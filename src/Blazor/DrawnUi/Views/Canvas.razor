@@ -144,6 +144,14 @@
             SetupRenderingLoop();
             await EnsureResizeObserverAsync();
         }
+        else if (SuppressDrawFrame)
+        {
+            // Pre-warm re-render completed: canvas now has correct CSS dimensions.
+            // Release the draw suppression so the next frame loop tick triggers the first real paint
+            // with warm caches.
+            SuppressDrawFrame = false;
+            IsDirty = true;
+        }
 
         if (CaptureInput)
         {
@@ -158,11 +166,27 @@
 
     }
 
+    private record HostSizeInfo(float Width, float Height);
+
     private async Task EnsureResizeObserverAsync()
     {
         _resizeModule ??= await JS.InvokeAsync<IJSObjectReference>("import", ResizeModulePath);
         _resizeCallbackRef ??= DotNetObjectReference.Create(this);
 
+        // Synchronous size read: one round-trip instead of waiting for the resize observer
+        // async callback cycle. If the element already has real dimensions, pre-warm the
+        // control tree on an offscreen surface so the first real canvas paint hits warm caches.
+        var sz = await _resizeModule.InvokeAsync<HostSizeInfo>("getHostSize", _hostElement);
+        if (sz.Width > 0 && sz.Height > 0)
+        {
+            _measuredCanvasWidth = sz.Width;
+            _measuredCanvasHeight = sz.Height;
+            PreWarmOffscreen(_measuredCanvasWidth, _measuredCanvasHeight);
+            await InvokeAsync(StateHasChanged);
+        }
+
+        // attachCanvasHost fires notifySize immediately, but OnHostResized checks
+        // for size equality and returns early — no redundant StateHasChanged triggered.
         await _resizeModule.InvokeVoidAsync("attachCanvasHost", _hostElement, _resizeCallbackRef);
     }
 

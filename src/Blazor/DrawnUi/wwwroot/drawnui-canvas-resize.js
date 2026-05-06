@@ -14,6 +14,14 @@ function notifySize(element, dotNetRef, width, height) {
     dotNetRef.invokeMethodAsync('OnHostResized', nextWidth, nextHeight);
 }
 
+export function getHostSize(element) {
+    const rect = element.getBoundingClientRect();
+    return {
+        width: Math.max(1, Math.round(rect.width)),
+        height: Math.max(1, Math.round(rect.height))
+    };
+}
+
 export function attachCanvasHost(element, dotNetRef) {
     detachCanvasHost(element);
 
