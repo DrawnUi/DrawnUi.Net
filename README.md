@@ -1,4 +1,4 @@
-# DrawnUI for .NET MAUI
+# DrawnUI for .NET MAUI and Blazor
 ![License](https://img.shields.io/github/license/taublast/DrawnUi.svg)
 ![NuGet Version](https://img.shields.io/nuget/v/AppoMobi.Maui.DrawnUi.svg)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/AppoMobi.Maui.DrawnUi.svg)
@@ -6,14 +6,15 @@
 
 [Docs and Samples](https://drawnui.net) 👈
 
-Rendering engine for .NET MAUI with gestures and animations and much more, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).   
+Rendering engine for .NET MAUI, with an in-progress Blazor WebAssembly target, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).   
 
-Supports **iOS**, **MacCatalyst**, **Android**, **Windows** with hardware acceleration.
+MAUI supports **iOS**, **MacCatalyst**, **Android**, **Windows** with hardware acceleration.
 
 * To use inside a usual MAUI app, by wrapping drawn controls into `Canvas` views.
 * To create a totally drawn apps with just one `Canvas` as root view.
 * Drawn controls are totally virtual, no native views/handlers.
 * Design in XAML or [code-behind](https://drawnui.net/articles/first-app-code.html)
+* Blazor WebAssembly support is available under active development with shared DrawnUI controls and `Canvas` hosting in Razor pages.
 * Free to use under the MIT license, nuget package available.
 
 ## Features
@@ -35,6 +36,7 @@ Supports **iOS**, **MacCatalyst**, **Android**, **Windows** with hardware accele
 ## To Note
 
 * Still targeting .NET9 library: entry controls not fully compatible with .NET10.
+* The Blazor target currently uses `net10.0` and is still building toward full MAUI parity.
  
 ---
 
@@ -66,6 +68,8 @@ public override SKRect CreateHitRect()
 
 ## Quick Start
 
+### .NET MAUI
+
 Install the package:
 ```bash
 dotnet add package DrawnUi.Maui
@@ -94,6 +98,10 @@ See the [Getting Started Guide](https://drawnui.net/articles/getting-started.htm
 
 Do not miss the [Tutorials Project](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials) on how to create your custom control, a recycled cells scroller and more.
 
+### Blazor WebAssembly
+
+For Blazor setup, package installation, startup, trimming notes, and the current validated slice, see the [Blazor README](src/Blazor/README.md).
+
 ---
 
 ## Sample Apps
@@ -101,6 +109,7 @@ Do not miss the [Tutorials Project](https://github.com/taublast/DrawnUi.Maui/tre
 **Demo Projects:**
 - [Tutorials](https://github.com/taublast/DrawnUi/tree/main/src/Maui/Samples/Tutorials) - First steps, bindings, recycled cells
 - [Sandbox Project](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Sandbox) - Playground for custom controls, shaders, camera, maps etc
+- [Blazor Sandbox](https://github.com/taublast/DrawnUi/tree/main/src/Blazor/Samples/BlazorSandbox) - WebAssembly playground for cards, scrolling, lottie, and keyboard probes
 - [Engine Demo](https://github.com/taublast/AppoMobi.Maui.DrawnUi.Demo) - Navigation, recycled cells, camera integration
 - [Shaders Carousel](https://github.com/taublast/ShadersCarousel/) - Advanced SkiaSharp v3 effects
 - [Space Shooter](https://github.com/taublast/Maui.Game.SpaceShooter/) - 2D Arcade Game Etude
