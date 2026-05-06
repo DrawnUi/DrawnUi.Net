@@ -334,9 +334,7 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         var sourceSize = SceneAssetDimensions[source];
         var segmentWidth = sourceSize.Width * EnvironmentScale;
         var repeatWidth = AuthoredRepeatWidths[source] * EnvironmentScale;
-        var tileHeight = string.Equals(source, "media/cold-corridors/foreground.png", StringComparison.Ordinal)
-            ? SceneHeight
-            : sourceSize.Height * EnvironmentScale;
+        var tileHeight = SceneHeight;
 
         return new RepeatingStripControl(source, repeatWidth, segmentWidth, 0, tileHeight)
         {
