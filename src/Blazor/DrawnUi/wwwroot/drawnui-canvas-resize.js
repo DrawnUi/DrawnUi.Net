@@ -28,7 +28,7 @@ function showSnapshot(element, state) {
     if (!canvas || !state.allowSnapshot) return;
     let dataUrl;
     try {
-        dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+        dataUrl = canvas.toDataURL('image/png');
     } catch {
         return;
     }
