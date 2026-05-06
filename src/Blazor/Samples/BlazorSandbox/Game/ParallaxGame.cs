@@ -7,7 +7,10 @@ using SkiaSharp;
 
 namespace ParallaxGameLoop.Game;
 
-public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
+/// <summary>
+/// Side-scrolling parallax gameplay sample with keyboard-driven movement, jumping, and attack states.
+/// </summary>
+public sealed class ParallaxGame : DrawnUi.Gaming.Game
 {
     private static readonly string[] SceneAssetSources =
     [
@@ -44,47 +47,195 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             ["media/cold-corridors/foreground.png"] = 1344f,
         };
 
+    /// <summary>
+    /// Width of the visible gameplay viewport in device pixels.
+    /// </summary>
     private const float SceneWidth = 940f;
+
+    /// <summary>
+    /// Height of the visible gameplay viewport in device pixels.
+    /// </summary>
     private const float SceneHeight = 430f;
+
+    /// <summary>
+    /// Authored height of the original Godot corridor scene before scaling.
+    /// </summary>
     private const float SourceSceneHeight = 239f;
+
+    /// <summary>
+    /// Scale factor that maps authored Godot scene coordinates into the runtime viewport.
+    /// </summary>
     private const float EnvironmentScale = SceneHeight / SourceSceneHeight;
-    private const float HeroineSize = 233.28f;
-    private const float HeroineBaseX = 271.36f;
-    private const float HeroineGroundTop = 164.00f;
-    private const float MoveSpeed = 240f;
+
+    /// <summary>
+    /// Render size of the player sprite in device pixels.
+    /// </summary>
+    private const float PlayerSize = 233.28f;
+
+    /// <summary>
+    /// Actual frame width authored in the current player sheets.
+    /// Measured from the source atlases: idle 512/4, run 896/7, jump 512/4, attack 640/5.
+    /// </summary>
+    private const float PlayerFrameWidth = 128f;
+
+    /// <summary>
+    /// Actual frame height authored in the current player sheets.
+    /// </summary>
+    private const float PlayerFrameHeight = 64f;
+
+    /// <summary>
+    /// Width of the player's stable render box.
+    /// Derived from the actual widest frame size in the measured sprite sheets.
+    /// </summary>
+    private const float PlayerRenderWidth = PlayerSize * (PlayerFrameWidth / PlayerFrameHeight);
+
+    /// <summary>
+    /// Height of the player's stable render box.
+    /// </summary>
+    private const float PlayerRenderHeight = PlayerSize;
+
+    /// <summary>
+    /// Left inset that keeps the visual player centered after expanding the render box width.
+    /// </summary>
+    private const float PlayerRenderLeftInset = (PlayerRenderWidth - PlayerSize) * 0.5f;
+
+    /// <summary>
+    /// Baseline X position of the heroine before camera drift is applied.
+    /// </summary>
+    private const float PlayerBaseX = 271.36f;
+
+    /// <summary>
+    /// Grounded Y position of the heroine when she is not jumping.
+    /// </summary>
+    private const float PlayerGroundTop = 164.00f;
+
+    /// <summary>
+    /// Horizontal world travel speed that drives all parallax scrolling.
+    /// </summary>
+    private const float MoveSpeed = 230f;
+
+    /// <summary>
+    /// Initial upward jump velocity applied when a jump starts.
+    /// Higher values make the heroine jump harder and stay airborne longer.
+    /// </summary>
     private const float JumpImpulse = 520f;
+
+    /// <summary>
+    /// Downward acceleration applied every frame while airborne.
+    /// </summary>
     private const float Gravity = 1450f;
+
+    /// <summary>
+    /// How much the heroine shifts on screen relative to world travel.
+    /// </summary>
     private const float ScreenDriftFactor = 0.16f;
+
+    /// <summary>
+    /// Maximum horizontal on-screen drift allowed for the heroine.
+    /// </summary>
     private const float MaxScreenDrift = 92f;
+
+    /// <summary>
+    /// Duration of the attack state in seconds.
+    /// </summary>
     private const float AttackDuration = 0.32f;
+
+    /// <summary>
+    /// Runtime height used by the scrolling image layers.
+    /// </summary>
     private const float LayerScreenHeight = SceneHeight;
+
+    /// <summary>
+    /// Top Y position of the floor strip in runtime scene space.
+    /// </summary>
     private const float TilesetTop = 197f * EnvironmentScale;
+
+    /// <summary>
+    /// Height of the floor strip in runtime scene space.
+    /// </summary>
     private const float TilesetHeight = 42f * EnvironmentScale;
+
+    /// <summary>
+    /// Width of one authored near-layer repeat band, used for torch repetition.
+    /// </summary>
     private const float TorchBandWidth = 896f * EnvironmentScale;
 
+    /// <summary>
+    /// Parallax background strip layers ordered from farthest to nearest.
+    /// </summary>
     private readonly RepeatingStripControl _back;
     private readonly RepeatingStripControl _far;
     private readonly RepeatingStripControl _middle;
     private readonly RepeatingStripControl _near;
     private readonly TilesetStripControl _tileset;
     private readonly RepeatingStripControl _foreground;
+
+    /// <summary>
+    /// Separate torch overlay band that moves with the near layer.
+    /// </summary>
     private readonly SkiaLayer _torchBand;
-    private readonly HeroineSprite _heroine;
 
+    /// <summary>
+    /// Player sprite-set used for the controllable actor.
+    /// </summary>
+    private readonly PlayerSprite _heroine;
+
+    /// <summary>
+    /// Tracks whether one-time asset initialization has already completed.
+    /// </summary>
     private bool _initialized;
-    private bool _moveLeft;
-    private bool _moveRight;
-    private bool _jumpRequested;
-    private bool _facingLeft;
-    private float _worldPosition;
-    private float _heroineVelocityY;
-    private float _heroineJumpOffset;
-    private float _attackTimeRemaining;
-    private HeroineState _heroineState;
 
-    public BridgeHeroineParallaxGame()
+    /// <summary>
+    /// Input latch for moving the player left.
+    /// </summary>
+    private bool _moveLeft;
+
+    /// <summary>
+    /// Input latch for moving the player right.
+    /// </summary>
+    private bool _moveRight;
+
+    /// <summary>
+    /// Queued jump request consumed on the next gameplay tick.
+    /// </summary>
+    private bool _jumpRequested;
+
+    /// <summary>
+    /// Current facing direction used to select left or right animation variants.
+    /// </summary>
+    private bool _facingLeft;
+
+    /// <summary>
+    /// Horizontal world travel accumulator that drives all parallax offsets.
+    /// </summary>
+    private float _worldPosition;
+
+    /// <summary>
+    /// Current vertical jump velocity of the player.
+    /// </summary>
+    private float _heroineVelocityY;
+
+    /// <summary>
+    /// Current vertical offset from the grounded player position.
+    /// </summary>
+    private float _heroineJumpOffset;
+
+    /// <summary>
+    /// Remaining attack-state time in seconds.
+    /// </summary>
+    private float _attackTimeRemaining;
+
+    /// <summary>
+    /// Last resolved high-level player gameplay state.
+    /// </summary>
+    private PlayerState _heroineState;
+
+    /// <summary>
+    /// Creates the scene graph, player sprite, and parallax layers for the playable corridor sample.
+    /// </summary>
+    public ParallaxGame()
     {
-        Tag = nameof(BridgeHeroineParallaxGame);
+        Tag = nameof(ParallaxGame);
         Type = LayoutType.Absolute;
         HeightRequest = SceneHeight;
         BackgroundColor = Color.FromArgb("#060A12");
@@ -124,17 +275,17 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             }
         };
 
-        _heroine = new HeroineSprite
+        _heroine = new PlayerSprite
         {
-            WidthRequest = HeroineSize,
-            HeightRequest = HeroineSize,
+            WidthRequest = PlayerRenderWidth,
+            HeightRequest = PlayerRenderHeight,
             HorizontalOptions = LayoutOptions.Start,
             VerticalOptions = LayoutOptions.Start,
-            Left = HeroineBaseX,
-            Top = HeroineGroundTop,
+            Left = PlayerBaseX - PlayerRenderLeftInset,
+            Top = PlayerGroundTop,
             ZIndex = 7,
         };
-        _heroine.State = HeroineSprite.HeroineAnimState.IdleRight;
+        _heroine.State = PlayerSprite.PlayerAnimState.IdleRight;
 
         Children =
         [
@@ -148,10 +299,13 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             _foreground,
         ];
 
-        ApplyHeroineState(HeroineState.Idle);
+        ApplyPlayerState(PlayerState.Idle);
         UpdateWorldVisuals();
     }
 
+    /// <summary>
+    /// Starts asynchronous asset initialization after the DrawnUI view tree is attached.
+    /// </summary>
     protected override void OnLayoutReady()
     {
         base.OnLayoutReady();
@@ -167,12 +321,18 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         }).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Stops the game loop before the control is disposed.
+    /// </summary>
     public override void OnDisposing()
     {
         StopLoop();
         base.OnDisposing();
     }
 
+    /// <summary>
+    /// Captures keyboard input and converts it into movement, jump, and attack requests.
+    /// </summary>
     public override void OnKeyDown(InputKey key)
     {
         switch (key)
@@ -200,6 +360,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         }
     }
 
+    /// <summary>
+    /// Clears held movement input when the corresponding key is released.
+    /// </summary>
     public override void OnKeyUp(InputKey key)
     {
         switch (key)
@@ -215,6 +378,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         }
     }
 
+    /// <summary>
+    /// Advances one gameplay frame: reads input, updates physics, advances world travel, and refreshes visuals.
+    /// </summary>
     public override void GameLoop(float deltaSeconds)
     {
         base.GameLoop(deltaSeconds);
@@ -255,10 +421,13 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
 
         _worldPosition += moveInput * MoveSpeed * deltaSeconds;
 
-        ApplyHeroineState(ResolveState(moveInput));
+        ApplyPlayerState(ResolveState(moveInput));
         UpdateWorldVisuals();
     }
 
+    /// <summary>
+    /// Preloads image assets and starts the runtime loop once the scene can render safely.
+    /// </summary>
     private async Task InitializeAsync()
     {
         if (_initialized || Superview == null || !Superview.HasHandler)
@@ -277,6 +446,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         StartLoop();
     }
 
+    /// <summary>
+    /// Applies the current world position to each parallax layer and repositions the player and torch band.
+    /// </summary>
     private void UpdateWorldVisuals()
     {
         _back.OffsetX = -_worldPosition * 0.18f;
@@ -289,35 +461,41 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         _foreground.OffsetX = -_worldPosition * 1.25f;
 
         var drift = Math.Clamp(_worldPosition * ScreenDriftFactor, -MaxScreenDrift, MaxScreenDrift);
-        _heroine.Left = HeroineBaseX + drift;
-        _heroine.Top = HeroineGroundTop + _heroineJumpOffset;
+        _heroine.Left = (PlayerBaseX - PlayerRenderLeftInset) + drift;
+        _heroine.Top = PlayerGroundTop + _heroineJumpOffset;
 
         _torchBand.TranslationX = nearTileOffset;
     }
 
-    private HeroineState ResolveState(int moveInput)
+    /// <summary>
+    /// Resolves the player's high-level animation state from attack, jump, and movement conditions.
+    /// </summary>
+    private PlayerState ResolveState(int moveInput)
     {
         if (_attackTimeRemaining > 0)
         {
-            return HeroineState.Attack;
+            return PlayerState.Attack;
         }
 
         if (_heroineJumpOffset != 0 || _heroineVelocityY != 0)
         {
-            return HeroineState.Jump;
+            return PlayerState.Jump;
         }
 
-        return moveInput == 0 ? HeroineState.Idle : HeroineState.Run;
+        return moveInput == 0 ? PlayerState.Idle : PlayerState.Run;
     }
 
-    private void ApplyHeroineState(HeroineState state)
+    /// <summary>
+    /// Maps a gameplay state into a concrete left/right animation variant and applies it to the sprite set.
+    /// </summary>
+    private void ApplyPlayerState(PlayerState state)
     {
         var nextAnimation = state switch
         {
-            HeroineState.Idle => _facingLeft ? HeroineSprite.HeroineAnimState.IdleLeft : HeroineSprite.HeroineAnimState.IdleRight,
-            HeroineState.Run => _facingLeft ? HeroineSprite.HeroineAnimState.RunLeft : HeroineSprite.HeroineAnimState.RunRight,
-            HeroineState.Jump => _facingLeft ? HeroineSprite.HeroineAnimState.JumpLeft : HeroineSprite.HeroineAnimState.JumpRight,
-            _ => _facingLeft ? HeroineSprite.HeroineAnimState.AttackLeft : HeroineSprite.HeroineAnimState.AttackRight,
+            PlayerState.Idle => _facingLeft ? PlayerSprite.PlayerAnimState.IdleLeft : PlayerSprite.PlayerAnimState.IdleRight,
+            PlayerState.Run => _facingLeft ? PlayerSprite.PlayerAnimState.RunLeft : PlayerSprite.PlayerAnimState.RunRight,
+            PlayerState.Jump => _facingLeft ? PlayerSprite.PlayerAnimState.JumpLeft : PlayerSprite.PlayerAnimState.JumpRight,
+            _ => _facingLeft ? PlayerSprite.PlayerAnimState.AttackLeft : PlayerSprite.PlayerAnimState.AttackRight,
         };
 
         if (_heroineState == state && _heroine.State == nextAnimation)
@@ -329,6 +507,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         _heroine.State = nextAnimation;
     }
 
+    /// <summary>
+    /// Creates a horizontally repeating image strip for one parallax layer using authored repeat widths.
+    /// </summary>
     private static RepeatingStripControl CreateParallaxLayer(string source, int zIndex, double opacity)
     {
         var sourceSize = SceneAssetDimensions[source];
@@ -343,6 +524,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         };
     }
 
+    /// <summary>
+    /// Creates the floor-strip renderer used for the moving tileset band.
+    /// </summary>
     private static TilesetStripControl CreateTilesetLayer()
     {
         return new TilesetStripControl("media/cold-corridors/tileset.png", 48f * EnvironmentScale)
@@ -351,6 +535,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         };
     }
 
+    /// <summary>
+    /// Creates one animated torch sprite positioned in authored near-layer scene coordinates.
+    /// </summary>
     private static SkiaSprite CreateTorch(float sceneX, float sceneY)
     {
         var size = 32f * EnvironmentScale;
@@ -375,7 +562,10 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         };
     }
 
-    private enum HeroineState
+    /// <summary>
+    /// High-level gameplay states that drive sprite animation selection.
+    /// </summary>
+    private enum PlayerState
     {
         Idle,
         Run,
@@ -383,9 +573,15 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         Attack,
     }
 
-    private sealed class HeroineSprite : SkiaSpriteSet
+    /// <summary>
+    /// Sprite-set wrapper that exposes semantic player animation states and left/right mirroring.
+    /// </summary>
+    private sealed class PlayerSprite : SkiaSpriteSet
     {
-        public enum HeroineAnimState
+        /// <summary>
+        /// Concrete animation variants, split by action and facing direction.
+        /// </summary>
+        public enum PlayerAnimState
         {
             IdleRight,
             IdleLeft,
@@ -397,9 +593,12 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             AttackLeft,
         }
 
-        private HeroineAnimState _state;
+        private PlayerAnimState _state;
 
-        public HeroineAnimState State
+        /// <summary>
+        /// Gets or sets the active semantic animation variant and maps it onto the underlying sprite-set state index.
+        /// </summary>
+        public PlayerAnimState State
         {
             get => _state;
             set
@@ -412,31 +611,40 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
                 _state = value;
                 base.State = value switch
                 {
-                    HeroineAnimState.IdleLeft or HeroineAnimState.IdleRight => 0,
-                    HeroineAnimState.RunLeft or HeroineAnimState.RunRight => 1,
-                    HeroineAnimState.JumpLeft or HeroineAnimState.JumpRight => 2,
+                    PlayerAnimState.IdleLeft or PlayerAnimState.IdleRight => 0,
+                    PlayerAnimState.RunLeft or PlayerAnimState.RunRight => 1,
+                    PlayerAnimState.JumpLeft or PlayerAnimState.JumpRight => 2,
                     _ => 3,
                 };
                 ApplyMirror();
             }
         }
 
-        public HeroineSprite()
+        /// <summary>
+        /// Registers the player's sprite sheets and default starting animation.
+        /// </summary>
+        public PlayerSprite()
         {
             UseCache = SkiaCacheType.GPU;
             Define(0, "media/gothicvania/heroine-idle.png", columns: 4, rows: 1, fps: 8);
             Define(1, "media/gothicvania/heroine-run.png", columns: 7, rows: 1, fps: 12);
             Define(2, "media/gothicvania/heroine-jump.png", columns: 4, rows: 1, fps: 10);
             Define(3, "media/gothicvania/heroine-attack.png", columns: 5, rows: 1, fps: 18);
-            State = HeroineAnimState.IdleRight;
+            State = PlayerAnimState.IdleRight;
         }
 
+        /// <summary>
+        /// Reapplies horizontal mirroring whenever the underlying sprite-set changes animation.
+        /// </summary>
         protected override void OnChangeState(int oldState, int newState)
         {
             base.OnChangeState(oldState, newState);
             ApplyMirror();
         }
 
+        /// <summary>
+        /// Mirrors the active sprite horizontally for left-facing animation variants.
+        /// </summary>
         private void ApplyMirror()
         {
             if (CurrentSprite == null)
@@ -444,15 +652,18 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
                 return;
             }
 
-            var mirror = State is HeroineAnimState.IdleLeft
-                or HeroineAnimState.RunLeft
-                or HeroineAnimState.JumpLeft
-                or HeroineAnimState.AttackLeft;
+            var mirror = State is PlayerAnimState.IdleLeft
+                or PlayerAnimState.RunLeft
+                or PlayerAnimState.JumpLeft
+                or PlayerAnimState.AttackLeft;
 
             CurrentSprite.ScaleX = mirror ? -1 : 1;
         }
     }
 
+    /// <summary>
+    /// Image control that repeats an authored texture segment horizontally across the scene.
+    /// </summary>
     private sealed class RepeatingStripControl : SkiaImage
     {
         private static readonly SKSamplingOptions PixelSampling = new(SKFilterMode.Nearest, SKMipmapMode.None);
@@ -461,6 +672,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         private float _offsetX;
         private SKImage _gpuImage;
 
+        /// <summary>
+        /// Horizontal scroll offset applied to the repeating strip.
+        /// </summary>
         public float OffsetX
         {
             get => _offsetX;
@@ -476,6 +690,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             }
         }
 
+        /// <summary>
+        /// Creates a repeating strip with explicit authored repeat width, segment width, and scene placement.
+        /// </summary>
         public RepeatingStripControl(string source, float repeatWidth, float segmentWidth, float top, float height)
         {
             _repeatWidth = repeatWidth;
@@ -489,6 +706,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             Top = top;
         }
 
+        /// <summary>
+        /// Releases any GPU image promoted for faster rendering.
+        /// </summary>
         public override void OnDisposing()
         {
             _gpuImage?.Dispose();
@@ -496,6 +716,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             base.OnDisposing();
         }
 
+        /// <summary>
+        /// Draws the repeating band by tiling the source image across each authored repeat segment.
+        /// </summary>
         protected override void DrawSource(
             DrawingContext ctx,
             LoadedImageSource source,
@@ -564,6 +787,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         }
     }
 
+    /// <summary>
+    /// Custom floor-strip renderer that tiles the corridor floor texture along the bottom band of the scene.
+    /// </summary>
     private sealed class TilesetStripControl : SkiaControl
     {
         private static readonly SKSamplingOptions PixelSampling = new(SKFilterMode.Nearest, SKMipmapMode.None);
@@ -574,6 +800,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         private SKImage _image;
         private SKImage _gpuImage;
 
+        /// <summary>
+        /// Horizontal scroll offset applied to the floor strip.
+        /// </summary>
         public float OffsetX
         {
             get => _offsetX;
@@ -589,6 +818,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             }
         }
 
+        /// <summary>
+        /// Creates the floor-strip renderer with a fixed tile width in scene pixels.
+        /// </summary>
         public TilesetStripControl(string source, float tileWidth)
         {
             _source = source.StartsWith("/", StringComparison.Ordinal) ? source : "/" + source;
@@ -599,6 +831,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             VerticalOptions = LayoutOptions.Start;
         }
 
+        /// <summary>
+        /// Injects the preloaded floor bitmap and refreshes cached image resources.
+        /// </summary>
         public void SetBitmap(SKBitmap bitmap)
         {
             if (bitmap == null)
@@ -616,6 +851,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             Update();
         }
 
+        /// <summary>
+        /// Releases cached CPU and GPU image resources owned by the floor strip.
+        /// </summary>
         public override void OnDisposing()
         {
             _gpuImage?.Dispose();
@@ -625,6 +863,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             base.OnDisposing();
         }
 
+        /// <summary>
+        /// Draws the floor strip into its authored band using the current scroll offset.
+        /// </summary>
         protected override void Paint(DrawingContext ctx)
         {
             base.Paint(ctx);
@@ -659,6 +900,9 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             }
         }
 
+        /// <summary>
+        /// Lazily resolves the floor texture from cache and promotes it to GPU memory when possible.
+        /// </summary>
         private void EnsureImageLoaded(DrawingContext ctx)
         {
             if (_bitmap == null)
