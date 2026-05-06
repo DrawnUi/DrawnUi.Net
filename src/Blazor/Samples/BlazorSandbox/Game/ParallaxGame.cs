@@ -838,8 +838,6 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         /// </summary>
         public PlayerSprite()
         {
-            UseCache = SkiaCacheType.Operations;
-            IsParentIndependent = true;
             Define(0, "media/gothicvania/heroine-idle.png", columns: 4, rows: 1, fps: 8);
             Define(1, "media/gothicvania/heroine-run.png", columns: 7, rows: 1, fps: 12);
             Define(2, "media/gothicvania/heroine-jump.png", columns: 4, rows: 1, fps: 10);

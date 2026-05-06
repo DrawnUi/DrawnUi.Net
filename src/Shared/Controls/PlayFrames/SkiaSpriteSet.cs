@@ -10,6 +10,12 @@ namespace DrawnUi.Controls;
 /// </summary>
 public class SkiaSpriteSet : ContentLayout
 {
+
+    public SkiaSpriteSet()
+    {
+        UseCache = SkiaCacheType.Operations;
+    }
+
     readonly Dictionary<int, SkiaSprite> _sprites = new();
     SkiaSprite _active;
 
