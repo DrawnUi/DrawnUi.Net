@@ -25,10 +25,16 @@ export function getHostSize(element) {
 export function attachCanvasHost(element, dotNetRef) {
     detachCanvasHost(element);
 
+    let resizeTimer = null;
+
     const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
             const box = entry.contentRect;
-            notifySize(entry.target, dotNetRef, box.width, box.height);
+            const w = box.width;
+            const h = box.height;
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() =>
+                notifySize(entry.target, dotNetRef, w, h), 80);
         }
     });
 
@@ -38,7 +44,7 @@ export function attachCanvasHost(element, dotNetRef) {
         notifyFullscreen(element, dotNetRef);
     };
 
-    observers.set(element, { resizeObserver, onFullscreenChange });
+    observers.set(element, { resizeObserver, onFullscreenChange, get resizeTimer() { return resizeTimer; }, clearTimer() { clearTimeout(resizeTimer); resizeTimer = null; } });
     resizeObserver.observe(element);
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
@@ -54,6 +60,7 @@ export function detachCanvasHost(element) {
         return;
     }
 
+    state.clearTimer();
     state.resizeObserver.disconnect();
     document.removeEventListener('fullscreenchange', state.onFullscreenChange);
     document.removeEventListener('webkitfullscreenchange', state.onFullscreenChange);
