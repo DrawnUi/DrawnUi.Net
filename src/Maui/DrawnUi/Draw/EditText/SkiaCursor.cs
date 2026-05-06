@@ -6,33 +6,24 @@ public class SkiaCursor : SkiaShape
 {
     private SkiaLabel _label;
 
-    public override void OnParentChanged(IDrawnBase newvalue, IDrawnBase oldvalue)
+    /// <summary>
+    /// Called by SkiaEditor after creating the cursor. Parent chain is not yet complete at AddSubView time.
+    /// </summary>
+    public void Initialize(SkiaLabel label)
     {
-        base.OnParentChanged(newvalue, oldvalue);
-
-        if (Parent is SkiaEditor editor)
+        _label = label;
+        if (_blinkAnimator == null)
         {
-            _label = editor.Label;
-            if (_blinkAnimator == null)
+            _blinkAnimator = new ToggleAnimator(this)
             {
-                _blinkAnimator = new ToggleAnimator(this)
+                Repeat = -1,
+                Speed = 1000,
+                Ratio = 0.5,
+                OnUpdated = (value) =>
                 {
-                    Repeat = -1,
-                    Speed = 1000,
-                    Ratio = 0.5,
-                    OnUpdated = (value) =>
-                    {
-                        if (!_blinkAnimator.State)
-                        {
-                            Opacity = 1.0;
-                        }
-                        else
-                        {
-                            Opacity = 0.01;
-                        }
-                    }
-                };
-            }
+                    Opacity = _blinkAnimator.State ? 0.01 : 1.0;
+                }
+            };
         }
     }
 
@@ -74,7 +65,7 @@ public class SkiaCursor : SkiaShape
     {
         _label = null;
 
-        _blinkAnimator.Dispose();
+        _blinkAnimator?.Dispose();
 
         base.OnDisposing();
     }

@@ -2553,27 +2553,27 @@ namespace DrawnUi.Draw
 
         #region View
 
-        public static readonly BindableProperty VerticalOptionsProperty = BindableProperty.Create(
+            public new static readonly BindableProperty VerticalOptionsProperty = BindableProperty.Create(
             nameof(VerticalOptions),
             typeof(LayoutOptions),
             typeof(SkiaControl),
             LayoutOptions.Start,
             propertyChanged: NeedInvalidateMeasure);
 
-        public LayoutOptions VerticalOptions
+            public new LayoutOptions VerticalOptions
         {
             get { return (LayoutOptions)GetValue(VerticalOptionsProperty); }
             set { SetValue(VerticalOptionsProperty, value); }
         }
 
-        public static readonly BindableProperty HorizontalOptionsProperty = BindableProperty.Create(
+            public new static readonly BindableProperty HorizontalOptionsProperty = BindableProperty.Create(
             nameof(HorizontalOptions),
             typeof(LayoutOptions),
             typeof(SkiaControl),
             LayoutOptions.Start,
             propertyChanged: NeedInvalidateMeasure);
 
-        public LayoutOptions HorizontalOptions
+            public new LayoutOptions HorizontalOptions
         {
             get { return (LayoutOptions)GetValue(HorizontalOptionsProperty); }
             set { SetValue(HorizontalOptionsProperty, value); }

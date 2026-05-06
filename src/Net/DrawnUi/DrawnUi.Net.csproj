@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
@@ -32,11 +32,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\..\icon128.png">
+        <None Include="..\..\..\icon128.png">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
         </None>
-        <None Include="..\Directory.Build.targets" Link="Directory.Build.targets" />
+        <None Include="..\..\Directory.Build.targets" Link="Directory.Build.targets" />
     </ItemGroup>
 
     <ItemGroup>
@@ -50,15 +50,21 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Gestures\AppoMobi.Gestures.csproj" />
+        <ProjectReference Include="..\..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Gestures\AppoMobi.Gestures.csproj" />
     </ItemGroup>
 
-    <Import Project="..\Shared\Shared.projitems" Label="Shared" />
-    <Import Project="..\SharedNet\SharedNet.projitems" Label="SharedNet" />
+    <ItemGroup>
+        <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaCursor.cs" Link="Draw\EditText\SkiaCursor.cs" />
+        <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaEditor.cs" Link="Draw\EditText\SkiaEditor.cs" />
+        <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaEditorSelection.cs" Link="Draw\EditText\SkiaEditorSelection.cs" />
+    </ItemGroup>
+
+    <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
+    <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
 
     <ItemGroup>
-        <Compile Remove="$(MSBuildThisFileDirectory)..\Shared\Features\Pdf\Pdf.cs" />
-        <Compile Remove="$(MSBuildThisFileDirectory)..\Shared\Draw\Base\VisualTreeHandler.cs" />
+        <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
+        <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
     </ItemGroup>
 
 </Project>

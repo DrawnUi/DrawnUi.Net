@@ -1,6 +1,7 @@
 ﻿global using DrawnUi.Draw;
 global using SkiaSharp;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.DevFlow.Agent;
 
 namespace Sandbox
 {

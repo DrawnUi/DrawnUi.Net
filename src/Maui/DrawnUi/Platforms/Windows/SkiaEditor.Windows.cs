@@ -1,13 +1,14 @@
 using DrawnUi.Draw;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using System.Diagnostics;
 using TextChangedEventArgs = Microsoft.UI.Xaml.Controls.TextChangedEventArgs;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace DrawnUi.Draw
 {
-    public partial class SkiaEditor : SkiaLayout, ISkiaGestureListener
+    public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
         private TextBox _hiddenTextBox;
         private bool _updatingText;
@@ -58,6 +59,7 @@ namespace DrawnUi.Draw
                     _hiddenTextBox.TextChanged -= HiddenTextBox_TextChanged;
                     _hiddenTextBox.SelectionChanged -= HiddenTextBox_SelectionChanged;
                     _hiddenTextBox.GotFocus -= HiddenTextBox_GotFocus;
+                    _hiddenTextBox.KeyDown -= HiddenTextBox_KeyDown;
 
                     var layout = (Panel)Superview?.Handler?.PlatformView;
                     if (layout != null)
@@ -82,6 +84,7 @@ namespace DrawnUi.Draw
                 return;
 
             var layout = (Panel)Superview?.Handler?.PlatformView;
+            Debug.WriteLine($"[SkiaEditor] EnsureTextBox layout={layout?.GetType().Name ?? "NULL"} superview={Superview?.GetType().Name ?? "NULL"}");
             if (layout == null)
                 return;
 
@@ -100,6 +103,7 @@ namespace DrawnUi.Draw
             _hiddenTextBox.TextChanged += HiddenTextBox_TextChanged;
             _hiddenTextBox.SelectionChanged += HiddenTextBox_SelectionChanged;
             _hiddenTextBox.GotFocus += HiddenTextBox_GotFocus;
+            _hiddenTextBox.KeyDown += HiddenTextBox_KeyDown;
 
             layout.Children.Add(_hiddenTextBox);
 
@@ -110,6 +114,7 @@ namespace DrawnUi.Draw
 
         public void SetFocusNative(bool focus)
         {
+            Debug.WriteLine($"[SkiaEditor] SetFocusNative focus={focus} textBox={_hiddenTextBox != null}");
             try
             {
                 if (focus)
@@ -141,26 +146,51 @@ namespace DrawnUi.Draw
 
         private void HiddenTextBox_TextChanged(object sender, TextChangedEventArgs textChangedEventArgs)
         {
+            Debug.WriteLine($"[SkiaEditor] TextChanged updatingText={_updatingText} newText='{_hiddenTextBox?.Text}'");
             if (!_updatingText)
             {
                 _updatingText = true;
-                Text = _hiddenTextBox.Text;
+                // normalize Windows line endings
+                Text = _hiddenTextBox.Text?.Replace("\r\n", "\n").Replace("\r", "\n");
                 _updatingText = false;
+            }
+        }
+
+        private void HiddenTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter && !IsMultiline)
+            {
+                e.Handled = true;
+                Submit();
+                return;
+            }
+
+            var ctrl = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control);
+            if (ctrl.HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down) && e.Key == Windows.System.VirtualKey.A)
+            {
+                e.Handled = true;
+                SelectAll();
             }
         }
 
         private void HiddenTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (_suppressSelectionChanged) return;
-            SetCursorPositionWithDelay(50, _hiddenTextBox.SelectionStart);
+            var start = _hiddenTextBox.SelectionStart;
+            var length = _hiddenTextBox.SelectionLength;
+            SelectionLength = length;
+            // cursor at end of selection (forward selection is the common case)
+            SetCursorPositionWithDelay(50, start + length);
         }
 
         private void HiddenTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            Debug.WriteLine($"[SkiaEditor] GotFocus CursorPosition={CursorPosition} textLen={_hiddenTextBox?.Text?.Length ?? -1}");
             if (_hiddenTextBox == null) return;
-            var pos = Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0);
+            var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
             _hiddenTextBox.SelectionStart = pos;
             _hiddenTextBox.SelectionLength = 0;
+            SelectionLength = 0;
             _suppressSelectionChanged = false;
         }
 

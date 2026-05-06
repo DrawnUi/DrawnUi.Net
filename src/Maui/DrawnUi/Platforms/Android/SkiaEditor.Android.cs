@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace DrawnUi.Draw
 {
-    public partial class SkiaEditor : SkiaLayout, ISkiaGestureListener
+    public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
 
 
@@ -74,6 +74,13 @@ namespace DrawnUi.Draw
 
         private void Control_EditorAction(object sender, TextView.EditorActionEventArgs e)
         {
+            if (IsMultiline)
+            {
+                // Let the native EditText insert the line break and advance selection.
+                e.Handled = false;
+                return;
+            }
+
             e.Handled = true;
             Submit();
             return;

@@ -4,7 +4,7 @@ using UIKit;
 
 namespace DrawnUi.Draw
 {
-    public partial class SkiaEditor : SkiaLayout, ISkiaGestureListener
+    public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
 
         public class TextFieldDelegate : UITextFieldDelegate

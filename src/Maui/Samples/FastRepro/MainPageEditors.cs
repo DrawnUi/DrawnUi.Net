@@ -55,7 +55,19 @@ namespace Sandbox
                             FontSize = 16,
                             TextColor = Colors.Black,
                             CursorColor = Colors.DodgerBlue,
+                            MaxLines = 8,
                         },
+
+                        //new SkiaRichLabel()
+                        //{
+                        //    Text="test",
+                        //    BackgroundColor = Colors.DeepPink,
+                        //    HorizontalOptions = LayoutOptions.Fill,
+                        //    HeightRequest = 32,
+                        //    KeepSpacesOnLineBreaks = true,
+                        //    NeedsGlyphPositions = true,
+                        //    TextColor = Colors.Black,
+                        //}
                     }
                 }
             };

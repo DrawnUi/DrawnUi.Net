@@ -486,31 +486,7 @@ namespace DrawnUi.Views
             ((DrawnView)bindable).Invalidate();
         }
 
-        public static readonly BindableProperty MaximumWidthRequestProperty = BindableProperty.Create(
-            nameof(MaximumWidthRequest),
-            typeof(double),
-            typeof(DrawnView),
-            -1.0,
-            propertyChanged: NeedInvalidate);
-
-        public double MaximumWidthRequest
-        {
-            get { return (double)GetValue(MaximumWidthRequestProperty); }
-            set { SetValue(MaximumWidthRequestProperty, value); }
-        }
-
-        public static readonly BindableProperty MaximumHeightRequestProperty = BindableProperty.Create(
-            nameof(MaximumHeightRequest),
-            typeof(double),
-            typeof(DrawnView),
-            -1.0,
-            propertyChanged: NeedInvalidate);
-
-        public double MaximumHeightRequest
-        {
-            get { return (double)GetValue(MaximumHeightRequestProperty); }
-            set { SetValue(MaximumHeightRequestProperty, value); }
-        }
+      
 
         public virtual void ReportHotreloadChildRemoved(SkiaControl control)
         {
