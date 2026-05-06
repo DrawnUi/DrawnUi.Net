@@ -25,6 +25,11 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         "media/gothicvania/heroine-run.png",
         "media/gothicvania/heroine-jump.png",
         "media/gothicvania/heroine-attack.png",
+        "media/gothicvania/ghost/ghost-Appear.png",
+        "media/gothicvania/ghost/ghost-Chase.png",
+        "media/gothicvania/ghost/ghost-Idle.png",
+        "media/gothicvania/ghost/ghost-Shriek.png",
+        "media/gothicvania/ghost/ghost-Vanish.png",
     ];
 
     private static readonly IReadOnlyDictionary<string, (float Width, float Height)> SceneAssetDimensions =
@@ -95,6 +100,26 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private const float PlayerRenderHeight = PlayerSize;
 
     /// <summary>
+    /// Render height of the wandering ghost enemy.
+    /// </summary>
+    private const float GhostRenderHeight = 200f;
+
+    /// <summary>
+    /// Actual frame width authored in the ghost sprite sheets.
+    /// </summary>
+    private const float GhostFrameWidth = 64f;
+
+    /// <summary>
+    /// Actual frame height authored in the ghost sprite sheets.
+    /// </summary>
+    private const float GhostFrameHeight = 80f;
+
+    /// <summary>
+    /// Stable render width of the ghost enemy derived from its authored frame size.
+    /// </summary>
+    private const float GhostRenderWidth = GhostRenderHeight * (GhostFrameWidth / GhostFrameHeight);
+
+    /// <summary>
     /// Left inset that keeps the visual player centered after expanding the render box width.
     /// </summary>
     private const float PlayerRenderLeftInset = (PlayerRenderWidth - PlayerSize) * 0.5f;
@@ -108,6 +133,57 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// Grounded Y position of the heroine when she is not jumping.
     /// </summary>
     private const float PlayerGroundTop = 164.00f;
+
+    /// <summary>
+    /// Vertical scene position of the ghost enemy's render box.
+    /// The ghost floats slightly above the floor line.
+    /// </summary>
+    private const float GhostBaseTop = 170f;
+
+    /// <summary>
+    /// World-space spawn point for the ghost, one viewport width east of the player start.
+    /// </summary>
+    private const float GhostSpawnWorldX = PlayerBaseX + SceneWidth;
+
+    /// <summary>
+    /// Half-width of the ghost patrol around its spawn point.
+    /// </summary>
+    private const float GhostPatrolHalfWidth = 96f;
+
+    /// <summary>
+    /// Patrol oscillation speed in radians per second.
+    /// </summary>
+    private const float GhostPatrolSpeed = 1.2f;
+
+    /// <summary>
+    /// Small vertical bob amplitude applied while the ghost is alive.
+    /// </summary>
+    private const float GhostBobAmplitude = 6f;
+
+    /// <summary>
+    /// Vertical bob speed in radians per second.
+    /// </summary>
+    private const float GhostBobSpeed = 2.4f;
+
+    /// <summary>
+    /// Maximum world-space distance at which the player's attack can kill the ghost.
+    /// </summary>
+    private const float AttackRange = 320f;
+
+    /// <summary>
+    /// Duration of the ghost appear animation in seconds.
+    /// </summary>
+    private const float GhostAppearDuration = 6f / 10f;
+
+    /// <summary>
+    /// Duration of the ghost vanish animation in seconds.
+    /// </summary>
+    private const float GhostVanishDuration = 7f / 10f;
+
+    /// <summary>
+    /// Delay before a defeated ghost respawns at its patrol origin.
+    /// </summary>
+    private const float GhostRespawnDelay = 10f;
 
     /// <summary>
     /// Horizontal world travel speed that drives all parallax scrolling.
@@ -181,6 +257,11 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private readonly PlayerSprite _heroine;
 
     /// <summary>
+    /// Single wandering enemy placed east of the player start.
+    /// </summary>
+    private readonly GhostSprite _ghost;
+
+    /// <summary>
     /// Tracks whether one-time asset initialization has already completed.
     /// </summary>
     private bool _initialized;
@@ -229,6 +310,26 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// Last resolved high-level player gameplay state.
     /// </summary>
     private PlayerState _heroineState;
+
+    /// <summary>
+    /// Current high-level ghost behavior state.
+    /// </summary>
+    private GhostState _ghostState;
+
+    /// <summary>
+    /// Remaining time for transient ghost states such as appear and vanish.
+    /// </summary>
+    private float _ghostStateTimeRemaining;
+
+    /// <summary>
+    /// Patrol phase accumulator used to move the ghost left and right.
+    /// </summary>
+    private float _ghostPatrolTime;
+
+    /// <summary>
+    /// Vertical bobbing phase accumulator for the ghost.
+    /// </summary>
+    private float _ghostBobTime;
 
     /// <summary>
     /// Creates the scene graph, player sprite, and parallax layers for the playable corridor sample.
@@ -287,6 +388,20 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         };
         _heroine.State = PlayerSprite.PlayerAnimState.IdleRight;
 
+        _ghost = new GhostSprite
+        {
+            WidthRequest = GhostRenderWidth,
+            HeightRequest = GhostRenderHeight,
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Start,
+            Left = GhostSpawnWorldX - (GhostRenderWidth * 0.5f),
+            Top = GhostBaseTop,
+            ZIndex = 6,
+        };
+        _ghost.State = GhostSprite.GhostAnimState.AppearLeft;
+        _ghostState = GhostState.Appearing;
+        _ghostStateTimeRemaining = GhostAppearDuration;
+
         Children =
         [
             _back,
@@ -295,6 +410,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             _near,
             _torchBand,
             _tileset,
+            _ghost,
             _heroine,
             _foreground,
         ];
@@ -423,6 +539,13 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
 
         ApplyPlayerState(ResolveState(moveInput));
         UpdateWorldVisuals();
+
+        if (_attackTimeRemaining > 0)
+        {
+            TryAttackGhost();
+        }
+
+        UpdateGhost(deltaSeconds);
     }
 
     /// <summary>
@@ -464,7 +587,119 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         _heroine.Left = (PlayerBaseX - PlayerRenderLeftInset) + drift;
         _heroine.Top = PlayerGroundTop + _heroineJumpOffset;
 
+        var ghostWorldX = GetGhostWorldX();
+        _ghost.Left = (ghostWorldX - _worldPosition) - (GhostRenderWidth * 0.5f);
+        _ghost.Top = GhostBaseTop + (_ghostState == GhostState.Gone ? 0f : MathF.Sin(_ghostBobTime) * GhostBobAmplitude);
+
         _torchBand.TranslationX = nearTileOffset;
+    }
+
+    /// <summary>
+    /// Advances the enemy patrol state machine and resolves attack kills against the ghost.
+    /// </summary>
+    private void UpdateGhost(float deltaSeconds)
+    {
+        if (_ghostState == GhostState.Gone)
+        {
+            _ghostStateTimeRemaining = Math.Max(0, _ghostStateTimeRemaining - deltaSeconds);
+            if (_ghostStateTimeRemaining == 0)
+            {
+                _ghostPatrolTime = 0;
+                _ghostBobTime = 0;
+                SetGhostState(GhostState.Appearing);
+            }
+            return;
+        }
+
+        _ghostPatrolTime += deltaSeconds;
+        _ghostBobTime += deltaSeconds * GhostBobSpeed;
+
+        if (_ghostState == GhostState.Appearing)
+        {
+            _ghostStateTimeRemaining = Math.Max(0, _ghostStateTimeRemaining - deltaSeconds);
+            if (_ghostStateTimeRemaining == 0)
+            {
+                SetGhostState(GhostState.Patrolling);
+            }
+            return;
+        }
+
+        if (_ghostState == GhostState.Vanishing)
+        {
+            _ghostStateTimeRemaining = Math.Max(0, _ghostStateTimeRemaining - deltaSeconds);
+            if (_ghostStateTimeRemaining == 0)
+            {
+                SetGhostState(GhostState.Gone);
+            }
+            return;
+        }
+
+        var movingLeft = MathF.Cos(_ghostPatrolTime * GhostPatrolSpeed) < 0;
+        _ghost.State = movingLeft ? GhostSprite.GhostAnimState.ChaseLeft : GhostSprite.GhostAnimState.ChaseRight;
+    }
+
+    /// <summary>
+    /// Computes the ghost's world-space X position from its patrol origin and oscillation phase.
+    /// </summary>
+    private float GetGhostWorldX()
+    {
+        return GhostSpawnWorldX + (MathF.Sin(_ghostPatrolTime * GhostPatrolSpeed) * GhostPatrolHalfWidth);
+    }
+
+    /// <summary>
+    /// Attempts to hit the ghost using the current melee attack window.
+    /// Returns true when the ghost enters the vanish state.
+    /// </summary>
+    private bool TryAttackGhost()
+    {
+        if (_heroineState != PlayerState.Attack)
+        {
+            return false;
+        }
+
+        if (_ghostState is GhostState.Gone or GhostState.Vanishing or GhostState.Appearing)
+        {
+            return false;
+        }
+
+        if (!_heroine.DrawingRect.IntersectsWith(_ghost.DrawingRect))
+        {
+            return false;
+        }
+
+        SetGhostState(GhostState.Vanishing);
+        return true;
+    }
+
+    /// <summary>
+    /// Applies a high-level ghost state to the sprite and visibility model.
+    /// </summary>
+    private void SetGhostState(GhostState state)
+    {
+        _ghostState = state;
+
+        switch (state)
+        {
+            case GhostState.Appearing:
+                _ghost.IsVisible = true;
+                _ghostStateTimeRemaining = GhostAppearDuration;
+                _ghost.State = GhostSprite.GhostAnimState.AppearLeft;
+                break;
+            case GhostState.Patrolling:
+                _ghost.IsVisible = true;
+                _ghostStateTimeRemaining = 0;
+                _ghost.State = GhostSprite.GhostAnimState.ChaseLeft;
+                break;
+            case GhostState.Vanishing:
+                _ghost.IsVisible = true;
+                _ghostStateTimeRemaining = GhostVanishDuration;
+                _ghost.State = GhostSprite.GhostAnimState.VanishLeft;
+                break;
+            default:
+                _ghostStateTimeRemaining = GhostRespawnDelay;
+                _ghost.IsVisible = false;
+                break;
+        }
     }
 
     /// <summary>
@@ -574,6 +809,17 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     }
 
     /// <summary>
+    /// High-level behavior states for the wandering ghost enemy.
+    /// </summary>
+    private enum GhostState
+    {
+        Appearing,
+        Patrolling,
+        Vanishing,
+        Gone,
+    }
+
+    /// <summary>
     /// Sprite-set wrapper that exposes semantic player animation states and left/right mirroring.
     /// </summary>
     private sealed class PlayerSprite : SkiaSpriteSet
@@ -658,6 +904,84 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
                 or PlayerAnimState.AttackLeft;
 
             CurrentSprite.ScaleX = mirror ? -1 : 1;
+        }
+    }
+
+    /// <summary>
+    /// Sprite-set wrapper for the corridor ghost enemy.
+    /// </summary>
+    private sealed class GhostSprite : SkiaSpriteSet
+    {
+        public enum GhostAnimState
+        {
+            AppearRight,
+            AppearLeft,
+            ChaseRight,
+            ChaseLeft,
+            IdleRight,
+            IdleLeft,
+            ShriekRight,
+            ShriekLeft,
+            VanishRight,
+            VanishLeft,
+        }
+
+        private GhostAnimState _state;
+
+        public GhostAnimState State
+        {
+            get => _state;
+            set
+            {
+                if (_state == value)
+                {
+                    return;
+                }
+
+                _state = value;
+                base.State = value switch
+                {
+                    GhostAnimState.AppearLeft or GhostAnimState.AppearRight => 0,
+                    GhostAnimState.ChaseLeft or GhostAnimState.ChaseRight => 1,
+                    GhostAnimState.IdleLeft or GhostAnimState.IdleRight => 2,
+                    GhostAnimState.ShriekLeft or GhostAnimState.ShriekRight => 3,
+                    _ => 4,
+                };
+                ApplyMirror();
+            }
+        }
+
+        public GhostSprite()
+        {
+            UseCache = SkiaCacheType.GPU;
+            Define(0, "media/gothicvania/ghost/ghost-Appear.png", columns: 6, rows: 1, fps: 10);
+            Define(1, "media/gothicvania/ghost/ghost-Chase.png", columns: 4, rows: 1, fps: 10);
+            Define(2, "media/gothicvania/ghost/ghost-Idle.png", columns: 7, rows: 1, fps: 10);
+            Define(3, "media/gothicvania/ghost/ghost-Shriek.png", columns: 4, rows: 1, fps: 10);
+            Define(4, "media/gothicvania/ghost/ghost-Vanish.png", columns: 7, rows: 1, fps: 10, repeat: 1);
+            State = GhostAnimState.AppearLeft;
+        }
+
+        protected override void OnChangeState(int oldState, int newState)
+        {
+            base.OnChangeState(oldState, newState);
+            ApplyMirror();
+        }
+
+        private void ApplyMirror()
+        {
+            if (CurrentSprite == null)
+            {
+                return;
+            }
+
+            var mirror = State is GhostAnimState.AppearLeft
+                or GhostAnimState.ChaseLeft
+                or GhostAnimState.IdleLeft
+                or GhostAnimState.ShriekLeft
+                or GhostAnimState.VanishLeft;
+
+            CurrentSprite.ScaleX = mirror ? 1 : -1;
         }
     }
 

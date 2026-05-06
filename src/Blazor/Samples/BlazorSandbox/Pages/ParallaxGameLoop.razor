@@ -8,6 +8,11 @@
 
 This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and runs movement from the shared game loop with keyboard input.
 
+<div style="display: flex; gap: 12px; align-items: center; margin: 0.75rem 0 0; flex-wrap: wrap;">
+    <button class="btn btn-primary" @onclick="ToggleFullscreen">@(_isFullscreen ? "Leave fullscreen" : "Enter fullscreen")</button>
+    <span>State: @(_isFullscreen ? "fullscreen" : "embedded")</span>
+</div>
+
 <Canvas Content="_canvasContent"
     HorizontalOptions="LayoutOptions.Fill"
     VerticalOptions="LayoutOptions.Fill"
@@ -16,11 +21,14 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
     BackgroundColor="#060A12"
     Margin="0,16,0,32"
     RenderingMode="@RenderingModeType.Accelerated"
-    Gestures="@GesturesMode.Enabled" />
+    Gestures="@GesturesMode.Enabled"
+    IsFullscreen="@_isFullscreen"
+    IsFullscreenChanged="OnFullscreenChanged" />
 
 @code {
     private readonly SkiaControl _canvasContent;
     private readonly SkiaControl _stage;
+    private bool _isFullscreen;
 
     public ParallaxGameLoop()
     {
@@ -56,5 +64,16 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
                 }
             }
         };
+    }
+
+    private void ToggleFullscreen()
+    {
+        _isFullscreen = !_isFullscreen;
+    }
+
+    private Task OnFullscreenChanged(bool isFullscreen)
+    {
+        _isFullscreen = isFullscreen;
+        return Task.CompletedTask;
     }
 }
