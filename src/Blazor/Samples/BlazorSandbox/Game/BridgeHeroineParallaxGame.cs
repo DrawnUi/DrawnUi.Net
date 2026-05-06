@@ -34,11 +34,20 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             ["media/cold-corridors/foreground.png"] = (224f, 224f),
         };
 
+    private static readonly IReadOnlyDictionary<string, float> AuthoredRepeatWidths =
+        new Dictionary<string, float>(StringComparer.Ordinal)
+        {
+            ["media/cold-corridors/back.png"] = 320f,
+            ["media/cold-corridors/far.png"] = 400f,
+            ["media/cold-corridors/middle.png"] = 800f,
+            ["media/cold-corridors/near.png"] = 896f,
+            ["media/cold-corridors/foreground.png"] = 1344f,
+        };
+
     private const float SceneWidth = 940f;
     private const float SceneHeight = 430f;
     private const float SourceSceneHeight = 239f;
     private const float EnvironmentScale = SceneHeight / SourceSceneHeight;
-    private const float NearTextureWidth = 224f;
     private const float HeroineSize = 233.28f;
     private const float HeroineBaseX = 271.36f;
     private const float HeroineGroundTop = 164.00f;
@@ -274,7 +283,7 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
         _far.OffsetX = -_worldPosition * 0.34f;
         _middle.OffsetX = -_worldPosition * 0.56f;
 
-        var nearTileOffset = -_worldPosition * 0.82f;
+        var nearTileOffset = MathF.Round(-_worldPosition * 0.82f);
         _near.OffsetX = nearTileOffset;
         _tileset.OffsetX = -_worldPosition;
         _foreground.OffsetX = -_worldPosition * 1.25f;
@@ -323,9 +332,13 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
     private static RepeatingStripControl CreateParallaxLayer(string source, int zIndex, double opacity)
     {
         var sourceSize = SceneAssetDimensions[source];
-        var tileWidth = sourceSize.Width * EnvironmentScale;
+        var segmentWidth = sourceSize.Width * EnvironmentScale;
+        var repeatWidth = AuthoredRepeatWidths[source] * EnvironmentScale;
+        var tileHeight = string.Equals(source, "media/cold-corridors/foreground.png", StringComparison.Ordinal)
+            ? SceneHeight
+            : sourceSize.Height * EnvironmentScale;
 
-        return new RepeatingStripControl(source, tileWidth, 0, LayerScreenHeight)
+        return new RepeatingStripControl(source, repeatWidth, segmentWidth, 0, tileHeight)
         {
             Opacity = opacity,
             ZIndex = zIndex,
@@ -343,6 +356,8 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
     private static SkiaSprite CreateTorch(float sceneX, float sceneY)
     {
         var size = 32f * EnvironmentScale;
+        var left = MathF.Round((sceneX * EnvironmentScale) - (size * 0.5f));
+        var top = MathF.Round((sceneY * EnvironmentScale) - (size * 0.5f));
         return new SkiaSprite
         {
             UseCache = SkiaCacheType.GPU,
@@ -355,8 +370,8 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             HeightRequest = size,
             HorizontalOptions = LayoutOptions.Start,
             VerticalOptions = LayoutOptions.Start,
-            TranslationX = (sceneX * EnvironmentScale) - (size * 0.5f),
-            TranslationY = (sceneY * EnvironmentScale) - (size * 0.5f),
+            TranslationX = left,
+            TranslationY = top,
             ZIndex = 14,
             Source = "media/cold-corridors/torch-sheet.png",
         };
@@ -443,7 +458,8 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
     private sealed class RepeatingStripControl : SkiaImage
     {
         private static readonly SKSamplingOptions PixelSampling = new(SKFilterMode.Nearest, SKMipmapMode.None);
-        private readonly float _tileWidth;
+        private readonly float _repeatWidth;
+        private readonly float _segmentWidth;
         private float _offsetX;
         private SKImage _gpuImage;
 
@@ -462,9 +478,10 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             }
         }
 
-        public RepeatingStripControl(string source, float tileWidth, float top, float height)
+        public RepeatingStripControl(string source, float repeatWidth, float segmentWidth, float top, float height)
         {
-            _tileWidth = tileWidth;
+            _repeatWidth = repeatWidth;
+            _segmentWidth = segmentWidth;
             Source = source;
             UseCache = SkiaCacheType.None;
             WidthRequest = -1;
@@ -517,21 +534,28 @@ public sealed class BridgeHeroineParallaxGame : DrawnUi.Gaming.Game
             }
 
             var activeImage = _gpuImage ?? source.Image;
-            var useOffsetX = -OffsetX % _tileWidth;
-            var offsetX = useOffsetX > 0 ? useOffsetX : _tileWidth + useOffsetX;
-            var startX = dest.Left - offsetX;
+            var repeatWidth = MathF.Round(_repeatWidth);
+            var segmentWidth = MathF.Round(_segmentWidth);
+            var useOffsetX = -OffsetX % repeatWidth;
+            var offsetX = useOffsetX > 0 ? useOffsetX : repeatWidth + useOffsetX;
+            var startX = MathF.Round(dest.Left - offsetX);
 
-            for (var x = startX; x < dest.Right + _tileWidth; x += _tileWidth)
+            for (var bandX = startX; bandX < dest.Right + repeatWidth; bandX += repeatWidth)
             {
-                var tileDest = new SKRect(x, dest.Top, x + _tileWidth, dest.Bottom);
+                for (var x = bandX; x < bandX + repeatWidth; x += segmentWidth)
+                {
+                    var left = MathF.Round(x);
+                    var right = MathF.Round(x + segmentWidth);
+                    var tileDest = new SKRect(left, dest.Top, right, dest.Bottom);
 
-                if (activeImage != null)
-                {
-                    ctx.Context.Canvas.DrawImage(activeImage, tileDest, PixelSampling, activePaint);
-                }
-                else if (source.Bitmap != null)
-                {
-                    ctx.Context.Canvas.DrawBitmap(source.Bitmap, tileDest, activePaint);
+                    if (activeImage != null)
+                    {
+                        ctx.Context.Canvas.DrawImage(activeImage, tileDest, PixelSampling, activePaint);
+                    }
+                    else if (source.Bitmap != null)
+                    {
+                        ctx.Context.Canvas.DrawBitmap(source.Bitmap, tileDest, activePaint);
+                    }
                 }
             }
 
