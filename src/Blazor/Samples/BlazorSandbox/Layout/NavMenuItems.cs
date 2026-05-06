@@ -147,7 +147,8 @@ internal static class NavMenuItems
             Items:
             [
                 new("Space Shooter", "space-shooter", "bi-rocket-takeoff-nav-menu"),
-                new("Parallax", "skmesh-parallax-probe", "bi-layers-fill-nav-menu")
+                new("Parallax", "skmesh-parallax-probe", "bi-layers-fill-nav-menu"),
+                new("Parallax Game Loop", "parallax-gameloop", "bi-controller-nav-menu")
             ]),
 
         //INTERNAL TESTING

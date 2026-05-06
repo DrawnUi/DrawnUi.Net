@@ -1,0 +1,60 @@
+@page "/parallax-gameloop"
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>Parallax Game Loop</PageTitle>
+
+<h1>Parallax Game Loop</h1>
+
+This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and runs movement from the shared game loop with keyboard input.
+
+<Canvas Content="_canvasContent"
+    HorizontalOptions="LayoutOptions.Fill"
+    VerticalOptions="LayoutOptions.Fill"
+    MaxWidthRequest="980"
+    HeightRequest="430"
+    BackgroundColor="#060A12"
+    Margin="0,16,0,32"
+    RenderingMode="@RenderingModeType.Accelerated"
+    Gestures="@GesturesMode.Enabled" />
+
+@code {
+    private readonly SkiaControl _canvasContent;
+    private readonly SkiaControl _stage;
+
+    public ParallaxGameLoop()
+    {
+        _stage = new global::ParallaxGameLoop.Game.BridgeHeroineParallaxGame()
+        {
+            HeightRequest = 430,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Start,
+        };
+
+        _canvasContent = new SkiaLayer()
+        {
+            WidthRequest = -1,
+            HeightRequest = 430,
+            MaximumWidthRequest = 980,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Padding = 0,
+            Children =
+            {
+                _stage,
+
+                new SkiaLabelFps()
+                {
+                    UseCache = SkiaCacheType.GPU,
+                    Margin = new (0, 0, 4, 24),
+                    VerticalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.End,
+                    Rotation = -45,
+                    BackgroundColor = Colors.DarkRed,
+                    TextColor = Colors.White,
+                    ZIndex = 110,
+                }
+            }
+        };
+    }
+}
