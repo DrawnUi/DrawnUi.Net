@@ -1,8 +1,10 @@
 using DrawnUi.Draw;
+using DrawnUi.Infrastructure.Enums;
 using DrawnUi.Views;
 using SkiaSharp;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using System.Text;
 
 Super.Init();
@@ -12,12 +14,21 @@ Directory.CreateDirectory(outputDirectory);
 
 using var host = new HeadlessCanvasHost(900, 520);
 
+var status = new SkiaLabel
+{
+    Tag = "status",
+    Text = "SkiaEditorHarness ready",
+    HorizontalOptions = LayoutOptions.Fill,
+    FontSize = 18,
+    TextColor = Colors.Black,
+    Margin = new Thickness(0, 0, 0, 12)
+};
+
 var editor = new SkiaEditor
 {
     Tag = "editor",
-    WidthRequest = 760,
+    HorizontalOptions = LayoutOptions.Fill,
     HeightRequest = 320,
-    Margin = new Thickness(40),
     FontSize = 24,
     MaxLines = 8,
     TextColor = Colors.Black,
@@ -26,10 +37,31 @@ var editor = new SkiaEditor
     SelectionColor = DrawnUi.Color.FromArgb("#5590CFFE")
 };
 
-host.Canvas.Children = new List<SkiaControl> { editor };
+var scene = new SkiaLayout
+{
+    Tag = "scene",
+    Type = LayoutType.Column,
+    HorizontalOptions = LayoutOptions.Fill,
+    VerticalOptions = LayoutOptions.Fill,
+    Padding = new Thickness(40),
+    Spacing = 0,
+    Children =
+    {
+        status,
+        editor
+    }
+};
+
+host.Canvas.Children = new List<SkiaControl> { scene };
+
+var context = new HarnessContext(host, scene, "editor", new IHarnessAdapter[]
+{
+    new SkiaEditorHarnessAdapter()
+});
+
 host.Render();
 
-editor.SetFocus(true);
+TrySetFocus(editor, true);
 editor.Text = string.Empty;
 editor.CursorPosition = 0;
 editor.SelectionLength = 0;
@@ -40,94 +72,96 @@ if (steps.Count == 0)
     steps = CreateDefaultScenario();
 }
 
-WriteSnapshot(host, editor, outputDirectory, 0, "initial");
+WriteSnapshot(context, outputDirectory, 0, "initial");
 
 for (var index = 0; index < steps.Count; index++)
 {
     var step = steps[index];
-    ExecuteStep(editor, step);
-    WriteSnapshot(host, editor, outputDirectory, index + 1, step.Name);
+    ExecuteStep(context, step);
+    WriteSnapshot(context, outputDirectory, index + 1, step.Name);
 }
 
 var finalImagePath = Path.Combine(outputDirectory, "final.png");
 host.SavePng(finalImagePath);
 
 var summaryPath = Path.Combine(outputDirectory, "summary.txt");
-File.WriteAllText(summaryPath, Describe(editor));
+File.WriteAllText(summaryPath, Describe(context));
 
-Console.WriteLine("SkiaEditor multiline harness complete.");
+Console.WriteLine("DrawnUi.Net harness complete.");
 Console.WriteLine($"Artifacts: {outputDirectory}");
 Console.WriteLine($"FinalImage: {finalImagePath}");
 Console.WriteLine($"Summary: {summaryPath}");
 Console.WriteLine($"Steps: {steps.Count}");
-Console.WriteLine(Describe(editor));
+Console.WriteLine(Describe(context));
 
-static void ExecuteStep(SkiaEditor editor, HarnessStep step)
+static void ExecuteStep(HarnessContext context, HarnessStep step)
 {
     switch (step.Command)
     {
-        case HarnessCommand.Type:
-            editor.StubTypeText(step.Text ?? string.Empty);
-            break;
-        case HarnessCommand.Enter:
-            editor.StubPressEnter();
-            break;
-        case HarnessCommand.Backspace:
-            editor.StubBackspace(step.Count);
-            break;
-        case HarnessCommand.Delete:
-            editor.StubDelete(step.Count);
-            break;
-        case HarnessCommand.Left:
-            editor.StubMoveCursor(-step.Count, step.ExtendSelection);
-            break;
-        case HarnessCommand.Right:
-            editor.StubMoveCursor(step.Count, step.ExtendSelection);
-            break;
-        case HarnessCommand.Select:
-            editor.StubSelectRange(step.Start, step.Count);
-            break;
-        case HarnessCommand.MoveLineColumn:
-            editor.StubMoveCursorToLineColumn(step.Line, step.Column, step.ExtendSelection);
-            break;
-        case HarnessCommand.SelectLineColumn:
-            editor.StubSelectLineColumnRange(step.Line, step.Column, step.EndLine, step.EndColumn);
-            break;
-        case HarnessCommand.SelectAll:
-            editor.StubSelectAll();
-            break;
+        case HarnessCommand.Target:
+            context.CurrentTargetTag = string.IsNullOrWhiteSpace(step.TargetTag) ? context.DefaultTargetTag : step.TargetTag;
+            return;
+        case HarnessCommand.Render:
+        case HarnessCommand.Snapshot:
+            return;
+    }
+
+    var target = ResolveTarget(context, step);
+
+    switch (step.Command)
+    {
         case HarnessCommand.Focus:
-            editor.SetFocus(true);
-            break;
+            if (!TrySetFocus(target, true))
+                throw new InvalidOperationException($"Target '{target.Tag}' does not support focus.");
+            return;
         case HarnessCommand.Blur:
-            editor.SetFocus(false);
-            break;
-        case HarnessCommand.SetText:
-            editor.Text = NormalizeLineBreaks(step.Text);
-            editor.CursorPosition = editor.Text?.Length ?? 0;
-            editor.SelectionLength = 0;
-            break;
+            if (!TrySetFocus(target, false))
+                throw new InvalidOperationException($"Target '{target.Tag}' does not support blur.");
+            return;
+        case HarnessCommand.SetProperty:
+            ApplyProperty(target, step.PropertyName, step.Text ?? string.Empty);
+            return;
         default:
-            throw new InvalidOperationException($"Unsupported command: {step.Command}");
+            foreach (var adapter in context.Adapters)
+            {
+                if (adapter.CanHandle(target) && adapter.TryExecute(target, step, context))
+                    return;
+            }
+
+            throw new InvalidOperationException($"Unsupported command '{step.Command}' for target '{target.Tag}' ({target.GetType().Name}).");
     }
 }
 
-static void WriteSnapshot(HeadlessCanvasHost host, SkiaEditor editor, string outputDirectory, int index, string name)
+static SkiaControl ResolveTarget(HarnessContext context, HarnessStep step)
 {
-    host.Render();
+    var targetTag = !string.IsNullOrWhiteSpace(step.TargetTag) ? step.TargetTag : context.CurrentTargetTag;
+    var target = context.Root.FindViewByTag(targetTag);
+
+    if (target == null)
+        throw new InvalidOperationException($"Could not find harness target '{targetTag}'.");
+
+    return target;
+}
+
+static void WriteSnapshot(HarnessContext context, string outputDirectory, int index, string name)
+{
+    context.Host.Render();
 
     var safeName = SanitizeFileName(name);
     var imagePath = Path.Combine(outputDirectory, $"{index:00}-{safeName}.png");
     var statePath = Path.Combine(outputDirectory, $"{index:00}-{safeName}.txt");
 
-    host.SavePng(imagePath);
-    File.WriteAllText(statePath, Describe(editor));
+    context.Host.SavePng(imagePath);
+    File.WriteAllText(statePath, Describe(context));
 }
 
 static List<HarnessStep> CreateDefaultScenario()
 {
     return new List<HarnessStep>
     {
+        new(HarnessCommand.Target, "target-status", TargetTag: "status"),
+        new(HarnessCommand.SetProperty, "set-status-text", Text: "Editor target follows below", PropertyName: "Text"),
+        new(HarnessCommand.Target, "target-editor", TargetTag: "editor"),
         new(HarnessCommand.Type, "type-line-1", Text: "first line"),
         new(HarnessCommand.Enter, "enter-1"),
         new(HarnessCommand.Type, "type-line-2", Text: "second line"),
@@ -153,8 +187,34 @@ static IEnumerable<HarnessStep> ParseSteps(string[] args)
 
         switch (commandToken.Trim().ToLowerInvariant())
         {
+            case "target":
+                yield return new HarnessStep(HarnessCommand.Target, $"target-{payload}", TargetTag: payload.Trim());
+                break;
+            case "render":
+                yield return new HarnessStep(HarnessCommand.Render, string.IsNullOrWhiteSpace(payload) ? "render" : payload.Trim());
+                break;
+            case "snapshot":
+                yield return new HarnessStep(HarnessCommand.Snapshot, string.IsNullOrWhiteSpace(payload) ? "snapshot" : payload.Trim());
+                break;
+            case "setprop":
+            {
+                var separator = payload.IndexOf('=');
+                if (separator <= 0)
+                    throw new ArgumentException($"Invalid setprop payload: {arg}");
+
+                var propertyName = payload[..separator].Trim();
+                var propertyValue = payload[(separator + 1)..];
+                yield return new HarnessStep(HarnessCommand.SetProperty, $"set-{propertyName.ToLowerInvariant()}", Text: propertyValue, PropertyName: propertyName);
+                break;
+            }
             case "type":
                 yield return new HarnessStep(HarnessCommand.Type, $"type-{payload.Length}", Text: Unescape(payload));
+                break;
+            case "markdown":
+                yield return new HarnessStep(HarnessCommand.UseMarkdown, $"markdown-{payload}", Enabled: ParseBool(payload));
+                break;
+            case "richtext":
+                yield return new HarnessStep(HarnessCommand.UseMarkdown, $"markdown-{payload}", Enabled: ParseBool(payload));
                 break;
             case "settext":
                 yield return new HarnessStep(HarnessCommand.SetText, "set-text", Text: Unescape(payload));
@@ -229,12 +289,98 @@ static IEnumerable<HarnessStep> ParseSteps(string[] args)
     }
 }
 
+static void ApplyProperty(SkiaControl target, string? propertyName, string rawValue)
+{
+    if (string.IsNullOrWhiteSpace(propertyName))
+        throw new ArgumentException("Property name is required for setprop.");
+
+    var property = target.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+    if (property == null || !property.CanWrite)
+        throw new InvalidOperationException($"Target '{target.Tag}' does not have a writable property named '{propertyName}'.");
+
+    var value = ConvertValue(property.PropertyType, rawValue);
+    property.SetValue(target, value);
+}
+
+static object? ConvertValue(Type propertyType, string rawValue)
+{
+    var targetType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+    if (targetType == typeof(string))
+        return Unescape(rawValue);
+
+    if (targetType == typeof(bool))
+        return ParseBool(rawValue);
+
+    if (targetType == typeof(int))
+        return ParseInt(rawValue, 0);
+
+    if (targetType == typeof(float))
+        return float.Parse(rawValue, CultureInfo.InvariantCulture);
+
+    if (targetType == typeof(double))
+        return double.Parse(rawValue, CultureInfo.InvariantCulture);
+
+    if (targetType.Name == "Color")
+    {
+        var parseMethod = targetType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, binder: null, new[] { typeof(string) }, modifiers: null);
+        if (parseMethod != null)
+            return parseMethod.Invoke(null, new object[] { rawValue });
+    }
+
+    if (targetType == typeof(Thickness))
+        return ParseThickness(rawValue);
+
+    if (targetType.IsEnum)
+        return Enum.Parse(targetType, rawValue, ignoreCase: true);
+
+    throw new InvalidOperationException($"Unsupported property type '{targetType.Name}' for setprop.");
+}
+
+static Thickness ParseThickness(string rawValue)
+{
+    var parts = rawValue.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+    return parts.Length switch
+    {
+        1 => new Thickness(double.Parse(parts[0], CultureInfo.InvariantCulture)),
+        2 => new Thickness(
+            double.Parse(parts[0], CultureInfo.InvariantCulture),
+            double.Parse(parts[1], CultureInfo.InvariantCulture)),
+        4 => new Thickness(
+            double.Parse(parts[0], CultureInfo.InvariantCulture),
+            double.Parse(parts[1], CultureInfo.InvariantCulture),
+            double.Parse(parts[2], CultureInfo.InvariantCulture),
+            double.Parse(parts[3], CultureInfo.InvariantCulture)),
+        _ => throw new InvalidOperationException($"Invalid Thickness value '{rawValue}'. Expected 1, 2, or 4 comma-separated numbers.")
+    };
+}
+
 static string Unescape(string value)
 {
     return NormalizeLineBreaks(value
         .Replace("\\r", "\r", StringComparison.Ordinal)
         .Replace("\\n", "\n", StringComparison.Ordinal)
         .Replace("\\t", "\t", StringComparison.Ordinal));
+}
+
+static bool TrySetFocus(SkiaControl target, bool focused)
+{
+    var method = target.GetType().GetMethod("SetFocus", BindingFlags.Instance | BindingFlags.Public, binder: null, new[] { typeof(bool) }, modifiers: null);
+    if (method != null)
+    {
+        method.Invoke(target, new object[] { focused });
+        return true;
+    }
+
+    var property = target.GetType().GetProperty("IsFocused", BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+    if (property != null && property.CanWrite && property.PropertyType == typeof(bool))
+    {
+        property.SetValue(target, focused);
+        return true;
+    }
+
+    return false;
 }
 
 static string NormalizeLineBreaks(string? value)
@@ -251,6 +397,18 @@ static int ParseInt(string value, int fallback)
         : fallback;
 }
 
+static bool ParseBool(string value)
+{
+    return value.Trim().ToLowerInvariant() switch
+    {
+        "1" => true,
+        "true" => true,
+        "on" => true,
+        "yes" => true,
+        _ => false
+    };
+}
+
 static string SanitizeFileName(string value)
 {
     var invalid = Path.GetInvalidFileNameChars();
@@ -264,27 +422,66 @@ static string SanitizeFileName(string value)
     return builder.ToString();
 }
 
-static string Describe(SkiaEditor editor)
+static string Describe(HarnessContext context)
 {
-    var scrollField = editor.GetType().GetField("_scroll", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-    var scroll = scrollField?.GetValue(editor) as SkiaScroll;
-
     var builder = new StringBuilder();
-    builder.AppendLine($"Text: {Escape(editor.Text)}");
-    builder.AppendLine($"CursorPosition: {editor.CursorPosition}");
-    builder.AppendLine($"SelectionLength: {editor.SelectionLength}");
-    builder.AppendLine($"IsMultiline: {editor.IsMultiline}");
-    builder.AppendLine($"MeasuredLines: {editor.Label?.LinesCount ?? 0}");
-    builder.AppendLine($"ScrollOffsetX: {scroll?.ViewportOffsetX ?? 0}");
-    builder.AppendLine($"ScrollOffsetY: {scroll?.ViewportOffsetY ?? 0}");
+    builder.AppendLine($"CurrentTarget: {context.CurrentTargetTag}");
+    builder.AppendLine($"TaggedControls: {string.Join(", ", EnumerateTaggedControls(context.Root).Select(x => $"{x.Tag}:{x.GetType().Name}"))}");
+
+    var currentTarget = context.Root.FindViewByTag(context.CurrentTargetTag);
+    if (currentTarget != null)
+    {
+        builder.AppendLine($"TargetType: {currentTarget.GetType().Name}");
+        builder.AppendLine($"TargetTag: {currentTarget.Tag}");
+    }
+
+    foreach (var adapter in context.Adapters)
+    {
+        adapter.AppendSummary(context, builder);
+    }
+
     return builder.ToString();
 }
 
-static string Escape(string? value)
+static IEnumerable<SkiaControl> EnumerateTaggedControls(SkiaControl root)
 {
-    return value?
-        .Replace("\r", "\\r")
-        .Replace("\n", "\\n") ?? string.Empty;
+    if (!string.IsNullOrWhiteSpace(root.Tag))
+        yield return root;
+
+    foreach (var view in root.Views)
+    {
+        foreach (var child in EnumerateTaggedControls(view))
+            yield return child;
+    }
+}
+
+internal static class HarnessUtilities
+{
+    public static string NormalizeLineBreaks(string? value)
+    {
+        return value?
+            .Replace("\r\n", "\n", StringComparison.Ordinal)
+            .Replace('\r', '\n') ?? string.Empty;
+    }
+
+    public static IEnumerable<SkiaControl> EnumerateTaggedControls(SkiaControl root)
+    {
+        if (!string.IsNullOrWhiteSpace(root.Tag))
+            yield return root;
+
+        foreach (var view in root.Views)
+        {
+            foreach (var child in EnumerateTaggedControls(view))
+                yield return child;
+        }
+    }
+
+    public static string Escape(string? value)
+    {
+        return value?
+            .Replace("\r", "\\r")
+            .Replace("\n", "\\n") ?? string.Empty;
+    }
 }
 
 internal sealed class HeadlessCanvasHost : IDisposable
@@ -397,6 +594,11 @@ internal sealed class HeadlessDrawable : ISkiaDrawable
 
 internal enum HarnessCommand
 {
+    Target,
+    Render,
+    Snapshot,
+    SetProperty,
+    UseMarkdown,
     Type,
     Enter,
     Backspace,
@@ -416,6 +618,9 @@ internal sealed record HarnessStep(
     HarnessCommand Command,
     string Name,
     string? Text = null,
+    string? TargetTag = null,
+    string? PropertyName = null,
+    bool Enabled = false,
     int Count = 1,
     int Start = 0,
     int Line = 0,
@@ -423,3 +628,110 @@ internal sealed record HarnessStep(
     int EndLine = 0,
     int EndColumn = 0,
     bool ExtendSelection = false);
+
+internal sealed class HarnessContext
+{
+    public HarnessContext(HeadlessCanvasHost host, SkiaControl root, string defaultTargetTag, IReadOnlyList<IHarnessAdapter> adapters)
+    {
+        Host = host;
+        Root = root;
+        DefaultTargetTag = defaultTargetTag;
+        CurrentTargetTag = defaultTargetTag;
+        Adapters = adapters;
+    }
+
+    public HeadlessCanvasHost Host { get; }
+
+    public SkiaControl Root { get; }
+
+    public string DefaultTargetTag { get; }
+
+    public string CurrentTargetTag { get; set; }
+
+    public IReadOnlyList<IHarnessAdapter> Adapters { get; }
+}
+
+internal interface IHarnessAdapter
+{
+    bool CanHandle(SkiaControl target);
+
+    bool TryExecute(SkiaControl target, HarnessStep step, HarnessContext context);
+
+    void AppendSummary(HarnessContext context, StringBuilder builder);
+}
+
+internal sealed class SkiaEditorHarnessAdapter : IHarnessAdapter
+{
+    public bool CanHandle(SkiaControl target)
+    {
+        return target is SkiaEditor;
+    }
+
+    public bool TryExecute(SkiaControl target, HarnessStep step, HarnessContext context)
+    {
+        if (target is not SkiaEditor editor)
+            return false;
+
+        switch (step.Command)
+        {
+            case HarnessCommand.UseMarkdown:
+                editor.UseMarkdown = step.Enabled;
+                return true;
+            case HarnessCommand.Type:
+                editor.StubTypeText(step.Text ?? string.Empty);
+                return true;
+            case HarnessCommand.Enter:
+                editor.StubPressEnter();
+                return true;
+            case HarnessCommand.Backspace:
+                editor.StubBackspace(step.Count);
+                return true;
+            case HarnessCommand.Delete:
+                editor.StubDelete(step.Count);
+                return true;
+            case HarnessCommand.Left:
+                editor.StubMoveCursor(-step.Count, step.ExtendSelection);
+                return true;
+            case HarnessCommand.Right:
+                editor.StubMoveCursor(step.Count, step.ExtendSelection);
+                return true;
+            case HarnessCommand.Select:
+                editor.StubSelectRange(step.Start, step.Count);
+                return true;
+            case HarnessCommand.MoveLineColumn:
+                editor.StubMoveCursorToLineColumn(step.Line, step.Column, step.ExtendSelection);
+                return true;
+            case HarnessCommand.SelectLineColumn:
+                editor.StubSelectLineColumnRange(step.Line, step.Column, step.EndLine, step.EndColumn);
+                return true;
+            case HarnessCommand.SelectAll:
+                editor.StubSelectAll();
+                return true;
+            case HarnessCommand.SetText:
+                editor.Text = HarnessUtilities.NormalizeLineBreaks(step.Text);
+                editor.CursorPosition = editor.Text?.Length ?? 0;
+                editor.SelectionLength = 0;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public void AppendSummary(HarnessContext context, StringBuilder builder)
+    {
+        foreach (var tagged in HarnessUtilities.EnumerateTaggedControls(context.Root).OfType<SkiaEditor>())
+        {
+            var scrollField = tagged.GetType().GetField("_scroll", BindingFlags.Instance | BindingFlags.NonPublic);
+            var scroll = scrollField?.GetValue(tagged) as SkiaScroll;
+
+            builder.AppendLine($"[{tagged.Tag}] Text: {HarnessUtilities.Escape(tagged.Text)}");
+            builder.AppendLine($"[{tagged.Tag}] CursorPosition: {tagged.CursorPosition}");
+            builder.AppendLine($"[{tagged.Tag}] SelectionLength: {tagged.SelectionLength}");
+            builder.AppendLine($"[{tagged.Tag}] IsMultiline: {tagged.IsMultiline}");
+            builder.AppendLine($"[{tagged.Tag}] UseMarkdown: {tagged.UseMarkdown}");
+            builder.AppendLine($"[{tagged.Tag}] MeasuredLines: {tagged.Label?.LinesCount ?? 0}");
+            builder.AppendLine($"[{tagged.Tag}] ScrollOffsetX: {scroll?.ViewportOffsetX ?? 0}");
+            builder.AppendLine($"[{tagged.Tag}] ScrollOffsetY: {scroll?.ViewportOffsetY ?? 0}");
+        }
+    }
+}
