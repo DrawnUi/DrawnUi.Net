@@ -180,7 +180,7 @@ namespace DrawnUi.Draw
             var length = _hiddenTextBox.SelectionLength;
             SelectionLength = length;
             // cursor at end of selection (forward selection is the common case)
-            SetCursorPositionWithDelay(50, start + length);
+            SetCursorPositionWithDelay(16, start + length);
         }
 
         private void HiddenTextBox_GotFocus(object sender, RoutedEventArgs e)

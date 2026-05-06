@@ -39,6 +39,28 @@ namespace DrawnUi.Draw
         protected SkiaLayout _contentLayer;
         protected SkiaEditorSelection _selectionControl;
 
+        private void RecreateLabelIfNeeded()
+        {
+            if (_contentLayer == null || _selectionControl == null || Cursor == null)
+                return;
+
+            var oldLabel = Label;
+            var newLabel = CreateLabel();
+
+            if (ReferenceEquals(oldLabel, newLabel))
+                return;
+
+            Label = newLabel;
+            _selectionControl.SourceLabel = Label;
+
+            _contentLayer.ClearChildren();
+            _contentLayer.AddSubView(Label);
+            _contentLayer.AddSubView(_selectionControl);
+            _contentLayer.AddSubView(Cursor);
+
+            Cursor.Initialize(Label);
+        }
+
 
         public virtual void UpdateLabel()
         {
@@ -95,7 +117,7 @@ namespace DrawnUi.Draw
 
         public virtual SkiaLabel CreateLabel()
         {
-            var label = new SkiaRichLabel
+            var label = UseMarkdown ? new SkiaRichLabel() : new SkiaLabel()
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 KeepSpacesOnLineBreaks = true,
@@ -699,6 +721,28 @@ namespace DrawnUi.Draw
         {
             get { return (ICommand)GetValue(CommandOnTextChangedProperty); }
             set { SetValue(CommandOnTextChangedProperty, value); }
+        }
+
+        public static readonly BindableProperty UseMarkdownProperty = BindableProperty.Create(
+            nameof(UseMarkdown),
+            typeof(bool),
+            typeof(SkiaEditor),
+            false,
+            propertyChanged: OnUseMarkdownChanged);
+
+        private static void OnUseMarkdownChanged(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            if (bindable is SkiaEditor control)
+            {
+                control.RecreateLabelIfNeeded();
+                control.UpdateLabel();
+            }
+        }
+
+        public bool UseMarkdown
+        {
+            get { return (bool)GetValue(UseMarkdownProperty); }
+            set { SetValue(UseMarkdownProperty, value); }
         }
 
 

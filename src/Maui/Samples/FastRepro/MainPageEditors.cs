@@ -2,6 +2,7 @@ using DrawnUi.Views;
 using DrawnUi.Draw;
 using DrawnUi.Controls;
 using DrawnUi.Infrastructure.Enums;
+using Sandbox.Resources.Strings;
 using Canvas = DrawnUi.Views.Canvas;
 
 namespace Sandbox
@@ -39,35 +40,48 @@ namespace Sandbox
                     Spacing = 16,
                     Children =
                     {
-                        // new SkiaMauiEntry()
-                        // {
-                        //     HorizontalOptions = LayoutOptions.Fill,
-                        //     HeightRequest = 44,
-                        //     PlaceholderText = "SkiaMauiEntry",
-                        // },
+                        new SkiaLabel()
+                        {
+                            Text = "Plain editor",
+                            FontSize = 18,
+                            TextColor = Colors.Black,
+                            HorizontalOptions = LayoutOptions.Fill,
+                        },
 
                         new SkiaEditor()
                         {
                             HorizontalOptions = LayoutOptions.Fill,
                             HeightRequest = 120,
-                            BackgroundColor = Color.Parse("#22000000"),
+                            MaxLines = 8,
+                            BackgroundColor = Color.Parse("#FEFEFE"),
                             Padding = new Thickness(8),
                             FontSize = 16,
                             TextColor = Colors.Black,
-                            CursorColor = Colors.DodgerBlue,
-                            MaxLines = 8,
+                            CursorColor = Colors.Red,
+                            Text = "Plain editor text\nSecond line",
                         },
 
-                        //new SkiaRichLabel()
-                        //{
-                        //    Text="test",
-                        //    BackgroundColor = Colors.DeepPink,
-                        //    HorizontalOptions = LayoutOptions.Fill,
-                        //    HeightRequest = 32,
-                        //    KeepSpacesOnLineBreaks = true,
-                        //    NeedsGlyphPositions = true,
-                        //    TextColor = Colors.Black,
-                        //}
+                        new SkiaLabel()
+                        {
+                            Text = "Markdown editor",
+                            FontSize = 18,
+                            TextColor = Colors.Black,
+                            HorizontalOptions = LayoutOptions.Fill,
+                        },
+
+                        new SkiaEditor()
+                        {
+                            HorizontalOptions = LayoutOptions.Fill,
+                            HeightRequest = 260,
+                            MaxLines = 16,
+                            BackgroundColor = Color.Parse("#FEFEFE"),
+                            Padding = new Thickness(8),
+                            FontSize = 16,
+                            TextColor = Colors.Black,
+                            CursorColor = Colors.Blue,
+                            UseMarkdown = true,
+                            Text = ResStrings.MarkdownTest,
+                        }
                     }
                 }
             };
