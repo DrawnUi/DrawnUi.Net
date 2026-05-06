@@ -187,7 +187,7 @@
 
         // attachCanvasHost fires notifySize immediately, but OnHostResized checks
         // for size equality and returns early — no redundant StateHasChanged triggered.
-        await _resizeModule.InvokeVoidAsync("attachCanvasHost", _hostElement, _resizeCallbackRef);
+        await _resizeModule.InvokeVoidAsync("attachCanvasHost", _hostElement, _resizeCallbackRef, RenderingMode == RenderingModeType.Default);
     }
 
     [JSInvokable]

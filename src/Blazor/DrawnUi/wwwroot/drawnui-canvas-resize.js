@@ -22,19 +22,67 @@ export function getHostSize(element) {
     };
 }
 
-export function attachCanvasHost(element, dotNetRef) {
+function showSnapshot(element, state) {
+    if (state.snapshotImg) return;
+    const canvas = element.querySelector('canvas');
+    if (!canvas || !state.allowSnapshot) return;
+    let dataUrl;
+    try {
+        dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+    } catch {
+        return;
+    }
+    const img = document.createElement('img');
+    img.src = dataUrl;
+    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:10;opacity:1;transition:opacity 0.2s ease;pointer-events:none;';
+    element.style.position = element.style.position || 'relative';
+    element.appendChild(img);
+    state.snapshotImg = img;
+}
+
+function fadeSnapshot(state) {
+    const img = state.snapshotImg;
+    if (!img) return;
+    state.snapshotImg = null;
+    img.style.opacity = '0';
+    setTimeout(() => img.parentNode && img.parentNode.removeChild(img), 220);
+}
+
+export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     detachCanvasHost(element);
 
     let resizeTimer = null;
+    let resizePending = false;
+    let hasFirstSize = false;
+    let hasFirstPaint = false;
+
+    const state = {
+        resizeObserver: null,
+        onFullscreenChange: null,
+        snapshotImg: null,
+        allowSnapshot: allowSnapshot === true,
+        get resizeTimer() { return resizeTimer; },
+        clearTimer() { clearTimeout(resizeTimer); resizeTimer = null; }
+    };
 
     const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
             const box = entry.contentRect;
             const w = box.width;
             const h = box.height;
+
+            if (hasFirstSize && hasFirstPaint && !resizePending) {
+                resizePending = true;
+                showSnapshot(element, state);
+            }
+
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() =>
-                notifySize(entry.target, dotNetRef, w, h), 80);
+            resizeTimer = setTimeout(() => {
+                resizePending = false;
+                fadeSnapshot(state);
+                notifySize(entry.target, dotNetRef, w, h);
+                hasFirstPaint = true;
+            }, 80);
         }
     });
 
@@ -44,7 +92,10 @@ export function attachCanvasHost(element, dotNetRef) {
         notifyFullscreen(element, dotNetRef);
     };
 
-    observers.set(element, { resizeObserver, onFullscreenChange, get resizeTimer() { return resizeTimer; }, clearTimer() { clearTimeout(resizeTimer); resizeTimer = null; } });
+    state.resizeObserver = resizeObserver;
+    state.onFullscreenChange = onFullscreenChange;
+    observers.set(element, state);
+
     resizeObserver.observe(element);
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
@@ -52,6 +103,7 @@ export function attachCanvasHost(element, dotNetRef) {
     const rect = element.getBoundingClientRect();
     notifySize(element, dotNetRef, rect.width, rect.height);
     notifyFullscreen(element, dotNetRef);
+    hasFirstSize = true;
 }
 
 export function detachCanvasHost(element) {
@@ -61,6 +113,7 @@ export function detachCanvasHost(element) {
     }
 
     state.clearTimer();
+    fadeSnapshot(state);
     state.resizeObserver.disconnect();
     document.removeEventListener('fullscreenchange', state.onFullscreenChange);
     document.removeEventListener('webkitfullscreenchange', state.onFullscreenChange);
