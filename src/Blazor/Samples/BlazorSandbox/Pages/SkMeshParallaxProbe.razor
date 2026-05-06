@@ -280,7 +280,7 @@
         var size = 32 * EnvironmentScale;
         var torch = new SkiaSprite
         {
-            UseCache = SkiaCacheType.Image,
+            UseCache = SkiaCacheType.GPU,
             AutoPlay = true,
             Repeat = -1,
             FramesPerSecond = 6,
@@ -316,6 +316,9 @@
         private readonly ParallaxSceneState _sceneState;
         private SKBitmap? _tilesetBitmap;
         private SKImage? _tilesetImage;
+        private SKImage? _gpuTilesetImage;
+        private int _tilesetBitmapWidth;
+        private readonly SKPaint _tilePaint = new() { IsAntialias = false, Color = SKColors.White };
         private static readonly SKSamplingOptions PixelSampling = new(SKFilterMode.Nearest, SKMipmapMode.None);
 
         public TilesetStripControl(ParallaxSceneState sceneState)
@@ -331,6 +334,7 @@
 
             var tilesetBytes = await http.GetByteArrayAsync("media/cold-corridors/tileset.png");
             _tilesetBitmap = SKBitmap.Decode(tilesetBytes) ?? throw new InvalidOperationException("decode failed: media/cold-corridors/tileset.png");
+            _tilesetBitmapWidth = _tilesetBitmap.Width;
             _tilesetImage = SKImage.FromBitmap(_tilesetBitmap);
             Update();
         }
@@ -338,10 +342,13 @@
         public override void OnDisposing()
         {
             _sceneState.Changed -= HandleSceneChanged;
+            _gpuTilesetImage?.Dispose();
+            _gpuTilesetImage = null;
             _tilesetImage?.Dispose();
             _tilesetImage = null;
             _tilesetBitmap?.Dispose();
             _tilesetBitmap = null;
+            _tilePaint.Dispose();
             base.OnDisposing();
         }
 
@@ -349,26 +356,39 @@
         {
             base.Paint(ctx);
 
-            if (_tilesetImage == null || _tilesetBitmap == null)
+            if (_tilesetImage == null && _gpuTilesetImage == null)
                 return;
 
+            // Promote CPU image to GPU texture once
+            if (_gpuTilesetImage == null && _tilesetImage != null && Superview is DrawnView drawnView)
+            {
+                var surface = drawnView.CreateSurface(_tilesetBitmap!.Width, _tilesetBitmap.Height, true);
+                if (surface?.Context != null)
+                {
+                    using var p = new SKPaint { IsAntialias = false };
+                    surface.Canvas.DrawImage(_tilesetImage, 0, 0, PixelSampling, p);
+                    surface.Canvas.Flush();
+                    _gpuTilesetImage = surface.Snapshot();
+                    drawnView.ReturnSurface(surface);
+                    _tilesetImage.Dispose();
+                    _tilesetImage = null;
+                    _tilesetBitmap?.Dispose();
+                    _tilesetBitmap = null;
+                }
+            }
+
+            var activeImage = _gpuTilesetImage ?? _tilesetImage!;
             var dest = ctx.Destination;
             var sceneTop = dest.Bottom - (SceneHeight * EnvironmentScale);
             var stripTop = sceneTop + (197f * EnvironmentScale);
             var stripBottom = sceneTop + (239f * EnvironmentScale);
-            var tileWidth = _tilesetBitmap.Width * EnvironmentScale;
-            // Godot's Tileset is its own Parallax2D with default scroll_scale = 1.0.
+            var tileWidth = _tilesetBitmapWidth * EnvironmentScale;
             var scroll = (float)_sceneState.Phase * ToPixelScrollPerPhase(GodotTilesetScrollScale);
             var offset = scroll % tileWidth;
-            using var paint = new SKPaint
-            {
-                IsAntialias = false,
-                Color = SKColors.White,
-            };
 
             for (var x = dest.Left - offset - tileWidth; x < dest.Right + tileWidth; x += tileWidth)
             {
-                ctx.Context.Canvas.DrawImage(_tilesetImage, new SKRect(x, stripTop, x + tileWidth, stripBottom), PixelSampling, paint);
+                ctx.Context.Canvas.DrawImage(activeImage, new SKRect(x, stripTop, x + tileWidth, stripBottom), PixelSampling, _tilePaint);
             }
         }
 
@@ -424,7 +444,7 @@
                 var bytes = await http.GetByteArrayAsync(config.Path);
                 var bitmap = SKBitmap.Decode(bytes) ?? throw new InvalidOperationException($"decode failed: {config.Path}");
                 var image = SKImage.FromBitmap(bitmap);
-                _layers.Add(new ParallaxLayer(config, bitmap, image));
+                _layers.Add(new ParallaxLayer(config, bitmap, image, (Columns + 1) * 2 * 4));
             }
 
             if (_drivesAnimation)
@@ -450,10 +470,7 @@
             _spec = null;
 
             foreach (var layer in _layers)
-            {
-                layer.Image.Dispose();
-                layer.Bitmap.Dispose();
-            }
+                layer.Dispose();
             _layers.Clear();
 
             base.OnDisposing();
@@ -485,15 +502,22 @@
                     }
                 }
 
+                // Promote CPU images to GPU textures once
+                if (Superview is DrawnView drawnView)
+                {
+                    foreach (var layer in _layers)
+                        layer.TryPromoteToGpu(drawnView);
+                }
+
                 foreach (var layer in _layers)
                 {
-                    var vertices = BuildLayerVertices(dest, layer, (float)_sceneState.Phase);
-                    using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(vertices.AsSpan()));
+                    BuildLayerVertices(dest, layer, (float)_sceneState.Phase, layer.VertexCache);
+                    using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(layer.VertexCache.AsSpan()));
                     using var mesh = SKMesh.Make(
                         _spec,
                         SKMeshMode.TriangleStrip,
                         vb,
-                        vertices.Length / 4,
+                        layer.VertexCache.Length / 4,
                         0,
                         dest,
                         out var meshErr);
@@ -504,19 +528,14 @@
                         return;
                     }
 
-                    using var shader = layer.Image.ToShader(
-                        SKShaderTileMode.Repeat,
-                        SKShaderTileMode.Clamp,
-                        PixelSampling);
-                    using var paint = new SKPaint
+                    // Create shader+paint once per layer (UV scroll is in vertex data, shader is stateless)
+                    if (layer.Paint == null)
                     {
-                        IsAntialias = false,
-                        Color = SKColors.White,
-                        Shader = shader,
-                    };
+                        layer.Shader = layer.ActiveImage.ToShader(SKShaderTileMode.Repeat, SKShaderTileMode.Clamp, PixelSampling);
+                        layer.Paint = new SKPaint { IsAntialias = false, Color = SKColors.White, Shader = layer.Shader };
+                    }
 
-                    canvas.DrawMesh(mesh, paint);
-
+                    canvas.DrawMesh(mesh, layer.Paint);
                 }
 
                 if (_drawHud)
@@ -599,19 +618,16 @@
                 out error);
         }
 
-        private static float[] BuildLayerVertices(SKRect dest, ParallaxLayer layer, float phase)
+        private static void BuildLayerVertices(SKRect dest, ParallaxLayer layer, float phase, float[] vertices)
         {
-            var vertexCount = (Columns + 1) * 2;
-            var vertices = new float[vertexCount * 4];
             var index = 0;
-
             var width = dest.Width;
             var sceneTop = dest.Bottom - (SceneHeight * EnvironmentScale);
             var layerHeight = SceneHeight * EnvironmentScale;
             var isForeground = string.Equals(layer.Config.Name, "foreground", StringComparison.Ordinal);
             var top = sceneTop;
             var bottom = isForeground ? dest.Bottom : sceneTop + layerHeight;
-            var tileWidth = layer.Bitmap.Width * EnvironmentScale;
+            var tileWidth = layer.BitmapWidth * EnvironmentScale;
             var scroll = phase * layer.Config.Speed;
             var cameraSway = 0f;
 
@@ -619,22 +635,18 @@
             {
                 var u = column / (float)Columns;
                 var x = dest.Left + u * width;
-                var topY = top;
-                var bottomY = bottom;
-                var scrollUv = (((x - dest.Left) / tileWidth) + scroll + cameraSway) * layer.Bitmap.Width;
+                var scrollUv = (((x - dest.Left) / tileWidth) + scroll + cameraSway) * layer.BitmapWidth;
 
                 vertices[index++] = x;
-                vertices[index++] = topY;
+                vertices[index++] = top;
                 vertices[index++] = scrollUv;
                 vertices[index++] = 0f;
 
                 vertices[index++] = x;
-                vertices[index++] = bottomY;
+                vertices[index++] = bottom;
                 vertices[index++] = scrollUv;
-                vertices[index++] = layer.Bitmap.Height;
+                vertices[index++] = layer.BitmapHeight;
             }
-
-            return vertices;
         }
 
         private void DrawHud(SKCanvas canvas, SKRect dest, float phase)
@@ -651,6 +663,67 @@
 
         private sealed record LayerConfig(string Name, string Path, float Speed, float RepeatWidth, float Depth);
 
-        private sealed record ParallaxLayer(LayerConfig Config, SKBitmap Bitmap, SKImage Image);
+        private sealed class ParallaxLayer
+        {
+            public readonly LayerConfig Config;
+            public readonly int BitmapWidth;
+            public readonly int BitmapHeight;
+            public readonly float[] VertexCache;
+            public SKBitmap? Bitmap;
+            public SKImage? CpuImage;
+            public SKImage? GpuImage;
+            public SKShader? Shader;
+            public SKPaint? Paint;
+
+            public ParallaxLayer(LayerConfig config, SKBitmap bitmap, SKImage cpuImage, int vertexCacheSize)
+            {
+                Config = config;
+                Bitmap = bitmap;
+                CpuImage = cpuImage;
+                BitmapWidth = bitmap.Width;
+                BitmapHeight = bitmap.Height;
+                VertexCache = new float[vertexCacheSize];
+            }
+
+            public SKImage ActiveImage => GpuImage ?? CpuImage!;
+
+            public void TryPromoteToGpu(DrawnView view)
+            {
+                if (GpuImage != null || CpuImage == null)
+                    return;
+
+                var surface = view.CreateSurface(BitmapWidth, BitmapHeight, true);
+                if (surface?.Context == null)
+                {
+                    if (surface != null) view.ReturnSurface(surface);
+                    return;
+                }
+
+                using var p = new SKPaint { IsAntialias = false };
+                surface.Canvas.DrawImage(CpuImage, 0, 0, new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None), p);
+                surface.Canvas.Flush();
+                GpuImage = surface.Snapshot();
+                view.ReturnSurface(surface);
+
+                // Free CPU resources and invalidate cached shader (must rebuild against GPU image)
+                CpuImage.Dispose();
+                CpuImage = null;
+                Bitmap?.Dispose();
+                Bitmap = null;
+                Paint?.Dispose();
+                Paint = null;
+                Shader?.Dispose();
+                Shader = null;
+            }
+
+            public void Dispose()
+            {
+                Paint?.Dispose();
+                Shader?.Dispose();
+                GpuImage?.Dispose();
+                CpuImage?.Dispose();
+                Bitmap?.Dispose();
+            }
+        }
     }
 }
