@@ -343,6 +343,8 @@ namespace DrawnUi.Draw
                     ApplyMeasureResult();
                 }
 
+                //System.Diagnostics.Debug.WriteLine($"[SkiaLabel.Paint] Tag={Tag} Text='{TextInternal}' Lines={(Lines?.Length ?? -1)} GliphsInvalidated={GliphsInvalidated} ArrangedDest={ArrangedDestination} Dest={ctx.Destination} PaintDefaultNull={PaintDefault==null} TextColor={TextColor} Spans={Spans.Count}");
+
                 if (Lines != null)
                     DrawLines(ctx.WithDestination(rectForChildren), PaintDefault, SKPoint.Empty, Lines);
             }
@@ -1621,7 +1623,7 @@ namespace DrawnUi.Draw
                     limitWidth = maxWidth;
                 }
 
-                if (maxLines > -1 && countLines > maxLines)
+                if (maxLines > 0 && countLines > maxLines)
                 {
                     isCut = true;
                     break;
