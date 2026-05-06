@@ -34,7 +34,7 @@ public class SkiaSpriteSet : ContentLayout
     {
         var s = new SkiaSprite
         {
-            UseCache = SkiaCacheType.Image,
+            UseCache = SkiaCacheType.GPU,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
             AutoPlay = autoPlay,

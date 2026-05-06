@@ -53,12 +53,12 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         };
 
     /// <summary>
-    /// Width of the visible gameplay viewport in device pixels.
+    /// Width of the visible gameplay viewport in scene units.
     /// </summary>
     private const float SceneWidth = 940f;
 
     /// <summary>
-    /// Height of the visible gameplay viewport in device pixels.
+    /// Height of the visible gameplay viewport in scene units.
     /// </summary>
     private const float SceneHeight = 430f;
 
@@ -73,7 +73,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private const float EnvironmentScale = SceneHeight / SourceSceneHeight;
 
     /// <summary>
-    /// Render size of the player sprite in device pixels.
+    /// Render size of the player sprite in scene units.
     /// </summary>
     private const float PlayerSize = 233.28f;
 
@@ -237,6 +237,17 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private const float TorchBandWidth = 896f * EnvironmentScale;
 
     /// <summary>
+    /// Authored torch mount centers within one near-layer repeat band.
+    /// </summary>
+    private static readonly (float X, float Y)[] TorchAnchors =
+    [
+        (143f, 112f),
+        (369f, 111f),
+        (591f, 112f),
+        (817f, 110f),
+    ];
+
+    /// <summary>
     /// Parallax background strip layers ordered from farthest to nearest.
     /// </summary>
     private readonly RepeatingStripControl _back;
@@ -249,7 +260,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// <summary>
     /// Separate torch overlay band that moves with the near layer.
     /// </summary>
-    private readonly SkiaLayer _torchBand;
+    private readonly TorchOverlayControl _torchBand;
 
     /// <summary>
     /// Player sprite-set used for the controllable actor.
@@ -351,29 +362,12 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         _tileset = CreateTilesetLayer();
         _foreground = CreateParallaxLayer("media/cold-corridors/foreground.png", 8, 1.0f);
 
-        _torchBand = new SkiaLayer
+        _torchBand = new TorchOverlayControl("media/cold-corridors/torch-sheet.png")
         {
-            WidthRequest = SceneWidth + (TorchBandWidth * 2f),
             HeightRequest = SceneHeight,
-            HorizontalOptions = LayoutOptions.Start,
+            HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Start,
             ZIndex = 5,
-            TranslationY = SceneHeight - (SourceSceneHeight * EnvironmentScale),
-            Children =
-            {
-                CreateTorch(143f - 896f, 112f),
-                CreateTorch(369f - 896f, 111f),
-                CreateTorch(591f - 896f, 112f),
-                CreateTorch(817f - 896f, 110f),
-                CreateTorch(143f, 112f),
-                CreateTorch(369f, 111f),
-                CreateTorch(591f, 112f),
-                CreateTorch(817f, 110f),
-                CreateTorch(143f + 896f, 112f),
-                CreateTorch(369f + 896f, 111f),
-                CreateTorch(591f + 896f, 112f),
-                CreateTorch(817f + 896f, 110f),
-            }
         };
 
         _heroine = new PlayerSprite
@@ -580,6 +574,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
 
         var nearTileOffset = MathF.Round(-_worldPosition * 0.82f);
         _near.OffsetX = nearTileOffset;
+        _torchBand.OffsetX = nearTileOffset;
         _tileset.OffsetX = -_worldPosition;
         _foreground.OffsetX = -_worldPosition * 1.25f;
 
@@ -591,7 +586,6 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         _ghost.Left = (ghostWorldX - _worldPosition) - (GhostRenderWidth * 0.5f);
         _ghost.Top = GhostBaseTop + (_ghostState == GhostState.Gone ? 0f : MathF.Sin(_ghostBobTime) * GhostBobAmplitude);
 
-        _torchBand.TranslationX = nearTileOffset;
     }
 
     /// <summary>
@@ -771,33 +765,6 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     }
 
     /// <summary>
-    /// Creates one animated torch sprite positioned in authored near-layer scene coordinates.
-    /// </summary>
-    private static SkiaSprite CreateTorch(float sceneX, float sceneY)
-    {
-        var size = 32f * EnvironmentScale;
-        var left = MathF.Round((sceneX * EnvironmentScale) - (size * 0.5f));
-        var top = MathF.Round((sceneY * EnvironmentScale) - (size * 0.5f));
-        return new SkiaSprite
-        {
-            UseCache = SkiaCacheType.GPU,
-            AutoPlay = true,
-            Repeat = -1,
-            FramesPerSecond = 6,
-            Columns = 4,
-            Rows = 1,
-            WidthRequest = size,
-            HeightRequest = size,
-            HorizontalOptions = LayoutOptions.Start,
-            VerticalOptions = LayoutOptions.Start,
-            TranslationX = left,
-            TranslationY = top,
-            ZIndex = 14,
-            Source = "media/cold-corridors/torch-sheet.png",
-        };
-    }
-
-    /// <summary>
     /// High-level gameplay states that drive sprite animation selection.
     /// </summary>
     private enum PlayerState
@@ -871,7 +838,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         /// </summary>
         public PlayerSprite()
         {
-            UseCache = SkiaCacheType.GPU;
+            UseCache = SkiaCacheType.Operations;
+            IsParentIndependent = true;
             Define(0, "media/gothicvania/heroine-idle.png", columns: 4, rows: 1, fps: 8);
             Define(1, "media/gothicvania/heroine-run.png", columns: 7, rows: 1, fps: 12);
             Define(2, "media/gothicvania/heroine-jump.png", columns: 4, rows: 1, fps: 10);
@@ -991,10 +959,15 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private sealed class RepeatingStripControl : SkiaImage
     {
         private static readonly SKSamplingOptions PixelSampling = new(SKFilterMode.Nearest, SKMipmapMode.None);
+        private readonly SKPaint _drawPaint = new() { IsAntialias = false };
+        private readonly SKPaint _uploadPaint = new() { IsAntialias = false };
         private readonly float _repeatWidth;
         private readonly float _segmentWidth;
         private float _offsetX;
         private SKImage _gpuImage;
+        private SKImage _repeatBandImage;
+        private int _repeatBandWidthPixels;
+        private int _repeatBandHeightPixels;
 
         /// <summary>
         /// Horizontal scroll offset applied to the repeating strip.
@@ -1037,6 +1010,10 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         {
             _gpuImage?.Dispose();
             _gpuImage = null;
+            _repeatBandImage?.Dispose();
+            _repeatBandImage = null;
+            _drawPaint.Dispose();
+            _uploadPaint.Dispose();
             base.OnDisposing();
         }
 
@@ -1051,25 +1028,29 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             DrawImageAlignment vertical = DrawImageAlignment.Center,
             SKPaint paint = null)
         {
-            var activePaint = paint ?? new SKPaint();
-            activePaint.IsAntialias = false;
+            var activePaint = paint ?? _drawPaint;
 
             var dest = ctx.Destination;
+            var pixelScale = ctx.Scale;
+            var repeatWidth = MathF.Round(_repeatWidth * pixelScale);
+            var segmentWidth = MathF.Round(_segmentWidth * pixelScale);
+            var pixelOffset = OffsetX * pixelScale;
+            var repeatBandWidthPixels = Math.Max(1, (int)repeatWidth);
+            var repeatBandHeightPixels = Math.Max(1, (int)MathF.Round(dest.Height));
 
             if (_gpuImage == null && Superview is DrawnView drawnView)
             {
                 using var surface = drawnView.CreateSurface(source.Width, source.Height, true);
                 if (surface?.Context != null)
                 {
-                    using var uploadPaint = new SKPaint { IsAntialias = false };
                     var uploadRect = new SKRect(0, 0, source.Width, source.Height);
                     if (source.Image != null)
                     {
-                        surface.Canvas.DrawImage(source.Image, uploadRect, PixelSampling, uploadPaint);
+                        surface.Canvas.DrawImage(source.Image, uploadRect, PixelSampling, _uploadPaint);
                     }
                     else if (source.Bitmap != null)
                     {
-                        surface.Canvas.DrawBitmap(source.Bitmap, uploadRect, uploadPaint);
+                        surface.Canvas.DrawBitmap(source.Bitmap, uploadRect, _uploadPaint);
                     }
 
                     surface.Canvas.Flush();
@@ -1079,11 +1060,26 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             }
 
             var activeImage = _gpuImage ?? source.Image;
-            var repeatWidth = MathF.Round(_repeatWidth);
-            var segmentWidth = MathF.Round(_segmentWidth);
-            var useOffsetX = -OffsetX % repeatWidth;
+            EnsureRepeatBandImage(source, activeImage, repeatBandWidthPixels, repeatBandHeightPixels, segmentWidth);
+
+            var activeBand = _repeatBandImage;
+            var useOffsetX = -pixelOffset % repeatWidth;
             var offsetX = useOffsetX > 0 ? useOffsetX : repeatWidth + useOffsetX;
             var startX = MathF.Round(dest.Left - offsetX);
+
+            if (activeBand != null)
+            {
+                for (var bandX = startX; bandX < dest.Right + repeatWidth; bandX += repeatWidth)
+                {
+                    var bandDest = new SKRect(
+                        MathF.Round(bandX),
+                        dest.Top,
+                        MathF.Round(bandX + repeatWidth),
+                        dest.Bottom);
+                    ctx.Context.Canvas.DrawImage(activeBand, bandDest, PixelSampling, activePaint);
+                }
+                return;
+            }
 
             for (var bandX = startX; bandX < dest.Right + repeatWidth; bandX += repeatWidth)
             {
@@ -1103,11 +1099,62 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
                     }
                 }
             }
+        }
 
-            if (paint == null)
+        private void EnsureRepeatBandImage(
+            LoadedImageSource source,
+            SKImage activeImage,
+            int repeatWidthPixels,
+            int repeatHeightPixels,
+            float segmentWidthPixels)
+        {
+            if (_repeatBandImage != null
+                && _repeatBandWidthPixels == repeatWidthPixels
+                && _repeatBandHeightPixels == repeatHeightPixels)
             {
-                activePaint.Dispose();
+                return;
             }
+
+            _repeatBandImage?.Dispose();
+            _repeatBandImage = null;
+            _repeatBandWidthPixels = repeatWidthPixels;
+            _repeatBandHeightPixels = repeatHeightPixels;
+
+            if (repeatWidthPixels <= 0
+                || repeatHeightPixels <= 0
+                || segmentWidthPixels <= 0
+                || Superview is not DrawnView drawnView)
+            {
+                return;
+            }
+
+            using var surface = drawnView.CreateSurface(repeatWidthPixels, repeatHeightPixels, true);
+            if (surface?.Context == null)
+            {
+                return;
+            }
+
+            surface.Canvas.Clear(SKColors.Transparent);
+
+            for (var x = 0f; x < repeatWidthPixels; x += segmentWidthPixels)
+            {
+                var left = MathF.Round(x);
+                var right = MathF.Round(Math.Min(x + segmentWidthPixels, repeatWidthPixels));
+                var tileDest = new SKRect(left, 0, right, repeatHeightPixels);
+
+                if (activeImage != null)
+                {
+                    surface.Canvas.DrawImage(activeImage, tileDest, PixelSampling, _drawPaint);
+                }
+                else if (source.Bitmap != null)
+                {
+                    surface.Canvas.DrawBitmap(source.Bitmap, tileDest, _drawPaint);
+                }
+            }
+
+            surface.Canvas.Flush();
+            _repeatBandImage = surface.Snapshot();
+            drawnView.ReturnSurface(surface);
         }
     }
 
@@ -1117,6 +1164,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private sealed class TilesetStripControl : SkiaControl
     {
         private static readonly SKSamplingOptions PixelSampling = new(SKFilterMode.Nearest, SKMipmapMode.None);
+        private readonly SKPaint _drawPaint = new() { IsAntialias = false };
+        private readonly SKPaint _uploadPaint = new() { IsAntialias = false };
         private readonly string _source;
         private readonly float _tileWidth;
         private float _offsetX;
@@ -1143,7 +1192,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         }
 
         /// <summary>
-        /// Creates the floor-strip renderer with a fixed tile width in scene pixels.
+        /// Creates the floor-strip renderer with a fixed tile width in scene units.
         /// </summary>
         public TilesetStripControl(string source, float tileWidth)
         {
@@ -1184,6 +1233,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             _gpuImage = null;
             _image?.Dispose();
             _image = null;
+            _drawPaint.Dispose();
+            _uploadPaint.Dispose();
             base.OnDisposing();
         }
 
@@ -1202,24 +1253,29 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
                 return;
             }
 
-            using var paint = new SKPaint { IsAntialias = false };
             var dest = ctx.Destination;
-            var sceneTop = dest.Bottom - SceneHeight;
-            var stripTop = sceneTop + TilesetTop;
-            var stripBottom = stripTop + TilesetHeight;
-            var useOffsetX = -OffsetX % _tileWidth;
-            var offsetX = useOffsetX > 0 ? useOffsetX : _tileWidth + useOffsetX;
+            var pixelScale = ctx.Scale;
+            var sceneHeight = SceneHeight * pixelScale;
+            var stripTopOffset = TilesetTop * pixelScale;
+            var stripHeight = TilesetHeight * pixelScale;
+            var tileWidth = _tileWidth * pixelScale;
+            var pixelOffset = OffsetX * pixelScale;
+            var sceneTop = dest.Bottom - sceneHeight;
+            var stripTop = sceneTop + stripTopOffset;
+            var stripBottom = stripTop + stripHeight;
+            var useOffsetX = -pixelOffset % tileWidth;
+            var offsetX = useOffsetX > 0 ? useOffsetX : tileWidth + useOffsetX;
 
-            for (var x = dest.Left - offsetX; x < dest.Right + _tileWidth; x += _tileWidth)
+            for (var x = dest.Left - offsetX; x < dest.Right + tileWidth; x += tileWidth)
             {
-                var tileDest = new SKRect(x, stripTop, x + _tileWidth, stripBottom);
+                var tileDest = new SKRect(x, stripTop, x + tileWidth, stripBottom);
                 if (activeImage != null)
                 {
-                    ctx.Context.Canvas.DrawImage(activeImage, tileDest, PixelSampling, paint);
+                    ctx.Context.Canvas.DrawImage(activeImage, tileDest, PixelSampling, _drawPaint);
                 }
                 else
                 {
-                    ctx.Context.Canvas.DrawBitmap(_bitmap, tileDest, paint);
+                    ctx.Context.Canvas.DrawBitmap(_bitmap, tileDest, _drawPaint);
                 }
             }
         }
@@ -1243,8 +1299,136 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
                 using var surface = drawnView.CreateSurface(_bitmap.Width, _bitmap.Height, true);
                 if (surface?.Context != null)
                 {
-                    using var uploadPaint = new SKPaint { IsAntialias = false };
-                    surface.Canvas.DrawImage(_image, 0, 0, PixelSampling, uploadPaint);
+                    surface.Canvas.DrawImage(_image, 0, 0, PixelSampling, _uploadPaint);
+                    surface.Canvas.Flush();
+                    _gpuImage = surface.Snapshot();
+                    drawnView.ReturnSurface(surface);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Repeating animated torch overlay that uses the same scroll math as the near corridor strip.
+    /// </summary>
+    private sealed class TorchOverlayControl : SkiaControl
+    {
+        private static readonly SKSamplingOptions PixelSampling = new(SKFilterMode.Nearest, SKMipmapMode.None);
+        private readonly SKPaint _drawPaint = new() { IsAntialias = false };
+        private readonly SKPaint _uploadPaint = new() { IsAntialias = false };
+        private readonly string _source;
+        private float _offsetX;
+        private SKBitmap _bitmap;
+        private SKImage _image;
+        private SKImage _gpuImage;
+
+        public float OffsetX
+        {
+            get => _offsetX;
+            set
+            {
+                if (Math.Abs(_offsetX - value) < 0.001f)
+                {
+                    return;
+                }
+
+                _offsetX = value;
+                Update();
+            }
+        }
+
+        public TorchOverlayControl(string source)
+        {
+            _source = source.StartsWith("/", StringComparison.Ordinal) ? source : "/" + source;
+            WidthRequest = -1;
+            HeightRequest = SceneHeight;
+            HorizontalOptions = LayoutOptions.Fill;
+            VerticalOptions = LayoutOptions.Start;
+        }
+
+        public override void OnDisposing()
+        {
+            _gpuImage?.Dispose();
+            _gpuImage = null;
+            _image?.Dispose();
+            _image = null;
+            _drawPaint.Dispose();
+            _uploadPaint.Dispose();
+            base.OnDisposing();
+        }
+
+        protected override void Paint(DrawingContext ctx)
+        {
+            base.Paint(ctx);
+
+            EnsureImageLoaded(ctx);
+
+            var activeImage = _gpuImage ?? _image;
+            if (activeImage == null && _bitmap == null)
+            {
+                return;
+            }
+
+            var dest = ctx.Destination;
+            var pixelScale = ctx.Scale;
+            var repeatWidth = TorchBandWidth * pixelScale;
+            var torchSize = 32f * EnvironmentScale * pixelScale;
+            var pixelOffset = OffsetX * pixelScale;
+            var useOffsetX = -pixelOffset % repeatWidth;
+            var offsetX = useOffsetX > 0 ? useOffsetX : repeatWidth + useOffsetX;
+            var startBandX = dest.Left - offsetX;
+            var frameWidth = (activeImage?.Width ?? _bitmap.Width) / 4f;
+            var frameHeight = activeImage?.Height ?? _bitmap.Height;
+            var frameIndex = (int)((SkiaControl.GetNanoseconds() / 1_000_000_000d) * 6d) % 4;
+            var sourceRect = new SKRect(
+                frameIndex * frameWidth,
+                0,
+                (frameIndex + 1) * frameWidth,
+                frameHeight);
+
+            for (var bandX = startBandX; bandX < dest.Right + repeatWidth; bandX += repeatWidth)
+            {
+                foreach (var (anchorX, anchorY) in TorchAnchors)
+                {
+                    var left = bandX + (((anchorX * EnvironmentScale) - (16f * EnvironmentScale)) * pixelScale);
+                    var top = dest.Top + (((anchorY * EnvironmentScale) - (16f * EnvironmentScale)) * pixelScale);
+                    var torchDest = new SKRect(
+                        MathF.Round(left),
+                        MathF.Round(top),
+                        MathF.Round(left + torchSize),
+                        MathF.Round(top + torchSize));
+
+                    if (activeImage != null)
+                    {
+                        ctx.Context.Canvas.DrawImage(activeImage, sourceRect, torchDest, PixelSampling, _drawPaint);
+                    }
+                    else
+                    {
+                        ctx.Context.Canvas.DrawBitmap(_bitmap, sourceRect, torchDest, _drawPaint);
+                    }
+                }
+            }
+        }
+
+        private void EnsureImageLoaded(DrawingContext ctx)
+        {
+            if (_bitmap == null)
+            {
+                _bitmap = SkiaImageManager.Instance.GetFromCache(_source);
+                if (_bitmap != null)
+                {
+                    _image = SKImage.FromBitmap(_bitmap);
+                    _gpuImage = null;
+                }
+            }
+
+            if (_gpuImage == null && _image != null && Superview is DrawnView drawnView)
+            {
+                using var surface = drawnView.CreateSurface(_image.Width, _image.Height, true);
+                if (surface?.Context != null)
+                {
+                    var uploadRect = new SKRect(0, 0, _image.Width, _image.Height);
+                    surface.Canvas.DrawImage(_image, uploadRect, PixelSampling, _uploadPaint);
                     surface.Canvas.Flush();
                     _gpuImage = surface.Snapshot();
                     drawnView.ReturnSurface(surface);

@@ -13,6 +13,87 @@ namespace DrawnUi.Controls;
 /// </summary>
 public class SkiaSprite : AnimatedFramesRenderer
 {
+    private sealed class SpriteFrameImage : SkiaImage
+    {
+        public int FrameX { get; set; }
+        public int FrameY { get; set; }
+        public int FrameWidthPixels { get; set; }
+        public int FrameHeightPixels { get; set; }
+
+        protected override void DrawSource(
+            DrawingContext ctx,
+            LoadedImageSource source,
+            TransformAspect stretch,
+            DrawImageAlignment horizontal = DrawImageAlignment.Center,
+            DrawImageAlignment vertical = DrawImageAlignment.Center,
+            SKPaint paint = null)
+        {
+            if (FrameWidthPixels <= 0 || FrameHeightPixels <= 0)
+            {
+                base.DrawSource(ctx, source, stretch, horizontal, vertical, paint);
+                return;
+            }
+
+            if (AspectScale == SKPoint.Empty)
+            {
+                throw new ApplicationException("AspectScale is not set");
+            }
+
+            var dest = ctx.Destination;
+            var scale = ctx.Scale;
+            var aspectScaleX = AspectScale.X * (float)ZoomX;
+            var aspectScaleY = AspectScale.Y * (float)ZoomY;
+
+            var display = CalculateDisplayRect(
+                dest,
+                aspectScaleX * FrameWidthPixels,
+                aspectScaleY * FrameHeightPixels,
+                horizontal,
+                vertical);
+
+            display.Inflate(new SKSize((float)InflateAmount, (float)InflateAmount));
+            display.Offset((float)Math.Round(scale * HorizontalOffset), (float)Math.Round(scale * VerticalOffset));
+
+            DisplayRect = display;
+            TextureScale = new(dest.Width / display.Width, dest.Height / display.Height);
+
+            var activePaint = paint ?? ImagePaint;
+            var srcRect = new SKRect(FrameX, FrameY, FrameX + FrameWidthPixels, FrameY + FrameHeightPixels);
+
+            if (source.Bitmap != null)
+            {
+                ctx.Context.Canvas.DrawBitmap(source.Bitmap, srcRect, display, activePaint);
+            }
+            else if (source.Image != null)
+            {
+                if (RescalingQuality != SKFilterQuality.None)
+                {
+                    ctx.Context.Canvas.DrawImage(source.Image, srcRect, display, GetSamplingOptions(RescalingQuality, false), activePaint);
+                }
+                else
+                {
+                    ctx.Context.Canvas.DrawImage(source.Image, srcRect, display, activePaint);
+                }
+            }
+        }
+
+        protected override ScaledSize SetMeasuredAsEmpty(float scale)
+        {
+            AspectScale = SKPoint.Empty;
+            return base.SetMeasuredAsEmpty(scale);
+        }
+
+        public override ScaledSize OnMeasuring(float widthRequest, float heightRequest, float dscale)
+        {
+            if (FrameWidthPixels > 0 && FrameHeightPixels > 0)
+            {
+                SetAspectScale(FrameWidthPixels, FrameHeightPixels, new SKRect(0, 0, widthRequest, heightRequest), TransformAspect.AspectFit, dscale);
+            }
+
+            return base.OnMeasuring(widthRequest, heightRequest, dscale);
+        }
+    }
+
     /// <summary>
     /// Cache for loaded spritesheets to avoid reloading the same image multiple times
     /// </summary>
@@ -32,9 +113,10 @@ public class SkiaSprite : AnimatedFramesRenderer
     /// </summary>
     public SkiaSprite()
     {
-        this.Display = new()
+        this.Display = new SpriteFrameImage()
         {
-            //UseCache = SkiaCacheType.Image,
+            UseCache = SkiaCacheType.None,
+            RescalingQuality = SKFilterQuality.None,
             LoadSourceOnFirstDraw = false,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
@@ -416,6 +498,7 @@ public class SkiaSprite : AnimatedFramesRenderer
                 Debug.WriteLine(
                     $"[SkiaSprite] Loaded spritesheet: Frames: {TotalFrames}, Duration: {DurationMs}ms, FPS: {FramesPerSecond}");
 
+                Display.SetBitmapInternal(bitmap, true);
                 InitializeAnimator(); // Autoplay applied inside
                 SetCurrentFrame(DefaultFrame);
 
@@ -520,24 +603,14 @@ public class SkiaSprite : AnimatedFramesRenderer
             int x = col * FrameWidth;
             int y = row * FrameHeight;
 
-            // Create a new bitmap for the frame if needed
-            if (_currentFrameBitmap == null ||
-                _currentFrameBitmap.Width != FrameWidth ||
-                _currentFrameBitmap.Height != FrameHeight)
+            if (Display is SpriteFrameImage frameDisplay)
             {
-                _currentFrameBitmap?.Dispose();
-                _currentFrameBitmap = new SKBitmap(FrameWidth, FrameHeight);
+                frameDisplay.FrameX = x;
+                frameDisplay.FrameY = y;
+                frameDisplay.FrameWidthPixels = FrameWidth;
+                frameDisplay.FrameHeightPixels = FrameHeight;
+                frameDisplay.Update();
             }
-
-            // Extract the frame from the sprite sheet
-            using (var canvas = new SKCanvas(_currentFrameBitmap))
-            {
-                canvas.Clear();
-                var srcRect = new SKRect(x, y, x + FrameWidth, y + FrameHeight);
-                canvas.DrawBitmap(SpriteSheet, srcRect, new SKRect(0, 0, FrameWidth, FrameHeight));
-            }
-
-            Display.SetBitmapInternal(_currentFrameBitmap, true);
         }
         finally
         {
@@ -549,12 +622,6 @@ public class SkiaSprite : AnimatedFramesRenderer
     {
         base.Update();
     }
-
-    /// <summary>
-    /// Current bitmap for the active frame
-    /// Current bitmap for the active frame
-    /// </summary>
-    private SKBitmap _currentFrameBitmap;
 
     /// <summary>
     /// The full sprite sheet bitmap
@@ -621,12 +688,6 @@ public class SkiaSprite : AnimatedFramesRenderer
             }
 
             SpriteSheet = null;
-
-            if (_currentFrameBitmap != null)
-            {
-                _currentFrameBitmap.Dispose();
-                _currentFrameBitmap = null;
-            }
 
             Monitor.PulseAll(_lockSource);
         }

@@ -13,19 +13,23 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
     <span>State: @(_isFullscreen ? "fullscreen" : "embedded")</span>
 </div>
 
-<Canvas Content="_canvasContent"
-    HorizontalOptions="LayoutOptions.Fill"
-    VerticalOptions="LayoutOptions.Fill"
-    MaxWidthRequest="980"
-    HeightRequest="430"
-    BackgroundColor="#060A12"
-    Margin="0,16,0,32"
-    RenderingMode="@RenderingModeType.Accelerated"
-    Gestures="@GesturesMode.Enabled"
-    IsFullscreen="@_isFullscreen"
-    IsFullscreenChanged="OnFullscreenChanged" />
+<div style="@GetCanvasHostStyle()">
+    <ParallaxRescalingCanvas Content="_canvasContent"
+        LogicalWidth="@ViewportWidth"
+        LogicalHeight="@ViewportHeight"
+        HorizontalOptions="LayoutOptions.Fill"
+        VerticalOptions="LayoutOptions.Fill"
+        BackgroundColor="#060A12"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Enabled"
+        IsFullscreen="@_isFullscreen"
+        IsFullscreenChanged="OnFullscreenChanged" />
+</div>
 
 @code {
+    private const float ViewportWidth = 940f;
+    private const float ViewportHeight = 430f;
+
     private readonly SkiaControl _canvasContent;
     private readonly SkiaControl _stage;
     private bool _isFullscreen;
@@ -34,23 +38,31 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
     {
         _stage = new global::ParallaxGameLoop.Game.ParallaxGame()
         {
-            HeightRequest = 430,
-            HorizontalOptions = LayoutOptions.Fill,
+            WidthRequest = ViewportWidth,
+            HeightRequest = ViewportHeight,
+            HorizontalOptions = LayoutOptions.Start,
             VerticalOptions = LayoutOptions.Start,
         };
 
         _canvasContent = new SkiaLayer()
         {
-            WidthRequest = -1,
-            HeightRequest = 430,
-            MaximumWidthRequest = 980,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
-            Padding = 0,
+            BackgroundColor = Colors.Black,
             Children =
             {
-                _stage,
-
+                new SkiaLayer()
+                {
+                    WidthRequest = ViewportWidth,
+                    HeightRequest = ViewportHeight,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    IsClippedToBounds = true,
+                    Children =
+                    {
+                        _stage,
+                    }
+                },
                 new SkiaLabelFps()
                 {
                     UseCache = SkiaCacheType.GPU,
@@ -75,5 +87,15 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
     {
         _isFullscreen = isFullscreen;
         return Task.CompletedTask;
+    }
+
+    private string GetCanvasHostStyle()
+    {
+        if (_isFullscreen)
+        {
+            return "position: fixed; inset: 0; width: 100vw; height: 100vh; margin: 0; background: #060A12; overflow: hidden; z-index: 2000;";
+        }
+
+        return "position: relative; width: 100%; aspect-ratio: 940 / 430; margin: 16px 0 32px; background: #060A12; overflow: hidden;";
     }
 }
