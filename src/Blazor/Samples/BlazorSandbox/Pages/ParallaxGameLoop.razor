@@ -8,12 +8,16 @@
 
 This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and runs movement from the shared game loop with keyboard input.
 
-<div style="display: flex; gap: 12px; align-items: center; margin: 0.75rem 0 0; flex-wrap: wrap;">
-    <button class="btn btn-primary" @onclick="ToggleFullscreen">@(_isFullscreen ? "Leave fullscreen" : "Enter fullscreen")</button>
-    <span>State: @(_isFullscreen ? "fullscreen" : "embedded")</span>
-</div>
+<FullscreenToggleBar
+    IsFullscreen="@_isFullscreen"
+    IsFullscreenChanged="OnFullscreenChanged" />
 
-<div style="@GetCanvasHostStyle()">
+<AspectLockedViewportHost
+    AspectWidth="@ViewportWidth"
+    AspectHeight="@ViewportHeight"
+    BackgroundColor="#060A12"
+    IsFullscreen="@_isFullscreen">
+
     <ParallaxRescalingCanvas Content="_canvasContent"
         LogicalWidth="@ViewportWidth"
         LogicalHeight="@ViewportHeight"
@@ -24,7 +28,8 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
         Gestures="@GesturesMode.Enabled"
         IsFullscreen="@_isFullscreen"
         IsFullscreenChanged="OnFullscreenChanged" />
-</div>
+        
+</AspectLockedViewportHost>
 
 @code {
     private const float ViewportWidth = 940f;
@@ -78,24 +83,10 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
         };
     }
 
-    private void ToggleFullscreen()
-    {
-        _isFullscreen = !_isFullscreen;
-    }
-
     private Task OnFullscreenChanged(bool isFullscreen)
     {
         _isFullscreen = isFullscreen;
         return Task.CompletedTask;
     }
 
-    private string GetCanvasHostStyle()
-    {
-        if (_isFullscreen)
-        {
-            return "position: fixed; inset: 0; width: 100vw; height: 100vh; margin: 0; background: #060A12; overflow: hidden; z-index: 2000;";
-        }
-
-        return "position: relative; width: 100%; aspect-ratio: 940 / 430; margin: 16px 0 32px; background: #060A12; overflow: hidden;";
-    }
 }

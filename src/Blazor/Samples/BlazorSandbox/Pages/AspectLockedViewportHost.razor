@@ -1,0 +1,75 @@
+<div class="@HostClass" style="@HostStyle">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>
+    /// Logical content width used to preserve the embedded host aspect ratio.
+    /// </summary>
+    [Parameter]
+    public float AspectWidth { get; set; }
+
+    /// <summary>
+    /// Logical content height used to preserve the embedded host aspect ratio.
+    /// </summary>
+    [Parameter]
+    public float AspectHeight { get; set; }
+
+    /// <summary>
+    /// Background color applied to both embedded and fullscreen host modes.
+    /// </summary>
+    [Parameter]
+    public string BackgroundColor { get; set; } = "#000000";
+
+    /// <summary>
+    /// Switches the host from embedded mode into a fixed fullscreen overlay.
+    /// </summary>
+    [Parameter]
+    public bool IsFullscreen { get; set; }
+
+    /// <summary>
+    /// In embedded mode, limits the host by the visible browser height instead of filling page width.
+    /// </summary>
+    [Parameter]
+    public bool FitVisibleHeight { get; set; }
+
+    /// <summary>
+    /// Reserved vertical chrome in pixels when <see cref="FitVisibleHeight"/> is enabled.
+    /// </summary>
+    [Parameter]
+    public float ViewportOffsetPixels { get; set; }
+
+    /// <summary>
+    /// Embedded mode margin. Fullscreen mode always resets margin to zero.
+    /// </summary>
+    [Parameter]
+    public string EmbeddedMargin { get; set; } = "16px auto 32px";
+
+    /// <summary>
+    /// Fullscreen z-index for the fixed overlay host.
+    /// </summary>
+    [Parameter]
+    public int FullscreenZIndex { get; set; } = 2000;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string HostClass => IsFullscreen
+        ? "aspect-locked-host fullscreen"
+        : FitVisibleHeight
+            ? "aspect-locked-host fit-height"
+            : "aspect-locked-host fit-width";
+
+    private string HostStyle
+    {
+        get
+        {
+            var aspectRatio = AspectHeight > 0f
+                ? AspectWidth / AspectHeight
+                : 1f;
+
+            return FormattableString.Invariant(
+                $"--host-aspect: {AspectWidth} / {AspectHeight}; --host-aspect-ratio: {aspectRatio}; --host-background: {BackgroundColor}; --host-margin: {EmbeddedMargin}; --host-viewport-offset: {ViewportOffsetPixels}px; --host-z-index: {FullscreenZIndex};");
+        }
+    }
+}

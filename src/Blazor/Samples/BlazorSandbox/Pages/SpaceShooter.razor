@@ -4,23 +4,53 @@
 
 <PageTitle>Space Shooter</PageTitle>
 
-<h1>Space Shooter</h1>
+<div class="game-demo-page">
+    <h1>Space Shooter</h1>
 
-This gaming demo stays in the sandbox as a full-scene example of accelerated rendering, gestures, and the DrawnUI game loop running in Blazor.
+    <p>This gaming demo stays in the sandbox as a full-scene example of accelerated rendering, gestures, and the DrawnUI game loop running in Blazor.</p>
 
-<Canvas Content="_canvasContent" 
-    HorizontalOptions="LayoutOptions.Fill"
-    VerticalOptions="LayoutOptions.Fill"
-    BackgroundColor="#F0F0F5"
-    Margin="16,16,16,16"
-    RenderingMode="@RenderingModeType.Accelerated"
-    Gestures="@GesturesMode.Enabled"
-     />
+    <FullscreenToggleBar
+        IsFullscreen="@_isFullscreen"
+        IsFullscreenChanged="OnFullscreenChanged" />
+
+    <div class="game-demo-viewport-slot" style="margin-top: 12px;">
+        <AspectLockedViewportHost
+            AspectWidth="@ViewportWidth"
+            AspectHeight="@ViewportHeight"
+            BackgroundColor="#020816"
+            IsFullscreen="@_isFullscreen"
+            EmbeddedMargin="0"
+            FitVisibleHeight="true"
+            ViewportOffsetPixels="0">
+            <AspectLockedCanvas 
+                Content="_canvasContent"
+                LogicalWidth="@ViewportWidth"
+                LogicalHeight="@ViewportHeight"
+                HorizontalOptions="LayoutOptions.Fill"
+                VerticalOptions="LayoutOptions.Fill"
+                BackgroundColor="#020816"
+                RenderingMode="@RenderingModeType.Accelerated"
+                Gestures="@GesturesMode.Enabled"
+                IsFullscreen="@_isFullscreen"
+                IsFullscreenChanged="OnFullscreenChanged" />
+        </AspectLockedViewportHost>
+    </div>
+</div>
 
 @code {
 
+    /// <summary>
+    /// Tune the locked game aspect here. The canvas always scales this logical portrait viewport without stretching.
+    /// </summary>
+    private const float ViewportWidth = 480f;
+
+    /// <summary>
+    /// Tune the locked game aspect here. Keep this paired with <see cref="ViewportWidth"/> to change the playable field ratio.
+    /// </summary>
+    private const float ViewportHeight = 800f;
+
     private SkiaControl _canvasContent;
-    private bool _canRefreshUi;
+    private bool _isFullscreen;
 
     public SpaceShooter()
     {
@@ -31,7 +61,13 @@ This gaming demo stays in the sandbox as a full-scene example of accelerated ren
             HorizontalOptions = LayoutOptions.Fill,
             Children =
             {
-                new global::SpaceShooter.Game.SpaceShooter(),
+                new global::SpaceShooter.Game.SpaceShooter()
+                {
+                    WidthRequest = ViewportWidth,
+                    HeightRequest = ViewportHeight,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                },
                 
                 new SkiaLabelFps()
                 {
@@ -49,15 +85,10 @@ This gaming demo stays in the sandbox as a full-scene example of accelerated ren
 
 
     }
-
-
-
-    protected override void OnAfterRender(bool firstRender)
+    private Task OnFullscreenChanged(bool isFullscreen)
     {
-        if (firstRender)
-        {
-            _canRefreshUi = true;
-        }
+        _isFullscreen = isFullscreen;
+        return Task.CompletedTask;
     }
 
 }
