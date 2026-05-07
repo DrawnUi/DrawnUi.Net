@@ -261,8 +261,8 @@ public class SkiaImageTiles : SkiaImage
             var tilesX = (int)Math.Ceiling((dest.Width + offsetX) / TileWidthPixels);
             var tilesY = (int)Math.Ceiling((dest.Height + Math.Abs(offsetY)) / TileHeightPixels);
 
-            var startY = (float)-offsetY;
-            var startX = (float)-offsetX;
+            var startY = dest.Top - offsetY;
+            var startX = dest.Left - offsetX;
 
             for (int x = 0; x < tilesX; x++)
             {
