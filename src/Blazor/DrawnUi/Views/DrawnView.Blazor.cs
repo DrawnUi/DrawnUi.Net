@@ -45,23 +45,8 @@ namespace DrawnUi.Views
             }
         }
 
-        // Set during PreWarmOffscreen to redirect FixDensity to known dims instead of reading CanvasView.CanvasSize (which is 0 before first real paint)
-        private float _preWarmWidth;
-        private float _preWarmHeight;
-        private bool _isPreWarming;
-
-        // Blocks DrawFrame while the pre-warm re-render is pending, preventing a stale 1×1 canvas paint from wiping warm caches
-        protected bool SuppressDrawFrame;
-
         protected void FixDensity()
         {
-            if (_isPreWarming)
-            {
-                Width = _preWarmWidth;
-                Height = _preWarmHeight;
-                return;
-            }
-
             Width = CanvasView.CanvasSize.Width;
             Height = CanvasView.CanvasSize.Height;
 
@@ -75,48 +60,6 @@ namespace DrawnUi.Views
 
                 RenderingScale = scale;
             }
-        }
-
-        /// <summary>
-        /// Runs a single draw pass on an offscreen CPU surface to warm layout and cache for all children.
-        /// The surface is created and disposed inside this call. SuppressDrawFrame is set to true on exit
-        /// to block real-canvas paints until the Blazor re-render that follows StateHasChanged delivers
-        /// correct CSS dimensions — cleared by Canvas.OnAfterRenderAsync on the subsequent render.
-        /// </summary>
-        protected void PreWarmOffscreen(float width, float height)
-        {
-            if (width <= 0 || height <= 0 || CanvasView == null)
-                return;
-
-            var info = new SKImageInfo((int)width, (int)height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            using var surface = SKSurface.Create(info);
-            if (surface == null)
-                return;
-
-            _preWarmWidth = width;
-            _preWarmHeight = height;
-            _isPreWarming = true;
-
-            try
-            {
-                DrawFrame(surface, new SKRect(0, 0, width, height));
-            }
-            catch (Exception e)
-            {
-                Super.Log(e);
-            }
-            finally
-            {
-                _isPreWarming = false;
-                _preWarmWidth = 0;
-                _preWarmHeight = 0;
-                // surface is disposed here by `using`
-            }
-
-            // Set AFTER draw completes and surface is gone.
-            // Blocks any rAF-triggered DrawFrame on the real <canvas> (which still has old/stale CSS size)
-            // until Canvas.OnAfterRenderAsync(false) clears this after the re-render.
-            SuppressDrawFrame = true;
         }
 
         protected Dictionary<Guid, SkiaControl> DirtyChildren = new();
@@ -318,8 +261,6 @@ namespace DrawnUi.Views
 
         protected bool DrawFrame(SKSurface surface, SKRect rect)
         {
-            if (SuppressDrawFrame)
-                return false;
             SyncExternalSize(rect.Width, rect.Height);
             return OnDrawSurface(surface, rect);
         }
