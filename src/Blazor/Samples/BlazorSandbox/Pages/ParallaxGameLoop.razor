@@ -18,7 +18,8 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
     BackgroundColor="#060A12"
     IsFullscreen="@_isFullscreen">
 
-    <ParallaxRescalingCanvas Content="_canvasContent"
+    <ParallaxRescalingCanvas @ref="_canvas"
+        Content="_canvasContent"
         LogicalWidth="@ViewportWidth"
         LogicalHeight="@ViewportHeight"
         HorizontalOptions="LayoutOptions.Fill"
@@ -37,6 +38,7 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
 
     private readonly SkiaControl _canvasContent;
     private readonly SkiaControl _stage;
+    private ParallaxRescalingCanvas _canvas;
     private bool _isFullscreen;
 
     public ParallaxGameLoop()
@@ -86,6 +88,7 @@ This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and
     private Task OnFullscreenChanged(bool isFullscreen)
     {
         _isFullscreen = isFullscreen;
+        _canvas?.InvalidateChildren();
         return Task.CompletedTask;
     }
 

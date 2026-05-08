@@ -23,6 +23,7 @@
             FitVisibleHeight="true"
             ViewportOffsetPixels="0">
             <AspectLockedCanvas 
+                @ref="_canvas"
                 Content="_canvasContent"
                 LogicalWidth="@ViewportWidth"
                 LogicalHeight="@ViewportHeight"
@@ -50,6 +51,7 @@
     private const float ViewportHeight = 800f;
 
     private SkiaControl _canvasContent;
+    private AspectLockedCanvas _canvas;
     private bool _isFullscreen;
 
     public SpaceShooter()
@@ -88,6 +90,7 @@
     private Task OnFullscreenChanged(bool isFullscreen)
     {
         _isFullscreen = isFullscreen;
+        _canvas?.InvalidateChildren();
         return Task.CompletedTask;
     }
 

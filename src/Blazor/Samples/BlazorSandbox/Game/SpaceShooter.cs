@@ -85,6 +85,25 @@ public partial class SpaceShooter : DrawnUi.Gaming.Game
         }).ConfigureAwait(false);
     }
 
+    protected override void OnLayoutChanged()
+    {
+        base.OnLayoutChanged();
+
+        if (!_initialized)
+            return;
+
+        var layoutSize = DrawingRect.Size;
+        var sizeChanged = Math.Abs(_lastCacheInvalidationWidth - layoutSize.Width) > 0.5f
+            || Math.Abs(_lastCacheInvalidationHeight - layoutSize.Height) > 0.5f;
+
+        if (!sizeChanged)
+            return;
+
+        _lastCacheInvalidationWidth = layoutSize.Width;
+        _lastCacheInvalidationHeight = layoutSize.Height;
+        InvalidateAllSpriteCaches();
+    }
+
     public override void OnAppeared()
     {
         base.OnAppeared();
@@ -222,6 +241,45 @@ public partial class SpaceShooter : DrawnUi.Gaming.Game
             return; //do not care
 
         base.OnChildRemoved(child);
+    }
+
+    public override void InvalidateWithChildren()
+    {
+        base.InvalidateWithChildren();
+
+        InvalidateAllSpriteCaches();
+    }
+
+    private void InvalidateAllSpriteCaches()
+    {
+        InvalidateChildrenTree();
+        //InvalidateCacheTree(this);
+        InvalidateDetachedPoolCaches(EnemiesPool.Values);
+        InvalidateDetachedPoolCaches(BulletsPool.Values);
+        InvalidateDetachedPoolCaches(ExplosionsPool.Values);
+        InvalidateDetachedPoolCaches(ExplosionsCrashPool.Values);
+    }
+
+    private static void InvalidateDetachedPoolCaches<TControl>(IEnumerable<TControl> controls)
+        where TControl : SkiaControl
+    {
+        foreach (var control in controls)
+        {
+            InvalidateCacheTree(control);
+        }
+    }
+
+    private static void InvalidateCacheTree(SkiaControl control)
+    {
+        if (control == null)
+            return;
+
+        control.InvalidateCacheWithPrevious();
+
+        foreach (var child in control.Views)
+        {
+            InvalidateCacheTree(child as SkiaControl);
+        }
     }
 
     #endregion
@@ -971,6 +1029,8 @@ public partial class SpaceShooter : DrawnUi.Gaming.Game
     private bool _needPrerender;
     private bool _initialized;
     private GameState _lastState;
+    private float _lastCacheInvalidationWidth = -1;
+    private float _lastCacheInvalidationHeight = -1;
 
     private GameState _gameState;
     public GameState State
