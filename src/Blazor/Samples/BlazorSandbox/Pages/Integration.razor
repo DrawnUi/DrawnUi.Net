@@ -1,0 +1,48 @@
+@page "/integration"
+
+<PageTitle>Integration</PageTitle>
+
+<div class="docs-page">
+    <h1>Integration</h1>
+    <p class="docs-lead">This page stays on standard Blazor controls so we can verify the regular Razor event and render flow inside the DrawnUI Blazor sandbox.</p>
+    <p class="docs-note">Use the buttons below and confirm the label updates immediately. After this baseline looks right, DrawnUI content can be added next to it.</p>
+
+    <div class="docs-example-frame" style="padding: 24px; margin-top: 16px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px;">
+            <button class="btn btn-primary" @onclick="IncrementCounter">Increment</button>
+            <button class="btn btn-secondary" @onclick="ResetCounter">Reset</button>
+            <button class="btn btn-outline-dark" @onclick="ToggleMessage">Toggle Message</button>
+        </div>
+
+        <p><strong>Clicks:</strong> @clickCount</p>
+        <p><strong>Label:</strong> @statusLabel</p>
+        <p><strong>Mode:</strong> @(showAlternateMessage ? "Alternate" : "Primary")</p>
+    </div>
+</div>
+
+@code {
+    private int clickCount;
+    private bool showAlternateMessage;
+    private string statusLabel = "Ready";
+
+    private void IncrementCounter()
+    {
+        clickCount++;
+        statusLabel = $"Increment pressed {clickCount} time{(clickCount == 1 ? string.Empty : "s")}.";
+    }
+
+    private void ResetCounter()
+    {
+        clickCount = 0;
+        showAlternateMessage = false;
+        statusLabel = "Counter reset to zero.";
+    }
+
+    private void ToggleMessage()
+    {
+        showAlternateMessage = !showAlternateMessage;
+        statusLabel = showAlternateMessage
+            ? "Alternate message enabled."
+            : "Primary message restored.";
+    }
+}

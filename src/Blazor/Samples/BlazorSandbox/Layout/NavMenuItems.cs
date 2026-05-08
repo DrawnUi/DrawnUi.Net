@@ -109,12 +109,6 @@ internal static class NavMenuItems
 
             ]),
 
-
-
- 
-
-
-
         //TUTORIALS
         new(
             "tutorials",
@@ -130,8 +124,18 @@ internal static class NavMenuItems
 
 
         new(
+            "gaming",
+            "Gaming",
+            false,
+            Items:
+            [
+                new("Space Shooter", "space-shooter", "bi-rocket-takeoff-nav-menu"),
+                new("Parallax Etude", "parallax-gameloop", "bi-controller-nav-menu")
+            ]),
+
+        new(
             "advanced",
-            "Advanced",
+            "SKMesh",
             false,
             Items:
             [
@@ -140,16 +144,6 @@ internal static class NavMenuItems
                 new("Rocket", "skmesh-rocket-probe", "bi-rocket-takeoff-nav-menu")
             ]),
 
-        new(
-            "gaming",
-            "Gaming",
-            false,
-            Items:
-            [
-                new("Space Shooter", "space-shooter", "bi-rocket-takeoff-nav-menu"),
-                new("Parallax", "skmesh-parallax-probe", "bi-layers-fill-nav-menu"),
-                new("Parallax Game Loop", "parallax-gameloop", "bi-controller-nav-menu")
-            ]),
 
         //INTERNAL TESTING
         new(
@@ -158,12 +152,14 @@ internal static class NavMenuItems
             false,
             Items:
             [
+                new("Integration", "integration", "bi-box-arrow-in-right"),
                 new("Fill Direction", "canvas-fill-direction", "bi-arrows-collapse-vertical"),
                 new("Full Fill", "canvas-full-fill", "bi-fullscreen"),
                 new("Image", "image-probe", "bi-image-nav-menu"),
                 new("Shapes", "shapes-probe", "bi-bounding-box-nav-menu"),
                 new("Svg", "svg-probe", "bi-badge-sd-nav-menu"),
                 new("Scroll", "scroll-probe", "bi-arrow-down-up-nav-menu"),
+                new("Parallax SKMech", "skmesh-parallax-probe", "bi-layers-fill-nav-menu"),
             ]),
     ];
 
