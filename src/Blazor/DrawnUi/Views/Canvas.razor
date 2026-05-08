@@ -102,7 +102,6 @@
     {
         base.OnParametersSet();
 
-        base.BackgroundColor = ParsedBackgroundColor;
         base.Margin = ParsedMargin;
         base.RenderingMode = RenderingMode;
         base.CanRenderOffScreen = CanRenderOffScreen;
@@ -379,6 +378,53 @@
         GesturesMode.Enabled or GesturesMode.Lock => "touch-action:none; user-select:none;",
         _ => string.Empty
     };
+
+    protected DrawingContext Context;
+
+    protected override void Draw(DrawingContext context)
+    {
+        Context = context;
+
+        double widthRequest = WidthRequest;
+        double heightRequest = HeightRequest;
+
+        Arrange(context.Destination, widthRequest, heightRequest, context.Scale);
+
+        var skia = Content as SkiaControl;
+
+        if (!IsGhost)
+        {
+            if (RenderingMode == RenderingModeType.AcceleratedRetained)
+            {
+                if (skia.NeedUpdate)
+                {
+                    Debug.WriteLine("PAINT");
+
+                    PaintTintBackground(context.Context.Canvas);
+                }
+                else
+                {
+                    Debug.WriteLine("RETAINED");
+                }
+
+                base.Draw(context.WithDestination(Destination));
+            }
+            else
+            {
+                //usual immediate mode
+                if (BackgroundColor != null && base.BackgroundColor != Colors.Transparent)
+                {
+                    PaintTintBackground(context.Context.Canvas);
+                }
+                else
+                {
+                    context.Context.Canvas.Clear();
+                }
+
+                base.Draw(context.WithDestination(Destination));
+            }
+        }
+    }
 
     public async ValueTask DisposeAsync()
     {

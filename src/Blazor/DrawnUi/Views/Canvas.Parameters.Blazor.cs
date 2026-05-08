@@ -8,7 +8,24 @@ namespace DrawnUi.Views;
 public partial class Canvas
 {
     [Parameter]
-    public new string BackgroundColor { get; set; } = "#00000000";
+    public new string BackgroundColor
+    {
+        get
+        {
+            return _backgroundColor;
+        }
+        set
+        {
+            if (_backgroundColor != value)
+            {
+                _backgroundColor = value;
+                base.BackgroundColor = string.IsNullOrWhiteSpace(value)
+                ? null: Color.FromSKColor(SKColor.Parse(value));
+            }
+        }
+    } 
+
+    string _backgroundColor = "#00000000";
 
     [Parameter]
     public new string Margin { get; set; } = string.Empty;
@@ -16,10 +33,6 @@ public partial class Canvas
     private string BackgroundColorCss => string.IsNullOrWhiteSpace(BackgroundColor)
         ? "transparent"
         : BackgroundColor;
-
-    private Color ParsedBackgroundColor => string.IsNullOrWhiteSpace(BackgroundColor)
-        ? null
-        : Color.FromSKColor(SKColor.Parse(BackgroundColor));
 
     private Thickness ParsedMargin => ParseThickness(Margin);
 
