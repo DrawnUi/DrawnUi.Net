@@ -81,7 +81,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaMauiEditor
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -184,22 +184,7 @@ items:
   - DrawnUi.Draw.SkiaControl.WhiteColor
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
-  - DrawnUi.Draw.SkiaControl.GetRandomColor
-  - DrawnUi.Draw.SkiaControl.UsingControlStyle
-  - DrawnUi.Draw.SkiaControl.ClearColorProperty
-  - DrawnUi.Draw.SkiaControl.ClearColor
   - DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
-  - DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
-  - DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  - DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
-  - DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
-  - DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
-  - DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
-  - DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
-  - DrawnUi.Draw.SkiaControl.PlatformShadow
-  - DrawnUi.Draw.SkiaControl.HasPlatformClip
-  - DrawnUi.Draw.SkiaControl.GetDensity
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.AutoCacheProperty
   - DrawnUi.Draw.SkiaControl.AutoCache
@@ -269,6 +254,21 @@ items:
   - DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.Initialized
   - DrawnUi.Draw.SkiaControl.Destroyed
+  - DrawnUi.Draw.SkiaControl.GetRandomColor
+  - DrawnUi.Draw.SkiaControl.UsingControlStyle
+  - DrawnUi.Draw.SkiaControl.ClearColorProperty
+  - DrawnUi.Draw.SkiaControl.ClearColor
+  - DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
+  - DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
+  - DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
+  - DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
+  - DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
+  - DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
+  - DrawnUi.Draw.SkiaControl.PlatformShadow
+  - DrawnUi.Draw.SkiaControl.HasPlatformClip
+  - DrawnUi.Draw.SkiaControl.GetDensity
   - DrawnUi.Draw.SkiaControl.SetHover(System.Boolean)
   - DrawnUi.Draw.SkiaControl.OnHover(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsHoveredProperty
@@ -338,18 +338,18 @@ items:
   - DrawnUi.Draw.SkiaControl.AdaptSizeRequestToContent(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GetTopParentView
   - DrawnUi.Draw.SkiaControl.GetParentElement(DrawnUi.Draw.IDrawnBase)
-  - DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
-  - DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.IsPointInside(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.IsPointInside(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.IsPixelInside(SkiaSharp.SKRect,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.IsPixelInside(System.Single,System.Single)
-  - DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
-  - DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.LockIterateListeners
   - DrawnUi.Draw.SkiaControl.LockChildrenGesturesProperty
   - DrawnUi.Draw.SkiaControl.LockChildrenGestures
-  - DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Maui.Gestures.TouchActionResult)
+  - DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.IsGestureForChild(DrawnUi.Draw.SkiaControlWithRect,SkiaSharp.SKPoint)
   - DrawnUi.Draw.SkiaControl.IsGestureForChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters)
@@ -538,8 +538,8 @@ items:
   - DrawnUi.Draw.SkiaControl.ApplyTransformationMatrix(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaControl.CreateTransformationMatrix(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.ApplyTransforms(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
-  - DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  - DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
+  - DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
   - DrawnUi.Draw.SkiaControl.GetHitBoxOnCanvas
   - DrawnUi.Draw.SkiaControl.TranslateInputCoords(SkiaSharp.SKPoint,System.Boolean)
   - DrawnUi.Draw.SkiaControl.CalculatePositionOffset(System.Boolean,System.Boolean,System.Boolean)
@@ -640,8 +640,8 @@ items:
   - DrawnUi.Draw.SkiaControl.GetPositionOffsetInPoints
   - DrawnUi.Draw.SkiaControl.GetPositionOffsetInPixels(System.Boolean,System.Boolean,System.Boolean)
   - DrawnUi.Draw.SkiaControl.GetFuturePositionOffsetInPixels(System.Boolean,System.Boolean,System.Boolean)
-  - DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  - DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
+  - DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
   - DrawnUi.Draw.SkiaControl.LastDrawnAt
   - DrawnUi.Draw.SkiaControl.ExecutePostAnimators(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.DrawViews(DrawnUi.Draw.DrawingContext)
@@ -1031,7 +1031,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1069,7 +1069,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1104,7 +1104,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLinesProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1131,7 +1131,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLines
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1162,7 +1162,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionGo
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1189,7 +1189,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionNext
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1216,7 +1216,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSend
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1243,7 +1243,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSearch
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1270,7 +1270,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionDone
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1297,7 +1297,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TextChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1324,7 +1324,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1351,7 +1351,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TextSubmitted
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1378,7 +1378,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: WillClipBounds
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1410,7 +1410,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MapProps
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1439,7 +1439,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrCreateControl
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1467,7 +1467,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Control
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1496,7 +1496,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderLabel
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1523,7 +1523,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusNative
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1549,7 +1549,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: UnfocusNative
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1575,7 +1575,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocus
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1607,7 +1607,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptControlSize
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1633,7 +1633,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreatePlaceholderLabel
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1661,7 +1661,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateControl
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1687,7 +1687,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdatePlaceholderLabel
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1713,7 +1713,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdatePlaceholderVisibility
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1739,7 +1739,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1768,7 +1768,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SubscribeToControl
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1800,7 +1800,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnFocusChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1839,7 +1839,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1868,7 +1868,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckChildAdded
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1896,7 +1896,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasuring
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1941,7 +1941,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocusInternal
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -1973,7 +1973,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardTypeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2000,7 +2000,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardType
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2041,7 +2041,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamilyProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2068,7 +2068,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamily
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2097,7 +2097,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColorProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2124,7 +2124,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColor
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2153,7 +2153,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderTextColorProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2180,7 +2180,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderTextColor
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2209,7 +2209,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeightProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2236,7 +2236,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeight
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2265,7 +2265,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSizeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2292,7 +2292,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSize
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2321,7 +2321,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TextProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2348,7 +2348,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Text
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2377,7 +2377,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderTextProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2404,7 +2404,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderText
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2433,7 +2433,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderFontFamilyProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2460,7 +2460,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderFontFamily
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2489,7 +2489,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderFontSizeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2516,7 +2516,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderFontSize
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2545,7 +2545,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignmentProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2572,7 +2572,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignment
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2601,7 +2601,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderVerticalAlignmentProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2628,7 +2628,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderVerticalAlignment
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2657,7 +2657,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnTypeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2684,7 +2684,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnType
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2713,7 +2713,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmitProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2740,7 +2740,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmit
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2769,7 +2769,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChangedProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2796,7 +2796,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2825,7 +2825,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChangedProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2852,7 +2852,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2881,7 +2881,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocusedProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -2908,7 +2908,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocused
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
@@ -4377,46 +4377,6 @@ references:
   name: RedColor
   nameWithType: SkiaControl.RedColor
   fullName: DrawnUi.Draw.SkiaControl.RedColor
-- uid: DrawnUi.Draw.SkiaControl.GetRandomColor
-  commentId: M:DrawnUi.Draw.SkiaControl.GetRandomColor
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRandomColor
-  name: GetRandomColor()
-  nameWithType: SkiaControl.GetRandomColor()
-  fullName: DrawnUi.Draw.SkiaControl.GetRandomColor()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.GetRandomColor
-    name: GetRandomColor
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRandomColor
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.GetRandomColor
-    name: GetRandomColor
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRandomColor
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.UsingControlStyle
-  commentId: P:DrawnUi.Draw.SkiaControl.UsingControlStyle
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UsingControlStyle
-  name: UsingControlStyle
-  nameWithType: SkiaControl.UsingControlStyle
-  fullName: DrawnUi.Draw.SkiaControl.UsingControlStyle
-- uid: DrawnUi.Draw.SkiaControl.ClearColorProperty
-  commentId: F:DrawnUi.Draw.SkiaControl.ClearColorProperty
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ClearColorProperty
-  name: ClearColorProperty
-  nameWithType: SkiaControl.ClearColorProperty
-  fullName: DrawnUi.Draw.SkiaControl.ClearColorProperty
-- uid: DrawnUi.Draw.SkiaControl.ClearColor
-  commentId: P:DrawnUi.Draw.SkiaControl.ClearColor
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ClearColor
-  name: ClearColor
-  nameWithType: SkiaControl.ClearColor
-  fullName: DrawnUi.Draw.SkiaControl.ClearColor
 - uid: DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   commentId: M:DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   parent: DrawnUi.Draw.SkiaControl
@@ -4447,365 +4407,6 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
-  parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPaddingSet_Microsoft_Maui_Thickness_
-  name: OnPaddingSet(Thickness)
-  nameWithType: SkiaControl.OnPaddingSet(Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
-    name: OnPaddingSet
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPaddingSet_Microsoft_Maui_Thickness_
-  - name: (
-  - uid: Microsoft.Maui.Thickness
-    name: Thickness
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
-    name: OnPaddingSet
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPaddingSet_Microsoft_Maui_Thickness_
-  - name: (
-  - uid: Microsoft.Maui.Thickness
-    name: Thickness
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
-  commentId: M:DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AddSubView_DrawnUi_Draw_SkiaControl_
-  name: AddSubView(SkiaControl)
-  nameWithType: SkiaControl.AddSubView(SkiaControl)
-  fullName: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
-    name: AddSubView
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AddSubView_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
-    name: AddSubView
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AddSubView_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  commentId: M:DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RemoveSubView_DrawnUi_Draw_SkiaControl_
-  name: RemoveSubView(SkiaControl)
-  nameWithType: SkiaControl.RemoveSubView(SkiaControl)
-  fullName: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
-    name: RemoveSubView
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RemoveSubView_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
-    name: RemoveSubView
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RemoveSubView_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
-  commentId: M:DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnLayoutPositionChanged
-  name: OnLayoutPositionChanged()
-  nameWithType: SkiaControl.OnLayoutPositionChanged()
-  fullName: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
-    name: OnLayoutPositionChanged
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnLayoutPositionChanged
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
-    name: OnLayoutPositionChanged
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnLayoutPositionChanged
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
-  commentId: M:DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
-  parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_
-  name: SetupGradient(SKPaint, SkiaGradient, SKRect)
-  nameWithType: SkiaControl.SetupGradient(SKPaint, SkiaGradient, SKRect)
-  fullName: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint, DrawnUi.Draw.SkiaGradient, SkiaSharp.SKRect)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
-    name: SetupGradient
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_
-  - name: (
-  - uid: SkiaSharp.SKPaint
-    name: SKPaint
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
-  - name: ','
-  - name: " "
-  - uid: DrawnUi.Draw.SkiaGradient
-    name: SkiaGradient
-    href: DrawnUi.Draw.SkiaGradient.html
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
-    name: SetupGradient
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_
-  - name: (
-  - uid: SkiaSharp.SKPaint
-    name: SKPaint
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
-  - name: ','
-  - name: " "
-  - uid: DrawnUi.Draw.SkiaGradient
-    name: SkiaGradient
-    href: DrawnUi.Draw.SkiaGradient.html
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
-  commentId: M:DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
-  parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_SkiaSharp_SKShader__System_Int32__SkiaSharp_SKRect__DrawnUi_Draw_SkiaGradient__
-  name: SetupGradient(SKPaint, SkiaGradient, SKRect, ref SKShader, ref int, ref SKRect, ref SkiaGradient)
-  nameWithType: SkiaControl.SetupGradient(SKPaint, SkiaGradient, SKRect, ref SKShader, ref int, ref SKRect, ref SkiaGradient)
-  fullName: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint, DrawnUi.Draw.SkiaGradient, SkiaSharp.SKRect, ref SkiaSharp.SKShader, ref int, ref SkiaSharp.SKRect, ref DrawnUi.Draw.SkiaGradient)
-  nameWithType.vb: SkiaControl.SetupGradient(SKPaint, SkiaGradient, SKRect, SKShader, Integer, SKRect, SkiaGradient)
-  fullName.vb: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint, DrawnUi.Draw.SkiaGradient, SkiaSharp.SKRect, SkiaSharp.SKShader, Integer, SkiaSharp.SKRect, DrawnUi.Draw.SkiaGradient)
-  name.vb: SetupGradient(SKPaint, SkiaGradient, SKRect, SKShader, Integer, SKRect, SkiaGradient)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
-    name: SetupGradient
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_SkiaSharp_SKShader__System_Int32__SkiaSharp_SKRect__DrawnUi_Draw_SkiaGradient__
-  - name: (
-  - uid: SkiaSharp.SKPaint
-    name: SKPaint
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
-  - name: ','
-  - name: " "
-  - uid: DrawnUi.Draw.SkiaGradient
-    name: SkiaGradient
-    href: DrawnUi.Draw.SkiaGradient.html
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: ','
-  - name: " "
-  - name: ref
-  - name: " "
-  - uid: SkiaSharp.SKShader
-    name: SKShader
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skshader
-  - name: ','
-  - name: " "
-  - name: ref
-  - name: " "
-  - uid: System.Int32
-    name: int
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: ','
-  - name: " "
-  - name: ref
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: ','
-  - name: " "
-  - name: ref
-  - name: " "
-  - uid: DrawnUi.Draw.SkiaGradient
-    name: SkiaGradient
-    href: DrawnUi.Draw.SkiaGradient.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
-    name: SetupGradient
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_SkiaSharp_SKShader__System_Int32__SkiaSharp_SKRect__DrawnUi_Draw_SkiaGradient__
-  - name: (
-  - uid: SkiaSharp.SKPaint
-    name: SKPaint
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
-  - name: ','
-  - name: " "
-  - uid: DrawnUi.Draw.SkiaGradient
-    name: SkiaGradient
-    href: DrawnUi.Draw.SkiaGradient.html
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKShader
-    name: SKShader
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skshader
-  - name: ','
-  - name: " "
-  - uid: System.Int32
-    name: Integer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: ','
-  - name: " "
-  - uid: DrawnUi.Draw.SkiaGradient
-    name: SkiaGradient
-    href: DrawnUi.Draw.SkiaGradient.html
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
-  commentId: M:DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
-  parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateShadow_DrawnUi_Draw_SkiaShadow_System_Single_
-  name: CreateShadow(SkiaShadow, float)
-  nameWithType: SkiaControl.CreateShadow(SkiaShadow, float)
-  fullName: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow, float)
-  nameWithType.vb: SkiaControl.CreateShadow(SkiaShadow, Single)
-  fullName.vb: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow, Single)
-  name.vb: CreateShadow(SkiaShadow, Single)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
-    name: CreateShadow
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateShadow_DrawnUi_Draw_SkiaShadow_System_Single_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaShadow
-    name: SkiaShadow
-    href: DrawnUi.Draw.SkiaShadow.html
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: float
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
-    name: CreateShadow
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateShadow_DrawnUi_Draw_SkiaShadow_System_Single_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaShadow
-    name: SkiaShadow
-    href: DrawnUi.Draw.SkiaShadow.html
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: Single
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
-  commentId: M:DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdatePlatformShadow
-  name: UpdatePlatformShadow()
-  nameWithType: SkiaControl.UpdatePlatformShadow()
-  fullName: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
-    name: UpdatePlatformShadow
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdatePlatformShadow
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
-    name: UpdatePlatformShadow
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdatePlatformShadow
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.PlatformShadow
-  commentId: P:DrawnUi.Draw.SkiaControl.PlatformShadow
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PlatformShadow
-  name: PlatformShadow
-  nameWithType: SkiaControl.PlatformShadow
-  fullName: DrawnUi.Draw.SkiaControl.PlatformShadow
-- uid: DrawnUi.Draw.SkiaControl.HasPlatformClip
-  commentId: M:DrawnUi.Draw.SkiaControl.HasPlatformClip
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HasPlatformClip
-  name: HasPlatformClip()
-  nameWithType: SkiaControl.HasPlatformClip()
-  fullName: DrawnUi.Draw.SkiaControl.HasPlatformClip()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.HasPlatformClip
-    name: HasPlatformClip
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HasPlatformClip
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.HasPlatformClip
-    name: HasPlatformClip
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HasPlatformClip
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.GetDensity
-  commentId: M:DrawnUi.Draw.SkiaControl.GetDensity
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDensity
-  name: GetDensity()
-  nameWithType: SkiaControl.GetDensity()
-  fullName: DrawnUi.Draw.SkiaControl.GetDensity()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.GetDensity
-    name: GetDensity
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDensity
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.GetDensity
-    name: GetDensity
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDensity
-  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
@@ -6184,6 +5785,405 @@ references:
   name: Destroyed
   nameWithType: SkiaControl.Destroyed
   fullName: DrawnUi.Draw.SkiaControl.Destroyed
+- uid: DrawnUi.Draw.SkiaControl.GetRandomColor
+  commentId: M:DrawnUi.Draw.SkiaControl.GetRandomColor
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRandomColor
+  name: GetRandomColor()
+  nameWithType: SkiaControl.GetRandomColor()
+  fullName: DrawnUi.Draw.SkiaControl.GetRandomColor()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetRandomColor
+    name: GetRandomColor
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRandomColor
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetRandomColor
+    name: GetRandomColor
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRandomColor
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.UsingControlStyle
+  commentId: P:DrawnUi.Draw.SkiaControl.UsingControlStyle
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UsingControlStyle
+  name: UsingControlStyle
+  nameWithType: SkiaControl.UsingControlStyle
+  fullName: DrawnUi.Draw.SkiaControl.UsingControlStyle
+- uid: DrawnUi.Draw.SkiaControl.ClearColorProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.ClearColorProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ClearColorProperty
+  name: ClearColorProperty
+  nameWithType: SkiaControl.ClearColorProperty
+  fullName: DrawnUi.Draw.SkiaControl.ClearColorProperty
+- uid: DrawnUi.Draw.SkiaControl.ClearColor
+  commentId: P:DrawnUi.Draw.SkiaControl.ClearColor
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ClearColor
+  name: ClearColor
+  nameWithType: SkiaControl.ClearColor
+  fullName: DrawnUi.Draw.SkiaControl.ClearColor
+- uid: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPaddingSet_Microsoft_Maui_Thickness_
+  name: OnPaddingSet(Thickness)
+  nameWithType: SkiaControl.OnPaddingSet(Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
+    name: OnPaddingSet
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPaddingSet_Microsoft_Maui_Thickness_
+  - name: (
+  - uid: Microsoft.Maui.Thickness
+    name: Thickness
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnPaddingSet(Microsoft.Maui.Thickness)
+    name: OnPaddingSet
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPaddingSet_Microsoft_Maui_Thickness_
+  - name: (
+  - uid: Microsoft.Maui.Thickness
+    name: Thickness
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AddSubView_DrawnUi_Draw_SkiaControl_
+  name: AddSubView(SkiaControl)
+  nameWithType: SkiaControl.AddSubView(SkiaControl)
+  fullName: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
+    name: AddSubView
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AddSubView_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AddSubView(DrawnUi.Draw.SkiaControl)
+    name: AddSubView
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AddSubView_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RemoveSubView_DrawnUi_Draw_SkiaControl_
+  name: RemoveSubView(SkiaControl)
+  nameWithType: SkiaControl.RemoveSubView(SkiaControl)
+  fullName: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
+    name: RemoveSubView
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RemoveSubView_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RemoveSubView(DrawnUi.Draw.SkiaControl)
+    name: RemoveSubView
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RemoveSubView_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
+  commentId: M:DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnLayoutPositionChanged
+  name: OnLayoutPositionChanged()
+  nameWithType: SkiaControl.OnLayoutPositionChanged()
+  fullName: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
+    name: OnLayoutPositionChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnLayoutPositionChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnLayoutPositionChanged
+    name: OnLayoutPositionChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnLayoutPositionChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_
+  name: SetupGradient(SKPaint, SkiaGradient, SKRect)
+  nameWithType: SkiaControl.SetupGradient(SKPaint, SkiaGradient, SKRect)
+  fullName: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint, DrawnUi.Draw.SkiaGradient, SkiaSharp.SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
+    name: SetupGradient
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_
+  - name: (
+  - uid: SkiaSharp.SKPaint
+    name: SKPaint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaGradient
+    name: SkiaGradient
+    href: DrawnUi.Draw.SkiaGradient.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect)
+    name: SetupGradient
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_
+  - name: (
+  - uid: SkiaSharp.SKPaint
+    name: SKPaint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaGradient
+    name: SkiaGradient
+    href: DrawnUi.Draw.SkiaGradient.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
+  commentId: M:DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_SkiaSharp_SKShader__System_Int32__SkiaSharp_SKRect__DrawnUi_Draw_SkiaGradient__
+  name: SetupGradient(SKPaint, SkiaGradient, SKRect, ref SKShader, ref int, ref SKRect, ref SkiaGradient)
+  nameWithType: SkiaControl.SetupGradient(SKPaint, SkiaGradient, SKRect, ref SKShader, ref int, ref SKRect, ref SkiaGradient)
+  fullName: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint, DrawnUi.Draw.SkiaGradient, SkiaSharp.SKRect, ref SkiaSharp.SKShader, ref int, ref SkiaSharp.SKRect, ref DrawnUi.Draw.SkiaGradient)
+  nameWithType.vb: SkiaControl.SetupGradient(SKPaint, SkiaGradient, SKRect, SKShader, Integer, SKRect, SkiaGradient)
+  fullName.vb: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint, DrawnUi.Draw.SkiaGradient, SkiaSharp.SKRect, SkiaSharp.SKShader, Integer, SkiaSharp.SKRect, DrawnUi.Draw.SkiaGradient)
+  name.vb: SetupGradient(SKPaint, SkiaGradient, SKRect, SKShader, Integer, SKRect, SkiaGradient)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
+    name: SetupGradient
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_SkiaSharp_SKShader__System_Int32__SkiaSharp_SKRect__DrawnUi_Draw_SkiaGradient__
+  - name: (
+  - uid: SkiaSharp.SKPaint
+    name: SKPaint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaGradient
+    name: SkiaGradient
+    href: DrawnUi.Draw.SkiaGradient.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: SkiaSharp.SKShader
+    name: SKShader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skshader
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaGradient
+    name: SkiaGradient
+    href: DrawnUi.Draw.SkiaGradient.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.SetupGradient(SkiaSharp.SKPaint,DrawnUi.Draw.SkiaGradient,SkiaSharp.SKRect,SkiaSharp.SKShader@,System.Int32@,SkiaSharp.SKRect@,DrawnUi.Draw.SkiaGradient@)
+    name: SetupGradient
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetupGradient_SkiaSharp_SKPaint_DrawnUi_Draw_SkiaGradient_SkiaSharp_SKRect_SkiaSharp_SKShader__System_Int32__SkiaSharp_SKRect__DrawnUi_Draw_SkiaGradient__
+  - name: (
+  - uid: SkiaSharp.SKPaint
+    name: SKPaint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaGradient
+    name: SkiaGradient
+    href: DrawnUi.Draw.SkiaGradient.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKShader
+    name: SKShader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skshader
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaGradient
+    name: SkiaGradient
+    href: DrawnUi.Draw.SkiaGradient.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateShadow_DrawnUi_Draw_SkiaShadow_System_Single_
+  name: CreateShadow(SkiaShadow, float)
+  nameWithType: SkiaControl.CreateShadow(SkiaShadow, float)
+  fullName: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow, float)
+  nameWithType.vb: SkiaControl.CreateShadow(SkiaShadow, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow, Single)
+  name.vb: CreateShadow(SkiaShadow, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
+    name: CreateShadow
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateShadow_DrawnUi_Draw_SkiaShadow_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaShadow
+    name: SkiaShadow
+    href: DrawnUi.Draw.SkiaShadow.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CreateShadow(DrawnUi.Draw.SkiaShadow,System.Single)
+    name: CreateShadow
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateShadow_DrawnUi_Draw_SkiaShadow_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaShadow
+    name: SkiaShadow
+    href: DrawnUi.Draw.SkiaShadow.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
+  commentId: M:DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdatePlatformShadow
+  name: UpdatePlatformShadow()
+  nameWithType: SkiaControl.UpdatePlatformShadow()
+  fullName: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
+    name: UpdatePlatformShadow
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdatePlatformShadow
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.UpdatePlatformShadow
+    name: UpdatePlatformShadow
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdatePlatformShadow
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.PlatformShadow
+  commentId: P:DrawnUi.Draw.SkiaControl.PlatformShadow
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PlatformShadow
+  name: PlatformShadow
+  nameWithType: SkiaControl.PlatformShadow
+  fullName: DrawnUi.Draw.SkiaControl.PlatformShadow
+- uid: DrawnUi.Draw.SkiaControl.HasPlatformClip
+  commentId: M:DrawnUi.Draw.SkiaControl.HasPlatformClip
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HasPlatformClip
+  name: HasPlatformClip()
+  nameWithType: SkiaControl.HasPlatformClip()
+  fullName: DrawnUi.Draw.SkiaControl.HasPlatformClip()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.HasPlatformClip
+    name: HasPlatformClip
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HasPlatformClip
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.HasPlatformClip
+    name: HasPlatformClip
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HasPlatformClip
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetDensity
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDensity
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDensity
+  name: GetDensity()
+  nameWithType: SkiaControl.GetDensity()
+  fullName: DrawnUi.Draw.SkiaControl.GetDensity()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDensity
+    name: GetDensity
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDensity
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDensity
+    name: GetDensity
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDensity
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetHover(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.SetHover(System.Boolean)
   parent: DrawnUi.Draw.SkiaControl
@@ -8226,25 +8226,24 @@ references:
     name: IDrawnBase
     href: DrawnUi.Draw.IDrawnBase.html
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
-  commentId: M:DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+- uid: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureIsInside_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureIsInside_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   name: GestureIsInside(TouchActionEventArgs, float, float)
   nameWithType: SkiaControl.GestureIsInside(TouchActionEventArgs, float, float)
-  fullName: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Maui.Gestures.TouchActionEventArgs, float, float)
+  fullName: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Gestures.TouchActionEventArgs, float, float)
   nameWithType.vb: SkiaControl.GestureIsInside(TouchActionEventArgs, Single, Single)
-  fullName.vb: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Maui.Gestures.TouchActionEventArgs, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Gestures.TouchActionEventArgs, Single, Single)
   name.vb: GestureIsInside(TouchActionEventArgs, Single, Single)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: GestureIsInside
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureIsInside_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureIsInside_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8259,13 +8258,12 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.GestureIsInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: GestureIsInside
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureIsInside_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureIsInside_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8279,25 +8277,24 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
-  commentId: M:DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+- uid: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureStartedInside_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureStartedInside_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   name: GestureStartedInside(TouchActionEventArgs, float, float)
   nameWithType: SkiaControl.GestureStartedInside(TouchActionEventArgs, float, float)
-  fullName: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Maui.Gestures.TouchActionEventArgs, float, float)
+  fullName: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Gestures.TouchActionEventArgs, float, float)
   nameWithType.vb: SkiaControl.GestureStartedInside(TouchActionEventArgs, Single, Single)
-  fullName.vb: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Maui.Gestures.TouchActionEventArgs, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Gestures.TouchActionEventArgs, Single, Single)
   name.vb: GestureStartedInside(TouchActionEventArgs, Single, Single)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: GestureStartedInside
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureStartedInside_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureStartedInside_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8312,13 +8309,12 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.GestureStartedInside(AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: GestureStartedInside
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureStartedInside_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GestureStartedInside_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8552,30 +8548,29 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
-  commentId: M:DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+- uid: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsInsideChild_DrawnUi_Draw_SkiaControl_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsInsideChild_DrawnUi_Draw_SkiaControl_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   name: CheckGestureIsInsideChild(SkiaControl, TouchActionEventArgs, float, float)
   nameWithType: SkiaControl.CheckGestureIsInsideChild(SkiaControl, TouchActionEventArgs, float, float)
-  fullName: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl, AppoMobi.Maui.Gestures.TouchActionEventArgs, float, float)
+  fullName: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl, AppoMobi.Gestures.TouchActionEventArgs, float, float)
   nameWithType.vb: SkiaControl.CheckGestureIsInsideChild(SkiaControl, TouchActionEventArgs, Single, Single)
-  fullName.vb: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl, AppoMobi.Maui.Gestures.TouchActionEventArgs, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl, AppoMobi.Gestures.TouchActionEventArgs, Single, Single)
   name.vb: CheckGestureIsInsideChild(SkiaControl, TouchActionEventArgs, Single, Single)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: CheckGestureIsInsideChild
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsInsideChild_DrawnUi_Draw_SkiaControl_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsInsideChild_DrawnUi_Draw_SkiaControl_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
   - uid: DrawnUi.Draw.SkiaControl
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8590,18 +8585,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsInsideChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: CheckGestureIsInsideChild
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsInsideChild_DrawnUi_Draw_SkiaControl_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsInsideChild_DrawnUi_Draw_SkiaControl_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
   - uid: DrawnUi.Draw.SkiaControl
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8615,30 +8609,29 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
-  commentId: M:DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+- uid: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsForChild_DrawnUi_Draw_SkiaControl_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsForChild_DrawnUi_Draw_SkiaControl_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   name: CheckGestureIsForChild(SkiaControl, TouchActionEventArgs, float, float)
   nameWithType: SkiaControl.CheckGestureIsForChild(SkiaControl, TouchActionEventArgs, float, float)
-  fullName: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl, AppoMobi.Maui.Gestures.TouchActionEventArgs, float, float)
+  fullName: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl, AppoMobi.Gestures.TouchActionEventArgs, float, float)
   nameWithType.vb: SkiaControl.CheckGestureIsForChild(SkiaControl, TouchActionEventArgs, Single, Single)
-  fullName.vb: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl, AppoMobi.Maui.Gestures.TouchActionEventArgs, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl, AppoMobi.Gestures.TouchActionEventArgs, Single, Single)
   name.vb: CheckGestureIsForChild(SkiaControl, TouchActionEventArgs, Single, Single)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: CheckGestureIsForChild
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsForChild_DrawnUi_Draw_SkiaControl_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsForChild_DrawnUi_Draw_SkiaControl_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
   - uid: DrawnUi.Draw.SkiaControl
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8653,18 +8646,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Maui.Gestures.TouchActionEventArgs,System.Single,System.Single)
+  - uid: DrawnUi.Draw.SkiaControl.CheckGestureIsForChild(DrawnUi.Draw.SkiaControl,AppoMobi.Gestures.TouchActionEventArgs,System.Single,System.Single)
     name: CheckGestureIsForChild
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsForChild_DrawnUi_Draw_SkiaControl_AppoMobi_Maui_Gestures_TouchActionEventArgs_System_Single_System_Single_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckGestureIsForChild_DrawnUi_Draw_SkiaControl_AppoMobi_Gestures_TouchActionEventArgs_System_Single_System_Single_
   - name: (
   - uid: DrawnUi.Draw.SkiaControl
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8699,31 +8691,28 @@ references:
   name: LockChildrenGestures
   nameWithType: SkiaControl.LockChildrenGestures
   fullName: DrawnUi.Draw.SkiaControl.LockChildrenGestures
-- uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Maui.Gestures.TouchActionResult)
-  commentId: M:DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Maui.Gestures.TouchActionResult)
+- uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Maui_Gestures_TouchActionResult_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   name: CheckChildrenGesturesLocked(TouchActionResult)
   nameWithType: SkiaControl.CheckChildrenGesturesLocked(TouchActionResult)
-  fullName: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Maui.Gestures.TouchActionResult)
+  fullName: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Maui.Gestures.TouchActionResult)
+  - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
     name: CheckChildrenGesturesLocked
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Maui_Gestures_TouchActionResult_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionResult
+  - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
-    isExternal: true
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Maui.Gestures.TouchActionResult)
+  - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
     name: CheckChildrenGesturesLocked
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Maui_Gestures_TouchActionResult_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionResult
+  - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
-    isExternal: true
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -11457,23 +11446,23 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  commentId: M:DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+- uid: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
+  commentId: M:DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputDirectOffsetToPoints_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputDirectOffsetToPoints_System_Drawing_PointF_SkiaSharp_SKPoint_
   name: TranslateInputDirectOffsetToPoints(PointF, SKPoint)
   nameWithType: SkiaControl.TranslateInputDirectOffsetToPoints(PointF, SKPoint)
-  fullName: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(Microsoft.Maui.Graphics.PointF, SkiaSharp.SKPoint)
+  fullName: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(System.Drawing.PointF, SkiaSharp.SKPoint)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: TranslateInputDirectOffsetToPoints
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputDirectOffsetToPoints_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputDirectOffsetToPoints_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint
@@ -11482,14 +11471,14 @@ references:
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.TranslateInputDirectOffsetToPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: TranslateInputDirectOffsetToPoints
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputDirectOffsetToPoints_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputDirectOffsetToPoints_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint
@@ -11497,23 +11486,23 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  commentId: M:DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+- uid: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
+  commentId: M:DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputOffsetToPixels_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputOffsetToPixels_System_Drawing_PointF_SkiaSharp_SKPoint_
   name: TranslateInputOffsetToPixels(PointF, SKPoint)
   nameWithType: SkiaControl.TranslateInputOffsetToPixels(PointF, SKPoint)
-  fullName: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(Microsoft.Maui.Graphics.PointF, SkiaSharp.SKPoint)
+  fullName: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(System.Drawing.PointF, SkiaSharp.SKPoint)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: TranslateInputOffsetToPixels
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputOffsetToPixels_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputOffsetToPixels_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint
@@ -11522,14 +11511,14 @@ references:
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.TranslateInputOffsetToPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: TranslateInputOffsetToPixels
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputOffsetToPixels_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TranslateInputOffsetToPixels_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint
@@ -14229,23 +14218,23 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  commentId: M:DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+- uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
+  commentId: M:DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPoints_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPoints_System_Drawing_PointF_SkiaSharp_SKPoint_
   name: GetOffsetInsideControlInPoints(PointF, SKPoint)
   nameWithType: SkiaControl.GetOffsetInsideControlInPoints(PointF, SKPoint)
-  fullName: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF, SkiaSharp.SKPoint)
+  fullName: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(System.Drawing.PointF, SkiaSharp.SKPoint)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: GetOffsetInsideControlInPoints
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPoints_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPoints_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint
@@ -14254,14 +14243,14 @@ references:
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: GetOffsetInsideControlInPoints
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPoints_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPoints_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint
@@ -14269,23 +14258,23 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  commentId: M:DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+- uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
+  commentId: M:DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPixels_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPixels_System_Drawing_PointF_SkiaSharp_SKPoint_
   name: GetOffsetInsideControlInPixels(PointF, SKPoint)
   nameWithType: SkiaControl.GetOffsetInsideControlInPixels(PointF, SKPoint)
-  fullName: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(Microsoft.Maui.Graphics.PointF, SkiaSharp.SKPoint)
+  fullName: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(System.Drawing.PointF, SkiaSharp.SKPoint)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: GetOffsetInsideControlInPixels
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPixels_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPixels_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint
@@ -14294,14 +14283,14 @@ references:
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - uid: DrawnUi.Draw.SkiaControl.GetOffsetInsideControlInPixels(System.Drawing.PointF,SkiaSharp.SKPoint)
     name: GetOffsetInsideControlInPixels
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPixels_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetOffsetInsideControlInPixels_System_Drawing_PointF_SkiaSharp_SKPoint_
   - name: (
-  - uid: Microsoft.Maui.Graphics.PointF
+  - uid: System.Drawing.PointF
     name: PointF
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+    href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   - name: ','
   - name: " "
   - uid: SkiaSharp.SKPoint

@@ -22,11 +22,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: StackLayoutStructure
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -61,11 +61,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: _layout
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -88,11 +88,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ChildrenCount
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -115,11 +115,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -147,11 +147,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: EnumerateViewsForMeasurement
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -175,11 +175,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Build
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 87
   assemblies:
   - DrawnUi.Maui
@@ -213,11 +213,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureCell
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 90
   assemblies:
   - DrawnUi.Maui
@@ -253,11 +253,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSpacingForIndex
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 152
   assemblies:
   - DrawnUi.Maui
@@ -289,11 +289,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/StackLayoutStructure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateWrapper
-    path: ../src/Maui/DrawnUi/Draw/Layout/StackLayoutStructure.cs
+    path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
     startLine: 163
   assemblies:
   - DrawnUi.Maui

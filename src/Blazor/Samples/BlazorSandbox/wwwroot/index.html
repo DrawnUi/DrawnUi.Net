@@ -31,6 +31,35 @@
         <a href="." class="reload">Reload</a>
         <span class="dismiss">🗙</span>
     </div>
+    <script>
+        (function () {
+            var url = new URL(window.location.href);
+            var route = url.searchParams.get('path');
+
+            if (!route) {
+                return;
+            }
+
+            url.searchParams.delete('path');
+
+            var baseHref = document.querySelector('base')?.getAttribute('href') || '/';
+            var origin = window.location.origin;
+            var baseUrl = new URL(baseHref, origin);
+            var normalizedBasePath = baseUrl.pathname.endsWith('/') ? baseUrl.pathname : baseUrl.pathname + '/';
+            var normalizedRoute = route.startsWith('/') ? route.slice(1) : route;
+            var targetUrl = new URL(normalizedRoute, origin + normalizedBasePath);
+
+            if (url.search) {
+                targetUrl.search = url.search;
+            }
+
+            if (url.hash) {
+                targetUrl.hash = url.hash;
+            }
+
+            window.history.replaceState(null, '', targetUrl.pathname + targetUrl.search + targetUrl.hash);
+        })();
+    </script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' });</script>
 </body>

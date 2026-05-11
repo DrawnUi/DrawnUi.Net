@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Platforms and Packages | DrawnUI for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Platforms and Packages | DrawnUI for .NET ">
+      
+      <meta name="description" content="DrawnUI for .NET - hardware-accelerated rendering engine powered by SkiaSharp for MAUI, Blazor, and platform-agnostic hosts through DrawnUi.Net.">
+      <link rel="icon" href="../images/draw.svg">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/draw.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="platforms-and-packages">Platforms and Packages</h1>
+
+<p>DrawnUI is now an umbrella for multiple .NET targets.</p>
+<p>Use this page first when you need to decide which package to install and which runtime model fits your use case.</p>
+<h2 id="choose-by-host">Choose by host</h2>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Main package</th>
+<th>Use it when</th>
+<th>Best fit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.NET MAUI</td>
+<td><code>DrawnUi.Maui</code></td>
+<td>You are building a native app for iOS, Android, MacCatalyst, or Windows</td>
+<td>App UI, gestures, animation-heavy native experiences</td>
+</tr>
+<tr>
+<td>Blazor WebAssembly</td>
+<td><code>DrawnUi.Blazor.Wasm</code></td>
+<td>DrawnUI should render locally in the browser</td>
+<td>Canvas-like browser UI, high-fps, local responsiveness, animation-heavy, web surfaces</td>
+</tr>
+<tr>
+<td>Blazor Server</td>
+<td><code>DrawnUi.Blazor.Server</code></td>
+<td>DrawnUI should be hosted in a Blazor Server or <code>InteractiveServer</code> app</td>
+<td>Event-driven widgets, low-fps, dashboards, mixed Razor + DrawnUI pages</td>
+</tr>
+<tr>
+<td>Platform-agnostic .NET</td>
+<td><code>DrawnUi.Net</code></td>
+<td>You need DrawnUI without a framework-specific UI host</td>
+<td>Headless rendering, console app, server-side, image/PDF generation, harnesses, shared-logic debugging</td>
+</tr>
+</tbody>
+</table>
+<h2 id="net-maui">.NET MAUI</h2>
+<p>Install:</p>
+<pre><code class="lang-bash">dotnet add package DrawnUi.Maui
+</code></pre>
+<p>Use <code>DrawnUi.Maui</code> when you want a native application host with DrawnUI owning part or all of the visible UI.</p>
+<p>Choose it for:</p>
+<ul>
+<li>mobile and desktop native apps</li>
+<li>rich gesture-driven UI</li>
+<li>animation-heavy app surfaces</li>
+<li>pixel-perfect custom app UI on top of MAUI app structure</li>
+</ul>
+<p>Start here:</p>
+<ul>
+<li><a href="maui/index.html">.NET MAUI</a></li>
+<li><a href="maui/getting-started.html">Installation and Setup</a></li>
+<li><a href="startup-settings.html">Startup Settings</a></li>
+</ul>
+<h2 id="blazor">Blazor</h2>
+<p>Install the runtime package that matches where rendering should happen:</p>
+<pre><code class="lang-bash">dotnet add package DrawnUi.Blazor.Wasm
+dotnet add package DrawnUi.Blazor.Server
+</code></pre>
+<p>Choose <code>DrawnUi.Blazor.Wasm</code> when DrawnUI should stay local in the browser.</p>
+<p>Choose <code>DrawnUi.Blazor.Server</code> when DrawnUI should live inside a Blazor Server app and server-rendered frames are acceptable.</p>
+<p>Start here:</p>
+<ul>
+<li><a href="blazor/index.html">Blazor</a></li>
+<li><a href="blazor-packages.html">Blazor Packages</a></li>
+<li><a href="blazor-faq.html">Blazor FAQ</a></li>
+</ul>
+<h2 id="drawnuinet">DrawnUi.Net</h2>
+<p>Install:</p>
+<pre><code class="lang-bash">dotnet add package DrawnUi.Net
+</code></pre>
+<p>Choose <code>DrawnUi.Net</code> when you need the DrawnUI rendering and layout model without a framework-specific app host.</p>
+<p>Use it for:</p>
+<ul>
+<li>headless rendering</li>
+<li>server-side image or PDF generation</li>
+<li>offscreen validation of shared layout and drawing behavior</li>
+<li>control harnesses and repro tools</li>
+<li>debugging shared rendering logic before checking the same scenario on MAUI or Blazor</li>
+</ul>
+<p>Start here:</p>
+<ul>
+<li><a href="net/index.html">DrawnUi.Net</a></li>
+</ul>
+<h2 id="more-targets-coming-soon">More targets coming soon</h2>
+<p>The DrawnUI umbrella is expanding. The current docs cover MAUI, Blazor, and <code>DrawnUi.Net</code> clearly first, while future platform targets can slot into the same package-and-host model.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Made by <a href="https://taublast.github.io/about/">Nick Kovalsky aka AppoMobi (@taublast)</a><script>(function(){try{const fix=function(){const brand=document.querySelector('a.navbar-brand');if(brand){brand.setAttribute('href','/');}document.querySelectorAll('a[href]').forEach(function(a){var href=a.getAttribute('href');if(!href||href.startsWith('http'))return;if(href==='index.html'||href==='/index.html'||href==='../index.html'){a.setAttribute('href','/');return;}if(href.endsWith('/articles/index.html')||href==='articles/index.html'||href==='../articles/index.html'){a.setAttribute('href','/articles/');return;}var m=href.match(/^(?:\.?\.?\/)?articles\/.*\/index\.html(.*)$/);if(m){var p=href.replace(/\/index\.html(.*)$/,'/');if(!p.startsWith('/')){p='/' + p.replace(/^\/?/,'');}a.setAttribute('href',p);}});};if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fix);}else{fix();}}catch(e){})();</script>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

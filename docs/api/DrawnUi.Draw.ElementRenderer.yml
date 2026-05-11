@@ -19,11 +19,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ElementRenderer
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 27
   assemblies:
   - DrawnUi.Maui
@@ -56,11 +56,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -88,11 +88,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -114,11 +114,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Element
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -143,11 +143,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintWithOpacity
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 48
   assemblies:
   - DrawnUi.Maui
@@ -174,11 +174,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateRenderObject
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 50
   assemblies:
   - DrawnUi.Maui

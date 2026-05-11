@@ -6,7 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.ZoomEventArgs.#ctor
-  - DrawnUi.Draw.ZoomEventArgs.#ctor(Microsoft.Maui.Graphics.PointF,System.Double)
+  - DrawnUi.Draw.ZoomEventArgs.#ctor(System.Drawing.PointF,System.Double)
   - DrawnUi.Draw.ZoomEventArgs.Center
   - DrawnUi.Draw.ZoomEventArgs.Value
   langs:
@@ -19,11 +19,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/ZoomEventArgs.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomEventArgs
     path: ../src/Shared/Features/Gestures/ZoomEventArgs.cs
-    startLine: 2
+    startLine: 3
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -58,11 +58,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/ZoomEventArgs.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Gestures/ZoomEventArgs.cs
-    startLine: 4
+    startLine: 5
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -73,25 +73,25 @@ items:
   nameWithType.vb: ZoomEventArgs.New()
   fullName.vb: DrawnUi.Draw.ZoomEventArgs.New()
   name.vb: New()
-- uid: DrawnUi.Draw.ZoomEventArgs.#ctor(Microsoft.Maui.Graphics.PointF,System.Double)
-  commentId: M:DrawnUi.Draw.ZoomEventArgs.#ctor(Microsoft.Maui.Graphics.PointF,System.Double)
-  id: '#ctor(Microsoft.Maui.Graphics.PointF,System.Double)'
+- uid: DrawnUi.Draw.ZoomEventArgs.#ctor(System.Drawing.PointF,System.Double)
+  commentId: M:DrawnUi.Draw.ZoomEventArgs.#ctor(System.Drawing.PointF,System.Double)
+  id: '#ctor(System.Drawing.PointF,System.Double)'
   parent: DrawnUi.Draw.ZoomEventArgs
   langs:
   - csharp
   - vb
   name: ZoomEventArgs(PointF, double)
   nameWithType: ZoomEventArgs.ZoomEventArgs(PointF, double)
-  fullName: DrawnUi.Draw.ZoomEventArgs.ZoomEventArgs(Microsoft.Maui.Graphics.PointF, double)
+  fullName: DrawnUi.Draw.ZoomEventArgs.ZoomEventArgs(System.Drawing.PointF, double)
   type: Constructor
   source:
     remote:
       path: src/Shared/Features/Gestures/ZoomEventArgs.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Gestures/ZoomEventArgs.cs
-    startLine: 7
+    startLine: 8
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -99,13 +99,13 @@ items:
     content: public ZoomEventArgs(PointF center, double value)
     parameters:
     - id: center
-      type: Microsoft.Maui.Graphics.PointF
+      type: System.Drawing.PointF
     - id: value
       type: System.Double
     content.vb: Public Sub New(center As PointF, value As Double)
   overload: DrawnUi.Draw.ZoomEventArgs.#ctor*
   nameWithType.vb: ZoomEventArgs.New(PointF, Double)
-  fullName.vb: DrawnUi.Draw.ZoomEventArgs.New(Microsoft.Maui.Graphics.PointF, Double)
+  fullName.vb: DrawnUi.Draw.ZoomEventArgs.New(System.Drawing.PointF, Double)
   name.vb: New(PointF, Double)
 - uid: DrawnUi.Draw.ZoomEventArgs.Center
   commentId: P:DrawnUi.Draw.ZoomEventArgs.Center
@@ -121,11 +121,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/ZoomEventArgs.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Center
     path: ../src/Shared/Features/Gestures/ZoomEventArgs.cs
-    startLine: 13
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -133,7 +133,7 @@ items:
     content: public PointF Center { get; set; }
     parameters: []
     return:
-      type: Microsoft.Maui.Graphics.PointF
+      type: System.Drawing.PointF
     content.vb: Public Property Center As PointF
   overload: DrawnUi.Draw.ZoomEventArgs.Center*
 - uid: DrawnUi.Draw.ZoomEventArgs.Value
@@ -150,11 +150,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/ZoomEventArgs.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Value
     path: ../src/Shared/Features/Gestures/ZoomEventArgs.cs
-    startLine: 14
+    startLine: 15
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -540,14 +540,14 @@ references:
   nameWithType.vb: ZoomEventArgs.New
   fullName.vb: DrawnUi.Draw.ZoomEventArgs.New
   name.vb: New
-- uid: Microsoft.Maui.Graphics.PointF
-  commentId: T:Microsoft.Maui.Graphics.PointF
-  parent: Microsoft.Maui.Graphics
+- uid: System.Drawing.PointF
+  commentId: T:System.Drawing.PointF
+  parent: System.Drawing
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+  href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   name: PointF
   nameWithType: PointF
-  fullName: Microsoft.Maui.Graphics.PointF
+  fullName: System.Drawing.PointF
 - uid: System.Double
   commentId: T:System.Double
   parent: System
@@ -559,43 +559,33 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
-- uid: Microsoft.Maui.Graphics
-  commentId: N:Microsoft.Maui.Graphics
+- uid: System.Drawing
+  commentId: N:System.Drawing
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft
-  name: Microsoft.Maui.Graphics
-  nameWithType: Microsoft.Maui.Graphics
-  fullName: Microsoft.Maui.Graphics
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Drawing
+  nameWithType: System.Drawing
+  fullName: System.Drawing
   spec.csharp:
-  - uid: Microsoft
-    name: Microsoft
+  - uid: System
+    name: System
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft
+    href: https://learn.microsoft.com/dotnet/api/system
   - name: .
-  - uid: Microsoft.Maui
-    name: Maui
+  - uid: System.Drawing
+    name: Drawing
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
-  - name: .
-  - uid: Microsoft.Maui.Graphics
-    name: Graphics
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics
+    href: https://learn.microsoft.com/dotnet/api/system.drawing
   spec.vb:
-  - uid: Microsoft
-    name: Microsoft
+  - uid: System
+    name: System
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft
+    href: https://learn.microsoft.com/dotnet/api/system
   - name: .
-  - uid: Microsoft.Maui
-    name: Maui
+  - uid: System.Drawing
+    name: Drawing
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
-  - name: .
-  - uid: Microsoft.Maui.Graphics
-    name: Graphics
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics
+    href: https://learn.microsoft.com/dotnet/api/system.drawing
 - uid: DrawnUi.Draw.ZoomEventArgs.Center*
   commentId: Overload:DrawnUi.Draw.ZoomEventArgs.Center
   href: DrawnUi.Draw.ZoomEventArgs.html#DrawnUi_Draw_ZoomEventArgs_Center

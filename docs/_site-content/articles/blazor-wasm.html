@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Blazor WebAssembly | DrawnUI for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Blazor WebAssembly | DrawnUI for .NET ">
+      
+      <meta name="description" content="DrawnUI for .NET - hardware-accelerated rendering engine powered by SkiaSharp for MAUI, Blazor, and platform-agnostic hosts through DrawnUi.Net.">
+      <link rel="icon" href="../images/draw.svg">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/draw.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="blazor-webassembly">Blazor WebAssembly</h1>
+
+<p>Use <code>DrawnUi.Blazor.Wasm</code> when DrawnUI should render locally in the browser and process interaction locally.</p>
+<h2 id="when-to-choose-it">When To Choose It</h2>
+<p>Choose the WASM/browser runtime when you need:</p>
+<ul>
+<li>local responsiveness</li>
+<li>high-frequency redraw</li>
+<li>animation-heavy surfaces</li>
+<li>gesture-heavy or pointer-heavy interaction</li>
+<li>pages that are mostly or entirely DrawnUI-driven</li>
+</ul>
+<p>If the DrawnUI surface should feel like a local canvas, this is the correct runtime.</p>
+<h2 id="install">Install</h2>
+<pre><code class="lang-bash">dotnet add package DrawnUi.Blazor.Wasm
+</code></pre>
+<h2 id="startup">Startup</h2>
+<pre><code class="lang-csharp">using DrawnUi.Draw;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+builder.RootComponents.Add&lt;App&gt;(&quot;#app&quot;);
+builder.RootComponents.Add&lt;HeadOutlet&gt;(&quot;head::after&quot;);
+builder.Services.AddScoped(sp =&gt; new HttpClient
+{
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+});
+
+DrawnExtensions.RegisterFont(&quot;FontText&quot;, FontWeight.Regular, &quot;/fonts/OpenSans-Regular.ttf&quot;);
+DrawnExtensions.RegisterFont(&quot;FontTextTitle&quot;, &quot;/fonts/OpenSans-Semibold.ttf&quot;);
+
+var host = await builder.UseDrawnUiAsync(new DrawnUiStartupSettings
+{
+    UseDesktopKeyboard = true
+});
+
+await host.RunAsync();
+</code></pre>
+<p>Blazor uses <code>UseDrawnUiAsync()</code> instead of the MAUI <code>UseDrawnUi()</code> extension.</p>
+<h2 id="minimal-page">Minimal Page</h2>
+<pre><code class="lang-razor">@page &quot;/&quot;
+@using DrawnUi.Draw
+@using DrawnUi.Views
+@using Microsoft.Maui.Controls
+
+&lt;Canvas WidthRequest=&quot;400&quot;
+        HeightRequest=&quot;220&quot;
+        BackgroundColor=&quot;#F4F1E8&quot;
+        RootControl=&quot;@RootControl&quot; /&gt;
+
+@code {
+    private readonly SkiaControl RootControl = new SkiaLayout()
+    {
+        Margin = new Thickness(16),
+        Type = LayoutType.Column,
+        Children =
+        {
+            new SkiaLabel()
+            {
+                Text = &quot;Hello from DrawnUI Blazor&quot;,
+                FontFamily = &quot;FontText&quot;,
+                FontSize = 24
+            }
+        }
+    };
+}
+</code></pre>
+<h2 id="fonts">Fonts</h2>
+<p>Fonts should be registered with URL paths that are reachable as static web assets.</p>
+<pre><code class="lang-csharp">DrawnExtensions.RegisterFont(&quot;FontText&quot;, FontWeight.Regular, &quot;/fonts/OpenSans-Regular.ttf&quot;);
+DrawnExtensions.RegisterFont(&quot;FontGame&quot;, FontWeight.Bold, &quot;/fonts/Orbitron-Bold.ttf&quot;);
+</code></pre>
+<p>The registered fonts are preloaded during <code>UseDrawnUiAsync()</code>.</p>
+<h2 id="trimming">Trimming</h2>
+<p>Blazor WebAssembly apps using DrawnUI may also need to root <code>SkiaSharp</code> for trimming:</p>
+<pre><code class="lang-xml">&lt;ItemGroup&gt;
+  &lt;TrimmerRootAssembly Include=&quot;SkiaSharp&quot; RootMode=&quot;EntireAssembly&quot; /&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<h2 id="keyboard">Keyboard</h2>
+<p>Enable browser keyboard support during startup:</p>
+<pre><code class="lang-csharp">var host = await builder.UseDrawnUiAsync(new DrawnUiStartupSettings
+{
+    UseDesktopKeyboard = true
+});
+</code></pre>
+<p>Then subscribe from your page or control:</p>
+<pre><code class="lang-csharp">KeyboardManager.KeyDown += OnKeyDown;
+KeyboardManager.KeyUp += OnKeyUp;
+</code></pre>
+<h2 id="best-reference">Best Reference</h2>
+<p>The best working browser/WASM reference today is:</p>
+<ul>
+<li><code>src/Blazor/Samples/BlazorSandbox/</code></li>
+</ul>
+<p>Useful probes currently include cards, keyboard, scrolling, and other runtime validation pages.</p>
+<h2 id="related-docs">Related Docs</h2>
+<ul>
+<li><a href="blazor.html">Blazor</a></li>
+<li><a href="blazor-faq.html">Blazor FAQ</a></li>
+<li><a href="startup-settings.html">Startup Settings</a></li>
+<li><a href="gestures.html">Handling Gestures</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Made by <a href="https://taublast.github.io/about/">Nick Kovalsky aka AppoMobi (@taublast)</a><script>(function(){try{const fix=function(){const brand=document.querySelector('a.navbar-brand');if(brand){brand.setAttribute('href','/');}document.querySelectorAll('a[href]').forEach(function(a){var href=a.getAttribute('href');if(!href||href.startsWith('http'))return;if(href==='index.html'||href==='/index.html'||href==='../index.html'){a.setAttribute('href','/');return;}if(href.endsWith('/articles/index.html')||href==='articles/index.html'||href==='../articles/index.html'){a.setAttribute('href','/articles/');return;}var m=href.match(/^(?:\.?\.?\/)?articles\/.*\/index\.html(.*)$/);if(m){var p=href.replace(/\/index\.html(.*)$/,'/');if(!p.startsWith('/')){p='/' + p.replace(/^\/?/,'');}a.setAttribute('href',p);}});};if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fix);}else{fix();}}catch(e){})();</script>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

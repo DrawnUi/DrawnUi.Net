@@ -10,8 +10,8 @@ items:
   - DrawnUi.Draw.KeyboardManager.IsShiftPressed
   - DrawnUi.Draw.KeyboardManager.KeyDown
   - DrawnUi.Draw.KeyboardManager.KeyUp
-  - DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.MauiKey)
-  - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.MauiKey)
+  - DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   langs:
   - csharp
   - vb
@@ -21,11 +21,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardManager
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -58,20 +58,20 @@ items:
   type: Event
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyDown
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static event EventHandler<MauiKey> KeyDown
+    content: public static event EventHandler<InputKey> KeyDown
     return:
-      type: System.EventHandler{DrawnUi.Draw.MauiKey}
-    content.vb: Public Shared Event KeyDown As EventHandler(Of MauiKey)
+      type: System.EventHandler{DrawnUi.Draw.InputKey}
+    content.vb: Public Shared Event KeyDown As EventHandler(Of InputKey)
 - uid: DrawnUi.Draw.KeyboardManager.KeyUp
   commentId: E:DrawnUi.Draw.KeyboardManager.KeyUp
   id: KeyUp
@@ -85,77 +85,77 @@ items:
   type: Event
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyUp
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static event EventHandler<MauiKey> KeyUp
+    content: public static event EventHandler<InputKey> KeyUp
     return:
-      type: System.EventHandler{DrawnUi.Draw.MauiKey}
-    content.vb: Public Shared Event KeyUp As EventHandler(Of MauiKey)
-- uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.MauiKey)
-  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.MauiKey)
-  id: KeyboardPressed(DrawnUi.Draw.MauiKey)
+      type: System.EventHandler{DrawnUi.Draw.InputKey}
+    content.vb: Public Shared Event KeyUp As EventHandler(Of InputKey)
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
+  id: KeyboardPressed(DrawnUi.Draw.InputKey)
   parent: DrawnUi.Draw.KeyboardManager
   langs:
   - csharp
   - vb
-  name: KeyboardPressed(MauiKey)
-  nameWithType: KeyboardManager.KeyboardPressed(MauiKey)
-  fullName: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.MauiKey)
+  name: KeyboardPressed(InputKey)
+  nameWithType: KeyboardManager.KeyboardPressed(InputKey)
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardPressed
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static void KeyboardPressed(MauiKey key)
+    content: public static void KeyboardPressed(InputKey key)
     parameters:
     - id: key
-      type: DrawnUi.Draw.MauiKey
-    content.vb: Public Shared Sub KeyboardPressed(key As MauiKey)
+      type: DrawnUi.Draw.InputKey
+    content.vb: Public Shared Sub KeyboardPressed(key As InputKey)
   overload: DrawnUi.Draw.KeyboardManager.KeyboardPressed*
-- uid: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.MauiKey)
-  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.MauiKey)
-  id: KeyboardReleased(DrawnUi.Draw.MauiKey)
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
+  id: KeyboardReleased(DrawnUi.Draw.InputKey)
   parent: DrawnUi.Draw.KeyboardManager
   langs:
   - csharp
   - vb
-  name: KeyboardReleased(MauiKey)
-  nameWithType: KeyboardManager.KeyboardReleased(MauiKey)
-  fullName: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.MauiKey)
+  name: KeyboardReleased(InputKey)
+  nameWithType: KeyboardManager.KeyboardReleased(InputKey)
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardReleased
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static void KeyboardReleased(MauiKey key)
+    content: public static void KeyboardReleased(InputKey key)
     parameters:
     - id: key
-      type: DrawnUi.Draw.MauiKey
-    content.vb: Public Shared Sub KeyboardReleased(key As MauiKey)
+      type: DrawnUi.Draw.InputKey
+    content.vb: Public Shared Sub KeyboardReleased(key As InputKey)
   overload: DrawnUi.Draw.KeyboardManager.KeyboardReleased*
 - uid: DrawnUi.Draw.KeyboardManager.IsShiftPressed
   commentId: P:DrawnUi.Draw.KeyboardManager.IsShiftPressed
@@ -170,11 +170,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsShiftPressed
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -199,11 +199,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAltPressed
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -228,11 +228,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsControlPressed
-    path: ../src/Maui/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -594,26 +594,26 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: System.EventHandler{DrawnUi.Draw.MauiKey}
-  commentId: T:System.EventHandler{DrawnUi.Draw.MauiKey}
+- uid: System.EventHandler{DrawnUi.Draw.InputKey}
+  commentId: T:System.EventHandler{DrawnUi.Draw.InputKey}
   parent: System
   definition: System.EventHandler`1
   href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
-  name: EventHandler<MauiKey>
-  nameWithType: EventHandler<MauiKey>
-  fullName: System.EventHandler<DrawnUi.Draw.MauiKey>
-  nameWithType.vb: EventHandler(Of MauiKey)
-  fullName.vb: System.EventHandler(Of DrawnUi.Draw.MauiKey)
-  name.vb: EventHandler(Of MauiKey)
+  name: EventHandler<InputKey>
+  nameWithType: EventHandler<InputKey>
+  fullName: System.EventHandler<DrawnUi.Draw.InputKey>
+  nameWithType.vb: EventHandler(Of InputKey)
+  fullName.vb: System.EventHandler(Of DrawnUi.Draw.InputKey)
+  name.vb: EventHandler(Of InputKey)
   spec.csharp:
   - uid: System.EventHandler`1
     name: EventHandler
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
   - name: <
-  - uid: DrawnUi.Draw.MauiKey
-    name: MauiKey
-    href: DrawnUi.Draw.MauiKey.html
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
   - name: '>'
   spec.vb:
   - uid: System.EventHandler`1
@@ -623,9 +623,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: DrawnUi.Draw.MauiKey
-    name: MauiKey
-    href: DrawnUi.Draw.MauiKey.html
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
   - name: )
 - uid: System.EventHandler`1
   commentId: T:System.EventHandler`1
@@ -657,20 +657,20 @@ references:
   - name: )
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardPressed
-  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardPressed_DrawnUi_Draw_MauiKey_
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardPressed_DrawnUi_Draw_InputKey_
   name: KeyboardPressed
   nameWithType: KeyboardManager.KeyboardPressed
   fullName: DrawnUi.Draw.KeyboardManager.KeyboardPressed
-- uid: DrawnUi.Draw.MauiKey
-  commentId: T:DrawnUi.Draw.MauiKey
+- uid: DrawnUi.Draw.InputKey
+  commentId: T:DrawnUi.Draw.InputKey
   parent: DrawnUi.Draw
-  href: DrawnUi.Draw.MauiKey.html
-  name: MauiKey
-  nameWithType: MauiKey
-  fullName: DrawnUi.Draw.MauiKey
+  href: DrawnUi.Draw.InputKey.html
+  name: InputKey
+  nameWithType: InputKey
+  fullName: DrawnUi.Draw.InputKey
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardReleased*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardReleased
-  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardReleased_DrawnUi_Draw_MauiKey_
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardReleased_DrawnUi_Draw_InputKey_
   name: KeyboardReleased
   nameWithType: KeyboardManager.KeyboardReleased
   fullName: DrawnUi.Draw.KeyboardManager.KeyboardReleased

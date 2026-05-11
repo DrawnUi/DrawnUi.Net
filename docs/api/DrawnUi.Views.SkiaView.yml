@@ -5,7 +5,7 @@ items:
   id: SkiaView
   parent: DrawnUi.Views
   children:
-  - DrawnUi.Views.SkiaView.#ctor(DrawnUi.Views.DrawnView)
+  - DrawnUi.Views.SkiaView.#ctor
   - DrawnUi.Views.SkiaView.Disconnect
   - DrawnUi.Views.SkiaView.Dispose
   - DrawnUi.Views.SkiaView.FPS
@@ -31,7 +31,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaView
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -287,7 +287,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Uid
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -319,7 +319,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsHardwareAccelerated
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -351,7 +351,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SignalFrame
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -386,7 +386,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDraw
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -419,7 +419,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Superview
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -428,7 +428,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   syntax:
-    content: public DrawnView Superview { get; protected set; }
+    content: public DrawnView Superview { get; set; }
     parameters: []
     return:
       type: DrawnUi.Views.DrawnView
@@ -448,7 +448,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -464,21 +464,21 @@ items:
   overload: DrawnUi.Views.SkiaView.Dispose*
   implements:
   - System.IDisposable.Dispose
-- uid: DrawnUi.Views.SkiaView.#ctor(DrawnUi.Views.DrawnView)
-  commentId: M:DrawnUi.Views.SkiaView.#ctor(DrawnUi.Views.DrawnView)
-  id: '#ctor(DrawnUi.Views.DrawnView)'
+- uid: DrawnUi.Views.SkiaView.#ctor
+  commentId: M:DrawnUi.Views.SkiaView.#ctor
+  id: '#ctor'
   parent: DrawnUi.Views.SkiaView
   langs:
   - csharp
   - vb
-  name: SkiaView(DrawnView)
-  nameWithType: SkiaView.SkiaView(DrawnView)
-  fullName: DrawnUi.Views.SkiaView.SkiaView(DrawnUi.Views.DrawnView)
+  name: SkiaView()
+  nameWithType: SkiaView.SkiaView()
+  fullName: DrawnUi.Views.SkiaView.SkiaView()
   type: Constructor
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
@@ -487,15 +487,12 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   syntax:
-    content: public SkiaView(DrawnView superview)
-    parameters:
-    - id: superview
-      type: DrawnUi.Views.DrawnView
-    content.vb: Public Sub New(superview As DrawnView)
+    content: public SkiaView()
+    content.vb: Public Sub New()
   overload: DrawnUi.Views.SkiaView.#ctor*
-  nameWithType.vb: SkiaView.New(DrawnView)
-  fullName.vb: DrawnUi.Views.SkiaView.New(DrawnUi.Views.DrawnView)
-  name.vb: New(DrawnView)
+  nameWithType.vb: SkiaView.New()
+  fullName.vb: DrawnUi.Views.SkiaView.New()
+  name.vb: New()
 - uid: DrawnUi.Views.SkiaView.Disconnect
   commentId: M:DrawnUi.Views.SkiaView.Disconnect
   id: Disconnect
@@ -510,11 +507,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Disconnect
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 32
+    startLine: 31
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -536,11 +533,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanging
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 42
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -570,11 +567,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanged
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 53
+    startLine: 52
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -600,11 +597,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Surface
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 78
+    startLine: 77
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -632,11 +629,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FPS
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 86
+    startLine: 85
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -664,11 +661,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameTime
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 123
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -696,11 +693,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDrawing
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 125
+    startLine: 124
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -728,11 +725,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: HasDrawn
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 127
+    startLine: 126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -760,11 +757,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Maui/DrawnUi/Views/SkiaView.cs
-    startLine: 165
+    startLine: 164
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5351,7 +5348,7 @@ references:
   - name: )
 - uid: DrawnUi.Views.SkiaView.#ctor*
   commentId: Overload:DrawnUi.Views.SkiaView.#ctor
-  href: DrawnUi.Views.SkiaView.html#DrawnUi_Views_SkiaView__ctor_DrawnUi_Views_DrawnView_
+  href: DrawnUi.Views.SkiaView.html#DrawnUi_Views_SkiaView__ctor
   name: SkiaView
   nameWithType: SkiaView.SkiaView
   fullName: DrawnUi.Views.SkiaView.SkiaView

@@ -1,4 +1,4 @@
-# DrawnUI for .NET MAUI
+# DrawnUI for .NET
 
 ![License](https://img.shields.io/github/license/taublast/DrawnUi.svg)
 ![NuGet Version](https://img.shields.io/nuget/v/DrawnUi.Maui.svg)
@@ -6,34 +6,63 @@
 
 [Source Code](https://github.com/taublast/DrawnUi.Maui) 👈
 
-**A rendering engine for .NET MAUI built on top of SkiaSharp**
+**A rendering engine for .NET, including MAUI, Blazor, and platform-agnostic hosts, built on top of SkiaSharp**
 
-**Hardware-accelerated rendering engine** for **iOS**, **MacCatalyst**, **Android**, **Windows** with enhanced WPF-like layout system, gestures and animations, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).
+**Hardware-accelerated rendering engine** for **.NET**, with packages and hosts for **MAUI**, **Blazor**, and **DrawnUi.Net**, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).
 
 ---
 
-## 📦 Quick Install
+## 📦 Choose Your Package
 
-**Install from nuget:**
+**Platform and package guide:**
+- [Platforms and Packages](platforms.md)
+
+**For .NET MAUI:**
 ```bash
 dotnet add package DrawnUi.Maui
 ```
 
-**Initialize in MauiProgram.cs:**
+**For Blazor WebAssembly:**
+```bash
+dotnet add package DrawnUi.Blazor.Wasm
+```
+
+**For Blazor Server:**
+```bash
+dotnet add package DrawnUi.Blazor.Server
+```
+
+**For platform-agnostic .NET workflows:**
+```bash
+dotnet add package DrawnUi.Net
+```
+
+**Initialize in MauiProgram.cs when using MAUI:**
 ```csharp
 builder.UseDrawnUi();
 ```
 
-👉 More in the [Getting Started Guide](getting-started.md)!
+👉 Start with [Platforms and Packages](platforms.md), then jump into the runtime-specific guide.
 
 ---
 
 ## 📚 Knowledge Base
 
 ### Documentation & Guides
-- **[Getting Started Guide](getting-started.md)** - Complete installation and setup
-- **[Blazor](blazor.md)** - Blazor WebAssembly setup, startup, fonts, canvas hosting, and keyboard support
-- **[Tutorials](tutorials.md)** - Tutorials and example projects
+- **[Platforms and Packages](platforms.md)** - Choose the right package and host before you start
+- **[.NET MAUI](maui/index.md)** - Native-host setup, MAUI guidance, and MAUI tutorials
+- **[Installation and Setup](maui/getting-started.md)** - .NET MAUI installation and setup
+- **[MAUI Tutorials](maui/tutorials.md)** - MAUI-only tutorials and example projects
+- **[Porting Native to Drawn](porting-maui.md)** - MAUI-focused migration guidance from native controls to DrawnUI
+- **[Blazor](blazor/index.md)** - Entry point for DrawnUI in Blazor
+- **[Blazor Packages](blazor-packages.md)** - Package roles, install targets, and project reference layout
+- **[Blazor WebAssembly](blazor-wasm.md)** - Browser-side `Canvas` setup and local rendering guidance
+- **[Blazor Server](blazor-server.md)** - `ServerCanvas` setup, server-rendering model, and current limits
+- **[Blazor Hybrid Web App](blazor-hybrid.md)** - Mixed `InteractiveServer` and `InteractiveWebAssembly` app structure
+- **[Blazor Capabilities](blazor-capabilities.md)** - Runtime fit, validated strengths, and current boundaries
+- **[Blazor Migration](blazor-migration.md)** - Adoption strategy for existing Blazor apps
+- **[Blazor FAQ](blazor-faq.md)** - Package choice, migration path, and support boundaries
+- **[DrawnUi.Net](net/index.md)** - Platform-agnostic rendering, harnesses, and headless workflows
 - **[Fluent Extensions](fluent-extensions.md)** - Code-behind UI creation patterns
 - **[FAQ](faq.md)** - Frequently asked questions and answers
 - **[Controls Documentation](controls/index.md)** - Complete controls reference

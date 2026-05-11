@@ -1,6 +1,6 @@
 ---
-title: DrawnUI for .NET MAUI - SkiaSharp Rendering Engine
-description: Hardware-accelerated rendering engine for .NET MAUI built on SkiaSharp. Create pixel-perfect cross-platform apps for iOS, Android, Windows, MacCatalyst.
+title: DrawnUI for .NET - SkiaSharp Rendering Engine
+description: Hardware-accelerated rendering engine for .NET, including MAUI, Blazor, and platform-agnostic hosts through DrawnUi.Net. Choose the right package and runtime for your app or rendering workflow.
 ---
 
 <div style="position: relative; text-align: center; padding: 30px 0 70px 0; border-radius: 12px; overflow: hidden; background: #0b1220; color: white;">
@@ -12,13 +12,13 @@ description: Hardware-accelerated rendering engine for .NET MAUI built on SkiaSh
   <div style="position: relative; z-index: 1;">
     <img src="images/draw.svg" alt="DrawnUI Logo" style="height: 80px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));">
     <h1 style="font-size: 3.5em; margin: 0; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.45);">
-      DrawnUI for .NET MAUI
+      DrawnUI for .NET
     </h1>
     <p style="font-size: 1.4em; margin: 20px auto; opacity: 0.95; max-width: 680px;">
-      Hardware-accelerated <strong>rendering engine</strong> for .NET MAUI powered by SkiaSharp
+      Hardware-accelerated <strong>rendering engine</strong> for .NET, including MAUI and Blazor, powered by SkiaSharp
     </p>
     <div class="hero-buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
-      <a href="articles/getting-started.md" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
+      <a href="articles/maui/getting-started.md" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
         🔨 Setup Guide
       </a>
       <a href="https://github.com/taublast/DrawnUi" class="hero-btn hero-btn-secondary" style="background: rgba(255,255,255,0.12); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; border: 2px solid rgba(255,255,255,0.22); backdrop-filter: blur(2px); display: inline-block; min-width: 160px; text-align: center;">
@@ -66,7 +66,7 @@ void main() {
 </script>
 
 <div style="margin: 22px 0 0 0; padding: 16px 20px; border: 1px solid rgba(37,99,235,0.22); border-radius: 10px; background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(37,99,235,0.02)); color: #dbeafe; text-align: center;">
-  Don't miss the <a href="articles/blazor.md" style="color: white; font-weight: 700; text-decoration: underline;">Blazor version too</a> if you want to run DrawnUI in the browser with WebAssembly.
+  Choose your target from the <a href="articles/platforms.md" style="color: white; font-weight: 700; text-decoration: underline;">platform and package guide</a>: .NET MAUI, Blazor, or DrawnUi.Net. More platform targets are planned.
 </div>
 
 <script id="fragShader" type="x-shader/x-fragment">
@@ -269,41 +269,44 @@ window.addEventListener('load', function() {
 });
 </script>
 
-<div style="background: #1a202c; color: #e2e8f0; padding: 25px; border-radius: 8px; margin: 20px 0;">
+## Choose Your Target
 
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 20px 0 28px 0;">
 
-**1. Install:**
-```bash
-dotnet add package DrawnUi.Maui
-```
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">.NET MAUI</h3>
+  <p>Use <strong>DrawnUi.Maui</strong> when you are building a native app for iOS, Android, MacCatalyst, or Windows.</p>
+  <p><strong>Install:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Maui</code></pre>
+  <p><a href="articles/maui/getting-started.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">MAUI setup guide →</a></p>
+</div>
 
-**2. Initialize:**
-```csharp
-public static MauiApp CreateMauiApp()
-{
-    var builder = MauiApp.CreateBuilder();
-    builder
-        .UseMauiApp<App>()
-        .UseDrawnUi();  // ← Add this line
-    
-    return builder.Build();
-}
-```
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">Blazor</h3>
+  <p>Use <strong>DrawnUi.Blazor.Wasm</strong> for browser-local rendering, or <strong>DrawnUi.Blazor.Server</strong> for server-rendered DrawnUI surfaces.</p>
+  <p><strong>Install:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Blazor.Wasm
+dotnet add package DrawnUi.Blazor.Server</code></pre>
+  <p><a href="articles/blazor/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">Blazor runtime guide →</a></p>
+</div>
 
-**3. Draw:**
-```xml
-<ContentPage xmlns:draw="http://schemas.taublast.com/drawnUi/2022/maui">
-    <draw:Canvas>
-        <draw:SkiaLabel FontSize="15" Text="Drawn with SkiaSharp!" />
-    </draw:Canvas>
-</ContentPage>
-```
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">DrawnUi.Net</h3>
+  <p>Use <strong>DrawnUi.Net</strong> when you need platform-agnostic rendering, headless harnesses, server-side image generation, or shared-logic debugging without a UI host.</p>
+  <p><strong>Install:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Net</code></pre>
+  <p><a href="articles/net/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Net guide →</a></p>
+</div>
 
 </div>
 
+<div style="margin: 20px 0 0 0; padding: 16px 20px; border-radius: 10px; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border: 1px dashed rgba(255,255,255,0.18); color: #d6e4ff;">
+  <strong>More platforms coming soon:</strong> the DrawnUI umbrella is expanding beyond the current MAUI, Blazor, and DrawnUi.Net targets.
+</div>
+
 <div style="text-align: center; margin: 30px 0;">
-  <a href="articles/getting-started.md" style="background: #4299e1; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: 600;">
-    📖 Complete Setup Guide
+  <a href="articles/platforms.md" style="background: #4299e1; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: 600;">
+    📖 Choose Your Package And Runtime
   </a>
 </div>
 
@@ -311,9 +314,9 @@ public static MauiApp CreateMauiApp()
 
 ## 🌟 What Is DrawnUI?
 
-**DrawnUI** is a powerful rendering engine for .NET MAUI built on top of **SkiaSharp** that brings together a complete layout system, gesture recognition, smooth animations, and custom-drawn controls—all rendered on hardware-accelerated canvases.
+**DrawnUI** is a rendering engine for **.NET** built on top of **SkiaSharp** that brings together a complete layout system, gesture recognition, smooth animations, and custom-drawn controls across multiple hosts, including .NET MAUI, Blazor, and platform-agnostic .NET runtimes.
 
-Unlike traditional MAUI controls that rely on native platform widgets, DrawnUI renders everything directly to GPU-accelerated surfaces using SkiaSharp's 2D graphics library. This approach gives you **pixel-perfect control** over your app's appearance while maintaining **max performance** across iOS, Android, Windows, and macOS.
+Unlike traditional UI stacks that rely only on native platform widgets, DrawnUI renders everything directly to SkiaSharp-powered surfaces. This approach gives you **pixel-perfect control** over your app's appearance while keeping a shared rendering model that can be hosted in native apps, browser runtimes, and headless .NET workflows.
 
 **Key Architecture:**
 - **SkiaSharp Foundation**: Leverages Google's Skia graphics engine for consistent, high-performance 2D rendering
@@ -322,7 +325,7 @@ Unlike traditional MAUI controls that rely on native platform widgets, DrawnUI r
 - **Animation Pipeline**: Smooth, performant animations using GPU acceleration and intelligent caching
 - **Virtual Controls**: Lightweight control system without native platform overhead
 
-Perfect for apps requiring **custom UI designs**, **complex animations**, **game-like interfaces**, or **pixel-perfect cross-platform consistency** that traditional MAUI controls can't achieve.
+Perfect for apps requiring **custom UI designs**, **complex animations**, **game-like interfaces**, **headless rendering workflows**, or **pixel-perfect cross-platform consistency** that traditional controls alone can't achieve.
 
 ### 🏃 **Master Performance**
 - **Fast App Startup** for totally drawn apps
@@ -355,8 +358,10 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 <div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
   <h4 style="margin-bottom: 15px;">📖 Documentation</h4>
   <p style="margin-bottom: 20px; ">Complete guides and API reference</p>
-  <a href="articles/getting-started.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Getting Started →</a><br>
-  <a href="articles/blazor.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Blazor →</a><br>
+  <a href="articles/platforms.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Choose Your Target →</a><br>
+  <a href="articles/net/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">DrawnUi.Net →</a><br>
+  <a href="articles/maui/getting-started.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Getting Started →</a><br>
+  <a href="articles/blazor/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Blazor →</a><br>
   <a href="articles/controls/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Controls Reference →</a><br>
   <a href="articles/advanced/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Advanced Topics →</a><br>
   <a href="/api/" style="color: #4299e1; text-decoration: none; font-weight: 600;">API Reference →</a>
@@ -365,7 +370,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 <div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
   <h4 style="margin-bottom: 15px;">🧙 Tutorials</h4>
   <p style="margin-bottom: 20px; ">Step-by-step practical examples</p>
-  <a href="articles/tutorials.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">View Tutorials →</a><br>
+  <a href="articles/maui/tutorials.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">View Tutorials →</a><br>
   <a href="articles/sample-apps.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Sample Apps →</a><br>
   <a href="articles/fluent-extensions.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Fluent Syntax →</a>
 </div>

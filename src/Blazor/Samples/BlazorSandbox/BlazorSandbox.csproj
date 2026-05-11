@@ -16,7 +16,7 @@
 
 <ItemGroup>
     <ProjectReference Include="..\..\Addons\DrawnUi.Gaming.Blazor\DrawnUi.Gaming.Blazor.csproj" />
-    <ProjectReference Include="..\..\DrawnUi\DrawnUi.Blazor.csproj" />
+  <ProjectReference Include="..\..\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj" />
 </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TrimmerRootAssembly Include="SkiaSharp" RootMode="EntireAssembly" />
+    <TrimmerRootAssembly Include="SkiaSharp" />
   </ItemGroup>
 
 </Project>

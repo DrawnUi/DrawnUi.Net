@@ -1,166 +1,206 @@
 # Handling Gestures in DrawnUI
 
-DrawnUI provides multiple ways to handle touch gestures. This guide shows real-world patterns used in the tutorials and sandbox apps.
+DrawnUI gesture docs have two layers:
 
-## Quick Start: The ConsumeGestures Pattern
+1. the canvas host must be configured to accept interaction
+2. the control tree decides what to do with taps, pans, long presses, and commands
 
-The simplest and most common pattern for handling gestures:
+If you skip the first layer, control handlers can be correct and still never fire.
+
+## Start with the canvas host
+
+### MAUI `Canvas`
+
+In MAUI, set the `Gestures` property on the `Canvas` that hosts your DrawnUI tree.
+
+Common values:
+
+- `Enabled` for normal interactive UI
+- `SoftLock` when the canvas lives inside a native `ScrollView` and you need DrawnUI panning controls to cooperate with native scrolling
+- `Lock` when the DrawnUI surface should fully capture the input stream
+
+Minimal MAUI example:
 
 ```xml
-<draw:SkiaShape 
-    x:Name="MyCard"
-    Type="Rectangle"
-    CornerRadius="20"
-    ConsumeGestures="OnCardTapped">
-    
-    <!-- Your content here -->
-</draw:SkiaShape>
+<draw:Canvas
+    Gestures="Enabled"
+    HorizontalOptions="Fill"
+    VerticalOptions="Fill">
+    <draw:SkiaLayout Type="Column" Padding="24" Spacing="12">
+        <draw:SkiaLabel Text="Canvas gestures enabled" FontSize="22" />
+        <draw:SkiaButton Text="Tap me" Clicked="OnButtonClicked" />
+    </draw:SkiaLayout>
+</draw:Canvas>
 ```
 
-```csharp
-private void OnCardTapped(object sender, SkiaGesturesInfo e)
-{
-    if (e.Args.Type == TouchActionResult.Tapped)
+Without `Gestures="Enabled"` or another non-disabled mode, your DrawnUI controls do not receive touch interaction through that canvas.
+
+### Blazor WebAssembly `Canvas`
+
+Browser-side Blazor uses the same idea, but the property is passed as `GesturesMode`.
+
+Minimal Blazor example:
+
+```razor
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<Canvas RootControl="@RootControl"
+        WidthRequest="400"
+        HeightRequest="220"
+        Gestures="@GesturesMode.Enabled" />
+
+@code {
+    private readonly SkiaControl RootControl = new SkiaLayout()
     {
-        e.Consumed = true; // Consume the gesture
-        
-        // Animations run async to avoid blocking
-        Task.Run(async () =>
+        Margin = new Thickness(16),
+        Type = LayoutType.Column,
+        Spacing = 12,
+        Children =
         {
-            var control = (SkiaControl)sender;
-            await control.ScaleTo(1.1, 100);
-            await control.ScaleTo(1.0, 100);
-        });
+            new SkiaLabel { Text = "Blazor canvas gestures enabled", FontSize = 22 },
+            new SkiaButton("Increment").OnTapped(_ => clickCount++)
+        }
+    };
+
+    private int clickCount;
+}
+```
+
+For browser-side `Canvas`, the default is effectively disabled until you opt in with `GesturesMode.Enabled` or `GesturesMode.Lock`.
+
+### Blazor Server `ServerCanvas`
+
+Blazor Server is different.
+
+`ServerCanvas` does not expose the same `Gestures` parameter as browser-side `Canvas`. The surface is rendered on the server and interactions are routed back to the server through the `ServerCanvas` runtime.
+
+That means:
+
+- you do not enable gestures with a `Gestures` property on `ServerCanvas`
+- you still wire gesture-aware controls and handlers inside the DrawnUI tree
+- the same control-level concepts apply, but the host model is `ServerCanvas`, not browser `Canvas`
+
+Minimal server-side example:
+
+```razor
+<ServerCanvas RootControl="@BuildCanvasContent()"
+              Width="400"
+              Height="240"
+              Alt="DrawnUI server-rendered sample" />
+
+@code {
+    private int clickCount;
+
+    private SkiaControl BuildCanvasContent()
+    {
+        return new SkiaLayout()
+        {
+            Type = LayoutType.Column,
+            Spacing = 12,
+            Children =
+            {
+                new SkiaLabel { Text = "ServerCanvas sample", FontSize = 24 },
+                new SkiaButton("Increment").OnTapped(_ => clickCount++)
+            }
+        };
     }
 }
 ```
 
-**Key points:**
-- `ConsumeGestures` attribute specifies the handler method
-- Check `e.Args.Type` for gesture type: `Tapped`, `Panning`, `Up`, etc.
-- Set `e.Consumed = true` to prevent gesture propagation
-- **Always** use `Task.Run` for async animations - don't await in the handler
-- Handler **must be synchronous** to consume properly
+So yes, the same control-level gesture patterns still apply to Blazor Server, but the canvas-level enablement step is specific to MAUI `Canvas` and browser-side Blazor `Canvas`.
 
-## Real-World Example: Interactive Card
+### `DrawnUi.Net`
 
-From the Tutorials app:
+`DrawnUi.Net` is different again because it is not a UI framework host by itself.
+
+There is no MAUI `Canvas`, browser `Canvas`, or Blazor `ServerCanvas` that automatically captures pointer input for you. `DrawnUi.Net` gives you the DrawnUI rendering and layout model, but the outer host or harness is responsible for delivering input.
+
+That means:
+
+- there is no canvas-level `Gestures` property to enable in `DrawnUi.Net`
+- control-level gesture logic still works once your host forwards pointer or touch input into the DrawnUI tree
+- in a headless rendering harness, there may be no live gesture stream at all unless you explicitly simulate or inject it
+
+Use `DrawnUi.Net` for gesture-related work when you want to:
+
+- validate shared gesture state transitions in a controlled harness
+- reproduce a gesture bug outside MAUI or Blazor noise
+- test the DrawnUI control logic after input has already been normalized by your own host
+
+So the rule is:
+
+- MAUI and browser Blazor need host-level gesture enablement on the canvas surface
+- Blazor Server uses `ServerCanvas` host behavior instead of a `Gestures` property
+- `DrawnUi.Net` depends on whatever outer host or test harness you build around it to feed interaction into DrawnUI
+
+## Then wire control-level gestures
+
+Once the host surface is configured correctly, choose the control-level pattern that matches the job.
+
+## `ConsumeGestures` for raw gesture handling
+
+Use `ConsumeGestures` when you want to inspect tap, pan, long press, or release events directly.
 
 ```xml
 <draw:SkiaShape
-    x:Name="Card1"
+    x:Name="MyCard"
     Type="Rectangle"
     CornerRadius="20"
-    WidthRequest="300"
-    HeightRequest="180"
     ConsumeGestures="OnCardGestures">
-    
-    <draw:SkiaControl.FillGradient>
-        <draw:SkiaGradient Type="Linear" Angle="45">
-            <draw:SkiaGradient.Colors>
-                <Color>#667eea</Color>
-                <Color>#764ba2</Color>
-            </draw:SkiaGradient.Colors>
-        </draw:SkiaGradient>
-    </draw:SkiaControl.FillGradient>
-    
-    <draw:SkiaLayout Type="Column" Margin="24" Spacing="12">
-        <draw:SkiaRichLabel
-            Text="🎨 Gradient Card"
-            FontSize="20"
-            FontAttributes="Bold"
-            TextColor="White" />
-        <draw:SkiaLabel
-            Text="Tap to animate!"
-            FontSize="12"
-            TextColor="#ccccff" />
-    </draw:SkiaLayout>
+
+    <!-- Your content here -->
 </draw:SkiaShape>
 ```
 
 ```csharp
 private void OnCardGestures(object sender, SkiaGesturesInfo e)
 {
-    if (sender is SkiaControl control)
+    if (sender is not SkiaControl control)
     {
-        if (e.Args.Type == TouchActionResult.Tapped)
-        {
-            e.Consumed = true;
-            
-            Task.Run(async () =>
-            {
-                // Brighten gradient colors on tap
-                if (control is SkiaShape shape && shape.FillGradient is SkiaGradient gradient)
-                {
-                    var original = gradient.Colors[0];
-                    var lighter = Color.FromRgba(
-                        Math.Min(1, original.Red * 1.5),
-                        Math.Min(1, original.Green * 1.5),
-                        Math.Min(1, original.Blue * 1.5),
-                        original.Alpha);
-                    
-                    gradient.Colors = new List<Color> { lighter, lighter };
-                    await Task.Delay(200);
-                    gradient.Colors = new List<Color> { original, original };
-                }
-            });
-        }
+        return;
     }
-}
-```
 
-## Gesture Types
-
-The `e.Args.Type` field tells you what happened:
-
-- **`Tapped`**: Single tap/click
-- **`DoubleTapped`**: Double tap
-- **`LongPressing`**: Long press detected
-- **`Panning`**: Dragging/swiping
-- **`Up`**: Touch released (end of interaction)
-- **`Holding`**: Touch held down
-
-Example with multiple gesture types:
-
-```csharp
-private void OnGestures(object sender, SkiaGesturesInfo e)
-{
-    var control = (SkiaControl)sender;
-    
     switch (e.Args.Type)
     {
         case TouchActionResult.Tapped:
             e.Consumed = true;
-            Task.Run(async () => await control.AnimateScaleTo(1.1, 100));
+            Task.Run(async () =>
+            {
+                await control.ScaleTo(1.05, 80);
+                await control.ScaleTo(1.0, 80);
+            });
             break;
-            
-        case TouchActionResult.LongPressing:
-            e.Consumed = true;
-            // Show context menu
-            break;
-            
+
         case TouchActionResult.Panning:
             e.Consumed = true;
-            // Drag the control
             control.TranslationX += e.Args.Event.Distance.Delta.X / control.RenderingScale;
             control.TranslationY += e.Args.Event.Distance.Delta.Y / control.RenderingScale;
             break;
-            
+
         case TouchActionResult.Up:
             e.Consumed = true;
-            // End gesture - snap back to position
-            Task.Run(async () => await control.TranslateToAsync(0, 0, 200));
+            Task.Run(async () => await control.TranslateToAsync(0, 0, 180));
             break;
     }
 }
 ```
 
-## Button Taps: Using SkiaButton
+Key points:
 
-For buttons, you can use the built-in `Tapped` event:
+- `ConsumeGestures` gives you raw gesture events on the control
+- check `e.Args.Type` for `Tapped`, `Panning`, `Up`, `LongPressing`, and related states
+- set `e.Consumed = true` when you want to stop propagation
+- keep the handler synchronous; if you animate, start async work from inside it
+
+## `SkiaButton` for button-like taps
+
+For button-style interaction, prefer the higher-level button APIs.
+
+### XAML event handler
 
 ```xml
-<draw:SkiaButton 
+<draw:SkiaButton
     Text="Click Me"
     Tapped="OnButtonTapped" />
 ```
@@ -169,95 +209,56 @@ For buttons, you can use the built-in `Tapped` event:
 private void OnButtonTapped(object sender, ControlTappedEventArgs e)
 {
     // Handle button click
-    DisplayAlert("Tapped", "Button was tapped!", "OK");
 }
 ```
 
-Or use MVVM binding with `AddGestures`:
+### Commands with `AddGestures`
 
 ```xml
-<draw:SkiaButton 
+<draw:SkiaButton
     Text="Click Me"
     draw:AddGestures.CommandTapped="{Binding MyCommand}" />
 ```
 
-## Drag and Pan Operations
+## MVVM shape or layout gestures
 
-For dragging/panning touch:
-
-```csharp
-private void OnPan(object sender, SkiaGesturesInfo e)
-{
-    var control = (SkiaControl)sender;
-    
-    if (e.Args.Type == TouchActionResult.Panning)
-    {
-        e.Consumed = true;
-        
-        // Update position in real-time
-        var deltaX = e.Args.Event.Distance.Delta.X / control.RenderingScale;
-        var deltaY = e.Args.Event.Distance.Delta.Y / control.RenderingScale;
-        
-        control.TranslationX += deltaX;
-        control.TranslationY += deltaY;
-    }
-    else if (e.Args.Type == TouchActionResult.Up)
-    {
-        e.Consumed = true;
-        
-        // Animate back to rest position
-        Task.Run(async () =>
-        {
-            await control.TranslateToAsync(0, 0, 300, Easing.SpringOut);
-        });
-    }
-}
-```
-
-## MVVM Pattern with Commands
-
-For MVVM applications:
+For non-button surfaces, attach commands to shapes and layouts:
 
 ```xml
-<draw:SkiaShape 
+<draw:SkiaShape
     Type="Rectangle"
     draw:AddGestures.CommandTapped="{Binding SelectItemCommand}"
     draw:AddGestures.CommandTappedParameter="{Binding .}"
     draw:AddGestures.AnimationTapped="Scale">
-    
+
     <draw:SkiaLabel Text="{Binding Name}" />
 </draw:SkiaShape>
 ```
 
-```csharp
-// In your ViewModel
-public Command<ItemModel> SelectItemCommand { get; }
+Built-in `AnimationTapped` values include:
 
-public MyViewModel()
-{
-    SelectItemCommand = new Command<ItemModel>(item =>
-    {
-        SelectedItem = item;
-        // Navigate or perform action
-    });
-}
-```
+- `Scale`
+- `Ripple`
+- `Fade`
 
-**Built-in animations for `AnimationTapped`:**
-- `"Scale"` - Scale up then down
-- `"Ripple"` - Ripple effect
-- `"Fade"` - Fade in/out
+## Gesture locking and propagation
 
-## Gesture Locking and Propagation
-
-Use `LockChildrenGestures` to control which gestures reach nested controls:
+Use `LockChildrenGestures` when a parent layout should decide which gestures reach nested controls.
 
 ```xml
 <draw:SkiaLayout Type="Column" LockChildrenGestures="PassTap">
-    <!-- Only tap gestures reach children, pan/swipe don't -->
     <draw:SkiaShape Type="Rectangle" ConsumeGestures="OnTap" />
 </draw:SkiaLayout>
 ```
+
+## Practical routing
+
+Use this rule of thumb:
+
+- configure the host first: `Canvas.Gestures` in MAUI or `GesturesMode` in browser Blazor
+- use `SkiaButton` events or commands for button-like actions
+- use `ConsumeGestures` when you need low-level gesture state such as pan, long press, or release
+- on Blazor Server, use `ServerCanvas` plus the same control-level handlers inside the DrawnUI tree
 
 Options:
 - `Enabled`: Children can't receive gestures

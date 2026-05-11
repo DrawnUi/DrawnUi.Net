@@ -39,7 +39,7 @@ items:
   - DrawnUi.Views.Canvas.HasHover
   - DrawnUi.Views.Canvas.Invalidate
   - DrawnUi.Views.Canvas.InvalidateMeasure
-  - DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Maui.Gestures.TouchActionResult)
+  - DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Views.Canvas.LayoutVisibilityChanged
   - DrawnUi.Views.Canvas.LineBreaks
   - DrawnUi.Views.Canvas.Measure(System.Single,System.Single)
@@ -48,7 +48,7 @@ items:
   - DrawnUi.Views.Canvas.OnChildAdded(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.Canvas.OnDestroyingVew
   - DrawnUi.Views.Canvas.OnDisposing
-  - DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
+  - DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Views.Canvas.OnGesturesAttachChanged
   - DrawnUi.Views.Canvas.OnHandlerChanged
   - DrawnUi.Views.Canvas.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
@@ -63,7 +63,7 @@ items:
   - DrawnUi.Views.Canvas.ReserveSpaceAroundProperty
   - DrawnUi.Views.Canvas.SetChildren(System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})
   - DrawnUi.Views.Canvas.SetContent(DrawnUi.Draw.SkiaControl)
-  - DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Maui.Gestures.TouchActionResult)
+  - DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Views.Canvas.Tapped
   - DrawnUi.Views.Canvas.TimeLastGC
   langs:
@@ -76,7 +76,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Canvas
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -95,11 +95,11 @@ items:
     content: >-
       [ContentProperty("Content")]
 
-      public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ILayout, ILayoutController, IContentView, IView, IElement, ITransform, IPadding, ICrossPlatformLayout, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated, IAnimatorsManager, IVisualTreeElement, IDisposeManager, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, IGestureListener
+      public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ILayout, ILayoutController, IContentView, IView, IElement, ITransform, IPadding, ICrossPlatformLayout, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated, IAnimatorsManager, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, IDisposeManager, IGestureListener
     content.vb: >-
       <ContentProperty("Content")>
 
-      Public Class Canvas Inherits DrawnView Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ILayout, ILayoutController, IContentView, IView, IElement, ITransform, IPadding, ICrossPlatformLayout, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated, IAnimatorsManager, IVisualTreeElement, IDisposeManager, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, IGestureListener
+      Public Class Canvas Inherits DrawnView Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ILayout, ILayoutController, IContentView, IView, IElement, ITransform, IPadding, ICrossPlatformLayout, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated, IAnimatorsManager, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, IDisposeManager, IGestureListener
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -140,14 +140,31 @@ items:
   - DrawnUi.Draw.ICanBeUpdated
   - DrawnUi.Draw.IAnimatorsManager
   - Microsoft.Maui.IVisualTreeElement
-  - DrawnUi.Views.IDisposeManager
   - Microsoft.Maui.IContainer
   - System.Collections.Generic.IList{Microsoft.Maui.IView}
   - System.Collections.Generic.ICollection{Microsoft.Maui.IView}
   - System.Collections.Generic.IEnumerable{Microsoft.Maui.IView}
   - System.Collections.IEnumerable
-  - AppoMobi.Maui.Gestures.IGestureListener
+  - DrawnUi.Views.IDisposeManager
+  - AppoMobi.Gestures.IGestureListener
   inheritedMembers:
+  - DrawnUi.Views.DrawnView.GetEnumerator
+  - DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
+  - DrawnUi.Views.DrawnView.Clear
+  - DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
+  - DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
+  - DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
+  - DrawnUi.Views.DrawnView.Count
+  - DrawnUi.Views.DrawnView.IsReadOnly
+  - DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
+  - DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
+  - DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
+  - DrawnUi.Views.DrawnView.Item(System.Int32)
+  - DrawnUi.Views.DrawnView.FixDensity
+  - DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.DrawnView.OnHotReload
+  - DrawnUi.Views.DrawnView.DestroyThis
+  - DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
   - DrawnUi.Views.DrawnView.DumpLayersTree(DrawnUi.Draw.VisualLayer,System.String,System.Boolean,System.Int32)
   - DrawnUi.Views.DrawnView.Diagnostics
   - DrawnUi.Views.DrawnView.Update
@@ -191,6 +208,8 @@ items:
   - DrawnUi.Views.DrawnView.ExecuteAnimators(System.Int64)
   - DrawnUi.Views.DrawnView.OnCanvasViewChanged
   - DrawnUi.Views.DrawnView.CanvasView
+  - DrawnUi.Views.DrawnView.RequestedCanvasViewIsHardwareAccelerated
+  - DrawnUi.Views.DrawnView.CanvasViewRequestVersion
   - DrawnUi.Views.DrawnView.SetDeviceOrientation(DrawnUi.Draw.DeviceOrientation)
   - DrawnUi.Views.DrawnView.OrientationChanged
   - DrawnUi.Views.DrawnView.OrientationProperty
@@ -202,7 +221,6 @@ items:
   - DrawnUi.Views.DrawnView.NeedMeasureDrawn
   - DrawnUi.Views.DrawnView.OnCanRenderChanged(System.Boolean)
   - DrawnUi.Views.DrawnView.ConnectedHandler
-  - DrawnUi.Views.DrawnView.FixDensity
   - DrawnUi.Views.DrawnView.StopDrawingWhenUpdateIsLocked
   - DrawnUi.Views.DrawnView.TimeDrawingStarted
   - DrawnUi.Views.DrawnView.TimeDrawingComplete
@@ -211,7 +229,6 @@ items:
   - DrawnUi.Views.DrawnView.ResetUpdate
   - DrawnUi.Views.DrawnView.InvalidatedCanvas
   - DrawnUi.Views.DrawnView.IsRendering
-  - DrawnUi.Views.DrawnView.Delayed
   - DrawnUi.Views.DrawnView.GetDensity
   - DrawnUi.Views.DrawnView.CreateSkiaView
   - DrawnUi.Views.DrawnView.DestroySkiaView
@@ -228,7 +245,6 @@ items:
   - DrawnUi.Views.DrawnView.NeedAutoHeight
   - DrawnUi.Views.DrawnView.NeedAutoWidth
   - DrawnUi.Views.DrawnView.ShouldInvalidateByChildren
-  - DrawnUi.Views.DrawnView.UpdateLocksProperty
   - DrawnUi.Views.DrawnView.UpdateLocks
   - DrawnUi.Views.DrawnView.Uid
   - DrawnUi.Views.DrawnView.LinearGradientAngleToPoints(System.Double)
@@ -236,7 +252,6 @@ items:
   - DrawnUi.Views.DrawnView.Clipping
   - DrawnUi.Views.DrawnView.CreateClip(System.Object,System.Boolean,SkiaSharp.SKPath)
   - DrawnUi.Views.DrawnView.Tag
-  - DrawnUi.Views.DrawnView.IsRootView(System.Single,System.Single,SkiaSharp.SKRect)
   - DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   - DrawnUi.Views.DrawnView.Arrange(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   - DrawnUi.Views.DrawnView.MeasuredSize
@@ -252,6 +267,7 @@ items:
   - DrawnUi.Views.DrawnView.WillDraw
   - DrawnUi.Views.DrawnView.WillFirstTimeDraw
   - DrawnUi.Views.DrawnView.LastDrawnRect
+  - DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface,SkiaSharp.SKRect)
   - DrawnUi.Views.DrawnView.CanRender
   - DrawnUi.Views.DrawnView.OnStartRendering(SkiaSharp.SKCanvas)
   - DrawnUi.Views.DrawnView.OnFinalizeRendering
@@ -307,11 +323,10 @@ items:
   - DrawnUi.Views.DrawnView.ClearChildren
   - DrawnUi.Views.DrawnView.AddSubView(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.DrawnView.ReportHotreloadChildAdded(DrawnUi.Draw.SkiaControl)
-  - DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  - DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.DrawnView.OnChildRemoved(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.DrawnView.Children
   - DrawnUi.Views.DrawnView.AddOrRemoveView(DrawnUi.Draw.SkiaControl,System.Boolean)
+  - DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.DrawnView.UpdateModeProperty
   - DrawnUi.Views.DrawnView.UpdateMode
   - DrawnUi.Views.DrawnView.ClipEffectsProperty
@@ -334,20 +349,6 @@ items:
   - DrawnUi.Views.DrawnView.GetIsVisibleWithParent(Microsoft.Maui.Controls.VisualElement)
   - DrawnUi.Views.DrawnView.CheckElementVisibility(Microsoft.Maui.Controls.VisualElement)
   - DrawnUi.Views.DrawnView.ClipSmart(SkiaSharp.SKCanvas,SkiaSharp.SKPath,SkiaSharp.SKClipOperation)
-  - DrawnUi.Views.DrawnView.GetEnumerator
-  - DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
-  - DrawnUi.Views.DrawnView.Clear
-  - DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
-  - DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
-  - DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
-  - DrawnUi.Views.DrawnView.Count
-  - DrawnUi.Views.DrawnView.IsReadOnly
-  - DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
-  - DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
-  - DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
-  - DrawnUi.Views.DrawnView.Item(System.Int32)
-  - DrawnUi.Views.DrawnView.OnHotReload
-  - DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   - Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
   - Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
@@ -355,6 +356,7 @@ items:
   - Microsoft.Maui.Controls.TemplatedView.OnChildRemoved(Microsoft.Maui.Controls.Element,System.Int32)
   - Microsoft.Maui.Controls.TemplatedView.GetTemplateChild(System.String)
   - Microsoft.Maui.Controls.TemplatedView.ResolveControlTemplate
+  - Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplate
   - Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
   - Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
@@ -367,7 +369,6 @@ items:
   - Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
   - Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated(System.Object,System.EventArgs)
   - Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-  - Microsoft.Maui.Controls.Compatibility.Layout.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
@@ -576,7 +577,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LayoutVisibilityChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -602,7 +603,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SetChildren
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -636,7 +637,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DumpDebug
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -662,7 +663,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChildAdded
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -693,7 +694,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SetContent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -724,7 +725,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSizeChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -752,7 +753,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateMeasure
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -781,7 +782,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptSizeToContentIfNeeded
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -819,7 +820,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ArrangeOverride
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -858,7 +859,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureOverride
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -900,7 +901,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -929,7 +930,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptWidthContraintToRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -963,7 +964,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptHeightContraintToRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -997,7 +998,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Measure
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1035,7 +1036,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetMeasuringRectForChildren
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1079,7 +1080,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptWidthContraintToContentRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1117,7 +1118,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptHeightContraintToContentRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1155,7 +1156,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptSizeRequestToContent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1196,7 +1197,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentSize
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1225,7 +1226,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureChild
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1272,7 +1273,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1302,7 +1303,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanging
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1336,7 +1337,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DetachGestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1362,7 +1363,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDestroyingVew
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1390,7 +1391,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnGesturesAttachChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1416,7 +1417,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AttachedTouchEffect
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1428,7 +1429,7 @@ items:
     content: protected TouchEffect AttachedTouchEffect { get; set; }
     parameters: []
     return:
-      type: AppoMobi.Maui.Gestures.TouchEffect
+      type: AppoMobi.Gestures.TouchEffect
     content.vb: Protected Property AttachedTouchEffect As TouchEffect
   overload: DrawnUi.Views.Canvas.AttachedTouchEffect*
 - uid: DrawnUi.Views.Canvas.CreateDebugPointer
@@ -1445,7 +1446,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateDebugPointer
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1473,7 +1474,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DebugPointer
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1502,7 +1503,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1530,7 +1531,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Context
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1557,7 +1558,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ReceivedInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1588,7 +1589,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: HadInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1605,21 +1606,21 @@ items:
       type: System.Collections.Generic.Dictionary{System.Guid,DrawnUi.Draw.ISkiaGestureListener}
     content.vb: Public ReadOnly Property HadInput As Dictionary(Of Guid, ISkiaGestureListener)
   overload: DrawnUi.Views.Canvas.HadInput*
-- uid: DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Maui.Gestures.TouchActionResult)
-  commentId: M:DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Maui.Gestures.TouchActionResult)
-  id: IsSavedGesture(AppoMobi.Maui.Gestures.TouchActionResult)
+- uid: DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Gestures.TouchActionResult)
+  id: IsSavedGesture(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Views.Canvas
   langs:
   - csharp
   - vb
   name: IsSavedGesture(TouchActionResult)
   nameWithType: Canvas.IsSavedGesture(TouchActionResult)
-  fullName: DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Maui.Gestures.TouchActionResult)
+  fullName: DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Gestures.TouchActionResult)
   type: Method
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsSavedGesture
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1633,7 +1634,7 @@ items:
     content: protected bool IsSavedGesture(TouchActionResult type)
     parameters:
     - id: type
-      type: AppoMobi.Maui.Gestures.TouchActionResult
+      type: AppoMobi.Gestures.TouchActionResult
       description: ''
     return:
       type: System.Boolean
@@ -1654,7 +1655,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1683,7 +1684,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: HasHover
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1700,21 +1701,21 @@ items:
       type: DrawnUi.Draw.SkiaControl
     content.vb: Public Property HasHover As SkiaControl
   overload: DrawnUi.Views.Canvas.HasHover*
-- uid: DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Maui.Gestures.TouchActionResult)
-  commentId: M:DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Maui.Gestures.TouchActionResult)
-  id: SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Maui.Gestures.TouchActionResult)
+- uid: DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)
+  id: SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Views.Canvas
   langs:
   - csharp
   - vb
   name: SignalInput(ISkiaGestureListener, TouchActionResult)
   nameWithType: Canvas.SignalInput(ISkiaGestureListener, TouchActionResult)
-  fullName: DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener, AppoMobi.Maui.Gestures.TouchActionResult)
+  fullName: DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener, AppoMobi.Gestures.TouchActionResult)
   type: Method
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SignalInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1730,7 +1731,7 @@ items:
     - id: listener
       type: DrawnUi.Draw.ISkiaGestureListener
     - id: gestureType
-      type: AppoMobi.Maui.Gestures.TouchActionResult
+      type: AppoMobi.Gestures.TouchActionResult
     return:
       type: System.Boolean
     content.vb: Public Function SignalInput(listener As ISkiaGestureListener, gestureType As TouchActionResult) As Boolean
@@ -1749,7 +1750,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Tapped
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1762,21 +1763,21 @@ items:
     return:
       type: System.EventHandler
     content.vb: Public Event Tapped As EventHandler
-- uid: DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
-  commentId: M:DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
-  id: OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
+- uid: DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+  id: OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Views.Canvas
   langs:
   - csharp
   - vb
   name: OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
   nameWithType: Canvas.OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
-  fullName: DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType, AppoMobi.Maui.Gestures.TouchActionEventArgs, AppoMobi.Maui.Gestures.TouchActionResult)
+  fullName: DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType, AppoMobi.Gestures.TouchActionEventArgs, AppoMobi.Gestures.TouchActionResult)
   type: Method
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnGestureEvent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1790,18 +1791,18 @@ items:
     content: public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
     parameters:
     - id: type
-      type: AppoMobi.Maui.Gestures.TouchActionType
+      type: AppoMobi.Gestures.TouchActionType
       description: ''
     - id: args1
-      type: AppoMobi.Maui.Gestures.TouchActionEventArgs
+      type: AppoMobi.Gestures.TouchActionEventArgs
       description: ''
     - id: touchAction
-      type: AppoMobi.Maui.Gestures.TouchActionResult
+      type: AppoMobi.Gestures.TouchActionResult
       description: ''
     content.vb: Public Overridable Sub OnGestureEvent(type As TouchActionType, args1 As TouchActionEventArgs, touchAction As TouchActionResult)
   overload: DrawnUi.Views.Canvas.OnGestureEvent*
   implements:
-  - AppoMobi.Maui.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
+  - AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
 - uid: DrawnUi.Views.Canvas.BreakLine
   commentId: M:DrawnUi.Views.Canvas.BreakLine
   id: BreakLine
@@ -1816,7 +1817,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: BreakLine
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1842,7 +1843,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LineBreaks
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1869,7 +1870,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1898,7 +1899,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlayRippleAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1936,7 +1937,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlayShimmerAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1976,7 +1977,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TimeLastGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2005,7 +2006,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DelayNanosBetweenGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2034,7 +2035,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CollectGarbage
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2066,7 +2067,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPropertyChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2102,7 +2103,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GesturesDebugColorProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2129,7 +2130,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GesturesDebugColor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2158,7 +2159,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ReserveSpaceAroundProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2185,7 +2186,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ReserveSpaceAround
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2214,7 +2215,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GesturesProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2241,7 +2242,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Gestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2270,7 +2271,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2297,7 +2298,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Content
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2326,7 +2327,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnParentChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2356,7 +2357,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: EnableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2384,7 +2385,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DisableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2412,7 +2413,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2443,7 +2444,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetGesturePositionInsideControl
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2490,7 +2491,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FindViewCoordinatesRecursive
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2842,13 +2843,6 @@ references:
   name: IVisualTreeElement
   nameWithType: IVisualTreeElement
   fullName: Microsoft.Maui.IVisualTreeElement
-- uid: DrawnUi.Views.IDisposeManager
-  commentId: T:DrawnUi.Views.IDisposeManager
-  parent: DrawnUi.Views
-  href: DrawnUi.Views.IDisposeManager.html
-  name: IDisposeManager
-  nameWithType: IDisposeManager
-  fullName: DrawnUi.Views.IDisposeManager
 - uid: Microsoft.Maui.IContainer
   commentId: T:Microsoft.Maui.IContainer
   parent: Microsoft.Maui
@@ -2970,13 +2964,446 @@ references:
   name: IEnumerable
   nameWithType: IEnumerable
   fullName: System.Collections.IEnumerable
-- uid: AppoMobi.Maui.Gestures.IGestureListener
-  commentId: T:AppoMobi.Maui.Gestures.IGestureListener
-  parent: AppoMobi.Maui.Gestures
-  isExternal: true
+- uid: DrawnUi.Views.IDisposeManager
+  commentId: T:DrawnUi.Views.IDisposeManager
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.IDisposeManager.html
+  name: IDisposeManager
+  nameWithType: IDisposeManager
+  fullName: DrawnUi.Views.IDisposeManager
+- uid: AppoMobi.Gestures.IGestureListener
+  commentId: T:AppoMobi.Gestures.IGestureListener
+  parent: AppoMobi.Gestures
   name: IGestureListener
   nameWithType: IGestureListener
-  fullName: AppoMobi.Maui.Gestures.IGestureListener
+  fullName: AppoMobi.Gestures.IGestureListener
+- uid: DrawnUi.Views.DrawnView.GetEnumerator
+  commentId: M:DrawnUi.Views.DrawnView.GetEnumerator
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator
+  name: GetEnumerator()
+  nameWithType: DrawnView.GetEnumerator()
+  fullName: DrawnUi.Views.DrawnView.GetEnumerator()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.GetEnumerator
+    name: GetEnumerator
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.GetEnumerator
+    name: GetEnumerator
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
+  commentId: M:DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_
+  name: Add(IView)
+  nameWithType: DrawnView.Add(IView)
+  fullName: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
+    name: Add
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
+    name: Add
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+- uid: DrawnUi.Views.DrawnView.Clear
+  commentId: M:DrawnUi.Views.DrawnView.Clear
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear
+  name: Clear()
+  nameWithType: DrawnView.Clear()
+  fullName: DrawnUi.Views.DrawnView.Clear()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.Clear
+    name: Clear
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.Clear
+    name: Clear
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
+  commentId: M:DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_
+  name: Contains(IView)
+  nameWithType: DrawnView.Contains(IView)
+  fullName: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
+    name: Contains
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
+    name: Contains
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+- uid: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
+  commentId: M:DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_
+  name: CopyTo(IView[], int)
+  nameWithType: DrawnView.CopyTo(IView[], int)
+  fullName: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[], int)
+  nameWithType.vb: DrawnView.CopyTo(IView(), Integer)
+  fullName.vb: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView(), Integer)
+  name.vb: CopyTo(IView(), Integer)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
+    name: CopyTo
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
+    name: CopyTo
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
+  commentId: M:DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_
+  name: Remove(IView)
+  nameWithType: DrawnView.Remove(IView)
+  fullName: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
+    name: Remove
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
+    name: Remove
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+- uid: DrawnUi.Views.DrawnView.Count
+  commentId: P:DrawnUi.Views.DrawnView.Count
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Count
+  name: Count
+  nameWithType: DrawnView.Count
+  fullName: DrawnUi.Views.DrawnView.Count
+- uid: DrawnUi.Views.DrawnView.IsReadOnly
+  commentId: P:DrawnUi.Views.DrawnView.IsReadOnly
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsReadOnly
+  name: IsReadOnly
+  nameWithType: DrawnView.IsReadOnly
+  fullName: DrawnUi.Views.DrawnView.IsReadOnly
+- uid: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
+  commentId: M:DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_
+  name: IndexOf(IView)
+  nameWithType: DrawnView.IndexOf(IView)
+  fullName: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
+    name: IndexOf
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
+    name: IndexOf
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_
+  - name: (
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+- uid: DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
+  commentId: M:DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_
+  name: Insert(int, IView)
+  nameWithType: DrawnView.Insert(int, IView)
+  fullName: DrawnUi.Views.DrawnView.Insert(int, Microsoft.Maui.IView)
+  nameWithType.vb: DrawnView.Insert(Integer, IView)
+  fullName.vb: DrawnUi.Views.DrawnView.Insert(Integer, Microsoft.Maui.IView)
+  name.vb: Insert(Integer, IView)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
+    name: Insert
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
+    name: Insert
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.IView
+    name: IView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
+  - name: )
+- uid: DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
+  commentId: M:DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_
+  name: RemoveAt(int)
+  nameWithType: DrawnView.RemoveAt(int)
+  fullName: DrawnUi.Views.DrawnView.RemoveAt(int)
+  nameWithType.vb: DrawnView.RemoveAt(Integer)
+  fullName.vb: DrawnUi.Views.DrawnView.RemoveAt(Integer)
+  name.vb: RemoveAt(Integer)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
+    name: RemoveAt
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
+    name: RemoveAt
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: DrawnUi.Views.DrawnView.Item(System.Int32)
+  commentId: P:DrawnUi.Views.DrawnView.Item(System.Int32)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: DrawnView.this[int]
+  fullName: DrawnUi.Views.DrawnView.this[int]
+  nameWithType.vb: DrawnView.this[](Integer)
+  fullName.vb: DrawnUi.Views.DrawnView.this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.Item(System.Int32)
+    name: this[]
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Item_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: DrawnUi.Views.DrawnView.FixDensity
+  commentId: M:DrawnUi.Views.DrawnView.FixDensity
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity
+  name: FixDensity()
+  nameWithType: DrawnView.FixDensity()
+  fullName: DrawnUi.Views.DrawnView.FixDensity()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.FixDensity
+    name: FixDensity
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.FixDensity
+    name: FixDensity
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_
+  name: ReportHotreloadChildRemoved(SkiaControl)
+  nameWithType: DrawnView.ReportHotreloadChildRemoved(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
+    name: ReportHotreloadChildRemoved
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
+    name: ReportHotreloadChildRemoved
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.OnHotReload
+  commentId: M:DrawnUi.Views.DrawnView.OnHotReload
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload
+  name: OnHotReload()
+  nameWithType: DrawnView.OnHotReload()
+  fullName: DrawnUi.Views.DrawnView.OnHotReload()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OnHotReload
+    name: OnHotReload
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OnHotReload
+    name: OnHotReload
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.DestroyThis
+  commentId: M:DrawnUi.Views.DrawnView.DestroyThis
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DestroyThis
+  name: DestroyThis()
+  nameWithType: DrawnView.DestroyThis()
+  fullName: DrawnUi.Views.DrawnView.DestroyThis()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.DestroyThis
+    name: DestroyThis
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DestroyThis
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.DestroyThis
+    name: DestroyThis
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DestroyThis
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
+  commentId: M:DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_
+  name: InitFramework(bool)
+  nameWithType: DrawnView.InitFramework(bool)
+  fullName: DrawnUi.Views.DrawnView.InitFramework(bool)
+  nameWithType.vb: DrawnView.InitFramework(Boolean)
+  fullName.vb: DrawnUi.Views.DrawnView.InitFramework(Boolean)
+  name.vb: InitFramework(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
+    name: InitFramework
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
+    name: InitFramework
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Views.DrawnView.DumpLayersTree(DrawnUi.Draw.VisualLayer,System.String,System.Boolean,System.Int32)
   commentId: M:DrawnUi.Views.DrawnView.DumpLayersTree(DrawnUi.Draw.VisualLayer,System.String,System.Boolean,System.Int32)
   parent: DrawnUi.Views.DrawnView
@@ -3854,6 +4281,20 @@ references:
   name: CanvasView
   nameWithType: DrawnView.CanvasView
   fullName: DrawnUi.Views.DrawnView.CanvasView
+- uid: DrawnUi.Views.DrawnView.RequestedCanvasViewIsHardwareAccelerated
+  commentId: P:DrawnUi.Views.DrawnView.RequestedCanvasViewIsHardwareAccelerated
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestedCanvasViewIsHardwareAccelerated
+  name: RequestedCanvasViewIsHardwareAccelerated
+  nameWithType: DrawnView.RequestedCanvasViewIsHardwareAccelerated
+  fullName: DrawnUi.Views.DrawnView.RequestedCanvasViewIsHardwareAccelerated
+- uid: DrawnUi.Views.DrawnView.CanvasViewRequestVersion
+  commentId: P:DrawnUi.Views.DrawnView.CanvasViewRequestVersion
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CanvasViewRequestVersion
+  name: CanvasViewRequestVersion
+  nameWithType: DrawnView.CanvasViewRequestVersion
+  fullName: DrawnUi.Views.DrawnView.CanvasViewRequestVersion
 - uid: DrawnUi.Views.DrawnView.SetDeviceOrientation(DrawnUi.Draw.DeviceOrientation)
   commentId: M:DrawnUi.Views.DrawnView.SetDeviceOrientation(DrawnUi.Draw.DeviceOrientation)
   parent: DrawnUi.Views.DrawnView
@@ -4009,25 +4450,6 @@ references:
     href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ConnectedHandler
   - name: (
   - name: )
-- uid: DrawnUi.Views.DrawnView.FixDensity
-  commentId: M:DrawnUi.Views.DrawnView.FixDensity
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity
-  name: FixDensity()
-  nameWithType: DrawnView.FixDensity()
-  fullName: DrawnUi.Views.DrawnView.FixDensity()
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.FixDensity
-    name: FixDensity
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.FixDensity
-    name: FixDensity
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity
-  - name: (
-  - name: )
 - uid: DrawnUi.Views.DrawnView.StopDrawingWhenUpdateIsLocked
   commentId: P:DrawnUi.Views.DrawnView.StopDrawingWhenUpdateIsLocked
   parent: DrawnUi.Views.DrawnView
@@ -4120,13 +4542,6 @@ references:
   name: IsRendering
   nameWithType: DrawnView.IsRendering
   fullName: DrawnUi.Views.DrawnView.IsRendering
-- uid: DrawnUi.Views.DrawnView.Delayed
-  commentId: P:DrawnUi.Views.DrawnView.Delayed
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Delayed
-  name: Delayed
-  nameWithType: DrawnView.Delayed
-  fullName: DrawnUi.Views.DrawnView.Delayed
 - uid: DrawnUi.Views.DrawnView.GetDensity
   commentId: M:DrawnUi.Views.DrawnView.GetDensity
   parent: DrawnUi.Views.DrawnView
@@ -4383,13 +4798,6 @@ references:
   name: ShouldInvalidateByChildren
   nameWithType: DrawnView.ShouldInvalidateByChildren
   fullName: DrawnUi.Views.DrawnView.ShouldInvalidateByChildren
-- uid: DrawnUi.Views.DrawnView.UpdateLocksProperty
-  commentId: F:DrawnUi.Views.DrawnView.UpdateLocksProperty
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_UpdateLocksProperty
-  name: UpdateLocksProperty
-  nameWithType: DrawnView.UpdateLocksProperty
-  fullName: DrawnUi.Views.DrawnView.UpdateLocksProperty
 - uid: DrawnUi.Views.DrawnView.UpdateLocks
   commentId: P:DrawnUi.Views.DrawnView.UpdateLocks
   parent: DrawnUi.Views.DrawnView
@@ -4511,61 +4919,6 @@ references:
   name: Tag
   nameWithType: DrawnView.Tag
   fullName: DrawnUi.Views.DrawnView.Tag
-- uid: DrawnUi.Views.DrawnView.IsRootView(System.Single,System.Single,SkiaSharp.SKRect)
-  commentId: M:DrawnUi.Views.DrawnView.IsRootView(System.Single,System.Single,SkiaSharp.SKRect)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsRootView_System_Single_System_Single_SkiaSharp_SKRect_
-  name: IsRootView(float, float, SKRect)
-  nameWithType: DrawnView.IsRootView(float, float, SKRect)
-  fullName: DrawnUi.Views.DrawnView.IsRootView(float, float, SkiaSharp.SKRect)
-  nameWithType.vb: DrawnView.IsRootView(Single, Single, SKRect)
-  fullName.vb: DrawnUi.Views.DrawnView.IsRootView(Single, Single, SkiaSharp.SKRect)
-  name.vb: IsRootView(Single, Single, SKRect)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.IsRootView(System.Single,System.Single,SkiaSharp.SKRect)
-    name: IsRootView
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsRootView_System_Single_System_Single_SkiaSharp_SKRect_
-  - name: (
-  - uid: System.Single
-    name: float
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: float
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.IsRootView(System.Single,System.Single,SkiaSharp.SKRect)
-    name: IsRootView
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsRootView_System_Single_System_Single_SkiaSharp_SKRect_
-  - name: (
-  - uid: System.Single
-    name: Single
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: Single
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: )
 - uid: DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   commentId: M:DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   parent: DrawnUi.Views.DrawnView
@@ -4872,6 +5225,46 @@ references:
   name: LastDrawnRect
   nameWithType: DrawnView.LastDrawnRect
   fullName: DrawnUi.Views.DrawnView.LastDrawnRect
+- uid: DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface,SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface,SkiaSharp.SKRect)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnDrawSurface_SkiaSharp_SKSurface_SkiaSharp_SKRect_
+  name: OnDrawSurface(SKSurface, SKRect)
+  nameWithType: DrawnView.OnDrawSurface(SKSurface, SKRect)
+  fullName: DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface, SkiaSharp.SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface,SkiaSharp.SKRect)
+    name: OnDrawSurface
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnDrawSurface_SkiaSharp_SKSurface_SkiaSharp_SKRect_
+  - name: (
+  - uid: SkiaSharp.SKSurface
+    name: SKSurface
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksurface
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface,SkiaSharp.SKRect)
+    name: OnDrawSurface
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnDrawSurface_SkiaSharp_SKSurface_SkiaSharp_SKRect_
+  - name: (
+  - uid: SkiaSharp.SKSurface
+    name: SKSurface
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksurface
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
 - uid: DrawnUi.Views.DrawnView.CanRender
   commentId: P:DrawnUi.Views.DrawnView.CanRender
   parent: DrawnUi.Views.DrawnView
@@ -5820,56 +6213,6 @@ references:
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: )
-- uid: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  commentId: M:DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_
-  name: RemoveSubView(SkiaControl)
-  nameWithType: DrawnView.RemoveSubView(SkiaControl)
-  fullName: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
-    name: RemoveSubView
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
-    name: RemoveSubView
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-- uid: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
-  commentId: M:DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_
-  name: ReportHotreloadChildRemoved(SkiaControl)
-  nameWithType: DrawnView.ReportHotreloadChildRemoved(SkiaControl)
-  fullName: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
-    name: ReportHotreloadChildRemoved
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
-    name: ReportHotreloadChildRemoved
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
 - uid: DrawnUi.Views.DrawnView.OnChildRemoved(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Views.DrawnView.OnChildRemoved(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Views.DrawnView
@@ -5942,6 +6285,31 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_
+  name: RemoveSubView(SkiaControl)
+  nameWithType: DrawnView.RemoveSubView(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
+    name: RemoveSubView
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
+    name: RemoveSubView
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
   - name: )
 - uid: DrawnUi.Views.DrawnView.UpdateModeProperty
   commentId: F:DrawnUi.Views.DrawnView.UpdateModeProperty
@@ -6260,370 +6628,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skclipoperation
   - name: )
-- uid: DrawnUi.Views.DrawnView.GetEnumerator
-  commentId: M:DrawnUi.Views.DrawnView.GetEnumerator
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator
-  name: GetEnumerator()
-  nameWithType: DrawnView.GetEnumerator()
-  fullName: DrawnUi.Views.DrawnView.GetEnumerator()
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.GetEnumerator
-    name: GetEnumerator
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.GetEnumerator
-    name: GetEnumerator
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator
-  - name: (
-  - name: )
-- uid: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
-  commentId: M:DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_
-  name: Add(IView)
-  nameWithType: DrawnView.Add(IView)
-  fullName: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
-    name: Add
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
-    name: Add
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-- uid: DrawnUi.Views.DrawnView.Clear
-  commentId: M:DrawnUi.Views.DrawnView.Clear
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear
-  name: Clear()
-  nameWithType: DrawnView.Clear()
-  fullName: DrawnUi.Views.DrawnView.Clear()
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.Clear
-    name: Clear
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.Clear
-    name: Clear
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear
-  - name: (
-  - name: )
-- uid: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
-  commentId: M:DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_
-  name: Contains(IView)
-  nameWithType: DrawnView.Contains(IView)
-  fullName: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
-    name: Contains
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
-    name: Contains
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-- uid: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
-  commentId: M:DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_
-  name: CopyTo(IView[], int)
-  nameWithType: DrawnView.CopyTo(IView[], int)
-  fullName: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[], int)
-  nameWithType.vb: DrawnView.CopyTo(IView(), Integer)
-  fullName.vb: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView(), Integer)
-  name.vb: CopyTo(IView(), Integer)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
-    name: CopyTo
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: '['
-  - name: ']'
-  - name: ','
-  - name: " "
-  - uid: System.Int32
-    name: int
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[],System.Int32)
-    name: CopyTo
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: (
-  - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Int32
-    name: Integer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: )
-- uid: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
-  commentId: M:DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_
-  name: Remove(IView)
-  nameWithType: DrawnView.Remove(IView)
-  fullName: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
-    name: Remove
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
-    name: Remove
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-- uid: DrawnUi.Views.DrawnView.Count
-  commentId: P:DrawnUi.Views.DrawnView.Count
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Count
-  name: Count
-  nameWithType: DrawnView.Count
-  fullName: DrawnUi.Views.DrawnView.Count
-- uid: DrawnUi.Views.DrawnView.IsReadOnly
-  commentId: P:DrawnUi.Views.DrawnView.IsReadOnly
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsReadOnly
-  name: IsReadOnly
-  nameWithType: DrawnView.IsReadOnly
-  fullName: DrawnUi.Views.DrawnView.IsReadOnly
-- uid: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
-  commentId: M:DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_
-  name: IndexOf(IView)
-  nameWithType: DrawnView.IndexOf(IView)
-  fullName: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
-    name: IndexOf
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
-    name: IndexOf
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_
-  - name: (
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-- uid: DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
-  commentId: M:DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_
-  name: Insert(int, IView)
-  nameWithType: DrawnView.Insert(int, IView)
-  fullName: DrawnUi.Views.DrawnView.Insert(int, Microsoft.Maui.IView)
-  nameWithType.vb: DrawnView.Insert(Integer, IView)
-  fullName.vb: DrawnUi.Views.DrawnView.Insert(Integer, Microsoft.Maui.IView)
-  name.vb: Insert(Integer, IView)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
-    name: Insert
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_
-  - name: (
-  - uid: System.Int32
-    name: int
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: ','
-  - name: " "
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.Insert(System.Int32,Microsoft.Maui.IView)
-    name: Insert
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_
-  - name: (
-  - uid: System.Int32
-    name: Integer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: ','
-  - name: " "
-  - uid: Microsoft.Maui.IView
-    name: IView
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.iview
-  - name: )
-- uid: DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
-  commentId: M:DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_
-  name: RemoveAt(int)
-  nameWithType: DrawnView.RemoveAt(int)
-  fullName: DrawnUi.Views.DrawnView.RemoveAt(int)
-  nameWithType.vb: DrawnView.RemoveAt(Integer)
-  fullName.vb: DrawnUi.Views.DrawnView.RemoveAt(Integer)
-  name.vb: RemoveAt(Integer)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
-    name: RemoveAt
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_
-  - name: (
-  - uid: System.Int32
-    name: int
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.RemoveAt(System.Int32)
-    name: RemoveAt
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_
-  - name: (
-  - uid: System.Int32
-    name: Integer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: )
-- uid: DrawnUi.Views.DrawnView.Item(System.Int32)
-  commentId: P:DrawnUi.Views.DrawnView.Item(System.Int32)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: this[int]
-  nameWithType: DrawnView.this[int]
-  fullName: DrawnUi.Views.DrawnView.this[int]
-  nameWithType.vb: DrawnView.this[](Integer)
-  fullName.vb: DrawnUi.Views.DrawnView.this[](Integer)
-  name.vb: this[](Integer)
-  spec.csharp:
-  - name: this
-  - name: '['
-  - uid: System.Int32
-    name: int
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: ']'
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.Item(System.Int32)
-    name: this[]
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Item_System_Int32_
-  - name: (
-  - uid: System.Int32
-    name: Integer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: )
-- uid: DrawnUi.Views.DrawnView.OnHotReload
-  commentId: M:DrawnUi.Views.DrawnView.OnHotReload
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload
-  name: OnHotReload()
-  nameWithType: DrawnView.OnHotReload()
-  fullName: DrawnUi.Views.DrawnView.OnHotReload()
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.OnHotReload
-    name: OnHotReload
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.OnHotReload
-    name: OnHotReload
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload
-  - name: (
-  - name: )
-- uid: DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
-  commentId: M:DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
-  parent: DrawnUi.Views.DrawnView
-  isExternal: true
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_
-  name: InitFramework(bool)
-  nameWithType: DrawnView.InitFramework(bool)
-  fullName: DrawnUi.Views.DrawnView.InitFramework(bool)
-  nameWithType.vb: DrawnView.InitFramework(Boolean)
-  fullName.vb: DrawnUi.Views.DrawnView.InitFramework(Boolean)
-  name.vb: InitFramework(Boolean)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
-    name: InitFramework
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_
-  - name: (
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.InitFramework(System.Boolean)
-    name: InitFramework
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_
-  - name: (
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   commentId: F:Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   parent: Microsoft.Maui.Controls.TemplatedView
@@ -6867,6 +6871,51 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.resolvecontroltemplate
   - name: (
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(System.Double,System.Double)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(System.Double,System.Double)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onsizeallocated
+  name: OnSizeAllocated(double, double)
+  nameWithType: TemplatedView.OnSizeAllocated(double, double)
+  fullName: Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(double, double)
+  nameWithType.vb: TemplatedView.OnSizeAllocated(Double, Double)
+  fullName.vb: Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(Double, Double)
+  name.vb: OnSizeAllocated(Double, Double)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(System.Double,System.Double)
+    name: OnSizeAllocated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onsizeallocated
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(System.Double,System.Double)
+    name: OnSizeAllocated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onsizeallocated
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
   - name: )
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplate
   commentId: P:Microsoft.Maui.Controls.TemplatedView.ControlTemplate
@@ -7169,51 +7218,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated
   - name: (
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.OnSizeAllocated(System.Double,System.Double)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.OnSizeAllocated(System.Double,System.Double)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onsizeallocated
-  name: OnSizeAllocated(double, double)
-  nameWithType: Layout.OnSizeAllocated(double, double)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.OnSizeAllocated(double, double)
-  nameWithType.vb: Layout.OnSizeAllocated(Double, Double)
-  fullName.vb: Microsoft.Maui.Controls.Compatibility.Layout.OnSizeAllocated(Double, Double)
-  name.vb: OnSizeAllocated(Double, Double)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnSizeAllocated(System.Double,System.Double)
-    name: OnSizeAllocated
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onsizeallocated
-  - name: (
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnSizeAllocated(System.Double,System.Double)
-    name: OnSizeAllocated
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onsizeallocated
-  - name: (
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
   - name: )
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
   commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
@@ -10689,36 +10693,23 @@ references:
     name: Collections
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections
-- uid: AppoMobi.Maui.Gestures
-  commentId: N:AppoMobi.Maui.Gestures
-  isExternal: true
-  name: AppoMobi.Maui.Gestures
-  nameWithType: AppoMobi.Maui.Gestures
-  fullName: AppoMobi.Maui.Gestures
+- uid: AppoMobi.Gestures
+  commentId: N:AppoMobi.Gestures
+  name: AppoMobi.Gestures
+  nameWithType: AppoMobi.Gestures
+  fullName: AppoMobi.Gestures
   spec.csharp:
   - uid: AppoMobi
     name: AppoMobi
-    isExternal: true
   - name: .
-  - uid: AppoMobi.Maui
-    name: Maui
-    isExternal: true
-  - name: .
-  - uid: AppoMobi.Maui.Gestures
+  - uid: AppoMobi.Gestures
     name: Gestures
-    isExternal: true
   spec.vb:
   - uid: AppoMobi
     name: AppoMobi
-    isExternal: true
   - name: .
-  - uid: AppoMobi.Maui
-    name: Maui
-    isExternal: true
-  - name: .
-  - uid: AppoMobi.Maui.Gestures
+  - uid: AppoMobi.Gestures
     name: Gestures
-    isExternal: true
 - uid: DrawnUi.Draw.DrawnExtensions.GetVelocityRatioForChild(DrawnUi.Draw.IDrawnBase,DrawnUi.Draw.ISkiaControl)
   commentId: M:DrawnUi.Draw.DrawnExtensions.GetVelocityRatioForChild(DrawnUi.Draw.IDrawnBase,DrawnUi.Draw.ISkiaControl)
   href: DrawnUi.Draw.DrawnExtensions.html#DrawnUi_Draw_DrawnExtensions_GetVelocityRatioForChild_DrawnUi_Draw_IDrawnBase_DrawnUi_Draw_ISkiaControl_
@@ -11783,13 +11774,12 @@ references:
   name: AttachedTouchEffect
   nameWithType: Canvas.AttachedTouchEffect
   fullName: DrawnUi.Views.Canvas.AttachedTouchEffect
-- uid: AppoMobi.Maui.Gestures.TouchEffect
-  commentId: T:AppoMobi.Maui.Gestures.TouchEffect
-  parent: AppoMobi.Maui.Gestures
-  isExternal: true
+- uid: AppoMobi.Gestures.TouchEffect
+  commentId: T:AppoMobi.Gestures.TouchEffect
+  parent: AppoMobi.Gestures
   name: TouchEffect
   nameWithType: TouchEffect
-  fullName: AppoMobi.Maui.Gestures.TouchEffect
+  fullName: AppoMobi.Gestures.TouchEffect
 - uid: DrawnUi.Views.Canvas.CreateDebugPointer*
   commentId: Overload:DrawnUi.Views.Canvas.CreateDebugPointer
   href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_CreateDebugPointer
@@ -11995,17 +11985,16 @@ references:
   - name: )
 - uid: DrawnUi.Views.Canvas.IsSavedGesture*
   commentId: Overload:DrawnUi.Views.Canvas.IsSavedGesture
-  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_IsSavedGesture_AppoMobi_Maui_Gestures_TouchActionResult_
+  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_IsSavedGesture_AppoMobi_Gestures_TouchActionResult_
   name: IsSavedGesture
   nameWithType: Canvas.IsSavedGesture
   fullName: DrawnUi.Views.Canvas.IsSavedGesture
-- uid: AppoMobi.Maui.Gestures.TouchActionResult
-  commentId: T:AppoMobi.Maui.Gestures.TouchActionResult
-  parent: AppoMobi.Maui.Gestures
-  isExternal: true
+- uid: AppoMobi.Gestures.TouchActionResult
+  commentId: T:AppoMobi.Gestures.TouchActionResult
+  parent: AppoMobi.Gestures
   name: TouchActionResult
   nameWithType: TouchActionResult
-  fullName: AppoMobi.Maui.Gestures.TouchActionResult
+  fullName: AppoMobi.Gestures.TouchActionResult
 - uid: DrawnUi.Views.Canvas.ProcessGestures*
   commentId: Overload:DrawnUi.Views.Canvas.ProcessGestures
   href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_ProcessGestures_DrawnUi_Draw_SkiaGesturesParameters_
@@ -12027,7 +12016,7 @@ references:
   fullName: DrawnUi.Views.Canvas.HasHover
 - uid: DrawnUi.Views.Canvas.SignalInput*
   commentId: Overload:DrawnUi.Views.Canvas.SignalInput
-  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_SignalInput_DrawnUi_Draw_ISkiaGestureListener_AppoMobi_Maui_Gestures_TouchActionResult_
+  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_SignalInput_DrawnUi_Draw_ISkiaGestureListener_AppoMobi_Gestures_TouchActionResult_
   name: SignalInput
   nameWithType: Canvas.SignalInput
   fullName: DrawnUi.Views.Canvas.SignalInput
@@ -12048,69 +12037,58 @@ references:
   fullName: System.EventHandler
 - uid: DrawnUi.Views.Canvas.OnGestureEvent*
   commentId: Overload:DrawnUi.Views.Canvas.OnGestureEvent
-  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_OnGestureEvent_AppoMobi_Maui_Gestures_TouchActionType_AppoMobi_Maui_Gestures_TouchActionEventArgs_AppoMobi_Maui_Gestures_TouchActionResult_
+  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_OnGestureEvent_AppoMobi_Gestures_TouchActionType_AppoMobi_Gestures_TouchActionEventArgs_AppoMobi_Gestures_TouchActionResult_
   name: OnGestureEvent
   nameWithType: Canvas.OnGestureEvent
   fullName: DrawnUi.Views.Canvas.OnGestureEvent
-- uid: AppoMobi.Maui.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
-  commentId: M:AppoMobi.Maui.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
-  parent: AppoMobi.Maui.Gestures.IGestureListener
-  isExternal: true
+- uid: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+  commentId: M:AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+  parent: AppoMobi.Gestures.IGestureListener
   name: OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
   nameWithType: IGestureListener.OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
-  fullName: AppoMobi.Maui.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType, AppoMobi.Maui.Gestures.TouchActionEventArgs, AppoMobi.Maui.Gestures.TouchActionResult)
+  fullName: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType, AppoMobi.Gestures.TouchActionEventArgs, AppoMobi.Gestures.TouchActionResult)
   spec.csharp:
-  - uid: AppoMobi.Maui.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
+  - uid: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
     name: OnGestureEvent
-    isExternal: true
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionType
+  - uid: AppoMobi.Gestures.TouchActionType
     name: TouchActionType
-    isExternal: true
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionResult
+  - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
-    isExternal: true
   - name: )
   spec.vb:
-  - uid: AppoMobi.Maui.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)
+  - uid: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
     name: OnGestureEvent
-    isExternal: true
   - name: (
-  - uid: AppoMobi.Maui.Gestures.TouchActionType
+  - uid: AppoMobi.Gestures.TouchActionType
     name: TouchActionType
-    isExternal: true
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
-    isExternal: true
   - name: ','
   - name: " "
-  - uid: AppoMobi.Maui.Gestures.TouchActionResult
+  - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
-    isExternal: true
   - name: )
-- uid: AppoMobi.Maui.Gestures.TouchActionType
-  commentId: T:AppoMobi.Maui.Gestures.TouchActionType
-  parent: AppoMobi.Maui.Gestures
-  isExternal: true
+- uid: AppoMobi.Gestures.TouchActionType
+  commentId: T:AppoMobi.Gestures.TouchActionType
+  parent: AppoMobi.Gestures
   name: TouchActionType
   nameWithType: TouchActionType
-  fullName: AppoMobi.Maui.Gestures.TouchActionType
-- uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
-  commentId: T:AppoMobi.Maui.Gestures.TouchActionEventArgs
-  parent: AppoMobi.Maui.Gestures
-  isExternal: true
+  fullName: AppoMobi.Gestures.TouchActionType
+- uid: AppoMobi.Gestures.TouchActionEventArgs
+  commentId: T:AppoMobi.Gestures.TouchActionEventArgs
+  parent: AppoMobi.Gestures
   name: TouchActionEventArgs
   nameWithType: TouchActionEventArgs
-  fullName: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  fullName: AppoMobi.Gestures.TouchActionEventArgs
 - uid: DrawnUi.Views.Canvas.BreakLine*
   commentId: Overload:DrawnUi.Views.Canvas.BreakLine
   href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_BreakLine

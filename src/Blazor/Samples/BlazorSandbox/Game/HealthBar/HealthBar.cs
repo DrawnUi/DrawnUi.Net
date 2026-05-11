@@ -172,7 +172,7 @@ public partial class HealthBar : SkiaShape
     }
 
 
-    public double[] Points
+    public new double[] Points
     {
         get
         {

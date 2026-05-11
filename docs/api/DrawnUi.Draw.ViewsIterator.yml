@@ -23,11 +23,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewsIterator
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1415
   assemblies:
   - DrawnUi.Maui
@@ -66,11 +66,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsTemplated
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1423
   assemblies:
   - DrawnUi.Maui
@@ -95,11 +95,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatedViewsPool
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1425
   assemblies:
   - DrawnUi.Maui
@@ -124,11 +124,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DataContexts
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1426
   assemblies:
   - DrawnUi.Maui
@@ -153,11 +153,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Views
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1427
   assemblies:
   - DrawnUi.Maui
@@ -182,11 +182,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1429
   assemblies:
   - DrawnUi.Maui
@@ -218,11 +218,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SetViews
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1437
   assemblies:
   - DrawnUi.Maui
@@ -250,11 +250,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1442
   assemblies:
   - DrawnUi.Maui
@@ -282,11 +282,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEnumerator
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1448
   assemblies:
   - DrawnUi.Maui
@@ -315,11 +315,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 1459
   assemblies:
   - DrawnUi.Maui

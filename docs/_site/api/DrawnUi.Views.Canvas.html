@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class Canvas | DrawnUI for .NET MAUI </title>
+      <title>Class Canvas | DrawnUI for .NET </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class Canvas | DrawnUI for .NET MAUI ">
+      <meta name="title" content="Class Canvas | DrawnUI for .NET ">
       
-      <meta name="description" content="DrawnUI for .NET MAUI - Rendering engine built on SkiaSharp. Create pixel-perfect cross-platform apps for iOS, Android, Windows, MacCatalyst with advanced animations, gestures, and visual effects.">
+      <meta name="description" content="DrawnUI for .NET - hardware-accelerated rendering engine powered by SkiaSharp for MAUI, Blazor, and platform-agnostic hosts through DrawnUi.Net.">
       <link rel="icon" href="../images/draw.svg">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="DrawnUi_Views_Canvas" data-uid="DrawnUi.Views.Canvas" class="text-break">
-Class Canvas  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class Canvas  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -105,7 +105,7 @@ If you put this inside some Maui control like Grid whatever expect more GC colle
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[ContentProperty(&quot;Content&quot;)]
-public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ILayout, ILayoutController, IContentView, IView, IElement, ITransform, IPadding, ICrossPlatformLayout, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated, IAnimatorsManager, IVisualTreeElement, IDisposeManager, IContainer, IList&lt;IView&gt;, ICollection&lt;IView&gt;, IEnumerable&lt;IView&gt;, IEnumerable, IGestureListener</code></pre>
+public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ILayout, ILayoutController, IContentView, IView, IElement, ITransform, IPadding, ICrossPlatformLayout, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated, IAnimatorsManager, IVisualTreeElement, IContainer, IList&lt;IView&gt;, ICollection&lt;IView&gt;, IEnumerable&lt;IView&gt;, IEnumerable, IDisposeManager, IGestureListener</code></pre>
   </div>
 
 
@@ -159,12 +159,12 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
       <div><a class="xref" href="DrawnUi.Draw.ICanBeUpdated.html">ICanBeUpdated</a></div>
       <div><a class="xref" href="DrawnUi.Draw.IAnimatorsManager.html">IAnimatorsManager</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.ivisualtreeelement">IVisualTreeElement</a></div>
-      <div><a class="xref" href="DrawnUi.Views.IDisposeManager.html">IDisposeManager</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.icontainer">IContainer</a></div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.iview">IView</a>&gt;</div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.iview">IView</a>&gt;</div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.iview">IView</a>&gt;</div>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+      <div><a class="xref" href="DrawnUi.Views.IDisposeManager.html">IDisposeManager</a></div>
       <div><span class="xref">IGestureListener</span></div>
     </dd>
   </dl>
@@ -173,6 +173,57 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator">DrawnView.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_">DrawnView.Add(IView)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear">DrawnView.Clear()</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_">DrawnView.Contains(IView)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_">DrawnView.CopyTo(IView[], int)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_">DrawnView.Remove(IView)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Count">DrawnView.Count</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsReadOnly">DrawnView.IsReadOnly</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_">DrawnView.IndexOf(IView)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_">DrawnView.Insert(int, IView)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_">DrawnView.RemoveAt(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Item_System_Int32_">DrawnView.this[int]</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity">DrawnView.FixDensity()</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_">DrawnView.ReportHotreloadChildRemoved(SkiaControl)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload">DrawnView.OnHotReload()</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DestroyThis">DrawnView.DestroyThis()</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_">DrawnView.InitFramework(bool)</a>
+    </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DumpLayersTree_DrawnUi_Draw_VisualLayer_System_String_System_Boolean_System_Int32_">DrawnView.DumpLayersTree(VisualLayer, string, bool, int)</a>
     </div>
@@ -303,6 +354,12 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CanvasView">DrawnView.CanvasView</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestedCanvasViewIsHardwareAccelerated">DrawnView.RequestedCanvasViewIsHardwareAccelerated</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CanvasViewRequestVersion">DrawnView.CanvasViewRequestVersion</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetDeviceOrientation_DrawnUi_Draw_DeviceOrientation_">DrawnView.SetDeviceOrientation(DeviceOrientation)</a>
     </div>
     <div>
@@ -336,9 +393,6 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ConnectedHandler">DrawnView.ConnectedHandler()</a>
     </div>
     <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_FixDensity">DrawnView.FixDensity()</a>
-    </div>
-    <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_StopDrawingWhenUpdateIsLocked">DrawnView.StopDrawingWhenUpdateIsLocked</a>
     </div>
     <div>
@@ -361,9 +415,6 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsRendering">DrawnView.IsRendering</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Delayed">DrawnView.Delayed</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetDensity">DrawnView.GetDensity()</a>
@@ -414,9 +465,6 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ShouldInvalidateByChildren">DrawnView.ShouldInvalidateByChildren</a>
     </div>
     <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_UpdateLocksProperty">DrawnView.UpdateLocksProperty</a>
-    </div>
-    <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_UpdateLocks">DrawnView.UpdateLocks</a>
     </div>
     <div>
@@ -436,9 +484,6 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Tag">DrawnView.Tag</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsRootView_System_Single_System_Single_SkiaSharp_SKRect_">DrawnView.IsRootView(float, float, SKRect)</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CalculateLayout_SkiaSharp_SKRect_System_Double_System_Double_System_Double_">DrawnView.CalculateLayout(SKRect, double, double, double)</a>
@@ -484,6 +529,9 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_LastDrawnRect">DrawnView.LastDrawnRect</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnDrawSurface_SkiaSharp_SKSurface_SkiaSharp_SKRect_">DrawnView.OnDrawSurface(SKSurface, SKRect)</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CanRender">DrawnView.CanRender</a>
@@ -651,12 +699,6 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildAdded_DrawnUi_Draw_SkiaControl_">DrawnView.ReportHotreloadChildAdded(SkiaControl)</a>
     </div>
     <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_">DrawnView.RemoveSubView(SkiaControl)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHotreloadChildRemoved_DrawnUi_Draw_SkiaControl_">DrawnView.ReportHotreloadChildRemoved(SkiaControl)</a>
-    </div>
-    <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnChildRemoved_DrawnUi_Draw_SkiaControl_">DrawnView.OnChildRemoved(SkiaControl)</a>
     </div>
     <div>
@@ -664,6 +706,9 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_AddOrRemoveView_DrawnUi_Draw_SkiaControl_System_Boolean_">DrawnView.AddOrRemoveView(SkiaControl, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveSubView_DrawnUi_Draw_SkiaControl_">DrawnView.RemoveSubView(SkiaControl)</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_UpdateModeProperty">DrawnView.UpdateModeProperty</a>
@@ -732,48 +777,6 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
       <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClipSmart_SkiaSharp_SKCanvas_SkiaSharp_SKPath_SkiaSharp_SKClipOperation_">DrawnView.ClipSmart(SKCanvas, SKPath, SKClipOperation)</a>
     </div>
     <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_GetEnumerator">DrawnView.GetEnumerator()</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Add_Microsoft_Maui_IView_">DrawnView.Add(IView)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Clear">DrawnView.Clear()</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Contains_Microsoft_Maui_IView_">DrawnView.Contains(IView)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CopyTo_Microsoft_Maui_IView___System_Int32_">DrawnView.CopyTo(IView[], int)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Remove_Microsoft_Maui_IView_">DrawnView.Remove(IView)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Count">DrawnView.Count</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsReadOnly">DrawnView.IsReadOnly</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IndexOf_Microsoft_Maui_IView_">DrawnView.IndexOf(IView)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Insert_System_Int32_Microsoft_Maui_IView_">DrawnView.Insert(int, IView)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RemoveAt_System_Int32_">DrawnView.RemoveAt(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Item_System_Int32_">DrawnView.this[int]</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHotReload">DrawnView.OnHotReload()</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_InitFramework_System_Boolean_">DrawnView.InitFramework(bool)</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.controltemplateproperty">TemplatedView.ControlTemplateProperty</a>
     </div>
     <div>
@@ -793,6 +796,9 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.resolvecontroltemplate">TemplatedView.ResolveControlTemplate()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onsizeallocated">TemplatedView.OnSizeAllocated(double, double)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.controltemplate">TemplatedView.ControlTemplate</a>
@@ -829,9 +835,6 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated">Layout.OnChildMeasureInvalidated()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onsizeallocated">Layout.OnSizeAllocated(double, double)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildadded">Layout.ShouldInvalidateOnChildAdded(View)</a>
@@ -1413,7 +1416,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas__ctor" data-uid="DrawnUi.Views.Canvas.#ctor">
   Canvas()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L879"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L879"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1442,7 +1445,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_ContentProperty" data-uid="DrawnUi.Views.Canvas.ContentProperty">
   ContentProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L982"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L982"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1472,7 +1475,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_Context" data-uid="DrawnUi.Views.Canvas.Context">
   Context
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L511"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L511"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1502,7 +1505,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_GesturesDebugColorProperty" data-uid="DrawnUi.Views.Canvas.GesturesDebugColorProperty">
   GesturesDebugColorProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L936"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L936"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1532,7 +1535,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_GesturesProperty" data-uid="DrawnUi.Views.Canvas.GesturesProperty">
   GesturesProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L968"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L968"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1562,7 +1565,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_LineBreaks" data-uid="DrawnUi.Views.Canvas.LineBreaks">
   LineBreaks
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L876"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L876"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1592,7 +1595,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_ReserveSpaceAroundProperty" data-uid="DrawnUi.Views.Canvas.ReserveSpaceAroundProperty">
   ReserveSpaceAroundProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L948"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L948"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1627,7 +1630,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_AttachedTouchEffect" data-uid="DrawnUi.Views.Canvas.AttachedTouchEffect">
   AttachedTouchEffect
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L483"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L483"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1658,7 +1661,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_Content" data-uid="DrawnUi.Views.Canvas.Content">
   Content
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L998"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L998"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1689,7 +1692,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_ContentSize" data-uid="DrawnUi.Views.Canvas.ContentSize">
   ContentSize
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L377"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L377"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1720,7 +1723,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_DebugPointer" data-uid="DrawnUi.Views.Canvas.DebugPointer">
   DebugPointer
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L498"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L498"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1751,7 +1754,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_DelayNanosBetweenGC" data-uid="DrawnUi.Views.Canvas.DelayNanosBetweenGC">
   DelayNanosBetweenGC
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L904"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L904"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1782,7 +1785,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_Gestures" data-uid="DrawnUi.Views.Canvas.Gestures">
   Gestures
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L974"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L974"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1813,7 +1816,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_GesturesDebugColor" data-uid="DrawnUi.Views.Canvas.GesturesDebugColor">
   GesturesDebugColor
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L942"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L942"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1844,7 +1847,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_HadInput" data-uid="DrawnUi.Views.Canvas.HadInput">
   HadInput
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L521"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L521"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Have consumed input in previous or current pass. To notify them about UP (release) even if they don't get it via touch.</p>
@@ -1876,7 +1879,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_HasHover" data-uid="DrawnUi.Views.Canvas.HasHover">
   HasHover
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L730"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L730"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Exchange point to set itsself or read who has hover</p>
@@ -1908,7 +1911,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_ReceivedInput" data-uid="DrawnUi.Views.Canvas.ReceivedInput">
   ReceivedInput
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L516"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L516"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Got input during current pass</p>
@@ -1940,7 +1943,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_ReserveSpaceAround" data-uid="DrawnUi.Views.Canvas.ReserveSpaceAround">
   ReserveSpaceAround
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L954"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L954"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -1971,7 +1974,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_TimeLastGC" data-uid="DrawnUi.Views.Canvas.TimeLastGC">
   TimeLastGC
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L903"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L903"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2006,7 +2009,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_AdaptHeightContraintToContentRequest_System_Single_DrawnUi_Draw_ScaledSize_System_Double_" data-uid="DrawnUi.Views.Canvas.AdaptHeightContraintToContentRequest(System.Single,DrawnUi.Draw.ScaledSize,System.Double)">
   AdaptHeightContraintToContentRequest(float, ScaledSize, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L340"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L340"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2046,7 +2049,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_AdaptHeightContraintToRequest_System_Double_" data-uid="DrawnUi.Views.Canvas.AdaptHeightContraintToRequest(System.Double)">
   AdaptHeightContraintToRequest(double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L234"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L234"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2082,7 +2085,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_AdaptSizeRequestToContent_System_Double_System_Double_" data-uid="DrawnUi.Views.Canvas.AdaptSizeRequestToContent(System.Double,System.Double)">
   AdaptSizeRequestToContent(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L359"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L359"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>In UNITS</p>
@@ -2121,7 +2124,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_AdaptSizeToContentIfNeeded_System_Double_System_Double_System_Boolean_" data-uid="DrawnUi.Views.Canvas.AdaptSizeToContentIfNeeded(System.Double,System.Double,System.Boolean)">
   AdaptSizeToContentIfNeeded(double, double, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L99"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2161,7 +2164,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_AdaptWidthContraintToContentRequest_System_Single_DrawnUi_Draw_ScaledSize_System_Double_" data-uid="DrawnUi.Views.Canvas.AdaptWidthContraintToContentRequest(System.Single,DrawnUi.Draw.ScaledSize,System.Double)">
   AdaptWidthContraintToContentRequest(float, ScaledSize, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L327"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L327"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2201,7 +2204,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_AdaptWidthContraintToRequest_System_Double_" data-uid="DrawnUi.Views.Canvas.AdaptWidthContraintToRequest(System.Double)">
   AdaptWidthContraintToRequest(double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2237,7 +2240,7 @@ public class Canvas : DrawnView, INotifyPropertyChanged, IEffectControlProvider,
 
   <h3 id="DrawnUi_Views_Canvas_ArrangeOverride_Microsoft_Maui_Graphics_Rect_" data-uid="DrawnUi.Views.Canvas.ArrangeOverride(Microsoft.Maui.Graphics.Rect)">
   ArrangeOverride(Rect)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L129"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>We need this mainly to autosize inside grid cells
@@ -2275,7 +2278,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_BreakLine" data-uid="DrawnUi.Views.Canvas.BreakLine">
   BreakLine()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L871"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L871"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2301,7 +2304,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_CollectGarbage_System_Int64_" data-uid="DrawnUi.Views.Canvas.CollectGarbage(System.Int64)">
   CollectGarbage(long)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L906"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L906"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2332,7 +2335,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_CreateDebugPointer" data-uid="DrawnUi.Views.Canvas.CreateDebugPointer">
   CreateDebugPointer()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L485"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L485"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2363,7 +2366,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_DetachGestures" data-uid="DrawnUi.Views.Canvas.DetachGestures">
   DetachGestures()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L442"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L442"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2389,7 +2392,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_DisableUpdates" data-uid="DrawnUi.Views.Canvas.DisableUpdates">
   DisableUpdates()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L1028"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L1028"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Disable invalidating and drawing on the canvas</p>
@@ -2416,7 +2419,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_Draw_DrawnUi_Draw_DrawingContext_" data-uid="DrawnUi.Views.Canvas.Draw(DrawnUi.Draw.DrawingContext)">
   Draw(DrawingContext)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L1033"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L1033"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2447,7 +2450,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_DumpDebug" data-uid="DrawnUi.Views.Canvas.DumpDebug">
   DumpDebug()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2473,7 +2476,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_EnableUpdates" data-uid="DrawnUi.Views.Canvas.EnableUpdates">
   EnableUpdates()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L1018"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L1018"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Enable canvas rendering itsself</p>
@@ -2500,7 +2503,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_FindViewCoordinatesRecursive_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_SkiaControl_SkiaSharp_SKPoint_" data-uid="DrawnUi.Views.Canvas.FindViewCoordinatesRecursive(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl,SkiaSharp.SKPoint)">
   FindViewCoordinatesRecursive(SkiaControl, SkiaControl, SKPoint)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L1183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L1183"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2540,7 +2543,7 @@ This is also called when parent visibilty changes</p>
 
   <h3 id="DrawnUi_Views_Canvas_GetGesturePositionInsideControl_DrawnUi_Draw_SkiaControl_SkiaSharp_SKPoint_" data-uid="DrawnUi.Views.Canvas.GetGesturePositionInsideControl(DrawnUi.Draw.SkiaControl,SkiaSharp.SKPoint)">
   GetGesturePositionInsideControl(SkiaControl, SKPoint)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L1138"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L1138"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the point in the local coordinate system of the view (relative to its Top/Left).
@@ -2583,7 +2586,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_GetMeasuringRectForChildren_System_Single_System_Single_System_Single_" data-uid="DrawnUi.Views.Canvas.GetMeasuringRectForChildren(System.Single,System.Single,System.Single)">
   GetMeasuringRectForChildren(float, float, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L312"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L312"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>All in in UNITS, OUT in PIXELS</p>
@@ -2624,7 +2627,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_Invalidate" data-uid="DrawnUi.Views.Canvas.Invalidate">
   Invalidate()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L207"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Makes the control dirty, in need to be remeasured and rendered but this doesn't call Update, it's up yo you</p>
@@ -2651,7 +2654,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_InvalidateMeasure" data-uid="DrawnUi.Views.Canvas.InvalidateMeasure">
   InvalidateMeasure()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Marks the current measure of an element as invalidated.</p>
@@ -2676,9 +2679,9 @@ Returns points (DIPs).</p>
 
   <a id="DrawnUi_Views_Canvas_IsSavedGesture_" data-uid="DrawnUi.Views.Canvas.IsSavedGesture*"></a>
 
-  <h3 id="DrawnUi_Views_Canvas_IsSavedGesture_AppoMobi_Maui_Gestures_TouchActionResult_" data-uid="DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Maui.Gestures.TouchActionResult)">
+  <h3 id="DrawnUi_Views_Canvas_IsSavedGesture_AppoMobi_Gestures_TouchActionResult_" data-uid="DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Gestures.TouchActionResult)">
   IsSavedGesture(TouchActionResult)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L528"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L528"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Define if consuming this gesture will register child inside <code>HadInput</code></p>
@@ -2715,7 +2718,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_LayoutVisibilityChanged" data-uid="DrawnUi.Views.Canvas.LayoutVisibilityChanged">
   LayoutVisibilityChanged()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2741,7 +2744,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_Measure_System_Single_System_Single_" data-uid="DrawnUi.Views.Canvas.Measure(System.Single,System.Single)">
   Measure(float, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L242"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2779,7 +2782,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_MeasureChild_DrawnUi_Draw_SkiaControl_System_Double_System_Double_System_Double_" data-uid="DrawnUi.Views.Canvas.MeasureChild(DrawnUi.Draw.SkiaControl,System.Double,System.Double,System.Double)">
   MeasureChild(SkiaControl, double, double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L398"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L398"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>PIXELS</p>
@@ -2822,7 +2825,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_MeasureOverride_System_Double_System_Double_" data-uid="DrawnUi.Views.Canvas.MeasureOverride(System.Double,System.Double)">
   MeasureOverride(double, double)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L144"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Allows subclasses to implement custom Measure logic during a controls measure pass.</p>
@@ -2864,7 +2867,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnChildAdded_DrawnUi_Draw_SkiaControl_" data-uid="DrawnUi.Views.Canvas.OnChildAdded(DrawnUi.Draw.SkiaControl)">
   OnChildAdded(SkiaControl)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2895,7 +2898,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnDestroyingVew" data-uid="DrawnUi.Views.Canvas.OnDestroyingVew">
   OnDestroyingVew()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L449"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L449"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2921,7 +2924,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnDisposing" data-uid="DrawnUi.Views.Canvas.OnDisposing">
   OnDisposing()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L500"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L500"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2945,9 +2948,9 @@ Returns points (DIPs).</p>
 
   <a id="DrawnUi_Views_Canvas_OnGestureEvent_" data-uid="DrawnUi.Views.Canvas.OnGestureEvent*"></a>
 
-  <h3 id="DrawnUi_Views_Canvas_OnGestureEvent_AppoMobi_Maui_Gestures_TouchActionType_AppoMobi_Maui_Gestures_TouchActionEventArgs_AppoMobi_Maui_Gestures_TouchActionResult_" data-uid="DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Maui.Gestures.TouchActionType,AppoMobi.Maui.Gestures.TouchActionEventArgs,AppoMobi.Maui.Gestures.TouchActionResult)">
+  <h3 id="DrawnUi_Views_Canvas_OnGestureEvent_AppoMobi_Gestures_TouchActionType_AppoMobi_Gestures_TouchActionEventArgs_AppoMobi_Gestures_TouchActionResult_" data-uid="DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)">
   OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L792"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L792"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>IGestureListener implementation</p>
@@ -2983,7 +2986,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnGesturesAttachChanged" data-uid="DrawnUi.Views.Canvas.OnGesturesAttachChanged">
   OnGesturesAttachChanged()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L456"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L456"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3009,7 +3012,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnHandlerChanged" data-uid="DrawnUi.Views.Canvas.OnHandlerChanged">
   OnHandlerChanged()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L411"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L411"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, should raise the <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element.handlerchanged">HandlerChanged</a> event.</p>
@@ -3039,7 +3042,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnHandlerChanging_Microsoft_Maui_Controls_HandlerChangingEventArgs_" data-uid="DrawnUi.Views.Canvas.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)">
   OnHandlerChanging(HandlerChangingEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L425"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L425"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, should raise the <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element.handlerchanging">HandlerChanging</a> event.</p>
@@ -3075,7 +3078,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnParentChanged" data-uid="DrawnUi.Views.Canvas.OnParentChanged">
   OnParentChanged()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L1008"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L1008"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, should raise the <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element.parentchanged">ParentChanged</a> event.</p>
@@ -3105,7 +3108,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnPropertyChanged_System_String_" data-uid="DrawnUi.Views.Canvas.OnPropertyChanged(System.String)">
   OnPropertyChanged(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L923"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L923"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Method that is called when a bound property is changed.</p>
@@ -3138,7 +3141,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_OnSizeChanged" data-uid="DrawnUi.Views.Canvas.OnSizeChanged">
   OnSizeChanged()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L83"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3164,7 +3167,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_PlayRippleAnimation_Microsoft_Maui_Graphics_Color_System_Double_System_Double_System_Boolean_" data-uid="DrawnUi.Views.Canvas.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean)">
   PlayRippleAnimation(Color, double, double, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L884"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L884"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3201,7 +3204,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_PlayShimmerAnimation_Microsoft_Maui_Graphics_Color_System_Single_System_Single_System_Int32_System_Boolean_" data-uid="DrawnUi.Views.Canvas.PlayShimmerAnimation(Microsoft.Maui.Graphics.Color,System.Single,System.Single,System.Int32,System.Boolean)">
   PlayShimmerAnimation(Color, float, float, int, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L890"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L890"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3240,7 +3243,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_ProcessGestures_DrawnUi_Draw_SkiaGesturesParameters_" data-uid="DrawnUi.Views.Canvas.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters)">
   ProcessGestures(SkiaGesturesParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L551"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L551"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3271,7 +3274,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_SetChildren_System_Collections_Generic_IEnumerable_DrawnUi_Draw_SkiaControl__" data-uid="DrawnUi.Views.Canvas.SetChildren(System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})">
   SetChildren(IEnumerable&lt;SkiaControl&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3302,7 +3305,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_SetContent_DrawnUi_Draw_SkiaControl_" data-uid="DrawnUi.Views.Canvas.SetContent(DrawnUi.Draw.SkiaControl)">
   SetContent(SkiaControl)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Use Content property for direct access</p>
@@ -3332,9 +3335,9 @@ Returns points (DIPs).</p>
 
   <a id="DrawnUi_Views_Canvas_SignalInput_" data-uid="DrawnUi.Views.Canvas.SignalInput*"></a>
 
-  <h3 id="DrawnUi_Views_Canvas_SignalInput_DrawnUi_Draw_ISkiaGestureListener_AppoMobi_Maui_Gestures_TouchActionResult_" data-uid="DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Maui.Gestures.TouchActionResult)">
+  <h3 id="DrawnUi_Views_Canvas_SignalInput_DrawnUi_Draw_ISkiaGestureListener_AppoMobi_Gestures_TouchActionResult_" data-uid="DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)">
   SignalInput(ISkiaGestureListener, TouchActionResult)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L760"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L760"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets signal from a listener that in has processed gestures. Return false if should not process gestures.</p>
@@ -3376,7 +3379,7 @@ Returns points (DIPs).</p>
 
   <h3 id="DrawnUi_Views_Canvas_Tapped" data-uid="DrawnUi.Views.Canvas.Tapped">
   Tapped
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L775"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L775"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3407,7 +3410,7 @@ Returns points (DIPs).</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/taublast/DrawnUi/blob/dev/src/Maui/DrawnUi/Views/Canvas.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Views/Canvas.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 

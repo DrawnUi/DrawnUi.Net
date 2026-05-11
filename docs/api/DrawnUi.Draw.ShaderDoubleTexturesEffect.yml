@@ -21,6 +21,7 @@ items:
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadedPrimaryBitmap
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadedSecondaryBitmap
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.OnDisposing
+  - DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(System.String)
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.ParentReady
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.PrimarySource
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.PrimarySourceProperty
@@ -41,11 +42,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ShaderDoubleTexturesEffect
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -168,11 +169,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ParentReady
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -196,11 +197,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldDisposePreviousTexture
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -233,11 +234,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -261,11 +262,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TilingSecondaryTexture
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -288,11 +289,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTexturesUniforms
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 45
   assemblies:
   - DrawnUi.Maui
@@ -326,11 +327,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPrimaryTextureImage
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 71
   assemblies:
   - DrawnUi.Maui
@@ -369,11 +370,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlFromProperty
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 119
   assemblies:
   - DrawnUi.Maui
@@ -396,11 +397,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlFrom
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 125
   assemblies:
   - DrawnUi.Maui
@@ -425,11 +426,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PrimarySourceProperty
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 137
   assemblies:
   - DrawnUi.Maui
@@ -452,11 +453,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PrimarySource
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 144
   assemblies:
   - DrawnUi.Maui
@@ -481,11 +482,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizePrimaryLoadedBitmap
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 170
   assemblies:
   - DrawnUi.Maui
@@ -507,11 +508,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizedPrimaryImage
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 209
   assemblies:
   - DrawnUi.Maui
@@ -538,11 +539,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedPrimaryBitmap
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 210
   assemblies:
   - DrawnUi.Maui
@@ -567,11 +568,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadPrimarySource
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 219
   assemblies:
   - DrawnUi.Maui
@@ -605,11 +606,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSecondaryTexture
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 264
   assemblies:
   - DrawnUi.Maui
@@ -633,11 +634,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondaryTexture
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 289
   assemblies:
   - DrawnUi.Maui
@@ -662,11 +663,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileSecondaryTexture
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 291
   assemblies:
   - DrawnUi.Maui
@@ -691,11 +692,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedSecondaryBitmap
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 310
   assemblies:
   - DrawnUi.Maui
@@ -718,11 +719,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondarySourceProperty
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 314
   assemblies:
   - DrawnUi.Maui
@@ -745,11 +746,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondarySource
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 321
   assemblies:
   - DrawnUi.Maui
@@ -774,11 +775,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizeSecondaryLoadedBitmapAndCompileTexture
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 348
   assemblies:
   - DrawnUi.Maui
@@ -800,11 +801,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSecondarySource
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 378
   assemblies:
   - DrawnUi.Maui
@@ -825,6 +826,40 @@ items:
   nameWithType.vb: ShaderDoubleTexturesEffect.LoadSecondarySource(String)
   fullName.vb: DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadSecondarySource(String)
   name.vb: LoadSecondarySource(String)
+- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(System.String)
+  commentId: M:DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(System.String)
+  id: OpenPackageFileStreamAsync(System.String)
+  parent: DrawnUi.Draw.ShaderDoubleTexturesEffect
+  langs:
+  - csharp
+  - vb
+  name: OpenPackageFileStreamAsync(string)
+  nameWithType: ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(string)
+  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OpenPackageFileStreamAsync
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    startLine: 414
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: protected virtual Task<Stream> OpenPackageFileStreamAsync(string fileName)
+    parameters:
+    - id: fileName
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.IO.Stream}
+    content.vb: Protected Overridable Function OpenPackageFileStreamAsync(fileName As String) As Task(Of Stream)
+  overload: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync*
+  nameWithType.vb: ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(String)
+  fullName.vb: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(String)
+  name.vb: OpenPackageFileStreamAsync(String)
 - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.AssignedControlTo
   commentId: F:DrawnUi.Draw.ShaderDoubleTexturesEffect.AssignedControlTo
   id: AssignedControlTo
@@ -838,12 +873,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: AssignedControlTo
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 418
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    startLine: 428
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -865,12 +900,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ImportCacheTo
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 420
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    startLine: 430
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -891,12 +926,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyControlTo
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 435
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    startLine: 445
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -920,12 +955,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlToProperty
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 466
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    startLine: 476
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -947,12 +982,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlTo
-    path: ../src/Maui/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 472
+    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    startLine: 482
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3598,6 +3633,75 @@ references:
   name: LoadSecondarySource
   nameWithType: ShaderDoubleTexturesEffect.LoadSecondarySource
   fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadSecondarySource
+- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync*
+  commentId: Overload:DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync
+  href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html#DrawnUi_Draw_ShaderDoubleTexturesEffect_OpenPackageFileStreamAsync_System_String_
+  name: OpenPackageFileStreamAsync
+  nameWithType: ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync
+  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync
+- uid: System.Threading.Tasks.Task{System.IO.Stream}
+  commentId: T:System.Threading.Tasks.Task{System.IO.Stream}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Stream>
+  nameWithType: Task<Stream>
+  fullName: System.Threading.Tasks.Task<System.IO.Stream>
+  nameWithType.vb: Task(Of Stream)
+  fullName.vb: System.Threading.Tasks.Task(Of System.IO.Stream)
+  name.vb: Task(Of Stream)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
 - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.ImportCacheTo*
   commentId: Overload:DrawnUi.Draw.ShaderDoubleTexturesEffect.ImportCacheTo
   href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html#DrawnUi_Draw_ShaderDoubleTexturesEffect_ImportCacheTo

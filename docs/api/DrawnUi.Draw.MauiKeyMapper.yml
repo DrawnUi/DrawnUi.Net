@@ -5,7 +5,7 @@ items:
   id: MauiKeyMapper
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.MauiKey)
+  - DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.MauiKeyMapper.MapToJava(System.Int32)
   langs:
   - csharp
@@ -16,11 +16,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/MauiKeys.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MauiKeyMapper
-    path: ../src/Maui/DrawnUi/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
     startLine: 120
   assemblies:
   - DrawnUi.Maui
@@ -51,57 +51,57 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/MauiKeys.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MapToJava
-    path: ../src/Maui/DrawnUi/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
     startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static MauiKey MapToJava(int code)
+    content: public static InputKey MapToJava(int code)
     parameters:
     - id: code
       type: System.Int32
     return:
-      type: DrawnUi.Draw.MauiKey
-    content.vb: Public Shared Function MapToJava(code As Integer) As MauiKey
+      type: DrawnUi.Draw.InputKey
+    content.vb: Public Shared Function MapToJava(code As Integer) As InputKey
   overload: DrawnUi.Draw.MauiKeyMapper.MapToJava*
   nameWithType.vb: MauiKeyMapper.MapToJava(Integer)
   fullName.vb: DrawnUi.Draw.MauiKeyMapper.MapToJava(Integer)
   name.vb: MapToJava(Integer)
-- uid: DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.MauiKey)
-  commentId: M:DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.MauiKey)
-  id: MapToCode(DrawnUi.Draw.MauiKey)
+- uid: DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.InputKey)
+  id: MapToCode(DrawnUi.Draw.InputKey)
   parent: DrawnUi.Draw.MauiKeyMapper
   langs:
   - csharp
   - vb
-  name: MapToCode(MauiKey)
-  nameWithType: MauiKeyMapper.MapToCode(MauiKey)
-  fullName: DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.MauiKey)
+  name: MapToCode(InputKey)
+  nameWithType: MauiKeyMapper.MapToCode(InputKey)
+  fullName: DrawnUi.Draw.MauiKeyMapper.MapToCode(DrawnUi.Draw.InputKey)
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Keyboard/MauiKeys.cs
-      branch: dev
+      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MapToCode
-    path: ../src/Maui/DrawnUi/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
     startLine: 131
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static int MapToCode(MauiKey key)
+    content: public static int MapToCode(InputKey key)
     parameters:
     - id: key
-      type: DrawnUi.Draw.MauiKey
+      type: DrawnUi.Draw.InputKey
     return:
       type: System.Int32
-    content.vb: Public Shared Function MapToCode(key As MauiKey) As Integer
+    content.vb: Public Shared Function MapToCode(key As InputKey) As Integer
   overload: DrawnUi.Draw.MauiKeyMapper.MapToCode*
 references:
 - uid: DrawnUi.Draw
@@ -380,16 +380,16 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
-- uid: DrawnUi.Draw.MauiKey
-  commentId: T:DrawnUi.Draw.MauiKey
+- uid: DrawnUi.Draw.InputKey
+  commentId: T:DrawnUi.Draw.InputKey
   parent: DrawnUi.Draw
-  href: DrawnUi.Draw.MauiKey.html
-  name: MauiKey
-  nameWithType: MauiKey
-  fullName: DrawnUi.Draw.MauiKey
+  href: DrawnUi.Draw.InputKey.html
+  name: InputKey
+  nameWithType: InputKey
+  fullName: DrawnUi.Draw.InputKey
 - uid: DrawnUi.Draw.MauiKeyMapper.MapToCode*
   commentId: Overload:DrawnUi.Draw.MauiKeyMapper.MapToCode
-  href: DrawnUi.Draw.MauiKeyMapper.html#DrawnUi_Draw_MauiKeyMapper_MapToCode_DrawnUi_Draw_MauiKey_
+  href: DrawnUi.Draw.MauiKeyMapper.html#DrawnUi_Draw_MauiKeyMapper_MapToCode_DrawnUi_Draw_InputKey_
   name: MapToCode
   nameWithType: MauiKeyMapper.MapToCode
   fullName: DrawnUi.Draw.MauiKeyMapper.MapToCode

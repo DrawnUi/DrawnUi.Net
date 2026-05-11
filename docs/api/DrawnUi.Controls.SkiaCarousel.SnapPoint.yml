@@ -16,11 +16,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Controls/Carousel/SkiaCarousel.cs
-      branch: dev
+      path: src/Shared/Controls/Layouts/SkiaCarousel.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SnapPoint
-    path: ../src/Maui/DrawnUi/Controls/Carousel/SkiaCarousel.cs
+    path: ../src/Shared/Controls/Layouts/SkiaCarousel.cs
     startLine: 1362
   assemblies:
   - DrawnUi.Maui
@@ -53,11 +53,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Controls/Carousel/SkiaCarousel.cs
-      branch: dev
+      path: src/Shared/Controls/Layouts/SkiaCarousel.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Id
-    path: ../src/Maui/DrawnUi/Controls/Carousel/SkiaCarousel.cs
+    path: ../src/Shared/Controls/Layouts/SkiaCarousel.cs
     startLine: 1364
   assemblies:
   - DrawnUi.Maui
@@ -82,11 +82,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Controls/Carousel/SkiaCarousel.cs
-      branch: dev
+      path: src/Shared/Controls/Layouts/SkiaCarousel.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Location
-    path: ../src/Maui/DrawnUi/Controls/Carousel/SkiaCarousel.cs
+    path: ../src/Shared/Controls/Layouts/SkiaCarousel.cs
     startLine: 1365
   assemblies:
   - DrawnUi.Maui

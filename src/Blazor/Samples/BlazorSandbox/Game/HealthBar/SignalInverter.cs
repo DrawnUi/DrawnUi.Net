@@ -157,7 +157,7 @@ public class SignalInverter : SkiaShape
         },
     };
 
-    public double[] Points
+    public new double[] Points
     {
         get
         {

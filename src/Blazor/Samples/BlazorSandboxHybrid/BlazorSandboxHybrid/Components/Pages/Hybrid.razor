@@ -1,0 +1,28 @@
+<PageTitle>DrawnUI Hybrid Sample</PageTitle>
+
+<section class="hero-card">
+    <h1>DrawnUI Server + WASM</h1>
+    <p>
+        This page is statically rendered by the host and mounts two sibling DrawnUI components with different runtimes.
+    </p>
+    <p>
+        The left card uses <strong>InteractiveServer</strong> and <strong>ServerCanvas</strong>. The right card uses
+        <strong>InteractiveWebAssembly</strong> and the browser <strong>Canvas</strong> path.
+    </p>
+</section>
+
+<div class="hybrid-grid">
+    <section class="sample-card">
+        <h2>InteractiveServer</h2>
+        <ServerDrawnPanel />
+    </section>
+
+    <section class="sample-card">
+        <h2>InteractiveWebAssembly</h2>
+        <WasmDrawnPanel @rendermode="wasmMode" />
+    </section>
+</div>
+
+@code {
+    private static readonly IComponentRenderMode wasmMode = new InteractiveWebAssemblyRenderMode(prerender: false);
+}

@@ -17,7 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\DrawnUi\DrawnUi.Blazor.csproj" />
+        <ProjectReference Include="..\..\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj" />
     </ItemGroup>
 
     <Import Project="..\..\..\SharedGame\SharedGame.projitems" Label="Shared" />

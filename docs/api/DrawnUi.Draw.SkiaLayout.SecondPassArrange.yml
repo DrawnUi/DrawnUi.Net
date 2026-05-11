@@ -18,12 +18,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondPassArrange
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 122
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -59,12 +59,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 122
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -97,12 +97,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Cell
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 122
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -126,12 +126,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Child
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 122
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -155,12 +155,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Scale
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 122
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

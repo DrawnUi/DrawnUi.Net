@@ -16,11 +16,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/IThermalStateService.cs
-      branch: dev
+      path: src/Shared/Internals/Interfaces/IThermalStateService.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IThermalStateService
-    path: ../src/Maui/DrawnUi/Shared/IThermalStateService.cs
+    path: ../src/Shared/Internals/Interfaces/IThermalStateService.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -43,11 +43,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/IThermalStateService.cs
-      branch: dev
+      path: src/Shared/Internals/Interfaces/IThermalStateService.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentState
-    path: ../src/Maui/DrawnUi/Shared/IThermalStateService.cs
+    path: ../src/Shared/Internals/Interfaces/IThermalStateService.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -72,11 +72,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/IThermalStateService.cs
-      branch: dev
+      path: src/Shared/Internals/Interfaces/IThermalStateService.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: StateChanged
-    path: ../src/Maui/DrawnUi/Shared/IThermalStateService.cs
+    path: ../src/Shared/Internals/Interfaces/IThermalStateService.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui

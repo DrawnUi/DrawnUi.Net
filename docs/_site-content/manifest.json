@@ -1,0 +1,827 @@
+{
+  "sitemap": {
+    "baseUrl": "https://drawnui.net/",
+    "changefreq": "weekly",
+    "priority": 0.5
+  },
+  "source_base_path": "C:/Dev/Cases/GitHub/DrawnUi/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "404.md",
+      "output": {
+        ".html": {
+          "relative_path": "404.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "PatreonAbout.md",
+      "output": {
+        ".html": {
+          "relative_path": "PatreonAbout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/ImageComposite.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/ImageComposite.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/game-ui.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/game-ui.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/gesture-system-architecture.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/gesture-system-architecture.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/gradients.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/gradients.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/layout-system.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/layout-system.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/platform-styling.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/platform-styling.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/recycled-cells.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/recycled-cells.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/skiascroll.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/skiascroll.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/advanced/theme-binding.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/advanced/theme-binding.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor-capabilities.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor-capabilities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor-faq.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor-faq.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor-hybrid.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor-hybrid.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor-migration.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor-migration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor-packages.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor-packages.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor-server.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor-server.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor-wasm.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor-wasm.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/blazor/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/blazor/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/animations.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/animations.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/buttons.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/buttons.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/carousels.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/carousels.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/drawers.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/drawers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/images.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/images.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/input.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/input.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/layouts.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/layouts.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/native-integration.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/native-integration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/scroll.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/scroll.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/shapes.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/shapes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/shell.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/shell.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/sprites.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/sprites.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/switches.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/switches.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/controls/text.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/controls/text.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/drawing-pipeline.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/drawing-pipeline.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/drawnui-net.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/drawnui-net.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/faq.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/faq.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/first-app-code.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/first-app-code.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/first-app.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/first-app.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/fluent-extensions.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/fluent-extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/gestures.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/gestures.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/interactive-button.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/interactive-button.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/interactive-cards.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/interactive-cards.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/layouts.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/layouts.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/maui/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/maui/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/maui/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/maui/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/maui/tutorials.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/maui/tutorials.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/net/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/net/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/news-feed-tutorial.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/news-feed-tutorial.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/platforms.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/platforms.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/porting-maui.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/porting-maui.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/sample-apps.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/sample-apps.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/shaders.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/shaders.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/startup-settings.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/startup-settings.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/tutorials.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/tutorials.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/whats-new.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/whats-new.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "demo.md",
+      "output": {
+        ".html": {
+          "relative_path": "demo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/cards.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/cards.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/custombutton.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/custombutton.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/draw.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/draw.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/drawnui.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/drawnui.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/drawnui38.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/drawnui38.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/drawnui_bt.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/drawnui_bt.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/drawnui_nt.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/drawnui_nt.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/drawnuint38.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/drawnuint38.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/first.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/first.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/firstcode.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/firstcode.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/logo.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/scroller.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/scroller.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tutorials.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/tutorials.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "shared-maui-blazor-port-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "shared-maui-blazor-port-status.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "shared-maui-blazor-porting-guide.md",
+      "output": {
+        ".html": {
+          "relative_path": "shared-maui-blazor-porting-guide.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

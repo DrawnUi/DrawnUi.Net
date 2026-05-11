@@ -19,11 +19,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Cache.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CacheValidityType
     path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 827
+    startLine: 815
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -46,11 +46,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Cache.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Valid
     path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 829
+    startLine: 817
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -72,11 +72,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Cache.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Missing
     path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 830
+    startLine: 818
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -98,11 +98,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Cache.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SizeMismatch
     path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 831
+    startLine: 819
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -124,11 +124,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Cache.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GraphicContextMismatch
     path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 832
+    startLine: 820
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

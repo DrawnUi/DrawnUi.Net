@@ -14,12 +14,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: dev
+      path: src/Shared/Controls/Button/SkiaButton.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ButtonElevationShadowEffect
-    path: ../src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 307
+    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    startLine: 309
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

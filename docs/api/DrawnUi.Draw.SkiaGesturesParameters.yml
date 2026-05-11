@@ -5,7 +5,7 @@ items:
   id: SkiaGesturesParameters
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Maui.Gestures.TouchActionResult,AppoMobi.Maui.Gestures.TouchActionEventArgs)
+  - DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs)
   - DrawnUi.Draw.SkiaGesturesParameters.Empty
   - DrawnUi.Draw.SkiaGesturesParameters.Event
   - DrawnUi.Draw.SkiaGesturesParameters.Type
@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaGesturesParameters
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -56,7 +56,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Type
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -68,7 +68,7 @@ items:
     content: public TouchActionResult Type { get; set; }
     parameters: []
     return:
-      type: AppoMobi.Maui.Gestures.TouchActionResult
+      type: AppoMobi.Gestures.TouchActionResult
     content.vb: Public Property Type As TouchActionResult
   overload: DrawnUi.Draw.SkiaGesturesParameters.Type*
 - uid: DrawnUi.Draw.SkiaGesturesParameters.Event
@@ -85,7 +85,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Event
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -97,24 +97,24 @@ items:
     content: public TouchActionEventArgs Event { get; set; }
     parameters: []
     return:
-      type: AppoMobi.Maui.Gestures.TouchActionEventArgs
+      type: AppoMobi.Gestures.TouchActionEventArgs
     content.vb: Public Property [Event] As TouchActionEventArgs
   overload: DrawnUi.Draw.SkiaGesturesParameters.Event*
-- uid: DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Maui.Gestures.TouchActionResult,AppoMobi.Maui.Gestures.TouchActionEventArgs)
-  commentId: M:DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Maui.Gestures.TouchActionResult,AppoMobi.Maui.Gestures.TouchActionEventArgs)
-  id: Create(AppoMobi.Maui.Gestures.TouchActionResult,AppoMobi.Maui.Gestures.TouchActionEventArgs)
+- uid: DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs)
+  commentId: M:DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs)
+  id: Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs)
   parent: DrawnUi.Draw.SkiaGesturesParameters
   langs:
   - csharp
   - vb
   name: Create(TouchActionResult, TouchActionEventArgs)
   nameWithType: SkiaGesturesParameters.Create(TouchActionResult, TouchActionEventArgs)
-  fullName: DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Maui.Gestures.TouchActionResult, AppoMobi.Maui.Gestures.TouchActionEventArgs)
+  fullName: DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Gestures.TouchActionResult, AppoMobi.Gestures.TouchActionEventArgs)
   type: Method
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Create
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -126,9 +126,9 @@ items:
     content: public static SkiaGesturesParameters Create(TouchActionResult action, TouchActionEventArgs args)
     parameters:
     - id: action
-      type: AppoMobi.Maui.Gestures.TouchActionResult
+      type: AppoMobi.Gestures.TouchActionResult
     - id: args
-      type: AppoMobi.Maui.Gestures.TouchActionEventArgs
+      type: AppoMobi.Gestures.TouchActionEventArgs
     return:
       type: DrawnUi.Draw.SkiaGesturesParameters
     content.vb: Public Shared Function Create(action As TouchActionResult, args As TouchActionEventArgs) As SkiaGesturesParameters
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Empty
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -518,59 +518,44 @@ references:
   name: Type
   nameWithType: SkiaGesturesParameters.Type
   fullName: DrawnUi.Draw.SkiaGesturesParameters.Type
-- uid: AppoMobi.Maui.Gestures.TouchActionResult
-  commentId: T:AppoMobi.Maui.Gestures.TouchActionResult
-  parent: AppoMobi.Maui.Gestures
-  isExternal: true
+- uid: AppoMobi.Gestures.TouchActionResult
+  commentId: T:AppoMobi.Gestures.TouchActionResult
+  parent: AppoMobi.Gestures
   name: TouchActionResult
   nameWithType: TouchActionResult
-  fullName: AppoMobi.Maui.Gestures.TouchActionResult
-- uid: AppoMobi.Maui.Gestures
-  commentId: N:AppoMobi.Maui.Gestures
-  isExternal: true
-  name: AppoMobi.Maui.Gestures
-  nameWithType: AppoMobi.Maui.Gestures
-  fullName: AppoMobi.Maui.Gestures
+  fullName: AppoMobi.Gestures.TouchActionResult
+- uid: AppoMobi.Gestures
+  commentId: N:AppoMobi.Gestures
+  name: AppoMobi.Gestures
+  nameWithType: AppoMobi.Gestures
+  fullName: AppoMobi.Gestures
   spec.csharp:
   - uid: AppoMobi
     name: AppoMobi
-    isExternal: true
   - name: .
-  - uid: AppoMobi.Maui
-    name: Maui
-    isExternal: true
-  - name: .
-  - uid: AppoMobi.Maui.Gestures
+  - uid: AppoMobi.Gestures
     name: Gestures
-    isExternal: true
   spec.vb:
   - uid: AppoMobi
     name: AppoMobi
-    isExternal: true
   - name: .
-  - uid: AppoMobi.Maui
-    name: Maui
-    isExternal: true
-  - name: .
-  - uid: AppoMobi.Maui.Gestures
+  - uid: AppoMobi.Gestures
     name: Gestures
-    isExternal: true
 - uid: DrawnUi.Draw.SkiaGesturesParameters.Event*
   commentId: Overload:DrawnUi.Draw.SkiaGesturesParameters.Event
   href: DrawnUi.Draw.SkiaGesturesParameters.html#DrawnUi_Draw_SkiaGesturesParameters_Event
   name: Event
   nameWithType: SkiaGesturesParameters.Event
   fullName: DrawnUi.Draw.SkiaGesturesParameters.Event
-- uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
-  commentId: T:AppoMobi.Maui.Gestures.TouchActionEventArgs
-  parent: AppoMobi.Maui.Gestures
-  isExternal: true
+- uid: AppoMobi.Gestures.TouchActionEventArgs
+  commentId: T:AppoMobi.Gestures.TouchActionEventArgs
+  parent: AppoMobi.Gestures
   name: TouchActionEventArgs
   nameWithType: TouchActionEventArgs
-  fullName: AppoMobi.Maui.Gestures.TouchActionEventArgs
+  fullName: AppoMobi.Gestures.TouchActionEventArgs
 - uid: DrawnUi.Draw.SkiaGesturesParameters.Create*
   commentId: Overload:DrawnUi.Draw.SkiaGesturesParameters.Create
-  href: DrawnUi.Draw.SkiaGesturesParameters.html#DrawnUi_Draw_SkiaGesturesParameters_Create_AppoMobi_Maui_Gestures_TouchActionResult_AppoMobi_Maui_Gestures_TouchActionEventArgs_
+  href: DrawnUi.Draw.SkiaGesturesParameters.html#DrawnUi_Draw_SkiaGesturesParameters_Create_AppoMobi_Gestures_TouchActionResult_AppoMobi_Gestures_TouchActionEventArgs_
   name: Create
   nameWithType: SkiaGesturesParameters.Create
   fullName: DrawnUi.Draw.SkiaGesturesParameters.Create

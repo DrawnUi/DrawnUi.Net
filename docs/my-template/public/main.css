@@ -10,6 +10,17 @@ margin-left: 4px;
 /* Light mode code styling - uses default DocFX colors */
 /* (Empty - let DocFX handle light mode styling) */
 
+body:not([data-search])[data-layout=""] > main > .toc-offcanvas,
+body:not([data-search])[data-layout="conceptual"] > main > .toc-offcanvas {
+    max-width: 200px !important;
+    flex: 0 0 200px;
+}
+
+body:not([data-search])[data-layout=""] > main > .toc-offcanvas .offcanvas-start,
+body:not([data-search])[data-layout="conceptual"] > main > .toc-offcanvas .offcanvas-start {
+    --bs-offcanvas-width: 200px;
+}
+
 /* ===== DARK MODE SYNTAX HIGHLIGHTING ===== */
 @media (prefers-color-scheme: dark) {
     /* Code block background */
@@ -155,10 +166,6 @@ margin-left: 4px;
 } /* End of dark mode media query */
 
 /* ===== CUSTOM SPACING AND TYPOGRAPHY ===== */
-
-code{
- 
-}
 
 /* Main content area spacing */
 .article {

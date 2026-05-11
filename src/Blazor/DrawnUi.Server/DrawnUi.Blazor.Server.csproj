@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AddRazorSupportForMvc>false</AddRazorSupportForMvc>
+    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>DrawnUI for Blazor Server</Title>
+    <PackageId>DrawnUi.Blazor.Server</PackageId>
+    <Description>Server-side hosting primitives for DrawnUI Blazor experiences.</Description>
+    <PackageTags>drawnui blazor server skia skiasharp</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net\DrawnUi\DrawnUi.Net.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.147.0-preview.2.1" />
+  </ItemGroup>
+
+</Project>

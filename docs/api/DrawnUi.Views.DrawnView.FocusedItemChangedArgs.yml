@@ -17,12 +17,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusedItemChangedArgs
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 2549
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 2477
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -56,12 +56,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 2551
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 2479
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -90,12 +90,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocused
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 2557
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 2485
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -119,12 +119,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Item
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 2558
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 2486
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views

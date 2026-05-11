@@ -1,0 +1,119 @@
+html, body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: #f5f0e7;
+    color: #2a2116;
+}
+
+a {
+    color: #0d5aa7;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 2.5rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    font: inherit;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: #1f4e79;
+    border-color: #1f4e79;
+    color: #fffaf2;
+}
+
+.btn-primary:hover {
+    background: #183d5f;
+    border-color: #183d5f;
+}
+
+.btn-secondary {
+    background: #fffaf2;
+    border-color: #c9b79d;
+    color: #5f4a33;
+}
+
+.btn-secondary:hover {
+    background: #f1e7d7;
+    border-color: #bda587;
+}
+
+.shell {
+    min-height: 100vh;
+}
+
+.shell-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #1f4e79, #284b63);
+    color: #fffaf2;
+}
+
+.shell-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.shell-header p {
+    margin: 0.25rem 0 0;
+    opacity: 0.88;
+}
+
+.shell-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.shell-nav a {
+    color: #fffaf2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.shell-main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.hero-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: #fffaf2;
+    border: 1px solid #e0d2bc;
+    box-shadow: 0 12px 30px rgba(55, 38, 18, 0.08);
+}
+
+.hero-card h1 {
+    margin-top: 0;
+}
+
+@media (max-width: 700px) {
+    .shell-header {
+        padding: 1.25rem;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .shell-main {
+        padding: 1rem;
+    }
+}

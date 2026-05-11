@@ -811,7 +811,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         /// <summary>
         /// Gets or sets the active semantic animation variant and maps it onto the underlying sprite-set state index.
         /// </summary>
-        public PlayerAnimState State
+        public new PlayerAnimState State
         {
             get => _state;
             set
@@ -894,7 +894,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
 
         private GhostAnimState _state;
 
-        public GhostAnimState State
+        public new GhostAnimState State
         {
             get => _state;
             set

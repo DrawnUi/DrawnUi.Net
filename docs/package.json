@@ -6,7 +6,11 @@
   "scripts": {
     "install-docfx": "npm install --no-save @docfx/lib",
     "build": "npx docfx build",
-    "serve": "npx docfx serve _site"
+    "build:content": "npx docfx build docfx.content.json",
+    "serve": "npx docfx serve _site",
+    "watch": "powershell -ExecutionPolicy Bypass -File ../dev/docs-watch.ps1",
+    "watch:content": "powershell -ExecutionPolicy Bypass -File ../dev/docs-watch-content.ps1",
+    "watch:wasm": "powershell -ExecutionPolicy Bypass -File ../dev/docs-watch-with-wasm.ps1"
   },
   "keywords": ["documentation", "docfx", "maui"],
   "author": "",
