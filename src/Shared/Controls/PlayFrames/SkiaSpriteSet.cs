@@ -32,6 +32,16 @@ public class SkiaSpriteSet : ContentLayout
         set => SetValue(StateProperty, value);
     }
 
+    public override void InvalidateWithChildren()
+    {
+        base.InvalidateWithChildren();
+
+        foreach (var sprite in _sprites.Values)
+        {
+            sprite.InvalidateWithChildren();
+        }
+    }
+
     /// <summary>
     /// Create and register a sprite for a state, preconfiguring Source, Columns, Rows, FPS and Repeat.
     /// If this state equals the current State and no active sprite exists yet, it becomes active immediately.
