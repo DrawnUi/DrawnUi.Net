@@ -166,9 +166,34 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private const float GhostBobSpeed = 2.4f;
 
     /// <summary>
-    /// Maximum world-space distance at which the player's attack can kill the ghost.
+    /// Width of the melee attack hit box projected in front of the heroine.
     /// </summary>
-    private const float AttackRange = 320f;
+    private const float AttackHitReach = 92f;
+
+    /// <summary>
+    /// Width of the small overlap anchor kept inside the heroine when projecting the melee hit box.
+    /// </summary>
+    private const float AttackHitAnchorWidth = 18f;
+
+    /// <summary>
+    /// Fractional top inset used to keep the melee hit box off the heroine's hair and empty head space.
+    /// </summary>
+    private const float AttackHitTopInsetFactor = 0.24f;
+
+    /// <summary>
+    /// Fractional bottom inset used to keep the melee hit box above the heroine's feet.
+    /// </summary>
+    private const float AttackHitBottomInsetFactor = 0.20f;
+
+    /// <summary>
+    /// Fractional horizontal inset used to tighten the ghost's combat hit box relative to its sprite bounds.
+    /// </summary>
+    private const float GhostHitInsetXFactor = 0.22f;
+
+    /// <summary>
+    /// Fractional vertical inset used to tighten the ghost's combat hit box relative to its sprite bounds.
+    /// </summary>
+    private const float GhostHitInsetYFactor = 0.18f;
 
     /// <summary>
     /// Duration of the ghost appear animation in seconds.
@@ -265,7 +290,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// <summary>
     /// Player sprite-set used for the controllable actor.
     /// </summary>
-    private readonly PlayerSprite _heroine;
+    private readonly PlayerSprite _player;
 
     /// <summary>
     /// Single wandering enemy placed east of the player start.
@@ -370,7 +395,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             ZIndex = 5,
         };
 
-        _heroine = new PlayerSprite
+        _player = new PlayerSprite
         {
             WidthRequest = PlayerRenderWidth,
             HeightRequest = PlayerRenderHeight,
@@ -380,7 +405,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             Top = PlayerGroundTop,
             ZIndex = 7,
         };
-        _heroine.State = PlayerSprite.PlayerAnimState.IdleRight;
+        _player.State = PlayerSprite.PlayerAnimState.IdleRight;
 
         _ghost = new GhostSprite
         {
@@ -405,7 +430,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             _torchBand,
             _tileset,
             _ghost,
-            _heroine,
+            _player,
             _foreground,
         ];
 
@@ -579,8 +604,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         _foreground.OffsetX = -_worldPosition * 1.25f;
 
         var drift = Math.Clamp(_worldPosition * ScreenDriftFactor, -MaxScreenDrift, MaxScreenDrift);
-        _heroine.Left = (PlayerBaseX - PlayerRenderLeftInset) + drift;
-        _heroine.Top = PlayerGroundTop + _heroineJumpOffset;
+        _player.Left = (PlayerBaseX - PlayerRenderLeftInset) + drift;
+        _player.Top = PlayerGroundTop + _heroineJumpOffset;
 
         var ghostWorldX = GetGhostWorldX();
         _ghost.Left = (ghostWorldX - _worldPosition) - (GhostRenderWidth * 0.5f);
@@ -656,13 +681,59 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             return false;
         }
 
-        if (!_heroine.DrawingRect.IntersectsWith(_ghost.DrawingRect))
+        var attackHitBox = GetAttackHitBox();
+        var ghostHitBox = GetGhostHitBox();
+
+        if (!attackHitBox.IntersectsWith(ghostHitBox))
         {
             return false;
         }
 
         SetGhostState(GhostState.Vanishing);
         return true;
+    }
+
+    /// <summary>
+    /// Builds a facing-aware melee hit box from the heroine's current automatic hit box.
+    /// </summary>
+    private SKRect GetAttackHitBox()
+    {
+        var playerHitBox = _player.HitBoxAuto;
+        var topInset = playerHitBox.Height * AttackHitTopInsetFactor;
+        var bottomInset = playerHitBox.Height * AttackHitBottomInsetFactor;
+        var top = playerHitBox.Top + topInset;
+        var bottom = playerHitBox.Bottom - bottomInset;
+
+        if (_facingLeft)
+        {
+            return new SKRect(
+                playerHitBox.Left - AttackHitReach,
+                top,
+                playerHitBox.Left + AttackHitAnchorWidth,
+                bottom);
+        }
+
+        return new SKRect(
+            playerHitBox.Right - AttackHitAnchorWidth,
+            top,
+            playerHitBox.Right + AttackHitReach,
+            bottom);
+    }
+
+    /// <summary>
+    /// Tightens the ghost's automatic hit box so attacks land on the body rather than transparent sprite padding.
+    /// </summary>
+    private SKRect GetGhostHitBox()
+    {
+        var hitBox = _ghost.HitBoxAuto;
+        var insetX = hitBox.Width * GhostHitInsetXFactor;
+        var insetY = hitBox.Height * GhostHitInsetYFactor;
+
+        return new SKRect(
+            hitBox.Left + insetX,
+            hitBox.Top + insetY,
+            hitBox.Right - insetX,
+            hitBox.Bottom - insetY);
     }
 
     /// <summary>
@@ -727,13 +798,13 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             _ => _facingLeft ? PlayerSprite.PlayerAnimState.AttackLeft : PlayerSprite.PlayerAnimState.AttackRight,
         };
 
-        if (_heroineState == state && _heroine.State == nextAnimation)
+        if (_heroineState == state && _player.State == nextAnimation)
         {
             return;
         }
 
         _heroineState = state;
-        _heroine.State = nextAnimation;
+        _player.State = nextAnimation;
     }
 
     /// <summary>
