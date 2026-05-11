@@ -9,11 +9,15 @@
 
 See also [Blazor Packages](blazor-packages.md).
 
-## What is the difference between `Canvas` and `ServerCanvas`?
+## Does Blazor still use different canvas names for WASM and Server?
 
-- `Canvas` is the browser-side DrawnUI surface used by the WASM/browser runtime
-- `ServerCanvas` is a server-rendered DrawnUI surface that returns encoded image frames to the page and routes supported interactions back to the server
-- if you expect browser-canvas semantics, local redraw, and local input processing, use `Canvas`
+No.
+
+- both runtimes now use `Canvas` as the public component name
+- `DrawnUi.Blazor.Wasm` provides the browser-side `Canvas`
+- `DrawnUi.Blazor.Server` provides the server-backed `Canvas`
+- in single-host apps you do not set an extra host-selection property; the runtime comes from the package and component graph you use
+- in mixed Blazor Web Apps, choose runtime at the component boundary and keep using `Canvas` on both sides
 
 ## Can I mix normal Razor/HTML UI with DrawnUI UI?
 
@@ -64,7 +68,7 @@ See also [Blazor Migration](blazor-migration.md).
 ### Strong current fit
 
 - browser/WASM DrawnUI surfaces through `Canvas`
-- server-rendered DrawnUI surfaces through `ServerCanvas`
+- server-rendered DrawnUI surfaces through `Canvas`
 - standard Razor + DrawnUI coexistence on the same page
 - same-app mixed server + WASM DrawnUI with sibling islands
 - button / tap style interactions in the validated samples

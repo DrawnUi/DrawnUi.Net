@@ -4,7 +4,7 @@ Use `DrawnUi.Blazor.Server` when DrawnUI should live naturally inside a Blazor S
 
 ## Mental Model
 
-`ServerCanvas` is not a live browser canvas.
+The server-backed `Canvas` is not a live browser canvas.
 
 It renders a DrawnUI control tree on the server, returns encoded image frames to the page, and routes supported interactions back to the server.
 
@@ -57,11 +57,13 @@ app.Run();
 @page "/drawn"
 @rendermode InteractiveServer
 
-<ServerCanvas RootControl="@BuildCanvasContent()"
-              Width="400"
-              Height="240"
-              Alt="DrawnUI server-rendered sample" />
+<Canvas Content="@BuildCanvasContent()"
+    WidthRequest="400"
+    HeightRequest="240"
+    Alt="DrawnUI server-rendered sample" />
 ```
+
+`DrawnUi.Blazor.Server` exposes its `Canvas` component from `DrawnUi.Blazor.Server.Views`. In a pure server app you import that runtime package and use `Canvas` directly. No extra host-selection property is required.
 
 ## Scene Builder Example
 
@@ -94,7 +96,7 @@ Build a fresh `SkiaControl` tree for each page render or server redraw. Reusing 
 
 Validated today:
 
-- server rendering of DrawnUI trees through `ServerCanvas`
+- server rendering of DrawnUI trees through `Canvas`
 - standard Blazor Server state updates reflected in the DrawnUI scene
 - clickable button-style interactions in the current samples
 

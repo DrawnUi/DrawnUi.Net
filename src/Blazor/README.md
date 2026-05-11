@@ -33,7 +33,7 @@ The docs site now mirrors the main runtime split and adoption guidance:
 - `docs/articles/blazor.md` as the entry point
 - `docs/articles/blazor-packages.md` for package roles and install targets
 - `docs/articles/blazor-wasm.md` for browser / WebAssembly setup
-- `docs/articles/blazor-server.md` for `ServerCanvas` and server rendering
+- `docs/articles/blazor-server.md` for the server-backed `Canvas` and server rendering
 - `docs/articles/blazor-hybrid.md` for mixed `InteractiveServer` + `InteractiveWebAssembly`
 - `docs/articles/blazor-capabilities.md` for current fit and limitations
 - `docs/articles/blazor-migration.md` for adoption guidance in existing apps
@@ -76,9 +76,9 @@ Use DrawnUI in a Razor page:
 @using Microsoft.Maui.Controls
 
 <Canvas WidthRequest="400"
-        HeightRequest="220"
-        BackgroundColor="#F4F1E8"
-        RootControl="@RootControl" />
+    HeightRequest="220"
+    BackgroundColor="#F4F1E8"
+    Content="@RootControl" />
 
 @code {
     private readonly SkiaControl RootControl = new SkiaLayout()
@@ -221,7 +221,7 @@ Today this package is best described as:
 
 Current validated path:
 
-- Blazor Server / `InteractiveServer` pages that render DrawnUI on the server and display the result through `ServerCanvas`
+- Blazor Server / `InteractiveServer` pages that render DrawnUI on the server and display the result through `Canvas`
 
 Current best reference:
 
@@ -252,7 +252,7 @@ Recommended positioning:
 1. Create or use an ASP.NET Core Blazor Web App host.
 2. Reference `DrawnUi.Blazor.Server`.
 3. Register the server services with `AddDrawnUiBlazorServer()`.
-4. Render DrawnUI content through `ServerCanvas` on an `InteractiveServer` page.
+4. Render DrawnUI content through `Canvas` on an `InteractiveServer` page.
 
 Host setup example:
 
@@ -282,10 +282,10 @@ Host page example:
 @page "/drawn"
 @rendermode InteractiveServer
 
-<ServerCanvas RootControl="@BuildCanvasContent()"
-              Width="400"
-              Height="240"
-              Alt="DrawnUI server-rendered sample" />
+<Canvas Content="@BuildCanvasContent()"
+    WidthRequest="400"
+    HeightRequest="240"
+    Alt="DrawnUI server-rendered sample" />
 ```
 
 Scene builder example:
@@ -360,11 +360,13 @@ If you are unsure, the fastest rule of thumb is:
 - in a mixed Blazor Web App, reference `DrawnUi.Blazor.Server` from the host and `DrawnUi.Blazor.Wasm` from the `.Client` project
 - `DrawnUi.Blazor.Core` is the shared implementation foundation and is not the normal top-level app package choice
 
-### What is the difference between `Canvas` and `ServerCanvas`?
+### Does Blazor still use different canvas names for WASM and Server?
 
-- `Canvas` is the browser-side DrawnUI rendering surface used by the WASM/browser runtime
-- `ServerCanvas` is a server-rendered DrawnUI surface that returns encoded image frames to the page and routes supported interactions back to the server
-- if a Blazor developer expects browser-canvas semantics, local redraw, and local input handling, they want `Canvas`, not `ServerCanvas`
+- no; both runtimes use `Canvas` as the public component name
+- `DrawnUi.Blazor.Wasm` provides the browser-side `Canvas`
+- `DrawnUi.Blazor.Server` provides the server-backed `Canvas`
+- in single-host apps you do not set an extra host-selection property; the runtime is implied by the package and component graph
+- in mixed Blazor Web Apps, choose runtime at the component boundary and keep using `Canvas` on both sides
 
 ### Can I mix normal Razor/HTML UI with DrawnUI UI?
 

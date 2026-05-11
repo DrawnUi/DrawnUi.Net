@@ -15,7 +15,7 @@ This page summarizes what the current Blazor slice does well, where each runtime
 ## Strong Current Fit
 
 - browser/WASM DrawnUI through `Canvas`
-- server-rendered DrawnUI through `ServerCanvas`
+- server-rendered DrawnUI through `Canvas`
 - normal Razor + DrawnUI on the same page
 - same-app mixed server + WASM DrawnUI with sibling islands
 - button and tap style interaction in the validated samples

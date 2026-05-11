@@ -57,7 +57,7 @@ builder.UseDrawnUi();
 - **[Blazor](blazor/index.md)** - Entry point for DrawnUI in Blazor
 - **[Blazor Packages](blazor-packages.md)** - Package roles, install targets, and project reference layout
 - **[Blazor WebAssembly](blazor-wasm.md)** - Browser-side `Canvas` setup and local rendering guidance
-- **[Blazor Server](blazor-server.md)** - `ServerCanvas` setup, server-rendering model, and current limits
+- **[Blazor Server](blazor-server.md)** - server-backed `Canvas` setup, server-rendering model, and current limits
 - **[Blazor Hybrid Web App](blazor-hybrid.md)** - Mixed `InteractiveServer` and `InteractiveWebAssembly` app structure
 - **[Blazor Capabilities](blazor-capabilities.md)** - Runtime fit, validated strengths, and current boundaries
 - **[Blazor Migration](blazor-migration.md)** - Adoption strategy for existing Blazor apps
