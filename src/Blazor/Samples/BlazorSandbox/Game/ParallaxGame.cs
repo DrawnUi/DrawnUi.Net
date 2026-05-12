@@ -10,8 +10,9 @@ namespace ParallaxGameLoop.Game;
 /// <summary>
 /// Side-scrolling parallax gameplay sample with keyboard-driven movement, jumping, and attack states.
 /// </summary>
-public sealed class ParallaxGame : DrawnUi.Gaming.Game
+public sealed partial class ParallaxGame : DrawnUi.Gaming.Game
 {
+
     private static readonly string[] SceneAssetSources =
     [
         "media/cold-corridors/back.png",
@@ -75,29 +76,19 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// <summary>
     /// Render size of the player sprite in scene units.
     /// </summary>
-    private const float PlayerSize = 233.28f;
+    private const float PlayerRenderWidth = 460f;
 
     /// <summary>
-    /// Actual frame width authored in the current player sheets.
-    /// Measured from the source atlases: idle 512/4, run 896/7, jump 512/4, attack 640/5.
+    /// Stable actor slot height used for bottom-anchored player rendering.
+    /// Individual animations can render shorter or taller inside this slot.
     /// </summary>
-    private const float PlayerFrameWidth = 128f;
+    private const float PlayerRenderHeight = 260f;
 
     /// <summary>
-    /// Actual frame height authored in the current player sheets.
+    /// Legacy grounded baseline preserved from the original top-anchored sample.
+    /// Bottom-anchored sprites align their feet to this world Y.
     /// </summary>
-    private const float PlayerFrameHeight = 64f;
-
-    /// <summary>
-    /// Width of the player's stable render box.
-    /// Derived from the actual widest frame size in the measured sprite sheets.
-    /// </summary>
-    private const float PlayerRenderWidth = PlayerSize * (PlayerFrameWidth / PlayerFrameHeight);
-
-    /// <summary>
-    /// Height of the player's stable render box.
-    /// </summary>
-    private const float PlayerRenderHeight = PlayerSize;
+    private const float PlayerGroundBaseline = 397.28f;
 
     /// <summary>
     /// Render height of the wandering ghost enemy.
@@ -120,9 +111,9 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private const float GhostRenderWidth = GhostRenderHeight * (GhostFrameWidth / GhostFrameHeight);
 
     /// <summary>
-    /// Left inset that keeps the visual player centered after expanding the render box width.
+    /// Left inset that keeps the actor slot centered around the heroine's authored baseline X.
     /// </summary>
-    private const float PlayerRenderLeftInset = (PlayerRenderWidth - PlayerSize) * 0.5f;
+    private const float PlayerRenderLeftInset = PlayerRenderWidth * 0.5f;
 
     /// <summary>
     /// Baseline X position of the heroine before camera drift is applied.
@@ -130,7 +121,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     private const float PlayerBaseX = 271.36f;
 
     /// <summary>
-    /// Grounded Y position of the heroine when she is not jumping.
+    /// Original top position used by the old fixed-box sample.
+    /// Kept for reference because other authored scene values were tuned against it.
     /// </summary>
     private const float PlayerGroundTop = 164.00f;
 
@@ -367,6 +359,13 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// </summary>
     private float _ghostBobTime;
 
+    public override void OnScaleChanged()
+    {
+        base.OnScaleChanged();
+
+        InvalidateWithChildren();
+    }
+
     /// <summary>
     /// Creates the scene graph, player sprite, and parallax layers for the playable corridor sample.
     /// </summary>
@@ -402,7 +401,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             HorizontalOptions = LayoutOptions.Start,
             VerticalOptions = LayoutOptions.Start,
             Left = PlayerBaseX - PlayerRenderLeftInset,
-            Top = PlayerGroundTop,
+            Top = PlayerGroundBaseline - PlayerRenderHeight,
             ZIndex = 7,
         };
         _player.State = PlayerSprite.PlayerAnimState.IdleRight;
@@ -470,6 +469,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// </summary>
     public override void OnKeyDown(InputKey key)
     {
+        Console.WriteLine($"[ParallaxGame] KeyDown {key}");
+
         switch (key)
         {
             case InputKey.ArrowLeft:
@@ -500,6 +501,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
     /// </summary>
     public override void OnKeyUp(InputKey key)
     {
+        Console.WriteLine($"[ParallaxGame] KeyUp {key}");
+
         switch (key)
         {
             case InputKey.ArrowLeft:
@@ -605,7 +608,7 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
 
         var drift = Math.Clamp(_worldPosition * ScreenDriftFactor, -MaxScreenDrift, MaxScreenDrift);
         _player.Left = (PlayerBaseX - PlayerRenderLeftInset) + drift;
-        _player.Top = PlayerGroundTop + _heroineJumpOffset;
+        _player.Top = (PlayerGroundBaseline - PlayerRenderHeight) + _heroineJumpOffset;
 
         var ghostWorldX = GetGhostWorldX();
         _ghost.Left = (ghostWorldX - _worldPosition) - (GhostRenderWidth * 0.5f);
@@ -803,6 +806,8 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
             return;
         }
 
+        Console.WriteLine($"[ParallaxGame] State {_heroineState} -> {state}, anim {_player.State} -> {nextAnimation}");
+
         _heroineState = state;
         _player.State = nextAnimation;
     }
@@ -855,93 +860,6 @@ public sealed class ParallaxGame : DrawnUi.Gaming.Game
         Patrolling,
         Vanishing,
         Gone,
-    }
-
-    /// <summary>
-    /// Sprite-set wrapper that exposes semantic player animation states and left/right mirroring.
-    /// </summary>
-    private sealed class PlayerSprite : SkiaSpriteSet
-    {
-        /// <summary>
-        /// Concrete animation variants, split by action and facing direction.
-        /// </summary>
-        public enum PlayerAnimState
-        {
-            IdleRight,
-            IdleLeft,
-            RunRight,
-            RunLeft,
-            JumpRight,
-            JumpLeft,
-            AttackRight,
-            AttackLeft,
-        }
-
-        private PlayerAnimState _state;
-
-        /// <summary>
-        /// Gets or sets the active semantic animation variant and maps it onto the underlying sprite-set state index.
-        /// </summary>
-        public new PlayerAnimState State
-        {
-            get => _state;
-            set
-            {
-                if (_state == value)
-                {
-                    return;
-                }
-
-                _state = value;
-                base.State = value switch
-                {
-                    PlayerAnimState.IdleLeft or PlayerAnimState.IdleRight => 0,
-                    PlayerAnimState.RunLeft or PlayerAnimState.RunRight => 1,
-                    PlayerAnimState.JumpLeft or PlayerAnimState.JumpRight => 2,
-                    _ => 3,
-                };
-                ApplyMirror();
-            }
-        }
-
-        /// <summary>
-        /// Registers the player's sprite sheets and default starting animation.
-        /// </summary>
-        public PlayerSprite()
-        {
-            Define(0, "media/gothicvania/heroine-idle.png", columns: 4, rows: 1, fps: 8);
-            Define(1, "media/gothicvania/heroine-run.png", columns: 7, rows: 1, fps: 12);
-            Define(2, "media/gothicvania/heroine-jump.png", columns: 4, rows: 1, fps: 10);
-            Define(3, "media/gothicvania/heroine-attack.png", columns: 5, rows: 1, fps: 18);
-            State = PlayerAnimState.IdleRight;
-        }
-
-        /// <summary>
-        /// Reapplies horizontal mirroring whenever the underlying sprite-set changes animation.
-        /// </summary>
-        protected override void OnChangeState(int oldState, int newState)
-        {
-            base.OnChangeState(oldState, newState);
-            ApplyMirror();
-        }
-
-        /// <summary>
-        /// Mirrors the active sprite horizontally for left-facing animation variants.
-        /// </summary>
-        private void ApplyMirror()
-        {
-            if (CurrentSprite == null)
-            {
-                return;
-            }
-
-            var mirror = State is PlayerAnimState.IdleLeft
-                or PlayerAnimState.RunLeft
-                or PlayerAnimState.JumpLeft
-                or PlayerAnimState.AttackLeft;
-
-            CurrentSprite.ScaleX = mirror ? -1 : 1;
-        }
     }
 
     /// <summary>

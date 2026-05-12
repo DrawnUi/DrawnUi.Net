@@ -1,6 +1,7 @@
 using DrawnUi.Draw;
 using DrawnUi.Views;
 using Microsoft.AspNetCore.Components;
+using SkiaSharp;
 
 namespace BlazorSandbox.Pages;
 
@@ -34,6 +35,30 @@ public class AspectLockedCanvas : Canvas
         if (scale <= 0)
         {
             scale = 1f;
+        }
+
+        if (scale < 1f)
+        {
+            var fittedWidth = wantedWidth * scale;
+            var fittedHeight = wantedHeight * scale;
+            var offsetX = context.Destination.Left + (availableWidth - fittedWidth) * 0.5f;
+            var offsetY = context.Destination.Top + (availableHeight - fittedHeight) * 0.5f;
+            var logicalDestination = new SKRect(0, 0, wantedWidth, wantedHeight);
+
+            context.Context.Canvas.Save();
+
+            try
+            {
+                context.Context.Canvas.Translate(offsetX, offsetY);
+                context.Context.Canvas.Scale(scale, scale);
+                base.Draw(context.WithDestination(logicalDestination).WithScale(context.Scale));
+            }
+            finally
+            {
+                context.Context.Canvas.Restore();
+            }
+
+            return;
         }
 
         var originalScale = context.Scale;

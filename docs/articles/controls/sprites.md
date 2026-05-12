@@ -258,6 +258,158 @@ The control automatically handles:
 
 ### Advanced: Custom Animation Speed
 
+```csharp
+mySprite.SpeedRatio = 0.5; // half speed
+mySprite.SpeedRatio = 2.0; // double speed
+```
+
+## SkiaSpriteSet
+
+`SkiaSpriteSet` is a stateful wrapper around multiple pre-created `SkiaSprite` instances. It is useful for characters or enemies that switch between states such as idle, run, jump, attack, appear, vanish, and so on.
+
+The usual pattern is:
+
+1. Define one sprite per integer state.
+2. Switch the active state by changing `State`.
+3. Wrap the integer state in your own semantic enum inside a subclass.
+
+```csharp
+public class PlayerSprite : SkiaSpriteSet
+{
+    public enum PlayerAnimState
+    {
+        Idle,
+        Run,
+        Jump,
+        Attack,
+    }
+
+    public new PlayerAnimState State
+    {
+        get => _state;
+        set
+        {
+            _state = value;
+            base.State = value switch
+            {
+                PlayerAnimState.Idle => 0,
+                PlayerAnimState.Run => 1,
+                PlayerAnimState.Jump => 2,
+                _ => 3,
+            };
+        }
+    }
+
+    private PlayerAnimState _state;
+
+    public PlayerSprite()
+    {
+        Define(0, "hero-idle.png", columns: 4, rows: 1, fps: 8);
+        Define(1, "hero-run.png", columns: 7, rows: 1, fps: 12);
+        Define(2, "hero-jump.png", columns: 4, rows: 1, fps: 10);
+        Define(3, "hero-attack.png", columns: 5, rows: 1, fps: 18);
+    }
+}
+```
+
+Use a `SkiaSpriteSet` when you want a stable actor/control in the scene while the active sprite sheet changes underneath it.
+
+## Dynamic Frame Sizing
+
+`SkiaSprite` and `SkiaSpriteSet` support frames whose visible content changes from frame to frame.
+
+This works by separating two concepts:
+
+1. Logical frame size.
+This is the full frame cell size from the sprite sheet grid.
+
+2. Visible content size.
+This is the actual opaque content inside the frame after transparent padding is trimmed.
+
+At draw time, DrawnUi keeps the logical frame as the positioning and anchoring reference, but renders only the trimmed visible content. This gives you three important properties:
+
+- Different transparent padding no longer bloats the rendered sprite.
+- Grounding stays stable because anchoring still uses the logical frame, not the cropped visible pixels.
+- Dynamic silhouettes such as wide attacks or compact idle frames render correctly without forcing every frame to have the same visible bounds.
+
+In other words, DrawnUi can handle changing visible frame bounds correctly, but it does not automatically normalize badly authored art that is fundamentally inconsistent in scale from one sheet to another.
+
+## Sprite Placement Config
+
+`SkiaSpriteSet.Define(...)` accepts an optional `placement` argument of type `SpritePlacementConfig`.
+
+Most users do not need this for every sprite.
+
+Use it when different state sheets must share a stable scale, pivot, or offset in the scene. If your idle, run, jump, and attack sheets already line up correctly, you can skip it.
+
+Important placement settings include:
+
+- `UnitsPerPixel`: shared logical scale for a sprite state.
+- `AnchorX` and `AnchorY`: pivot used to place the sprite inside its logical actor slot.
+- `OffsetXUnits` and `OffsetYUnits`: optional state-specific offsets.
+
+Typical game usage is bottom-center anchoring with a shared `UnitsPerPixel` value across idle, run, jump, and attack sheets.
+
+```csharp
+Define(0, "hero-idle.png", columns: 4, rows: 1, fps: 8,
+    placement: new SpritePlacementConfig
+    {
+        UnitsPerPixel = 3f,
+        AnchorX = 0.5f,
+        AnchorY = 1f,
+    });
+```
+
+After you provide it once during sprite-state setup, the engine uses it internally. Your gameplay code usually should not touch it again.
+
+## Hit Testing for Games
+
+For sprites, there are usually two different hit-testing needs:
+
+1. Visual hit box.
+This is the tight box around the currently visible sprite content.
+
+2. Gameplay hit box.
+This is the box your game uses for damage, hurt, reach, pickups, or interactions.
+
+DrawnUi provides a useful reusable base for the first part:
+
+- `SkiaSprite` computes a trimmed display rect for the active frame.
+- `SkiaSpriteSet.HitBoxAuto` returns that active frame rect in world space rather than the looser control slot.
+
+That means `HitBoxAuto` is a good default for visual body intersection.
+
+For gameplay, it is usually better to derive a box from `HitBoxAuto` instead of using it raw:
+
+```csharp
+var body = enemySprite.HitBoxAuto;
+
+var hurtBox = new SKRect(
+    body.Left + body.Width * 0.10f,
+    body.Top + body.Height * 0.12f,
+    body.Right - body.Width * 0.10f,
+    body.Bottom - body.Height * 0.08f);
+```
+
+For a melee attack, project a custom box from the facing side of the current body box:
+
+```csharp
+var body = playerSprite.HitBoxAuto;
+var attack = new SKRect(
+    body.Right - 16,
+    body.Top + body.Height * 0.2f,
+    body.Right + 80,
+    body.Bottom - body.Height * 0.2f);
+```
+
+This split is recommended for reusable game code:
+
+- Use `HitBoxAuto` as the truthful visual frame body box.
+- Derive scene-specific hurt boxes and attack boxes from it.
+- Keep combat tuning in the game layer, not inside the sprite renderer.
+
+If you need fixed gameplay consistency independent of animation silhouette, use authored gameplay boxes instead of relying entirely on the visual bounds.
+
 Adjust animation speed using `SpeedRatio`:
 
 ```xml

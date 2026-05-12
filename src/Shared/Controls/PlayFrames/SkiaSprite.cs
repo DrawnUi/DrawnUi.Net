@@ -11,87 +11,25 @@ namespace DrawnUi.Controls;
 /// <summary>
 /// Renders animated sprite sheets by subclassing AnimatedFramesRenderer
 /// </summary>
-public class SkiaSprite : AnimatedFramesRenderer
+public partial class SkiaSprite : AnimatedFramesRenderer
 {
-    private sealed class SpriteFrameImage : SkiaImage
+    private readonly struct FrameContentBounds
     {
-        public int FrameX { get; set; }
-        public int FrameY { get; set; }
-        public int FrameWidthPixels { get; set; }
-        public int FrameHeightPixels { get; set; }
-
-        protected override void DrawSource(
-            DrawingContext ctx,
-            LoadedImageSource source,
-            TransformAspect stretch,
-            DrawImageAlignment horizontal = DrawImageAlignment.Center,
-            DrawImageAlignment vertical = DrawImageAlignment.Center,
-            SKPaint paint = null)
+        public FrameContentBounds(int left, int top, int width, int height)
         {
-            if (FrameWidthPixels <= 0 || FrameHeightPixels <= 0)
-            {
-                base.DrawSource(ctx, source, stretch, horizontal, vertical, paint);
-                return;
-            }
-
-            if (AspectScale == SKPoint.Empty)
-            {
-                throw new ApplicationException("AspectScale is not set");
-            }
-
-            var dest = ctx.Destination;
-            var scale = ctx.Scale;
-            var aspectScaleX = AspectScale.X * (float)ZoomX;
-            var aspectScaleY = AspectScale.Y * (float)ZoomY;
-
-            var display = CalculateDisplayRect(
-                dest,
-                aspectScaleX * FrameWidthPixels,
-                aspectScaleY * FrameHeightPixels,
-                horizontal,
-                vertical);
-
-            display.Inflate(new SKSize((float)InflateAmount, (float)InflateAmount));
-            display.Offset((float)Math.Round(scale * HorizontalOffset), (float)Math.Round(scale * VerticalOffset));
-
-            DisplayRect = display;
-            TextureScale = new(dest.Width / display.Width, dest.Height / display.Height);
-
-            var activePaint = paint ?? ImagePaint;
-            var srcRect = new SKRect(FrameX, FrameY, FrameX + FrameWidthPixels, FrameY + FrameHeightPixels);
-
-            if (source.Bitmap != null)
-            {
-                ctx.Context.Canvas.DrawBitmap(source.Bitmap, srcRect, display, activePaint);
-            }
-            else if (source.Image != null)
-            {
-                if (RescalingQuality != SKFilterQuality.None)
-                {
-                    ctx.Context.Canvas.DrawImage(source.Image, srcRect, display, GetSamplingOptions(RescalingQuality, false), activePaint);
-                }
-                else
-                {
-                    ctx.Context.Canvas.DrawImage(source.Image, srcRect, display, activePaint);
-                }
-            }
+            Left = left;
+            Top = top;
+            Width = width;
+            Height = height;
         }
 
-        protected override ScaledSize SetMeasuredAsEmpty(float scale)
-        {
-            AspectScale = SKPoint.Empty;
-            return base.SetMeasuredAsEmpty(scale);
-        }
+        public int Left { get; }
 
-        public override ScaledSize OnMeasuring(float widthRequest, float heightRequest, float dscale)
-        {
-            if (FrameWidthPixels > 0 && FrameHeightPixels > 0)
-            {
-                SetAspectScale(FrameWidthPixels, FrameHeightPixels, new SKRect(0, 0, widthRequest, heightRequest), TransformAspect.AspectFit, dscale);
-            }
+        public int Top { get; }
 
-            return base.OnMeasuring(widthRequest, heightRequest, dscale);
-        }
+        public int Width { get; }
+
+        public int Height { get; }
     }
 
     /// <summary>
@@ -102,6 +40,8 @@ public class SkiaSprite : AnimatedFramesRenderer
     // In-flight task dedup — prevents multiple simultaneous fetches for the same source URL.
     private static readonly ConcurrentDictionary<string, Task<SKBitmap>> _spriteInFlight =
         new(StringComparer.OrdinalIgnoreCase);
+
+    private readonly ConcurrentDictionary<int, FrameContentBounds> _frameContentBoundsCache = new();
 
     /// <summary>
     /// Internal SkiaImage control used to display the current frame
@@ -116,14 +56,17 @@ public class SkiaSprite : AnimatedFramesRenderer
         this.Display = new SpriteFrameImage()
         {
             UseCache = SkiaCacheType.None,
+            //BackgroundColor = Colors.Yellow, //for debugging frame bounds
+            Aspect = TransformAspect.AspectFit,
             RescalingQuality = SKFilterQuality.None,
             LoadSourceOnFirstDraw = false,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
         };
 
-        Display.SetParent(this);
+        AddSubView(Display);
     }
+
 
     protected override void Paint(DrawingContext ctx)
     {
@@ -162,6 +105,60 @@ public class SkiaSprite : AnimatedFramesRenderer
     {
         IsStandalone = true;
         this.Display = display;
+    }
+
+    public float RenderWidthUnits { get; private set; } = -1f;
+
+    public float RenderHeightUnits { get; private set; } = -1f;
+
+    public float RenderUnitsPerPixel { get; private set; } = -1f;
+
+    public float RenderAnchorX { get; private set; } = 0.5f;
+
+    public float RenderAnchorY { get; private set; } = 0.5f;
+
+    public float RenderOffsetXUnits { get; private set; }
+
+    public float RenderOffsetYUnits { get; private set; }
+
+    public virtual void ApplyPlacementConfig(SpritePlacementConfig placement)
+    {
+        if (placement == null)
+        {
+            RenderUnitsPerPixel = -1f;
+            RenderWidthUnits = -1f;
+            RenderHeightUnits = -1f;
+            RenderAnchorX = 0.5f;
+            RenderAnchorY = 0.5f;
+            RenderOffsetXUnits = 0f;
+            RenderOffsetYUnits = 0f;
+        }
+        else
+        {
+            RenderUnitsPerPixel = placement.UnitsPerPixel;
+            RenderWidthUnits = placement.WidthUnits;
+            RenderHeightUnits = placement.HeightUnits;
+            RenderAnchorX = placement.AnchorX;
+            RenderAnchorY = placement.AnchorY;
+            RenderOffsetXUnits = placement.OffsetXUnits;
+            RenderOffsetYUnits = placement.OffsetYUnits;
+        }
+
+        if (Display is SpriteFrameImage frameDisplay)
+        {
+            frameDisplay.RenderUnitsPerPixel = RenderUnitsPerPixel;
+            frameDisplay.RenderWidthUnits = RenderWidthUnits;
+            frameDisplay.RenderHeightUnits = RenderHeightUnits;
+            frameDisplay.RenderAnchorX = RenderAnchorX;
+            frameDisplay.RenderAnchorY = RenderAnchorY;
+            frameDisplay.HorizontalOffset = RenderOffsetXUnits;
+            frameDisplay.VerticalOffset = RenderOffsetYUnits;
+            frameDisplay.NeedMeasure = true;
+            frameDisplay.InvalidateInternal();
+        }
+
+        NeedMeasure = true;
+        InvalidateMeasureInternal();
     }
 
     /// <summary>
@@ -535,6 +532,8 @@ public class SkiaSprite : AnimatedFramesRenderer
     {
         if (SpriteSheet == null) return;
 
+        _frameContentBoundsCache.Clear();
+
         // Calculate frames based on sprite sheet layout and dimensions
         int framesX = Math.Max(1, Columns);
         int framesY = Math.Max(1, Rows);
@@ -602,13 +601,28 @@ public class SkiaSprite : AnimatedFramesRenderer
             // Extract frame from spritesheet
             int x = col * FrameWidth;
             int y = row * FrameHeight;
+            var contentBounds = GetFrameContentBounds(actualFrame, x, y);
 
             if (Display is SpriteFrameImage frameDisplay)
             {
+                var frameSizeChanged = frameDisplay.FrameWidthPixels != FrameWidth
+                    || frameDisplay.FrameHeightPixels != FrameHeight;
+
                 frameDisplay.FrameX = x;
                 frameDisplay.FrameY = y;
                 frameDisplay.FrameWidthPixels = FrameWidth;
                 frameDisplay.FrameHeightPixels = FrameHeight;
+                frameDisplay.ContentOffsetXPixels = contentBounds.Left;
+                frameDisplay.ContentOffsetYPixels = contentBounds.Top;
+                frameDisplay.ContentWidthPixels = contentBounds.Width;
+                frameDisplay.ContentHeightPixels = contentBounds.Height;
+
+                if (frameSizeChanged)
+                {
+                    frameDisplay.NeedMeasure = true;
+                    frameDisplay.InvalidateInternal();
+                }
+
                 frameDisplay.Update();
             }
         }
@@ -616,6 +630,79 @@ public class SkiaSprite : AnimatedFramesRenderer
         {
             isSettingFrame = false;
         }
+    }
+
+    private FrameContentBounds GetFrameContentBounds(int frameNumber, int frameX, int frameY)
+    {
+        if (FrameWidth <= 0 || FrameHeight <= 0)
+        {
+            return new FrameContentBounds(0, 0, Math.Max(FrameWidth, 0), Math.Max(FrameHeight, 0));
+        }
+
+        if (_frameContentBoundsCache.TryGetValue(frameNumber, out var cached))
+        {
+            return cached;
+        }
+
+        var scanned = ScanFrameContentBounds(frameX, frameY);
+        _frameContentBoundsCache[frameNumber] = scanned;
+        return scanned;
+    }
+
+    private FrameContentBounds ScanFrameContentBounds(int frameX, int frameY)
+    {
+        var bitmap = SpriteSheet;
+        if (bitmap == null || FrameWidth <= 0 || FrameHeight <= 0)
+        {
+            return new FrameContentBounds(0, 0, Math.Max(FrameWidth, 0), Math.Max(FrameHeight, 0));
+        }
+
+        var maxFrameX = Math.Min(frameX + FrameWidth, bitmap.Width);
+        var maxFrameY = Math.Min(frameY + FrameHeight, bitmap.Height);
+        var minX = FrameWidth;
+        var minY = FrameHeight;
+        var maxX = -1;
+        var maxY = -1;
+
+        for (var y = frameY; y < maxFrameY; y++)
+        {
+            for (var x = frameX; x < maxFrameX; x++)
+            {
+                if (bitmap.GetPixel(x, y).Alpha == 0)
+                {
+                    continue;
+                }
+
+                var localX = x - frameX;
+                var localY = y - frameY;
+                if (localX < minX)
+                {
+                    minX = localX;
+                }
+
+                if (localY < minY)
+                {
+                    minY = localY;
+                }
+
+                if (localX > maxX)
+                {
+                    maxX = localX;
+                }
+
+                if (localY > maxY)
+                {
+                    maxY = localY;
+                }
+            }
+        }
+
+        if (maxX < minX || maxY < minY)
+        {
+            return new FrameContentBounds(0, 0, FrameWidth, FrameHeight);
+        }
+
+        return new FrameContentBounds(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 
     public override void Update()
@@ -642,6 +729,7 @@ public class SkiaSprite : AnimatedFramesRenderer
             if (_spriteSheet != value)
             {
                 _spriteSheet = value;
+                _frameContentBoundsCache.Clear();
                 OnPropertyChanged();
             }
         }

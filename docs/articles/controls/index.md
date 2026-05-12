@@ -35,6 +35,8 @@ There are controls that are aliases for other controls, te make porting existing
 ### Graphics Controls
 - [SkiaImage](images.md#skiaimage): Image rendering with many options and filters
 - [SkiaSvg](shapes.md#skiasvg): SVG vector graphics rendering with styling and effects
+- [SkiaSprite](sprites.md#skiasprite): Sprite sheet animation control
+- [SkiaSpriteSet](sprites.md#skiaspriteset): Stateful wrapper for characters and enemies with multiple sprite states
 - [SkiaGif](images.md#skiagif): Animated GIF support - dedicated lightweight GIF-player with playback properties
 - [SkiaMediaImage](images.md#skiamediaimage): Media image, subclassed SkiaImage for displaying any kind of images (image/animated gif/more..)
 - [SkiaLottie](animations.md#skialottie): Lottie animation with tint customization, subclassed SkiaImage

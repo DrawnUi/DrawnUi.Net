@@ -3,6 +3,17 @@ using System.Collections.Generic;
 
 namespace DrawnUi.Controls;
 
+public sealed class SpritePlacementConfig
+{
+    public float UnitsPerPixel { get; init; } = -1f;
+    public float WidthUnits { get; init; } = -1f;
+    public float HeightUnits { get; init; } = -1f;
+    public float AnchorX { get; init; } = 0.5f;
+    public float AnchorY { get; init; } = 0.5f;
+    public float OffsetXUnits { get; init; }
+    public float OffsetYUnits { get; init; }
+}
+
 /// <summary>
 /// Stateful sprite switcher that PRE-CREATES one SkiaSprite per integer state via Define().
 /// Base OnChangeState swaps the active child to the precreated sprite atomically.
@@ -13,7 +24,7 @@ public class SkiaSpriteSet : ContentLayout
 
     public SkiaSpriteSet()
     {
-        UseCache = SkiaCacheType.Operations;
+        UseCache = SkiaCacheType.Operations; //need cache to use Left + Top
     }
 
     readonly Dictionary<int, SkiaSprite> _sprites = new();
@@ -32,21 +43,22 @@ public class SkiaSpriteSet : ContentLayout
         set => SetValue(StateProperty, value);
     }
 
-    public override void InvalidateWithChildren()
+    public override void InvalidateInternal()
     {
-        base.InvalidateWithChildren();
+        base.InvalidateInternal();
 
         foreach (var sprite in _sprites.Values)
         {
-            sprite.InvalidateWithChildren();
+            sprite.Invalidate();
         }
     }
+
 
     /// <summary>
     /// Create and register a sprite for a state, preconfiguring Source, Columns, Rows, FPS and Repeat.
     /// If this state equals the current State and no active sprite exists yet, it becomes active immediately.
     /// </summary>
-    public SkiaSpriteSet Define(int state, string source, int columns, int rows, double fps = 15, int repeat = -1, bool autoPlay = true)
+    public SkiaSpriteSet Define(int state, string source, int columns, int rows, double fps = 15, int repeat = -1, bool autoPlay = true, SpritePlacementConfig placement = null)
     {
         var s = new SkiaSprite
         {
@@ -60,6 +72,8 @@ public class SkiaSpriteSet : ContentLayout
             Rows = rows,
             Source = source,
         };
+
+        s.ApplyPlacementConfig(placement);
 
         _sprites[state] = s;
 
@@ -75,6 +89,28 @@ public class SkiaSpriteSet : ContentLayout
     /// The currently active SkiaSprite instance.
     /// </summary>
     public SkiaSprite CurrentSprite => _active;
+
+    public override SKRect HitBoxAuto
+    {
+        get
+        {
+            if (_active?.Display is SkiaImage image && image.DisplayRect != SKRect.Empty)
+            {
+                var controlHitBox = image.GetHitBoxOnCanvas();
+                var displayRect = image.DisplayRect;
+                var offsetX = controlHitBox.Left - image.DrawingRect.Left;
+                var offsetY = controlHitBox.Top - image.DrawingRect.Top;
+
+                return new SKRect(
+                    displayRect.Left + offsetX,
+                    displayRect.Top + offsetY,
+                    displayRect.Right + offsetX,
+                    displayRect.Bottom + offsetY);
+            }
+
+            return base.HitBoxAuto;
+        }
+    }
 
     void SetActive(SkiaSprite sprite)
     {
