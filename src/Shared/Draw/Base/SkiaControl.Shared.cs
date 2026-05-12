@@ -6144,8 +6144,7 @@ namespace DrawnUi.Draw
 
             if (NeedToMeasureSelf())
             {
-                //MeasureSelf(destination, widthRequest, heightRequest, scale);
-                MeasureSelf(destination, GetWidthRequestPixelsWIthMargins(scale), GetHeightRequestPixelsWIthMargins(scale), scale);
+                MeasureSelf(destination, widthRequest, heightRequest, scale);
             }
             else
             {
@@ -7279,12 +7278,13 @@ namespace DrawnUi.Draw
 
         private float independetScale = -1;
 
-        /// <summary>
-        /// Will not invalidate the measurement of parent if True
-        /// </summary>
+
         bool _isParentIndependent;
         long useParentIndependent;
 
+        /// <summary>
+        /// Will not invalidate the measurement of parent if True
+        /// </summary>
         public bool IsParentIndependent
         {
             get
@@ -7686,7 +7686,7 @@ namespace DrawnUi.Draw
 
             LockUpdate(true);
 
-            foreach (var view in Views.ToList())
+            foreach (var view in GetUnorderedSubviews())
             {
                 InvalidateChildren(view as SkiaControl);
             }
@@ -7711,7 +7711,7 @@ namespace DrawnUi.Draw
             {
                 control.InvalidateInternal();
 
-                foreach (var view in control.Views.ToList())
+                foreach (var view in control.GetUnorderedSubviews())
                 {
                     InvalidateChildren(view as SkiaControl);
                 }
