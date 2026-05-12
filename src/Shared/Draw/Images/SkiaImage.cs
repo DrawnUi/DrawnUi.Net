@@ -1601,7 +1601,7 @@ public class SkiaImage : SkiaControl
     public SKPoint TextureScale { get; protected set; }
     public ScaledRect SourceImageSize { get; protected set; }
 
-    protected void SetAspectScale(int pxWidth, int pxHeight, SKRect dest, TransformAspect stretch, float scale)
+    protected virtual void SetAspectScale(int pxWidth, int pxHeight, SKRect dest, TransformAspect stretch, float scale)
     {
         var scaled = RescaleAspect(pxWidth, pxHeight, dest, stretch);
 
@@ -1756,6 +1756,13 @@ public class SkiaImage : SkiaControl
         }
 
         return SetMeasured(width, height, false, false, request.Scale);
+    }
+
+    public override void InvalidateInternal()
+    {
+        base.InvalidateInternal();
+
+        AspectScale = SKPoint.Empty;
     }
 
     #endregion
