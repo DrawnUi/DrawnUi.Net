@@ -165,7 +165,9 @@ namespace DrawnUi.Draw
                 return -1f;
             }
 
-            return -(float)Math.Round(halfStroke);
+            // Ceiling guarantees stroke outer edge stays >= 0.5px inside DrawingRect boundary,
+            // preventing bleed into un-erased composite cache boundary pixels at fractional offsets.
+            return -(float)Math.Ceiling(halfStroke);
         }
 
         protected SKRect CalculateContentSizeForStroke(SKRect destination, float scale)
