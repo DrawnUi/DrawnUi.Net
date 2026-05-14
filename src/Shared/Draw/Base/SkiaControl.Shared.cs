@@ -394,13 +394,27 @@ namespace DrawnUi.Draw
             get { return RenderObject?.Image; }
         }
 
+        public static readonly BindableProperty LeftProperty
+            = BindableProperty.Create(nameof(Left),
+                typeof(double), typeof(SkiaControl),
+                0.0, propertyChanged: NeedRepaint);
+
         /// <summary>
         /// Offset cache (RenderObject) in points.
         /// This works similar to TranslationX but uses no matrix transform, works faster.
         /// For code-behind fast reposition of cached controls, background thread friendly, no bindings involved.
         /// Cached controls only, not a bindable property, doesn't trigger repaint, would need to do this manually if needed.
         /// </summary>
-        public double Left { get; set; }
+        public double Left
+        {
+            get { return (double)GetValue(LeftProperty); }
+            set { SetValue(LeftProperty, value); }
+        }
+
+        public static readonly BindableProperty TopProperty
+            = BindableProperty.Create(nameof(Top),
+                typeof(double), typeof(SkiaControl),
+                0.0, propertyChanged: NeedRepaint);
 
         /// <summary>
         /// Offset cache (RenderObject) in points.
@@ -408,7 +422,11 @@ namespace DrawnUi.Draw
         /// For code-behind fast reposition of cached controls, background thread friendly, no bindings involved.
         /// Cached controls only, not a bindable property, doesn't trigger repaint, would need to do this manually if needed.
         /// </summary>
-        public double Top { get; set; }
+        public double Top
+        {
+            get { return (double)GetValue(TopProperty); }
+            set { SetValue(TopProperty, value); }
+        }
 
         public static readonly BindableProperty ControlStyleProperty = BindableProperty.Create(
             nameof(PrebuiltControlStyle),
