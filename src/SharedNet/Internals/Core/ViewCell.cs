@@ -8,7 +8,7 @@ namespace DrawnUi.Views
     public class ViewCell<T> : VisualElement
     {
         [Parameter]
-        public T BindingContext { get; set; }
+        public new T BindingContext { get; set; }
 
         [Parameter]
         public Action<T> OnSelected { get; set; }

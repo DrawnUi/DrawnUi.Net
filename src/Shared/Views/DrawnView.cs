@@ -58,7 +58,7 @@ namespace DrawnUi.Views
 
         public DiagnosticData Diagnostics = new();
 
-        public virtual void Update()
+        public new virtual void Update()
         {
             if (!Super.EnableRendering || IsDisposing || IsDisposed || UpdateLocks > 0)
             {
@@ -760,7 +760,7 @@ namespace DrawnUi.Views
             Dispose(false);
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             if (!IsDisposed)
             {
@@ -928,7 +928,7 @@ namespace DrawnUi.Views
             }
         }
 
-        public Guid Uid { get; } = Guid.NewGuid();
+        public new Guid Uid { get; } = Guid.NewGuid();
 
         public static (double X1, double Y1, double X2, double Y2) LinearGradientAngleToPoints(double direction)
         {
