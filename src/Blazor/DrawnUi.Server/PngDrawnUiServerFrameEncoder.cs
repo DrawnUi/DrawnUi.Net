@@ -19,4 +19,10 @@ public sealed class PngDrawnUiServerFrameEncoder : IDrawnUiServerFrameEncoder
 
         return ValueTask.FromResult(new DrawnUiServerFrame(ContentType, data.ToArray()));
     }
+
+    public ValueTask<DrawnUiServerFrame> EncodeAsync(
+        SKImage image,
+        DrawnUiServerFrameEncodingOptions options,
+        CancellationToken cancellationToken = default)
+        => EncodeAsync(image, cancellationToken);
 }

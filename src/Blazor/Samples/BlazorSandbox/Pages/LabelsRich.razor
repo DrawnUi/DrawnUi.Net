@@ -12,8 +12,8 @@
     <p class="docs-note">The control below uses a single markdown string. DrawnUI parses it into spans and keeps the result inside the same drawn text pipeline as the rest of the page.</p>
 
     <div class="docs-example-frame">
-        <Canvas Content="_canvasContent" WidthRequest="360"
-                HeightRequest="328"
+        <Canvas Content="_canvasContent" 
+                WidthRequest="360"
                 BackgroundColor="#F5EFE6"
                 Margin="0,8,0,0"
                 Gestures="@GesturesMode.Enabled"
@@ -25,12 +25,44 @@
 
 @code {
     private const string RichLabelSnippet = """
-var body = new SkiaRichLabel()
+new SkiaRichLabel()
 {
-    Text = "Use **bold**, _italics_, and [links](https://drawnui.net)",
-    FontSize = 14,
-    LinkColor = Colors.MediumPurple
-};
+    UseCache = SkiaCacheType.Image,
+    HorizontalTextAlignment = DrawTextAlignment.Center,
+    HorizontalOptions = LayoutOptions.Fill,
+    LineHeight = 1,
+    CharacterSpacing = 1.33,
+    FontSize = 18,
+    Text = "💥 Welcome! 🏓\r\nStart creating games with .NET and C# for Web, Mobile and Desktop with DrawnUI!",
+    TextColor = Colors.Orange,
+},
+new SkiaShape()
+{
+    Padding = new Thickness(8),
+    WidthRequest = 292,
+    HeightRequest = 216,
+    Type = ShapeType.Rectangle,
+    CornerRadius = 18,
+    BackgroundColor = Colors.White,
+    StrokeColor = new Color(0.851f, 0.827f, 0.776f, 1f),
+    StrokeWidth = 1,
+    HorizontalOptions = LayoutOptions.Center,
+    Children =
+    {
+        new SkiaRichLabel()
+        {
+            WidthRequest = 248,
+            Text = "Use **SkiaRichLabel** when your docs block needs _mixed emphasis_, `inline code`, or [links](https://github.com/taublast/DrawnUi).\n\n- Markdown-style spans are generated automatically\n- You stay inside the DrawnUI text pipeline\n- The page code stays short",
+            FontFamily = "FontText",
+            FontSize = 14,
+            LineSpacing = 1.35,
+            LinkColor = new Color(0.424f, 0.255f, 0.745f, 1f),
+            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        }
+    }
+}
 """;
 
     private SkiaControl _canvasContent;
@@ -56,8 +88,20 @@ var body = new SkiaRichLabel()
                     TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
                     HorizontalOptions = LayoutOptions.Fill
                 },
+                new SkiaRichLabel()
+                {
+                    UseCache = SkiaCacheType.Image,
+                    HorizontalTextAlignment = DrawTextAlignment.Center,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    LineHeight = 1,
+                    CharacterSpacing = 1.33,
+                    FontSize = 18,
+                    Text = "💥 Welcome! 🏓\r\nStart creating games with .NET and C# for Web, Mobile and Desktop with DrawnUI!",
+                    TextColor = Colors.Orange,
+                },
                 new SkiaShape()
                 {
+                    Padding = new Thickness(8),
                     WidthRequest = 292,
                     HeightRequest = 216,
                     Type = ShapeType.Rectangle,

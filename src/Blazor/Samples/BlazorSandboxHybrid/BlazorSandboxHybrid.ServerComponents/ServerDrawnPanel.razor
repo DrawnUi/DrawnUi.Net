@@ -16,10 +16,9 @@
     <p><strong>Clicks:</strong> @clickCount</p>
     <p><strong>Status:</strong> @statusLabel</p>
 
-    <div style="margin-top: 18px; max-width: 400px;">
+    <div style="margin-top: 18px; width: 100%; max-width: 400px;">
         <Canvas Content="@BuildCanvasContent()"
-            WidthRequest="400"
-            HeightRequest="240"
+            MaximumWidthRequest="400"
             Alt="DrawnUI hybrid server sample" />
     </div>
 </div>
@@ -36,8 +35,8 @@
     {
         return new SkiaLayout()
         {
-            WidthRequest = 400,
-            HeightRequest = 240,
+            MaximumWidthRequest = 400,
+            HorizontalOptions = LayoutOptions.Fill,
             Padding = new Thickness(18),
             BackgroundColor = SurfaceColor,
             Type = LayoutType.Column,

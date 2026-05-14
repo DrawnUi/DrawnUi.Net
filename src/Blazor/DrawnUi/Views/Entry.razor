@@ -39,7 +39,10 @@
 
         if (eventArgs.Key == "Enter")
         {
+#if !BROWSER
             await App.Current.CallJSAsync("SetFocus", InputField, false);
+#endif
+
             OnEnter?.Invoke(InputField, null);
         }
         else

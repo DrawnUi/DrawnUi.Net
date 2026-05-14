@@ -17,8 +17,11 @@
         <ServerDrawnPanel />
     </section>
 
-    <section class="sample-card">
+    <section class="sample-card sample-card-wasm">
         <h2>InteractiveWebAssembly</h2>
+        <div class="wasm-loader-shell" aria-label="Loading DrawnUI WebAssembly" aria-live="polite">
+            <div class="wasm-loader-spinner" aria-hidden="true"></div>
+        </div>
         <WasmDrawnPanel @rendermode="wasmMode" />
     </section>
 </div>

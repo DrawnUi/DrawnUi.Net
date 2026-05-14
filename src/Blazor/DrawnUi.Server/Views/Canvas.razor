@@ -12,24 +12,27 @@
 {
     <div>No DrawnUI content was provided.</div>
 }
-else if (string.IsNullOrWhiteSpace(_imageSource))
+else if (!_hasFrame)
 {
     <div>Rendering DrawnUI server frame...</div>
 }
 else
 {
-    <div @ref="_hostElement"
-         style="position:relative; display:inline-block; overflow:hidden; max-width:100%; border-radius:12px; border:1px solid #d8c6a8;">
-        <img @ref="_imageElement"
-             src="@_imageSource"
-             alt="@Alt"
-             width="@_renderedWidth"
-             height="@_renderedHeight"
-             style="@Style"
-             @onpointerdown="HandlePointerDownAsync"
-             @onpointerup="HandlePointerUpAsync"
-             @onpointerleave="HandlePointerLeaveAsync"
-             @onpointercancel="HandlePointerLeaveAsync" />
+    <div @ref="_measurementElement"
+        style="display:block; width:100%; max-width:100%;">
+       <div @ref="_hostElement"
+               style="@ResolvedHostStyle">
+          <img @ref="_imageElement"
+              src="@_imageSource"
+              alt="@Alt"
+              width="@_renderedWidth"
+              height="@_renderedHeight"
+              style="@ResolvedImageStyle"
+              @onpointerdown="HandlePointerDownAsync"
+              @onpointerup="HandlePointerUpAsync"
+              @onpointerleave="HandlePointerLeaveAsync"
+              @onpointercancel="HandlePointerLeaveAsync" />
+       </div>
     </div>
 }
 
@@ -38,21 +41,34 @@ else
     private const int DefaultAutoMeasureExtent = 1200;
     private const int MaxAutoMeasurePasses = 4;
     private DrawnUi.Blazor.Server.HeadlessCanvasHost? _host;
+    private ElementReference _measurementElement;
     private ElementReference _hostElement;
     private ElementReference _imageElement;
     private string? _imageSource;
+    private DrawnUi.Blazor.Server.DrawnUiServerFrame? _latestFrame;
     private IJSObjectReference? _module;
+    private DotNetObjectReference<Canvas>? _resizeCallbackRef;
     private ISkiaGestureListener? _activeGestureListener;
+    private bool _hasFrame;
+    private bool _needsJsFrameSync;
     private bool _needsJsModule;
     private bool _pointerIsDown;
+    private bool _resizeObserverAttached;
     private PointF _pointerDownLocation;
     private float _displayWidth;
     private float _displayHeight;
     private int _renderedWidth;
     private int _renderedHeight;
+    private long _requestedFrameVersion;
+    private long _latestFrameVersion;
     private Color _renderedBackgroundColor = Colors.Transparent;
 
     private SkiaControl? ResolvedContent => Content ?? RootControl;
+    private const string HostChromeStyle = "position:relative; overflow:hidden; border-radius:12px; box-shadow: inset 0 0 0 1px #d8c6a8;";
+    private string ResolvedHostStyle => UsesResponsiveWidth
+        ? $"{HostChromeStyle} display:block; width:100%; max-width:100%;"
+        : $"{HostChromeStyle} display:inline-block; max-width:100%;";
+    private string ResolvedImageStyle => EnsureResponsiveImageStyle(Style);
 
     [Parameter]
     public SkiaControl? Content { get; set; }
@@ -65,6 +81,9 @@ else
 
     [Parameter]
     public int? WidthRequest { get; set; }
+
+    [Parameter]
+    public int? MaximumWidthRequest { get; set; }
 
     [Parameter]
     public int? Height { get; set; }
@@ -81,18 +100,27 @@ else
     [Parameter]
     public Color BackgroundColor { get; set; } = Colors.Transparent;
 
+    [Parameter]
+    public DrawnUiServerFrameFormat FrameFormat { get; set; } = DrawnUiServerFrameFormat.Jpeg;
+
+    [Parameter]
+    public int JpegQuality { get; set; } = 85;
+
     protected override async Task OnParametersSetAsync()
     {
         if (ResolvedContent is null)
         {
             await DisposeHostAsync();
+            _hasFrame = false;
             _imageSource = null;
+            _latestFrame = null;
+            _needsJsFrameSync = false;
             return;
         }
 
         var renderSize = ResolveRenderSize();
         EnsureHost(renderSize.Width, renderSize.Height);
-        _host!.Canvas.Children = new List<SkiaControl> { ResolvedContent };
+        SetHostContent(ResolvedContent);
         await RenderFrameAsync();
         _needsJsModule = true;
     }
@@ -104,8 +132,24 @@ else
             _module ??= await JSRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
                 "./_content/DrawnUi.Blazor.Server/serverCanvas.js");
+            _resizeCallbackRef ??= DotNetObjectReference.Create(this);
 
-            var elementSize = await _module.InvokeAsync<ElementSize>("getElementSize", _imageElement);
+            var elementSize = await _module.InvokeAsync<ElementSize>("getElementSize", _hostElement);
+            if (elementSize.Width <= 0)
+            {
+                elementSize = await _module.InvokeAsync<ElementSize>("getElementSize", _measurementElement);
+            }
+
+            if (elementSize.Width <= 0)
+            {
+                elementSize = await _module.InvokeAsync<ElementSize>("getElementSize", _imageElement);
+            }
+
+            if (await TryRenderResponsiveFrameAsync(elementSize))
+            {
+                return;
+            }
+
             _displayWidth = elementSize.Width;
             _displayHeight = elementSize.Height;
             await _module.InvokeVoidAsync(
@@ -116,19 +160,135 @@ else
                 _renderedHeight,
                 CreateTapEffectBounds());
 
+            if (!_resizeObserverAttached)
+            {
+                await _module.InvokeVoidAsync("attachResizeObserver", _hostElement, _resizeCallbackRef);
+                _resizeObserverAttached = true;
+            }
+
             _needsJsModule = false;
         }
+
+        if (_module is not null && _needsJsFrameSync && _latestFrame is not null)
+        {
+            var frame = _latestFrame;
+            var frameVersion = _latestFrameVersion;
+
+            await _module.InvokeVoidAsync(
+                "setImageFrame",
+                _imageElement,
+                frameVersion,
+                frame.Payload,
+                frame.ContentType);
+
+            if (_latestFrameVersion == frameVersion)
+            {
+                _needsJsFrameSync = false;
+            }
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnHostResized(double width, double height)
+    {
+        if (!UsesResponsiveWidth || ResolvedContent is null || _host is null)
+        {
+            return;
+        }
+
+        var elementSize = new ElementSize
+        {
+            Width = Math.Max(0, (float)Math.Round(width)),
+            Height = Math.Max(0, (float)Math.Round(height))
+        };
+
+        if (await TryRenderResponsiveFrameAsync(elementSize))
+        {
+            return;
+        }
+
+        _displayWidth = elementSize.Width;
+        _displayHeight = elementSize.Height;
     }
 
     private RenderSize ResolveRenderSize()
     {
-        var renderWidth = Math.Max(1, WidthRequest ?? Width);
+        var renderWidth = ResolveRenderWidth();
         var renderHeight = HeightRequest ?? Height;
         var resolvedHeight = renderHeight is > 0
             ? renderHeight.Value
-            : MeasureAutoHeight(renderWidth);
+            : ResolveAutoHeight(renderWidth);
 
         return new RenderSize(renderWidth, resolvedHeight);
+    }
+
+    private bool UsesResponsiveWidth => WidthRequest is null && MaximumWidthRequest is > 0;
+
+    private int ResolveRenderWidth()
+    {
+        if (WidthRequest is > 0)
+        {
+            return WidthRequest.Value;
+        }
+
+        if (UsesResponsiveWidth)
+        {
+            return ResolveResponsiveWidth(_displayWidth);
+        }
+
+        return Math.Max(1, Width);
+    }
+
+    private int ResolveResponsiveWidth(float displayWidth)
+    {
+        var cappedWidth = Math.Max(1, MaximumWidthRequest ?? Width);
+        if (displayWidth <= 0)
+        {
+            return cappedWidth;
+        }
+
+        return Math.Max(1, Math.Min(cappedWidth, (int)Math.Round(displayWidth)));
+    }
+
+    private async Task<bool> TryRenderResponsiveFrameAsync(ElementSize elementSize)
+    {
+        if (!UsesResponsiveWidth || ResolvedContent is null || _host is null || elementSize.Width <= 0)
+        {
+            return false;
+        }
+
+        var desiredWidth = ResolveResponsiveWidth(elementSize.Width);
+        var requestedHeight = HeightRequest ?? Height;
+        var desiredHeight = requestedHeight is > 0
+            ? requestedHeight.Value
+            : ResolveAutoHeight(desiredWidth);
+
+        if (desiredWidth == _renderedWidth && desiredHeight == _renderedHeight)
+        {
+            return false;
+        }
+
+        _displayWidth = elementSize.Width;
+        _displayHeight = elementSize.Height;
+
+        EnsureHost(desiredWidth, desiredHeight);
+        SetHostContent(ResolvedContent);
+        ResolvedContent.InvalidateWithChildren();
+        await RenderFrameAsync();
+        _needsJsModule = true;
+        await InvokeAsync(StateHasChanged);
+        return true;
+    }
+
+    private int ResolveAutoHeight(int width)
+    {
+        var measuredHeight = MeasureAutoHeight(width);
+        if (measuredHeight <= 1 && _renderedHeight > 1)
+        {
+            return _renderedHeight;
+        }
+
+        return measuredHeight;
     }
 
     private int MeasureAutoHeight(int width)
@@ -138,22 +298,80 @@ else
             return DefaultAutoMeasureExtent;
         }
 
-        var heightConstraint = Math.Max(_renderedHeight, DefaultAutoMeasureExtent);
-
-        for (var attempt = 0; attempt < MaxAutoMeasurePasses; attempt++)
+        var widthOverride = BeginContentWidthOverride(width);
+        try
         {
-            var measured = ResolvedContent.Measure(width, heightConstraint, 1f);
-            var measuredHeight = Math.Max(1, (int)Math.Ceiling(measured.Pixels.Height));
+            var heightConstraint = Math.Max(_renderedHeight, DefaultAutoMeasureExtent);
 
-            if (!measured.HeightCut)
+            for (var attempt = 0; attempt < MaxAutoMeasurePasses; attempt++)
             {
-                return measuredHeight;
+                var measured = ResolvedContent.Measure(width, heightConstraint, 1f);
+                var measuredHeight = Math.Max(1, (int)Math.Ceiling(measured.Pixels.Height));
+
+                if (!measured.HeightCut)
+                {
+                    return measuredHeight;
+                }
+
+                heightConstraint = Math.Max(heightConstraint * 2, measuredHeight + DefaultAutoMeasureExtent);
             }
 
-            heightConstraint = Math.Max(heightConstraint * 2, measuredHeight + DefaultAutoMeasureExtent);
+            return heightConstraint;
+        }
+        finally
+        {
+            EndContentWidthOverride(widthOverride);
+        }
+    }
+
+    private (SkiaControl Content, double OriginalWidthRequest)? BeginContentWidthOverride(int width)
+    {
+        var content = ResolvedContent;
+        if (!UsesResponsiveWidth || content is null || content.WidthRequest >= 0)
+        {
+            return null;
         }
 
-        return heightConstraint;
+        var originalWidthRequest = content.WidthRequest;
+        content.WidthRequest = width;
+        return (content, originalWidthRequest);
+    }
+
+    private static void EndContentWidthOverride((SkiaControl Content, double OriginalWidthRequest)? widthOverride)
+    {
+        if (widthOverride is { } state)
+        {
+            state.Content.WidthRequest = state.OriginalWidthRequest;
+        }
+    }
+
+    private void SetHostContent(SkiaControl content)
+    {
+        if (_host is null)
+        {
+            return;
+        }
+
+        if (_host.Canvas.Views.Count == 1 && ReferenceEquals(_host.Canvas.Views[0], content))
+        {
+            return;
+        }
+
+        DetachHostContent();
+        _host.Canvas.AddSubView(content);
+    }
+
+    private void DetachHostContent()
+    {
+        if (_host is null)
+        {
+            return;
+        }
+
+        while (_host.Canvas.Views.Count > 0)
+        {
+            _host.Canvas.RemoveSubView(_host.Canvas.Views[0]);
+        }
     }
 
     private void EnsureHost(int width, int height)
@@ -166,8 +384,19 @@ else
             return;
         }
 
-        _host?.Dispose();
+        var previousHost = _host;
+        var existingContent = previousHost is not null && previousHost.Canvas.Views.Count > 0
+            ? previousHost.Canvas.Views[0]
+            : null;
+
         _host = new DrawnUi.Blazor.Server.HeadlessCanvasHost(width, height, BackgroundColor);
+
+        if (existingContent is not null)
+        {
+            _host.Canvas.AddSubView(existingContent);
+        }
+
+        previousHost?.Dispose();
         _renderedWidth = width;
         _renderedHeight = height;
         _renderedBackgroundColor = BackgroundColor;
@@ -177,14 +406,45 @@ else
     {
         if (_host is null)
         {
+            _hasFrame = false;
             _imageSource = null;
+            _latestFrame = null;
+            _latestFrameVersion = 0;
+            _needsJsFrameSync = false;
             return;
         }
 
-        _host.Render();
-        using var image = _host.Snapshot();
-        var frame = await FrameEncoder.EncodeAsync(image, cancellationToken);
-        _imageSource = frame.ToDataUrl();
+        var requestedVersion = System.Threading.Interlocked.Increment(ref _requestedFrameVersion);
+        var widthOverride = BeginContentWidthOverride(_renderedWidth);
+        try
+        {
+            _host.Render();
+            using var image = _host.Snapshot();
+            var frame = await FrameEncoder.EncodeAsync(
+                image,
+                new DrawnUiServerFrameEncodingOptions(FrameFormat, BackgroundColor, JpegQuality),
+                cancellationToken);
+
+            if (requestedVersion != System.Threading.Volatile.Read(ref _requestedFrameVersion))
+            {
+                return;
+            }
+
+            _latestFrame = frame;
+            _latestFrameVersion = requestedVersion;
+            _hasFrame = true;
+            _needsJsFrameSync = true;
+
+            // Keep the first frame in markup so prerendered HTML is immediately visible.
+            if (_imageSource is null)
+            {
+                _imageSource = frame.ToDataUrl();
+            }
+        }
+        finally
+        {
+            EndContentWidthOverride(widthOverride);
+        }
     }
 
     private async Task HandlePointerDownAsync(MouseEventArgs args)
@@ -383,6 +643,8 @@ else
         {
             try
             {
+                await _module.InvokeVoidAsync("detachResizeObserver", _hostElement);
+                await _module.InvokeVoidAsync("disposeImageFrame", _imageElement);
                 await _module.DisposeAsync();
             }
             catch (JSDisconnectedException)
@@ -393,8 +655,18 @@ else
             _module = null;
         }
 
+        _resizeObserverAttached = false;
+        _resizeCallbackRef?.Dispose();
+        _resizeCallbackRef = null;
+
+        DetachHostContent();
         _host?.Dispose();
         _host = null;
+        _latestFrame = null;
+        _latestFrameVersion = 0;
+        _requestedFrameVersion = 0;
+        _hasFrame = false;
+        _needsJsFrameSync = false;
     }
 
     public async ValueTask DisposeAsync()
@@ -427,6 +699,20 @@ else
         public float Height { get; set; }
 
         public float Radius { get; set; }
+    }
+
+    private static string EnsureResponsiveImageStyle(string style)
+    {
+        var resolvedStyle = string.IsNullOrWhiteSpace(style)
+            ? "display:block; max-width:100%;"
+            : style.Trim();
+
+        if (resolvedStyle.Contains("height:", StringComparison.OrdinalIgnoreCase))
+        {
+            return resolvedStyle;
+        }
+
+        return $"{resolvedStyle.TrimEnd(';')}; height:auto;";
     }
 
     private readonly record struct RenderSize(int Width, int Height);

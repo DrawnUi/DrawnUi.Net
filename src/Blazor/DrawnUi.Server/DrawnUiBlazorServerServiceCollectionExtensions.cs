@@ -18,7 +18,7 @@ public static class DrawnUiBlazorServerServiceCollectionExtensions
             services.Configure(configure);
         }
 
-        services.TryAddSingleton<IDrawnUiServerFrameEncoder, PngDrawnUiServerFrameEncoder>();
+        services.TryAddSingleton<IDrawnUiServerFrameEncoder, DrawnUiServerFrameEncoder>();
         services.TryAddSingleton<IDrawnUiServerRenderer, DrawnUiServerRenderer>();
 
         return services;

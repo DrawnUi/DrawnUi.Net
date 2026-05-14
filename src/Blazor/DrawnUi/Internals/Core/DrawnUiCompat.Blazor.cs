@@ -102,23 +102,6 @@ namespace DrawnUi.Draw
         }
     }
 
-    /// <summary>
-    /// Blazor-only host wrapper used by JS interop.
-    /// </summary>
-    public static class BlazorAppHost
-    {
-    }
+
 }
 
-namespace DrawnUi.Blazor.Views
-{
-    public sealed class App
-    {
-        public static App Current { get; } = new();
-
-        public Task CallJSAsync(string identifier, object arg1, bool arg2)
-        {
-            return Task.CompletedTask;
-        }
-    }
-}

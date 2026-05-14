@@ -5,11 +5,14 @@
         RootControl="@RootControl"
         Width="@Width"
         WidthRequest="@WidthRequest"
+    MaximumWidthRequest="@MaximumWidthRequest"
         Height="@Height"
         HeightRequest="@HeightRequest"
         Alt="@Alt"
         Style="@Style"
-        BackgroundColor="@BackgroundColor" />
+    BackgroundColor="@BackgroundColor"
+    FrameFormat="@FrameFormat"
+    JpegQuality="@JpegQuality" />
 
 @code {
     [Parameter]
@@ -25,6 +28,9 @@
     public int? WidthRequest { get; set; }
 
     [Parameter]
+    public int? MaximumWidthRequest { get; set; }
+
+    [Parameter]
     public int? Height { get; set; }
 
     [Parameter]
@@ -38,4 +44,10 @@
 
     [Parameter]
     public Color BackgroundColor { get; set; } = Colors.Transparent;
+
+    [Parameter]
+    public DrawnUiServerFrameFormat FrameFormat { get; set; } = DrawnUiServerFrameFormat.Jpeg;
+
+    [Parameter]
+    public int JpegQuality { get; set; } = 85;
 }

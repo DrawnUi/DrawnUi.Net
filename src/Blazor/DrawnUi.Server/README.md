@@ -15,7 +15,7 @@ The first scaffold in this folder intentionally keeps the API small:
 - `Canvas` for a minimal server-rendered DrawnUI surface
 - `ServerCanvas` as a compatibility wrapper over `Canvas`
 - `IDrawnUiServerRenderer` for headless DrawnUI-to-frame rendering
-- `IDrawnUiServerFrameEncoder` and `PngDrawnUiServerFrameEncoder` for encoded frame output
+- `IDrawnUiServerFrameEncoder`, `DrawnUiServerFrameEncoder`, and `PngDrawnUiServerFrameEncoder` for encoded frame output
 - `DrawnUiServerFrame` as the transport payload contract
 
 Planned next layer:
@@ -24,3 +24,5 @@ Planned next layer:
 - poster-frame prerender support
 - server-frame streaming and invalidation throttling
 - input event dispatch between Blazor and the DrawnUI scene
+
+Current frame delivery defaults to JPEG for smaller/faster payloads. Set `FrameFormat="DrawnUiServerFrameFormat.Png"` on `Canvas` or `ServerCanvas` when you need transparency preserved. Server canvases also expose `JpegQuality`, which defaults to `85` and only applies to JPEG delivery.

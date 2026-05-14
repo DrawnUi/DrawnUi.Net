@@ -82,7 +82,7 @@ namespace DrawnUi.Views
 
         }
 
-        public object Handler = new();
+        public new object Handler = new();
 
         private View _visibilityParent;
 
@@ -589,7 +589,7 @@ namespace DrawnUi.Views
             Invalidate();
         }
 
-        public static readonly BindableProperty MaximumWidthRequestProperty = BindableProperty.Create(
+        public new static readonly BindableProperty MaximumWidthRequestProperty = BindableProperty.Create(
             nameof(MaximumWidthRequest),
             typeof(double),
             typeof(DrawnView),
@@ -602,7 +602,7 @@ namespace DrawnUi.Views
             set { SetValue(MaximumWidthRequestProperty, value); }
         }
 
-        public static readonly BindableProperty MaximumHeightRequestProperty = BindableProperty.Create(
+        public new static readonly BindableProperty MaximumHeightRequestProperty = BindableProperty.Create(
             nameof(MaximumHeightRequest),
             typeof(double),
             typeof(DrawnView),

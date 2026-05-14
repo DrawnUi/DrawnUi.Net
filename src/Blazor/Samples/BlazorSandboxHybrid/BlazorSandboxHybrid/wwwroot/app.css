@@ -118,6 +118,36 @@ a {
 
 .sample-card {
     min-height: 100%;
+    min-width: 0;
+}
+
+.runtime-card {
+    min-width: 0;
+}
+
+.sample-card-wasm {
+    position: relative;
+}
+
+.wasm-loader-shell {
+    display: flex;
+    min-height: 21rem;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.wasm-loader-spinner {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 3px solid rgba(31, 78, 121, 0.16);
+    border-top-color: #1f4e79;
+    animation: wasm-loader-spin 0.9s linear infinite;
+}
+
+.sample-card-wasm:has(.runtime-card-wasm) .wasm-loader-shell {
+    display: none;
 }
 
 .runtime-meta {
@@ -133,12 +163,15 @@ a {
     margin: 1rem 0;
 }
 
-.runtime-card-server {
+.runtime-card-server,
+.runtime-card-wasm {
     background: linear-gradient(180deg, #fffaf2 0%, #faf0de 100%);
 }
 
-.runtime-card-wasm {
-    background: linear-gradient(180deg, #f3f8ff 0%, #edf4ff 100%);
+@keyframes wasm-loader-spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 900px) {
