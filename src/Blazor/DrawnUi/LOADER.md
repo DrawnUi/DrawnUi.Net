@@ -10,6 +10,7 @@ Shipped inside `DrawnUi.Blazor.Core` — no extra package needed.
 | File | Description |
 |---|---|
 | `drawnui-loader.css` | All `.boot-*` styles and animations |
+| `drawnui-loader.js` | Shared Blazor startup helper for progress and initialization text |
 | `drawnui-logo.svg` | Gray DrawnUI logo — for dark backgrounds |
 | `drawnui-logo-black.svg` | Black DrawnUI logo — for light backgrounds |
 
@@ -80,9 +81,33 @@ Light-themed apps can skip this or use their own color; the loader will pick up 
 
 ## Progress bar
 
-The progress fill reads `--blazor-load-percentage` and the text reads  
-`--blazor-load-percentage-text` — both set automatically by Blazor during WASM download.  
-No JS needed.
+Add the shared startup helper before `blazor.webassembly.js`, then start Blazor through it:
+
+```html
+<script src="_content/DrawnUi.Blazor.Core/drawnui-loader.js"></script>
+<script src="_framework/blazor.webassembly.js" autostart="false"></script>
+<script>
+    globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
+        initialLabel: "Loading",
+        initializingLabel: "Initializing...",
+        failureLabel: "Failed"
+    });
+</script>
+```
+
+The helper shows real download progress from `0%` to `100%`. Once resources are fully downloaded and Blazor is still starting, it switches the loader text to `initializingLabel` while keeping the fill at `100%`.
+
+All loader labels are app-provided, so they can be localized the same way you localize any other app-specific text in `index.html`.
+
+If your app already persists the selected language before Blazor starts, resolve the labels from that stored culture first so the boot screen matches the rest of the app without any extra network request. Breakout does this by reading `breakout.lang` from local storage and selecting the loader labels before calling `startBlazorWithLoader(...)`.
+
+Available loader label options:
+
+| Option | Default | Meaning |
+|---|---|---|
+| `initialLabel` | `Loading` | Initial text shown before download progress starts |
+| `initializingLabel` | `Initializing...` | Text shown after download reaches `100%` and Blazor is still booting |
+| `failureLabel` | `Failed` | Text shown if Blazor startup fails |
 
 To preview the loader at a specific progress without running the app, open:
 

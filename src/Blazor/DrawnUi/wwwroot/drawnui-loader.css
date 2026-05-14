@@ -185,7 +185,7 @@
 .boot-progress-fill {
     position: relative;
     height: 100%;
-    width: var(--blazor-load-percentage, 8%);
+    width: var(--drawnui-load-percentage, 8%);
     min-width: 2.4rem;
     border-radius: inherit;
     background: linear-gradient(90deg, #f25536 0%, #e4a130 30%, #4b8ef9 66%, #78549e 100%);
@@ -219,7 +219,7 @@
 }
 
 .boot-progress-text::after {
-    content: var(--blazor-load-percentage-text, "Loading");
+    content: var(--drawnui-load-percentage-text, "Loading");
 }
 
 @keyframes boot-spin {
