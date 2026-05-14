@@ -10,6 +10,13 @@ namespace DrawnUi.Draw
 {
     public partial class SkiaLayout : SkiaControl, ISkiaGridLayout
     {
+        public override void OnScaleChanged()
+        {
+            base.OnScaleChanged();
+
+            InvalidateWithChildren();
+        }
+
         public override bool PreArrange(SKRect destination, float widthRequest, float heightRequest, float scale)
         {
             if (!CanDraw)
