@@ -17,16 +17,18 @@
     style="@CssMargins @CssPadding @CssGridPosition @CssStyle @GestureStyle">
 
     <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" >
-        @if(RenderingMode == RenderingModeType.Default)
-        {
-            <SkiaView Superview="@this" DrawHandler="DrawFrame"
-                      Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
-        }
-        else
-        {
-            <SkiaViewAccelerated Superview="@this" DrawHandler="DrawFrame"
-                                Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
-        }
+        <div class="xaml-canvas-element" style="@CanvasSurfaceElementStyle">
+            @if(RenderingMode == RenderingModeType.Default)
+            {
+                    <SkiaView Superview="@this" DrawHandler="DrawFrame" EnableRenderLoop="@EnableRenderLoop"
+                          Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
+            }
+            else
+            {
+                    <SkiaViewAccelerated Superview="@this" DrawHandler="DrawFrame" EnableRenderLoop="@EnableRenderLoop"
+                                    Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
+            }
+        </div>
     </div>
 
     @*<div class="xaml-canvas-content">
@@ -71,6 +73,28 @@
         overflow: hidden;
     }
 
+    .xaml-canvas-element {
+        position: relative;
+        flex: 0 0 auto;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .xaml-canvas-element > * {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .xaml-canvas-element canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
     .xaml-canvas-surface.centered {
         display: flex;
         align-items: center;
@@ -98,6 +122,17 @@
 
     [Parameter]
     public SkiaControl? Content { get; set; }
+
+    [Parameter]
+    public new virtual DrawnUi.Infrastructure.Enums.UpdateMode UpdateMode { get; set; } = DrawnUi.Infrastructure.Enums.UpdateMode.Dynamic;
+
+    public bool EnableRenderLoop 
+    {
+        get
+        {
+            return UpdateMode == DrawnUi.Infrastructure.Enums.UpdateMode.Constant;
+        }
+    }
 
     public virtual bool Focus()
     {
@@ -260,6 +295,9 @@
     private float CanvasElementHeight => HeightRequest > 0 && CanUseRequestedCanvasSize()
         ? (float)HeightRequest
         : _measuredCanvasHeight > 0 ? _measuredCanvasHeight : AutoCanvasHeight;
+
+    private string CanvasSurfaceElementStyle =>
+        $"width: {CanvasElementWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}px; height: {CanvasElementHeight.ToString(System.Globalization.CultureInfo.InvariantCulture)}px;";
 
     private float AutoCanvasWidth
     {
