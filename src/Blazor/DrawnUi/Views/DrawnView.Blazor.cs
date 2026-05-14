@@ -47,17 +47,56 @@ namespace DrawnUi.Views
 
         protected void FixDensity()
         {
-            Width = CanvasView.CanvasSize.Width;
-            Height = CanvasView.CanvasSize.Height;
+            var canvasWidth = PhisicalWidth;
+            var canvasHeight = PhisicalHeight;
 
-            if (_renderingScale <= 0.0)
+            var logicalWidth = WidthRequest > 0.1
+                ? WidthRequest
+                : Width > 0.1 && Math.Abs(Width - canvasWidth) > 0.5
+                    ? Width
+                    : 0;
+            var logicalHeight = HeightRequest > 0.1
+                ? HeightRequest
+                : Height > 0.1 && Math.Abs(Height - canvasHeight) > 0.5
+                    ? Height
+                    : 0;
+
+            var inferredScale = 0f;
+            if (logicalWidth > 0.1 && canvasWidth > 0)
             {
-                var scale = (float)GetDensity();
-                if (scale <= 0.0)
-                {
-                    scale = (float)(CanvasView.CanvasSize.Width / this.Width);
-                }
+                inferredScale = (float)(canvasWidth / logicalWidth);
+            }
 
+            if (logicalHeight > 0.1 && canvasHeight > 0)
+            {
+                var heightScale = (float)(canvasHeight / logicalHeight);
+                inferredScale = inferredScale > 0.0f
+                    ? MathF.Min(inferredScale, heightScale)
+                    : heightScale;
+            }
+
+            var scale = inferredScale;
+            if (scale <= 0.0f)
+            {
+                scale = (float)GetDensity();
+            }
+
+            if (scale <= 0.0f)
+            {
+                scale = _renderingScale > 0.0f ? _renderingScale : 1.0f;
+            }
+
+            var measured = OnMeasure(WidthRequest, HeightRequest);
+            Width = measured.Width;
+            Height = measured.Height;
+
+            NeedMeasure = false;
+
+            //Width = canvasWidth;
+            //Height = canvasHeight;
+
+            if (Math.Abs(RenderingScale - scale) > 0.01f)
+            {
                 RenderingScale = scale;
             }
         }
@@ -242,13 +281,17 @@ namespace DrawnUi.Views
             }
         }
 
+        protected double PhisicalWidth = -1;
+        protected double PhisicalHeight = -1;
+
         public void SyncExternalSize(double width, double height)
         {
-            if (Math.Abs(Width - width) < 0.5 && Math.Abs(Height - height) < 0.5)
+            if (Math.Abs(PhisicalWidth - width) < 0.5 && Math.Abs(PhisicalHeight - height) < 0.5)
                 return;
 
-            Width = width;
-            Height = height;
+            PhisicalWidth = width;
+            PhisicalHeight = height;
+
             OnSizeChanged();
         }
 

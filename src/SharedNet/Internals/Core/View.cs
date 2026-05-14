@@ -208,9 +208,30 @@ namespace DrawnUi.Draw
 
         public virtual double Y { get; set; }
 
-        public virtual double Width { get; set; } = -1;
+        private double width = -1;
+        private double height = -1;
 
-        public virtual double Height { get; set; } = -1;
+        public virtual double Width
+        {
+            get => width;
+            set
+            {
+                if (value.Equals(width)) return;
+                width = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public virtual double Height
+        {
+            get => height;
+            set
+            {
+                if (value.Equals(height)) return;
+                height = value;
+                OnPropertyChanged();
+            }
+        }
 
         public static readonly BindableProperty ShadowProperty = BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(SkiaControl),
             default(Shadow));
@@ -252,6 +273,7 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty BackgroundColorProperty = BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(SkiaControl),
             Colors.Transparent);
+
         public Color BackgroundColor
         {
             get { return (Color)GetValue(BackgroundColorProperty); }
