@@ -16,7 +16,7 @@
     @ref="_hostElement"
     style="@CssMargins @CssPadding @CssGridPosition @CssStyle @GestureStyle">
 
-    <div class="xaml-canvas-surface">
+    <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" >
         @if(RenderingMode == RenderingModeType.Default)
         {
             <SkiaView Superview="@this" DrawHandler="DrawFrame"
@@ -69,6 +69,12 @@
         position: absolute;
         inset: 0;
         overflow: hidden;
+    }
+
+    .xaml-canvas-surface.centered {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .xaml-canvas-content {
@@ -180,13 +186,16 @@
     }
 
     [JSInvokable]
-    public async Task OnHostResized(double width, double height)
+    public virtual async Task OnHostResized(double width, double height)
     {
         if ((WidthRequest <= 0 && width <= 0) || (HeightRequest <= 0 && height <= 0))
             return;
 
-        var nextWidth = WidthRequest > 0 && !_isBrowserFullscreen ? (float)WidthRequest : (float)Math.Round(width);
-        var nextHeight = HeightRequest > 0 && !_isBrowserFullscreen ? (float)HeightRequest : (float)Math.Round(height);
+        var shouldUseRequestedSize = WidthRequest > 0 && CanUseRequestedCanvasSize();
+        var shouldUseRequestedHeight = HeightRequest > 0 && CanUseRequestedCanvasSize();
+
+        var nextWidth = shouldUseRequestedSize ? (float)WidthRequest : (float)Math.Round(width);
+        var nextHeight = shouldUseRequestedHeight ? (float)HeightRequest : (float)Math.Round(height);
 
         if (nextWidth == _measuredCanvasWidth && nextHeight == _measuredCanvasHeight)
             return;
@@ -244,11 +253,11 @@
         }
     }
 
-    private float CanvasElementWidth => WidthRequest > 0 && !_isBrowserFullscreen
+    private float CanvasElementWidth => WidthRequest > 0 && CanUseRequestedCanvasSize()
         ? (float)WidthRequest
         : _measuredCanvasWidth > 0 ? _measuredCanvasWidth : AutoCanvasWidth;
 
-    private float CanvasElementHeight => HeightRequest > 0 && !_isBrowserFullscreen
+    private float CanvasElementHeight => HeightRequest > 0 && CanUseRequestedCanvasSize()
         ? (float)HeightRequest
         : _measuredCanvasHeight > 0 ? _measuredCanvasHeight : AutoCanvasHeight;
 
@@ -312,7 +321,7 @@
     {
         get
         {
-            if (WidthRequest > 0 || HeightRequest > 0)
+            if (UseRequestedSizeForHostLayout && (WidthRequest > 0 || HeightRequest > 0))
             {
                 return "xaml-canvas-fixed";
             }
@@ -331,9 +340,79 @@
         get
         {
             var bg = BackgroundColorCss;
-            var ret = $"background: {bg}; {CssLayoutAlignment} {AutoCanvasStyle} {Style}";
+            var ret = $"background: {bg}; {HostLayoutAlignmentCss} {AutoCanvasStyle} {Style}";
             return new MarkupString(ret);
         }
+    }
+
+    private string HostLayoutAlignmentCss => BuildLayoutAlignmentCss(UseRequestedSizeForHostLayout);
+
+    private string BuildLayoutAlignmentCss(bool useRequestedSize)
+    {
+        var ret = string.Empty;
+        var hAlign = HorizontalOptions.Alignment;
+        var vAlign = VerticalOptions.Alignment;
+
+        var width = " width: fit-content;";
+        var height = " height: fit-content;";
+
+        if (useRequestedSize && WidthRequest >= 0)
+        {
+            width = $"width: {WidthRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+        else if (hAlign == LayoutAlignment.Fill)
+        {
+            width = "width: 100%;";
+        }
+
+        var maxWidth = string.Empty;
+        if (!double.IsPositiveInfinity(MaximumWidthRequest) && MaximumWidthRequest >= 0)
+        {
+            maxWidth = $"max-width: {MaximumWidthRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+
+        var maxHeight = string.Empty;
+        if (!double.IsPositiveInfinity(MaximumHeightRequest) && MaximumHeightRequest >= 0)
+        {
+            maxHeight = $"max-height: {MaximumHeightRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+
+        if (useRequestedSize && HeightRequest >= 0)
+        {
+            height = $"height: {HeightRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+        else if (vAlign == LayoutAlignment.Fill)
+        {
+            height = "height: 100%;";
+        }
+
+        if (hAlign == LayoutAlignment.Start || hAlign == LayoutAlignment.Fill)
+        {
+            ret += width + maxWidth;
+        }
+        else if (hAlign == LayoutAlignment.Center)
+        {
+            ret += "margin-left: auto; margin-right: auto;" + width + maxWidth;
+        }
+        else if (hAlign == LayoutAlignment.End)
+        {
+            ret += "margin-left: auto;" + width + maxWidth;
+        }
+
+        if (vAlign == LayoutAlignment.Start || vAlign == LayoutAlignment.Fill)
+        {
+            ret += height + maxHeight;
+        }
+        else if (vAlign == LayoutAlignment.Center)
+        {
+            ret += "margin-top: auto; margin-bottom: auto;" + height + maxHeight;
+        }
+        else if (vAlign == LayoutAlignment.End)
+        {
+            ret += "margin-top: auto;" + height + maxHeight;
+        }
+
+        return ret;
     }
 
     [Parameter]
@@ -397,7 +476,7 @@
                     Debug.WriteLine("RETAINED");
                 }
 
-                base.Draw(context.WithDestination(Destination));
+                base.Draw(CreateContentContext(context.WithDestination(Destination)));
             }
             else
             {
@@ -411,10 +490,21 @@
                     context.Context.Canvas.Clear();
                 }
 
-                base.Draw(context.WithDestination(Destination));
+                base.Draw(CreateContentContext(context.WithDestination(Destination)));
             }
         }
     }
+
+    protected virtual bool CenterSurface => false;
+
+    protected virtual bool KeepRequestedCanvasSizeInBrowserFullscreen => false;
+
+    protected virtual bool UseRequestedSizeForHostLayout => true;
+
+    protected virtual DrawingContext CreateContentContext(DrawingContext context) => context;
+
+    private bool CanUseRequestedCanvasSize()
+        => !_isBrowserFullscreen || KeepRequestedCanvasSizeInBrowserFullscreen;
 
     public async ValueTask DisposeAsync()
     {

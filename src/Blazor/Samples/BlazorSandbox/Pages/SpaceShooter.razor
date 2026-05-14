@@ -1,41 +1,43 @@
 @page "/space-shooter"
 @using DrawnUi.Draw
 @using DrawnUi.Views
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
 
 <PageTitle>Space Shooter</PageTitle>
 
-<div class="game-demo-page">
-    <h1>Space Shooter</h1>
+<h1>Space Shooter</h1>
 
-    <p>This gaming demo stays in the sandbox as a full-scene example of accelerated rendering, gestures, and the DrawnUI game loop running in Blazor.</p>
+<p>This gaming demo stays in the sandbox as a full-scene example of accelerated rendering, gestures, and the DrawnUI game loop running in Blazor.</p>
 
-    <FullscreenToggleBar
+<FullscreenToggleBar
+    IsFullscreen="@_isFullscreen"
+    IsFullscreenChanged="OnFullscreenChanged" />
+
+<div @ref="_viewportAnchor">
+    <AspectLockedViewportHost
+        AspectWidth="@ViewportWidth"
+        AspectHeight="@ViewportHeight"
+        BackgroundColor="#020816"
         IsFullscreen="@_isFullscreen"
-        IsFullscreenChanged="OnFullscreenChanged" />
-
-    <div class="game-demo-viewport-slot" style="margin-top: 12px;">
-        <AspectLockedViewportHost
-            AspectWidth="@ViewportWidth"
-            AspectHeight="@ViewportHeight"
+        EmbeddedMargin="12px auto 0"
+        FitVisibleHeight="true"
+        ViewportOffsetPixels="@_viewportOffsetPixels">
+        <AspectLockedCanvas 
+            @ref="_canvas"
+            Content="_canvasContent"
+            LogicalWidth="@ViewportWidth"
+            LogicalHeight="@ViewportHeight"
+            HorizontalOptions="LayoutOptions.Fill"
+            VerticalOptions="LayoutOptions.Fill"
             BackgroundColor="#020816"
+            RenderingMode="@RenderingModeType.Accelerated"
+            Gestures="@GesturesMode.Enabled"
             IsFullscreen="@_isFullscreen"
-            EmbeddedMargin="0"
-            FitVisibleHeight="true"
-            ViewportOffsetPixels="0">
-            <AspectLockedCanvas 
-                @ref="_canvas"
-                Content="_canvasContent"
-                LogicalWidth="@ViewportWidth"
-                LogicalHeight="@ViewportHeight"
-                HorizontalOptions="LayoutOptions.Fill"
-                VerticalOptions="LayoutOptions.Fill"
-                BackgroundColor="#020816"
-                RenderingMode="@RenderingModeType.Accelerated"
-                Gestures="@GesturesMode.Enabled"
-                IsFullscreen="@_isFullscreen"
-                IsFullscreenChanged="OnFullscreenChanged" />
-        </AspectLockedViewportHost>
-    </div>
+            IsFullscreenChanged="OnFullscreenChanged" />
+    </AspectLockedViewportHost>
 </div>
 
 @code {
@@ -53,6 +55,10 @@
     private SkiaControl _canvasContent;
     private AspectLockedCanvas _canvas;
     private bool _isFullscreen;
+    private ElementReference _viewportAnchor;
+    private float _viewportOffsetPixels;
+    private IJSObjectReference? _layoutModule;
+    private DotNetObjectReference<SpaceShooter>? _layoutCallbackRef;
 
     public SpaceShooter()
     {
@@ -87,11 +93,64 @@
 
 
     }
-    private Task OnFullscreenChanged(bool isFullscreen)
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (!firstRender)
+            return;
+
+        _layoutModule ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/SpaceShooter.razor.js");
+        _layoutCallbackRef ??= DotNetObjectReference.Create(this);
+
+        await _layoutModule.InvokeVoidAsync("attachViewportOffsetObserver", _viewportAnchor, _layoutCallbackRef);
+    }
+
+    [JSInvokable]
+    public async Task OnViewportOffsetChanged(double offset)
+    {
+        var nextOffset = (float)Math.Max(0, Math.Round(offset));
+        if (Math.Abs(_viewportOffsetPixels - nextOffset) < 0.5f)
+            return;
+
+        _viewportOffsetPixels = nextOffset;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnFullscreenChanged(bool isFullscreen)
     {
         _isFullscreen = isFullscreen;
         _canvas?.InvalidateChildren();
-        return Task.CompletedTask;
+
+        if (_layoutModule != null)
+        {
+            await _layoutModule.InvokeVoidAsync("refreshViewportOffset", _viewportAnchor);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_layoutModule != null)
+        {
+            try
+            {
+                await _layoutModule.InvokeVoidAsync("detachViewportOffsetObserver", _viewportAnchor);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                await _layoutModule.DisposeAsync();
+            }
+            catch
+            {
+            }
+        }
+
+        _layoutCallbackRef?.Dispose();
     }
 
 }

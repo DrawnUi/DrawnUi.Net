@@ -13,10 +13,10 @@
 }
 
 .aspect-locked-host.fit-height {
-    height: calc(100% - var(--host-viewport-offset, 0px));
-    width: auto;
+    width: min(100%, calc((100vh - var(--host-viewport-offset, 0px)) * var(--host-aspect-ratio, 1)));
+    height: auto;
     max-width: 100%;
-    max-height: 100%;
+    max-height: calc(100vh - var(--host-viewport-offset, 0px));
 }
 
 .aspect-locked-host.fullscreen {

@@ -9,6 +9,7 @@
     <link rel="preload" id="webassembly" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="_content/DrawnUi.Blazor.Core/drawnui-loader.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="BlazorSandbox.styles.css" rel="stylesheet" />
     <link href="manifest.webmanifest" rel="manifest" />
@@ -19,11 +20,30 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="boot-shell" aria-label="Loading DrawnUI Sandbox">
+            <div class="boot-stage">
+                <div class="boot-logo-wrap">
+                    <img class="boot-logo" src="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg" alt="DrawnUI" />
+                    <span class="boot-spark" style="--a:15deg;--r:6.8rem;--du:2.1s;--de:0s;--c:#4b8ef9"></span>
+                    <span class="boot-spark" style="--a:72deg;--r:6.4rem;--du:1.8s;--de:0.38s;--c:#f25536"></span>
+                    <span class="boot-spark" style="--a:138deg;--r:7rem;--du:2.4s;--de:0.72s;--c:#e4a130"></span>
+                    <span class="boot-spark" style="--a:195deg;--r:6.2rem;--du:1.9s;--de:1.08s;--c:#78549e"></span>
+                    <span class="boot-spark" style="--a:252deg;--r:6.8rem;--du:2.2s;--de:1.44s;--c:#4b8ef9"></span>
+                    <span class="boot-spark" style="--a:315deg;--r:6rem;--du:1.7s;--de:0.56s;--c:#f25536"></span>
+                    <span class="boot-spark" style="--a:42deg;--r:7.4rem;--du:2.6s;--de:0.92s;--c:#e4a130"></span>
+                    <span class="boot-spark" style="--a:172deg;--r:7.6rem;--du:2s;--de:1.6s;--c:#78549e"></span>
+                </div>
+                <div class="boot-foot">
+                    <div class="boot-copy">DrawnUI Sandbox</div>
+                    <div class="boot-progress" aria-hidden="true">
+                        <div class="boot-progress-track">
+                            <div class="boot-progress-fill"></div>
+                        </div>
+                        <div class="boot-progress-text"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">

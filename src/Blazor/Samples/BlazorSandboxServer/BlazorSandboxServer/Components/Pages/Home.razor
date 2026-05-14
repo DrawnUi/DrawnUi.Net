@@ -1,6 +1,54 @@
 @page "/"
 @page "/drawn"
+@inject NavigationManager Navigation
+@inject IHttpContextAccessor HttpContextAccessor
 
-<PageTitle>BlazorSandboxServer</PageTitle>
+<PageTitle>@ShareTitle</PageTitle>
+
+<HeadContent>
+	<meta name="description" content="@ShareDescription" />
+	<link rel="canonical" href="@PageUrl" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="DrawnUI" />
+	<meta property="og:title" content="@ShareTitle" />
+	<meta property="og:description" content="@ShareDescription" />
+	<meta property="og:url" content="@PageUrl" />
+	<meta property="og:image" content="@ShareImageUrl" />
+	<meta property="og:image:secure_url" content="@ShareImageUrl" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="458" />
+	<meta property="og:image:height" content="772" />
+	<meta property="og:image:alt" content="@ShareImageAlt" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="@ShareTitle" />
+	<meta name="twitter:description" content="@ShareDescription" />
+	<meta name="twitter:url" content="@PageUrl" />
+	<meta name="twitter:image" content="@ShareImageUrl" />
+	<meta name="twitter:image:alt" content="@ShareImageAlt" />
+</HeadContent>
 
 <DrawnHost />
+
+@code {
+	private const string ShareTitle = "DrawnUI Blazor Server Sample";
+	private const string ShareDescription = "Blazor Server host rendering server-generated image frames with SkiaSharp.";
+	private const string ShareImageAlt = "Preview for the DrawnUI Blazor Server sample";
+
+	private string PageUrl => AbsoluteBaseUrl;
+
+	private string ShareImageUrl => new Uri(new Uri(AbsoluteBaseUrl), "og/drawnui-server-dashboard.png").ToString();
+
+	private string AbsoluteBaseUrl
+	{
+		get
+		{
+			var request = HttpContextAccessor.HttpContext?.Request;
+			if (request is not null)
+			{
+				return $"{request.Scheme}://{request.Host}{request.PathBase.ToUriComponent()}/";
+			}
+
+			return Navigation.BaseUri;
+		}
+	}
+}
