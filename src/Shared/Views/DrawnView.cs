@@ -1014,7 +1014,7 @@ namespace DrawnUi.Views
 
         private void ViewSizeChanged(object sender, EventArgs e)
         {
-            //xamarin forms changed our size if used inside xamarin layout
+            //framework changed our size if used inside framework layout
             OnSizeChanged();
         }
 
@@ -2018,6 +2018,8 @@ namespace DrawnUi.Views
                 _renderingScale = value;
                 try
                 {
+                    Console.WriteLine($"RenderingScale set: {value:F1}");
+
                     SetValue(RenderingScaleProperty, value);
                 }
                 catch (Exception e)

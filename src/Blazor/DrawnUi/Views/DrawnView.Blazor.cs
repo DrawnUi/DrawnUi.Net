@@ -47,7 +47,9 @@ namespace DrawnUi.Views
 
         protected void FixDensity()
         {
-            var canvasWidth = PhisicalWidth;
+            Console.WriteLine($"CANVAS {RenderingScale} FixDensity: {PhisicalWidth:0}x{PhisicalHeight:0}");
+
+            var canvasWidth =  PhisicalWidth;
             var canvasHeight = PhisicalHeight;
 
             var logicalWidth = WidthRequest > 0.1
@@ -291,6 +293,8 @@ namespace DrawnUi.Views
 
             PhisicalWidth = width;
             PhisicalHeight = height;
+
+            Console.WriteLine($"SyncExternalSize: {PhisicalWidth:0}x{PhisicalHeight:0}");
 
             OnSizeChanged();
         }
@@ -629,6 +633,8 @@ namespace DrawnUi.Views
 
         protected virtual void OnSizeChanged()
         {
+            Console.WriteLine($"OnSizeChanged");
+
             Invalidate();
         }
 

@@ -20,12 +20,16 @@
         <div class="xaml-canvas-element" style="@CanvasSurfaceElementStyle">
             @if(RenderingMode == RenderingModeType.Default)
             {
-                    <SkiaView Superview="@this" DrawHandler="DrawFrame" EnableRenderLoop="@EnableRenderLoop"
+                <SkiaView Superview="@this" 
+                          DrawHandler="DrawFrame" 
+                          EnableRenderLoop="@EnableRenderLoop" 
                           Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
             }
             else
             {
-                    <SkiaViewAccelerated Superview="@this" DrawHandler="DrawFrame" EnableRenderLoop="@EnableRenderLoop"
+                <SkiaViewAccelerated Superview="@this" 
+                                     DrawHandler="DrawFrame" 
+                                     EnableRenderLoop="@EnableRenderLoop" 
                                     Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
             }
         </div>
@@ -111,6 +115,7 @@
 
     private ElementReference _hostElement;
     private TouchEffect? _gestureEffect;
+    private GesturesMode _attachedGesturesMode = GesturesMode.Disabled;
     private IJSObjectReference? _resizeModule;
     private DotNetObjectReference<Canvas>? _resizeCallbackRef;
     private float _measuredCanvasWidth;
@@ -118,7 +123,7 @@
     private bool _isBrowserFullscreen;
     private bool? _lastFullscreenRequest;
 
-    private const string ResizeModulePath = "./_content/DrawnUi.Blazor.Core/drawnui-canvas-resize.js";
+    private static readonly string ResizeModulePath = $"./_content/DrawnUi.Blazor.Core/drawnui-canvas-resize.js?v={System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
 
     [Parameter]
     public SkiaControl? Content { get; set; }
@@ -189,11 +194,16 @@
         {
             _gestureEffect ??= new TouchEffect(JS);
             _gestureEffect.TouchMode = GestureTouchMode;
-            await _gestureEffect.AttachAsync(_hostElement, this);
+            if (_attachedGesturesMode != Gestures)
+            {
+                await _gestureEffect.AttachAsync(_hostElement, this);
+                _attachedGesturesMode = Gestures;
+            }
         }
         else if (_gestureEffect != null)
         {
             await _gestureEffect.DetachAsync();
+            _attachedGesturesMode = GesturesMode.Disabled;
         }
 
     }

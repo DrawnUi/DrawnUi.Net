@@ -24,9 +24,14 @@ namespace DrawnUi.Draw
 
             Super.Init();
 
+            var jsRuntime = host.Services.GetService<IJSRuntime>();
+            if (jsRuntime != null)
+            {
+                await Super.AttachNativeAppLifecycleAsync(jsRuntime);
+            }
+
             if (settings?.UseDesktopKeyboard == true)
             {
-                var jsRuntime = host.Services.GetService<IJSRuntime>();
                 if (jsRuntime != null)
                 {
                     await KeyboardManager.AttachToKeyboardAsync(jsRuntime);

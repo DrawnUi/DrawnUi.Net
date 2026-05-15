@@ -1,4 +1,5 @@
 using AppoMobi.Gestures;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DrawnUi.Views;
 
@@ -212,6 +213,8 @@ public partial class Canvas : IGestureListener
             return;
         }
 
+        Console.WriteLine($"CANVAS {RenderingScale:F1}/{args1.Scale:F1} touch: {touchAction} {args1.Location}");
+
         if (touchAction == TouchActionResult.Tapped)
         {
             Tapped?.Invoke(this, EventArgs.Empty);
@@ -222,7 +225,7 @@ public partial class Canvas : IGestureListener
             _gestureEffect.WIllLock = ShareLockState.Initial;
         }
 
-        var args = SkiaGesturesParameters.Create(touchAction, args1);
+        var args = SkiaGesturesParameters.Create(touchAction, args1, RenderingScale);
 
         // Blazor interop needs the lock state updated before JS decides whether
         // the current browser event should stay local or bubble to the page.

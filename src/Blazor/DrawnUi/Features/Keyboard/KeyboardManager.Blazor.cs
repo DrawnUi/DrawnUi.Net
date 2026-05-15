@@ -7,7 +7,7 @@ public partial class KeyboardManager
     private static IJSObjectReference? _module;
     private static bool _attached;
 
-    private const string KeyboardModulePath = "./_content/DrawnUi.Blazor.Core/drawnui-keyboard.js";
+    private static readonly string KeyboardModulePath = $"./_content/DrawnUi.Blazor.Core/drawnui-keyboard.js?v={System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
 
     public static async Task AttachToKeyboardAsync(IJSRuntime jsRuntime)
     {

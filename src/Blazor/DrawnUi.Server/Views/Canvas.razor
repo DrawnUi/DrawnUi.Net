@@ -133,7 +133,7 @@ else
         {
             _module ??= await JSRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
-                "./_content/DrawnUi.Blazor.Server/serverCanvas.js");
+                $"./_content/DrawnUi.Blazor.Server/serverCanvas.js?v={System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}");
             _resizeCallbackRef ??= DotNetObjectReference.Create(this);
 
             var elementSize = await _module.InvokeAsync<ElementSize>("getElementSize", _hostElement);

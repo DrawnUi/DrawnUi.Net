@@ -21,6 +21,7 @@ global using PointF = System.Drawing.PointF;
 //global using SkiaSharp.Views.Maui;
 //global using SkiaSharp.Views.Maui.Controls;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +33,17 @@ namespace DrawnUi.Draw
     public partial class Super
     {
         private static readonly object FrameLoopLock = new();
+        private static readonly object NativeAppLifecycleLock = new();
         private static CancellationTokenSource _frameLoopCancellation;
+        private static IJSObjectReference? _nativeAppLifecycleModule;
         private static bool _loopStarted;
+        private static bool _nativeAppCreated;
+        private static bool _nativeAppDestroyed;
+        private static bool _nativeAppLifecycleAttached;
+        private static bool? _nativeAppVisible;
+
+        private static readonly string NativeAppLifecycleModulePath =
+            $"./_content/DrawnUi.Blazor.Core/drawnui-app-lifecycle.js?v={System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
 
         public static object App { get; set; }
 
@@ -63,6 +73,37 @@ namespace DrawnUi.Draw
             {
                 _services = value;
                 _servicesFromHandler = value != null;
+            }
+        }
+
+        public static async Task AttachNativeAppLifecycleAsync(IJSRuntime jsRuntime)
+        {
+            lock (NativeAppLifecycleLock)
+            {
+                if (_nativeAppLifecycleAttached)
+                {
+                    return;
+                }
+
+                _nativeAppLifecycleAttached = true;
+            }
+
+            try
+            {
+                _nativeAppLifecycleModule ??= await jsRuntime.InvokeAsync<IJSObjectReference>(
+                    "import",
+                    NativeAppLifecycleModulePath);
+
+                await _nativeAppLifecycleModule.InvokeVoidAsync("attachNativeAppLifecycle");
+            }
+            catch
+            {
+                lock (NativeAppLifecycleLock)
+                {
+                    _nativeAppLifecycleAttached = false;
+                }
+
+                throw;
             }
         }
 
@@ -174,6 +215,104 @@ namespace DrawnUi.Draw
                 _frameLoopCancellation?.Dispose();
                 _frameLoopCancellation = new CancellationTokenSource();
                 _ = RunFrameLoopAsync(_frameLoopCancellation.Token);
+            }
+        }
+
+        [JSInvokable]
+        public static void HandleNativeAppCreated()
+        {
+            bool raiseCreated = false;
+
+            lock (NativeAppLifecycleLock)
+            {
+                if (!_nativeAppCreated)
+                {
+                    _nativeAppCreated = true;
+                    _nativeAppDestroyed = false;
+                    raiseCreated = true;
+                }
+            }
+
+            if (raiseCreated)
+            {
+                OnCreated();
+            }
+        }
+
+        [JSInvokable]
+        public static void HandleNativeAppHidden()
+        {
+            if (!TrySetNativeAppVisibility(false))
+            {
+                return;
+            }
+
+            EnsureNativeAppCreated();
+            OnWentBackground();
+        }
+
+        [JSInvokable]
+        public static void HandleNativeAppVisible()
+        {
+            if (!TrySetNativeAppVisibility(true))
+            {
+                return;
+            }
+
+            EnsureNativeAppCreated();
+            OnWentForeground();
+        }
+
+        [JSInvokable]
+        public static void HandleNativeAppDestroyed()
+        {
+            bool raiseDestroyed = false;
+
+            lock (NativeAppLifecycleLock)
+            {
+                if (!_nativeAppDestroyed)
+                {
+                    _nativeAppDestroyed = true;
+                    _nativeAppVisible = false;
+                    raiseDestroyed = true;
+                }
+            }
+
+            if (!raiseDestroyed)
+            {
+                return;
+            }
+
+            InBackground = true;
+            OnNativeAppDestroyed?.Invoke(null, EventArgs.Empty);
+        }
+
+        private static void EnsureNativeAppCreated()
+        {
+            if (_nativeAppCreated)
+            {
+                return;
+            }
+
+            HandleNativeAppCreated();
+        }
+
+        private static bool TrySetNativeAppVisibility(bool isVisible)
+        {
+            lock (NativeAppLifecycleLock)
+            {
+                if (_nativeAppDestroyed)
+                {
+                    return false;
+                }
+
+                if (_nativeAppVisible == isVisible)
+                {
+                    return false;
+                }
+
+                _nativeAppVisible = isVisible;
+                return true;
             }
         }
 

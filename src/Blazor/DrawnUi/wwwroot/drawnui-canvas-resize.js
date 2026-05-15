@@ -1,11 +1,11 @@
 const observers = new WeakMap();
 
-function isElementFullscreen(element) {
-    return document.fullscreenElement === element || document.webkitFullscreenElement === element;
+function isElementFullscreen(element, simulatedFullscreen) {
+    return simulatedFullscreen === true || document.fullscreenElement === element || document.webkitFullscreenElement === element;
 }
 
-function notifyFullscreen(element, dotNetRef) {
-    dotNetRef.invokeMethodAsync('OnFullscreenChanged', isElementFullscreen(element));
+function notifyFullscreen(element, dotNetRef, simulatedFullscreen) {
+    dotNetRef.invokeMethodAsync('OnFullscreenChanged', isElementFullscreen(element, simulatedFullscreen));
 }
 
 function notifySize(element, dotNetRef, width, height) {
@@ -59,6 +59,8 @@ export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     const state = {
         resizeObserver: null,
         onFullscreenChange: null,
+        onSimulatedFullscreen: null,
+        simulatedFullscreen: false,
         snapshotImg: null,
         allowSnapshot: allowSnapshot === true,
         get resizeTimer() { return resizeTimer; },
@@ -89,20 +91,30 @@ export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     const onFullscreenChange = () => {
         const rect = element.getBoundingClientRect();
         notifySize(element, dotNetRef, rect.width, rect.height);
-        notifyFullscreen(element, dotNetRef);
+        notifyFullscreen(element, dotNetRef, state.simulatedFullscreen);
+    };
+
+    // Handles CSS-simulated fullscreen for browsers/WebViews that don't support the Fullscreen API
+    // (e.g. Telegram in-app browser, WKWebView on iOS). The app dispatches 'drawnui-simulated-fullscreen'
+    // when it detects that requestFullscreen() is unavailable or fails.
+    const onSimulatedFullscreen = (e) => {
+        state.simulatedFullscreen = e.detail?.enabled === true;
+        notifyFullscreen(element, dotNetRef, state.simulatedFullscreen);
     };
 
     state.resizeObserver = resizeObserver;
     state.onFullscreenChange = onFullscreenChange;
+    state.onSimulatedFullscreen = onSimulatedFullscreen;
     observers.set(element, state);
 
     resizeObserver.observe(element);
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+    document.addEventListener('drawnui-simulated-fullscreen', onSimulatedFullscreen);
 
     const rect = element.getBoundingClientRect();
     notifySize(element, dotNetRef, rect.width, rect.height);
-    notifyFullscreen(element, dotNetRef);
+    notifyFullscreen(element, dotNetRef, state.simulatedFullscreen);
     hasFirstSize = true;
 }
 
@@ -117,6 +129,7 @@ export function detachCanvasHost(element) {
     state.resizeObserver.disconnect();
     document.removeEventListener('fullscreenchange', state.onFullscreenChange);
     document.removeEventListener('webkitfullscreenchange', state.onFullscreenChange);
+    document.removeEventListener('drawnui-simulated-fullscreen', state.onSimulatedFullscreen);
     observers.delete(element);
 }
 
@@ -125,9 +138,18 @@ export async function setCanvasFullscreen(element, enabled) {
         return false;
     }
 
+    const state = observers.get(element);
+
+    // If the Fullscreen API is not available (WebView, Telegram in-app browser, etc.),
+    // honour the simulated state that was set via the 'drawnui-simulated-fullscreen' event.
+    if (!document.fullscreenEnabled) {
+        if (state) state.simulatedFullscreen = enabled;
+        return enabled;
+    }
+
     try {
         if (enabled) {
-            if (isElementFullscreen(element)) {
+            if (isElementFullscreen(element, state?.simulatedFullscreen)) {
                 return true;
             }
 
@@ -141,10 +163,10 @@ export async function setCanvasFullscreen(element, enabled) {
                 await element.webkitRequestFullscreen();
             }
 
-            return isElementFullscreen(element);
+            return isElementFullscreen(element, state?.simulatedFullscreen);
         }
 
-        if (isElementFullscreen(element)) {
+        if (isElementFullscreen(element, state?.simulatedFullscreen)) {
             if (document.exitFullscreen) {
                 await document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {
@@ -154,5 +176,5 @@ export async function setCanvasFullscreen(element, enabled) {
     } catch {
     }
 
-    return isElementFullscreen(element);
+    return isElementFullscreen(element, state?.simulatedFullscreen);
 }
