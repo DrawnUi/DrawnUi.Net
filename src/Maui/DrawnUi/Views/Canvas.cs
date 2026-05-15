@@ -816,7 +816,7 @@ public class Canvas : DrawnView, IGestureListener
             }
         }
 
-        var args = SkiaGesturesParameters.Create(touchAction, args1);
+        var args = SkiaGesturesParameters.Create(touchAction, args1, RenderingScale);
 
         if (GesturesDebugColor.Alpha > 0)
         {
