@@ -40,6 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="AppoMobi.Gestures" Version="3.10.1" />
         <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-pr.3779.2" />
         <PackageReference Include="SkiaSharp.Skottie" Version="4.147.0-pr.3779.2" />
         <PackageReference Include="Svg.Skia" Version="3.0.3" />
@@ -47,10 +48,6 @@
         <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
         <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
         <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Gestures\AppoMobi.Gestures.csproj" />
     </ItemGroup>
 
     <ItemGroup>

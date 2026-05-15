@@ -84,6 +84,7 @@
         <!--parsing markdown text-->
         <!--cannot use due to .net runtime bug still being worked out to be fixed-->
         <!--<PackageReference Include="Markdig" Version="0.41.1" />-->
+        <PackageReference Include="AppoMobi.Maui.Gestures" Version="3.10.1" />
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
         <!--<PackageReference Include="AppoMobi.Maui.Gestures" Version="1.11.9.2" />-->
         <PackageReference Include="Plugin.Maui.ApplePlatform" Version="1.0.0">
@@ -190,10 +191,6 @@
         <Folder Include="Platforms\Apple\Extensions\" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Gestures\AppoMobi.Gestures.csproj" />
-      <ProjectReference Include="..\..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Maui.Gestures\AppoMobi.Maui.Gestures.csproj" />
-    </ItemGroup>
 
     <!--<ItemGroup>
         <Compile Remove="Shared/**/*.*pple.cs" />

@@ -78,6 +78,9 @@ else
     [Parameter]
     public SkiaControl? RootControl { get; set; }
 
+    [Parameter] 
+    public float RenderingScale { get; set; } = 1;
+
     [Parameter]
     public int Width { get; set; } = 400;
 
@@ -575,14 +578,14 @@ else
             PointerId,
             actionType,
             new PointF(point.X, point.Y),
-            ResolvedContent?.BindingContext)
+            ResolvedContent?.BindingContext, RenderingScale)
         {
             IsInsideView = true,
             NumberOfTouches = 1,
             StartingLocation = _pointerDownLocation
         };
 
-        return SkiaGesturesParameters.Create(actionResult, touchArgs);
+        return SkiaGesturesParameters.Create(actionResult, touchArgs, RenderingScale);
     }
 
     private List<TapEffectBounds> CreateTapEffectBounds()

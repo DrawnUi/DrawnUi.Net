@@ -30,6 +30,8 @@
 
     <ItemGroup>
     
+      <PackageReference Include="AppoMobi.Blazor.Gestures" Version="3.10.1" />
+    
       <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
         <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="8.3.1.6-pr.3779.2" />
@@ -44,10 +46,6 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Blazor.Gestures\AppoMobi.Blazor.Gestures.csproj" />
-    <ProjectReference Include="..\..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Gestures\AppoMobi.Gestures.csproj" />
-  </ItemGroup>
  
   <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
