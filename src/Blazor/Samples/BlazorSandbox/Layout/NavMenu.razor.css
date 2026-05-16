@@ -8,7 +8,22 @@
 }
 
 .navbar-brand {
-    font-size: 1.1rem;
+    margin: 0;
+    font-size: 1.06rem;
+    font-weight: 700;
+}
+
+.navbar-brand-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.navbar-byline {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
 
 .bi {

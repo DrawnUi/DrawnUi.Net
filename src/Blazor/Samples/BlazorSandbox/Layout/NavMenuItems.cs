@@ -133,6 +133,7 @@ internal static class NavMenuItems
                 new("Parallax Etude", "parallax-gameloop", "bi-controller-nav-menu")
             ]),
 
+#if !SKIPMESH
         new(
             "advanced",
             "SKMesh",
@@ -143,9 +144,10 @@ internal static class NavMenuItems
                 new("Projection", "skmesh-projection-probe", "bi-badge-3d-nav-menu"),
                 new("Rocket", "skmesh-rocket-probe", "bi-rocket-takeoff-nav-menu")
             ]),
-
+#endif
 
         //INTERNAL TESTING
+#if DEBUG
         new(
             "testing",
             "Testing",
@@ -161,6 +163,7 @@ internal static class NavMenuItems
                 new("Scroll", "scroll-probe", "bi-arrow-down-up-nav-menu"),
                 new("Parallax SKMech", "skmesh-parallax-probe", "bi-layers-fill-nav-menu"),
             ]),
+#endif
     ];
 
     public static HashSet<string> CreateDefaultExpandedSections()

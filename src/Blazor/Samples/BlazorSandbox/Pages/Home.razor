@@ -1,20 +1,95 @@
 @page "/"
-<PageTitle>Home</PageTitle>
+<PageTitle>DrawnUI for Blazor</PageTitle>
 
-<div class="docs-page">
-    <h1>Welcome to DrawnUI for Blazor</h1>
-    <p class="docs-lead">This sandbox collects focused DrawnUI samples for controls, graphics, gestures, advanced rendering, and gaming scenarios running in WebAssembly.</p>
-    <p class="docs-note">Use the left navigation to open sections as you need them. The default route now starts on this lightweight home page instead of jumping straight into a heavy demo.</p>
+<div class="home-shell">
+    <section class="home-hero">
+        <div class="home-eyebrow">Public preview for .NET 10 and Blazor WebAssembly</div>
+        <h1>DrawnUI for Blazor</h1>
+        <p class="home-lead">This is DrawnUI running in the browser: a niche, GPU-first UI engine made by Nick Kovalsky for .NET developers who want more control over rendering, animation, gestures, and custom controls than stock web UI usually gives them.</p>
+        <p class="home-sublead">It is still in active development. Some parts are polished, some are experiments, and some probes are intentionally rough. That is the point of this sandbox: open the drawers, inspect the moving parts, and see what this stack can already do.</p>
 
-    <div class="docs-example-frame" style="padding: 24px; margin-top: 16px;">
-        <h2 style="margin-top: 0;">Start Here</h2>
-        <p>Browse the sandbox by intent:</p>
-        <ul>
-            <li><strong>Presentation</strong> for the landing page and richer showcase samples.</li>
-            <li><strong>Tutorials</strong> for guided examples like cards.</li>
-            <li><strong>Controls</strong>, <strong>Graphics</strong>, and <strong>Effects</strong> for targeted component probes.</li>
-            <li><strong>Gaming</strong> for heavier accelerated scenes like Space Shooter and Parallax.</li>
-        </ul>
-        <p>The Space Shooter demo is still available from the <strong>Gaming</strong> section.</p>
-    </div>
+        <div class="home-tag-row" aria-label="Highlights">
+            <span class="home-tag">custom drawn controls</span>
+            <span class="home-tag">Skia rendering</span>
+            <span class="home-tag">gesture-heavy UI</span>
+            <span class="home-tag">game-ready surfaces</span>
+            <span class="home-tag">for connoisseurs</span>
+        </div>
+    </section>
+
+    <section class="home-section">
+        <div class="home-section-heading">
+            <h2>What to open first</h2>
+            <p>If you only have five minutes, start with these pages.</p>
+        </div>
+
+        <div class="home-card-grid">
+            <a class="home-card" href="tutorial-first-app">
+                <span class="home-card-kicker">Fastest onboarding</span>
+                <h3>First App</h3>
+                <p>The smallest useful DrawnUI setup in Blazor. Good place to understand canvas, content, and the basic mental model.</p>
+            </a>
+
+            <a class="home-card" href="buttons">
+                <span class="home-card-kicker">Interactive controls</span>
+                <h3>Buttons</h3>
+                <p>See how taps, states, and composed UI behave when the controls are drawn instead of delegated to normal HTML widgets.</p>
+            </a>
+
+            <a class="home-card" href="scrolls">
+                <span class="home-card-kicker">Layout and motion</span>
+                <h3>Scrolls</h3>
+                <p>Useful if you care about virtualization, scrolling surfaces, and how drawn content behaves when it gets larger than the viewport.</p>
+            </a>
+
+            <a class="home-card" href="cards">
+                <span class="home-card-kicker">Real-ish UI</span>
+                <h3>Cards</h3>
+                <p>A more product-shaped example showing that DrawnUI is not only about probes and test surfaces.</p>
+            </a>
+
+            <a class="home-card" href="canvas">
+                <span class="home-card-kicker">Core primitive</span>
+                <h3>Canvas</h3>
+                <p>The foundation of the whole stack. Open this when you want to understand how the drawn tree is hosted in the browser.</p>
+            </a>
+
+            <a class="home-card" href="space-shooter">
+                <span class="home-card-kicker">Heavy demo</span>
+                <h3>Space Shooter</h3>
+                <p>The loudest proof point in the sandbox: animation, input, sprite flow, and a much less polite workload than a typical UI sample.</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="home-section home-section-split">
+        <div class="home-panel">
+            <h2>What DrawnUI is good at</h2>
+            <ul>
+                <li>Building custom controls that do not want to look or behave like standard web components.</li>
+                <li>Running animation-heavy, gesture-heavy, or canvas-heavy UI in a way that still feels like a .NET app.</li>
+                <li>Keeping one mental model across MAUI and Blazor when your product is more "drawn surface" than CRUD website.</li>
+                <li>Exploring effects, imaging, scrolling, and graphics without dropping immediately into handwritten JavaScript rendering code.</li>
+            </ul>
+        </div>
+
+        <div class="home-panel">
+            <h2>How the sandbox is organized</h2>
+            <ul>
+                <li><strong>The Canvas</strong> explains the host surface and sizing behavior.</li>
+                <li><strong>Drawn Elements</strong> is where labels, shapes, images, layouts, scrolling, and controls live.</li>
+                <li><strong>Tutorials</strong> gives you more human examples instead of isolated probes.</li>
+                <li><strong>Gaming</strong> shows the engine under a heavier rendering load.</li>
+                <li><strong>Testing</strong> is exactly what it sounds like: internal probes, edge cases, and imperfect experiments.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="home-section">
+        <div class="home-note-panel">
+            <h2>Small honest warning</h2>
+            <p>This is not pretending to be a polished enterprise component gallery. It is a working sandbox for a niche rendering engine, built by one developer, and it intentionally exposes unfinished edges alongside the strong parts.</p>
+            <p>If that sounds annoying, this probably is not your stack. If that sounds interesting, you are probably exactly the person this was made for.</p>
+        </div>
+    </section>
 </div>

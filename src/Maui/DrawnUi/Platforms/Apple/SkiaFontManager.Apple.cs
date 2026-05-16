@@ -118,7 +118,7 @@ namespace DrawnUi.Draw
                             systemFont = SKTypeface.FromFamilyName(fontName);
 
                             // If that fails and name starts with ".", try without the dot
-                            if (systemFont == null && fontName.StartsWith("."))
+                            if (systemFont == null && fontName.StartsWith('.'))
                             {
                                 var nameWithoutDot = fontName.Substring(1);
                                 systemFont = SKTypeface.FromFamilyName(nameWithoutDot);

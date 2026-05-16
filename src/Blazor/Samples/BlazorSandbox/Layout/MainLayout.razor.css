@@ -2,6 +2,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f7f9fc 0%, #edf2f7 100%);
 }
 
 main {
@@ -13,17 +15,18 @@ main {
 }
 
 .top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
-    height: 3.5rem;
+    justify-content: space-between;
+    min-height: 4rem;
     display: flex;
     align-items: center;
+    gap: 1rem;
+    background: rgba(250, 252, 255, 0.82);
+    border-bottom: 1px solid rgba(37, 52, 74, 0.08);
+    backdrop-filter: blur(14px);
 }
 
     .top-row ::deep a, .top-row ::deep .btn-link {
         white-space: nowrap;
-        margin-left: 1.5rem;
         text-decoration: none;
     }
 
@@ -31,18 +34,59 @@ main {
         text-decoration: underline;
     }
 
-    .top-row ::deep a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.top-row-copy {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.top-row-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+    background: #183b71;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.top-row-text {
+    color: #324155;
+    font-size: 0.95rem;
+    line-height: 1.35;
+}
+
+.top-row-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.top-row-links ::deep a {
+    color: #1d4f91;
+    font-weight: 600;
+}
 
 @media (max-width: 640.98px) {
     .top-row {
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 0.85rem;
+        padding-bottom: 0.85rem;
     }
 
-    .top-row ::deep a, .top-row ::deep .btn-link {
-        margin-left: 0;
+    .top-row-copy {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .top-row-links {
+        gap: 0.85rem;
     }
 }
 
@@ -62,12 +106,6 @@ main {
         position: sticky;
         top: 0;
         z-index: 1;
-    }
-
-    .top-row.auth ::deep a:first-child {
-        flex: 1;
-        text-align: right;
-        width: 0;
     }
 
     .top-row, article {

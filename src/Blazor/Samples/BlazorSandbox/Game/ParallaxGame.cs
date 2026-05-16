@@ -1183,7 +1183,7 @@ public sealed partial class ParallaxGame : DrawnUi.Gaming.Game
         /// </summary>
         public TilesetStripControl(string source, float tileWidth)
         {
-            _source = source.StartsWith("/", StringComparison.Ordinal) ? source : "/" + source;
+            _source = source.StartsWith('/') ? source : '/' + source;
             _tileWidth = tileWidth;
             WidthRequest = -1;
             HeightRequest = SceneHeight;
@@ -1326,7 +1326,7 @@ public sealed partial class ParallaxGame : DrawnUi.Gaming.Game
 
         public TorchOverlayControl(string source)
         {
-            _source = source.StartsWith("/", StringComparison.Ordinal) ? source : "/" + source;
+            _source = source.StartsWith('/') ? source : '/' + source;
             WidthRequest = -1;
             HeightRequest = SceneHeight;
             HorizontalOptions = LayoutOptions.Fill;

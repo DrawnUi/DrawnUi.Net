@@ -674,9 +674,9 @@ public class SkiaImageManager : IDisposable
         }
 
         normalized = normalized.TrimStart('.');
-        if (!normalized.StartsWith("/", StringComparison.Ordinal))
+        if (!normalized.StartsWith('/'))
         {
-            normalized = "/" + normalized.TrimStart('/');
+            normalized = '/' + normalized.TrimStart('/');
         }
 
         return normalized;

@@ -886,7 +886,7 @@ public class SkiaLottie : AnimatedFramesRenderer
     public static Color StringToXamarinColorFromHex(string hexColor)
     {
         // Remove the '#' if present
-        if (hexColor.StartsWith("#"))
+        if (hexColor.StartsWith('#'))
             hexColor = hexColor.Substring(1);
 
         // Parse RGB values
