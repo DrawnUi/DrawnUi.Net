@@ -10,15 +10,13 @@
     <p class="docs-lead">SkiaButton gives you a ready-made drawn button with built-in press feedback. The example below keeps the surface small and copyable, which is the right shape for docs and quick experiments.</p>
     <p class="docs-note">Try tapping the buttons inside the canvas. The status line updates, and the button text changes to show that the control stays fully interactive in Blazor.</p>
 
-    <div class="docs-example-frame">
-        <Canvas Content="_canvasContent" WidthRequest="360"
-                BackgroundColor="#F7F3EA"
-                Margin="0,8,0,0"
-                Gestures="@GesturesMode.Enabled"/>
-    </div>
-
     <pre class="docs-code"><code>@ButtonSnippet</code></pre>
 </div>
+
+<Canvas Content="_canvasContent" 
+        BackgroundColor="#F7F3EA"
+        Margin="0,8,0,0"
+        Gestures="@GesturesMode.Enabled"/>
 
 @code {
     private const string ButtonSnippet = """
@@ -58,7 +56,7 @@ button.Tapped += (_, _) => button.Text = "Saved";
         {
             Margin = new Thickness(16),
             WidthRequest = 328,
-            HeightRequest = 240,
+            HeightRequest = 296,
             Padding = new Thickness(18),
             BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
             Type = LayoutType.Column,

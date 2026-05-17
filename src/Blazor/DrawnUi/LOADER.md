@@ -34,10 +34,14 @@ Optional — use the DrawnUI logo as favicon:
 
 ```html
 <div id="app">
-    <div class="boot-shell" aria-label="Loading MyApp">
+    <div class="boot-shell" data-loader-theme="dark" aria-label="Loading MyApp">
         <div class="boot-stage">
             <div class="boot-logo-wrap">
-                <img class="boot-logo" src="_content/DrawnUi.Blazor.Core/drawnui-logo.svg" alt="DrawnUI" />
+                <img class="boot-logo"
+                     src="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-dark="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-light="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg"
+                     alt="DrawnUI" />
                 <span class="boot-spark" style="--a:15deg;--r:6.8rem;--du:2.1s;--de:0s;--c:#4b8ef9"></span>
                 <span class="boot-spark" style="--a:72deg;--r:6.4rem;--du:1.8s;--de:0.38s;--c:#f25536"></span>
                 <span class="boot-spark" style="--a:138deg;--r:7rem;--du:2.4s;--de:0.72s;--c:#e4a130"></span>
@@ -62,6 +66,64 @@ Optional — use the DrawnUI logo as favicon:
 ```
 
 Change `My App Name` and the `aria-label` to match your app.
+
+### 2a. Loader theme switching
+
+The loader theme is controlled in one place through `startBlazorWithLoader(...)`.
+
+Available themes:
+
+| Theme | Result |
+|---|---|
+| `dark` | Default dark loader styling |
+| `light` | Light card, darker footer text, black logo variant |
+| `auto` | Uses `prefers-color-scheme` before Blazor starts |
+|
+
+Recommended markup keeps both logo variants on the loader image:
+
+```html
+<div id="app">
+    <div class="boot-shell" data-loader-theme="auto" aria-label="Loading MyApp">
+        <div class="boot-stage">
+            <div class="boot-logo-wrap">
+                <img class="boot-logo"
+                     src="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-dark="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-light="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg"
+                     alt="My App" />
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+Then set the theme in startup options:
+
+```html
+<script>
+    globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
+        theme: "auto",
+        initialLabel: "Loading",
+        initializingLabel: "Initializing...",
+        failureLabel: "Failed"
+    });
+</script>
+```
+
+If you already know the theme before Blazor starts, pass `theme: "light"` or `theme: "dark"` directly.
+
+If you need to override the loader theme before calling `startBlazorWithLoader(...)`, use:
+
+```html
+<script>
+    globalThis.DrawnUiLoader.applyTheme({
+        theme: "light",
+        lightLogoSrc: "_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg",
+        darkLogoSrc: "_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+    });
+</script>
+```
 
 ### 3. `wwwroot/css/app.css` — set background to match your app
 
@@ -88,6 +150,7 @@ Add the shared startup helper before `blazor.webassembly.js`, then start Blazor 
 <script src="_framework/blazor.webassembly.js" autostart="false"></script>
 <script>
     globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
+        theme: "auto",
         initialLabel: "Loading",
         initializingLabel: "Initializing...",
         failureLabel: "Failed"
@@ -108,11 +171,16 @@ Available loader label options:
 | `initialLabel` | `Loading` | Initial text shown before download progress starts |
 | `initializingLabel` | `Initializing...` | Text shown after download reaches `100%` and Blazor is still booting |
 | `failureLabel` | `Failed` | Text shown if Blazor startup fails |
+| `theme` | `dark` | Loader theme: `dark`, `light`, or `auto` |
+| `shellSelector` | `.boot-shell` | Which loader root element to theme |
+| `logoSelector` | `.boot-logo` | Which logo inside the loader root should switch variants |
+| `lightLogoSrc` | `null` | Explicit logo source to use in light theme |
+| `darkLogoSrc` | `null` | Explicit logo source to use in dark theme |
 
 To preview the loader at a specific progress without running the app, open:
 
 ```
-http://localhost:PORT/?loader-preview&progress=65&label=Loading+assets
+http://localhost:PORT/?loader-preview&theme=light&progress=65&label=Loading+assets
 ```
 
 This requires the preview JS block from the Breakout `index.html` (optional, copy as needed).

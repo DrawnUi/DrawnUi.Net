@@ -8,11 +8,8 @@
 
 <div class="docs-page">
     <h1>First App</h1>
-    <p class="docs-lead">
-        This is the Blazor version of DrawnUI tutorial <a href="https://drawnui.net/articles/first-app-code.html">Your First DrawnUI App: C# Fluent Syntax</a>.
-        Please not this tutorial text is still for .NET MAUI but has practically same code and Blazor version will be added soon.
-    </p>
-    <p class="docs-note">Here we have fluent bindings, linking SkiaLabel and SkiaButton.</p>
+    <p class="docs-lead">This is the fastest useful DrawnUI page to study in Blazor: one canvas, one image, one button, and one bound label reacting to live button state.</p>
+    <p class="docs-note">The structure stays close to the original DrawnUI tutorial at <a href="https://drawnui.net/articles/first-app-code.html">Your First DrawnUI App: C# Fluent Syntax</a>, but this page is a real Blazor sandbox version. Focus on the fluent composition and the <strong>ObserveProperties</strong> binding between <strong>SkiaButton</strong> and <strong>SkiaRichLabel</strong>.</p>
 
     <div class="docs-example-frame">
         <Canvas
@@ -81,7 +78,7 @@
                         Source = @"Images\dotnetbotcar.png",
                         HorizontalOptions = LayoutOptions.Center,
                     },
-                    new SkiaLabel("DrawnUI for .NET MAUI")
+                    new SkiaLabel("DrawnUI for Blazor")
                     {
                         UseCache = SkiaCacheType.Operations,
                         FontSize = 24,

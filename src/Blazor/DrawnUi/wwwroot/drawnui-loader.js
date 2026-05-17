@@ -1,10 +1,58 @@
 (function () {
+    const loaderThemeClasses = ['boot-shell-light', 'boot-shell-dark'];
     const defaultLoaderOptions = {
         initialProgress: 8,
         initialLabel: 'Loading',
         initializingLabel: 'Initializing...',
-        failureLabel: 'Failed'
+        failureLabel: 'Failed',
+        theme: 'dark',
+        shellSelector: '.boot-shell',
+        logoSelector: '.boot-logo',
+        lightLogoSrc: null,
+        darkLogoSrc: null
     };
+
+    function getLoaderShell(selector) {
+        return globalThis.document.querySelector(selector || '.boot-shell');
+    }
+
+    function normalizeTheme(theme) {
+        const resolved = String(theme || 'dark').toLowerCase();
+        if (resolved === 'light' || resolved === 'dark') {
+            return resolved;
+        }
+
+        if (resolved === 'auto') {
+            return globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        return 'dark';
+    }
+
+    function applyLoaderTheme(loaderOptions) {
+        const resolvedLoaderOptions = Object.assign({}, defaultLoaderOptions, loaderOptions);
+        const shell = getLoaderShell(resolvedLoaderOptions.shellSelector);
+        if (!shell) {
+            return null;
+        }
+
+        const theme = normalizeTheme(resolvedLoaderOptions.theme || shell.dataset.loaderTheme);
+        shell.classList.remove(...loaderThemeClasses);
+        shell.classList.add(theme === 'light' ? 'boot-shell-light' : 'boot-shell-dark');
+        shell.dataset.loaderThemeApplied = theme;
+
+        const logo = shell.querySelector(resolvedLoaderOptions.logoSelector);
+        if (logo) {
+            const lightLogoSrc = resolvedLoaderOptions.lightLogoSrc || logo.getAttribute('data-logo-light') || shell.dataset.loaderLogoLight;
+            const darkLogoSrc = resolvedLoaderOptions.darkLogoSrc || logo.getAttribute('data-logo-dark') || shell.dataset.loaderLogoDark;
+            const nextLogoSrc = theme === 'light' ? lightLogoSrc : darkLogoSrc;
+            if (nextLogoSrc) {
+                logo.setAttribute('src', nextLogoSrc);
+            }
+        }
+
+        return theme;
+    }
 
     function setLoaderProgress(state, progress, label) {
         const clampedProgress = Math.max(0, Math.min(100, progress));
@@ -15,10 +63,15 @@
         globalThis.document.documentElement.style.setProperty('--drawnui-load-percentage-text', `"${progressText}"`);
     }
 
-    function resolvePreview(state) {
+    function resolvePreview(state, loaderOptions) {
         const searchParams = new URLSearchParams(globalThis.location.search);
         if (!searchParams.has('loader-preview')) {
             return false;
+        }
+
+        const previewTheme = searchParams.get('theme');
+        if (previewTheme) {
+            applyLoaderTheme(Object.assign({}, loaderOptions, { theme: previewTheme }));
         }
 
         const loaderProgressRaw = Number(searchParams.get('progress'));
@@ -41,7 +94,9 @@
             downloadsCompleted: false
         };
 
-        if (resolvePreview(state)) {
+        applyLoaderTheme(resolvedLoaderOptions);
+
+        if (resolvePreview(state, resolvedLoaderOptions)) {
             return Promise.resolve();
         }
 
@@ -85,5 +140,6 @@
     }
 
     globalThis.DrawnUiLoader = globalThis.DrawnUiLoader || {};
+    globalThis.DrawnUiLoader.applyTheme = applyLoaderTheme;
     globalThis.DrawnUiLoader.startBlazorWithLoader = startBlazorWithLoader;
 })();

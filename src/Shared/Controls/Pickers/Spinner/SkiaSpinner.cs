@@ -87,6 +87,18 @@ public class SkiaSpinner : SkiaLayout
             Wheel.Invalidate();
         }
 
+        if (!_hasInitializedWheelState && ItemsCount > 0)
+        {
+            InitializeWheelState();
+            return;
+        }
+
+        if (SelectedIndex >= 0 && SelectedIndex < ItemsCount)
+        {
+            UpdateWheelRotationFromIndex();
+            return;
+        }
+
         UpdateSelectedIndexFromRotation();
 
     }
@@ -120,8 +132,16 @@ public class SkiaSpinner : SkiaLayout
 
     static Color[] DefaultColors = new[]
     {
-        Colors.Cyan, Colors.Blue, Colors.Green, Colors.Lime, Colors.Yellow, Colors.Orange, Colors.Red,
-        Colors.Purple, Colors.Magenta, Colors.Pink,
+        new Color(0.07f, 0.43f, 0.56f, 1f),
+        new Color(0.11f, 0.26f, 0.66f, 1f),
+        new Color(0.08f, 0.47f, 0.24f, 1f),
+        new Color(0.32f, 0.52f, 0.08f, 1f),
+        new Color(0.62f, 0.45f, 0.08f, 1f),
+        new Color(0.70f, 0.29f, 0.08f, 1f),
+        new Color(0.68f, 0.12f, 0.14f, 1f),
+        new Color(0.37f, 0.16f, 0.58f, 1f),
+        new Color(0.56f, 0.10f, 0.45f, 1f),
+        new Color(0.56f, 0.20f, 0.34f, 1f),
     };
 
     /// <summary>
@@ -143,6 +163,7 @@ public class SkiaSpinner : SkiaLayout
             HorizontalTextAlignment = DrawTextAlignment.Center,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
+            TextColor = Colors.White,
             //VerticalOptions = LayoutOptions.Center,
             //Padding = 10,
             VerticalTextAlignment = TextAlignment.Center
@@ -307,6 +328,15 @@ public class SkiaSpinner : SkiaLayout
 
     //readonly List<object> _itemsList = new();
     bool _isUpdatingFromRotation;
+    bool _hasInitializedWheelState;
+    PendingInitialWheelState _pendingInitialWheelState;
+
+    enum PendingInitialWheelState
+    {
+        None,
+        SelectedIndex,
+        WheelRotation
+    }
 
     #endregion
 
@@ -314,8 +344,18 @@ public class SkiaSpinner : SkiaLayout
 
     static void OnSelectedIndexChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is SkiaSpinner control && !control._isUpdatingFromRotation)
+        if (bindable is SkiaSpinner control)
         {
+            if (!control._hasInitializedWheelState && control.ItemsCount == 0)
+            {
+                control._pendingInitialWheelState = PendingInitialWheelState.SelectedIndex;
+            }
+
+            if (control._isUpdatingFromRotation)
+            {
+                return;
+            }
+
             control.UpdateWheelRotationFromIndex();
             control.SelectedIndexChanged?.Invoke(control, (int)newValue);
         }
@@ -325,6 +365,11 @@ public class SkiaSpinner : SkiaLayout
     {
         if (bindable is SkiaSpinner spinner)
         {
+            if (!spinner._hasInitializedWheelState && spinner.ItemsCount == 0)
+            {
+                spinner._pendingInitialWheelState = PendingInitialWheelState.WheelRotation;
+            }
+
             spinner.UpdateSelectedIndexFromRotation();
             spinner.Wheel.Rotation = spinner.WheelRotation;
         }
@@ -400,6 +445,35 @@ public class SkiaSpinner : SkiaLayout
         {
             WheelRotation = targetRotation;
         }
+    }
+
+    void InitializeWheelState()
+    {
+        if (_pendingInitialWheelState == PendingInitialWheelState.SelectedIndex
+            && SelectedIndex >= 0
+            && SelectedIndex < ItemsCount)
+        {
+            UpdateWheelRotationFromIndex();
+        }
+        else
+        {
+            UpdateSelectedIndexFromRotation();
+
+            if (Snap
+                && _pendingInitialWheelState != PendingInitialWheelState.WheelRotation
+                && SelectedIndex >= 0
+                && SelectedIndex < ItemsCount)
+            {
+                var targetRotation = GetRotationForIndex(SelectedIndex);
+                if (Math.Abs(WheelRotation - targetRotation) > 0.1)
+                {
+                    WheelRotation = targetRotation;
+                }
+            }
+        }
+
+        _hasInitializedWheelState = true;
+        _pendingInitialWheelState = PendingInitialWheelState.None;
     }
 
 

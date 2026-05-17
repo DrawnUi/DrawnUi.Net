@@ -5,13 +5,16 @@
 
 @using DrawnUi
 
-<PageTitle>Image Probe</PageTitle>
+<PageTitle>Image Workbench</PageTitle>
 
-<h1>Image Probe</h1>
-
-<p id="image-probe-description">Use this page to validate the first Blazor backup of SkiaImage.</p>
+<div class="docs-page">
+    <h1>Image Workbench</h1>
+    <p class="docs-lead" id="image-probe-description">This page is a larger SkiaImage workbench for Blazor: local files, remote bitmaps, and aspect handling in one place.</p>
+    <p class="docs-note">It is less polished than the compact <strong>SkiaImage</strong> docs page, but better when you want to inspect how the browser runtime behaves with different image sources.</p>
+</div>
 
 <Canvas
+    Content="_canvasContent"
     WidthRequest="420"
     HeightRequest="760"
     BackgroundColor="#F4F1E8"
@@ -43,7 +46,7 @@
             {
                 new SkiaLabel()
                 {
-                    Text = "SkiaImage backup probe",
+                    Text = "SkiaImage workbench",
                     FontFamily = "FontTextTitle",
                     FontSize = 28,
                     TextColor = new Color(0.145f, 0.169f, 0.216f, 1f),
@@ -51,7 +54,7 @@
                 },
                 new SkiaLabel()
                 {
-                    Text = "Expected: three images rendered below, without touching Home.",
+                    Text = "Three image paths in one page: local favicon, local app icon, and a remote bitmap.",
                     FontFamily = "FontText",
                     FontSize = 15,
                     TextColor = new Color(0.255f, 0.286f, 0.353f, 1f),

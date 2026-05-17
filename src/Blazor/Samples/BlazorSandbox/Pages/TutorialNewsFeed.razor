@@ -10,17 +10,19 @@
 <div class="docs-page">
     <h1>News Feed</h1>
     <p class="docs-lead">Blazor port of the DrawnUI NewsFeed tutorial. The DrawnUI feed tree, recycled cell setup, refresh, and load-more behavior are kept aligned with the MAUI sample.</p>
+    <p class="docs-note">What to look for here: a richer real-world layout, recycled cells, refresh behavior, and feed-style composition that still stays fully inside the DrawnUI tree.</p>
 
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent"
+                MaxWidthRequest="430"
+                HorizontalOptions="@LayoutOptions.Fill"
+                VerticalOptions="@LayoutOptions.Fill"
+                BackgroundColor="#DCDCDC"
+                Margin="0,8,0,8"
+                RenderingMode="@RenderingModeType.Accelerated"
+                Gestures="@GesturesMode.Lock" />
+    </div>
 </div>
-
-<Canvas Content="_canvasContent"
-        MaxWidthRequest="430"
-        HorizontalOptions="@LayoutOptions.Fill"
-        VerticalOptions="@LayoutOptions.Fill"
-        BackgroundColor="#DCDCDC"
-        Margin="0,8,0,8"
-        RenderingMode="@RenderingModeType.Accelerated"
-        Gestures="@GesturesMode.Lock" />
 
 @code {
     private readonly SkiaControl _canvasContent;

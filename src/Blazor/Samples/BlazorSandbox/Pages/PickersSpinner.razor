@@ -1,4 +1,6 @@
 @page "/pickers-spinner"
+@using AppoMobi.Specials
+@using System.Collections.ObjectModel
 @using DrawnUi
 @using DrawnUi.Controls
 @using DrawnUi.Draw
@@ -13,7 +15,7 @@
 
     <div class="docs-example-frame">
         <Canvas Content="_canvasContent" WidthRequest="380"
-                HeightRequest="360"
+                HeightRequest="452"
                 BackgroundColor="#102338"
                 Margin="0,8,0,0"
                 Gestures="@GesturesMode.Enabled"
@@ -34,7 +36,8 @@ var spinner = new SkiaSpinner()
 };
 """;
 
-    private readonly List<string> _items = ["Azure", "Maui", "Blazor", "Skia", "Docs", "Gaming"];
+    private readonly ObservableCollection<string> _items = ["Azure", "Maui", "Blazor", "Skia", "Docs", "Gaming"];
+    private readonly string[] _extraItems = ["Canvas", "Shader", "Layout", "Scroll", "Gestures", "Controls"];
     private readonly SkiaSpinner _spinner;
     private readonly SkiaLabel _selectionLabel;
     private SkiaControl _canvasContent;
@@ -61,13 +64,26 @@ var spinner = new SkiaSpinner()
             FontSize = 18,
             TextColor = Colors.White,
             HorizontalOptions = LayoutOptions.Center
-        };
+        }
+        .Observe(_spinner, (me, prop) =>
+        {
+            if (prop == nameof(SkiaSpinner.SelectedIndex))
+            {
+                var selected = _spinner.SelectedIndex >= 0 && _spinner.SelectedIndex < _items.Count
+                    ? $"{_items[_spinner.SelectedIndex]} [{_spinner.SelectedIndex}]"
+                    : "None";
+
+                me.Text = $"Selected: {selected}";
+            }
+        });
+
+        _selectionLabel.Text = FormatSelectedText(_spinner.SelectedIndex);
 
         _canvasContent = new SkiaLayout()
         {
             Margin = new Thickness(16),
             WidthRequest = 344,
-            HeightRequest = 328,
+            HeightRequest = 420,
             Padding = new Thickness(16),
             BackgroundColor = new Color(0.063f, 0.149f, 0.286f, 1f),
             Type = LayoutType.Column,
@@ -85,39 +101,113 @@ var spinner = new SkiaSpinner()
                 new SkiaLayout()
                 {
                     HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Fill,
                     Children =
                     {
                         _spinner,
                         new SkiaShape()
                         {
+                            Tag = "Arrow",
+                            UseCache = SkiaCacheType.Operations,
                             Type = ShapeType.Polygon,
                             BackgroundColor = Colors.Red,
                             StrokeColor = Colors.White,
-                            StrokeWidth = 1,
-                            WidthRequest = 22,
+                            StrokeWidth = 1.5,
+                            WidthRequest = 24,
                             HeightRequest = 16,
                             VerticalOptions = LayoutOptions.Center,
-                            HorizontalOptions = LayoutOptions.Start,
-                            Margin = new Thickness(22, 0, 0, 0),
+                            TranslationX = -10,
+                            ZIndex = 10,
                             Points = new List<SkiaPoint>
                             {
-                                new (0, 8),
-                                new (22, 0),
-                                new (22, 16)
+                                new (1.0, 0.5),
+                                new (0.0, 0.0),
+                                new (0.0, 1.0)
                             }
                         }
                     }
                 },
-                _selectionLabel
+                _selectionLabel,
+                new SkiaLayout()
+                {
+                    Type = LayoutType.Row,
+                    HorizontalOptions = LayoutOptions.Center,
+                    Spacing = 15,
+                    Children =
+                    {
+                        new SkiaButton()
+                        {
+                            UseCache = SkiaCacheType.Image,
+                            Text = "Spin Random",
+                            BackgroundColor = Colors.Orange,
+                            TextColor = Colors.White,
+                            CornerRadius = 8,
+                        }.OnTapped(me => { OnButtonTapped("spin"); }),
+                        new SkiaButton()
+                        {
+                            UseCache = SkiaCacheType.Image,
+                            Text = "Add Item",
+                            BackgroundColor = Colors.Green,
+                            TextColor = Colors.White,
+                            CornerRadius = 8,
+                        }.OnTapped(me => { OnButtonTapped("add"); }),
+                        new SkiaButton()
+                        {
+                            UseCache = SkiaCacheType.Image,
+                            Text = "Remove Item",
+                            BackgroundColor = Colors.Red,
+                            TextColor = Colors.White,
+                            CornerRadius = 8,
+                        }.OnTapped(me => { OnButtonTapped("remove"); })
+                    }
+                }
             }
         };
     }
 
     private void OnSpinnerSelectionChanged(object? sender, int index)
     {
-        var selected = index >= 0 && index < _items.Count ? _items[index] : "None";
-        _selectionLabel.Text = $"Selected: {selected}";
+        _selectionLabel.Text = FormatSelectedText(index);
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private string FormatSelectedText(int index)
+    {
+        var selected = index >= 0 && index < _items.Count
+            ? $"{_items[index]} [{index}]"
+            : "None";
+
+        return $"Selected: {selected}";
+    }
+
+    private void OnButtonTapped(string action)
+    {
+        switch (action)
+        {
+            case "spin":
+                _spinner.SpinToRandom();
+                break;
+
+            case "add":
+                if (_items.Count < 32)
+                {
+                    var nextIndex = _items.Count - 6;
+                    var label = nextIndex >= 0 && nextIndex < _extraItems.Length
+                        ? _extraItems[nextIndex]
+                        : $"Item {_items.Count + 1}";
+                    _items.Add(label);
+                }
+                break;
+
+            case "remove":
+                if (_items.Count > 2)
+                {
+                    _items.RemoveAt(_items.Count - 1);
+                }
+                break;
+        }
+
+        _selectionLabel.Text = FormatSelectedText(_spinner.SelectedIndex);
         _ = InvokeAsync(StateHasChanged);
     }
 }

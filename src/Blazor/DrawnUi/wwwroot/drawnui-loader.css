@@ -36,6 +36,22 @@
  */
 
 .boot-shell {
+    --boot-shell-background: transparent;
+    --boot-blob-primary: rgba(120, 84, 158, 0.48);
+    --boot-blob-secondary: rgba(75, 142, 249, 0.36);
+    --boot-stage-background: transparent;
+    --boot-stage-border: transparent;
+    --boot-stage-shadow: none;
+    --boot-logo-wrap-background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 62%);
+    --boot-logo-core-glow: radial-gradient(circle, rgba(75, 142, 249, 0.14), rgba(120, 84, 158, 0.08) 55%, transparent 72%);
+    --boot-logo-halo-glow: radial-gradient(circle, rgba(75, 142, 249, 0.09), rgba(120, 84, 158, 0.06) 50%, transparent 72%);
+    --boot-copy-color: #9aa3b6;
+    --boot-progress-track-background: rgba(255, 255, 255, 0.1);
+    --boot-progress-track-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --boot-progress-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.36) 48%, transparent 100%);
+    --boot-progress-cap-background: rgba(255, 255, 255, 0.95);
+    --boot-progress-cap-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.7), 0 0 14px 4px rgba(75, 142, 249, 0.6);
+    --boot-progress-text-color: rgba(221, 227, 239, 0.72);
     position: relative;
     display: grid;
     place-items: center;
@@ -43,6 +59,45 @@
     width: 100%;
     overflow: hidden;
     isolation: isolate;
+    background: var(--boot-shell-background);
+}
+
+.boot-shell-light {
+    --boot-shell-background: linear-gradient(180deg, #f7f9fc 0%, #eef4fb 52%, #fbf7f1 100%);
+    --boot-blob-primary: rgba(120, 84, 158, 0.16);
+    --boot-blob-secondary: rgba(75, 142, 249, 0.18);
+    --boot-stage-background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(248, 250, 253, 0.82) 100%);
+    --boot-stage-border: rgba(140, 157, 181, 0.18);
+    --boot-stage-shadow: 0 24px 64px rgba(41, 54, 73, 0.08), 0 6px 18px rgba(75, 142, 249, 0.08);
+    --boot-logo-wrap-background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.96), rgba(236, 243, 253, 0.62) 52%, rgba(255, 255, 255, 0) 78%);
+    --boot-logo-core-glow: radial-gradient(circle, rgba(75, 142, 249, 0.18), rgba(228, 161, 48, 0.08) 56%, transparent 74%);
+    --boot-logo-halo-glow: radial-gradient(circle, rgba(75, 142, 249, 0.12), rgba(120, 84, 158, 0.08) 48%, transparent 72%);
+    --boot-copy-color: #435066;
+    --boot-progress-track-background: rgba(151, 163, 184, 0.2);
+    --boot-progress-track-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 0 0 1px rgba(148, 163, 184, 0.14);
+    --boot-progress-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.62) 48%, transparent 100%);
+    --boot-progress-cap-background: rgba(255, 255, 255, 0.82);
+    --boot-progress-cap-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.55), 0 0 12px 3px rgba(75, 142, 249, 0.22);
+    --boot-progress-text-color: rgba(68, 81, 104, 0.8);
+}
+
+.boot-shell-dark {
+    --boot-shell-background: transparent;
+    --boot-blob-primary: rgba(120, 84, 158, 0.48);
+    --boot-blob-secondary: rgba(75, 142, 249, 0.36);
+    --boot-stage-background: transparent;
+    --boot-stage-border: transparent;
+    --boot-stage-shadow: none;
+    --boot-logo-wrap-background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 62%);
+    --boot-logo-core-glow: radial-gradient(circle, rgba(75, 142, 249, 0.14), rgba(120, 84, 158, 0.08) 55%, transparent 72%);
+    --boot-logo-halo-glow: radial-gradient(circle, rgba(75, 142, 249, 0.09), rgba(120, 84, 158, 0.06) 50%, transparent 72%);
+    --boot-copy-color: #9aa3b6;
+    --boot-progress-track-background: rgba(255, 255, 255, 0.1);
+    --boot-progress-track-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --boot-progress-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.36) 48%, transparent 100%);
+    --boot-progress-cap-background: rgba(255, 255, 255, 0.95);
+    --boot-progress-cap-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.7), 0 0 14px 4px rgba(75, 142, 249, 0.6);
+    --boot-progress-text-color: rgba(221, 227, 239, 0.72);
 }
 
 .boot-shell::before,
@@ -60,7 +115,7 @@
     height: min(48vw, 22rem);
     top: 5%;
     right: 4%;
-    background: rgba(120, 84, 158, 0.48);
+    background: var(--boot-blob-primary);
     animation: boot-blob 6s ease-in-out infinite;
 }
 
@@ -69,7 +124,7 @@
     height: min(52vw, 26rem);
     bottom: 4%;
     left: 3%;
-    background: rgba(75, 142, 249, 0.36);
+    background: var(--boot-blob-secondary);
     animation: boot-blob 7.5s ease-in-out infinite reverse;
 }
 
@@ -81,6 +136,11 @@
     gap: 1rem;
     width: min(28rem, calc(100vw - 2.75rem));
     padding: 2.5rem 1.5rem 2rem;
+    border-radius: 2rem;
+    background: var(--boot-stage-background);
+    border: 1px solid var(--boot-stage-border);
+    box-shadow: var(--boot-stage-shadow);
+    backdrop-filter: blur(18px);
     animation: boot-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -92,7 +152,7 @@
     display: grid;
     place-items: center;
     border-radius: 2rem;
-    background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 62%);
+    background: var(--boot-logo-wrap-background);
     animation: boot-float 4.6s ease-in-out infinite;
 }
 
@@ -101,7 +161,7 @@
     position: absolute;
     inset: 8%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(75, 142, 249, 0.14), rgba(120, 84, 158, 0.08) 55%, transparent 72%);
+    background: var(--boot-logo-core-glow);
     filter: blur(18px);
 }
 
@@ -110,7 +170,7 @@
     position: absolute;
     inset: -28%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(75, 142, 249, 0.09), rgba(120, 84, 158, 0.06) 50%, transparent 72%);
+    background: var(--boot-logo-halo-glow);
     filter: blur(28px);
 }
 
@@ -124,8 +184,10 @@
 
 .boot-foot {
     display: grid;
-    grid-template-columns: max-content;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
+    width: 100%;
+    justify-items: center;
 }
 
 .boot-copy {
@@ -134,9 +196,17 @@
     font-size: 1.3rem;
     font-weight: 650;
     text-align: center;
-    color: #9aa3b6;
-    white-space: nowrap;
+    color: var(--boot-copy-color);
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+    line-height: 1.2;
     animation: boot-title-pulse 4s ease-in-out infinite;
+}
+
+.boot-shell-light .boot-copy {
+    animation: boot-title-pulse-light 4s ease-in-out infinite;
 }
 
 .boot-progress {
@@ -166,8 +236,8 @@
     overflow: hidden;
     height: 0.48rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    background: var(--boot-progress-track-background);
+    box-shadow: var(--boot-progress-track-shadow);
 }
 
 .boot-progress-track::after {
@@ -177,7 +247,7 @@
     bottom: 0;
     left: -36%;
     width: 36%;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.36) 48%, transparent 100%);
+    background: var(--boot-progress-shimmer);
     transform: translateX(0);
     animation: boot-shimmer 1.8s ease-in-out infinite;
 }
@@ -202,11 +272,9 @@
     bottom: -0.15rem;
     width: 0.55rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--boot-progress-cap-background);
     filter: blur(1.5px);
-    box-shadow:
-        0 0 6px 2px rgba(255, 255, 255, 0.7),
-        0 0 14px 4px rgba(75, 142, 249, 0.6);
+    box-shadow: var(--boot-progress-cap-shadow);
 }
 
 .boot-progress-text {
@@ -215,7 +283,7 @@
     text-transform: uppercase;
     letter-spacing: 0.24em;
     font-size: 0.75rem;
-    color: rgba(221, 227, 239, 0.72);
+    color: var(--boot-progress-text-color);
 }
 
 .boot-progress-text::after {
@@ -286,6 +354,21 @@
             0 0 18px rgba(75, 142, 249, 0.75),
             0 0 48px rgba(75, 142, 249, 0.32),
             0 0 88px rgba(120, 84, 158, 0.22);
+    }
+}
+
+@keyframes boot-title-pulse-light {
+    0%, 100% {
+        text-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.72),
+            0 0 16px rgba(75, 142, 249, 0.12),
+            0 0 32px rgba(120, 84, 158, 0.06);
+    }
+    50% {
+        text-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.86),
+            0 0 22px rgba(75, 142, 249, 0.2),
+            0 0 42px rgba(120, 84, 158, 0.1);
     }
 }
 

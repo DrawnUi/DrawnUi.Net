@@ -44,14 +44,17 @@ main {
 .top-row-pill {
     display: inline-flex;
     align-items: center;
-    padding: 0.28rem 0.65rem;
+    flex-shrink: 0;
+    padding: 0.44rem 0.95rem 0.48rem;
     border-radius: 999px;
     background: #183b71;
     color: #fff;
     font-size: 0.78rem;
     font-weight: 700;
+    line-height: 1;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .top-row-text {

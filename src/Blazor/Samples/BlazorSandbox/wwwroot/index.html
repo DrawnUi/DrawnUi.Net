@@ -20,10 +20,14 @@
 
 <body>
     <div id="app">
-        <div class="boot-shell" aria-label="Loading DrawnUI for Blazor">
+        <div class="boot-shell" data-loader-theme="light" aria-label="Loading DrawnUI for Blazor">
             <div class="boot-stage">
                 <div class="boot-logo-wrap">
-                    <img class="boot-logo" src="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg" alt="DrawnUI" />
+                    <img class="boot-logo"
+                         src="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg"
+                         data-logo-dark="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                         data-logo-light="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg"
+                         alt="DrawnUI" />
                     <span class="boot-spark" style="--a:15deg;--r:6.8rem;--du:2.1s;--de:0s;--c:#4b8ef9"></span>
                     <span class="boot-spark" style="--a:72deg;--r:6.4rem;--du:1.8s;--de:0.38s;--c:#f25536"></span>
                     <span class="boot-spark" style="--a:138deg;--r:7rem;--du:2.4s;--de:0.72s;--c:#e4a130"></span>
@@ -34,7 +38,7 @@
                     <span class="boot-spark" style="--a:172deg;--r:7.6rem;--du:2s;--de:1.6s;--c:#78549e"></span>
                 </div>
                 <div class="boot-foot">
-                    <div class="boot-copy">DrawnUI for Blazor</div>
+                    <div class="boot-copy">DrawnUI Blazor Sandbox</div>
                     <div class="boot-progress" aria-hidden="true">
                         <div class="boot-progress-track">
                             <div class="boot-progress-fill"></div>
@@ -84,6 +88,7 @@
     <script src="_framework/blazor.webassembly.js" autostart="false"></script>
     <script>
         globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
+            theme: 'light',
             initialLabel: 'Loading',
             initializingLabel: 'Initializing...',
             failureLabel: 'Failed'

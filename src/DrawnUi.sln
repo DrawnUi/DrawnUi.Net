@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Maui\Samples\San
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawnUi.Blazor.Wasm", "Blazor\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj", "{8D99F129-8B66-1848-BE06-F93F65B0E242}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastRepro", "Maui\Samples\FastRepro\FastRepro.csproj", "{DA3890E5-27F6-AFA3-CE6A-B32052050764}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{8D99F129-8B66-1848-BE06-F93F65B0E242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D99F129-8B66-1848-BE06-F93F65B0E242}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D99F129-8B66-1848-BE06-F93F65B0E242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA3890E5-27F6-AFA3-CE6A-B32052050764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA3890E5-27F6-AFA3-CE6A-B32052050764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA3890E5-27F6-AFA3-CE6A-B32052050764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA3890E5-27F6-AFA3-CE6A-B32052050764}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{1F8C6D12-70FC-42BB-B56F-BBD56941C0C4} = {31616691-6743-4833-B7C9-4A2B6F5443D6}
 		{DDBB9807-01E1-22BC-C525-591C7CD5DE6F} = {32FF08BC-102F-411B-930A-F1561250A7BE}
 		{8D99F129-8B66-1848-BE06-F93F65B0E242} = {9E06E6F0-4214-4D7B-9D29-F26B0B44E84D}
+		{DA3890E5-27F6-AFA3-CE6A-B32052050764} = {32FF08BC-102F-411B-930A-F1561250A7BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {329E3D0C-A3F7-4A3E-B61C-6B2D1BD7F708}

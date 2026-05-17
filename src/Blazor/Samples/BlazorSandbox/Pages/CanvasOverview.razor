@@ -9,7 +9,7 @@
     <h1>Canvas</h1>
     <p class="docs-lead">Canvas is the Blazor host for a DrawnUI render tree. It bridges browser layout and the DrawnUI drawing surface, and it can run in either <strong>Default</strong> or <strong>Accelerated</strong> rendering mode.</p>
     <p class="docs-note">Blazor uses <strong>Canvas</strong> as the public host name for both runtime shapes. <strong>DrawnUi.Blazor.Wasm</strong> provides the browser-side Canvas, and <strong>DrawnUi.Blazor.Server</strong> provides the server-backed Canvas, so single-host apps do not need an extra host-selection property. In a <strong>Hybrid</strong> Blazor Web App you still use <strong>Canvas</strong> on both sides and choose the runtime at the component boundary, for example by rendering one island with <strong>InteractiveServer</strong> and another with <strong>InteractiveWebAssembly</strong>.</p>
-    <p class="docs-note">Use <strong>WidthRequest</strong> and <strong>HeightRequest</strong> when you want a fixed surface. You can also use <strong>HorizonalOptions</strong> and <strong>VerticalOptions</strong> WPF-style properties.</p>
+    <p class="docs-note">Use <strong>WidthRequest</strong> and <strong>HeightRequest</strong> when you want a fixed surface. You can also use <strong>HorizontalOptions</strong> and <strong>VerticalOptions</strong> WPF-style properties.</p>
 
     <div class="docs-example-frame">
         <Canvas Content="_defaultRoot"

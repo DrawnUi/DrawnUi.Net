@@ -25,14 +25,19 @@
         Route="MainPage" />-->
 
     <!--<ShellContent
-        Title="DrawnUI for .NET MAUI"
-        ContentTemplate="{DataTemplate sandbox:MainPageSpinner}"
+        Title="SkiaPicker Demo"
+        ContentTemplate="{DataTemplate sandbox:MainPagePicker}"
         Route="MainPage" />-->
 
     <ShellContent
         Title="DrawnUI for .NET MAUI"
-        ContentTemplate="{DataTemplate sandbox:MainPageEditors}"
+        ContentTemplate="{DataTemplate sandbox:MainPageSpinner}"
         Route="MainPage" />
+
+    <!--<ShellContent
+        Title="DrawnUI for .NET MAUI"
+        ContentTemplate="{DataTemplate sandbox:MainPageEditors}"
+        Route="MainPage" />-->
 
     <!--<ShellContent
     Title="DrawnUI for .NET MAUI"

@@ -4,11 +4,13 @@
 
 @using DrawnUi
 
-<PageTitle>Svg Probe</PageTitle>
+<PageTitle>SVG Workbench</PageTitle>
 
-<h1>Svg Probe</h1>
-
-<p id="svg-probe-description">Use this page to validate the shared SkiaSvg browser port.</p>
+<div class="docs-page">
+    <h1>SVG Workbench</h1>
+    <p class="docs-lead" id="svg-probe-description">This page exercises SkiaSvg with both local and remote sources so you can inspect asset loading and rendered output in a larger surface.</p>
+    <p class="docs-note">The compact <strong>SkiaSvg</strong> page is better as a quick reference. This one is better when you want to confirm the browser runtime is loading what you expect.</p>
+</div>
 <p id="svg-local-status">@_localSvgStatus</p>
 <p id="svg-remote-status">@_remoteSvgStatus</p>
 
@@ -50,7 +52,7 @@
             {
                 new SkiaLabel()
                 {
-                    Text = "SkiaSvg shared probe",
+                    Text = "SkiaSvg workbench",
                     FontFamily = "FontTextTitle",
                     FontSize = 28,
                     TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
@@ -58,7 +60,7 @@
                 },
                 new SkiaLabel()
                 {
-                    Text = "Expected: one local svg and one remote svg rendered below.",
+                    Text = "Local SVG from the app plus one remote SVG, with status lines above for quick inspection.",
                     FontFamily = "FontText",
                     FontSize = 15,
                     TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),

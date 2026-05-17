@@ -30,6 +30,7 @@ internal static class NavMenuItems
                 new("Canvas", "canvas", "bi-aspect-ratio"),
                 new("Auto Size", "canvas-auto-size", "bi-arrows-angle-expand"),
                 new("Full Size", "canvas-fullscreen", "bi-bounding-box-circles"),
+                new("Gestures", "canvas-gestures", "bi-hand-index-thumb-nav-menu"),
         
                 new("Keyboard Input", "keyboard-probe", "bi-keyboard-nav-menu"),
             ]),
@@ -103,6 +104,7 @@ internal static class NavMenuItems
                         new("SkiaSwitch", "switches", "bi-toggle2-on-nav-menu"),
 
                         new("Picker Wheels", "pickers", "bi-list-ul-nav-menu"),
+                        new("SkiaPicker", "pickers-sheet", "bi-menu-button-wide-nav-menu"),
                         new("Picker Spinner", "pickers-spinner", "bi-disc-nav-menu")
                     ]),
 

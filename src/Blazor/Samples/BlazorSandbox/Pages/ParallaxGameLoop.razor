@@ -4,9 +4,11 @@
 
 <PageTitle>Parallax Game Loop</PageTitle>
 
-<h1>Parallax Game Loop</h1>
-
-This scene keeps the Cold Corridors art, uses tiled DrawnUI parallax layers, and runs movement from the shared game loop with keyboard input.
+<div class="docs-page">
+    <h1>Parallax Game Loop</h1>
+    <p class="docs-lead">This page is a side-scrolling scene built from layered DrawnUI content, shared game-loop timing, and keyboard-driven movement. It is a good middle ground between tiny control docs and the full Space Shooter demo.</p>
+    <p class="docs-note">What to look for: parallax depth, continuous motion, aspect-locked scaling, and how a wider scene still stays inside the DrawnUI rendering model instead of falling back to HTML layering.</p>
+</div>
 
 <FullscreenToggleBar
     IsFullscreen="@_isFullscreen"

@@ -5,11 +5,13 @@
 @using DrawnUi
 @implements IDisposable
 
-<PageTitle>Keyboard Probe</PageTitle>
+<PageTitle>Keyboard Input</PageTitle>
 
-<h1>Keyboard Probe</h1>
-
-Use this page to verify `UseDesktopKeyboard` in Blazor. Keep this tab active and press keys.
+<div class="docs-page">
+    <h1>Keyboard Input</h1>
+    <p class="docs-lead">This page shows how DrawnUI keyboard input flows in Blazor when the page has focus. It is useful for shortcuts, game input, debug overlays, and desktop-style interactions inside a drawn surface.</p>
+    <p class="docs-note">Click the page to focus it, then press a few keys. The last key, modifier state, and recent history update both as browser text and inside the DrawnUI canvas below.</p>
+</div>
 
 <p id="keyboard-probe-last">@_lastKeyText</p>
 <p id="keyboard-probe-modifiers">@_modifierText</p>
@@ -31,7 +33,7 @@ Use this page to verify `UseDesktopKeyboard` in Blazor. Keep this tab active and
 @code {
     private readonly SkiaLabel _heroLabel = new()
     {
-        Text = "Keyboard probe ready",
+        Text = "Keyboard input ready",
         FontFamily = "FontTextTitle",
         FontSize = 28,
         TextColor = new Color(0.145f, 0.169f, 0.216f, 1f),

@@ -5,13 +5,16 @@
 
 @using DrawnUi
 
-<PageTitle>Shapes Probe</PageTitle>
+<PageTitle>Shape Workbench</PageTitle>
 
-<h1>Shapes Probe</h1>
-
-<p id="shapes-probe-description">Use this page to validate SkiaShape clipping, stroke-aware children rects, and rounded shape content in Blazor.</p>
+<div class="docs-page">
+    <h1>Shape Workbench</h1>
+    <p class="docs-lead" id="shapes-probe-description">This page pushes a few SkiaShape behaviors harder than the compact docs sample: clipping, thick strokes, inset child layout, and rounded content.</p>
+    <p class="docs-note">Use it when you want to inspect the geometry more closely than the simpler <strong>SkiaShape</strong> page allows.</p>
+</div>
 
 <Canvas
+    Content="_canvasContent"
     WidthRequest="420"
     HeightRequest="860"
     BackgroundColor="#F4F1E8"
@@ -36,7 +39,7 @@
             {
                 new SkiaLabel()
                 {
-                    Text = "SkiaShape probe",
+                    Text = "SkiaShape workbench",
                     FontFamily = "FontTextTitle",
                     FontSize = 28,
                     TextColor = new Color(0.145f, 0.169f, 0.216f, 1f),
@@ -44,7 +47,7 @@
                 },
                 new SkiaLabel()
                 {
-                    Text = "Expected: child content stays inside the stroked rounded shape, and the interior rect shrinks with the stroke.",
+                    Text = "Stroke thickness, clipping, and child layout are all visible in the examples below.",
                     FontFamily = "FontText",
                     FontSize = 15,
                     TextColor = new Color(0.255f, 0.286f, 0.353f, 1f),

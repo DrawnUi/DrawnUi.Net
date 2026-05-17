@@ -502,8 +502,22 @@
     {
         Context = context;
 
-        double widthRequest = WidthRequest;
-        double heightRequest = HeightRequest;
+        double widthRequest = WidthRequest > 0
+            ? WidthRequest
+            : CanvasElementWidth;
+        double heightRequest = HeightRequest > 0
+            ? HeightRequest
+            : CanvasElementHeight;
+
+        if (Math.Abs(Width - widthRequest) > 0.01)
+        {
+            Width = widthRequest;
+        }
+
+        if (Math.Abs(Height - heightRequest) > 0.01)
+        {
+            Height = heightRequest;
+        }
 
         Arrange(context.Destination, widthRequest, heightRequest, context.Scale);
 

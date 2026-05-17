@@ -5,11 +5,13 @@
 
 @using DrawnUi
 
-<PageTitle>Gif Probe</PageTitle>
+<PageTitle>SkiaGif</PageTitle>
 
-<h1>Gif Probe</h1>
-
-<p id="gif-probe-description">Use this page to validate the shared SkiaGif browser port.</p>
+<div class="docs-page">
+    <h1>SkiaGif</h1>
+    <p class="docs-lead" id="gif-probe-description">SkiaGif is the straightforward way to host animated GIF assets inside a DrawnUI surface.</p>
+    <p class="docs-note">This page keeps one looping local animation visible together with a live status line, which makes it useful both as a demo and as a quick sanity check when working on media loading.</p>
+</div>
 <p id="gif-local-status">@_gifStatus</p>
 
 <Canvas Content="_canvasContent" WidthRequest="420"
@@ -52,7 +54,7 @@
             {
                 new SkiaLabel()
                 {
-                    Text = "SkiaGif shared probe",
+                    Text = "SkiaGif",
                     FontFamily = "FontTextTitle",
                     FontSize = 28,
                     TextColor = new Color(0.133f, 0.184f, 0.251f, 1f),
@@ -60,7 +62,7 @@
                 },
                 new SkiaLabel()
                 {
-                    Text = "Expected: the local banana gif animates inside the rounded card.",
+                    Text = "Local GIF asset, autoplay, repeat, and fit behavior in one compact sample.",
                     FontFamily = "FontText",
                     FontSize = 15,
                     TextColor = new Color(0.290f, 0.341f, 0.408f, 1f),
