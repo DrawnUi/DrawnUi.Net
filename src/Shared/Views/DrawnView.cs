@@ -2510,8 +2510,7 @@ namespace DrawnUi.Views
 
                     FocusedItemChanged?.Invoke(this, new(_focusedChild as SkiaControl, false));
                 }
-
-
+                
                 if (value != null)
                 {
                     if (value != setter || setter == null)

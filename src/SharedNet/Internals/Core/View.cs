@@ -28,15 +28,54 @@ namespace DrawnUi.Draw
         /// <summary>
         /// ToDo
         /// </summary>
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled
+        {
+            get;
+            set
+            {
+                if (value == field)
+                {
+                    return;
+                }
+
+                field = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IList<object> Effects { get; } = new List<object>();
 
         public IList<object> Behaviors { get; } = new List<object>();
 
-        public new virtual bool IsVisible { get; set; } = true;
+        public new virtual bool IsVisible
+        {
+            get;
+            set
+            {
+                if (value == field)
+                {
+                    return;
+                }
 
-        public virtual bool InputTransparent { get; set; }
+                field = value;
+                OnPropertyChanged();
+            }
+        } = true;
+
+        public virtual bool InputTransparent
+        {
+            get;
+            set
+            {
+                if (value == field)
+                {
+                    return;
+                }
+
+                field = value;
+                OnPropertyChanged();
+            }
+        }
 
         public virtual bool IsClippedToBounds { get; set; }
 
