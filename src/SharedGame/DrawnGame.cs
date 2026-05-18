@@ -11,7 +11,7 @@ namespace DrawnUi.Gaming
     /// <summary>
     /// Base class for implementing a game. StartLoop, StopLoop, override GameLoop(..) etc.
     /// </summary>
-    public partial class Game : SkiaLayout, IGame
+    public partial class DrawnGame : SkiaLayout, IGame
     {
  
         /// <summary>
@@ -23,7 +23,7 @@ namespace DrawnUi.Gaming
         private ActionOnTickAnimator _appLoop;
         protected long LastFrameTimeNanos;
 
-        public Game()
+        public DrawnGame()
         {
             Super.Log("****************** GAME CREATED **********************");
 
@@ -91,7 +91,7 @@ namespace DrawnUi.Gaming
             float deltaSeconds = (frameTimeNanos - LastFrameTimeNanos) / 1_000_000_000.0f;
 
             // Use stable time
-            if (!Game.FrameInterpolatorDisabled)
+            if (!DrawnGame.FrameInterpolatorDisabled)
                 deltaSeconds = FrameTimeInterpolator.GetDeltaTimeFromDelta(deltaSeconds);
 
             LastFrameTimeNanos = frameTimeNanos;

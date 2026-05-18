@@ -2,7 +2,7 @@ using DrawnUi.Draw;
 
 namespace DrawnUi.Gaming
 {
-    public partial class Game
+    public partial class DrawnGame
     {
         #region KEYS
 
