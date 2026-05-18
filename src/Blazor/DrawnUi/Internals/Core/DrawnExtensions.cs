@@ -21,6 +21,7 @@ namespace DrawnUi.Draw
 
             await SkiaFontManager.Instance.InitializeAsync(host.Services, cancellationToken);
             await SkiaImageManager.Instance.InitializeAsync(host.Services, cancellationToken);
+            await SkiaSvg.InitializeAsync(cancellationToken);
 
             Super.Init();
 

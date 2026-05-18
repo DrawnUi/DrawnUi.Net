@@ -142,4 +142,26 @@
     globalThis.DrawnUiLoader = globalThis.DrawnUiLoader || {};
     globalThis.DrawnUiLoader.applyTheme = applyLoaderTheme;
     globalThis.DrawnUiLoader.startBlazorWithLoader = startBlazorWithLoader;
+    globalThis.DrawnUiBrowser = globalThis.DrawnUiBrowser || {};
+    globalThis.DrawnUiBrowser.isMobileBrowser = function () {
+        const navigatorRef = globalThis.navigator;
+        if (!navigatorRef) {
+            return false;
+        }
+
+        if (typeof navigatorRef.userAgentData?.mobile === 'boolean') {
+            return navigatorRef.userAgentData.mobile;
+        }
+
+        const userAgent = navigatorRef.userAgent || navigatorRef.vendor || '';
+        if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent)) {
+            return true;
+        }
+
+        const coarsePointer = globalThis.matchMedia?.('(pointer: coarse)')?.matches === true;
+        const smallViewport = globalThis.matchMedia?.('(max-width: 900px)')?.matches === true;
+        const hasTouch = (navigatorRef.maxTouchPoints || 0) > 1;
+
+        return coarsePointer && smallViewport && hasTouch;
+    };
 })();

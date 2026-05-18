@@ -7,6 +7,8 @@ namespace DrawnUi.Views;
 
 public partial class Canvas
 {
+    public ElementReference HostReference => _hostElement;
+
     [Parameter]
     public new string BackgroundColor
     {

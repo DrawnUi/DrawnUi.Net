@@ -4,6 +4,28 @@ function isElementFullscreen(element, simulatedFullscreen) {
     return simulatedFullscreen === true || document.fullscreenElement === element || document.webkitFullscreenElement === element;
 }
 
+function isMobileBrowserCore() {
+    const navigatorRef = globalThis.navigator;
+    if (!navigatorRef) {
+        return false;
+    }
+
+    if (typeof navigatorRef.userAgentData?.mobile === 'boolean') {
+        return navigatorRef.userAgentData.mobile;
+    }
+
+    const userAgent = navigatorRef.userAgent || navigatorRef.vendor || '';
+    if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent)) {
+        return true;
+    }
+
+    const coarsePointer = globalThis.matchMedia?.('(pointer: coarse)')?.matches === true;
+    const smallViewport = globalThis.matchMedia?.('(max-width: 900px)')?.matches === true;
+    const hasTouch = (navigatorRef.maxTouchPoints || 0) > 1;
+
+    return coarsePointer && smallViewport && hasTouch;
+}
+
 function notifyFullscreen(element, dotNetRef, simulatedFullscreen) {
     dotNetRef.invokeMethodAsync('OnFullscreenChanged', isElementFullscreen(element, simulatedFullscreen));
 }
@@ -20,6 +42,19 @@ export function getHostSize(element) {
         width: Math.max(1, Math.round(rect.width)),
         height: Math.max(1, Math.round(rect.height))
     };
+}
+
+export function isCanvasFullscreen(element) {
+    if (!element) {
+        return false;
+    }
+
+    const state = observers.get(element);
+    return isElementFullscreen(element, state?.simulatedFullscreen === true);
+}
+
+export function isMobileBrowser() {
+    return isMobileBrowserCore();
 }
 
 function showSnapshot(element, state) {

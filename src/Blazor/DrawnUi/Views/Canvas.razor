@@ -22,14 +22,14 @@
             {
                 <SkiaView Superview="@this" 
                           DrawHandler="DrawFrame" 
-                          EnableRenderLoop="@EnableRenderLoop" 
+                          EnableRenderLoop="@IsRenderLoopEnabled" 
                           Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
             }
             else
             {
                 <SkiaViewAccelerated Superview="@this" 
                                      DrawHandler="DrawFrame" 
-                                     EnableRenderLoop="@EnableRenderLoop" 
+                                     EnableRenderLoop="@IsRenderLoopEnabled" 
                                     Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
             }
         </div>
@@ -129,13 +129,13 @@
     public SkiaControl? Content { get; set; }
 
     [Parameter]
-    public new virtual DrawnUi.Infrastructure.Enums.UpdateMode UpdateMode { get; set; } = DrawnUi.Infrastructure.Enums.UpdateMode.Dynamic;
+    public new virtual UpdateModeType UpdateMode { get; set; } = UpdateModeType.Dynamic;
 
-    public bool EnableRenderLoop 
+    public bool IsRenderLoopEnabled 
     {
         get
         {
-            return UpdateMode == DrawnUi.Infrastructure.Enums.UpdateMode.Constant;
+            return UpdateMode == UpdateModeType.Constant;
         }
     }
 
