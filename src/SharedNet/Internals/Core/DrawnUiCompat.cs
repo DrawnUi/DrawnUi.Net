@@ -173,6 +173,16 @@ namespace DrawnUi.Draw
             SkiaImageManager.Instance.RegisterImage(alias, sourceUrl);
         }
 
+        public static void RegisterSvg(string sourceUrl)
+        {
+            SkiaSvg.RegisterSource(sourceUrl);
+        }
+
+        public static void RegisterSvg(string alias, string sourceUrl)
+        {
+            SkiaSvg.RegisterSource(alias, sourceUrl);
+        }
+
         public static bool IsFinite(float value)
         {
             return float.IsFinite(value);
