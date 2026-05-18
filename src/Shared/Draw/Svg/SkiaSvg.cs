@@ -425,7 +425,15 @@ namespace DrawnUi.Draw
                 }
                 else
                 {
-                    Task.Run(async () => { await control.LoadSource(control.Source); });
+                    if (TryGetCachedSvgText(control.Source, out var cached))
+                    {
+                        control.UpdateImageFromString(cached);
+                        control.UpdateIcon();
+                    }
+                    else
+                    {
+                        _ = control.LoadSource(control.Source);
+                    }
                 }
             }
         }
@@ -449,6 +457,14 @@ namespace DrawnUi.Draw
         private static readonly ConcurrentDictionary<string, string> _svgSourceCache =
             new(StringComparer.OrdinalIgnoreCase);
 
+        // Startup-registered SVG sources for eager preload on platforms that benefit from it.
+        private static readonly ConcurrentDictionary<string, string> _registeredSources =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        private static readonly SemaphoreSlim _initializeSemaphore = new(1, 1);
+
+        public static new bool Initialized { get; private set; }
+
         // In-flight task dedup — prevents multiple simultaneous fetches for the same source.
         private static readonly ConcurrentDictionary<string, Task<string>> _svgInFlight =
             new(StringComparer.OrdinalIgnoreCase);
@@ -469,6 +485,122 @@ namespace DrawnUi.Draw
             finally
             {
                 _svgInFlight.TryRemove(source, out _);
+            }
+        }
+
+        private static bool TryGetCachedSvgText(string source, out string cached)
+        {
+            cached = null;
+
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return false;
+            }
+
+            if (_svgSourceCache.TryGetValue(source, out cached))
+            {
+                return true;
+            }
+
+            var normalized = NormalizeSvgPath(source);
+            if (!string.Equals(normalized, source, StringComparison.OrdinalIgnoreCase) &&
+                _svgSourceCache.TryGetValue(normalized, out cached))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static string NormalizeSvgPath(string source)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return string.Empty;
+            }
+
+            var normalized = source.Trim().Replace('\\', '/');
+
+            if (normalized.StartsWith("./", StringComparison.Ordinal))
+            {
+                normalized = normalized.Substring(2);
+            }
+
+            if (normalized.StartsWith("wwwroot/", StringComparison.OrdinalIgnoreCase))
+            {
+                normalized = normalized.Substring("wwwroot/".Length);
+            }
+
+            if (!normalized.Contains("://", StringComparison.Ordinal) && normalized.StartsWith("/", StringComparison.Ordinal))
+            {
+                normalized = normalized.Substring(1);
+            }
+
+            return normalized;
+        }
+
+        public static void RegisterSource(string sourceUrl)
+        {
+            if (string.IsNullOrWhiteSpace(sourceUrl))
+            {
+                throw new ArgumentException("SVG source URL cannot be empty.", nameof(sourceUrl));
+            }
+
+            var normalized = NormalizeSvgPath(sourceUrl);
+            _registeredSources[normalized] = normalized;
+        }
+
+        public static void RegisterSource(string alias, string sourceUrl)
+        {
+            if (string.IsNullOrWhiteSpace(alias))
+            {
+                throw new ArgumentException("SVG alias cannot be empty.", nameof(alias));
+            }
+
+            if (string.IsNullOrWhiteSpace(sourceUrl))
+            {
+                throw new ArgumentException("SVG source URL cannot be empty.", nameof(sourceUrl));
+            }
+
+            _registeredSources[NormalizeSvgPath(alias)] = NormalizeSvgPath(sourceUrl);
+        }
+
+        public static async Task InitializeAsync(CancellationToken cancellationToken = default)
+        {
+            if (_registeredSources.Count == 0)
+            {
+                Initialized = true;
+                return;
+            }
+
+            await _initializeSemaphore.WaitAsync(cancellationToken);
+            try
+            {
+                foreach (var registration in _registeredSources)
+                {
+                    if (TryGetCachedSvgText(registration.Key, out _))
+                    {
+                        continue;
+                    }
+
+                    var svgText = await FetchSvgTextAsync(registration.Value);
+                    if (string.IsNullOrWhiteSpace(svgText))
+                    {
+                        continue;
+                    }
+
+                    _svgSourceCache[registration.Key] = svgText;
+                    if (!string.Equals(registration.Key, registration.Value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _svgSourceCache[registration.Value] = svgText;
+                    }
+                }
+
+                Initialized = true;
+            }
+            finally
+            {
+                _initializeSemaphore.Release();
             }
         }
 
