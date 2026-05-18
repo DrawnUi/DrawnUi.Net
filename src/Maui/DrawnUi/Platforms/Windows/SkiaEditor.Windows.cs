@@ -3,6 +3,9 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System.Diagnostics;
+using InputScope = Microsoft.UI.Xaml.Input.InputScope;
+using InputScopeName = Microsoft.UI.Xaml.Input.InputScopeName;
+using InputScopeNameValue = Microsoft.UI.Xaml.Input.InputScopeNameValue;
 using TextChangedEventArgs = Microsoft.UI.Xaml.Controls.TextChangedEventArgs;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
@@ -112,6 +115,30 @@ namespace DrawnUi.Draw
             _hiddenTextBox.Arrange(new Windows.Foundation.Rect(-10, -10, 1, 1));
         }
 
+        public void ApplyKeyboardType()
+        {
+            if (_hiddenTextBox == null) return;
+
+            if (IsPassword || KeyboardType == SkiaEditorKeyboard.Default)
+            {
+                _hiddenTextBox.InputScope = null;
+                return;
+            }
+
+            var nameValue = KeyboardType switch
+            {
+                SkiaEditorKeyboard.Numeric  => InputScopeNameValue.Number,
+                SkiaEditorKeyboard.Decimal  => InputScopeNameValue.Number,
+                SkiaEditorKeyboard.Phone    => InputScopeNameValue.TelephoneNumber,
+                SkiaEditorKeyboard.Email    => InputScopeNameValue.EmailSmtpAddress,
+                _                           => InputScopeNameValue.Default
+            };
+
+            var scope = new InputScope();
+            scope.Names.Add(new InputScopeName { NameValue = nameValue });
+            _hiddenTextBox.InputScope = scope;
+        }
+
         public void SetFocusNative(bool focus)
         {
             Debug.WriteLine($"[SkiaEditor] SetFocusNative focus={focus} textBox={_hiddenTextBox != null}");
@@ -131,6 +158,8 @@ namespace DrawnUi.Draw
                         _hiddenTextBox.Text = this.Text ?? string.Empty;
                         _updatingText = false;
                     }
+
+                    ApplyKeyboardType();
 
                     _suppressSelectionChanged = true;
                     _hiddenTextBox.Focus(FocusState.Programmatic);

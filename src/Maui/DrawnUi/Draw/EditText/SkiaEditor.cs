@@ -68,7 +68,11 @@ namespace DrawnUi.Draw
                 return;
 
             var displayText = Text;
-            if (IsMultiline && !string.IsNullOrEmpty(displayText) && displayText.EndsWith("\n", StringComparison.Ordinal))
+            if (IsPassword && !string.IsNullOrEmpty(displayText))
+            {
+                displayText = new string('\u2022', displayText.Length);
+            }
+            else if (IsMultiline && !string.IsNullOrEmpty(displayText) && displayText.EndsWith("\n", StringComparison.Ordinal))
             {
                 // Preserve the visible trailing empty line for caret placement without mutating editor state.
                 displayText += "\u200B";
@@ -777,6 +781,15 @@ namespace DrawnUi.Draw
 
         #region PROPERTIES
 
+        public enum SkiaEditorKeyboard
+        {
+            Default,
+            Numeric,
+            Decimal,
+            Phone,
+            Email
+        }
+
 #if !BROWSER
         public static readonly BindableProperty ReturnTypeProperty = BindableProperty.Create(
             nameof(ReturnType),
@@ -790,6 +803,39 @@ namespace DrawnUi.Draw
             set { SetValue(ReturnTypeProperty, value); }
         }
 #endif
+
+        public static readonly BindableProperty KeyboardTypeProperty = BindableProperty.Create(
+            nameof(KeyboardType),
+            typeof(SkiaEditorKeyboard),
+            typeof(SkiaEditor),
+            SkiaEditorKeyboard.Default,
+            propertyChanged: (b, o, n) => { if (b is SkiaEditor e && e.IsFocused) e.ApplyKeyboardType(); });
+
+        public SkiaEditorKeyboard KeyboardType
+        {
+            get { return (SkiaEditorKeyboard)GetValue(KeyboardTypeProperty); }
+            set { SetValue(KeyboardTypeProperty, value); }
+        }
+
+        public static readonly BindableProperty IsPasswordProperty = BindableProperty.Create(
+            nameof(IsPassword),
+            typeof(bool),
+            typeof(SkiaEditor),
+            false,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is SkiaEditor e)
+                {
+                    e.UpdateLabel();
+                    if (e.IsFocused) e.ApplyKeyboardType();
+                }
+            });
+
+        public bool IsPassword
+        {
+            get { return (bool)GetValue(IsPasswordProperty); }
+            set { SetValue(IsPasswordProperty, value); }
+        }
 
         public static readonly BindableProperty CommandOnSubmitProperty = BindableProperty.Create(
             nameof(CommandOnSubmit),
@@ -1118,6 +1164,8 @@ namespace DrawnUi.Draw
         {
             throw new NotImplementedException();
         }
+
+        public void ApplyKeyboardType() { }
 
 #endif
 

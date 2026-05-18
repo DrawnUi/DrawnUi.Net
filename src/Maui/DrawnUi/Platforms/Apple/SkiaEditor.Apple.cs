@@ -143,6 +143,8 @@ namespace DrawnUi.Draw
                         _updatingText = false;
                     }
 
+                    ApplyKeyboardType();
+
                     Control.IsFocused = true;
                     Control.BecomeFirstResponder();
                 }
@@ -159,6 +161,25 @@ namespace DrawnUi.Draw
             {
                 Trace.WriteLine(e);
             }
+        }
+
+        public void ApplyKeyboardType()
+        {
+            if (Control == null) return;
+
+            Control.SecureTextEntry = IsPassword;
+            Control.AutocorrectionType = IsPassword
+                ? UITextAutocorrectionType.No
+                : UITextAutocorrectionType.Default;
+
+            Control.KeyboardType = IsPassword ? UIKeyboardType.Default : KeyboardType switch
+            {
+                SkiaEditorKeyboard.Numeric  => UIKeyboardType.NumberPad,
+                SkiaEditorKeyboard.Decimal  => UIKeyboardType.DecimalPad,
+                SkiaEditorKeyboard.Phone    => UIKeyboardType.PhonePad,
+                SkiaEditorKeyboard.Email    => UIKeyboardType.EmailAddress,
+                _                           => UIKeyboardType.Default
+            };
         }
 
         public void SetReturnType(ReturnType type)

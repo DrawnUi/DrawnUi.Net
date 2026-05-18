@@ -12,6 +12,8 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         _stubSelectionStop = stop;
     }
 
+    public void ApplyKeyboardType() { }
+
     public void DisposePlatform()
     {
         SubscribeToKeyboard(false);

@@ -20,6 +20,34 @@ namespace DrawnUi.Draw
 
         public int NativeSelectionStart => Control?.SelectionStart ?? 0;
 
+        public void ApplyKeyboardType()
+        {
+            if (Control == null) return;
+
+            InputTypes inputType;
+            if (IsPassword)
+            {
+                inputType = InputTypes.ClassText | InputTypes.TextVariationPassword;
+                Control.TransformationMethod = Android.Text.Method.PasswordTransformationMethod.Instance;
+            }
+            else
+            {
+                Control.TransformationMethod = null;
+                inputType = KeyboardType switch
+                {
+                    SkiaEditorKeyboard.Numeric  => InputTypes.ClassNumber,
+                    SkiaEditorKeyboard.Decimal  => InputTypes.ClassNumber | InputTypes.NumberFlagDecimal,
+                    SkiaEditorKeyboard.Phone    => InputTypes.ClassPhone,
+                    SkiaEditorKeyboard.Email    => InputTypes.ClassText | InputTypes.TextVariationEmailAddress,
+                    _                           => InputTypes.ClassText
+                };
+                if (inputType == InputTypes.ClassText && MaxLines != 1)
+                    inputType |= InputTypes.TextFlagMultiLine;
+            }
+
+            Control.InputType = inputType;
+        }
+
         public void DisposePlatform()
         {
             try
@@ -184,6 +212,10 @@ namespace DrawnUi.Draw
 
                 if (focus)
                 {
+                    _updatingText = true;
+                    try { ApplyKeyboardType(); }
+                    finally { _updatingText = false; }
+
                     // Guard SetReturnType: SetSingleLine() internally triggers onTextChanged
                     // with SelectionStart=0 on first focus (selection not yet positioned),
                     // which would queue SetCursorPositionWithDelay(50, 0) and jump cursor.
