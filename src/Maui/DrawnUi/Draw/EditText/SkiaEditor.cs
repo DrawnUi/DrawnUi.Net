@@ -594,9 +594,24 @@ namespace DrawnUi.Draw
                     var viewW = _scroll.Width;
                     var offsetX = _scroll.ViewportOffsetX;
                     if (x < -offsetX)
+                    {
+                        // cursor off left edge — scroll right to show it
                         _scroll.ScrollTo((float)-x, (float)_scroll.ViewportOffsetY, 0.1f, true);
+                    }
                     else if (cursorRight > -offsetX + viewW)
+                    {
+                        // cursor off right edge — scroll left to show it
                         _scroll.ScrollTo((float)-(cursorRight - viewW), (float)_scroll.ViewportOffsetY, 0.1f, true);
+                    }
+                    else if (offsetX < 0)
+                    {
+                        // cursor is visible but viewport is scrolled right further than needed
+                        // (e.g. text was deleted) — scroll back left as far as possible while
+                        // keeping cursor in view
+                        var idealOffsetX = (float)(cursorRight > viewW ? -(cursorRight - viewW) : 0);
+                        if (idealOffsetX > offsetX)
+                            _scroll.ScrollTo(idealOffsetX, (float)_scroll.ViewportOffsetY, 0.1f, true);
+                    }
                 }
             }
 
