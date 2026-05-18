@@ -12,7 +12,7 @@ Super.Init();
 var outputDirectory = Path.Combine(AppContext.BaseDirectory, "artifacts");
 Directory.CreateDirectory(outputDirectory);
 
-using var host = new HeadlessCanvasHost(900, 520);
+using var host = new HeadlessCanvasHost(900, 780);
 
 var status = new SkiaLabel
 {
@@ -28,12 +28,25 @@ var editor = new SkiaEditor
 {
     Tag = "editor",
     HorizontalOptions = LayoutOptions.Fill,
-    HeightRequest = 320,
+    HeightRequest = 280,
     FontSize = 24,
     MaxLines = 8,
     TextColor = Colors.Black,
     CursorColor = Colors.DodgerBlue,
     BackgroundColor = Colors.White,
+    SelectionColor = DrawnUi.Color.FromArgb("#5590CFFE")
+};
+
+var richEditor = new SkiaRichEditor
+{
+    Tag = "rich-editor",
+    HorizontalOptions = LayoutOptions.Fill,
+    HeightRequest = 200,
+    FontSize = 20,
+    MaxLines = 8,
+    TextColor = Colors.DarkBlue,
+    CursorColor = Colors.DarkBlue,
+    BackgroundColor = Colors.AliceBlue,
     SelectionColor = DrawnUi.Color.FromArgb("#5590CFFE")
 };
 
@@ -48,7 +61,8 @@ var scene = new SkiaLayout
     Children =
     {
         status,
-        editor
+        editor,
+        richEditor
     }
 };
 
@@ -56,6 +70,7 @@ host.Canvas.Children = new List<SkiaControl> { scene };
 
 var context = new HarnessContext(host, scene, "editor", new IHarnessAdapter[]
 {
+    new SkiaRichEditorHarnessAdapter(),
     new SkiaEditorHarnessAdapter()
 });
 
@@ -159,6 +174,7 @@ static List<HarnessStep> CreateDefaultScenario()
 {
     return new List<HarnessStep>
     {
+        // --- plain editor scenario ---
         new(HarnessCommand.Target, "target-status", TargetTag: "status"),
         new(HarnessCommand.SetProperty, "set-status-text", Text: "Editor target follows below", PropertyName: "Text"),
         new(HarnessCommand.Target, "target-editor", TargetTag: "editor"),
@@ -170,7 +186,66 @@ static List<HarnessStep> CreateDefaultScenario()
         new(HarnessCommand.Left, "move-left-8", Count: 8),
         new(HarnessCommand.Type, "insert-middle", Text: "[MID]"),
         new(HarnessCommand.SelectLineColumn, "select-second-line", Line: 1, Column: 0, EndLine: 1, EndColumn: 11),
-        new(HarnessCommand.Type, "replace-selection", Text: "SECOND")
+        new(HarnessCommand.Type, "replace-selection", Text: "SECOND"),
+
+        // --- rich editor scenario ---
+        new(HarnessCommand.Target, "target-rich-editor", TargetTag: "rich-editor"),
+        new(HarnessCommand.Type, "rich-type-hello", Text: "Hello world"),
+        // Select "world" (chars 6-11) and apply bold
+        new(HarnessCommand.Select, "rich-select-world", Start: 6, Count: 5),
+        new(HarnessCommand.Bold, "rich-bold-world"),
+        new(HarnessCommand.AssertFormat, "assert-bold-on", Text: "Bold=true"),
+        // Move caret after "world" then type italic text
+        new(HarnessCommand.Right, "rich-move-after-world"),
+        new(HarnessCommand.Type, "rich-type-space", Text: " "),
+        new(HarnessCommand.Type, "rich-type-italic-word", Text: "italic"),
+        new(HarnessCommand.Select, "rich-select-italic", Start: 12, Count: 6),
+        new(HarnessCommand.Italic, "rich-italic-italic"),
+        new(HarnessCommand.AssertFormat, "assert-italic-on", Text: "Italic=true"),
+        // Undo italic
+        new(HarnessCommand.Undo, "rich-undo-italic"),
+        new(HarnessCommand.AssertFormat, "assert-italic-off", Text: "Italic=false"),
+        // Redo italic
+        new(HarnessCommand.Redo, "rich-redo-italic"),
+        new(HarnessCommand.AssertFormat, "assert-italic-back", Text: "Italic=true"),
+        // Underline the entire text
+        new(HarnessCommand.SelectAll, "rich-select-all"),
+        new(HarnessCommand.Underline, "rich-underline-all"),
+        // Strikethrough "Hello"
+        new(HarnessCommand.Select, "rich-select-hello", Start: 0, Count: 5),
+        new(HarnessCommand.Strikethrough, "rich-strikethrough-hello"),
+        // Delete "world" bold span via backspace
+        new(HarnessCommand.Select, "rich-select-world-2", Start: 6, Count: 5),
+        new(HarnessCommand.Backspace, "rich-delete-world"),
+
+        // --- multiline + glyph assertions ---
+        new(HarnessCommand.Target, "target-rich-editor-2", TargetTag: "rich-editor"),
+        // Clear and type two lines
+        new(HarnessCommand.SelectAll, "rich-ml-select-all"),
+        new(HarnessCommand.Backspace, "rich-ml-clear"),
+        new(HarnessCommand.Type, "rich-ml-line1", Text: "first line"),
+        new(HarnessCommand.Enter, "rich-ml-enter1"),
+        new(HarnessCommand.Type, "rich-ml-line2", Text: "second line"),
+        new(HarnessCommand.Enter, "rich-ml-enter2"),
+        new(HarnessCommand.Type, "rich-ml-line3", Text: "third line"),
+        // Cursor is now at end of "third line" (char 33)
+        new(HarnessCommand.AssertChar, "assert-cursor-end", Count: 33),
+        // Verify 3 rendered lines
+        new(HarnessCommand.AssertLinesCount, "assert-3-lines", Count: 3),
+        // Verify glyph positions were computed
+        new(HarnessCommand.AssertGlyphsOk, "assert-glyphs-ok"),
+        // Move to start and verify line 0
+        new(HarnessCommand.Select, "rich-ml-move-start", Start: 0, Count: 0),
+        new(HarnessCommand.AssertChar, "assert-cursor-0", Count: 0),
+        new(HarnessCommand.AssertLine, "assert-on-line-0", Count: 0),
+        // Move to start of second line (char 11 = after "first line\n")
+        new(HarnessCommand.Select, "rich-ml-move-line2", Start: 11, Count: 0),
+        new(HarnessCommand.AssertChar, "assert-cursor-11", Count: 11),
+        new(HarnessCommand.AssertLine, "assert-on-line-1", Count: 1),
+        // Move to start of third line (char 23 = after "first line\nsecond line\n")
+        new(HarnessCommand.Select, "rich-ml-move-line3", Start: 23, Count: 0),
+        new(HarnessCommand.AssertChar, "assert-cursor-23", Count: 23),
+        new(HarnessCommand.AssertLine, "assert-on-line-2", Count: 2),
     };
 }
 
@@ -282,6 +357,39 @@ static IEnumerable<HarnessStep> ParseSteps(string[] args)
                 break;
             case "blur":
                 yield return new HarnessStep(HarnessCommand.Blur, "blur");
+                break;
+            case "bold":
+                yield return new HarnessStep(HarnessCommand.Bold, "bold");
+                break;
+            case "italic":
+                yield return new HarnessStep(HarnessCommand.Italic, "italic");
+                break;
+            case "underline":
+                yield return new HarnessStep(HarnessCommand.Underline, "underline");
+                break;
+            case "strikethrough":
+                yield return new HarnessStep(HarnessCommand.Strikethrough, "strikethrough");
+                break;
+            case "undo":
+                yield return new HarnessStep(HarnessCommand.Undo, "undo");
+                break;
+            case "redo":
+                yield return new HarnessStep(HarnessCommand.Redo, "redo");
+                break;
+            case "assertformat":
+                yield return new HarnessStep(HarnessCommand.AssertFormat, $"assert-{payload.ToLowerInvariant()}", Text: payload);
+                break;
+            case "assertchar":
+                yield return new HarnessStep(HarnessCommand.AssertChar, $"assert-char-{payload}", Count: ParseInt(payload, 0));
+                break;
+            case "assertline":
+                yield return new HarnessStep(HarnessCommand.AssertLine, $"assert-line-{payload}", Count: ParseInt(payload, 0));
+                break;
+            case "assertlinescount":
+                yield return new HarnessStep(HarnessCommand.AssertLinesCount, $"assert-lines-{payload}", Count: ParseInt(payload, 0));
+                break;
+            case "assertglyphsok":
+                yield return new HarnessStep(HarnessCommand.AssertGlyphsOk, "assert-glyphs-ok");
                 break;
             default:
                 throw new ArgumentException($"Unknown harness step: {arg}");
@@ -611,7 +719,20 @@ internal enum HarnessCommand
     SelectAll,
     Focus,
     Blur,
-    SetText
+    SetText,
+    // Rich formatting
+    Bold,
+    Italic,
+    Underline,
+    Strikethrough,
+    Undo,
+    Redo,
+    AssertFormat,
+    // Structural assertions (both editor types)
+    AssertChar,
+    AssertLine,
+    AssertLinesCount,
+    AssertGlyphsOk,
 }
 
 internal sealed record HarnessStep(
@@ -660,16 +781,196 @@ internal interface IHarnessAdapter
     void AppendSummary(HarnessContext context, StringBuilder builder);
 }
 
+internal sealed class SkiaRichEditorHarnessAdapter : IHarnessAdapter
+{
+    public bool CanHandle(SkiaControl target) => target is SkiaRichEditor;
+
+    public bool TryExecute(SkiaControl target, HarnessStep step, HarnessContext context)
+    {
+        if (target is not SkiaRichEditor editor)
+            return false;
+
+        switch (step.Command)
+        {
+            case HarnessCommand.Type:
+                editor.StubTypeText(step.Text ?? string.Empty);
+                return true;
+            case HarnessCommand.Enter:
+                editor.StubPressEnter();
+                return true;
+            case HarnessCommand.Backspace:
+                editor.StubBackspace(step.Count);
+                return true;
+            case HarnessCommand.Delete:
+                editor.StubDelete(step.Count);
+                return true;
+            case HarnessCommand.Left:
+                editor.StubMoveCursor(-step.Count, step.ExtendSelection);
+                return true;
+            case HarnessCommand.Right:
+                editor.StubMoveCursor(step.Count, step.ExtendSelection);
+                return true;
+            case HarnessCommand.Select:
+                editor.StubSelectRange(step.Start, step.Count);
+                return true;
+            case HarnessCommand.MoveLineColumn:
+                editor.StubMoveCursorToLineColumn(step.Line, step.Column, step.ExtendSelection);
+                return true;
+            case HarnessCommand.SelectLineColumn:
+                editor.StubSelectLineColumnRange(step.Line, step.Column, step.EndLine, step.EndColumn);
+                return true;
+            case HarnessCommand.SelectAll:
+                editor.StubSelectAll();
+                return true;
+            case HarnessCommand.SetText:
+                editor.Document.SetText(HarnessUtilities.NormalizeLineBreaks(step.Text));
+                editor.CursorPosition = editor.Document.Length;
+                editor.SelectionLength = 0;
+                return true;
+            case HarnessCommand.Bold:
+                editor.ToggleBold();
+                return true;
+            case HarnessCommand.Italic:
+                editor.ToggleItalic();
+                return true;
+            case HarnessCommand.Underline:
+                editor.ToggleUnderline();
+                return true;
+            case HarnessCommand.Strikethrough:
+                editor.ToggleStrikethrough();
+                return true;
+            case HarnessCommand.Undo:
+                editor.UndoRich();
+                return true;
+            case HarnessCommand.Redo:
+                editor.RedoRich();
+                return true;
+            case HarnessCommand.AssertFormat:
+                AssertFormat(editor, step.Text ?? string.Empty, step.Name);
+                return true;
+            case HarnessCommand.AssertChar:
+                AssertEqual(step.Name, "CursorPosition", step.Count, editor.CursorPosition);
+                return true;
+            case HarnessCommand.AssertLine:
+                context.Host.Render();
+                AssertEqual(step.Name, "CursorLine", step.Count, editor.GetCursorLine());
+                return true;
+            case HarnessCommand.AssertLinesCount:
+                context.Host.Render();
+                AssertEqual(step.Name, "LinesCount", step.Count, editor.Label?.LinesCount ?? 0);
+                return true;
+            case HarnessCommand.AssertGlyphsOk:
+                context.Host.Render();
+                AssertGlyphsOk(editor, step.Name);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public void AppendSummary(HarnessContext context, StringBuilder builder)
+    {
+        foreach (var tagged in HarnessUtilities.EnumerateTaggedControls(context.Root).OfType<SkiaRichEditor>())
+        {
+            var scrollField = tagged.GetType().GetField("_scroll", BindingFlags.Instance | BindingFlags.NonPublic);
+            var scroll = scrollField?.GetValue(tagged) as SkiaScroll;
+
+            var docText = tagged.Document.GetText();
+            builder.AppendLine($"[{tagged.Tag}] Text: {HarnessUtilities.Escape(docText)}");
+            builder.AppendLine($"[{tagged.Tag}] CursorPosition: {tagged.CursorPosition}");
+            builder.AppendLine($"[{tagged.Tag}] SelectionLength: {tagged.SelectionLength}");
+            builder.AppendLine($"[{tagged.Tag}] IsMultiline: {tagged.IsMultiline}");
+            builder.AppendLine($"[{tagged.Tag}] MeasuredLines: {tagged.Label?.LinesCount ?? 0}");
+            builder.AppendLine($"[{tagged.Tag}] ScrollOffsetX: {scroll?.ViewportOffsetX ?? 0}");
+            builder.AppendLine($"[{tagged.Tag}] ScrollOffsetY: {scroll?.ViewportOffsetY ?? 0}");
+
+            var runs = tagged.Document.GetFormattingRuns();
+            builder.AppendLine($"[{tagged.Tag}] FormatRuns: {runs.Count}");
+            foreach (var (s, e, fmt) in runs)
+            {
+                var text = docText.Length >= e ? docText.Substring(s, e - s) : "?";
+                builder.AppendLine($"  [{s},{e}) '{HarnessUtilities.Escape(text)}' B={fmt.Bold} I={fmt.Italic} U={fmt.Underline} S={fmt.Strikethrough}");
+            }
+        }
+    }
+
+    private static void AssertFormat(SkiaRichEditor editor, string assertion, string stepName)
+    {
+        var parts = assertion.Split('=', 2, StringSplitOptions.TrimEntries);
+        if (parts.Length != 2)
+            throw new ArgumentException($"AssertFormat '{stepName}': invalid assertion '{assertion}'. Expected 'Field=value'.");
+
+        var field = parts[0];
+        var expected = parts[1].ToLowerInvariant() == "true";
+
+        var fmt = editor.SelectionFormat;
+        bool? actual = field.ToLowerInvariant() switch
+        {
+            "bold"          => fmt.Bold,
+            "italic"        => fmt.Italic,
+            "underline"     => fmt.Underline,
+            "strikethrough" => fmt.Strikethrough,
+            _ => throw new ArgumentException($"AssertFormat '{stepName}': unknown field '{field}'.")
+        };
+
+        var actualBool = actual == true;
+        if (actualBool != expected)
+            throw new InvalidOperationException(
+                $"AssertFormat '{stepName}': {field} expected {expected} but was {actual?.ToString() ?? "null"}. " +
+                $"CursorPos={editor.CursorPosition} SelectionLength={editor.SelectionLength}");
+
+        Console.WriteLine($"  ✓ {stepName}: {field}={actual}");
+    }
+
+    private static void AssertEqual(string stepName, string label, int expected, int actual)
+    {
+        if (actual != expected)
+            throw new InvalidOperationException($"Assert '{stepName}': {label} expected {expected} but was {actual}.");
+        Console.WriteLine($"  ✓ {stepName}: {label}={actual}");
+    }
+
+    private static void AssertGlyphsOk(SkiaRichEditor editor, string stepName)
+    {
+        var label = editor.Label;
+        if (label == null || label.LinesCount == 0)
+            throw new InvalidOperationException($"Assert '{stepName}': Label has no lines.");
+
+        var line0 = label.Lines[0];
+        if (line0.Spans.Count == 0)
+            throw new InvalidOperationException($"Assert '{stepName}': Line 0 has no spans.");
+
+        LineGlyph[]? glyphs = null;
+        foreach (var span in line0.Spans)
+        {
+            if (span.Glyphs != null && span.Glyphs.Length > 0)
+            {
+                glyphs = span.Glyphs;
+                break;
+            }
+        }
+
+        if (glyphs == null || glyphs.Length == 0)
+            throw new InvalidOperationException($"Assert '{stepName}': Line 0 spans have no glyphs. NeedsGlyphPositions may not be set.");
+
+        // At least two glyphs so we can verify positions advance
+        if (glyphs.Length > 1 && glyphs[glyphs.Length - 1].Position <= glyphs[0].Position)
+            throw new InvalidOperationException(
+                $"Assert '{stepName}': Glyph positions do not advance (first={glyphs[0].Position}, last={glyphs[glyphs.Length - 1].Position}). Positions may not be computed.");
+
+        Console.WriteLine($"  ✓ {stepName}: {glyphs.Length} glyphs, pos[0]={glyphs[0].Position:F1} pos[last]={glyphs[glyphs.Length - 1].Position:F1}");
+    }
+}
+
 internal sealed class SkiaEditorHarnessAdapter : IHarnessAdapter
 {
     public bool CanHandle(SkiaControl target)
     {
-        return target is SkiaEditor;
+        return target is SkiaEditor && target is not SkiaRichEditor;
     }
 
     public bool TryExecute(SkiaControl target, HarnessStep step, HarnessContext context)
     {
-        if (target is not SkiaEditor editor)
+        if (target is not SkiaEditor editor || target is SkiaRichEditor)
             return false;
 
         switch (step.Command)
@@ -712,6 +1013,33 @@ internal sealed class SkiaEditorHarnessAdapter : IHarnessAdapter
                 editor.CursorPosition = editor.Text?.Length ?? 0;
                 editor.SelectionLength = 0;
                 return true;
+            case HarnessCommand.AssertChar:
+                if (editor.CursorPosition != step.Count)
+                    throw new InvalidOperationException($"Assert '{step.Name}': CursorPosition expected {step.Count} but was {editor.CursorPosition}.");
+                Console.WriteLine($"  ✓ {step.Name}: CursorPosition={editor.CursorPosition}");
+                return true;
+            case HarnessCommand.AssertLine:
+                context.Host.Render();
+                var editorLine = editor.GetCursorLine();
+                if (editorLine != step.Count)
+                    throw new InvalidOperationException($"Assert '{step.Name}': CursorLine expected {step.Count} but was {editorLine}.");
+                Console.WriteLine($"  ✓ {step.Name}: CursorLine={editorLine}");
+                return true;
+            case HarnessCommand.AssertLinesCount:
+                context.Host.Render();
+                var editorLinesCount = editor.Label?.LinesCount ?? 0;
+                if (editorLinesCount != step.Count)
+                    throw new InvalidOperationException($"Assert '{step.Name}': LinesCount expected {step.Count} but was {editorLinesCount}.");
+                Console.WriteLine($"  ✓ {step.Name}: LinesCount={editorLinesCount}");
+                return true;
+            case HarnessCommand.AssertGlyphsOk:
+                context.Host.Render();
+                var editorLine0 = editor.Label?.Lines?.FirstOrDefault();
+                var editorGlyphs = editorLine0?.Spans.Count > 0 ? editorLine0.Spans[0].Glyphs : null;
+                if (editorGlyphs == null || editorGlyphs.Length == 0)
+                    throw new InvalidOperationException($"Assert '{step.Name}': No glyphs found in line 0.");
+                Console.WriteLine($"  ✓ {step.Name}: {editorGlyphs.Length} glyphs");
+                return true;
             default:
                 return false;
         }
@@ -719,7 +1047,9 @@ internal sealed class SkiaEditorHarnessAdapter : IHarnessAdapter
 
     public void AppendSummary(HarnessContext context, StringBuilder builder)
     {
-        foreach (var tagged in HarnessUtilities.EnumerateTaggedControls(context.Root).OfType<SkiaEditor>())
+        foreach (var tagged in HarnessUtilities.EnumerateTaggedControls(context.Root)
+                     .OfType<SkiaEditor>()
+                     .Where(e => e is not SkiaRichEditor))
         {
             var scrollField = tagged.GetType().GetField("_scroll", BindingFlags.Instance | BindingFlags.NonPublic);
             var scroll = scrollField?.GetValue(tagged) as SkiaScroll;
