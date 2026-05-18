@@ -90,7 +90,7 @@ namespace DrawnUi.Views
             {
                 if (_isDirty != value)
                 {
-                    if (!value && UpdateMode == UpdateMode.Constant)
+                    if (!value && UpdateMode == UpdateModeType.Constant)
                     {
                         value = true;
                     }
@@ -1312,7 +1312,7 @@ namespace DrawnUi.Views
                 }
 
                 if (!OnStartRendering(surface.Canvas))
-                    return UpdateMode == UpdateMode.Constant;
+                    return UpdateMode == UpdateModeType.Constant;
 
                 try
                 {
@@ -1400,7 +1400,7 @@ namespace DrawnUi.Views
 
             if (CanvasView != null)
             {
-                if (UpdateMode == UpdateMode.Constant || !CanvasView.HasDrawn)
+                if (UpdateMode == UpdateModeType.Constant || !CanvasView.HasDrawn)
                     IsDirty = true;
 
                 if (IsDirty)
@@ -2377,9 +2377,9 @@ namespace DrawnUi.Views
 
         public static readonly BindableProperty UpdateModeProperty = BindableProperty.Create(
             nameof(UpdateMode),
-            typeof(UpdateMode),
+            typeof(UpdateModeType),
             typeof(DrawnView),
-            UpdateMode.Dynamic,
+            UpdateModeType.Dynamic,
             propertyChanged: ChangeUpdateMode);
 
         private static void ChangeUpdateMode(BindableObject bindable, object oldvalue, object newvalue)
@@ -2390,9 +2390,9 @@ namespace DrawnUi.Views
             }
         }
 
-        public UpdateMode UpdateMode
+        public UpdateModeType UpdateMode
         {
-            get { return (UpdateMode)GetValue(UpdateModeProperty); }
+            get { return (UpdateModeType)GetValue(UpdateModeProperty); }
             set { SetValue(UpdateModeProperty, value); }
         }
 
