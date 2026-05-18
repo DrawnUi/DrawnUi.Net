@@ -40,6 +40,23 @@ public class SkiaCursor : SkiaShape
         }
     }
 
+    public override void OnVisibilityChanged(bool newvalue)
+    {
+        base.OnVisibilityChanged(newvalue);
+
+        if (_blinkAnimator != null)
+        {
+            if (newvalue)
+            {
+                _blinkAnimator.Start();
+            }
+            else
+            {
+                _blinkAnimator.Stop();
+            }
+        }
+    }
+
     private ToggleAnimator _blinkAnimator;
 
     //public override void OnBeforeDraw()

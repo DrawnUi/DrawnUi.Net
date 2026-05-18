@@ -83,7 +83,7 @@ namespace Sandbox
                                 FontSize = 16,
                                 TextColor = Colors.Yellow,
                                 CursorColor = Colors.White,
-                                Text = "First line\nSecond line\nThird line",
+                                Text = "First line\nSecond line\nThird line\n4\n5\n6",
                             },
 
 #if DEBUG

@@ -127,20 +127,24 @@ namespace DrawnUi.Draw
             return OnCreatingLabel(label);
         }
 
+        protected virtual SkiaCursor CreateCursor()
+        {
+            return new()
+            {
+                UseCache = SkiaCacheType.Operations,
+                WidthRequest = 2,
+                HeightRequest = FontSize > 0 ? FontSize * 1.2 : 20
+            };
+        }
+
         public virtual void CreateControl()
         {
             Label = CreateLabel();
 
-            Cursor = new()
-            {
-                ZIndex = 1,
-                UseCache = SkiaCacheType.Operations,
-                WidthRequest = 2,
-                HeightRequest = FontSize > 0 ? FontSize * 1.2 : 20,
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Start,
-                IsVisible = false
-            };
+            Cursor = CreateCursor();
+
+            Cursor.ZIndex = 1;
+            Cursor.IsVisible = false;
 
             Children = new List<SkiaControl>()
             {
