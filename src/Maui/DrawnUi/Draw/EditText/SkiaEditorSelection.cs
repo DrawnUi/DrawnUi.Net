@@ -6,6 +6,11 @@ public class SkiaEditorSelection : SkiaControl
 
     public SkiaLabel SourceLabel { get; set; }
 
+    /// <summary>
+    /// When set, used instead of Spans[0].Glyphs to support multi-span lines.
+    /// </summary>
+    public Func<TextLine, LineGlyph[]>? GetLineGlyphsOverride { get; set; }
+
     public int SelectionStart { get; set; } = -1;
     public int SelectionLength { get; set; } = 0;
     public Color SelectionColor { get; set; } = Color.FromArgb("#5590CFFE");
@@ -26,9 +31,9 @@ public class SkiaEditorSelection : SkiaControl
 
         foreach (var labelLine in SourceLabel.Lines)
         {
-            var glyphs = labelLine.Spans.Count > 0
-                ? (labelLine.Spans[0].Glyphs ?? Array.Empty<LineGlyph>())
-                : Array.Empty<LineGlyph>();
+            var glyphs = GetLineGlyphsOverride != null
+                ? GetLineGlyphsOverride(labelLine)
+                : (labelLine.Spans.Count > 0 ? (labelLine.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>());
 
             var lineEnd = lineIndex + glyphs.Length;
             var nextLineIndex = lineEnd;

@@ -54,6 +54,9 @@
         <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaCursor.cs" Link="Draw\EditText\SkiaCursor.cs" />
         <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaEditor.cs" Link="Draw\EditText\SkiaEditor.cs" />
         <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaEditorSelection.cs" Link="Draw\EditText\SkiaEditorSelection.cs" />
+        <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\RichCharFormat.cs" Link="Draw\EditText\RichCharFormat.cs" Condition="'$(Configuration)'=='Debug'" />
+        <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaEditorDocument.cs" Link="Draw\EditText\SkiaEditorDocument.cs" Condition="'$(Configuration)'=='Debug'" />
+        <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaRichEditor.cs" Link="Draw\EditText\SkiaRichEditor.cs" Condition="'$(Configuration)'=='Debug'" />
     </ItemGroup>
 
     <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />

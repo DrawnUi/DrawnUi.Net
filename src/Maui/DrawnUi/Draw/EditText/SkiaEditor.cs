@@ -75,7 +75,7 @@ namespace DrawnUi.Draw
             }
 
             Label.Text = displayText;
-            Debug.WriteLine($"Label Text: {Label.Text}");
+            //Debug.WriteLine($"Label Text: {Label.Text}");
             Label.FontFamily = FontFamily;
             Label.FontSize = FontSize;
             Label.TextColor = this.TextColor;
@@ -95,7 +95,7 @@ namespace DrawnUi.Draw
             }
             else
             {
-                Label.HeightRequest = 32;
+                Label.HeightRequest = FontSize > 0 ? Math.Ceiling(FontSize * 1.2) : 20;
                 Label.MaxLines = 1;
                 if (_scroll != null)
                     _scroll.Orientation = ScrollOrientation.Horizontal;
@@ -110,8 +110,6 @@ namespace DrawnUi.Draw
 
         protected virtual SkiaLabel OnCreatingLabel(SkiaLabel label)
         {
-            Text = "test";
-
             return label;
         }
 
@@ -185,6 +183,21 @@ namespace DrawnUi.Draw
 
         #region ENGINE
 
+        public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
+        {
+            if (HeightRequest < 0)
+            {
+                var lines = MaxLines > 0 ? MaxLines : 1;
+                var paddingPx = (float)(Padding.VerticalThickness * scale);
+                // use the label's own height for single-line; fall back to FontSize×1.3 for multiline
+                var lineH = Label?.HeightRequest >= 0
+                    ? Label.HeightRequest
+                    : (FontSize > 0 ? FontSize * (LineHeight > 0 ? LineHeight : 1.3) : 20.0);
+                heightConstraint = (float)(lines * lineH * scale + paddingPx);
+            }
+            return base.OnMeasuring(widthConstraint, heightConstraint, scale);
+        }
+
         /// <summary>
         /// This is Done or Enter key, so maybe just split lines in specific case
         /// </summary>
@@ -230,6 +243,15 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Returns all glyphs for a rendered line, flattened across spans.
+        /// Override in subclasses to support multi-span lines.
+        /// </summary>
+        protected virtual LineGlyph[] GetLineGlyphs(TextLine line)
+        {
+            return line.Spans.Count > 0 ? (line.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>();
+        }
+
+        /// <summary>
         /// Input in pixels
         /// </summary>
         /// <param name="x"></param>
@@ -247,7 +269,7 @@ namespace DrawnUi.Draw
                     var rect = labelLine.Bounds;
                     // rect.Offset(new SKPoint(0, this.HitBoxAuto.Top));
 
-                    var lineGlyphs = labelLine.Spans.Count > 0 ? (labelLine.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>();
+                    var lineGlyphs = GetLineGlyphs(labelLine);
 
                     if (y >= rect.Top && y <= rect.Bottom) //inside line
                     {
@@ -268,7 +290,13 @@ namespace DrawnUi.Draw
                         }
 
                         //if we fallen here means we clicked outside the line.
-                        return firstPosInLine + posInline;
+                        var endPos = firstPosInLine + posInline;
+                        // If the glyph array included a trailing '\n', step back so cursor lands
+                        // at end-of-line (before \n) rather than at the start of the next line.
+                        if (Text != null && endPos > 0 && endPos - 1 < Text.Length && Text[endPos - 1] == '\n')
+                            endPos--;
+                        // clamp — glyph array can have N+1 slots for N chars (end-of-text sentinel)
+                        return Math.Min(endPos, Text?.Length ?? endPos);
 
                     }
 
@@ -318,6 +346,9 @@ namespace DrawnUi.Draw
             CursorPosition = pos;
             SelectionLength = 0;
 
+            // Re-focus native keyboard sink — WinUI shifts keyboard focus on canvas tap
+            // even when IsFocused is already true, so BindableProperty callback never fires.
+            SetFocusInternal(true);
             Superview.FocusedChild = this;
             return this;
             break;
@@ -405,7 +436,7 @@ namespace DrawnUi.Draw
                 var lastY = 0f;
                 foreach (var labelLine in Label.Lines)
                 {
-                    var lineGlyphs = labelLine.Spans.Count > 0 ? (labelLine.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>();
+                    var lineGlyphs = GetLineGlyphs(labelLine);
                     var nextIndex = AdvanceLineTextIndex(index, lineGlyphs.Length);
 
                     // Check if we're on the last line and the cursor is at the last position
@@ -440,7 +471,7 @@ namespace DrawnUi.Draw
                         var nextLine = line + 1 < Label.LinesCount ? Label.Lines[line + 1] : null;
                         if (nextLine != null)
                         {
-                            var nextGlyphs = nextLine.Spans.Count > 0 ? (nextLine.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>();
+                            var nextGlyphs = GetLineGlyphs(nextLine);
                             var startX = nextLine.Bounds.Left + (nextGlyphs.Length > 0 ? nextGlyphs[0].Position : 0);
                             MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
                                 (nextLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
@@ -528,6 +559,10 @@ namespace DrawnUi.Draw
         {
             Cursor.Left = x;
             Cursor.Top = y;
+            // BindableProperty skips propertyChanged when value equals the default (0.0).
+            // At cursor position 0 both Left and Top are 0, so NeedRepaint never fires.
+            // Force a repaint so the cursor always redraws at the new position.
+            Cursor.Repaint();
 
             // scroll to keep cursor visible
             if (_scroll != null)
@@ -571,6 +606,30 @@ namespace DrawnUi.Draw
             return nextIndex;
         }
 
+        /// <summary>Returns the zero-based line index the cursor is currently on.</summary>
+        public int GetCursorLine()
+        {
+            if (Label?.Lines == null || Label.LinesCount == 0)
+                return 0;
+
+            var cursorIndex = CursorPosition;
+            var textIndex = 0;
+            var lineNum = 0;
+
+            foreach (var labelLine in Label.Lines)
+            {
+                var lineGlyphs = GetLineGlyphs(labelLine);
+                var nextIndex = AdvanceLineTextIndex(textIndex, lineGlyphs.Length);
+
+                if (cursorIndex < nextIndex || lineNum == Label.LinesCount - 1)
+                    return lineNum;
+
+                textIndex = nextIndex;
+                lineNum++;
+            }
+
+            return lineNum;
+        }
 
         public void SetFocus(bool focus)
         {
