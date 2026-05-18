@@ -80,7 +80,6 @@ namespace Sandbox
             Canvas = new Canvas()
             {
                 RenderingMode = RenderingModeType.Accelerated,
-                UpdateMode = UpdateMode.Dynamic,
                 //Gestures = GesturesMode.Enabled,
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
