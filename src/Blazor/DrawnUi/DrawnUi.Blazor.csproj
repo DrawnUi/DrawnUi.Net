@@ -54,6 +54,12 @@
     <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
     <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaCursor.cs" Link="Draw\EditText\SkiaCursor.cs" />
+    <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaEditor.cs" Link="Draw\EditText\SkiaEditor.cs" />
+    <Compile Include="..\..\Maui\DrawnUi\Draw\EditText\SkiaEditorSelection.cs" Link="Draw\EditText\SkiaEditorSelection.cs" />
+  </ItemGroup>
  
 
 

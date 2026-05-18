@@ -10,6 +10,13 @@ public partial class KeyboardManager
 
     public static event EventHandler<InputKey> KeyUp;
 
+    public static event EventHandler<string> KeyChar;
+
+    public static void KeyboardChar(string ch)
+    {
+        KeyChar?.Invoke(null, ch);
+    }
+
     public static void KeyboardPressed(InputKey key)
     {
         CheckAndApplyModifiers(key, true);

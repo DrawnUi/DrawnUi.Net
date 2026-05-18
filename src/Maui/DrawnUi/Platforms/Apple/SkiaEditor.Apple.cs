@@ -1,58 +1,67 @@
-﻿using CoreGraphics;
+using CoreGraphics;
 using DrawnUi.Draw;
+using Foundation;
 using UIKit;
 
 namespace DrawnUi.Draw
 {
     public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
+        private bool _updatingText;
 
-        public class TextFieldDelegate : UITextFieldDelegate
+        public class TextViewDelegate : UITextViewDelegate
         {
-            private SkiaEditor _editor;
-            public TextFieldDelegate(SkiaEditor editor)
+            private readonly SkiaEditor _editor;
+            private bool _firstSynced;
+
+            public TextViewDelegate(SkiaEditor editor) => _editor = editor;
+
+            public override void Changed(UITextView textView)
             {
-                _editor = editor;
+                if (_editor._updatingText)
+                    return;
+
+                _editor._updatingText = true;
+                _editor.Text = textView.Text?.Replace("\r\n", "\n").Replace("\r", "\n");
+                _editor._updatingText = false;
             }
 
-            bool firstSynced;
-            public override void DidChangeSelection(UITextField textField)
+            public override void SelectionChanged(UITextView textView)
             {
-                if (!firstSynced)
+                if (!_firstSynced)
                 {
-                    firstSynced = true;
+                    _firstSynced = true;
                     return;
                 }
-                var newPosition = textField.GetOffsetFromPosition(textField.BeginningOfDocument, textField.SelectedTextRange.Start);
-#if DEBUG
-                Trace.WriteLine($"[DidChangeSelection] {newPosition}");
-#endif                
-                _editor.SetCursorPositionWithDelay(50, (int)newPosition);
+
+                var range = textView.SelectedRange;
+                var location = (int)range.Location;
+                var length = (int)range.Length;
+
+                _editor.SelectionLength = length;
+                _editor.SetCursorPositionWithDelay(50, location + length);
+            }
+
+            public override bool ShouldChangeText(UITextView textView, NSRange range, string text)
+            {
+                if (!_editor.IsMultiline && text == "\n")
+                {
+                    _editor.Submit();
+                    return false;
+                }
+                return true;
             }
         }
 
-        private void Control_EditingChanged(object sender, EventArgs e)
-        {
-            //Trace.WriteLine("Text has changed: " + Control.Text);
-            this.Text = Control.Text;
-            //MainThread.BeginInvokeOnMainThread(async () =>
-            //{
-            //	SetCursorPositionWithDelay(50, NativeSelectionStart);
-            //});
-        }
+        protected NativeEntryView Control;
+        private UIView _layout;
 
-        /// <summary>
-        /// This will be read by the parent to check the cursor position at will. For Apple we must read this on ui thread.
-        /// </summary>
         public int NativeSelectionStart
         {
             get
             {
-                var newPosition = (int)Control.GetOffsetFromPosition(Control.BeginningOfDocument, Control.SelectedTextRange.Start);
-#if DEBUG
-                Trace.WriteLine($"[Reported NativeSelectionStart] {newPosition}");
-#endif
-                return newPosition;
+                if (Control == null) return 0;
+                return (int)Control.SelectedRange.Location;
             }
         }
 
@@ -61,19 +70,13 @@ namespace DrawnUi.Draw
             if (Control == null)
                 return;
 
-            MainThread.BeginInvokeOnMainThread(async () =>
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                UITextPosition start = Control.GetPosition(Control.BeginningOfDocument, position);
-                if (start != null)
-                {
-                    //System.Diagnostics.Debug.WriteLine("SetCursorPositionNative " + start);
-
-                    UITextPosition end = stop >= 0 ? Control.GetPosition(Control.BeginningOfDocument, stop) : start;
-#if DEBUG
-                    Trace.WriteLine($"[SetCursorPositionNative] {start}");
-#endif
-                    Control.SelectedTextRange = Control.GetTextRange(start, end);
-                }
+                if (Control == null) return;
+                var len = (int)(Control.Text?.Length ?? 0);
+                var clampedPos = Math.Min(position, len);
+                var clampedStop = stop >= 0 ? Math.Min(stop, len) : clampedPos;
+                Control.SelectedRange = new NSRange(clampedPos, Math.Max(0, clampedStop - clampedPos));
             });
         }
 
@@ -81,14 +84,12 @@ namespace DrawnUi.Draw
         {
             if (Control != null)
             {
-                Control.EditingChanged -= Control_EditingChanged;
+                Control.Delegate = null;
                 Control.ResignFirstResponder();
                 Control.RemoveFromSuperview();
-                Control.Delegate = null;
                 Control = null;
             }
             _layout = null;
-
         }
 
         public void UpdateNativePosition()
@@ -97,54 +98,52 @@ namespace DrawnUi.Draw
             {
                 Control.InputAccessoryView = null;
                 Control.AutocorrectionType = UITextAutocorrectionType.No;
-                Control.Frame = new CGRect(DrawingRect.Right / RenderingScale, DrawingRect.Bottom / RenderingScale,
-                    1, 1);
+                Control.Frame = new CGRect(DrawingRect.Right / RenderingScale, DrawingRect.Bottom / RenderingScale, 1, 1);
             }
         }
 
-        protected NativeEntryField Control;
-        private UIView _layout;
-
         void CreateNativeControl()
         {
-            Control = new()
+            Control = new NativeEntryView
             {
-                Frame = new CGRect(50, 50, 0, 0),
-                UserInteractionEnabled = true,
-                //BackgroundColor = UIColor.Red,
+                Frame = new CGRect(-10, -10, 1, 1),
                 AccessibilityIdentifier = "NativeEntry" + GenerateUniqueId(),
-                Text = this.Text
+                ScrollEnabled = false,
             };
 
-            Control.Delegate = new TextFieldDelegate(this);
+            Control.TextContainerInset = UIEdgeInsets.Zero;
+            Control.TextContainer.LineFragmentPadding = 0;
 
-            Control.EditingChanged += Control_EditingChanged;
+            _updatingText = true;
+            Control.Text = this.Text ?? string.Empty;
+            _updatingText = false;
+
+            Control.Delegate = new TextViewDelegate(this);
 
             _layout.AddSubview(Control);
         }
 
-
-
         public void SetFocusNative(bool focus)
         {
-
-
             try
             {
-                _layout = (UIView)Superview.Handler?.PlatformView;
+                _layout = (UIView)Superview?.Handler?.PlatformView;
 
-                System.Diagnostics.Debug.WriteLine("SetFocusNative " + focus);
+                System.Diagnostics.Debug.WriteLine("[SkiaEditor] SetFocusNative " + focus);
 
                 if (focus)
                 {
                     if (Control == null)
-                    {
                         CreateNativeControl();
+
+                    if (!_updatingText)
+                    {
+                        _updatingText = true;
+                        Control.Text = this.Text ?? string.Empty;
+                        _updatingText = false;
                     }
 
                     Control.IsFocused = true;
-
-                    // Request focus and show the keyboard
                     Control.BecomeFirstResponder();
                 }
                 else
@@ -152,22 +151,9 @@ namespace DrawnUi.Draw
                     if (Control != null)
                     {
                         Control.IsFocused = false;
-
-                        // Remove focus and hide the keyboard
                         Control.ResignFirstResponder();
                     }
                 }
-#if DEBUG
-
-                if (Control.IsFirstResponder)
-                {
-                    Trace.WriteLine("Control is focused, okay " + Control.CanBecomeFirstResponder + " okay focued " + Control.CanBecomeFocused);
-                }
-                else
-                {
-                    Trace.WriteLine("Control is not focused");
-                }
-#endif
             }
             catch (Exception e)
             {
@@ -177,23 +163,14 @@ namespace DrawnUi.Draw
 
         public void SetReturnType(ReturnType type)
         {
+            if (Control == null) return;
             switch (type)
             {
-            case ReturnType.Go:
-            Control.ReturnKeyType = UIReturnKeyType.Go;
-            break;
-            case ReturnType.Next:
-            Control.ReturnKeyType = UIReturnKeyType.Next;
-            break;
-            case ReturnType.Send:
-            Control.ReturnKeyType = UIReturnKeyType.Send;
-            break;
-            case ReturnType.Search:
-            Control.ReturnKeyType = UIReturnKeyType.Search;
-            break;
-            default:
-            Control.ReturnKeyType = UIReturnKeyType.Done;
-            break;
+                case ReturnType.Go:     Control.ReturnKeyType = UIReturnKeyType.Go;     break;
+                case ReturnType.Next:   Control.ReturnKeyType = UIReturnKeyType.Next;   break;
+                case ReturnType.Send:   Control.ReturnKeyType = UIReturnKeyType.Send;   break;
+                case ReturnType.Search: Control.ReturnKeyType = UIReturnKeyType.Search; break;
+                default:                Control.ReturnKeyType = UIReturnKeyType.Done;   break;
             }
         }
 
@@ -204,25 +181,11 @@ namespace DrawnUi.Draw
             return uniqueId;
         }
 
-
-        public class NativeEntryField : UITextField
+        public class NativeEntryView : UITextView
         {
-            /// <summary>
-            /// Without this the field will get unfocused everytime we click outside
-            /// </summary>
             public bool IsFocused { get; set; }
 
-
-
-            public override bool CanResignFirstResponder
-            {
-                get
-                {
-                    return !IsFocused;
-                }
-            }
+            public override bool CanResignFirstResponder => !IsFocused;
         }
-
     }
-
 }

@@ -43,12 +43,14 @@ namespace Sandbox
                         HorizontalOptions = LayoutOptions.Fill,
                         Padding = new Thickness(16),
                         Spacing = 16,
+                        UseCache = SkiaCacheType.Operations,
 
                         Children =
                         {
                             new SkiaLabel()
                             {
                                 Text = "Single-line editor",
+                                UseCache = SkiaCacheType.Operations,
                                 FontSize = 18,
                                 TextColor = Colors.Black,
                                 HorizontalOptions = LayoutOptions.Fill,
@@ -56,6 +58,7 @@ namespace Sandbox
 
                             new SkiaEditor()
                             {
+                                UseCache = SkiaCacheType.Operations,
                                 HorizontalOptions = LayoutOptions.Fill,
                                 MaxLines = 1,
                                 BackgroundColor = Color.Parse("#FFCCCC"),
@@ -69,6 +72,7 @@ namespace Sandbox
                             new SkiaLabel()
                             {
                                 Text = "Multiline editor",
+                                UseCache = SkiaCacheType.Operations,
                                 FontSize = 18,
                                 TextColor = Colors.Black,
                                 HorizontalOptions = LayoutOptions.Fill,
@@ -76,6 +80,7 @@ namespace Sandbox
 
                             new SkiaEditor()
                             {
+                                UseCache = SkiaCacheType.Operations,
                                 HorizontalOptions = LayoutOptions.Fill,
                                 MaxLines = 4,
                                 BackgroundColor = Colors.DarkBlue,
@@ -86,10 +91,11 @@ namespace Sandbox
                                 Text = "First line\nSecond line\nThird line\n4\n5\n6",
                             },
 
-#if DEBUG
+#if xDEBUG
                             new SkiaLabel()
                             {
                                 Text = "Rich editor (DEBUG)",
+                                UseCache = SkiaCacheType.Operations,
                                 FontSize = 18,
                                 TextColor = Colors.DarkSlateBlue,
                                 HorizontalOptions = LayoutOptions.Fill,
@@ -108,7 +114,7 @@ namespace Sandbox
             };
         }
 
-#if DEBUG
+#if notyetDEBUG
         private SkiaRichEditor _richEditor;
 
         private SkiaControl BuildRichEditorPanel()
@@ -119,7 +125,7 @@ namespace Sandbox
                 HorizontalOptions = LayoutOptions.Fill,
                 HeightRequest = 200,
                 MaxLines = 8,
-                BackgroundColor = Color.Parse("#FEFEFE"),
+                BackgroundColor = Color.Parse("#EFEFEF"),
                 Padding = new Thickness(8),
                 FontSize = 16,
                 TextColor = Colors.Black,
@@ -173,6 +179,7 @@ namespace Sandbox
 
             return new SkiaStack
             {
+                UseCache = SkiaCacheType.Image,
                 Type = LayoutType.Column,
                 Spacing = 4,
                 HorizontalOptions = LayoutOptions.Fill,

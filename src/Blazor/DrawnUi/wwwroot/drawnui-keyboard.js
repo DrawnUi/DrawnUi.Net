@@ -23,6 +23,9 @@ export function attachGlobalKeyboard() {
 
     state.keyDownHandler = event => {
         invoke("HandleGlobalKeyDown", event.code || null);
+        if (event.key && event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey) {
+            invoke("HandleGlobalKeyChar", event.key);
+        }
     };
 
     state.keyUpHandler = event => {

@@ -1,0 +1,82 @@
+@page "/editors-probe"
+@using DrawnUi.Draw
+@using DrawnUi.Views
+@using DrawnUi
+
+<PageTitle>SkiaEditor</PageTitle>
+
+<div class="docs-page">
+    <h1>SkiaEditor</h1>
+    <p class="docs-lead">Single-line and multiline text editors drawn entirely on the SkiaSharp canvas. Click an editor to focus it and start typing.</p>
+</div>
+
+<Canvas Content="_canvasContent"
+        WidthRequest="400"
+        HeightRequest="520"
+        Gestures="@GesturesMode.Enabled"
+        Margin="0,8,0,0" />
+
+@code {
+    private readonly SkiaControl _canvasContent;
+
+    public EditorsProbe()
+    {
+        _canvasContent = new SkiaScroll()
+        {
+            Orientation = ScrollOrientation.Vertical,
+            VerticalOptions = LayoutOptions.Fill,
+            HorizontalOptions = LayoutOptions.Fill,
+
+            Content = new SkiaStack()
+            {
+                BackgroundColor = Colors.White,
+                HorizontalOptions = LayoutOptions.Fill,
+                Padding = new Thickness(16),
+                Spacing = 16,
+
+                Children =
+                {
+                    new SkiaLabel()
+                    {
+                        Text = "Single-line editor",
+                        FontSize = 18,
+                        TextColor = Colors.Black,
+                        HorizontalOptions = LayoutOptions.Fill,
+                    },
+
+                    new SkiaEditor()
+                    {
+                        HorizontalOptions = LayoutOptions.Fill,
+                        MaxLines = 1,
+                        BackgroundColor = Color.Parse("#FFCCCC"),
+                        Padding = new Thickness(8),
+                        FontSize = 16,
+                        TextColor = Colors.Black,
+                        CursorColor = Colors.Red,
+                        Text = "Single line text",
+                    },
+
+                    new SkiaLabel()
+                    {
+                        Text = "Multiline editor",
+                        FontSize = 18,
+                        TextColor = Colors.Black,
+                        HorizontalOptions = LayoutOptions.Fill,
+                    },
+
+                    new SkiaEditor()
+                    {
+                        HorizontalOptions = LayoutOptions.Fill,
+                        MaxLines = 4,
+                        BackgroundColor = Colors.DarkBlue,
+                        Padding = new Thickness(8),
+                        FontSize = 16,
+                        TextColor = Colors.Yellow,
+                        CursorColor = Colors.White,
+                        Text = "First line\nSecond line\nThird line\n4\n5\n6",
+                    },
+                }
+            }
+        };
+    }
+}

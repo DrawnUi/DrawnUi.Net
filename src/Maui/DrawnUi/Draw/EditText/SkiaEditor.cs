@@ -649,6 +649,45 @@ namespace DrawnUi.Draw
             UpdateLabel();
         }
 
+        protected virtual void HandleVerticalArrow(bool up)
+        {
+            if (Label?.Lines == null || Label.LinesCount <= 1) return;
+
+            var curLine = GetCursorLine();
+            var targetLine = up ? curLine - 1 : curLine + 1;
+
+            if (targetLine < 0 || targetLine >= Label.LinesCount) return;
+
+            var cursorXPixels = (float)(Cursor.Left * RenderingScale);
+
+            var lineStart = 0;
+            for (var i = 0; i < targetLine; i++)
+                lineStart = AdvanceLineTextIndex(lineStart, GetLineGlyphs(Label.Lines[i]).Length);
+
+            var glyphs = GetLineGlyphs(Label.Lines[targetLine]);
+            if (glyphs.Length == 0)
+            {
+                CursorPosition = lineStart;
+                return;
+            }
+
+            var prevX = 0f;
+            for (var i = 0; i < glyphs.Length; i++)
+            {
+                if (prevX <= cursorXPixels && cursorXPixels <= glyphs[i].Position)
+                {
+                    CursorPosition = lineStart + i;
+                    return;
+                }
+                prevX = glyphs[i].Position;
+            }
+
+            var pos = lineStart + glyphs.Length;
+            if (Text != null && pos > 0 && pos - 1 < Text.Length && Text[pos - 1] == '\n')
+                pos--;
+            CursorPosition = pos;
+        }
+
 
 
 
@@ -738,6 +777,7 @@ namespace DrawnUi.Draw
 
         #region PROPERTIES
 
+#if !BROWSER
         public static readonly BindableProperty ReturnTypeProperty = BindableProperty.Create(
             nameof(ReturnType),
             typeof(ReturnType),
@@ -749,6 +789,7 @@ namespace DrawnUi.Draw
             get { return (ReturnType)GetValue(ReturnTypeProperty); }
             set { SetValue(ReturnTypeProperty, value); }
         }
+#endif
 
         public static readonly BindableProperty CommandOnSubmitProperty = BindableProperty.Create(
             nameof(CommandOnSubmit),
@@ -1055,7 +1096,7 @@ namespace DrawnUi.Draw
 
         #endregion
 
-#if (!ANDROID && !IOS && !MACCATALYST && !WINDOWS && !TIZEN && !DRAWNUI_NET)
+#if (!ANDROID && !IOS && !MACCATALYST && !WINDOWS && !TIZEN && !DRAWNUI_NET && !BROWSER)
 
 
         public void SetCursorPositionNative(int position, int stop = -1)

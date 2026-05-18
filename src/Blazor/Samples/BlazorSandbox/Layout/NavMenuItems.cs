@@ -102,6 +102,8 @@ internal static class NavMenuItems
                         new("Custom Button", "buttons-custom", "bi-boxes-nav-menu"),
                         new("Radio Buttons", "buttons-radio", "bi-record-circle-nav-menu"),
 
+                        new("SkiaEditor", "editors-probe", "bi-pencil-square-nav-menu"),
+
                         new("SkiaSwitch", "switches", "bi-toggle2-on-nav-menu"),
 
                         new("Picker Wheels", "pickers", "bi-list-ul-nav-menu"),

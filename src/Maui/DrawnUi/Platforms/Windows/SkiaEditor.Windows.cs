@@ -180,49 +180,6 @@ namespace DrawnUi.Draw
             }
         }
 
-        private void HandleVerticalArrow(bool up)
-        {
-            if (Label?.Lines == null || Label.LinesCount <= 1) return;
-
-            var curLine = GetCursorLine();
-            var targetLine = up ? curLine - 1 : curLine + 1;
-
-            if (targetLine < 0 || targetLine >= Label.LinesCount) return;
-
-            // cursor X in content pixels (same coordinate space as glyph positions)
-            var cursorXPixels = (float)(Cursor.Left * RenderingScale);
-
-            // walk lines to find target line's start character index
-            var lineStart = 0;
-            for (var i = 0; i < targetLine; i++)
-                lineStart = AdvanceLineTextIndex(lineStart, GetLineGlyphs(Label.Lines[i]).Length);
-
-            // find character on target line closest to cursorXPixels
-            var glyphs = GetLineGlyphs(Label.Lines[targetLine]);
-            if (glyphs.Length == 0)
-            {
-                CursorPosition = lineStart;
-                return;
-            }
-
-            var prevX = 0f;
-            for (var i = 0; i < glyphs.Length; i++)
-            {
-                if (prevX <= cursorXPixels && cursorXPixels <= glyphs[i].Position)
-                {
-                    CursorPosition = lineStart + i;
-                    return;
-                }
-                prevX = glyphs[i].Position;
-            }
-
-            // past end of target line — clamp back before any trailing '\n'
-            var pos = lineStart + glyphs.Length;
-            if (Text != null && pos > 0 && pos - 1 < Text.Length && Text[pos - 1] == '\n')
-                pos--;
-            CursorPosition = pos;
-        }
-
         private void HiddenTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (_suppressSelectionChanged) return;

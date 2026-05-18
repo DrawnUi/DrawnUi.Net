@@ -33,6 +33,13 @@ public partial class KeyboardManager
         KeyboardReleased(MapToMaui(code));
     }
 
+    [JSInvokable]
+    public static void HandleGlobalKeyChar(string? ch)
+    {
+        if (!string.IsNullOrEmpty(ch))
+            KeyboardChar(ch);
+    }
+
     public static InputKey MapToMaui(string? code)
     {
         if (string.IsNullOrWhiteSpace(code))
