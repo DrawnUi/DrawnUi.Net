@@ -14,7 +14,7 @@ using SkiaSharp;
 
 namespace SpaceShooter.Game;
 
-public partial class SpaceShooter : DrawnUi.Gaming.Game
+public partial class SpaceShooter : DrawnGame
 {
     #region CONSTANTS
 

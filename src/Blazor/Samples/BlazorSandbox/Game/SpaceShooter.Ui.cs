@@ -3,12 +3,13 @@
 
 using DrawnUi;
 using DrawnUi.Draw;
+using DrawnUi.Gaming;
 using DrawnUi.Views;
 using SkiaSharp;
 
 namespace SpaceShooter.Game;
 
-public partial class SpaceShooter : DrawnUi.Gaming.Game
+public partial class SpaceShooter : DrawnGame
 {
     // Named controls referenced from SpaceShooter.cs game logic
     private SkiaImageTiles ParallaxLayer;

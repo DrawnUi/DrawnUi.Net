@@ -58,6 +58,7 @@ internal static class NavMenuItems
                         new("SkiaShape", "graphics-shape", "bi-bounding-box-nav-menu"),
                         new("SkiaSvg", "graphics-svg", "bi-badge-sd-nav-menu"),
                         new("SkiaImage", "graphics-image", "bi-image-nav-menu"),
+                        new("Image Effects", "effects-image", "bi-stars-nav-menu"),
 
                         new("SkiaLottie", "lottie-probe", "bi-play-circle-nav-menu"),
                         new("SkiaGif", "gif-probe", "bi-film-nav-menu"),
@@ -132,7 +133,8 @@ internal static class NavMenuItems
             Items:
             [
                 new("Space Shooter", "space-shooter", "bi-rocket-takeoff-nav-menu"),
-                new("Parallax Etude", "parallax-gameloop", "bi-controller-nav-menu")
+                new("Parallax Etude", "parallax-gameloop", "bi-controller-nav-menu"),
+                new("Pong", "pong", "bi-controller-nav-menu")
             ]),
 
 #if !SKIPMESH

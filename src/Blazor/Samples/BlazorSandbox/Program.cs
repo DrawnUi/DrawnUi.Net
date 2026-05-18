@@ -33,6 +33,7 @@ DrawnExtensions.RegisterImage("favicon.png", "/favicon.png");
 DrawnExtensions.RegisterImage("icon-192.png", "/icon-192.png");
 DrawnExtensions.RegisterImage("dotnetbotcar.png", "/images/dotnetbotcar.png");
 DrawnExtensions.RegisterImage(@"Images\banana.gif", "/media/banana.gif");
+DrawnExtensions.RegisterSvg("media/dotnet_bot.svg");
 
 var host = await builder.UseDrawnUiAsync(new DrawnUiStartupSettings
 {

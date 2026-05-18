@@ -1,13 +1,13 @@
-@page "/parallax-gameloop"
+@page "/pong"
 @using DrawnUi.Draw
 @using DrawnUi.Views
 
-<PageTitle>Parallax Game Loop</PageTitle>
+<PageTitle>Pong</PageTitle>
 
 <div class="docs-page">
-    <h1>Parallax Game Loop</h1>
-    <p class="docs-lead">This page is a side-scrolling scene built from layered DrawnUI content, shared game-loop timing, and keyboard-driven movement. It is a good middle ground between tiny control docs and the full Space Shooter demo.</p>
-    <p class="docs-note">What to look for: parallax depth, continuous motion, aspect-locked scaling, and how a wider scene still stays inside the DrawnUI rendering model instead of falling back to HTML layering.</p>
+    <h1>Pong</h1>
+    <p class="docs-lead">This page ports the standalone Pong sample into the sandbox as a compact accelerated game surface with keyboard input, touch gestures, AI paddle tracking, and a simple score loop.</p>
+    <p class="docs-note">Use the arrow keys or drag the bottom paddle, then tap or press space to serve. Compared with the other gaming samples, this one proves the shared game loop on a much smaller scene with no sprite-sheet assets.</p>
 </div>
 
 <FullscreenToggleBar
@@ -17,66 +17,52 @@
 <AspectLockedViewportHost
     AspectWidth="@ViewportWidth"
     AspectHeight="@ViewportHeight"
-    BackgroundColor="#060A12"
-    IsFullscreen="@_isFullscreen">
+    BackgroundColor="#0A0F1E"
+    IsFullscreen="@_isFullscreen"
+    EmbeddedMargin="12px auto 0"
+    FitVisibleHeight="true">
 
-    <ParallaxRescalingCanvas @ref="_canvas"
+    <AspectLockedCanvas
+        @ref="_canvas"
         Content="_canvasContent"
         LogicalWidth="@ViewportWidth"
         LogicalHeight="@ViewportHeight"
         HorizontalOptions="LayoutOptions.Fill"
         VerticalOptions="LayoutOptions.Fill"
-        BackgroundColor="#060A12"
+        BackgroundColor="#0A0F1E"
         UpdateMode="@UpdateModeType.Constant"
         RenderingMode="@RenderingModeType.Accelerated"
         Gestures="@GesturesMode.Enabled"
         IsFullscreen="@_isFullscreen"
         IsFullscreenChanged="OnFullscreenChanged" />
-        
+
 </AspectLockedViewportHost>
 
 @code {
-    private const float ViewportWidth = 940f;
-    private const float ViewportHeight = 430f;
+    private const float ViewportWidth = global::Pong.Game.PongGame.WIDTH;
+    private const float ViewportHeight = global::Pong.Game.PongGame.HEIGHT;
 
     private readonly SkiaControl _canvasContent;
-    private readonly SkiaControl _stage;
-    private ParallaxRescalingCanvas _canvas;
+    private AspectLockedCanvas _canvas;
     private bool _isFullscreen;
 
-    public ParallaxGameLoop()
+    public PongPage()
     {
-        _stage = new global::ParallaxGameLoop.Game.ParallaxGame()
-        {
-            WidthRequest = ViewportWidth,
-            HeightRequest = ViewportHeight,
-            HorizontalOptions = LayoutOptions.Start,
-            VerticalOptions = LayoutOptions.Start,
-        };
-
         _canvasContent = new SkiaLayer()
         {
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
-            BackgroundColor = Colors.Black,
             Children =
             {
-                new SkiaLayer()
+                new global::Pong.Game.PongGame()
                 {
-                    WidthRequest = ViewportWidth,
-                    HeightRequest = ViewportHeight,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    IsClippedToBounds = true,
-                    Children =
-                    {
-                        _stage,
-                    }
                 },
                 new SkiaLabelFps()
                 {
                     UseCache = SkiaCacheType.GPU,
-                    Margin = new (0, 0, 4, 24),
+                    Margin = new(0, 0, 4, 24),
                     VerticalOptions = LayoutOptions.End,
                     HorizontalOptions = LayoutOptions.End,
                     Rotation = -45,
@@ -94,5 +80,4 @@
         _canvas?.InvalidateChildren();
         return Task.CompletedTask;
     }
-
 }

@@ -10,7 +10,7 @@ namespace ParallaxGameLoop.Game;
 /// <summary>
 /// Side-scrolling parallax gameplay sample with keyboard-driven movement, jumping, and attack states.
 /// </summary>
-public sealed partial class ParallaxGame : DrawnUi.Gaming.Game
+public sealed partial class ParallaxGame : DrawnGame
 {
 
     private static readonly string[] SceneAssetSources =
