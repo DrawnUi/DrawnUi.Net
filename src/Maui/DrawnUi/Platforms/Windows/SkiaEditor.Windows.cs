@@ -62,6 +62,7 @@ namespace DrawnUi.Draw
                     _hiddenTextBox.TextChanged -= HiddenTextBox_TextChanged;
                     _hiddenTextBox.SelectionChanged -= HiddenTextBox_SelectionChanged;
                     _hiddenTextBox.GotFocus -= HiddenTextBox_GotFocus;
+                    _hiddenTextBox.PreviewKeyDown -= HiddenTextBox_PreviewKeyDown;
                     _hiddenTextBox.KeyDown -= HiddenTextBox_KeyDown;
 
                     var layout = (Panel)Superview?.Handler?.PlatformView;
@@ -106,6 +107,7 @@ namespace DrawnUi.Draw
             _hiddenTextBox.TextChanged += HiddenTextBox_TextChanged;
             _hiddenTextBox.SelectionChanged += HiddenTextBox_SelectionChanged;
             _hiddenTextBox.GotFocus += HiddenTextBox_GotFocus;
+            _hiddenTextBox.PreviewKeyDown += HiddenTextBox_PreviewKeyDown;
             _hiddenTextBox.KeyDown += HiddenTextBox_KeyDown;
 
             layout.Children.Add(_hiddenTextBox);
@@ -185,19 +187,24 @@ namespace DrawnUi.Draw
             }
         }
 
+        // PreviewKeyDown fires before the TextBox processes the key — used for Up/Down so the
+        // 1×1-pixel TextBox never navigates its own (garbage) wrap layout and never fires
+        // a spurious SelectionChanged that would override the drawn cursor position.
+        private void HiddenTextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (IsMultiline && (e.Key == Windows.System.VirtualKey.Up || e.Key == Windows.System.VirtualKey.Down))
+            {
+                e.Handled = true;
+                HandleVerticalArrow(e.Key == Windows.System.VirtualKey.Up);
+            }
+        }
+
         private void HiddenTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter && !IsMultiline)
             {
                 e.Handled = true;
                 Submit();
-                return;
-            }
-
-            if (IsMultiline && (e.Key == Windows.System.VirtualKey.Up || e.Key == Windows.System.VirtualKey.Down))
-            {
-                e.Handled = true;
-                HandleVerticalArrow(e.Key == Windows.System.VirtualKey.Up);
                 return;
             }
 
