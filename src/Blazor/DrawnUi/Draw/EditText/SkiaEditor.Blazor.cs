@@ -4,6 +4,19 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
 {
     private bool _isSubscribedToKeyboard;
     private int _stubSelectionStop = -1;
+    private bool _deferringCursorUpdate;
+
+    // On Blazor, Label.Lines is populated during the render pass, which happens after
+    // property-change events. This schedules a visual cursor re-placement once the
+    // label has had a chance to re-render with the new text.
+    private async void DeferVisualCursorUpdate()
+    {
+        if (_deferringCursorUpdate) return;
+        _deferringCursorUpdate = true;
+        await Task.Delay(30);
+        _deferringCursorUpdate = false;
+        MoveInternalCursor();
+    }
 
     public int NativeSelectionStart => CursorPosition;
 
@@ -131,6 +144,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         Text = text.Remove(start, remove);
         CursorPosition = start;
         SelectionLength = 0;
+        DeferVisualCursorUpdate();
     }
 
     public void StubDelete(int count = 1)
@@ -151,6 +165,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         var remove = Math.Min(count, text.Length - CursorPosition);
         Text = text.Remove(CursorPosition, remove);
         SelectionLength = 0;
+        DeferVisualCursorUpdate();
     }
 
     public void StubMoveCursor(int delta, bool extendSelection = false)
@@ -201,6 +216,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         CursorPosition = selectionStart + normalized.Length;
         SelectionLength = 0;
         _stubSelectionStop = -1;
+        DeferVisualCursorUpdate();
     }
 
     private static string NormalizeLineBreaks(string? value)

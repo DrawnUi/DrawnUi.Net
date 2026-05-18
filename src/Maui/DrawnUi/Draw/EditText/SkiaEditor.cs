@@ -434,7 +434,12 @@ namespace DrawnUi.Draw
 
                 if (Label.Lines == null || Label.LinesCount <= 0)
                 {
+#if !BROWSER
+                    // On Blazor, Lines are populated during the render pass which happens
+                    // after property-change handlers. Hiding cursor here would cause a
+                    // 1-frame invisible flicker every keystroke; defer instead (see DeferVisualCursorUpdate).
                     SetCursorVisible(false);
+#endif
                     return;
                 }
 
