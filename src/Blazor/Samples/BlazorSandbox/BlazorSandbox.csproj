@@ -8,16 +8,24 @@
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <WasmBuildNative>true</WasmBuildNative>
+
+    <!-- use nugets or ref drawnui source-->
+    <UseSource>true</UseSource>
+
 </PropertyGroup>
 
 <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
-</ItemGroup> 
+</ItemGroup>
 
-<ItemGroup>
-    <ProjectReference Include="..\..\Addons\DrawnUi.Gaming.Blazor\DrawnUi.Gaming.Blazor.csproj" />
+<ItemGroup Condition="'$(UseSource)' != 'true'">
+    <PackageReference Include="DrawnUi.Gaming.Blazor" Version="1.10.0.1-preview1.1" />
+</ItemGroup>
+
+<ItemGroup Condition="'$(UseSource)' == 'true'">
   <ProjectReference Include="..\..\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj" />
+  <ProjectReference Include="..\..\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj" />
 </ItemGroup>
 
   <ItemGroup>
