@@ -2169,7 +2169,7 @@ namespace DrawnUi.Draw
         public virtual void CheckHovered(SkiaGesturesParameters args)
         {
 
-#if WINDOWS || MACCATALYST || ANDROID
+#if WINDOWS || MACCATALYST || ANDROID || BROWSER
             if (args.Type == TouchActionResult.Pointer)
             {
                 SetHover(true);
