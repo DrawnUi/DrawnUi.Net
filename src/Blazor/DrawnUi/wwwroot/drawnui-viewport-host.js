@@ -5,11 +5,7 @@ function reportOffset(element, dotNetRef) {
         return;
     }
 
-    const measuredElement = element.firstElementChild instanceof HTMLElement
-        ? element.firstElementChild
-        : element;
-
-    const rect = measuredElement.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
     const offset = Math.max(0, rect.top);
     dotNetRef.invokeMethodAsync('OnViewportOffsetChanged', offset);
 }

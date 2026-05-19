@@ -1,10 +1,15 @@
 @namespace DrawnUi.Views
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@using Microsoft.JSInterop
 
-<div class="@HostClass" style="@HostStyle">
+<div @ref="_hostElement" class="@HostClass" style="@HostStyle">
     @ChildContent
 </div>
 
 @code {
+    private const string ViewportModulePath = "./_content/DrawnUi.Blazor.Core/drawnui-viewport-host.js";
+
     /// <summary>
     /// Logical content width used to preserve the embedded host aspect ratio.
     /// </summary>
@@ -56,6 +61,16 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    private ElementReference _hostElement;
+    private IJSObjectReference? _viewportModule;
+    private DotNetObjectReference<AspectLockedViewportHost>? _viewportCallbackRef;
+    private float _measuredViewportOffsetPixels;
+    private bool _viewportObserverAttached;
+    private bool ShouldObserveViewportOffset => FitVisibleHeight && !IsFullscreen;
+    private float EffectiveViewportOffsetPixels => ViewportOffsetPixels > 0f
+        ? ViewportOffsetPixels
+        : _measuredViewportOffsetPixels;
+
     private string HostClass => IsFullscreen
         ? "aspect-locked-host fullscreen"
         : FitVisibleHeight
@@ -71,7 +86,74 @@
                 : 1f;
 
             return FormattableString.Invariant(
-                $"--host-aspect: {AspectWidth} / {AspectHeight}; --host-aspect-ratio: {aspectRatio}; --host-background: {BackgroundColor}; --host-margin: {EmbeddedMargin}; --host-viewport-offset: {ViewportOffsetPixels}px; --host-z-index: {FullscreenZIndex};");
+                $"--host-aspect: {AspectWidth} / {AspectHeight}; --host-aspect-ratio: {aspectRatio}; --host-background: {BackgroundColor}; --host-margin: {EmbeddedMargin}; --host-viewport-offset: {EffectiveViewportOffsetPixels}px; --host-z-index: {FullscreenZIndex};");
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (ShouldObserveViewportOffset)
+        {
+            _viewportModule ??= await JS.InvokeAsync<IJSObjectReference>("import", ViewportModulePath);
+            _viewportCallbackRef ??= DotNetObjectReference.Create(this);
+
+            if (!_viewportObserverAttached)
+            {
+                await _viewportModule.InvokeVoidAsync("attachViewportOffsetObserver", _hostElement, _viewportCallbackRef);
+                _viewportObserverAttached = true;
+            }
+            else
+            {
+                await _viewportModule.InvokeVoidAsync("refreshViewportOffset", _hostElement);
+            }
+
+            return;
+        }
+
+        if (_viewportObserverAttached && _viewportModule != null)
+        {
+            await _viewportModule.InvokeVoidAsync("detachViewportOffsetObserver", _hostElement);
+            _viewportObserverAttached = false;
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnViewportOffsetChanged(double offset)
+    {
+        var nextOffset = (float)Math.Max(0, Math.Round(offset));
+        if (Math.Abs(_measuredViewportOffsetPixels - nextOffset) < 0.5f)
+            return;
+
+        _measuredViewportOffsetPixels = nextOffset;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_viewportModule != null)
+        {
+            if (_viewportObserverAttached)
+            {
+                try
+                {
+                    await _viewportModule.InvokeVoidAsync("detachViewportOffsetObserver", _hostElement);
+                }
+                catch
+                {
+                }
+            }
+
+            try
+            {
+                await _viewportModule.DisposeAsync();
+            }
+            catch
+            {
+            }
+        }
+
+        _viewportCallbackRef?.Dispose();
     }
 }

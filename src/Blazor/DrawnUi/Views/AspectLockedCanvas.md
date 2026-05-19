@@ -23,10 +23,10 @@ Pure Blazor/HTML component. Renders one `<div>` that defines how much space the 
 | Parameter | CSS class | Behaviour |
 |-----------|-----------|-----------|
 | default | `fit-width` | `width:100%`, CSS `aspect-ratio` drives height |
-| `FitVisibleHeight=true` | `fit-height` | Width is clamped by both `100%` and `calc((100vh - ViewportOffsetPixels) * aspectRatio)` so portrait hosts can shrink with narrow layouts while still respecting visible height |
+| `FitVisibleHeight=true` | `fit-height` | Width is clamped by both `100%` and `calc((100vh - offset) * aspectRatio)` so portrait hosts can shrink with narrow layouts while still respecting the visible height remaining below the page chrome |
 | `IsFullscreen=true` | `fullscreen` | `position:fixed; inset:0`, covers entire viewport |
 
-`AspectWidth` / `AspectHeight` are passed as CSS custom properties (`--host-aspect`). The browser enforces the ratio natively via `aspect-ratio` — no JS resize math needed inside this component.
+`AspectWidth` / `AspectHeight` are passed as CSS custom properties (`--host-aspect`). The browser enforces the ratio natively via `aspect-ratio`. When `FitVisibleHeight=true`, the host also measures its own top offset in the viewport and subtracts that from `100vh` by default, so callers do not need page-local observer glue. `ViewportOffsetPixels` remains available as an explicit override when a caller needs to supply a fixed custom value.
 
 **Role after refactor**: space provider. Its div gives `AspectLockedCanvas`'s resize observer a meaningful CSS bounding box to measure. Without it, the canvas outer div has no parent-driven size and collapses to 1 px.
 

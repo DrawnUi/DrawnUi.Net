@@ -20,7 +20,7 @@
     BackgroundColor="#060A12"
     IsFullscreen="@_isFullscreen">
 
-    <ParallaxRescalingCanvas @ref="_canvas"
+    <AspectLockedCanvas @ref="_canvas"
         Content="_canvasContent"
         LogicalWidth="@ViewportWidth"
         LogicalHeight="@ViewportHeight"
@@ -41,7 +41,7 @@
 
     private readonly SkiaControl _canvasContent;
     private readonly SkiaControl _stage;
-    private ParallaxRescalingCanvas _canvas;
+    private AspectLockedCanvas _canvas;
     private bool _isFullscreen;
 
     public ParallaxGameLoop()
