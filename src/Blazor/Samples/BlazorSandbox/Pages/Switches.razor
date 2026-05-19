@@ -11,8 +11,10 @@
     <p class="docs-note">Tap the controls in the canvas. The summary line shows the current state without leaving the compact example format.</p>
 
     <div class="docs-example-frame">
-        <Canvas Content="_canvasContent" WidthRequest="360"
-                HeightRequest="296"
+        <Canvas 
+                Content="_canvasContent" 
+                WidthRequest="360"
+            HeightRequest="320"
                 BackgroundColor="#F5F0E5"
                 Margin="0,8,0,0"
                 Gestures="@GesturesMode.Enabled"
@@ -52,7 +54,7 @@ newsletter.Toggled += (_, isOn) => { /* react here */ };
 
         _notificationsSwitch = new SkiaSwitch()
         {
-            WidthRequest = 54,
+            WidthRequest = 44,
             HeightRequest = 32,
             DefaultValue = true,
             ColorFrameOn = new Color(0.176f, 0.616f, 0.353f, 1f),
@@ -62,7 +64,7 @@ newsletter.Toggled += (_, isOn) => { /* react here */ };
 
         _updatesSwitch = new SkiaSwitch()
         {
-            WidthRequest = 54,
+            WidthRequest = 44,
             HeightRequest = 32,
             ControlStyle = PrebuiltControlStyle.Material,
             ColorFrameOn = new Color(0.129f, 0.588f, 0.953f, 1f),
@@ -86,7 +88,7 @@ newsletter.Toggled += (_, isOn) => { /* react here */ };
         {
             Margin = new Thickness(16),
             WidthRequest = 328,
-            HeightRequest = 264,
+            HeightRequest = 288,
             Padding = new Thickness(18),
             BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
             Type = LayoutType.Column,
@@ -124,7 +126,7 @@ newsletter.Toggled += (_, isOn) => { /* react here */ };
     {
         return new SkiaLayout()
         {
-            WidthRequest = 292,
+            WidthRequest = 320,
             Padding = new Thickness(12, 10),
             BackgroundColor = Colors.White,
             Type = LayoutType.Row,
@@ -133,7 +135,7 @@ newsletter.Toggled += (_, isOn) => { /* react here */ };
             {
                 new SkiaLayout()
                 {
-                    WidthRequest = 228,
+                    HorizontalOptions = LayoutOptions.Fill,
                     Type = LayoutType.Column,
                     Spacing = 2,
                     Children =

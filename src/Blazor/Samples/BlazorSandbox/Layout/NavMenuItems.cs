@@ -102,13 +102,13 @@ internal static class NavMenuItems
                         new("Custom Button", "buttons-custom", "bi-boxes-nav-menu"),
                         new("Radio Buttons", "buttons-radio", "bi-record-circle-nav-menu"),
 
-                        new("SkiaEditor", "editors-probe", "bi-pencil-square-nav-menu"),
-
                         new("SkiaSwitch", "switches", "bi-toggle2-on-nav-menu"),
 
-                        new("Picker Wheels", "pickers", "bi-list-ul-nav-menu"),
                         new("SkiaPicker", "pickers-sheet", "bi-menu-button-wide-nav-menu"),
-                        new("Picker Spinner", "pickers-spinner", "bi-disc-nav-menu")
+                        new("Picker Wheels", "pickers", "bi-list-ul-nav-menu"),
+                        new("Picker Spinner", "pickers-spinner", "bi-disc-nav-menu"),
+
+                        new("SkiaEditor", "editors-probe", "bi-pencil-square-nav-menu"),
                     ]),
 
 
@@ -123,8 +123,8 @@ internal static class NavMenuItems
             [
                 new("First App", "tutorial-first-app", "bi-stars-nav-menu"),
                 new("Custom Button", "tutorial-custom-button", "bi-dpad-fill-nav-menu"),
+                new("Cards", "cards", "bi-columns-gap-nav-menu"),
                 new("News Feed", "tutorial-news-feed", "bi-newspaper-nav-menu"),
-                new("Cards", "cards", "bi-columns-gap-nav-menu")
             ]),
 
 
@@ -134,9 +134,9 @@ internal static class NavMenuItems
             false,
             Items:
             [
-                new("Space Shooter", "space-shooter", "bi-rocket-takeoff-nav-menu"),
                 new("Parallax Etude", "parallax-gameloop", "bi-controller-nav-menu"),
-                new("Pong", "pong", "bi-controller-nav-menu")
+                new("Pong", "pong", "bi-controller-nav-menu"),
+                new("Space Shooter", "space-shooter", "bi-rocket-takeoff-nav-menu"),
             ]),
 
 #if !SKIPMESH

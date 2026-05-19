@@ -69,6 +69,7 @@ namespace BlazorSandbox.Pages.NewsFeed.Views
                     new SkiaRichLabel()
                     {
                         Text = "DrawnUI News Feed Tutorial",
+                        TextColor = Colors.DarkBlue,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
                     }
