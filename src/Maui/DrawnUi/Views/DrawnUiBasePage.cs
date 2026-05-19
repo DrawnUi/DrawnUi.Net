@@ -21,7 +21,9 @@ public class DrawnUiBasePage : ContentPage
 
     public virtual double OnKeyboardResized(double size)
     {
-        return size;
+        if (size>0)
+            return size;
+        return 0;
     }
 
     /// <summary>

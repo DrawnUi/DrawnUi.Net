@@ -6,6 +6,8 @@ using Canvas = DrawnUi.Views.Canvas;
 
 namespace Sandbox
 {
+
+
     public class MainPageEditors : BasePageReloadable, IDisposable
     {
         Canvas Canvas;
@@ -84,7 +86,7 @@ namespace Sandbox
                             {
                                 UseCache = SkiaCacheType.Operations,
                                 HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 4,
+                                MaxLines = 5,
                                 BackgroundColor = Colors.DarkBlue,
                                 Padding = new Thickness(8),
                                 FontSize = 16,
@@ -129,7 +131,7 @@ namespace Sandbox
                             {
                                 UseCache = SkiaCacheType.Operations,
                                 HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 4,
+                                MaxLines = 5,
                                 BackgroundColor = Color.Parse("#1E1E2E"),
                                 Padding = new Thickness(8),
                                 FontSize = 16,
@@ -141,7 +143,7 @@ namespace Sandbox
 
                             new SkiaLabel()
                             {
-                                Text = "Centered placeholder",
+                                Text = "Centered",
                                 UseCache = SkiaCacheType.Operations,
                                 FontSize = 18,
                                 TextColor = Colors.Black,
@@ -156,12 +158,13 @@ namespace Sandbox
                                 BackgroundColor = Color.Parse("#1E1E2E"),
                                 Padding = new Thickness(8),
                                 FontSize = 16,
-                                TextColor = Colors.Black,
+                                TextColor = Colors.White,
                                 CursorColor = Colors.OrangeRed,
-                                //HorizontalTextAlignment = DrawTextAlignment.Center,
                                 PlaceholderText = "Search…",
                                 PlaceholderColor = Color.Parse("#B0B0B0"),
+                                Text="123",
                                 PlaceholderHorizontalAlignment = DrawTextAlignment.Center,
+                                HorizontalTextAlignment = DrawTextAlignment.Center
                             },
 
                             new SkiaLabel()
@@ -200,14 +203,38 @@ namespace Sandbox
 
                             BuildRichEditorPanel(),
 #endif
+
+                            new SkiaControl()
+                            {
+                                HeightRequest = 0,
+                                HorizontalOptions = LayoutOptions.Fill
+                            }.Observe(this, (me, s) =>
+                            {
+                                if (s == nameof(this.KeyboardSize))
+                                {
+                                    me.HeightRequest = KeyboardSize;
+                                }
+                            })
+
                         }
                     }
-                }
+                }.Observe(this,
+                    (me, s) =>
+                    {
+                        if (s == nameof(this.KeyboardSize))
+                        {
+                            me.AdaptToKeyboardFor = Canvas.FocusedChild as SkiaControl;
+                            me.AdaptToKeyboardSize = KeyboardSize;
+                        }
+                    })
             };
 
             Content = new Grid()
             {
-                Children = { Canvas }
+                Children =
+                {
+                    Canvas
+                }
             };
         }
 

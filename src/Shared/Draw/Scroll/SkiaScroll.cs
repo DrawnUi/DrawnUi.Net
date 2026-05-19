@@ -3230,6 +3230,8 @@ namespace DrawnUi.Draw
                 if (AdaptToKeyboardFor == null || AdaptToKeyboardSize == 0 || !this.LayoutReady)
                     return;
 
+                StopScrolling();
+
                 var myPos = AdaptToKeyboardFor.VisualLayer.HitBoxWithTransforms.Units.Location;
                 var scrollPos =
                     VisualLayer.HitBoxWithTransforms.Units.Location; //this.GetPositionOnCanvasInPoints();
