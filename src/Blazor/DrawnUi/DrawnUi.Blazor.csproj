@@ -55,11 +55,6 @@
     <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\SharedNet\Internals\Core\Canvas.cs" Link="Canvas.cs" />
-    <Compile Include="..\..\SharedNet\Internals\Core\SkiaFontManager.cs" Link="SkiaFontManager.cs" />
-  </ItemGroup>
-
  
 
 
