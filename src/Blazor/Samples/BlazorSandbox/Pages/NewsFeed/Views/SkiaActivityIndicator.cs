@@ -29,7 +29,7 @@ public class SkiaActivityIndicator : LottieRefreshIndicator
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 LockRatio = -1,
-                Source = "Lottie/iosloader.json"
+                Source = "lottie/iosloader.json"
             };
 
             AddSubView(new SkiaShape()

@@ -453,6 +453,84 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Subscribes to one specific property changes on a source and a target control, executing callbacks in both
+        /// directions while guarding against re-entrant loops.
+        /// Use this to simulate MAUI XAML two-way property binding semantics in fluent C# code.
+        /// Will unsubscribe upon control disposal.
+        /// </summary>
+        /// <typeparam name="T">Type of the target control (the one being extended)</typeparam>
+        /// <typeparam name="TSource">Type of the source object being observed</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="targetPropertyName">Name of the source property to observe</param>
+        /// <param name="targetChanged">Callback executed when the source property changes</param>
+        /// <param name="controlPropertyName">Name of the control property to observe for reverse sync</param>
+        /// <param name="controlChanged">Callback executed when the control property changes</param>
+        /// <returns>The target control for chaining</returns>
+        public static T ObservePropertyTwoWay<T, TSource>(
+            this T control,
+            TSource target,
+            string targetPropertyName,
+            Action<T> targetChanged,
+            string controlPropertyName,
+            Action<TSource, T> controlChanged)
+            where T : SkiaControl, INotifyPropertyChanged
+            where TSource : INotifyPropertyChanged
+        {
+            string subscriptionKey = $"Subscribe2W_{target.GetHashCode()}_{Guid.NewGuid()}";
+            bool isSyncing = false;
+
+            void ExecuteGuarded(Action action)
+            {
+                if (isSyncing)
+                    return;
+
+                try
+                {
+                    isSyncing = true;
+                    action?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"ObservePropertyTwoWay: Error in callback: {ex.Message}");
+                }
+                finally
+                {
+                    isSyncing = false;
+                }
+            }
+
+            PropertyChangedEventHandler sourceHandler = (sender, args) =>
+            {
+                if (args.PropertyName != targetPropertyName && args.PropertyName != nameof(BindableObject.BindingContext))
+                    return;
+
+                ExecuteGuarded(() => targetChanged?.Invoke(control));
+            };
+
+            PropertyChangedEventHandler controlHandler = (sender, args) =>
+            {
+                if (args.PropertyName != controlPropertyName && args.PropertyName != nameof(BindableObject.BindingContext))
+                    return;
+
+                ExecuteGuarded(() => controlChanged?.Invoke(target, control));
+            };
+
+            target.PropertyChanged += sourceHandler;
+            control.PropertyChanged += controlHandler;
+
+            sourceHandler(target, new PropertyChangedEventArgs(nameof(BindableObject.BindingContext)));
+
+            control.ExecuteUponDisposal[subscriptionKey] = () =>
+            {
+                target.PropertyChanged -= sourceHandler;
+                control.PropertyChanged -= controlHandler;
+            };
+
+            return control;
+        }
+
+        /// <summary>
         /// Subscribes to one specific property changes on a source control obtained via lambda expression and executes a callback when they occur.
         /// Will unsubscribe upon control disposal.
         /// </summary>

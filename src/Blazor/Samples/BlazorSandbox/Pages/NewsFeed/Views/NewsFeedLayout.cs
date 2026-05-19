@@ -43,7 +43,7 @@ namespace BlazorSandbox.Pages.NewsFeed.Views
 
         private SkiaControl CreateContent()
         {
-            return new SkiaScroll()
+            var scroll = new SkiaScroll()
             {
                 Orientation = ScrollOrientation.Vertical,
                 FrictionScrolled = 0.5f,
@@ -91,11 +91,20 @@ namespace BlazorSandbox.Pages.NewsFeed.Views
                     ItemTemplateType = typeof(NewsCell),
                     HorizontalOptions = LayoutOptions.Fill,
                 }
-            }
-            .ObserveProperty(_viewModel, nameof(NewsViewModel.IsRefreshing), me =>
-            {
-                me.IsRefreshing = _viewModel.IsRefreshing;
-            });
+            };
+
+            return scroll.ObservePropertyTwoWay(
+                _viewModel,
+                nameof(NewsViewModel.IsRefreshing),
+                me =>
+                {
+                    me.IsRefreshing = _viewModel.IsRefreshing;
+                },
+                nameof(SkiaScroll.IsRefreshing),
+                (vm, me) =>
+                {
+                    vm.IsRefreshing = me.IsRefreshing;
+                });
         }
 
     }

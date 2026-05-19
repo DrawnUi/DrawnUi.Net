@@ -193,6 +193,7 @@ These methods replace traditional MAUI bindings with a thread-safe approach that
 
 **Essential Methods (start here):**
 - `ObserveProperty()` - Single property observation
+- `ObservePropertyTwoWay()` - Two-way property observation to simulate XAML-style sync
 - `ObserveProperties()` - Multiple properties observation
 
 **Key Points:**
@@ -230,6 +231,42 @@ new SkiaRichLabel()
     me.Text = this.Text;
 })
 ```
+
+### `.ObservePropertyTwoWay(target, targetPropertyName, targetChanged, controlPropertyName, controlChanged)` - Two-Way Property
+
+Use this when the fluent C# version must mirror MAUI XAML two-way binding semantics instead of simple one-way observation.
+
+This is especially useful when the control can mutate its own state internally and that state must flow back into the ViewModel.
+
+```csharp
+SkiaScroll scroll = null;
+
+scroll = new SkiaScroll()
+{
+    RefreshEnabled = true,
+    RefreshCommand = ViewModel.RefreshCommand,
+}
+.ObservePropertyTwoWay(
+    ViewModel,
+    nameof(ViewModel.IsRefreshing),
+    me =>
+    {
+        me.IsRefreshing = ViewModel.IsRefreshing;
+    },
+    nameof(SkiaScroll.IsRefreshing),
+    (vm, me) =>
+    {
+        vm.IsRefreshing = me.IsRefreshing;
+    });
+```
+
+**Use it when:**
+- a DrawnUI control already exposes a two-way bindable property in shared code
+- the fluent C# version should behave like XAML
+- the control changes the property internally and the ViewModel must stay in sync
+
+**Typical example:**
+- `SkiaScroll.IsRefreshing` for pull-to-refresh, where the control can enter refresh state by gesture and the ViewModel must also receive that new value
 
 ### `.ObserveProperties(target, propertyNames, callback)` - Multiple Properties
 
