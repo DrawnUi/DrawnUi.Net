@@ -38,8 +38,8 @@ public partial class Canvas : IGestureListener
                 HadInput.Clear();
             }
 
-            var checkHover = args.Type == TouchActionResult.Pointer;
-            var hadHover = false;
+            _checkHover = args.Type == TouchActionResult.Pointer;
+            _hadHover = false;
             ISkiaGestureListener consumed = null;
             ISkiaGestureListener alreadyConsumed = null;
 
@@ -95,7 +95,11 @@ public partial class Canvas : IGestureListener
                     var forChild = true;
                     if (args.Type != TouchActionResult.Up)
                     {
-                        forChild = ((SkiaControl)listener).HitIsInside(args.Event.StartingLocation.X, args.Event.StartingLocation.Y) ||
+                        var hitPoint = args.Type == TouchActionResult.Pointer
+                            ? args.Event.Location
+                            : args.Event.StartingLocation;
+
+                        forChild = ((SkiaControl)listener).HitIsInside(hitPoint.X, hitPoint.Y) ||
                                    listener == FocusedChild;
                     }
 
@@ -184,7 +188,7 @@ public partial class Canvas : IGestureListener
                 }
             }
 
-            if (checkHover && !hadHover)
+            if (_checkHover && !_hadHover)
             {
                 HasHover = null;
             }

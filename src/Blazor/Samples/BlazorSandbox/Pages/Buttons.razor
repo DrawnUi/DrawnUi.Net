@@ -7,8 +7,8 @@
 
 <div class="docs-page">
     <h1>SkiaButton</h1>
-    <p class="docs-lead">SkiaButton gives you a ready-made drawn button with built-in press feedback. The example below keeps the surface small and copyable, which is the right shape for docs and quick experiments.</p>
-    <p class="docs-note">Try tapping the buttons inside the canvas. The status line updates, and the button text changes to show that the control stays fully interactive in Blazor.</p>
+    <p class="docs-lead">SkiaButton gives you a ready-made drawn button with built-in press feedback. This Blazor sample now also shows desktop hover states, keeping parity with the MAUI sandbox while staying small enough to copy.</p>
+    <p class="docs-note">On desktop, hover the buttons to see color, scale, and glow feedback. Tapping still updates the status line so the page shows both pointer hover and tap interaction.</p>
 
     <pre class="docs-code"><code>@ButtonSnippet</code></pre>
 </div>
@@ -16,7 +16,7 @@
 <Canvas Content="_canvasContent" 
         BackgroundColor="#F7F3EA"
         Margin="0,8,0,0"
-        Gestures="@GesturesMode.Enabled"/>
+        Gestures="@GesturesMode.Lock"/>
 
 @code {
     private const string ButtonSnippet = """
@@ -26,6 +26,12 @@ var button = new SkiaButton("Save")
     TextColor = Colors.White,
     CornerRadius = 10
 };
+
+button.ObserveProperty(button, nameof(SkiaButton.IsHovered), me =>
+{
+    me.ScaleX = me.IsHovered ? 1.025f : 1f;
+    me.ScaleY = me.IsHovered ? 1.025f : 1f;
+});
 
 button.Tapped += (_, _) => button.Text = "Saved";
 """;
@@ -40,7 +46,7 @@ button.Tapped += (_, _) => button.Text = "Saved";
     {
         _statusLabel = new SkiaLabel()
         {
-            Text = "Tap a button to see the event flow.",
+            Text = "Hover or tap a button to see the event flow.",
             FontFamily = "FontText",
             FontSize = 13,
             TextColor = new Color(0.302f, 0.165f, 0.063f, 1f),
@@ -48,9 +54,19 @@ button.Tapped += (_, _) => button.Text = "Saved";
             HorizontalTextAlignment = DrawTextAlignment.Center
         };
 
-        _primaryButton = CreateButton("Primary action", 0.227f, 0.482f, 0.816f);
-        _materialButton = CreateButton("Material style", 0.129f, 0.588f, 0.953f, PrebuiltControlStyle.Material);
-        _windowsButton = CreateButton("Windows style", 0.000f, 0.471f, 0.843f, PrebuiltControlStyle.Windows);
+        _primaryButton = CreateColorHoverButton(
+            "Primary action",
+            new Color(0.227f, 0.482f, 0.816f, 1f),
+            new Color(0.165f, 0.416f, 0.718f, 1f));
+        _materialButton = CreateScaleHoverButton(
+            "Material style",
+            new Color(0.129f, 0.588f, 0.953f, 1f),
+            PrebuiltControlStyle.Material);
+        _windowsButton = CreateGlowHoverButton(
+            "Windows style",
+            new Color(0.000f, 0.471f, 0.843f, 1f),
+            new Color(0.000f, 0.471f, 0.843f, 0.65f),
+            PrebuiltControlStyle.Windows);
 
         _canvasContent = new SkiaLayout()
         {
@@ -88,14 +104,68 @@ button.Tapped += (_, _) => button.Text = "Saved";
 
     }
 
-    private SkiaButton CreateButton(string text, float red, float green, float blue, PrebuiltControlStyle? style = null)
+    private SkiaButton CreateColorHoverButton(string text, Color backgroundColor, Color hoverColor, PrebuiltControlStyle? style = null)
+    {
+        var button = CreateButton(text, backgroundColor, style);
+
+        button.ObserveProperty(button, nameof(SkiaButton.IsHovered), me =>
+        {
+            me.BackgroundColor = me.IsHovered ? hoverColor : backgroundColor;
+        });
+
+        return button;
+    }
+
+    private SkiaButton CreateScaleHoverButton(string text, Color backgroundColor, PrebuiltControlStyle? style = null)
+    {
+        var button = CreateButton(text, backgroundColor, style);
+
+        button.ObserveProperty(button, nameof(SkiaButton.IsHovered), me =>
+        {
+            var scale = me.IsHovered ? 1.025f : 1f;
+            me.ScaleX = scale;
+            me.ScaleY = scale;
+        });
+
+        return button;
+    }
+
+    private SkiaButton CreateGlowHoverButton(string text, Color backgroundColor, Color glowColor, PrebuiltControlStyle? style = null)
+    {
+        var button = CreateButton(text, backgroundColor, style);
+        var idleShadow = new DropShadowEffect()
+        {
+            Blur = 4,
+            X = 0,
+            Y = 2,
+            Color = new Color(0.133f, 0.133f, 0.133f, 0.13f)
+        };
+        var hoverShadow = new DropShadowEffect()
+        {
+            Blur = 20,
+            X = 0,
+            Y = 0,
+            Color = glowColor
+        };
+
+        button.VisualEffects.Add(idleShadow);
+        button.ObserveProperty(button, nameof(SkiaButton.IsHovered), me =>
+        {
+            me.VisualEffects.Clear();
+            me.VisualEffects.Add(me.IsHovered ? hoverShadow : idleShadow);
+        });
+
+        return button;
+    }
+
+    private SkiaButton CreateButton(string text, Color backgroundColor, PrebuiltControlStyle? style = null)
     {
         var button = new SkiaButton(text)
         {
             WidthRequest = 220,
             HeightRequest = 40,
             HorizontalOptions = LayoutOptions.Center,
-            BackgroundColor = new Color(red, green, blue, 1f),
+            BackgroundColor = backgroundColor,
             TextColor = Colors.White,
             CornerRadius = 10,
             Padding = new Thickness(12, 6)
