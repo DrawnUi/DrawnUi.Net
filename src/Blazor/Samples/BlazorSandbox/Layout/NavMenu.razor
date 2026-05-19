@@ -1,4 +1,8 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@implements IDisposable
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Routing
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <div class="navbar-brand-wrap">
             <a class="navbar-brand" href="">DrawnUI Blazor Sandbox</a>
@@ -28,6 +32,12 @@
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        ExpandSectionsForUri(NavigationManager.Uri);
+    }
+
     private bool IsSectionExpanded(string key)
     {
         return expandedSections.Contains(key);
@@ -51,5 +61,25 @@
     private void CloseNavMenu(MouseEventArgs _)
     {
         collapseNavMenu = true;
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs args)
+    {
+        ExpandSectionsForUri(args.Location);
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void ExpandSectionsForUri(string absoluteUri)
+    {
+        var relativePath = NavigationManager.ToBaseRelativePath(absoluteUri);
+        foreach (var sectionKey in NavMenuItems.FindSectionPathForHref(relativePath))
+        {
+            expandedSections.Add(sectionKey);
+        }
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 }

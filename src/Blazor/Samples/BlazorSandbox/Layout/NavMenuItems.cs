@@ -180,6 +180,60 @@ internal static class NavMenuItems
             .ToHashSet(StringComparer.Ordinal);
     }
 
+    public static IReadOnlyList<string> FindSectionPathForHref(string? href)
+    {
+        var normalizedHref = NormalizeHref(href);
+        if (TryFindSectionPath(RootSections, normalizedHref, [], out var path))
+        {
+            return path;
+        }
+
+        return Array.Empty<string>();
+    }
+
+    private static bool TryFindSectionPath(
+        IEnumerable<NavMenuSectionDefinition> sections,
+        string normalizedHref,
+        IReadOnlyList<string> parentPath,
+        out IReadOnlyList<string> path)
+    {
+        foreach (var section in sections)
+        {
+            var currentPath = parentPath.Concat([section.Key]).ToArray();
+
+            if (section.Items.Any(item => string.Equals(NormalizeHref(item.Href), normalizedHref, StringComparison.Ordinal)))
+            {
+                path = currentPath;
+                return true;
+            }
+
+            if (TryFindSectionPath(section.Children, normalizedHref, currentPath, out path))
+            {
+                return true;
+            }
+        }
+
+        path = Array.Empty<string>();
+        return false;
+    }
+
+    private static string NormalizeHref(string? href)
+    {
+        if (string.IsNullOrWhiteSpace(href))
+        {
+            return string.Empty;
+        }
+
+        var trimmed = href.Trim();
+        var queryIndex = trimmed.IndexOfAny(['?', '#']);
+        if (queryIndex >= 0)
+        {
+            trimmed = trimmed[..queryIndex];
+        }
+
+        return trimmed.Trim('/');
+    }
+
     private static IEnumerable<NavMenuSectionDefinition> EnumerateSections(IEnumerable<NavMenuSectionDefinition> sections)
     {
         foreach (var section in sections)
