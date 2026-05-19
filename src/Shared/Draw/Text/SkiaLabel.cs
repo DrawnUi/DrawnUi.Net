@@ -2009,7 +2009,9 @@ namespace DrawnUi.Draw
 
             // Now trim the line and split by space, without removing empty entries
             var trimmedLine = line.Trim();
-            var words = trimmedLine.Split(new[] { space }, StringSplitOptions.None).Reverse().ToList();
+            var splitWords = trimmedLine.Split(new[] { space }, StringSplitOptions.None);
+            Array.Reverse(splitWords);
+            var words = splitWords.ToList();
 
             // words list is inverted!
             if (leadingSpaces.Length > 0) words.Add(leadingSpaces);

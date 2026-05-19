@@ -1040,10 +1040,18 @@ namespace DrawnUi.Draw
             CopySelection();
             DeleteSelection();
         }
-#else
+#elif DRAWNUI_NET
+        // Net target: no clipboard; stubs satisfy the interface contract.
         public void CutSelection() => DeleteSelection();
         public void CopySelection() { }
         public void PasteFromClipboard() { }
+#else
+        // BROWSER: CutSelection here; CopySelection/PasteFromClipboard in SkiaEditor.Blazor.cs.
+        public void CutSelection()
+        {
+            CopySelection();
+            DeleteSelection();
+        }
 #endif
 
 #if !BROWSER && !DRAWNUI_NET

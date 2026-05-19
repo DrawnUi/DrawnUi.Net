@@ -102,6 +102,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\VisualTreeHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\TextSpan.Maui.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\RichCharFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaCursor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditorDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditorSelection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaRichEditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\AnimatedShaderEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainDropShadowsEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainTintWithAlphaEffect.cs" />
