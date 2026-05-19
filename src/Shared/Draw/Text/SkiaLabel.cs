@@ -343,8 +343,6 @@ namespace DrawnUi.Draw
                     ApplyMeasureResult();
                 }
 
-                //System.Diagnostics.Debug.WriteLine($"[SkiaLabel.Paint] Tag={Tag} Text='{TextInternal}' Lines={(Lines?.Length ?? -1)} GliphsInvalidated={GliphsInvalidated} ArrangedDest={ArrangedDestination} Dest={ctx.Destination} PaintDefaultNull={PaintDefault==null} TextColor={TextColor} Spans={Spans.Count}");
-
                 if (Lines != null)
                     DrawLines(ctx.WithDestination(rectForChildren), PaintDefault, SKPoint.Empty, Lines);
             }
@@ -590,23 +588,28 @@ namespace DrawnUi.Draw
                     float enlargeSpaceCharacter = 0.0f;
                     float fillCharactersOffset = 0.0f;
 
-                    if (HorizontalTextAlignment == DrawTextAlignment.Center)
+                    // Use ViewportConstraintWidth when the draw rect is scroll-unconstrained (huge).
+                    var alignWidth = rectDraw.Width < MaxRealPixelSize ? rectDraw.Width
+                        : ViewportConstraintWidth > 0 ? ViewportConstraintWidth : 0f;
+
+                    if (HorizontalTextAlignment == DrawTextAlignment.Center && alignWidth > 0)
                     {
-                        alignedLineDrawingStartX += (rectDraw.Width - line.Width) / 2.0f;
+                        alignedLineDrawingStartX += (alignWidth - line.Width) / 2.0f;
                     }
-                    else if (HorizontalTextAlignment == DrawTextAlignment.End)
+                    else if (HorizontalTextAlignment == DrawTextAlignment.End && alignWidth > 0)
                     {
-                        alignedLineDrawingStartX += rectDraw.Width - line.Width;
+                        alignedLineDrawingStartX += alignWidth - line.Width;
                     }
-                    else if ((HorizontalTextAlignment == DrawTextAlignment.FillWords
+                    else if (alignWidth > 0 &&
+                             ((HorizontalTextAlignment == DrawTextAlignment.FillWords
                               || HorizontalTextAlignment == DrawTextAlignment.FillCharacters) && !line.IsLastInParagraph
                              || HorizontalTextAlignment == DrawTextAlignment.FillWordsFull
-                             || HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull)
+                             || HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull))
                     {
-                        float emptySpace = rectDraw.Width - line.Width;
+                        float emptySpace = alignWidth - line.Width;
                         if (lineNb == 1)
                         {
-                            emptySpace = rectDraw.Width - (line.Width + startOffset.X);
+                            emptySpace = alignWidth - (line.Width + startOffset.X);
                         }
 
                         if (emptySpace > 0)
@@ -2913,6 +2916,10 @@ namespace DrawnUi.Draw
             false,
             propertyChanged: NeedInvalidateMeasure);
 
+        /// <summary>
+        /// Normally space is remove at the end of a line break for display (this property is false by default).
+        /// In case you need to keep it to create custom controls set this to true.
+        /// </summary>
         public bool KeepSpacesOnLineBreaks
         {
             get { return (bool)GetValue(KeepSpacesOnLineBreaksProperty); }
@@ -3016,6 +3023,14 @@ namespace DrawnUi.Draw
             get { return (DrawTextAlignment)GetValue(HorizontalTextAlignmentProperty); }
             set { SetValue(HorizontalTextAlignmentProperty, value); }
         }
+
+        /// <summary>
+        /// Override for alignment calculations when the label lives inside an unconstrained (infinite-width)
+        /// scroll. Set this in pixels to the parent's visible viewport width so Center/End text alignment
+        /// offsets are computed against the real visible area rather than the scroll content width.
+        /// When 0 (default) the label's own rectDraw width is used (normal case).
+        /// </summary>
+        public float ViewportConstraintWidth { get; set; }
 
         public static readonly BindableProperty VerticalTextAlignmentProperty = BindableProperty.Create(
             nameof(VerticalTextAlignment),

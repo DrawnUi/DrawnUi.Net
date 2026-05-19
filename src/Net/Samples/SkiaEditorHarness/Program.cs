@@ -37,6 +37,21 @@ var editor = new SkiaEditor
     SelectionColor = DrawnUi.Color.FromArgb("#5590CFFE")
 };
 
+var centeredPlaceholderEditor = new SkiaEditor
+{
+    Tag = "centered-ph",
+    HorizontalOptions = LayoutOptions.Fill,
+    MaxLines = 1,
+    FontSize = 20,
+    TextColor = Colors.Black,
+    CursorColor = Colors.OrangeRed,
+    BackgroundColor = Colors.LightYellow,
+    HorizontalTextAlignment = DrawTextAlignment.Center,
+    PlaceholderText = "Search…",
+    PlaceholderColor = Colors.Gray,
+    PlaceholderHorizontalAlignment = DrawTextAlignment.Center,
+};
+
 var richEditor = new SkiaRichEditor
 {
     Tag = "rich-editor",
@@ -62,6 +77,7 @@ var scene = new SkiaLayout
     {
         status,
         editor,
+        centeredPlaceholderEditor,
         richEditor
     }
 };
@@ -187,6 +203,14 @@ static List<HarnessStep> CreateDefaultScenario()
         new(HarnessCommand.Type, "insert-middle", Text: "[MID]"),
         new(HarnessCommand.SelectLineColumn, "select-second-line", Line: 1, Column: 0, EndLine: 1, EndColumn: 11),
         new(HarnessCommand.Type, "replace-selection", Text: "SECOND"),
+
+        // --- centered-placeholder scenario ---
+        new(HarnessCommand.Target, "target-centered-ph", TargetTag: "centered-ph"),
+        new(HarnessCommand.AssertPlaceholderVisible, "ph-visible-initial"),    // must show when empty
+        new(HarnessCommand.Type, "ph-type-hello", Text: "hello"),
+        new(HarnessCommand.AssertPlaceholderHidden, "ph-hidden-after-type"),   // must hide when text present
+        new(HarnessCommand.Backspace, "ph-backspace-all", Count: 5),
+        new(HarnessCommand.AssertPlaceholderVisible, "ph-visible-after-clear"), // must reappear when empty again
 
         // --- rich editor scenario ---
         new(HarnessCommand.Target, "target-rich-editor", TargetTag: "rich-editor"),
@@ -733,6 +757,8 @@ internal enum HarnessCommand
     AssertLine,
     AssertLinesCount,
     AssertGlyphsOk,
+    AssertPlaceholderVisible,
+    AssertPlaceholderHidden,
 }
 
 internal sealed record HarnessStep(
@@ -1040,9 +1066,38 @@ internal sealed class SkiaEditorHarnessAdapter : IHarnessAdapter
                     throw new InvalidOperationException($"Assert '{step.Name}': No glyphs found in line 0.");
                 Console.WriteLine($"  ✓ {step.Name}: {editorGlyphs.Length} glyphs");
                 return true;
+            case HarnessCommand.AssertPlaceholderVisible:
+            {
+                context.Host.Render();
+                var ph = GetPlaceholderLabel(editor);
+                if (ph == null)
+                    throw new InvalidOperationException($"Assert '{step.Name}': _placeholderLabel field not found.");
+                if (!ph.IsVisible)
+                    throw new InvalidOperationException($"Assert '{step.Name}': placeholder expected VISIBLE but IsVisible={ph.IsVisible}. Text='{editor.Text}' PlaceholderText='{editor.PlaceholderText}'");
+                Console.WriteLine($"  ✓ {step.Name}: placeholder visible");
+                return true;
+            }
+            case HarnessCommand.AssertPlaceholderHidden:
+            {
+                context.Host.Render();
+                var ph = GetPlaceholderLabel(editor);
+                if (ph == null)
+                    throw new InvalidOperationException($"Assert '{step.Name}': _placeholderLabel field not found.");
+                if (ph.IsVisible)
+                    throw new InvalidOperationException($"Assert '{step.Name}': placeholder expected HIDDEN but IsVisible={ph.IsVisible}. Text='{editor.Text}' PlaceholderText='{editor.PlaceholderText}'");
+                Console.WriteLine($"  ✓ {step.Name}: placeholder hidden");
+                return true;
+            }
             default:
                 return false;
         }
+    }
+
+    private static SkiaLabel? GetPlaceholderLabel(SkiaEditor editor)
+    {
+        var field = editor.GetType().GetField("_placeholderLabel",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        return field?.GetValue(editor) as SkiaLabel;
     }
 
     public void AppendSummary(HarnessContext context, StringBuilder builder)

@@ -23,6 +23,13 @@ namespace DrawnUi.Draw
         IHasAfterEffects,
         ISkiaControl, ISkiaDisposable
     {
+        /// <summary>
+        /// Any layout dimension larger than this is treated as "scroll-unconstrained" and skipped
+        /// for alignment offset calculations. No real display exceeds ~32K pixels even at extreme
+        /// device scale, so 1 million is a safe sentinel threshold.
+        /// </summary>
+        public const float MaxRealPixelSize = 1_000_000f;
+
         public SkiaControl()
         {
             Init();
@@ -3950,7 +3957,7 @@ namespace DrawnUi.Draw
             // layoutHorizontal
             switch (layoutHorizontal.Alignment)
             {
-                case LayoutAlignment.Center when float.IsFinite(availableWidth) && availableWidth > useMaxWidth:
+                case LayoutAlignment.Center when float.IsFinite(availableWidth) && availableWidth < MaxRealPixelSize && availableWidth > useMaxWidth:
                 {
                     var half = availableWidth / 2.0f - realWidth / 2.0f;
                     if (RoundCenterAlignment)
@@ -3983,7 +3990,7 @@ namespace DrawnUi.Draw
 
                     break;
                 }
-                case LayoutAlignment.End when float.IsFinite(destination.Right) && availableWidth > useMaxWidth:
+                case LayoutAlignment.End when float.IsFinite(destination.Right) && availableWidth < MaxRealPixelSize && availableWidth > useMaxWidth:
                 {
                     right = destination.Right;
                     left = right - useMaxWidth;
@@ -4011,7 +4018,7 @@ namespace DrawnUi.Draw
             // VerticalOptions
             switch (layoutVertical.Alignment)
             {
-                case LayoutAlignment.Center when float.IsFinite(availableHeight) && availableHeight > useMaxHeight:
+                case LayoutAlignment.Center when float.IsFinite(availableHeight) && availableHeight < MaxRealPixelSize && availableHeight > useMaxHeight:
                 {
                     var half = availableHeight / 2.0f - realHeight / 2.0f;
                     if (RoundCenterAlignment)
@@ -4045,7 +4052,7 @@ namespace DrawnUi.Draw
 
                     break;
                 }
-                case LayoutAlignment.End when float.IsFinite(destination.Bottom) && availableHeight > useMaxHeight:
+                case LayoutAlignment.End when float.IsFinite(destination.Bottom) && availableHeight < MaxRealPixelSize && availableHeight > useMaxHeight:
                 {
                     bottom = destination.Bottom;
                     top = bottom - useMaxHeight;
@@ -4073,12 +4080,12 @@ namespace DrawnUi.Draw
 
             var offsetX = 0f;
             var offsetY = 0f;
-            if (float.IsFinite(availableHeight))
+            if (float.IsFinite(availableHeight) && availableHeight < MaxRealPixelSize)
             {
                 offsetY = (float)VerticalPositionOffsetRatio * layout.Height;
             }
 
-            if (float.IsFinite(availableWidth))
+            if (float.IsFinite(availableWidth) && availableWidth < MaxRealPixelSize)
             {
                 offsetX = (float)HorizontalPositionOffsetRatio * layout.Width;
             }
@@ -5094,6 +5101,22 @@ namespace DrawnUi.Draw
             //PASS 3 for those with partial Fill (only one dimension) - only if needed
             if (partialFill != null)
             {
+                // When this layout is Fill (NeedAutoWidth=false) but the incoming constraint is
+                // float.MaxValue (the "unconstrained" sentinel used by horizontal SkiaScroll),
+                // fall back to the previous frame's arranged width so Fill/Center/End children
+                // measure and position correctly instead of expanding into infinite space.
+                var effectiveWidth = rectForChildrenPixels.Width;
+                if (!NeedAutoWidth && effectiveWidth >= MaxRealPixelSize && DrawingRect.Width > 0 && DrawingRect.Width < MaxRealPixelSize)
+                {
+                    effectiveWidth = Math.Max(0f, DrawingRect.Width - (float)((Padding.Left + Padding.Right) * scale));
+                }
+
+                var effectiveHeight = rectForChildrenPixels.Height;
+                if (!NeedAutoHeight && effectiveHeight >= MaxRealPixelSize && DrawingRect.Height > 0 && DrawingRect.Height < MaxRealPixelSize)
+                {
+                    effectiveHeight = Math.Max(0f, DrawingRect.Height - (float)((Padding.Top + Padding.Bottom) * scale));
+                }
+
                 foreach (var (child, originalMeasured) in partialFill)
                 {
                     var hasHorizontalFill = child.NeedFillHorizontally;
@@ -5102,12 +5125,12 @@ namespace DrawnUi.Draw
                     bool remeasureX = false, remeasureY = false;
                     if (hasHorizontalFill)
                     {
-                        remeasureX = child.MeasuredSize.Pixels.Width != rectForChildrenPixels.Width;
+                        remeasureX = child.MeasuredSize.Pixels.Width != effectiveWidth;
                     }
 
                     if (hasVerticalFill)
                     {
-                        remeasureY = child.MeasuredSize.Pixels.Height != rectForChildrenPixels.Height;
+                        remeasureY = child.MeasuredSize.Pixels.Height != effectiveHeight;
                     }
 
                     if (!remeasureX && !remeasureY)
@@ -5116,12 +5139,12 @@ namespace DrawnUi.Draw
                     }
 
                     var provideWidth = hasHorizontalFill
-                        ? (NeedAutoWidth && maxWidth >= 0 ? maxWidth : rectForChildrenPixels.Width)
-                        : rectForChildrenPixels.Width;
+                        ? (NeedAutoWidth && maxWidth >= 0 ? maxWidth : effectiveWidth)
+                        : effectiveWidth;
 
                     var provideHeight = hasVerticalFill
-                        ? (NeedAutoHeight && maxHeight >= 0 ? maxHeight : rectForChildrenPixels.Height)
-                        : rectForChildrenPixels.Height;
+                        ? (NeedAutoHeight && maxHeight >= 0 ? maxHeight : effectiveHeight)
+                        : effectiveHeight;
 
                     var measured = MeasureChild(child, provideWidth, provideHeight, scale);
 

@@ -17,6 +17,14 @@ public partial class SkiaEditor
     {
     }
 
+    public void ApplyKeyboardType()
+    {
+    }
+
+    partial void PlatformClearFocusNow()
+    {
+    }
+
     public void UpdateNativePosition()
     {
     }

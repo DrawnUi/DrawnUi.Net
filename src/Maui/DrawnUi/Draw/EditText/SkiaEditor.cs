@@ -55,8 +55,6 @@ namespace DrawnUi.Draw
             _selectionControl.SourceLabel = Label;
 
             _contentLayer.ClearChildren();
-            if (_placeholderLabel != null)
-                _contentLayer.AddSubView(_placeholderLabel);
             _contentLayer.AddSubView(Label);
             _contentLayer.AddSubView(_selectionControl);
             _contentLayer.AddSubView(Cursor);
@@ -152,10 +150,11 @@ namespace DrawnUi.Draw
         {
             return new SkiaLabel
             {
+                UseCache = SkiaCacheType.Operations,
                 HorizontalOptions = LayoutOptions.Fill,
-                KeepSpacesOnLineBreaks = true,
+                VerticalOptions = LayoutOptions.Start,
                 Margin = new Thickness(0, 0, 4, 0),
-                IsVisible = false
+                IsVisible = false,
             };
         }
 
@@ -196,6 +195,11 @@ namespace DrawnUi.Draw
 
             Children = new List<SkiaControl>()
             {
+                // Placeholder lives at the editor level so it receives the correct
+                // constrained width from the editor's layout pass, not float.MaxValue
+                // from the horizontal SkiaScroll content area.
+                _placeholderLabel,
+
                 new SkiaScroll()
                 {
                     VerticalOptions = LayoutOptions.Fill,
@@ -205,7 +209,6 @@ namespace DrawnUi.Draw
                         {
                             Children =
                             {
-                                _placeholderLabel,
                                 Label,
                                 new SkiaEditorSelection
                                 {
@@ -235,6 +238,19 @@ namespace DrawnUi.Draw
         #endregion
 
         #region ENGINE
+
+        protected override void Paint(DrawingContext ctx)
+        {
+            // Push the editor's real pixel viewport width to the label before any child draws,
+            // so DrawLines can use it for Center/End alignment when the label sits inside the
+            // horizontal scroll (which gives it an unconstrained/huge rectDraw.Width).
+            if (Label != null && DrawingRect.Width > 0)
+            {
+                var paddingPx = (float)(Padding.HorizontalThickness * ctx.Scale);
+                Label.ViewportConstraintWidth = Math.Max(0f, DrawingRect.Width - paddingPx);
+            }
+            base.Paint(ctx);
+        }
 
         public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
         {
@@ -578,8 +594,22 @@ namespace DrawnUi.Draw
                     // 1-frame invisible flicker every keystroke; defer instead (see DeferVisualCursorUpdate).
                     if (string.IsNullOrEmpty(Text))
                     {
-                        // Empty editor: no lines but cursor should sit at origin.
-                        MoveCursorTo(0, 0);
+                        // Empty editor: no lines — place cursor at the text insertion point
+                        // for the active horizontal alignment so it aligns with placeholder text.
+                        var cursorX = 0.0;
+                        // Use ViewportConstraintWidth (set from editor's real pixel width in Paint)
+                        // so cursor centers within the visible area, not the infinite scroll content.
+                        var viewportW = Label.ViewportConstraintWidth > 0
+                            ? Label.ViewportConstraintWidth / RenderingScale
+                            : Label.DrawingRect.Width / RenderingScale;
+                        if (viewportW > 0 && viewportW < SkiaControl.MaxRealPixelSize)
+                        {
+                            if (HorizontalTextAlignment == DrawTextAlignment.Center)
+                                cursorX = (viewportW - Cursor.WidthRequest) / 2.0;
+                            else if (HorizontalTextAlignment == DrawTextAlignment.End)
+                                cursorX = viewportW - Cursor.WidthRequest;
+                        }
+                        MoveCursorTo(cursorX, 0);
                         SetCursorVisible(IsFocused && CanShowCursor);
                     }
                     else
@@ -620,7 +650,7 @@ namespace DrawnUi.Draw
                         }
                         else
                         {
-                            translateX = labelLine.Bounds.Width / RenderingScale;
+                            translateX = (labelLine.Bounds.Right - Label.DrawingRect.Left) / RenderingScale;
                             translateY = (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale;
                         }
 
@@ -1004,13 +1034,19 @@ namespace DrawnUi.Draw
             OnTextInsertedAtCursor();
         }
 
+#if !BROWSER && !DRAWNUI_NET
         public void CutSelection()
         {
             CopySelection();
             DeleteSelection();
         }
+#else
+        public void CutSelection() => DeleteSelection();
+        public void CopySelection() { }
+        public void PasteFromClipboard() { }
+#endif
 
-#if !BROWSER
+#if !BROWSER && !DRAWNUI_NET
         public void CopySelection()
         {
             var text = GetSelectedText();
