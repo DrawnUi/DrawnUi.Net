@@ -1,3 +1,5 @@
+using Microsoft.JSInterop;
+
 namespace DrawnUi.Draw;
 
 public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
@@ -93,8 +95,14 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
             case InputKey.KeyA when ctrl:
                 StubSelectAll();
                 break;
+            case InputKey.KeyC when ctrl:
+                CopySelection();
+                break;
+            case InputKey.KeyX when ctrl:
+                CutSelection();
+                break;
             case InputKey.KeyV when ctrl:
-                // paste not implemented for Blazor yet
+                PasteFromClipboard();
                 break;
         }
     }
@@ -204,6 +212,57 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     }
 
     private bool HasSelection => SelectionLength > 0;
+
+    partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+
+    partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
+
+    public void CopySelection()
+    {
+        var text = GetSelectedText();
+        if (string.IsNullOrEmpty(text)) return;
+        _ = CopyToClipboardAsync(text);
+    }
+
+    public void PasteFromClipboard()
+    {
+        _ = PasteFromClipboardAsync();
+    }
+
+    private async Task CopyToClipboardAsync(string text)
+    {
+        try
+        {
+            var js = Super.Services?.GetService(typeof(IJSRuntime)) as IJSRuntime;
+            if (js != null)
+                await js.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        }
+        catch (Exception e)
+        {
+            System.Diagnostics.Debug.WriteLine($"[SkiaEditor] CopyToClipboard: {e.Message}");
+        }
+    }
+
+    private async Task PasteFromClipboardAsync()
+    {
+        try
+        {
+            var js = Super.Services?.GetService(typeof(IJSRuntime)) as IJSRuntime;
+            if (js != null)
+            {
+                var text = await js.InvokeAsync<string>("navigator.clipboard.readText");
+                if (!string.IsNullOrEmpty(text))
+                {
+                    InsertAtCursor(text);
+                    DeferVisualCursorUpdate();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            System.Diagnostics.Debug.WriteLine($"[SkiaEditor] PasteFromClipboard: {e.Message}");
+        }
+    }
 
     private void ReplaceSelection(string insertedText)
     {

@@ -48,6 +48,13 @@ namespace DrawnUi.Draw
             Control.InputType = inputType;
         }
 
+        partial void PlatformClearFocusNow()
+        {
+            // Remove input capture from this EditText without closing the keyboard.
+            // The keyboard stays visible; the next focused editor inherits it.
+            Control?.ClearFocus();
+        }
+
         public void DisposePlatform()
         {
             try
@@ -99,7 +106,14 @@ namespace DrawnUi.Draw
                     if (e.HasFocus && Control != null)
                     {
                         var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
-                        try { Control.SetSelection(pos); } catch { }
+                        try
+                        {
+                            if (SelectionLength > 0)
+                                Control.SetSelection(pos, System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
+                            else
+                                Control.SetSelection(pos);
+                        }
+                        catch { }
                     }
                 };
                 Control.FocusChange += _focusChangeListener;
@@ -241,7 +255,14 @@ namespace DrawnUi.Draw
                         InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
                         imm.ShowSoftInput(Control, ShowFlags.Implicit);
                         var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
-                        try { Control.SetSelection(pos); } catch { }
+                        try
+                        {
+                            if (SelectionLength > 0)
+                                Control.SetSelection(pos, System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
+                            else
+                                Control.SetSelection(pos);
+                        }
+                        catch { }
                     });
                 }
                 else

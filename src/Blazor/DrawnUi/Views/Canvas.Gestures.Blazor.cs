@@ -213,7 +213,7 @@ public partial class Canvas : IGestureListener
             return;
         }
 
-        Console.WriteLine($"CANVAS {RenderingScale:F1}/{args1.Scale:F1} touch: {touchAction} {args1.Location}");
+        //Console.WriteLine($"CANVAS {RenderingScale:F1}/{args1.Scale:F1} touch: {touchAction} {args1.Location}");
 
         if (touchAction == TouchActionResult.Tapped)
         {

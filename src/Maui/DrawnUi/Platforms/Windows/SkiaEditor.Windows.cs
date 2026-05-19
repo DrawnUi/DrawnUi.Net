@@ -79,6 +79,15 @@ namespace DrawnUi.Draw
             }
         }
 
+        // Block stray keystrokes during the 100 ms focus-delay window that follows a tap.
+        // IsReadOnly=true keeps the TextBox in the focus chain but silently discards input.
+        // SetFocusNative restores IsReadOnly=false before calling Focus(Programmatic).
+        partial void PlatformClearFocusNow()
+        {
+            if (_hiddenTextBox != null)
+                _hiddenTextBox.IsReadOnly = true;
+        }
+
         // TextBox is an off-screen keyboard sink — size and position are fixed.
         public void UpdateNativePosition() { }
 
@@ -163,8 +172,31 @@ namespace DrawnUi.Draw
 
                     ApplyKeyboardType();
 
+                    // PlatformClearFocusNow sets IsReadOnly=true to block stray keystrokes
+                    // during the 100 ms focus delay. Restore before focusing.
+                    _hiddenTextBox.IsReadOnly = false;
+
+                    // GotFocus fires only on focus *transitions*. If this TextBox was already
+                    // focused (re-tap of same editor), GotFocus won't fire and
+                    // _suppressSelectionChanged stays true, blocking all future SelectionChanged.
+                    // Detect this case up-front so we can handle selection manually.
+                    bool alreadyFocused = _hiddenTextBox.FocusState != FocusState.Unfocused;
+
                     _suppressSelectionChanged = true;
                     _hiddenTextBox.Focus(FocusState.Programmatic);
+
+                    if (alreadyFocused)
+                    {
+                        // GotFocus won't fire — manually position selection and clear flag.
+                        var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
+                        var len = SelectionLength > 0
+                            ? Math.Min(SelectionLength, (_hiddenTextBox.Text?.Length ?? 0) - pos)
+                            : 0;
+                        _hiddenTextBox.SelectionStart = pos;
+                        _hiddenTextBox.SelectionLength = len;
+                        _suppressSelectionChanged = false;
+                    }
+                    // else: GotFocus fires synchronously during Focus() and clears the flag.
                 }
                 // on defocus: do nothing — TextBox stays in tree, just loses WinUI focus naturally.
                 // No destroy/recreate race possible.
@@ -196,6 +228,27 @@ namespace DrawnUi.Draw
             {
                 e.Handled = true;
                 HandleVerticalArrow(e.Key == Windows.System.VirtualKey.Up);
+                return;
+            }
+
+            var ctrl = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control);
+            if (ctrl.HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
+            {
+                if (e.Key == Windows.System.VirtualKey.C)
+                {
+                    e.Handled = true;
+                    CopySelection();
+                }
+                else if (e.Key == Windows.System.VirtualKey.X)
+                {
+                    e.Handled = true;
+                    CutSelection();
+                }
+                else if (e.Key == Windows.System.VirtualKey.V)
+                {
+                    e.Handled = true;
+                    PasteFromClipboard();
+                }
             }
         }
 
@@ -222,8 +275,9 @@ namespace DrawnUi.Draw
             var start = _hiddenTextBox.SelectionStart;
             var length = _hiddenTextBox.SelectionLength;
             SelectionLength = length;
-            // cursor at end of selection (forward selection is the common case)
-            SetCursorPositionWithDelay(16, start + length);
+            // CursorPosition tracks the start of the selection; UpdateCursorVisibility draws
+            // cursor at CursorPosition+SelectionLength (end) when selection is non-empty.
+            SetCursorPositionWithDelay(16, start);
         }
 
         private void HiddenTextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -231,9 +285,11 @@ namespace DrawnUi.Draw
             Debug.WriteLine($"[SkiaEditor] GotFocus CursorPosition={CursorPosition} textLen={_hiddenTextBox?.Text?.Length ?? -1}");
             if (_hiddenTextBox == null) return;
             var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
+            var len = SelectionLength > 0
+                ? Math.Min(SelectionLength, (_hiddenTextBox.Text?.Length ?? 0) - pos)
+                : 0;
             _hiddenTextBox.SelectionStart = pos;
-            _hiddenTextBox.SelectionLength = 0;
-            SelectionLength = 0;
+            _hiddenTextBox.SelectionLength = len;
             _suppressSelectionChanged = false;
         }
 

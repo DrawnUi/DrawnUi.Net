@@ -47,7 +47,7 @@ namespace DrawnUi.Views
 
         protected void FixDensity()
         {
-            Console.WriteLine($"CANVAS {RenderingScale} FixDensity: {PhisicalWidth:0}x{PhisicalHeight:0}");
+            //Console.WriteLine($"CANVAS {RenderingScale} FixDensity: {PhisicalWidth:0}x{PhisicalHeight:0}");
 
             var canvasWidth =  PhisicalWidth;
             var canvasHeight = PhisicalHeight;

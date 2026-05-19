@@ -38,6 +38,7 @@ namespace DrawnUi.Draw
         protected SkiaScroll _scroll;
         protected SkiaLayout _contentLayer;
         protected SkiaEditorSelection _selectionControl;
+        protected SkiaLabel _placeholderLabel;
 
         private void RecreateLabelIfNeeded()
         {
@@ -54,6 +55,8 @@ namespace DrawnUi.Draw
             _selectionControl.SourceLabel = Label;
 
             _contentLayer.ClearChildren();
+            if (_placeholderLabel != null)
+                _contentLayer.AddSubView(_placeholderLabel);
             _contentLayer.AddSubView(Label);
             _contentLayer.AddSubView(_selectionControl);
             _contentLayer.AddSubView(Cursor);
@@ -108,13 +111,52 @@ namespace DrawnUi.Draw
             Cursor.Color = this.CursorColor;
 
             UpdateCursorVisibility();
+            UpdatePlaceholder();
 
             Invalidate();
+        }
+
+        protected virtual void UpdatePlaceholder()
+        {
+            if (_placeholderLabel == null)
+                return;
+
+            _placeholderLabel.Text = PlaceholderText;
+            _placeholderLabel.TextColor = PlaceholderColor;
+            _placeholderLabel.HorizontalTextAlignment = PlaceholderHorizontalAlignment;
+            _placeholderLabel.FontFamily = FontFamily;
+            _placeholderLabel.FontSize = FontSize;
+            _placeholderLabel.FontWeight = FontWeight;
+            _placeholderLabel.LineHeight = LineHeight;
+
+            if (IsMultiline)
+            {
+                _placeholderLabel.HeightRequest = -1;
+                _placeholderLabel.MaxLines = -1;
+            }
+            else
+            {
+                _placeholderLabel.HeightRequest = FontSize > 0 ? Math.Ceiling(FontSize * 1.2) : 20;
+                _placeholderLabel.MaxLines = 1;
+            }
+
+            _placeholderLabel.IsVisible = string.IsNullOrEmpty(Text) && !string.IsNullOrEmpty(PlaceholderText);
         }
 
         protected virtual SkiaLabel OnCreatingLabel(SkiaLabel label)
         {
             return label;
+        }
+
+        protected virtual SkiaLabel CreatePlaceholderLabel()
+        {
+            return new SkiaLabel
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                KeepSpacesOnLineBreaks = true,
+                Margin = new Thickness(0, 0, 4, 0),
+                IsVisible = false
+            };
         }
 
         public virtual SkiaLabel CreateLabel()
@@ -145,6 +187,8 @@ namespace DrawnUi.Draw
         {
             Label = CreateLabel();
 
+            _placeholderLabel = CreatePlaceholderLabel();
+
             Cursor = CreateCursor();
 
             Cursor.ZIndex = 1;
@@ -156,11 +200,12 @@ namespace DrawnUi.Draw
                 {
                     VerticalOptions = LayoutOptions.Fill,
                     HorizontalOptions = LayoutOptions.Fill,
-                    Content = 
+                    Content =
                         new SkiaLayer
                         {
                             Children =
                             {
+                                _placeholderLabel,
                                 Label,
                                 new SkiaEditorSelection
                                 {
@@ -320,14 +365,42 @@ namespace DrawnUi.Draw
 
 
 
+        private enum SelectionDragMode { None, ExtendFromAnchor, DragHandleStart, DragHandleEnd }
+        private SelectionDragMode _selectionDragMode;
+        private int _selectionAnchor;
+
         public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
         {
 
             switch (args.Type)
             {
             case TouchActionResult.Up:
+            _selectionDragMode = SelectionDragMode.None;
             return this;
             break;
+
+            case TouchActionResult.LongPressing:
+            {
+                if (!HitIsInside(args.Event.StartingLocation.X, args.Event.StartingLocation.Y))
+                    break;
+
+                var lpOffset = TranslateInputCoords(apply.ChildOffset);
+                var lpX = args.Event.StartingLocation.X + lpOffset.X;
+                var lpY = args.Event.StartingLocation.Y + lpOffset.Y;
+                if (_scroll != null)
+                {
+                    lpX += (float)(_scroll.ViewportOffsetX * RenderingScale);
+                    lpY += (float)(_scroll.ViewportOffsetY * RenderingScale);
+                }
+
+                var lpPos = GetCursorPosition(lpX, lpY);
+                SelectWord(lpPos);
+                _selectionDragMode = SelectionDragMode.ExtendFromAnchor;
+                _selectionAnchor = CursorPosition;
+                SetFocusInternal(true);
+                Superview.FocusedChild = this;
+                return this;
+            }
 
             case TouchActionResult.Down:
 
@@ -350,6 +423,38 @@ namespace DrawnUi.Draw
                 y += (float)(_scroll.ViewportOffsetY * RenderingScale);
             }
 
+            // Handle hit-test: tapping near a selection handle starts drag mode.
+            if (SelectionLength > 0 && _selectionControl != null)
+            {
+                var lhc = _selectionControl.LeftHandleCenter;
+                if (lhc != SKPoint.Empty)
+                {
+                    var hitR = (float)(22 * RenderingScale);
+                    var hitR2 = hitR * hitR;
+                    float hdx, hdy;
+                    hdx = x - lhc.X; hdy = y - lhc.Y;
+                    if (hdx * hdx + hdy * hdy <= hitR2)
+                    {
+                        _selectionDragMode = SelectionDragMode.DragHandleStart;
+                        _selectionAnchor = CursorPosition + SelectionLength;
+                        SetFocusInternal(true);
+                        Superview.FocusedChild = this;
+                        return this;
+                    }
+                    var rhc = _selectionControl.RightHandleCenter;
+                    hdx = x - rhc.X; hdy = y - rhc.Y;
+                    if (hdx * hdx + hdy * hdy <= hitR2)
+                    {
+                        _selectionDragMode = SelectionDragMode.DragHandleEnd;
+                        _selectionAnchor = CursorPosition;
+                        SetFocusInternal(true);
+                        Superview.FocusedChild = this;
+                        return this;
+                    }
+                }
+            }
+
+            _selectionDragMode = SelectionDragMode.None;
             var pos = GetCursorPosition(x, y);
             CursorPosition = pos;
             SelectionLength = 0;
@@ -360,6 +465,27 @@ namespace DrawnUi.Draw
             Superview.FocusedChild = this;
             return this;
             break;
+
+            case TouchActionResult.Panning:
+            if (_selectionDragMode != SelectionDragMode.None)
+            {
+                var panOffset = TranslateInputCoords(apply.ChildOffset);
+                var px = args.Event.Location.X + panOffset.X;
+                var py = args.Event.Location.Y + panOffset.Y;
+                if (_scroll != null)
+                {
+                    px += (float)(_scroll.ViewportOffsetX * RenderingScale);
+                    py += (float)(_scroll.ViewportOffsetY * RenderingScale);
+                }
+                var newPos = GetCursorPosition(px, py);
+                var selStart = Math.Min(newPos, _selectionAnchor);
+                var selEnd = Math.Max(newPos, _selectionAnchor);
+                CursorPosition = selStart;
+                SelectionLength = selEnd - selStart;
+                SetCursorPositionNative(selStart, selEnd);
+                return this;
+            }
+            goto default;
 
             default:
             if (IsFocused)
@@ -378,6 +504,10 @@ namespace DrawnUi.Draw
 
         protected void SetFocusInternal(bool value)
         {
+            // 100 ms: on Android/iOS the IME needs time to connect before ShowSoftInput +
+            // SetSelection fire. On Windows, WinUI shifts keyboard focus to the Canvas on
+            // every tap — 100 ms lets that settle before we steal it back with Focus(Programmatic).
+            // Stray keystrokes during the window are blocked by PlatformClearFocusNow().
             Tasks.StartDelayed(TimeSpan.FromMilliseconds(100), () =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
@@ -386,17 +516,18 @@ namespace DrawnUi.Draw
                     MoveInternalCursor();
                 });
             });
-
-
         }
 
 
         /// <summary>
-        /// Sets native contol cursor position to CursorPosition and calls UpdateCursorVisibility
+        /// Sets native control cursor position to CursorPosition (and selection end if active) and calls UpdateCursorVisibility.
         /// </summary>
         protected void MoveInternalCursor()
         {
-            SetCursorPositionNative(CursorPosition);
+            if (SelectionLength > 0)
+                SetCursorPositionNative(CursorPosition, CursorPosition + SelectionLength);
+            else
+                SetCursorPositionNative(CursorPosition);
 
             UpdateCursorVisibility();
         }
@@ -417,7 +548,14 @@ namespace DrawnUi.Draw
             if (Label != null && Cursor != null)
             {
 
-                var cursorIndex = CursorPosition;
+                // Clamp to text length — CursorPosition can be stale (16 ms delay on Windows,
+                // 50 ms on Android) while text has already shrunk via native TextBox events.
+                // Without clamping, the glyph loop exits without calling MoveCursorTo and the
+                // cursor stays at its previous pixel position indefinitely.
+                var textLen = Text?.Length ?? 0;
+                var cursorIndex = SelectionLength > 0
+                    ? Math.Min(CursorPosition + SelectionLength, textLen)
+                    : Math.Min(CursorPosition, textLen);
 
                 //make cursor fit the line height
                 var lineH = Label.MeasuredLineHeight / RenderingScale;
@@ -438,7 +576,18 @@ namespace DrawnUi.Draw
                     // On Blazor, Lines are populated during the render pass which happens
                     // after property-change handlers. Hiding cursor here would cause a
                     // 1-frame invisible flicker every keystroke; defer instead (see DeferVisualCursorUpdate).
-                    SetCursorVisible(false);
+                    if (string.IsNullOrEmpty(Text))
+                    {
+                        // Empty editor: no lines but cursor should sit at origin.
+                        MoveCursorTo(0, 0);
+                        SetCursorVisible(IsFocused && CanShowCursor);
+                    }
+                    else
+                    {
+                        // Text was just changed and label hasn't re-measured yet — hide
+                        // cursor briefly; it will be repositioned by the delayed position update.
+                        SetCursorVisible(false);
+                    }
 #endif
                     return;
                 }
@@ -667,11 +816,21 @@ namespace DrawnUi.Draw
             }
             else
             {
+                SelectionLength = 0;
+                _selectionDragMode = SelectionDragMode.None;
                 IsFocused = false;
+                // Release native control immediately so it stops capturing keystrokes
+                // while the next editor's focus delay (16–100 ms) elapses.
+                // Does NOT close the keyboard — another editor will inherit it.
+                PlatformClearFocusNow();
             }
 
             UpdateLabel();
         }
+
+        // Implemented per platform: release the native control from input focus without
+        // closing the soft keyboard (another editor will steal input).
+        partial void PlatformClearFocusNow();
 
         protected virtual void HandleVerticalArrow(bool up)
         {
@@ -774,14 +933,115 @@ namespace DrawnUi.Draw
         {
             if (Label != null)
             {
-                //todo
-                //Label.SelectionStart = start;
-                //Label.SelectionEnd = end;
                 MoveInternalCursor();
             }
         }
 
+        protected (int start, int end) GetWordBoundaries(int charIndex)
+        {
+            var text = Text;
+            if (string.IsNullOrEmpty(text) || charIndex < 0 || charIndex >= text.Length)
+                return (charIndex, charIndex);
 
+            if (!char.IsLetterOrDigit(text[charIndex]))
+                return (charIndex, charIndex);
+
+            var start = charIndex;
+            while (start > 0 && char.IsLetterOrDigit(text[start - 1]))
+                start--;
+
+            var end = charIndex;
+            while (end < text.Length && char.IsLetterOrDigit(text[end]))
+                end++;
+
+            return (start, end);
+        }
+
+        public virtual void SelectWord(int charIndex)
+        {
+            var (start, end) = GetWordBoundaries(charIndex);
+            if (end > start)
+            {
+                CursorPosition = start;
+                SelectionLength = end - start;
+                SetCursorPositionNative(start, end);
+            }
+        }
+
+        public string GetSelectedText()
+        {
+            if (IsPassword || SelectionLength <= 0) return null;
+            var text = Text ?? string.Empty;
+            var start = Math.Clamp(CursorPosition, 0, text.Length);
+            var len = Math.Clamp(SelectionLength, 0, text.Length - start);
+            return len > 0 ? text.Substring(start, len) : null;
+        }
+
+        public void DeleteSelection()
+        {
+            if (SelectionLength <= 0) return;
+            var text = Text ?? string.Empty;
+            var start = Math.Clamp(CursorPosition, 0, text.Length);
+            var len = Math.Clamp(SelectionLength, 0, text.Length - start);
+            if (len == 0) return;
+            Text = text.Remove(start, len);
+            SelectionLength = 0;
+            OnSelectionDeleted();
+        }
+
+        public void InsertAtCursor(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            var existing = Text ?? string.Empty;
+            var start = Math.Clamp(CursorPosition, 0, existing.Length);
+            var len = Math.Clamp(SelectionLength, 0, existing.Length - start);
+            var normalized = value.Replace("\r\n", "\n").Replace("\r", "\n");
+            if (!IsMultiline)
+                normalized = normalized.Replace("\n", " ");
+            Text = existing.Remove(start, len).Insert(start, normalized);
+            CursorPosition = start + normalized.Length;
+            SelectionLength = 0;
+            OnTextInsertedAtCursor();
+        }
+
+        public void CutSelection()
+        {
+            CopySelection();
+            DeleteSelection();
+        }
+
+#if !BROWSER
+        public void CopySelection()
+        {
+            var text = GetSelectedText();
+            if (string.IsNullOrEmpty(text)) return;
+            _ = Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.SetTextAsync(text);
+        }
+
+        public void PasteFromClipboard()
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    var text = await Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.GetTextAsync();
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        InsertAtCursor(text);
+                        SetFocusNative(true);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"[SkiaEditor] PasteFromClipboard: {e}");
+                }
+            });
+        }
+#endif
+
+        partial void OnSelectionDeleted();
+
+        partial void OnTextInsertedAtCursor();
 
         public override void OnDisposing()
         {
@@ -1138,6 +1398,51 @@ namespace DrawnUi.Draw
         {
             get { return (Color)GetValue(SelectionColorProperty); }
             set { SetValue(SelectionColorProperty, value); }
+        }
+
+        public static readonly BindableProperty PlaceholderTextProperty = BindableProperty.Create(
+            nameof(PlaceholderText),
+            typeof(string),
+            typeof(SkiaEditor),
+            null,
+            propertyChanged: OnPlaceholderChanged);
+
+        public string PlaceholderText
+        {
+            get => (string)GetValue(PlaceholderTextProperty);
+            set => SetValue(PlaceholderTextProperty, value);
+        }
+
+        public static readonly BindableProperty PlaceholderColorProperty = BindableProperty.Create(
+            nameof(PlaceholderColor),
+            typeof(Color),
+            typeof(SkiaEditor),
+            Colors.Gray,
+            propertyChanged: OnPlaceholderChanged);
+
+        public Color PlaceholderColor
+        {
+            get => (Color)GetValue(PlaceholderColorProperty);
+            set => SetValue(PlaceholderColorProperty, value);
+        }
+
+        public static readonly BindableProperty PlaceholderHorizontalAlignmentProperty = BindableProperty.Create(
+            nameof(PlaceholderHorizontalAlignment),
+            typeof(DrawTextAlignment),
+            typeof(SkiaEditor),
+            DrawTextAlignment.Start,
+            propertyChanged: OnPlaceholderChanged);
+
+        public DrawTextAlignment PlaceholderHorizontalAlignment
+        {
+            get => (DrawTextAlignment)GetValue(PlaceholderHorizontalAlignmentProperty);
+            set => SetValue(PlaceholderHorizontalAlignmentProperty, value);
+        }
+
+        private static void OnPlaceholderChanged(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            if (bindable is SkiaEditor e)
+                e.UpdatePlaceholder();
         }
 
         public static readonly BindableProperty MaxLinesProperty = BindableProperty.Create(nameof(MaxLines),
