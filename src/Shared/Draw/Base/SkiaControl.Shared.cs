@@ -4140,8 +4140,12 @@ namespace DrawnUi.Draw
         }
 
         private SKRect _lastArrangedFor = new();
-        private float _lastArrangedWidth;
-        private float _lastArrangedHeight;
+
+        private double _lastArrangedWidth;
+        private double _lastArrangedHeight;
+
+        private float _lastArrangedWidthRequest;
+        private float _lastArrangedHeightRequest;
         public float _lastMeasuredForWidth { get; protected set; }
         public float _lastMeasuredForHeight { get; protected set; }
 
@@ -4728,8 +4732,8 @@ namespace DrawnUi.Draw
                  ViewportWidthLimit != _arrangedViewportWidthLimit ||
                  scale != _lastArrangedForScale ||
                  !CompareRects(arrangingFor, _lastArrangedFor, 0.5f) ||
-                 !AreEqual(_lastArrangedHeight, heightRequest, 0.5f) ||
-                 !AreEqual(_lastArrangedWidth, widthRequest, 0.5f)))
+                 !AreEqual(_lastArrangedHeightRequest, heightRequest, 0.5f) ||
+                 !AreEqual(_lastArrangedWidthRequest, widthRequest, 0.5f)))
             {
                 IsLayoutDirty = true;
             }
@@ -4759,11 +4763,15 @@ namespace DrawnUi.Draw
             _arrangedViewportWidthLimit = ViewportWidthLimit;
             _lastArrangedFor = arrangingFor;
             _lastArrangedForScale = scale;
-            _lastArrangedHeight = heightRequest;
-            _lastArrangedWidth = widthRequest;
+
+            _lastArrangedWidthRequest = widthRequest;
+            _lastArrangedHeightRequest = heightRequest;
 
             if (!AreEqual(oldDrawingRect.Height, DrawingRect.Height, 0.5)
-                || !AreEqual(oldDrawingRect.Width, DrawingRect.Width, 0.5))
+                || !AreEqual(oldDrawingRect.Width, DrawingRect.Width, 0.5) ||
+                !AreEqual(_lastArrangedHeight, Height, 0.5) ||
+                !AreEqual(_lastArrangedWidth, Width, 0.5)
+                )
             {
                 OnDrawingSizeChanged();
                 layoutChanged = true;
@@ -4773,6 +4781,9 @@ namespace DrawnUi.Draw
                 {
                     OnLayoutPositionChanged();
                 }
+
+                _lastArrangedWidth = Width;
+                _lastArrangedHeight = Height;
 
             if (layoutChanged)
                 OnLayoutChanged();
