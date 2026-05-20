@@ -22,22 +22,6 @@ public partial class ContentLayout : SkiaLayout, IVisibilityAware, ISkiaGestureL
 
     public ScaledRect Viewport { get; protected set; } = new();
 
-    //public override void Arrange(SKRect destination, float widthRequest, float heightRequest, float scale)
-    //{
-    //    if (!CanDraw)
-    //        return;
-
-    //    if (NeedMeasure)
-    //    {
-    //        var adjustedDestination = CalculateLayout(destination, SizeRequest.Width, SizeRequest.Height, scale);
-    //        Measure(adjustedDestination.Width, adjustedDestination.Height, scale);
-    //        IsLayoutDirty = true;
-    //    }
-
-    //    base.Arrange(destination, MeasuredSize.Units.Width, MeasuredSize.Units.Height, scale);
-    //}
-
-
 
     /// <summary>
     /// In PIXELS
