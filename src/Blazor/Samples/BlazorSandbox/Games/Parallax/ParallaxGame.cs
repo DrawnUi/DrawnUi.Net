@@ -105,7 +105,7 @@ public sealed partial class ParallaxGame : DrawnGame
     /// <summary>
     /// Render height of the wandering ghost enemy.
     /// </summary>
-    private const float GhostRenderHeight = 200f;
+    private const float GhostRenderHeight = 240f;
 
     /// <summary>
     /// Actual frame width authored in the ghost sprite sheets.

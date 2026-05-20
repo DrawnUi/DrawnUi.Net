@@ -7,7 +7,7 @@ namespace ParallaxGameLoop.Game
     /// <summary>
     /// Sprite-set wrapper for the corridor ghost enemy.
     /// </summary>
-    public sealed class GhostSprite : SkiaSpriteSet
+    public sealed class GhostSprite : MirroredSpriteSet<GhostSprite.GhostAnimState>
     {
         public enum GhostAnimState
         {
@@ -85,22 +85,15 @@ namespace ParallaxGameLoop.Game
         /// </summary>
         public SKRect GetHitBox()
         {
-            var hitBox = HitBoxAuto;
-            var insetX = hitBox.Width * GhostHitInsetXFactor;
-            var insetY = hitBox.Height * GhostHitInsetYFactor;
-
-            return new SKRect(
-                hitBox.Left + insetX,
-                hitBox.Top + insetY,
-                hitBox.Right - insetX,
-                hitBox.Bottom - insetY);
+            SKRect hitBox = HitBoxAuto;
+            return SpriteHitBoxHelpers.Inset(hitBox, GhostHitInsetXFactor, GhostHitInsetYFactor);
         }
 
 
         /// <summary>
         /// Current high-level ghost behavior state.
         /// </summary>
-        public GhostState State
+        public new GhostState State
         {
             get;
             set
@@ -212,53 +205,27 @@ namespace ParallaxGameLoop.Game
             }
         }
 
-        private GhostAnimState _state;
-
-        public new GhostAnimState AnimationState
+        protected override int MapAnimationState(GhostAnimState animationState)
         {
-            get => _state;
-            set
+            return animationState switch
             {
-                if (_state == value)
-                {
-                    return;
-                }
-
-                _state = value;
-                base.State = value switch
-                {
-                    GhostAnimState.AppearLeft or GhostAnimState.AppearRight => 0,
-                    GhostAnimState.ChaseLeft or GhostAnimState.ChaseRight => 1,
-                    GhostAnimState.IdleLeft or GhostAnimState.IdleRight => 2,
-                    GhostAnimState.ShriekLeft or GhostAnimState.ShriekRight => 3,
-                    _ => 4,
-                };
-                ApplyMirror();
-            }
+                GhostAnimState.AppearLeft or GhostAnimState.AppearRight => 0,
+                GhostAnimState.ChaseLeft or GhostAnimState.ChaseRight => 1,
+                GhostAnimState.IdleLeft or GhostAnimState.IdleRight => 2,
+                GhostAnimState.ShriekLeft or GhostAnimState.ShriekRight => 3,
+                _ => 4,
+            };
         }
 
-
-
-        protected override void OnChangeState(int oldState, int newState)
+        protected override float GetSpriteScaleX(GhostAnimState animationState)
         {
-            base.OnChangeState(oldState, newState);
-            ApplyMirror();
-        }
-
-        private void ApplyMirror()
-        {
-            if (CurrentSprite == null)
-            {
-                return;
-            }
-
-            var mirror = AnimationState is GhostAnimState.AppearLeft
+            return animationState is GhostAnimState.AppearLeft
                 or GhostAnimState.ChaseLeft
                 or GhostAnimState.IdleLeft
                 or GhostAnimState.ShriekLeft
-                or GhostAnimState.VanishLeft;
-
-            CurrentSprite.ScaleX = mirror ? 1 : -1;
+                or GhostAnimState.VanishLeft
+                ? 1
+                : -1;
         }
     }
 }

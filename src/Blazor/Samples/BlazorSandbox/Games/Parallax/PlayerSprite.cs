@@ -6,11 +6,11 @@ using SkiaSharp;
 
 namespace ParallaxGameLoop.Game
 {
-    public class PlayerSprite : SkiaSpriteSet
+    public class PlayerSprite : MirroredSpriteSet<PlayerSprite.PlayerAnimState>
     {
         public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
         {
-            var measured = base.OnMeasuring(widthConstraint, heightConstraint, scale);
+            ScaledSize measured = base.OnMeasuring(widthConstraint, heightConstraint, scale);
 
             Console.WriteLine($"[ParallaxGame] PlayerSprite measured: {measured}, constraint: ({widthConstraint}, {heightConstraint}), scale: {scale}");
 
@@ -86,33 +86,25 @@ namespace ParallaxGameLoop.Game
                 });
             AnimationState = PlayerAnimState.IdleRight;
         }
-
-
-        private PlayerAnimState animationState;
-
-        /// <summary>
-        /// Gets or sets the active semantic animation variant and maps it onto the underlying sprite-set state index.
-        /// </summary>
-        public new PlayerAnimState AnimationState
+        protected override int MapAnimationState(PlayerAnimState animationState)
         {
-            get => animationState;
-            set
+            return animationState switch
             {
-                if (animationState == value)
-                {
-                    return;
-                }
+                PlayerAnimState.IdleLeft or PlayerAnimState.IdleRight => 0,
+                PlayerAnimState.RunLeft or PlayerAnimState.RunRight => 1,
+                PlayerAnimState.JumpLeft or PlayerAnimState.JumpRight => 2,
+                _ => 3,
+            };
+        }
 
-                animationState = value;
-                base.State = value switch
-                {
-                    PlayerAnimState.IdleLeft or PlayerAnimState.IdleRight => 0,
-                    PlayerAnimState.RunLeft or PlayerAnimState.RunRight => 1,
-                    PlayerAnimState.JumpLeft or PlayerAnimState.JumpRight => 2,
-                    _ => 3,
-                };
-                ApplyMirror();
-            }
+        protected override float GetSpriteScaleX(PlayerAnimState animationState)
+        {
+            return animationState is PlayerAnimState.IdleLeft
+                or PlayerAnimState.RunLeft
+                or PlayerAnimState.JumpLeft
+                or PlayerAnimState.AttackLeft
+                ? -1
+                : 1;
         }
 
         /// <summary>
@@ -123,7 +115,7 @@ namespace ParallaxGameLoop.Game
         /// <summary>
         /// Last resolved high-level player gameplay state.
         /// </summary>
-        public PlayerState State;
+        public new PlayerState State;
 
         /// <summary>
         /// Maps a gameplay state into a concrete left/right animation variant and applies it to the sprite set.
@@ -131,7 +123,7 @@ namespace ParallaxGameLoop.Game
         public void SetState(PlayerState state, bool facingLeft)
         {
             _facingLeft = facingLeft;
-            var nextAnimation = state switch
+            PlayerAnimState nextAnimation = state switch
             {
                 PlayerState.Idle => _facingLeft ? PlayerAnimState.IdleLeft : PlayerAnimState.IdleRight,
                 PlayerState.Run => _facingLeft ? PlayerAnimState.RunLeft : PlayerAnimState.RunRight,
@@ -155,53 +147,15 @@ namespace ParallaxGameLoop.Game
         /// </summary>
         public SKRect GetAttackHitBox()
         {
-            var playerHitBox = this.HitBoxAuto;
-            var topInset = playerHitBox.Height * AttackHitTopInsetFactor;
-            var bottomInset = playerHitBox.Height * AttackHitBottomInsetFactor;
-            var top = playerHitBox.Top + topInset;
-            var bottom = playerHitBox.Bottom - bottomInset;
-
-            if (_facingLeft)
-            {
-                return new SKRect(
-                    playerHitBox.Left - AttackHitReach,
-                    top,
-                    playerHitBox.Left + AttackHitAnchorWidth,
-                    bottom);
-            }
-
-            return new SKRect(
-                playerHitBox.Right - AttackHitAnchorWidth,
-                top,
-                playerHitBox.Right + AttackHitReach,
-                bottom);
+            SKRect playerHitBox = this.HitBoxAuto;
+            return SpriteHitBoxHelpers.CreateForwardReachHitBox(
+                playerHitBox,
+                _facingLeft,
+                AttackHitReach,
+                AttackHitAnchorWidth,
+                AttackHitTopInsetFactor,
+                AttackHitBottomInsetFactor);
         }
 
-        /// <summary>
-        /// Reapplies horizontal mirroring whenever the underlying sprite-set changes animation.
-        /// </summary>
-        protected override void OnChangeState(int oldState, int newState)
-        {
-            base.OnChangeState(oldState, newState);
-            ApplyMirror();
-        }
-
-        /// <summary>
-        /// Mirrors the active sprite horizontally for left-facing animation variants.
-        /// </summary>
-        private void ApplyMirror()
-        {
-            if (CurrentSprite == null)
-            {
-                return;
-            }
-
-            var mirror = AnimationState is PlayerAnimState.IdleLeft
-                or PlayerAnimState.RunLeft
-                or PlayerAnimState.JumpLeft
-                or PlayerAnimState.AttackLeft;
-
-            CurrentSprite.ScaleX = mirror ? -1 : 1;
-        }
     }
 }
