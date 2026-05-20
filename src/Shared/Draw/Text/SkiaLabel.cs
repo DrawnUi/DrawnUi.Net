@@ -1948,9 +1948,8 @@ namespace DrawnUi.Draw
                 //last line
                 if (stackWords.Count == 0) //!string.IsNullOrEmpty(lineResult) &&
                 {
-                    if (string.IsNullOrEmpty(lineResult) && span != null)
+                    if (string.IsNullOrEmpty(lineResult))
                     {
-                        //we can add an empty one because we gonna merge spans later and remove empty lines eventually
                         AddEmptyLineInternal();
                     }
                     else
