@@ -27,6 +27,13 @@ public class SkiaSpriteSet : ContentLayout
         UseCache = SkiaCacheType.Operations; //need cache to use Left + Top
     }
 
+    protected override void MeasureSelf(SKRect destination, float widthRequest, float heightRequest, float scale)
+    {
+        NeedMeasure = false;
+
+        //base.MeasureSelf(destination, widthRequest, heightRequest, scale);
+    }
+
     readonly Dictionary<int, SkiaSprite> _sprites = new();
     SkiaSprite _active;
 

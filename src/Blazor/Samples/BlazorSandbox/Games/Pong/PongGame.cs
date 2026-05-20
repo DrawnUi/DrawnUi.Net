@@ -52,6 +52,7 @@ public partial class PongGame : DrawnGame
         Type = LayoutType.Absolute;
 
         BuildUi();
+
         ResetBall(true);
         _ai = new PongAI(this, AIDifficulty.Medium);
 
@@ -65,7 +66,7 @@ public partial class PongGame : DrawnGame
         {
             Type = ShapeType.Rectangle,
             BackgroundColor = Colors.Transparent,
-            StrokeColor = Color.Parse("#1E2D40"),
+            StrokeColor = Color.Parse("#FEFEFE"),
             StrokeWidth = 2,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
