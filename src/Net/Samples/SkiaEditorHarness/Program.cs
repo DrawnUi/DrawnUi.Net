@@ -1045,12 +1045,14 @@ internal sealed class SkiaEditorHarnessAdapter : IHarnessAdapter
                 Console.WriteLine($"  ✓ {step.Name}: CursorPosition={editor.CursorPosition}");
                 return true;
             case HarnessCommand.AssertLine:
+            {
                 context.Host.Render();
                 var editorLine = editor.GetCursorLine();
                 if (editorLine != step.Count)
                     throw new InvalidOperationException($"Assert '{step.Name}': CursorLine expected {step.Count} but was {editorLine}.");
                 Console.WriteLine($"  ✓ {step.Name}: CursorLine={editorLine}");
                 return true;
+            }
             case HarnessCommand.AssertLinesCount:
                 context.Host.Render();
                 var editorLinesCount = editor.Label?.LinesCount ?? 0;

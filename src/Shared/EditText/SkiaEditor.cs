@@ -538,8 +538,16 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Sets native control cursor position to CursorPosition (and selection end if active) and calls UpdateCursorVisibility.
         /// </summary>
+        /// <summary>
+        /// Set to true to suppress the immediate MoveInternalCursor() triggered
+        /// by CursorPosition property change while a deferred post-measure update is pending.
+        /// </summary>
+        protected bool _suppressImmediateCursorMove;
+
         protected void MoveInternalCursor()
         {
+            if (_suppressImmediateCursorMove) return;
+
             if (SelectionLength > 0)
                 SetCursorPositionNative(CursorPosition, CursorPosition + SelectionLength);
             else
@@ -805,11 +813,17 @@ namespace DrawnUi.Draw
         private int AdvanceLineTextIndex(int currentIndex, int glyphCount)
         {
             var nextIndex = currentIndex + glyphCount;
-            if (Text != null && nextIndex < Text.Length && Text[nextIndex] == '\n')
+            // KeepSpacesOnLineBreaks causes the last glyph to be a synthetic space that
+            // covers the '\n' separator in the text. When that happens, the separator is
+            // already consumed and must NOT be skipped a second time.
+            var lastGlyphIsNewline = glyphCount > 0
+                && Text != null
+                && nextIndex - 1 < Text.Length
+                && Text[nextIndex - 1] == '\n';
+            if (!lastGlyphIsNewline && Text != null && nextIndex < Text.Length && Text[nextIndex] == '\n')
             {
                 nextIndex++;
             }
-
             return nextIndex;
         }
 

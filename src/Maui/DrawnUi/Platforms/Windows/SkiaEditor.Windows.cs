@@ -224,6 +224,16 @@ namespace DrawnUi.Draw
         // a spurious SelectionChanged that would override the drawn cursor position.
         private void HiddenTextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
+            // Must block Enter for single-line here, before TextBox processes it.
+            // KeyDown fires after TextBox inserts the character; AcceptsReturn=true
+            // means a \n would already be in the text by the time KeyDown runs.
+            if (!IsMultiline && e.Key == Windows.System.VirtualKey.Enter)
+            {
+                e.Handled = true;
+                Submit();
+                return;
+            }
+
             if (IsMultiline && (e.Key == Windows.System.VirtualKey.Up || e.Key == Windows.System.VirtualKey.Down))
             {
                 e.Handled = true;
@@ -254,13 +264,6 @@ namespace DrawnUi.Draw
 
         private void HiddenTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == Windows.System.VirtualKey.Enter && !IsMultiline)
-            {
-                e.Handled = true;
-                Submit();
-                return;
-            }
-
             var ctrl = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control);
             if (ctrl.HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down) && e.Key == Windows.System.VirtualKey.A)
             {
