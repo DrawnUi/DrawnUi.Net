@@ -63,7 +63,7 @@ foreach ($sample in $samples) {
         $indexHtml = $indexHtml.Replace('%BASE_HREF%', $sample.BaseHref)
     } else {
         $baseTagPattern = '<base\s+href="[^"]*"\s*/?>'
-        $baseTagReplacement = "<base href=\"$($sample.BaseHref)\" />"
+        $baseTagReplacement = [string]::Format('<base href="{0}" />', $sample.BaseHref)
         $updatedIndexHtml = [System.Text.RegularExpressions.Regex]::Replace($indexHtml, $baseTagPattern, $baseTagReplacement, 1)
 
         if ($updatedIndexHtml -eq $indexHtml) {
