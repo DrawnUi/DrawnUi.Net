@@ -7,9 +7,8 @@
 <PageTitle>Image Effects</PageTitle>
 
 <div class="docs-page">
-    <h1>Image Effects</h1>
-    <p class="docs-lead">VisualEffects let one SkiaImage carry a full stack of filters and shadows without preprocessing the bitmap. This page ports the MAUI car demo into the Blazor sandbox as a dedicated effects sample instead of hiding it inside the basic image page.</p>
-    <p class="docs-note">The hero card keeps the original idea: one global colored shadow, two local shadow accents, and a chained color preset over the same car image. Use the controls below to retint the main shadow and swap the preset live.</p>
+    <h1>VisualEffects</h1>
+    <p class="docs-lead">Any element on the Canvas has a VisualEffects property of any drawn control can carry a full stack of color filters, shaders and other effects.</p>
 
     <div class="docs-example-frame">
         <Canvas Content="_canvasContent"
@@ -191,7 +190,7 @@ var image = new SkiaImage()
                     {
                         new SkiaLabel()
                         {
-                            Text = "MAUI-style image effect stack",
+                            Text = "VisualEffects attached",
                             FontFamily = "FontTextTitle",
                             FontSize = 22,
                             TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),

@@ -1,0 +1,15 @@
+uniform float4 iMouse;
+uniform float iTime;
+uniform float2 iResolution;
+uniform float2 iImageResolution;
+uniform shader iImage1;
+uniform float2 iOffset;
+uniform float2 iOrigin;
+
+half4 main(float2 fragCoord)
+{
+    float2 renderingScale = iImageResolution.xy / iResolution.xy;
+    float2 inputCoord = (fragCoord - iOffset) * renderingScale;
+
+    return iImage1.eval(inputCoord);
+}

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.AspNetCore.Components.Routing;
 
 namespace BlazorSandbox.Layout;
@@ -31,8 +30,11 @@ internal static class NavMenuItems
                 new("Auto Size", "canvas-auto-size", "bi-arrows-angle-expand"),
                 new("Full Size", "canvas-fullscreen", "bi-bounding-box-circles"),
                 new("Gestures", "canvas-gestures", "bi-hand-index-thumb-nav-menu"),
-        
+
                 new("Keyboard Input", "keyboard-probe", "bi-keyboard-nav-menu"),
+
+                new("VisualEffects", "effects-image", "bi-stars-nav-menu"),
+                new("Shader Example", "effects-shader", "bi-water-nav-menu"),
             ]),
 
         // CONTROLS
@@ -42,7 +44,6 @@ internal static class NavMenuItems
             false,
             Children:
             [
-
                 // GRAPHICS
                 new(
                     "controls-graphics",
@@ -58,13 +59,37 @@ internal static class NavMenuItems
                         new("SkiaShape", "graphics-shape", "bi-bounding-box-nav-menu"),
                         new("SkiaSvg", "graphics-svg", "bi-badge-sd-nav-menu"),
                         new("SkiaImage", "graphics-image", "bi-image-nav-menu"),
-                        new("Image Effects", "effects-image", "bi-stars-nav-menu"),
 
                         new("SkiaLottie", "lottie-probe", "bi-play-circle-nav-menu"),
                         new("SkiaGif", "gif-probe", "bi-film-nav-menu"),
 
+                    ]),
+
+
+                // CONTROLS
+                new(
+                    "controls-buttons",
+                    "Controls",
+                    false,
+                    IsSubgroup: true,
+                    Items:
+                    [
+                        new("SkiaButton", "buttons", "bi-hand-index-thumb-nav-menu"),
+                        new("Custom Button", "buttons-custom", "bi-boxes-nav-menu"),
+                        new("Radio Buttons", "buttons-radio", "bi-record-circle-nav-menu"),
+
+                        new("SkiaSwitch", "switches", "bi-toggle2-on-nav-menu"),
+                        new("SkiaSlider", "sliders", "bi-sliders-nav-menu"),
+
+                        new("SkiaPicker", "pickers-sheet", "bi-menu-button-wide-nav-menu"),
+                        new("Picker Wheels", "pickers", "bi-list-ul-nav-menu"),
+                        new("Picker Spinner", "pickers-spinner", "bi-disc-nav-menu"),
+
+                        new("SkiaEditor", "editors-probe", "bi-pencil-square-nav-menu"),
+
                         new("SkiaBackdrop", "effects-backdrop", "bi-layers-half-nav-menu"),
                         new("SkiaHoverMask", "effects-hover-mask", "bi-intersect-nav-menu"),
+
                     ]),
 
                 // Layouts
@@ -89,30 +114,6 @@ internal static class NavMenuItems
                         new("SkiaCarousel", "scrolls-carousel", "bi-view-list-nav-menu"),
                         new("SkiaDrawer", "scrolls-drawer", "bi-layout-sidebar-inset-nav-menu")
                     ]),
-
-                // CONTROLS
-                new(
-                    "controls-buttons",
-                    "Controls",
-                    false,
-                    IsSubgroup: true,
-                    Items:
-                    [
-                        new("SkiaButton", "buttons", "bi-hand-index-thumb-nav-menu"),
-                        new("Custom Button", "buttons-custom", "bi-boxes-nav-menu"),
-                        new("Radio Buttons", "buttons-radio", "bi-record-circle-nav-menu"),
-
-                        new("SkiaSwitch", "switches", "bi-toggle2-on-nav-menu"),
-                        new("SkiaSlider", "sliders", "bi-sliders-nav-menu"),
-
-                        new("SkiaPicker", "pickers-sheet", "bi-menu-button-wide-nav-menu"),
-                        new("Picker Wheels", "pickers", "bi-list-ul-nav-menu"),
-                        new("Picker Spinner", "pickers-spinner", "bi-disc-nav-menu"),
-
-                        new("SkiaEditor", "editors-probe", "bi-pencil-square-nav-menu"),
-                    ]),
-
-
             ]),
 
         //TUTORIALS
@@ -202,7 +203,8 @@ internal static class NavMenuItems
         {
             var currentPath = parentPath.Concat([section.Key]).ToArray();
 
-            if (section.Items.Any(item => string.Equals(NormalizeHref(item.Href), normalizedHref, StringComparison.Ordinal)))
+            if (section.Items.Any(item =>
+                    string.Equals(NormalizeHref(item.Href), normalizedHref, StringComparison.Ordinal)))
             {
                 path = currentPath;
                 return true;
@@ -235,7 +237,8 @@ internal static class NavMenuItems
         return trimmed.Trim('/');
     }
 
-    private static IEnumerable<NavMenuSectionDefinition> EnumerateSections(IEnumerable<NavMenuSectionDefinition> sections)
+    private static IEnumerable<NavMenuSectionDefinition> EnumerateSections(
+        IEnumerable<NavMenuSectionDefinition> sections)
     {
         foreach (var section in sections)
         {
@@ -259,7 +262,8 @@ public sealed record NavMenuSectionDefinition(
 {
     public IReadOnlyList<NavMenuLinkDefinition> Items { get; init; } = Items ?? Array.Empty<NavMenuLinkDefinition>();
 
-    public IReadOnlyList<NavMenuSectionDefinition> Children { get; init; } = Children ?? Array.Empty<NavMenuSectionDefinition>();
+    public IReadOnlyList<NavMenuSectionDefinition> Children { get; init; } =
+        Children ?? Array.Empty<NavMenuSectionDefinition>();
 }
 
 public sealed record NavMenuLinkDefinition(
