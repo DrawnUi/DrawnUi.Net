@@ -37,6 +37,7 @@ var scroll = new SkiaScroll()
     {
         var content = new SkiaLayout()
         {
+            HorizontalOptions = LayoutOptions.Fill,
             Type = LayoutType.Column,
             Spacing = 14,
             Padding = new Thickness(12, 64, 12, 20)
@@ -49,14 +50,13 @@ var scroll = new SkiaScroll()
 
         var scroll = new SkiaScroll()
         {
-            WidthRequest = 292,
             HeightRequest = 236,
+            HorizontalOptions = LayoutOptions.Fill,
             BackgroundColor = new Color(0.988f, 0.985f, 0.973f, 1f),
             HeaderSticky = true,
-            HorizontalOptions = LayoutOptions.Center,
             Header = new SkiaShape()
             {
-                WidthRequest = 292,
+                HorizontalOptions = LayoutOptions.Fill,
                 HeightRequest = 56,
                 CornerRadius = 20,
                 BackgroundColor = new Color(0.118f, 0.180f, 0.286f, 1f),
@@ -127,7 +127,7 @@ var scroll = new SkiaScroll()
         _canvasContent = new SkiaLayout()
         {
             Margin = new Thickness(16),
-            WidthRequest = 328,
+            HorizontalOptions = LayoutOptions.Fill,
             Padding = new Thickness(20),
             BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
             Type = LayoutType.Column,
@@ -175,12 +175,11 @@ var scroll = new SkiaScroll()
 
         return new SkiaShape()
         {
-            WidthRequest = 252,
             HeightRequest = 82,
             Type = ShapeType.Rectangle,
             CornerRadius = 16,
             BackgroundColor = shades[index % shades.Length],
-            HorizontalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Fill,
             Children =
             {
                 new SkiaLayout()
@@ -223,7 +222,6 @@ var scroll = new SkiaScroll()
                             FontSize = 11,
                             TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
                             HorizontalOptions = LayoutOptions.Fill,
-                            WidthRequest = 214
                         }
                     }
                 }

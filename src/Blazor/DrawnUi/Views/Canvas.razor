@@ -655,14 +655,19 @@
             return (float)Content.WidthRequest;
         }
 
-        if (Content?.MeasuredSize?.Units.Width > 0)
+        if (UsesAutoHostWidth)
         {
-            return Content.MeasuredSize.Units.Width;
+            return float.PositiveInfinity;
         }
 
         if (_measuredCanvasWidth > 0)
         {
             return _measuredCanvasWidth;
+        }
+
+        if (Content?.MeasuredSize?.Units.Width > 0)
+        {
+            return Content.MeasuredSize.Units.Width;
         }
 
         return float.PositiveInfinity;
@@ -680,14 +685,19 @@
             return (float)Content.HeightRequest;
         }
 
-        if (Content?.MeasuredSize?.Units.Height > 0)
+        if (UsesAutoHostHeight)
         {
-            return Content.MeasuredSize.Units.Height;
+            return float.PositiveInfinity;
         }
 
         if (_measuredCanvasHeight > 0)
         {
             return _measuredCanvasHeight;
+        }
+
+        if (Content?.MeasuredSize?.Units.Height > 0)
+        {
+            return Content.MeasuredSize.Units.Height;
         }
 
         return float.PositiveInfinity;

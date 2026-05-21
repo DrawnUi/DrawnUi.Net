@@ -660,7 +660,21 @@ public class SkiaImageManager : IDisposable
             return path;
         }
 
-        return _registeredSources.TryGetValue(path, out var registered) ? registered : path;
+        var normalizedPath = NormalizeFilePath(path);
+        if (_registeredSources.TryGetValue(normalizedPath, out var registered))
+        {
+            return registered;
+        }
+
+        var fileName = Path.GetFileName(normalizedPath);
+        if (!string.IsNullOrWhiteSpace(fileName) &&
+            !string.Equals(fileName, normalizedPath, StringComparison.OrdinalIgnoreCase) &&
+            _registeredSources.TryGetValue(fileName, out registered))
+        {
+            return registered;
+        }
+
+        return normalizedPath;
     }
 
     private static string NormalizeFilePath(string filename)

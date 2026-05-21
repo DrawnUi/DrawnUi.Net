@@ -21,6 +21,26 @@ body:not([data-search])[data-layout="conceptual"] > main > .toc-offcanvas .offca
     --bs-offcanvas-width: 200px;
 }
 
+@media (max-width: 767.98px) {
+    body:not([data-search])[data-layout=""] > main > .toc-offcanvas,
+    body:not([data-search])[data-layout="conceptual"] > main > .toc-offcanvas {
+        display: none !important;
+        max-width: 0 !important;
+        flex: 0 0 0 !important;
+    }
+
+    body:not([data-search])[data-layout=""] > main > .content,
+    body:not([data-search])[data-layout="conceptual"] > main > .content {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    body:not([data-search])[data-layout=""] > main > .content > .actionbar .btn[data-bs-target="#tocOffcanvas"],
+    body:not([data-search])[data-layout="conceptual"] > main > .content > .actionbar .btn[data-bs-target="#tocOffcanvas"] {
+        display: none !important;
+    }
+}
+
 /* ===== DARK MODE SYNTAX HIGHLIGHTING ===== */
 @media (prefers-color-scheme: dark) {
     /* Code block background */

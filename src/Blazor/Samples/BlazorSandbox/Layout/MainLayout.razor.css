@@ -74,6 +74,52 @@ main {
     font-weight: 600;
 }
 
+.page-release-placeholder {
+    align-items: stretch;
+    justify-content: center;
+}
+
+.release-placeholder-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.release-placeholder-card {
+    width: min(100%, 34rem);
+    padding: 2.5rem;
+    border: 1px solid rgba(37, 52, 74, 0.08);
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 20px 50px rgba(18, 35, 61, 0.12);
+    text-align: center;
+}
+
+.release-placeholder-kicker {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    color: #1d4f91;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.release-placeholder-card h1 {
+    margin: 0;
+    color: #10233c;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1;
+}
+
+.release-placeholder-card p {
+    margin: 1rem 0 0;
+    color: #4b5d73;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
 @media (max-width: 640.98px) {
     .top-row {
         flex-direction: column;
@@ -90,6 +136,14 @@ main {
 
     .top-row-links {
         gap: 0.85rem;
+    }
+
+    .release-placeholder-main {
+        padding: 1.25rem;
+    }
+
+    .release-placeholder-card {
+        padding: 2rem 1.5rem;
     }
 }
 

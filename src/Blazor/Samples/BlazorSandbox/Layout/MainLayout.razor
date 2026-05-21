@@ -1,23 +1,46 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <div class="top-row-copy">
-                <span class="top-row-pill">Public preview</span>
-                <span class="top-row-text">Rendering Engine for .NET powered by SkiaSharp.</span>
-            </div>
-
-            <div class="top-row-links">
-                <a href="https://github.com/taublast/DrawnUi" target="_blank" rel="noreferrer">GitHub</a>
-            </div>
+@if (IsDebugBuild)
+{
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <main>
+            <div class="top-row px-4">
+                <div class="top-row-copy">
+                    <span class="top-row-pill">Public preview</span>
+                    <span class="top-row-text">Rendering Engine for .NET powered by SkiaSharp.</span>
+                </div>
+
+                <div class="top-row-links">
+                    <a href="https://github.com/taublast/DrawnUi" target="_blank" rel="noreferrer">GitHub</a>
+                </div>
+            </div>
+
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+    </div>
+}
+else
+{
+    <div class="page page-release-placeholder">
+        <main class="release-placeholder-main">
+            <section class="release-placeholder-card" aria-labelledby="release-placeholder-title">
+                <span class="release-placeholder-kicker">DrawnUI Blazor Sandbox</span>
+                <h1 id="release-placeholder-title">Fixing Bugs, Coming Soon...</h1>
+                <p>The public sandbox content is hidden for non-debug builds while work continues behind the scenes.</p>
+            </section>
+        </main>
+    </div>
+}
+
+@code {
+#if DEBUG
+    private const bool IsDebugBuild = true;
+#else
+    private const bool IsDebugBuild = false;
+#endif
+}

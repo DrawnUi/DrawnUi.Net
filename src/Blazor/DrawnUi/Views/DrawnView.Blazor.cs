@@ -73,7 +73,7 @@ namespace DrawnUi.Views
             {
                 var heightScale = (float)(canvasHeight / logicalHeight);
                 inferredScale = inferredScale > 0.0f
-                    ? MathF.Min(inferredScale, heightScale)
+                    ? MathF.Max(inferredScale, heightScale)
                     : heightScale;
             }
 
