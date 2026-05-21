@@ -61,6 +61,7 @@
         <Compile Remove="Platforms\Windows\ViewChainPanel.Windows.cs" />
         <Compile Remove="Platforms\Windows\Views\AngleSwapChainPanel.cs" />
         <Compile Remove="Controls\Extensions\**" />
+        <Compile Remove="Features\Effects\**" />
         <Compile Remove="Platforms\Windows\Controls\**" />
         <Compile Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
@@ -164,30 +165,33 @@
 
     <ItemGroup>
         <EmbeddedResource Remove="Controls\Extensions\**" />
+        <EmbeddedResource Remove="Features\Effects\**" />
         <EmbeddedResource Remove="Platforms\Windows\Controls\**" />
         <EmbeddedResource Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
 
     <ItemGroup>
         <MauiXaml Remove="Controls\Extensions\**" />
+        <MauiXaml Remove="Features\Effects\**" />
         <MauiXaml Remove="Platforms\Windows\Controls\**" />
         <MauiXaml Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
 
     <ItemGroup>
         <MauiCss Remove="Controls\Extensions\**" />
+        <MauiCss Remove="Features\Effects\**" />
         <MauiCss Remove="Platforms\Windows\Controls\**" />
         <MauiCss Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
     <ItemGroup>
         <AndroidAarLibrary Remove="Controls\Extensions\**" />
+        <None Remove="Features\Effects\**" />
         <None Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
 
     <ItemGroup>
         <Folder Include="Draw\Images\" />
         <Folder Include="Draw\Scroll\" />
-        <Folder Include="Features\Effects\" />
         <Folder Include="Internals\Handlers\" />
         <Folder Include="Platforms\Apple\Extensions\" />
     </ItemGroup>
