@@ -98,8 +98,8 @@ public class SkiaImageManager : IDisposable
             throw new ArgumentException("Image source URL cannot be empty.", nameof(sourceUrl));
         }
 
-        var normalized = NormalizeFilePath(sourceUrl);
-        _registeredSources[normalized] = normalized;
+        var cacheKey = NormalizeFilePath(sourceUrl);
+        _registeredSources[cacheKey] = NormalizeRegisteredSource(sourceUrl);
     }
 
     public void RegisterImage(string alias, string sourceUrl)
@@ -114,7 +114,7 @@ public class SkiaImageManager : IDisposable
             throw new ArgumentException("Image source URL cannot be empty.", nameof(sourceUrl));
         }
 
-        _registeredSources[NormalizeFilePath(alias)] = NormalizeFilePath(sourceUrl);
+        _registeredSources[NormalizeFilePath(alias)] = NormalizeRegisteredSource(sourceUrl);
     }
 
     public async Task InitializeAsync(IServiceProvider services, CancellationToken cancellationToken = default)
@@ -144,18 +144,19 @@ public class SkiaImageManager : IDisposable
 
                 try
                 {
-                    var bytes = await httpClient.GetByteArrayAsync(registration.Value, cancellationToken);
+                    var requestPath = ResolveRequestPath(registration.Value);
+                    var bytes = await httpClient.GetByteArrayAsync(requestPath, cancellationToken);
                     var bitmap = SKBitmap.Decode(bytes);
                     if (bitmap == null)
                     {
-                        Super.Log($"[DRAWNUI] Blazor image preload failed for {registration.Key} from {registration.Value}", Microsoft.Extensions.Logging.LogLevel.Warning);
+                        Super.Log($"[DRAWNUI] Blazor image preload failed for {registration.Key} from {requestPath}", Microsoft.Extensions.Logging.LogLevel.Warning);
                         continue;
                     }
 
                     AddToCache(registration.Key, bitmap, CacheLongevitySecs);
-                    if (!string.Equals(registration.Key, registration.Value, StringComparison.OrdinalIgnoreCase))
+                    if (!string.Equals(registration.Key, requestPath, StringComparison.OrdinalIgnoreCase))
                     {
-                        AddToCache(registration.Value, bitmap, CacheLongevitySecs);
+                        AddToCache(requestPath, bitmap, CacheLongevitySecs);
                     }
                 }
                 catch (Exception e)
@@ -403,6 +404,8 @@ public class SkiaImageManager : IDisposable
     /// </summary>
     public static async Task<Stream> OpenStreamAsync(string source, CancellationToken cancel = default)
     {
+        source = ResolveRequestPath(source);
+
         if (source.SafeContainsInLower(NativeFilePrefix))
         {
             var fullFilename = source.Replace(NativeFilePrefix, "");
@@ -473,7 +476,7 @@ public class SkiaImageManager : IDisposable
         }
 
         var cacheKey = NormalizeFilePath(filename);
-        var sourcePath = Instance.ResolveRegisteredSource(cacheKey);
+        var sourcePath = ResolveRequestPath(Instance.ResolveRegisteredSource(cacheKey));
         var cached = Instance.GetFromCacheInternal(cacheKey);
         if (cached != null)
         {
@@ -668,17 +671,65 @@ public class SkiaImageManager : IDisposable
         }
 
         var normalized = filename.Replace('\\', '/');
+        if (Uri.TryCreate(normalized, UriKind.Absolute, out var absoluteUri))
+        {
+            return absoluteUri.ToString();
+        }
+
         if (normalized.StartsWith("wwwroot/", StringComparison.OrdinalIgnoreCase))
         {
             normalized = normalized[7..];
         }
 
-        normalized = normalized.TrimStart('.');
-        if (!normalized.StartsWith('/'))
+        while (normalized.StartsWith("./", StringComparison.Ordinal))
         {
-            normalized = '/' + normalized.TrimStart('/');
+            normalized = normalized[2..];
         }
 
+        if (normalized == ".")
+        {
+            return string.Empty;
+        }
+
+        return normalized.Replace("//", "/");
+    }
+
+    private static string NormalizeRegisteredSource(string sourceUrl)
+    {
+        var normalized = NormalizeFilePath(sourceUrl);
         return normalized;
+    }
+
+    private static string ResolveRequestPath(string source)
+    {
+        if (string.IsNullOrWhiteSpace(source))
+        {
+            return source;
+        }
+
+        if (source.SafeContainsInLower(NativeFilePrefix))
+        {
+            return source;
+        }
+
+        if (Uri.TryCreate(source, UriKind.Absolute, out var absoluteUri))
+        {
+            return absoluteUri.ToString();
+        }
+
+        var normalized = NormalizeRegisteredSource(source);
+        if (string.IsNullOrWhiteSpace(normalized) || normalized.StartsWith('/'))
+        {
+            return normalized;
+        }
+
+        var client = GetHttpClient();
+        var baseUri = client?.BaseAddress;
+        if (baseUri == null)
+        {
+            return normalized;
+        }
+
+        return new Uri(baseUri, normalized).ToString();
     }
 }
