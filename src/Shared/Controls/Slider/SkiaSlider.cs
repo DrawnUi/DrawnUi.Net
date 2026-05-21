@@ -48,6 +48,9 @@ public class SkiaSlider : SkiaLayout
 
         if (EndThumb == null)
             EndThumb = FindView<SliderThumb>("EndThumb");
+
+        if (EnableRange && StartThumb == null)
+            StartThumb = FindView<SliderThumb>("StartThumb");
     }
 
     public virtual void ApplyProperties()
@@ -60,13 +63,11 @@ public class SkiaSlider : SkiaLayout
 
     public SkiaControl Trail;
     private SliderTrail SelectedTrail;
+    private SliderThumb StartThumb;
     private SliderThumb EndThumb;
 
     protected virtual void CreateDefaultStyleContent()
     {
-        //SetDefaultContentSize(64, 35);
-
-
         AvailableWidthAdjustment = 1.5;
         HorizontalOptions = LayoutOptions.Fill;
         MinimumWidthRequest = 64;
@@ -74,237 +75,347 @@ public class SkiaSlider : SkiaLayout
         Type = LayoutType.Column;
         UseCache = SkiaCacheType.ImageDoubleBuffered;
 
+        var trailChildren = new List<SkiaControl>()
+        {
+            //unselected trail
+            new SkiaShape()
+            {
+                BackgroundColor = Colors.DarkGray,
+                HeightRequest = 8,
+                CornerRadius = 6,
+                HorizontalOptions = LayoutOptions.Fill,
+                StrokeColor = Colors.Gray,
+                StrokeWidth = 2,
+                UseCache = SkiaCacheType.Operations,
+                VerticalOptions = LayoutOptions.Center
+            },
+            //selected trail
+            new SliderTrail()
+                {
+                    Tag = "SelectedTrail",
+                    BackgroundColor = Colors.Red,
+                    HeightRequest = 10,
+                    CornerRadius = 6,
+                    HorizontalOptions = LayoutOptions.Start,
+                    StrokeBlendMode = SKBlendMode.Color,
+                    StrokeColor = Colors.DarkRed,
+                    StrokeWidth = 2,
+                    UseCache = SkiaCacheType.Operations,
+                    VerticalOptions = LayoutOptions.Center,
+                    ModifyXPosEnd = 10,
+                    SideOffset = 0,
+                    XPos = 0,
+                }.Assign(out SelectedTrail)
+                .Observe(() => EndThumb, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(TranslationX)))
+                        me.XPosEnd = EndThumb.TranslationX;
+                })
+                .Observe(this, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(StartThumbX)))
+                        me.XPos = StartThumbX;
+                }),
+
+            //end thumb
+            new SliderThumb()
+                {
+                    Tag = "EndThumb",
+                    UseCache = SkiaCacheType.Image,
+                    Children = new List<SkiaControl>()
+                    {
+                        new SkiaShape()
+                        {
+                            Margin = 4,
+                            BackgroundColor = Colors.Red,
+                            HorizontalOptions = LayoutOptions.Fill,
+                            StrokeColor = Colors.DarkRed,
+                            StrokeWidth = 1,
+                            Type = ShapeType.Circle,
+                            VerticalOptions = LayoutOptions.Fill,
+                            Shadows = new List<SkiaShadow>()
+                            {
+                                new SkiaShadow()
+                                {
+                                    Blur = 2,
+                                    Opacity = 0.5,
+                                    X = 1,
+                                    Y = 1,
+                                    Color = Colors.DarkRed
+                                }
+                            }
+                        },
+                        new SkiaShape()
+                        {
+                            LockRatio = 1,
+                            WidthRequest = 6,
+                            BackgroundColor = Colors.White,
+                            HorizontalOptions = LayoutOptions.Center,
+                            StrokeColor = Colors.DarkRed,
+                            Type = ShapeType.Circle,
+                            VerticalOptions = LayoutOptions.Center,
+                        },
+                    }
+                }.Assign(out EndThumb)
+                .Observe(() => Trail, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(Height)))
+                    {
+                        me.HeightRequest = Trail.Height;
+                        me.WidthRequest = Trail.Height;
+                    }
+                })
+                .Observe(this, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(EndThumbX)))
+                        me.TranslationX = this.EndThumbX;
+                }),
+        };
+
+        if (EnableRange)
+        {
+            StartThumb = new SliderThumb()
+            {
+                Tag = "StartThumb",
+                UseCache = SkiaCacheType.Image,
+                Children = new List<SkiaControl>()
+                {
+                    new SkiaShape()
+                    {
+                        Margin = 4,
+                        BackgroundColor = Colors.Red,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        StrokeColor = Colors.DarkRed,
+                        StrokeWidth = 1,
+                        Type = ShapeType.Circle,
+                        VerticalOptions = LayoutOptions.Fill,
+                        Shadows = new List<SkiaShadow>()
+                        {
+                            new SkiaShadow()
+                            {
+                                Blur = 2,
+                                Opacity = 0.5,
+                                X = 1,
+                                Y = 1,
+                                Color = Colors.DarkRed
+                            }
+                        }
+                    },
+                    new SkiaShape()
+                    {
+                        LockRatio = 1,
+                        WidthRequest = 6,
+                        BackgroundColor = Colors.White,
+                        HorizontalOptions = LayoutOptions.Center,
+                        StrokeColor = Colors.DarkRed,
+                        Type = ShapeType.Circle,
+                        VerticalOptions = LayoutOptions.Center,
+                    },
+                }
+            }
+            .Observe(() => Trail, (me, prop) =>
+            {
+                if (prop.IsEither(nameof(BindingContext), nameof(Height)))
+                {
+                    me.HeightRequest = Trail.Height;
+                    me.WidthRequest = Trail.Height;
+                }
+            })
+            .Observe(this, (me, prop) =>
+            {
+                if (prop.IsEither(nameof(BindingContext), nameof(StartThumbX)))
+                    me.TranslationX = StartThumbX;
+            });
+
+            trailChildren.Insert(trailChildren.Count - 1, StartThumb);
+        }
+
         Children = new List<SkiaControl>()
         {
-            //main grid
             new SkiaLayout
                 {
                     Tag = "Trail",
                     HeightRequest = SliderHeight,
                     HorizontalOptions = LayoutOptions.Fill,
-                    Children = new List<SkiaControl>()
-                    {
-                        //unselected trail
-                        new SkiaShape()
-                        {
-                            BackgroundColor = Colors.DarkGray,
-                            HeightRequest = 8,
-                            CornerRadius = 6,
-                            HorizontalOptions = LayoutOptions.Fill,
-                            StrokeColor = Colors.Gray,
-                            StrokeWidth = 2,
-                            UseCache = SkiaCacheType.Operations,
-                            VerticalOptions = LayoutOptions.Center
-                        },
-                        //selected trail
-                        new SliderTrail()
-                            {
-                                Tag = "SelectedTrail",
-                                BackgroundColor = Colors.Red,
-                                HeightRequest = 10,
-                                CornerRadius = 6,
-                                HorizontalOptions = LayoutOptions.Start,
-                                StrokeBlendMode = SKBlendMode.Color,
-                                StrokeColor = Colors.DarkRed,
-                                StrokeWidth = 2,
-                                UseCache = SkiaCacheType.Operations,
-                                VerticalOptions = LayoutOptions.Center,
-                                ModifyXPosEnd = 10,
-                                SideOffset = 0,
-                                XPos = 0,
-                            }.Assign(out SelectedTrail)
-                            //{Binding Source={x:Reference EndThumb}, Path=TranslationX}"
-                            .Observe(() => EndThumb, (me, prop) =>
-                            {
-                                if (prop.IsEither(nameof(BindingContext), nameof(TranslationX)))
-                                {
-                                    me.XPosEnd = EndThumb.TranslationX;
-                                }
-                            }),
-
-                        //thumb
-                        new SliderThumb()
-                            {
-                                Tag = "EndThumb",
-                                UseCache = SkiaCacheType.Image,
-                                Children = new List<SkiaControl>()
-                                {
-                                    //thumb circle
-                                    new SkiaShape()
-                                    {
-                                        Margin = 4,
-                                        BackgroundColor = Colors.Red,
-                                        HorizontalOptions = LayoutOptions.Fill,
-                                        StrokeColor = Colors.DarkRed,
-                                        StrokeWidth = 1,
-                                        Type = ShapeType.Circle,
-                                        VerticalOptions = LayoutOptions.Fill,
-                                        Shadows = new List<SkiaShadow>()
-                                        {
-                                            new SkiaShadow()
-                                            {
-                                                Blur = 2,
-                                                Opacity = 0.5,
-                                                X = 1,
-                                                Y = 1,
-                                                Color = Colors.DarkRed
-                                            }
-                                        }
-                                    },
-                                    //point inside circle
-                                    new SkiaShape()
-                                    {
-                                        LockRatio = 1,
-                                        WidthRequest = 6,
-                                        BackgroundColor = Colors.White,
-                                        HorizontalOptions = LayoutOptions.Center,
-                                        StrokeColor = Colors.DarkRed,
-                                        Type = ShapeType.Circle,
-                                        VerticalOptions = LayoutOptions.Center,
-                                    },
-                                }
-                            }.Assign(out EndThumb)
-                            //HeightRequest="{Binding Source={x:Reference SliderContainer}, Path=Height}"
-                            //WidthRequest="{Binding Source={x:Reference SliderContainer}, Path=Height}"
-                            .Observe(() => Trail, (me, prop) =>
-                            {
-                                if (prop.IsEither(nameof(BindingContext), nameof(Height)))
-                                {
-                                    me.HeightRequest = Trail.Height;
-                                    me.WidthRequest = Trail.Height;
-                                }
-                            })
-                            //TranslationX="{Binding Source={x:Reference This}, Path=EndThumbX}"
-                            .Observe(this, (me, prop) =>
-                            {
-                                if (prop.IsEither(nameof(BindingContext), nameof(EndThumbX)))
-                                {
-                                    me.TranslationX = this.EndThumbX;
-                                }
-                            }),
-                    }
+                    Children = trailChildren
                 }
-                //same as {Binding Source={x:Reference This}, Path=SliderHeight}"
                 .Observe(this, (me, prop) =>
                 {
                     if (prop.IsEither(nameof(BindingContext), nameof(SliderHeight)))
-                    {
                         me.HeightRequest = SliderHeight;
-                    }
                 })
                 .Assign(out Trail)
         };
     }
 
     /// <summary>
-    /// Creates a Cupertino (iOS) style slider following Apple's design guidelines
+    /// Creates a Cupertino (iOS) style slider following Apple's design guidelines.
+    /// When <see cref="EnableRange"/> is true, a second (start) thumb is added automatically.
     /// </summary>
     protected virtual void CreateCupertinoStyleContent()
     {
-        // Set default properties
         AvailableWidthAdjustment = -1;
         HorizontalOptions = LayoutOptions.Fill;
         MinimumWidthRequest = 64;
-        SliderHeight = CupertinoThumbDiameter; // Set slider height to match thumb diameter
+        SliderHeight = CupertinoThumbDiameter;
         Type = LayoutType.Column;
         UseCache = SkiaCacheType.ImageDoubleBuffered;
 
+        var trailChildren = new List<SkiaControl>()
+        {
+            // Unselected track (gray)
+            new SkiaShape()
+            {
+                BackgroundColor = TrackColor,
+                HeightRequest = CupertinoTrackHeight,
+                CornerRadius = CupertinoTrackHeight / 2,
+                HorizontalOptions = LayoutOptions.Fill,
+                UseCache = SkiaCacheType.Operations,
+                VerticalOptions = LayoutOptions.Center
+            },
+
+            // Selected track (iOS blue); XPos follows StartThumbX in range mode
+            new SliderTrail()
+                {
+                    Tag = "SelectedTrail",
+                    BackgroundColor = TrackSelectedColor,
+                    HeightRequest = CupertinoTrackHeight,
+                    CornerRadius = CupertinoTrackHeight / 2,
+                    HorizontalOptions = LayoutOptions.Start,
+                    UseCache = SkiaCacheType.Operations,
+                    VerticalOptions = LayoutOptions.Center,
+                    ModifyXPosEnd = CupertinoThumbDiameter / 2,
+                    SideOffset = 0,
+                    XPos = 0,
+                }.Assign(out SelectedTrail)
+                .Observe(() => EndThumb, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(TranslationX)))
+                        me.XPosEnd = EndThumb.TranslationX;
+                })
+                .Observe(this, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(StartThumbX)))
+                        me.XPos = StartThumbX;
+                }),
+
+            // End thumb
+            new SliderThumb()
+                {
+                    Tag = "EndThumb",
+                    UseCache = SkiaCacheType.Image,
+                    Children = new List<SkiaControl>()
+                    {
+                        new SkiaShape()
+                        {
+                            BackgroundColor = ThumbColor,
+                            HorizontalOptions = LayoutOptions.Fill,
+                            StrokeColor = new Color(0.8f, 0.8f, 0.8f),
+                            StrokeWidth = CupertinoThumbBorderWidth,
+                            Type = ShapeType.Circle,
+                            VerticalOptions = LayoutOptions.Fill,
+                            Shadows = new List<SkiaShadow>()
+                            {
+                                new SkiaShadow()
+                                {
+                                    Blur = 3,
+                                    Opacity = 0.2,
+                                    X = 0,
+                                    Y = 1,
+                                    Color = Colors.Gray
+                                }
+                            }
+                        }
+                    }
+                }.Assign(out EndThumb)
+                .Observe(() => Trail, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(Height)))
+                    {
+                        me.HeightRequest = CupertinoThumbDiameter;
+                        me.WidthRequest = CupertinoThumbDiameter;
+                    }
+                })
+                .Observe(this, (me, prop) =>
+                {
+                    if (prop.IsEither(nameof(BindingContext), nameof(EndThumbX)))
+                        me.TranslationX = this.EndThumbX;
+                }),
+        };
+
+        if (EnableRange)
+        {
+            // Extra vertical space so thumb drop-shadows are not clipped by the track container.
+            SliderHeight = CupertinoThumbDiameter + 8;
+            var thumbSize = CupertinoThumbDiameter + 4;
+
+            // Adjust end-thumb for shadow room and update selected-trail right-edge offset.
+            EndThumb.Top     = 2;
+            EndThumb.Left    = 6;
+            EndThumb.Padding = new Thickness(2);
+            SelectedTrail.ModifyXPosEnd = CupertinoThumbDiameter / 2 - 4;
+
+            StartThumb = new SliderThumb()
+            {
+                Tag     = "StartThumb",
+                UseCache = SkiaCacheType.Image,
+                Left    = -2,
+                Top     = 2,
+                Padding = new Thickness(2),
+                Children = new List<SkiaControl>()
+                {
+                    new SkiaShape()
+                    {
+                        BackgroundColor = ThumbColor,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        StrokeColor = new Color(0.8f, 0.8f, 0.8f),
+                        StrokeWidth = CupertinoThumbBorderWidth,
+                        Type = ShapeType.Circle,
+                        VerticalOptions = LayoutOptions.Fill,
+                        Shadows = new List<SkiaShadow>()
+                        {
+                            new SkiaShadow()
+                            {
+                                Blur = 3,
+                                Opacity = 0.2,
+                                X = 0,
+                                Y = 1,
+                                Color = Colors.Gray
+                            }
+                        }
+                    }
+                }
+            }
+            .Observe(() => Trail, (me, prop) =>
+            {
+                if (prop.IsEither(nameof(BindingContext), nameof(Height)))
+                {
+                    me.HeightRequest = thumbSize;
+                    me.WidthRequest  = thumbSize;
+                }
+            })
+            .Observe(this, (me, prop) =>
+            {
+                if (prop.IsEither(nameof(BindingContext), nameof(StartThumbX)))
+                    me.TranslationX = StartThumbX;
+            });
+
+            trailChildren.Insert(trailChildren.Count - 1, StartThumb);
+        }
+
         Children = new List<SkiaControl>()
         {
-            // Main track container
             new SkiaLayout
                 {
                     Tag = "Trail",
                     HeightRequest = SliderHeight,
                     HorizontalOptions = LayoutOptions.Fill,
-                    Children = new List<SkiaControl>()
-                    {
-                        // Unselected track (gray part)
-                        new SkiaShape()
-                        {
-                            BackgroundColor = TrackColor,
-                            HeightRequest = CupertinoTrackHeight,
-                            CornerRadius = CupertinoTrackHeight / 2, // Round corners (pill shape)
-                            HorizontalOptions = LayoutOptions.Fill,
-                            UseCache = SkiaCacheType.Operations,
-                            VerticalOptions = LayoutOptions.Center
-                        },
-
-                        // Selected track (iOS blue part)
-                        new SliderTrail()
-                            {
-                                Tag = "SelectedTrail",
-                                BackgroundColor = TrackSelectedColor,
-                                HeightRequest = CupertinoTrackHeight,
-                                CornerRadius = CupertinoTrackHeight / 2, // Round corners
-                                HorizontalOptions = LayoutOptions.Start,
-                                UseCache = SkiaCacheType.Operations,
-                                VerticalOptions = LayoutOptions.Center,
-                                ModifyXPosEnd = CupertinoThumbDiameter / 2,
-                                SideOffset = 0,
-                                XPos = 0,
-                            }.Assign(out SelectedTrail)
-                            .Observe(() => EndThumb, (me, prop) =>
-                            {
-                                if (prop.IsEither(nameof(BindingContext), nameof(TranslationX)))
-                                {
-                                    me.XPosEnd = EndThumb.TranslationX;
-                                }
-                            }),
-
-                        // iOS thumb (circular)
-                        new SliderThumb()
-                            {
-                                Tag = "EndThumb",
-                                UseCache = SkiaCacheType.Image,
-                                Children = new List<SkiaControl>()
-                                {
-                                    // Main thumb circle
-                                    new SkiaShape()
-                                    {
-                                        BackgroundColor = ThumbColor,
-                                        HorizontalOptions = LayoutOptions.Fill,
-                                        StrokeColor = new Color(0.8f, 0.8f, 0.8f), // Light gray border
-                                        StrokeWidth = CupertinoThumbBorderWidth,
-                                        Type = ShapeType.Circle,
-                                        VerticalOptions = LayoutOptions.Fill,
-                                        Shadows = new List<SkiaShadow>()
-                                        {
-                                            new SkiaShadow()
-                                            {
-                                                Blur = 3,
-                                                Opacity = 0.2,
-                                                X = 0,
-                                                Y = 1,
-                                                Color = Colors.Gray
-                                            }
-                                        }
-                                    }
-                                }
-                            }.Assign(out EndThumb)
-                            .Observe(() => Trail, (me, prop) =>
-                            {
-                                if (prop.IsEither(nameof(BindingContext), nameof(Height)))
-                                {
-                                    me.HeightRequest = CupertinoThumbDiameter;
-                                    me.WidthRequest = CupertinoThumbDiameter;
-                                }
-                            })
-                            .Observe(this, (me, prop) =>
-                            {
-                                if (prop.IsEither(nameof(BindingContext), nameof(EndThumbX)))
-                                {
-                                    me.TranslationX = this.EndThumbX;
-                                }
-                            }),
-                    }
+                    Children = trailChildren
                 }
                 .Observe(this, (me, prop) =>
                 {
                     if (prop.IsEither(nameof(BindingContext), nameof(SliderHeight)))
-                    {
                         me.HeightRequest = SliderHeight;
-                    }
                 })
                 .Assign(out Trail)
         };
@@ -353,7 +464,7 @@ public class SkiaSlider : SkiaLayout
         SelectedTrail.BackgroundColor = TrackSelectedColor;
         SelectedTrail.ModifyXPosEnd = CupertinoThumbDiameter / 2;
 
-        // Update the thumb size and border
+        // Update end thumb size and border
         EndThumb.HeightRequest = CupertinoThumbDiameter;
         EndThumb.WidthRequest = CupertinoThumbDiameter;
 
@@ -364,8 +475,22 @@ public class SkiaSlider : SkiaLayout
             thumbShape.BackgroundColor = ThumbColor;
         }
 
-        // Update the overall slider height to match the thumb
-        SliderHeight = CupertinoThumbDiameter;
+        // Update start thumb if range mode is active
+        if (StartThumb != null)
+        {
+            StartThumb.HeightRequest = CupertinoThumbDiameter;
+            StartThumb.WidthRequest = CupertinoThumbDiameter;
+
+            var startThumbShape = StartThumb.Children.FirstOrDefault(c => c is SkiaShape) as SkiaShape;
+            if (startThumbShape != null)
+            {
+                startThumbShape.StrokeWidth = CupertinoThumbBorderWidth;
+                startThumbShape.BackgroundColor = ThumbColor;
+            }
+        }
+
+        // Update the overall slider height (range mode needs extra room for shadows)
+        SliderHeight = EnableRange ? CupertinoThumbDiameter + 8 : CupertinoThumbDiameter;
         Trail.HeightRequest = SliderHeight;
 
         Invalidate();
@@ -927,6 +1052,18 @@ public class SkiaSlider : SkiaLayout
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
+
+        // EnableRange may be set after ControlStyle in an object initializer, which causes
+        // NeedInitialize to fire before EnableRange=true. Detect this and force a rebuild.
+        if (propertyName == nameof(EnableRange) && DefaultContentCreated)
+        {
+            Trail = null;
+            SelectedTrail = null;
+            EndThumb = null;
+            StartThumb = null;
+            ClearChildren();
+            DefaultContentCreated = false;
+        }
 
         if (UpdateCupertinoProperties(propertyName))
             return;
