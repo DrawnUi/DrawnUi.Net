@@ -122,6 +122,10 @@
     private float _measuredCanvasHeight;
     private bool _isBrowserFullscreen;
     private bool? _lastFullscreenRequest;
+    private float _reportedAutoCanvasWidth;
+    private float _reportedAutoCanvasHeight;
+    private bool _autoSizeRenderQueued;
+    private bool _isComputingIntrinsicAutoSize;
 
     private static readonly string ResizeModulePath = $"./_content/DrawnUi.Blazor.Core/drawnui-canvas-resize.js?v={System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
 
@@ -188,6 +192,8 @@
         {
             SetupRenderingLoop();
             await EnsureResizeObserverAsync();
+            _reportedAutoCanvasWidth = AutoCanvasWidth;
+            _reportedAutoCanvasHeight = AutoCanvasHeight;
         }
 
         if (CaptureInput)
@@ -318,6 +324,12 @@
                 return (float)Content.WidthRequest;
             }
 
+            var intrinsic = GetIntrinsicAutoCanvasSize();
+            if (intrinsic?.Units.Width > 0)
+            {
+                return intrinsic.Units.Width;
+            }
+
             if (Content?.MeasuredSize?.Units.Width > 0)
             {
                 return Content.MeasuredSize.Units.Width;
@@ -334,6 +346,12 @@
             if (Content?.HeightRequest > 0)
             {
                 return (float)Content.HeightRequest;
+            }
+
+            var intrinsic = GetIntrinsicAutoCanvasSize();
+            if (intrinsic?.Units.Height > 0)
+            {
+                return intrinsic.Units.Height;
             }
 
             if (Content?.MeasuredSize?.Units.Height > 0)
@@ -555,6 +573,8 @@
                 base.Draw(CreateContentContext(context.WithDestination(Destination)));
             }
         }
+
+        RequestAutoSizeHostLayoutRefresh();
     }
 
     protected virtual bool CenterSurface => false;
@@ -567,6 +587,83 @@
 
     private bool CanUseRequestedCanvasSize()
         => !_isBrowserFullscreen || KeepRequestedCanvasSizeInBrowserFullscreen;
+
+    private bool UsesAutoHostWidth => WidthRequest <= 0 && HorizontalOptions.Alignment != LayoutAlignment.Fill;
+
+    private bool UsesAutoHostHeight => HeightRequest <= 0 && VerticalOptions.Alignment != LayoutAlignment.Fill;
+
+    private void RequestAutoSizeHostLayoutRefresh()
+    {
+        if (_autoSizeRenderQueued || (!UsesAutoHostWidth && !UsesAutoHostHeight))
+        {
+            return;
+        }
+
+        var nextWidth = AutoCanvasWidth;
+        var nextHeight = AutoCanvasHeight;
+
+        var widthChanged = UsesAutoHostWidth && nextWidth > 1f && Math.Abs(nextWidth - _reportedAutoCanvasWidth) > 0.5f;
+        var heightChanged = UsesAutoHostHeight && nextHeight > 1f && Math.Abs(nextHeight - _reportedAutoCanvasHeight) > 0.5f;
+
+        if (!widthChanged && !heightChanged)
+        {
+            return;
+        }
+
+        _reportedAutoCanvasWidth = nextWidth;
+        _reportedAutoCanvasHeight = nextHeight;
+        _autoSizeRenderQueued = true;
+
+        _ = InvokeAsync(() =>
+        {
+            _autoSizeRenderQueued = false;
+            StateHasChanged();
+        });
+    }
+
+    private ScaledSize? GetIntrinsicAutoCanvasSize()
+    {
+        if (Content == null || _isComputingIntrinsicAutoSize)
+        {
+            return null;
+        }
+
+        var widthConstraint = GetIntrinsicWidthConstraint();
+        var heightConstraint = Content.HeightRequest > 0
+            ? (float)Content.HeightRequest
+            : float.PositiveInfinity;
+        var scale = RenderingScale > 0 ? RenderingScale : 1f;
+
+        try
+        {
+            _isComputingIntrinsicAutoSize = true;
+            return Content.Measure(widthConstraint, heightConstraint, scale);
+        }
+        finally
+        {
+            _isComputingIntrinsicAutoSize = false;
+        }
+    }
+
+    private float GetIntrinsicWidthConstraint()
+    {
+        if (Content?.WidthRequest > 0)
+        {
+            return (float)Content.WidthRequest;
+        }
+
+        if (Content?.MeasuredSize?.Units.Width > 0)
+        {
+            return Content.MeasuredSize.Units.Width;
+        }
+
+        if (_measuredCanvasWidth > 0)
+        {
+            return _measuredCanvasWidth;
+        }
+
+        return float.PositiveInfinity;
+    }
 
     public async ValueTask DisposeAsync()
     {

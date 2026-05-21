@@ -21,6 +21,7 @@
 
     public EditorsProbe()
     {
+ 
         _canvasContent = new SkiaScroll()
         {
             Orientation = ScrollOrientation.Vertical,
@@ -40,7 +41,7 @@
                     new SkiaLabel()
                     {
                         UseCache = SkiaCacheType.Operations,
-                        Text = "Single-line editor",
+                        Text = "Single-line",
                         FontSize = 18,
                         TextColor = Colors.Black,
                         HorizontalOptions = LayoutOptions.Fill,
@@ -56,13 +57,13 @@
                         FontSize = 16,
                         TextColor = Colors.Black,
                         CursorColor = Colors.Red,
-                        Text = "Single line text",
+                        Text = "Hello world!",
                     },
 
                     new SkiaLabel()
                     {
                         UseCache = SkiaCacheType.Operations,
-                        Text = "Multiline editor",
+                        Text = "Multiline",
                         FontSize = 18,
                         TextColor = Colors.Black,
                         HorizontalOptions = LayoutOptions.Fill,
@@ -72,14 +73,15 @@
                     {
                         UseCache = SkiaCacheType.Operations,
                         HorizontalOptions = LayoutOptions.Fill,
-                        MaxLines = 4,
+                        MaxLines = 6,
                         BackgroundColor = Colors.DarkBlue,
                         Padding = new Thickness(8),
                         FontSize = 16,
                         TextColor = Colors.Yellow,
                         CursorColor = Colors.White,
-                        Text = "First line\nSecond line\nThird line\n4\n5\n6",
+                        Text = "First line\nSecond line\nThird line\nFourth line\nFifth line\nSixth line",
                     },
+ 
                 }
             }
         };

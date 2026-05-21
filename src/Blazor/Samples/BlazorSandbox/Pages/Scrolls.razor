@@ -12,7 +12,6 @@
 
     <div class="docs-example-frame">
         <Canvas Content="_canvasContent" WidthRequest="360"
-                HeightRequest="364"
                 BackgroundColor="#F6F0E6"
                 Margin="0,8,0,0"
                 Gestures="@GesturesMode.Enabled"
@@ -39,11 +38,11 @@ var scroll = new SkiaScroll()
         var content = new SkiaLayout()
         {
             Type = LayoutType.Column,
-            Spacing = 10,
-            Padding = new Thickness(12, 8, 12, 12)
+            Spacing = 14,
+            Padding = new Thickness(12, 64, 12, 20)
         };
 
-        for (var index = 0; index < 7; index++)
+        for (var index = 0; index < 6; index++)
         {
             content.AddSubView(CreateCard(index));
         }
@@ -51,24 +50,74 @@ var scroll = new SkiaScroll()
         var scroll = new SkiaScroll()
         {
             WidthRequest = 292,
-            HeightRequest = 220,
-            BackgroundColor = Colors.White,
+            HeightRequest = 236,
+            BackgroundColor = new Color(0.988f, 0.985f, 0.973f, 1f),
             HeaderSticky = true,
             HorizontalOptions = LayoutOptions.Center,
             Header = new SkiaShape()
             {
-                HeightRequest = 40,
-                BackgroundColor = new Color(0.157f, 0.278f, 0.420f, 1f),
+                WidthRequest = 292,
+                HeightRequest = 56,
+                CornerRadius = 20,
+                BackgroundColor = new Color(0.118f, 0.180f, 0.286f, 1f),
                 Children =
                 {
-                    new SkiaLabel()
+                    new SkiaLayout()
                     {
-                        Text = "Sticky header",
-                        FontFamily = "FontTextTitle",
-                        FontSize = 16,
-                        TextColor = Colors.White,
-                        HorizontalOptions = LayoutOptions.Center,
-                        VerticalOptions = LayoutOptions.Center
+                        Padding = new Thickness(16, 10, 16, 14),
+                        Type = LayoutType.Row,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        VerticalOptions = LayoutOptions.Fill,
+                        Children =
+                        {
+                            new SkiaLayout()
+                            {
+                                Type = LayoutType.Column,
+                                Spacing = 1,
+                                HorizontalOptions = LayoutOptions.Fill,
+                                VerticalOptions = LayoutOptions.Center,
+                                Children =
+                                {
+                                    new SkiaLabel()
+                                    {
+                                        Text = "Sticky header",
+                                        FontFamily = "FontTextTitle",
+                                        FontSize = 15,
+                                        TextColor = Colors.White,
+                                        HorizontalOptions = LayoutOptions.Fill
+                                    },
+                                    new SkiaLabel()
+                                    {
+                                        Text = "Keeps the feed anchored.",
+                                        FontFamily = "FontText",
+                                        FontSize = 11,
+                                        TextColor = new Color(0.831f, 0.867f, 0.925f, 1f),
+                                        HorizontalOptions = LayoutOptions.Fill
+                                    }
+                                }
+                            },
+                            new SkiaShape()
+                            {
+                                WidthRequest = 42,
+                                HeightRequest = 24,
+                                Type = ShapeType.Rectangle,
+                                CornerRadius = 99,
+                                BackgroundColor = new Color(0.220f, 0.435f, 0.710f, 1f),
+                                VerticalOptions = LayoutOptions.Center,
+                                Children =
+                                {
+                                    new SkiaLabel()
+                                    {
+                                        Text = "Live",
+                                        FontFamily = "FontTextTitle",
+                                        FontSize = 11,
+                                        TextColor = Colors.White,
+                                        HorizontalOptions = LayoutOptions.Center,
+                                        VerticalOptions = LayoutOptions.Center
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -79,8 +128,7 @@ var scroll = new SkiaScroll()
         {
             Margin = new Thickness(16),
             WidthRequest = 328,
-            HeightRequest = 332,
-            Padding = new Thickness(18),
+            Padding = new Thickness(20),
             BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
             Type = LayoutType.Column,
             Spacing = 12,
@@ -108,10 +156,27 @@ var scroll = new SkiaScroll()
             new Color(0.922f, 0.961f, 0.929f, 1f)
         };
 
+        var accents = new[]
+        {
+            new Color(0.208f, 0.447f, 0.761f, 1f),
+            new Color(0.812f, 0.427f, 0.216f, 1f),
+            new Color(0.224f, 0.522f, 0.365f, 1f)
+        };
+
+        var titles = new[]
+        {
+            "Diagnostics feed",
+            "Pinned surface",
+            "Touch telemetry",
+            "Runtime notes",
+            "Viewport audit",
+            "Gesture summary"
+        };
+
         return new SkiaShape()
         {
             WidthRequest = 252,
-            HeightRequest = 74,
+            HeightRequest = 82,
             Type = ShapeType.Rectangle,
             CornerRadius = 16,
             BackgroundColor = shades[index % shades.Length],
@@ -120,26 +185,45 @@ var scroll = new SkiaScroll()
             {
                 new SkiaLayout()
                 {
-                    Padding = new Thickness(14, 12),
+                    Padding = new Thickness(14, 12, 14, 14),
                     Type = LayoutType.Column,
-                    Spacing = 4,
+                    Spacing = 6,
                     Children =
                     {
-                        new SkiaLabel()
+                        new SkiaLayout()
                         {
-                            Text = $"Row {index + 1}",
-                            FontFamily = "FontTextTitle",
-                            FontSize = 16,
-                            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
-                            HorizontalOptions = LayoutOptions.Fill
+                            Type = LayoutType.Row,
+                            Spacing = 8,
+                            Children =
+                            {
+                                new SkiaShape()
+                                {
+                                    WidthRequest = 30,
+                                    HeightRequest = 6,
+                                    Type = ShapeType.Rectangle,
+                                    CornerRadius = 99,
+                                    BackgroundColor = accents[index % accents.Length],
+                                    VerticalOptions = LayoutOptions.Center
+                                },
+                                new SkiaLabel()
+                                {
+                                    Text = titles[index % titles.Length],
+                                    FontFamily = "FontTextTitle",
+                                    FontSize = 15,
+                                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                                    HorizontalOptions = LayoutOptions.Fill,
+                                    VerticalOptions = LayoutOptions.Center
+                                }
+                            }
                         },
                         new SkiaLabel()
                         {
                             Text = "Reusable for long drawn feeds, settings pages, or custom list content.",
                             FontFamily = "FontText",
-                            FontSize = 12,
+                            FontSize = 11,
                             TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
-                            HorizontalOptions = LayoutOptions.Fill
+                            HorizontalOptions = LayoutOptions.Fill,
+                            WidthRequest = 214
                         }
                     }
                 }

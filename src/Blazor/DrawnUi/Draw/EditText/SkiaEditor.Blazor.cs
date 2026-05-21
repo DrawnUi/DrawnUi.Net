@@ -75,6 +75,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
         var shift = KeyboardManager.IsShiftPressed;
         var ctrl = KeyboardManager.IsControlPressed;
+        var alt = KeyboardManager.IsAltPressed;
 
         switch (key)
         {
@@ -85,7 +86,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
                 StubDelete();
                 break;
             case InputKey.Enter:
-                StubPressEnter();
+                StubPressEnter(alt);
                 break;
             case InputKey.ArrowLeft:
                 StubMoveCursor(-1, shift);
@@ -129,17 +130,18 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
         if (string.IsNullOrEmpty(value))
             return;
-        ReplaceSelection(NormalizeLineBreaks(value));
+        ReplaceSelection(value);
     }
 
-    public void StubPressEnter()
+    public void StubPressEnter(bool splitLine = false)
     {
         if (IsMultiline)
         {
-            ReplaceSelection("\n");
+            ReplaceSelection(GetEditorBreakText(splitLine));
             return;
         }
-        Submit();
+
+        ExecuteSubmit(clearFocus: false);
     }
 
     public void StubBackspace(int count = 1)
@@ -284,7 +286,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         var text = Text ?? string.Empty;
         var selectionStart = Math.Clamp(CursorPosition, 0, text.Length);
         var selectionLength = Math.Clamp(SelectionLength, 0, text.Length - selectionStart);
-        var normalized = NormalizeLineBreaks(insertedText);
+        var normalized = NormalizeEditorInput(insertedText);
 
         Text = text.Remove(selectionStart, selectionLength).Insert(selectionStart, normalized);
         _suppressImmediateCursorMove = true;
@@ -293,7 +295,4 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         _stubSelectionStop = -1;
         DeferVisualCursorUpdate();
     }
-
-    private static string NormalizeLineBreaks(string? value)
-        => value?.Replace("\r\n", "\n", StringComparison.Ordinal).Replace('\r', '\n') ?? string.Empty;
 }

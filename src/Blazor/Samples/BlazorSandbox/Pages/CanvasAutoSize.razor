@@ -12,41 +12,47 @@
     <pre class="docs-code"><code>@CanvasSnippet</code></pre>
 </div>
 
-<Canvas 
-        Content="_canvasContent"
-        BackgroundColor="#F7F3EA"
-        Margin="0,16,0,16"
-        Gestures="@GesturesMode.Enabled" />
+<Canvas
+    Content="_canvasContent"
+    BackgroundColor="#F7F3EA"
+    Margin="0,16,0,16"
+    Gestures="@GesturesMode.Enabled"/>
 
 @code {
+
     private const string CanvasSnippet = """
-<Canvas Content="_canvasContent" BackgroundColor="#F7F3EA"
-    Margin="0,16,0,16"
-    Gestures="@GesturesMode.Enabled"
-    Content="@_autoButton" />
-""";
+                                         <Canvas Content="_canvasContent" BackgroundColor="#F7F3EA"
+                                             Margin="0,16,0,16"
+                                             Gestures="@GesturesMode.Enabled"
+                                             Content="@_autoButton" />
+                                         """;
 
     private SkiaControl _canvasContent;
 
     public CanvasAutoSize()
     {
-        _canvasContent = new SkiaButton("Tap the real SkiaButton")
-        {
-            WidthRequest = 228,
-            HeightRequest = 48,
-            BackgroundColor = new Color(0.188f, 0.478f, 0.827f, 1f),
-            TextColor = Colors.White,
-            CornerRadius = 12,
-            Padding = new Thickness(16, 8),
-        }.OnTapped(me =>
-        {
-            me.Text = me.Text == "Tap the real SkiaButton"
-                ? "The button is alive"
-                : "Tap the real SkiaButton";
-
-            _ = InvokeAsync(StateHasChanged);
-        });
-
-   
+        _canvasContent =
+            new SkiaStack
+            {
+                //HorizontalOptions = LayoutOptions.Fill,
+                Children =
+                {
+                    new SkiaButton("Tap the real SkiaButton")
+                    {
+                        WidthRequest = 228,
+                        HeightRequest = 48,
+                        BackgroundColor = new Color(0.188f, 0.478f, 0.827f, 1f),
+                        TextColor = Colors.White,
+                        CornerRadius = 12,
+                        Padding = new Thickness(16, 8),
+                    }.OnTapped(me =>
+                    {
+                        me.Text = me.Text == "Tap the real SkiaButton"
+                            ? "The button is alive"
+                            : "Tap the real SkiaButton";
+                    })
+                }
+            };
     }
+
 }

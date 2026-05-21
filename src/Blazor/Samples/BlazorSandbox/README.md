@@ -68,3 +68,7 @@ The homepage in this sample was verified in the browser after this layout fix:
 - `main` stretches to the viewport height.
 - `article.content` stretches to the remaining height under the top row.
 - The DrawnUI host fills the remaining vertical space without changing `Pages/Home.razor`.
+
+## Credits
+
+Sprites for SpaceShooter sample: ICT MOO space ships sprites come under the Apache 2.0 license.
