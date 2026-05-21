@@ -1,0 +1,83 @@
+@page "/pong"
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>Pong</PageTitle>
+
+<div class="docs-page">
+    <h1>Pong</h1>
+    <p class="docs-lead">Simple Pong example in C# running on browser canvas, you could also make this run on mobile and desktop SkiaSharp canvas with .NET MAUI, by storing game UI/logic in a shared project. 
+        Example: <a href='https://github.com/taublast/DrawnUi.Breakout' target='_blank'>Bricks Breaker on github</a>.</p>
+    </div>
+
+<FullscreenToggleBar
+    IsFullscreen="@_isFullscreen"
+    IsFullscreenChanged="OnFullscreenChanged" />
+
+<AspectLockedViewportHost
+    AspectWidth="@ViewportWidth"
+    AspectHeight="@ViewportHeight"
+    BackgroundColor="#0A0F1E"
+    IsFullscreen="@_isFullscreen"
+    EmbeddedMargin="12px auto 0"
+    FitVisibleHeight="true">
+
+    <AspectLockedCanvas
+        @ref="_canvas"
+        Content="_canvasContent"
+        LogicalWidth="@ViewportWidth"
+        LogicalHeight="@ViewportHeight"
+        HorizontalOptions="LayoutOptions.Fill"
+        VerticalOptions="LayoutOptions.Fill"
+        BackgroundColor="#0A0F1E"
+        UpdateMode="@UpdateModeType.Constant"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Enabled"
+        IsFullscreen="@_isFullscreen"
+        IsFullscreenChanged="OnFullscreenChanged" />
+
+</AspectLockedViewportHost>
+
+@code {
+    private const float ViewportWidth = global::Pong.Game.PongGame.WIDTH;
+    private const float ViewportHeight = global::Pong.Game.PongGame.HEIGHT;
+
+    private readonly SkiaControl _canvasContent;
+    private AspectLockedCanvas _canvas;
+    private bool _isFullscreen;
+
+    public PongPage()
+    {
+        _canvasContent = new SkiaLayer()
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new global::Pong.Game.PongGame()
+                {
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                },
+                new SkiaLabelFps()
+                {
+                    UseCache = SkiaCacheType.GPU,
+                    Margin = new(0, 0, 4, 24),
+                    VerticalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.End,
+                    Rotation = -45,
+                    BackgroundColor = Colors.DarkRed,
+                    TextColor = Colors.White,
+                    ZIndex = 110,
+                }
+            }
+        };
+    }
+
+    private Task OnFullscreenChanged(bool isFullscreen)
+    {
+        _isFullscreen = isFullscreen;
+        _canvas?.InvalidateChildren();
+        return Task.CompletedTask;
+    }
+}

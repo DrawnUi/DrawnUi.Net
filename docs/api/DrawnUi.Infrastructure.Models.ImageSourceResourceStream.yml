@@ -16,11 +16,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Internals/Models/ImageSourceResourceStream.cs
-      branch: dev
+      path: src/Shared/Draw/Images/ImageSourceResourceStream.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageSourceResourceStream
-    path: ../src/Maui/DrawnUi/Internals/Models/ImageSourceResourceStream.cs
+    path: ../src/Shared/Draw/Images/ImageSourceResourceStream.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -138,11 +138,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Internals/Models/ImageSourceResourceStream.cs
-      branch: dev
+      path: src/Shared/Draw/Images/ImageSourceResourceStream.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Resource
-    path: ../src/Maui/DrawnUi/Internals/Models/ImageSourceResourceStream.cs
+    path: ../src/Shared/Draw/Images/ImageSourceResourceStream.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -167,11 +167,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Internals/Models/ImageSourceResourceStream.cs
-      branch: dev
+      path: src/Shared/Draw/Images/ImageSourceResourceStream.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Url
-    path: ../src/Maui/DrawnUi/Internals/Models/ImageSourceResourceStream.cs
+    path: ../src/Shared/Draw/Images/ImageSourceResourceStream.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui

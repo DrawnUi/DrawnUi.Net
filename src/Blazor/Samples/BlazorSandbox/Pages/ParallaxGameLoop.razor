@@ -1,0 +1,102 @@
+@page "/parallax-gameloop"
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>Parallax Game Loop</PageTitle>
+
+<div class="docs-page">
+    <h1>Parallax Game Etude</h1>
+    <p class="docs-lead">Write games with C# to run on the web with Blazor Canvas, and mobile and desktop with .NET MAUI Canvas. Below is a simple parallax game loop with gestures and keyboard support.
+      </p>
+    <p class="docs-note">
+        A complete sample with audio on every platform, localizations and much more is provided externally with
+        Brick Breaker (<a href='https://github.com/taublast/DrawnUi.Breakout'>full source code</a>), <a href=''>try in browser</a>, published <a href='https://play.google.com/store/apps/details?id=com.appomobi.drawnui.breakout'>for Android</a> and <a href='https://apps.apple.com/us/app/bricks-breaker/id6749823869?platform=iphone'>for iOS</a>.
+    </p>
+</div>
+
+<FullscreenToggleBar
+    IsFullscreen="@_isFullscreen"
+    IsFullscreenChanged="OnFullscreenChanged" />
+
+<AspectLockedViewportHost
+    AspectWidth="@ViewportWidth"
+    AspectHeight="@ViewportHeight"
+    BackgroundColor="#060A12"
+    IsFullscreen="@_isFullscreen">
+
+    <AspectLockedCanvas @ref="_canvas"
+        Content="_canvasContent"
+        LogicalWidth="@ViewportWidth"
+        LogicalHeight="@ViewportHeight"
+        HorizontalOptions="LayoutOptions.Fill"
+        VerticalOptions="LayoutOptions.Fill"
+        BackgroundColor="#060A12"
+        UpdateMode="@UpdateModeType.Constant"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Enabled"
+        IsFullscreen="@_isFullscreen"
+        IsFullscreenChanged="OnFullscreenChanged" />
+        
+</AspectLockedViewportHost>
+
+@code {
+    private const float ViewportWidth = 940f;
+    private const float ViewportHeight = 430f;
+
+    private readonly SkiaControl _canvasContent;
+    private readonly SkiaControl _stage;
+    private AspectLockedCanvas _canvas;
+    private bool _isFullscreen;
+
+    public ParallaxGameLoop()
+    {
+        _stage = new global::ParallaxGameLoop.Game.ParallaxGame()
+        {
+            WidthRequest = ViewportWidth,
+            HeightRequest = ViewportHeight,
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Start,
+        };
+
+        _canvasContent = new SkiaLayer()
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            BackgroundColor = Colors.Black,
+            Children =
+            {
+                new SkiaLayer()
+                {
+                    WidthRequest = ViewportWidth,
+                    HeightRequest = ViewportHeight,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    IsClippedToBounds = true,
+                    Children =
+                    {
+                        _stage,
+                    }
+                },
+                new SkiaLabelFps()
+                {
+                    UseCache = SkiaCacheType.GPU,
+                    Margin = new (0, 0, 4, 24),
+                    VerticalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.End,
+                    Rotation = -45,
+                    BackgroundColor = Colors.DarkRed,
+                    TextColor = Colors.White,
+                    ZIndex = 110,
+                }
+            }
+        };
+    }
+
+    private Task OnFullscreenChanged(bool isFullscreen)
+    {
+        _isFullscreen = isFullscreen;
+        _canvas?.InvalidateChildren();
+        return Task.CompletedTask;
+    }
+
+}

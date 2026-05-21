@@ -1,0 +1,53 @@
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<Canvas Content="@Content"
+        RootControl="@RootControl"
+        Width="@Width"
+        WidthRequest="@WidthRequest"
+    MaximumWidthRequest="@MaximumWidthRequest"
+        Height="@Height"
+        HeightRequest="@HeightRequest"
+        Alt="@Alt"
+        Style="@Style"
+    BackgroundColor="@BackgroundColor"
+    FrameFormat="@FrameFormat"
+    JpegQuality="@JpegQuality" />
+
+@code {
+    [Parameter]
+    public SkiaControl? Content { get; set; }
+
+    [Parameter]
+    public SkiaControl? RootControl { get; set; }
+
+    [Parameter]
+    public int Width { get; set; } = 400;
+
+    [Parameter]
+    public int? WidthRequest { get; set; }
+
+    [Parameter]
+    public int? MaximumWidthRequest { get; set; }
+
+    [Parameter]
+    public int? Height { get; set; }
+
+    [Parameter]
+    public int? HeightRequest { get; set; }
+
+    [Parameter]
+    public string Alt { get; set; } = "DrawnUI server-rendered content";
+
+    [Parameter]
+    public string Style { get; set; } = "display:block; max-width:100%;";
+
+    [Parameter]
+    public Color BackgroundColor { get; set; } = Colors.Transparent;
+
+    [Parameter]
+    public DrawnUiServerFrameFormat FrameFormat { get; set; } = DrawnUiServerFrameFormat.Jpeg;
+
+    [Parameter]
+    public int JpegQuality { get; set; } = 85;
+}

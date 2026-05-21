@@ -17,11 +17,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CellWIthHeight
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -56,11 +56,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -90,11 +90,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -119,11 +119,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: view
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui

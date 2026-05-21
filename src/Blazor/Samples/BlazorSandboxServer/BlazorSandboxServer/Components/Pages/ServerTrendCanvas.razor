@@ -1,0 +1,359 @@
+@using DrawnUi
+@using DrawnUi.Draw
+@using DrawnUi.Views
+@using SkiaSharp
+@implements IDisposable
+
+<Canvas Content="@BuildCanvasContent()"
+		WidthRequest="560"
+		HeightRequest="258"
+		BackgroundColor="@CanvasBackgroundColor"
+		FrameFormat="@FrameFormat"
+		JpegQuality="@JpegQuality"
+		Alt="Server-rendered dashboard chart tile" />
+
+@code {
+	[Parameter] public double UpdateIntervalSeconds { get; set; } = 1.25;
+	[Parameter] public DrawnUiServerFrameFormat FrameFormat { get; set; } = DrawnUiServerFrameFormat.Jpeg;
+	[Parameter] public int JpegQuality { get; set; } = 85;
+
+	private const int CanvasWidth = 560;
+	private const int CanvasHeight = 258;
+	private static readonly Color CanvasBackgroundColor = new(0.082f, 0.118f, 0.192f, 1f);
+	private const double MarkerRadius = 7;
+	private const int PointCount = 16;
+	private const double PlotWidth = 512;
+	private const double PlotHeight = 190;
+	private readonly List<double> throughputHistory = new(PointCount);
+	private static readonly Color SurfaceColor = new(0.086f, 0.11f, 0.176f, 1f);
+	private static readonly Color PlotColor = new(0.11f, 0.141f, 0.216f, 1f);
+	private static readonly Color GridColor = new(0.267f, 0.341f, 0.498f, 0.7f);
+	private static readonly Color TitleColor = new(0.949f, 0.969f, 1f, 1f);
+	private static readonly Color BodyColor = new(0.576f, 0.651f, 0.839f, 1f);
+	private static readonly Color LineColor = new(0.973f, 0.604f, 0.188f, 1f);
+	private static readonly Color BarColor = new(0.227f, 0.478f, 0.945f, 0.34f);
+	private static readonly Color BarHighlightColor = new(0.341f, 0.741f, 0.984f, 0.72f);
+	private CancellationTokenSource? loopCancellation;
+	private PeriodicTimer? loopTimer;
+	private int tick;
+	private int throughputPerMinute;
+	private double queueLagMs;
+	private string cadence = string.Empty;
+
+	protected override void OnInitialized()
+	{
+		SeedHistory();
+		UpdateSnapshot(addNewSample: false);
+		loopCancellation = new CancellationTokenSource();
+		loopTimer = new PeriodicTimer(TimeSpan.FromSeconds(UpdateIntervalSeconds));
+		_ = RunLoopAsync(loopTimer, loopCancellation.Token);
+	}
+
+	private async Task RunLoopAsync(PeriodicTimer timer, CancellationToken cancellationToken)
+	{
+		try
+		{
+			while (await timer.WaitForNextTickAsync(cancellationToken))
+			{
+				tick++;
+				UpdateSnapshot(addNewSample: true);
+				await InvokeAsync(StateHasChanged);
+			}
+		}
+		catch (OperationCanceledException)
+		{
+		}
+	}
+
+	private void SeedHistory()
+	{
+		throughputHistory.Clear();
+		for (var index = 0; index < PointCount; index++)
+		{
+			throughputHistory.Add(GetSample(index - PointCount + 1));
+		}
+	}
+
+	private void UpdateSnapshot(bool addNewSample)
+	{
+		var sample = GetSample(tick);
+		if (addNewSample)
+		{
+			if (throughputHistory.Count == PointCount)
+			{
+				throughputHistory.RemoveAt(0);
+			}
+
+			throughputHistory.Add(sample);
+		}
+
+		throughputPerMinute = 820 + (int)Math.Round(sample * 220);
+		queueLagMs = 126 + (1 - sample) * 94 + 10 * Math.Abs(Math.Sin(tick * 0.33));
+		cadence = $"This chart refreshes every {UpdateIntervalSeconds:0.##}s";
+	}
+
+	private SkiaControl BuildCanvasContent()
+	{
+		return new SkiaShape()
+		{
+			WidthRequest = CanvasWidth,
+			HeightRequest = CanvasHeight,
+			Type = ShapeType.Rectangle,
+			CornerRadius = 20,
+			BackgroundColor = SurfaceColor,
+			Padding = new Thickness(16),
+			Children =
+			{
+				new SkiaLayout()
+				{
+					Type = LayoutType.Column,
+					Spacing = 12,
+					Children =
+					{
+						new SkiaLayout()
+						{
+							Type = LayoutType.Row,
+							Spacing = 12,
+							Children =
+							{
+								new SkiaLayout()
+								{
+									WidthRequest = 340,
+									Type = LayoutType.Column,
+									Spacing = 2,
+									Children =
+									{
+										new SkiaLabel()
+										{
+											Text = "Throughput trend",
+											FontSize = 18,
+											FontAttributes = FontAttributes.Bold,
+											TextColor = TitleColor
+										},
+										new SkiaLabel()
+										{
+											Text = cadence,
+											FontSize = 12,
+											TextColor = BodyColor
+										}
+									}
+								},
+								CreateChip($"{throughputPerMinute}/min"),
+								CreateChip($"{queueLagMs:0} ms lag")
+							}
+						},
+						CreatePlotSurface()
+					}
+				}
+			}
+		};
+	}
+
+	private SkiaControl CreateChip(string text)
+	{
+		return new SkiaShape()
+		{
+			WidthRequest = 92,
+			HeightRequest = 34,
+			Type = ShapeType.Rectangle,
+			CornerRadius = 12,
+			BackgroundColor = PlotColor,
+			Padding = new Thickness(10, 8),
+			Children =
+			{
+				new SkiaLabel()
+				{
+					Text = text,
+					FontSize = 11,
+					FontAttributes = FontAttributes.Bold,
+					TextColor = TitleColor
+				}
+			}
+		};
+	}
+
+	private SkiaControl CreatePlotSurface()
+	{
+		const double padding = 12;
+		var plotWidth = PlotWidth - padding * 2;
+		var plotHeight = PlotHeight - padding * 2;
+		var surface = new SkiaShape()
+		{
+			WidthRequest = PlotWidth,
+			HeightRequest = PlotHeight,
+			Type = ShapeType.Rectangle,
+			CornerRadius = 16,
+			BackgroundColor = PlotColor,
+			Children =
+			{
+				new SkiaLayout()
+				{
+					Type = LayoutType.Absolute,
+					HorizontalOptions = LayoutOptions.Fill,
+					VerticalOptions = LayoutOptions.Fill
+				}
+			}
+		};
+
+		var absolute = (SkiaLayout)surface.Children[0];
+		absolute.AddSubView(CreateGridLine(plotWidth, padding, 0.15));
+		absolute.AddSubView(CreateGridLine(plotWidth, padding, 0.45));
+		absolute.AddSubView(CreateGridLine(plotWidth, padding, 0.75));
+
+		for (var index = 0; index < throughputHistory.Count; index++)
+		{
+			absolute.AddSubView(CreateBar(index, throughputHistory[index], plotHeight, padding));
+		}
+
+		var plotPoints = BuildPlotPoints(plotWidth, plotHeight);
+
+		absolute.AddSubView(CreateTrendPathOverlay(plotPoints, plotWidth, plotHeight, padding));
+		absolute.AddSubView(CreateMarker(plotPoints[^1], padding));
+		return surface;
+	}
+
+	private SkiaControl CreateGridLine(double plotWidth, double padding, double yRatio)
+	{
+		return new SkiaShape()
+		{
+			Type = ShapeType.Rectangle,
+			WidthRequest = plotWidth,
+			HeightRequest = 1,
+			BackgroundColor = GridColor,
+			Margin = new Thickness(padding, padding + yRatio * (PlotHeight - padding * 2), 0, 0)
+		};
+	}
+
+	private SkiaControl CreateBar(int index, double value, double plotHeight, double padding)
+	{
+		const double barWidth = 20;
+		const double barGap = 11;
+		var barHeight = 18 + value * (plotHeight - 26);
+		var x = padding + 8 + index * (barWidth + barGap);
+		var y = padding + plotHeight - barHeight;
+
+		return new SkiaShape()
+		{
+			Type = ShapeType.Rectangle,
+			WidthRequest = barWidth,
+			HeightRequest = barHeight,
+			CornerRadius = 6,
+			BackgroundColor = index == throughputHistory.Count - 1 ? BarHighlightColor : BarColor,
+			Margin = new Thickness(x, y, 0, 0)
+		};
+	}
+
+	private SkiaControl CreateTrendPathOverlay(IReadOnlyList<SKPoint> points, double plotWidth, double plotHeight, double padding)
+	{
+		return new SkiaControl()
+		{
+			WidthRequest = plotWidth,
+			HeightRequest = plotHeight,
+			Margin = new Thickness(padding, padding, 0, 0)
+		}.WhenPaint((_, ctx) => DrawTrendPath(ctx, points));
+	}
+
+	private void DrawTrendPath(DrawingContext ctx, IReadOnlyList<SKPoint> points)
+	{
+		if (points.Count < 2)
+		{
+			return;
+		}
+
+		using var path = CreateSplinePath(points, ctx.Destination.Left, ctx.Destination.Top);
+		using var paint = new SKPaint()
+		{
+			IsAntialias = true,
+			Style = SKPaintStyle.Stroke,
+			StrokeWidth = 4,
+			StrokeCap = SKStrokeCap.Round,
+			StrokeJoin = SKStrokeJoin.Round,
+			Color = LineColor.ToSKColor()
+		};
+
+		ctx.Context.Canvas.DrawPath(path, paint);
+	}
+
+	private SkiaControl CreateMarker(SKPoint point, double padding)
+	{
+		return new SkiaShape()
+		{
+			Type = ShapeType.Circle,
+			WidthRequest = MarkerRadius * 2,
+			HeightRequest = MarkerRadius * 2,
+			BackgroundColor = LineColor,
+			StrokeColor = TitleColor,
+			StrokeWidth = 2,
+			Margin = new Thickness(padding + point.X - MarkerRadius, padding + point.Y - MarkerRadius, 0, 0)
+		};
+	}
+
+	private IReadOnlyList<SKPoint> BuildPlotPoints(double plotWidth, double plotHeight)
+	{
+		var min = throughputHistory.Min();
+		var max = throughputHistory.Max();
+		var span = Math.Max(0.001, max - min);
+		var points = new List<SKPoint>(throughputHistory.Count);
+
+		for (var index = 0; index < throughputHistory.Count; index++)
+		{
+			var x = throughputHistory.Count == 1
+				? 0
+				: index * plotWidth / (throughputHistory.Count - 1);
+			var normalized = (throughputHistory[index] - min) / span;
+			var y = (0.86 - normalized * 0.68) * plotHeight;
+			points.Add(new SKPoint((float)x, (float)y));
+		}
+
+		return points;
+	}
+
+	private static SKPath CreateSplinePath(IReadOnlyList<SKPoint> points, float offsetX, float offsetY)
+	{
+		var path = new SKPathBuilder();
+		path.MoveTo(offsetX + points[0].X, offsetY + points[0].Y);
+
+		for (var index = 0; index < points.Count - 1; index++)
+		{
+			var p0 = index > 0 ? points[index - 1] : points[index];
+			var p1 = points[index];
+			var p2 = points[index + 1];
+			var p3 = index + 2 < points.Count ? points[index + 2] : points[index + 1];
+
+			var control1 = new SKPoint(
+				p1.X + (p2.X - p0.X) / 6f,
+				p1.Y + (p2.Y - p0.Y) / 6f);
+
+			var control2 = new SKPoint(
+				p2.X - (p3.X - p1.X) / 6f,
+				p2.Y - (p3.Y - p1.Y) / 6f);
+
+			path.CubicTo(
+				offsetX + control1.X,
+				offsetY + control1.Y,
+				offsetX + control2.X,
+				offsetY + control2.Y,
+				offsetX + p2.X,
+				offsetY + p2.Y);
+		}
+
+		return path.Detach();
+	}
+
+	private static double GetSample(int currentTick)
+	{
+		var wave = 0.58
+			+ 0.18 * Math.Sin(currentTick * 0.55)
+			+ 0.09 * Math.Cos(currentTick * 0.23)
+			+ 0.05 * Math.Sin(currentTick * 0.91);
+
+		return Math.Clamp(wave, 0.22, 0.94);
+	}
+
+	public void Dispose()
+	{
+		loopCancellation?.Cancel();
+		loopTimer?.Dispose();
+		loopCancellation?.Dispose();
+	}
+}

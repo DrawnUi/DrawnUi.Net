@@ -2,11 +2,11 @@
 
     <PropertyGroup>
 
-        <!--<TargetFrameworks>net9.0-windows10.0.19041.0</TargetFrameworks>-->
-        <!--<TargetFrameworks>net9.0-android</TargetFrameworks>-->
+        <!--<TargetFrameworks>net10.0-windows10.0.19041.0</TargetFrameworks>-->
+        <!--<TargetFrameworks>net10.0-android</TargetFrameworks>-->
 
-        <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
+        <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
         
         <ApplicationId>com.drawnioui.repro</ApplicationId>
         <ApplicationIdGuid>330e66b0-efc2-4fde-9ac8-074d5c3299b3</ApplicationIdGuid>
@@ -17,7 +17,7 @@
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
         
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <!--<AllowUnsafeBlocks>true</AllowUnsafeBlocks>-->
 
     </PropertyGroup>
 
@@ -120,13 +120,9 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-        <!--<PackageReference Include="DrawnUi.Maui" Version="1.6.2.5" />-->
-	</ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\..\..\DrawnUi.Maui.Camera\src\Lib\DrawnUi.Maui.Camera.csproj" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Maui.DevFlow.Agent" Version="0.1.0-preview.7.26229.11" />
 	</ItemGroup>
 
     <ItemGroup>
@@ -152,11 +148,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <MauiXaml Update="TestRandom.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </MauiXaml>
+      <ProjectReference Include="..\..\DrawnUi\DrawnUi.Maui.csproj" />
     </ItemGroup>
-
+ 
 
  
 </Project>

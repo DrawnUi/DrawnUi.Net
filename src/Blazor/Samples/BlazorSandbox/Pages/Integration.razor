@@ -1,0 +1,186 @@
+@page "/integration"
+@using DrawnUi
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>Integration</PageTitle>
+
+<div class="docs-page">
+    <h1>Integration</h1>
+    <p class="docs-lead">This page now shows the same interaction flow twice: once with standard Blazor controls and once with DrawnUI controls hosted in the sandbox canvas.</p>
+    <p class="docs-note">Both sections use the same backing fields. Tapping either set of buttons should keep the HTML labels and the DrawnUI labels in sync.</p>
+
+    <div class="docs-example-frame" style="padding: 24px; margin-top: 16px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px;">
+            <button class="btn btn-primary" @onclick="OnIncrementClicked">Increment</button>
+            <button class="btn btn-secondary" @onclick="OnResetClicked">Reset</button>
+            <button class="btn btn-outline-dark" @onclick="OnToggleClicked">Toggle Message</button>
+        </div>
+
+        <p><strong>Clicks:</strong> @clickCount</p>
+        <p><strong>Label:</strong> @statusLabel</p>
+        <p><strong>Mode:</strong> @CurrentModeText</p>
+    </div>
+
+    <div class="docs-example-frame" style="padding: 24px; margin-top: 16px;">
+        <Canvas Content="_canvasContent"
+                WidthRequest="330"
+                Margin="0,8,0,0"
+                Gestures="@GesturesMode.Enabled" />
+    </div>
+</div>
+
+@code {
+    private int clickCount;
+    private bool showAlternateMessage;
+    private string statusLabel = "Ready";
+
+    private readonly SkiaLabel _drawnClicksValueLabel;
+    private readonly SkiaLabel _drawnStatusValueLabel;
+    private readonly SkiaLabel _drawnModeValueLabel;
+    private readonly SkiaControl _canvasContent;
+
+    private string CurrentModeText => showAlternateMessage ? "Alternate" : "Primary";
+
+    public Integration()
+    {
+        _drawnClicksValueLabel = CreateValueLabel();
+        _drawnStatusValueLabel = CreateValueLabel();
+        _drawnModeValueLabel = CreateValueLabel();
+        _canvasContent = CreateCanvasContent();
+
+        SynchronizeDrawnUiState();
+    }
+
+    private SkiaControl CreateCanvasContent()
+    {
+        return new SkiaLayout()
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            HeightRequest = 288,
+            Type = LayoutType.Column,
+            Spacing = 12,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = "DrawnUI Canvas",
+                    FontFamily = "FontTextTitle",
+                    FontSize = 24,
+                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                new SkiaLabel()
+                {
+                    Text = "These buttons call the same handlers as the HTML buttons above and render the same state below.",
+                    FontFamily = "FontText",
+                    FontSize = 14,
+                    TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill,
+                    MaxLines = 2
+                },
+                new SkiaRow()
+                {
+                    Spacing = 8,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    Children =
+                    {
+                        CreateDrawnButton("Increment", new Color(0.227f, 0.482f, 0.816f, 1f), 96, OnIncrementClicked),
+                        CreateDrawnButton("Reset", new Color(0.424f, 0.471f, 0.529f, 1f), 82, OnResetClicked),
+                        CreateDrawnButton("Toggle", new Color(0.165f, 0.165f, 0.165f, 1f), 94, OnToggleClicked)
+                    }
+                },
+                CreateInfoRow("Clicks:", _drawnClicksValueLabel),
+                CreateInfoRow("Label:", _drawnStatusValueLabel),
+                CreateInfoRow("Mode:", _drawnModeValueLabel)
+            }
+        };
+    }
+
+    private SkiaControl CreateInfoRow(string title, SkiaLabel valueLabel)
+    {
+        return new SkiaLayout()
+        {
+            Type = LayoutType.Column,
+            Spacing = 2,
+            HorizontalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = title,
+                    FontFamily = "FontText",
+                    FontSize = 13,
+                    TextColor = new Color(0.424f, 0.361f, 0.275f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                valueLabel
+            }
+        };
+    }
+
+    private SkiaLabel CreateValueLabel()
+    {
+        return new SkiaLabel()
+        {
+            FontFamily = "FontText",
+            FontSize = 15,
+            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+            HorizontalOptions = LayoutOptions.Fill
+        };
+    }
+
+    private SkiaButton CreateDrawnButton(string text, Color backgroundColor, double width, Action onTap)
+    {
+        var button = new SkiaButton(text)
+        {
+            WidthRequest = -1,
+            HorizontalOptions = LayoutOptions.Start,
+            HeightRequest = 38,
+            BackgroundColor = backgroundColor,
+            TextColor = Colors.White,
+            CornerRadius = 10,
+            Padding = new Thickness(10, 6),
+            FontSize = 13
+        };
+
+        button.Tapped += (_, _) =>
+        {
+            onTap();
+            _ = InvokeAsync(StateHasChanged);
+        };
+
+        return button;
+    }
+
+    private void OnIncrementClicked()
+    {
+        clickCount++;
+        statusLabel = $"Increment pressed {clickCount} time{(clickCount == 1 ? string.Empty : "s")}.";
+        SynchronizeDrawnUiState();
+    }
+
+    private void OnResetClicked()
+    {
+        clickCount = 0;
+        showAlternateMessage = false;
+        statusLabel = "Counter reset to zero.";
+        SynchronizeDrawnUiState();
+    }
+
+    private void OnToggleClicked()
+    {
+        showAlternateMessage = !showAlternateMessage;
+        statusLabel = showAlternateMessage
+            ? "Alternate message enabled."
+            : "Primary message restored.";
+        SynchronizeDrawnUiState();
+    }
+
+    private void SynchronizeDrawnUiState()
+    {
+        _drawnClicksValueLabel.Text = clickCount.ToString();
+        _drawnStatusValueLabel.Text = statusLabel;
+        _drawnModeValueLabel.Text = CurrentModeText;
+    }
+}

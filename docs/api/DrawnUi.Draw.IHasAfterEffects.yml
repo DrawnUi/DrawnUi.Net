@@ -5,7 +5,7 @@ items:
   id: IHasAfterEffects
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+  - DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
   - DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean)
   - DrawnUi.Draw.IHasAfterEffects.PlayShimmerAnimation(Microsoft.Maui.Graphics.Color,System.Single,System.Single,System.Int32,System.Boolean)
   langs:
@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IHasAfterEffects.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IHasAfterEffects
     path: ../src/Shared/Internals/Interfaces/IHasAfterEffects.cs
@@ -45,7 +45,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IHasAfterEffects.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlayRippleAnimation
     path: ../src/Shared/Internals/Interfaces/IHasAfterEffects.cs
@@ -83,7 +83,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IHasAfterEffects.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PlayShimmerAnimation
     path: ../src/Shared/Internals/Interfaces/IHasAfterEffects.cs
@@ -109,21 +109,21 @@ items:
   nameWithType.vb: IHasAfterEffects.PlayShimmerAnimation(Color, Single, Single, Integer, Boolean)
   fullName.vb: DrawnUi.Draw.IHasAfterEffects.PlayShimmerAnimation(Microsoft.Maui.Graphics.Color, Single, Single, Integer, Boolean)
   name.vb: PlayShimmerAnimation(Color, Single, Single, Integer, Boolean)
-- uid: DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  commentId: M:DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
-  id: GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF,SkiaSharp.SKPoint)
+- uid: DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
+  commentId: M:DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
+  id: GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
   parent: DrawnUi.Draw.IHasAfterEffects
   langs:
   - csharp
   - vb
   name: GetOffsetInsideControlInPoints(PointF, SKPoint)
   nameWithType: IHasAfterEffects.GetOffsetInsideControlInPoints(PointF, SKPoint)
-  fullName: DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(Microsoft.Maui.Graphics.PointF, SkiaSharp.SKPoint)
+  fullName: DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(System.Drawing.PointF, SkiaSharp.SKPoint)
   type: Method
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IHasAfterEffects.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOffsetInsideControlInPoints
     path: ../src/Shared/Internals/Interfaces/IHasAfterEffects.cs
@@ -135,7 +135,7 @@ items:
     content: SKPoint GetOffsetInsideControlInPoints(PointF argsLocation, SKPoint childOffset)
     parameters:
     - id: argsLocation
-      type: Microsoft.Maui.Graphics.PointF
+      type: System.Drawing.PointF
     - id: childOffset
       type: SkiaSharp.SKPoint
     return:
@@ -365,18 +365,18 @@ references:
   name.vb: Integer
 - uid: DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints*
   commentId: Overload:DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints
-  href: DrawnUi.Draw.IHasAfterEffects.html#DrawnUi_Draw_IHasAfterEffects_GetOffsetInsideControlInPoints_Microsoft_Maui_Graphics_PointF_SkiaSharp_SKPoint_
+  href: DrawnUi.Draw.IHasAfterEffects.html#DrawnUi_Draw_IHasAfterEffects_GetOffsetInsideControlInPoints_System_Drawing_PointF_SkiaSharp_SKPoint_
   name: GetOffsetInsideControlInPoints
   nameWithType: IHasAfterEffects.GetOffsetInsideControlInPoints
   fullName: DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints
-- uid: Microsoft.Maui.Graphics.PointF
-  commentId: T:Microsoft.Maui.Graphics.PointF
-  parent: Microsoft.Maui.Graphics
+- uid: System.Drawing.PointF
+  commentId: T:System.Drawing.PointF
+  parent: System.Drawing
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.pointf
+  href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
   name: PointF
   nameWithType: PointF
-  fullName: Microsoft.Maui.Graphics.PointF
+  fullName: System.Drawing.PointF
 - uid: SkiaSharp.SKPoint
   commentId: T:SkiaSharp.SKPoint
   parent: SkiaSharp
@@ -385,6 +385,33 @@ references:
   name: SKPoint
   nameWithType: SKPoint
   fullName: SkiaSharp.SKPoint
+- uid: System.Drawing
+  commentId: N:System.Drawing
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Drawing
+  nameWithType: System.Drawing
+  fullName: System.Drawing
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Drawing
+    name: Drawing
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.drawing
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Drawing
+    name: Drawing
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.drawing
 - uid: SkiaSharp
   commentId: N:SkiaSharp
   isExternal: true

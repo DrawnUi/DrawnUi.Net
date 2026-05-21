@@ -1,0 +1,363 @@
+@rendermode InteractiveServer
+@using DrawnUi
+@using DrawnUi.Blazor.Server
+@using DrawnUi.Views
+
+<style>
+	.server-dashboard {
+		margin-top: 24px;
+		padding: 20px;
+		border-radius: 24px;
+		background: linear-gradient(180deg, #151e31 0%, #101827 100%);
+		border: 1px solid #22304a;
+		box-shadow: 0 20px 40px rgba(12, 18, 32, 0.22);
+		overflow-x: auto;
+	}
+
+	.server-dashboard__header {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 14px;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 18px;
+	}
+
+	.server-dashboard__heading {
+		color: #eef4ff;
+		font-size: 1.05rem;
+		font-weight: 700;
+		margin: 0;
+	}
+
+	.server-dashboard__subtext {
+		color: #92a1c7;
+		font-size: 0.86rem;
+		line-height: 1.45;
+		margin: 4px 0 0;
+		max-width: 44rem;
+	}
+
+	.server-dashboard__meta {
+		color: #92a1c7;
+		font-size: 0.78rem;
+		white-space: nowrap;
+	}
+
+	.server-dashboard__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(260px, 280px);
+		gap: 18px;
+		align-items: stretch;
+	}
+
+	.server-dashboard__cards {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 18px;
+	}
+
+	.server-dashboard__region {
+		min-width: 0;
+	}
+
+	.server-dashboard__region--trend {
+		padding-left: 2px;
+	}
+
+	@@media (max-width: 1080px) {
+		.server-dashboard {
+			padding: 16px;
+		}
+
+		.server-dashboard__layout {
+			grid-template-columns: 1fr;
+		}
+
+		.server-dashboard__cards {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-items: stretch;
+		}
+
+		.server-dashboard__cards .server-dashboard__region {
+			flex: 0 0 auto;
+			width: 260px;
+			max-width: 100%;
+		}
+
+		.server-dashboard__region--trend {
+			padding-left: 0;
+		}
+	}
+
+	@@media (max-width: 760px) {
+		.server-dashboard__cards {
+			display: grid;
+			grid-template-columns: 1fr;
+		}
+
+		.server-dashboard__cards .server-dashboard__region {
+			width: 100%;
+		}
+	}
+</style>
+
+<div style="padding: 1.5rem; border-radius: 1rem; background: #fffaf2; border: 1px solid #e0d2bc; box-shadow: 0 12px 30px rgba(55, 38, 18, 0.08);">
+	<h1>DrawnUI Blazor Server Example</h1>
+    <p>This page runs as classic Blazor Server (EU). 
+        Using package <strong>DrawnUi.Blazor.Server</strong> to render graphics with <b>SkiaSharp</b> on the server and deliver
+        as image frame. JPEG is the default delivery mode and PNG stays available when you need transparency.</p>
+    
+    <p><strong>Frame delivery:</strong> @frameFormatDescription</p>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 16px 0;">
+        <button class="btn @(frameFormat == DrawnUiServerFrameFormat.Jpeg ? "btn-dark" : "btn-outline-dark")" @onclick="UseJpeg">Use JPEG</button>
+        <button class="btn @(frameFormat == DrawnUiServerFrameFormat.Png ? "btn-dark" : "btn-outline-dark")" @onclick="UsePng">Use PNG</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 16px 0;">
+        <label for="jpeg-quality">JPEG quality</label>
+        <input id="jpeg-quality"
+               type="range"
+               min="0"
+               max="100"
+               step="1"
+               value="@jpegQuality"
+               @oninput="OnJpegQualityChanged"
+               disabled="@(frameFormat != DrawnUiServerFrameFormat.Jpeg)" />
+        <span>@jpegQuality</span>
+    </div>
+    
+    @* EXAMPLE A *@
+    <p style="margin-top: 24px;"><strong>A: Generated on server: multiple small regions:</strong></p>
+
+	<div class="server-dashboard">
+		<div class="server-dashboard__header">
+			<div>
+				<p class="server-dashboard__heading">Dashboard mock</p>
+                <p class="server-dashboard__subtext">Regular Razor owns the layout, 3 DrawnUI server-side canvases are used to paint regions inside. Inspect HTML to see the structure.</p>
+			</div>
+			<div class="server-dashboard__meta">Each canvas updates at its own cadence.</div>
+		</div>
+
+		<div class="server-dashboard__layout">
+			<div class="server-dashboard__region server-dashboard__region--trend">
+				<ServerTrendCanvas UpdateIntervalSeconds="1.25"
+								   FrameFormat="@frameFormat"
+								   JpegQuality="@jpegQuality" />
+			</div>
+
+			<div class="server-dashboard__cards">
+				<div class="server-dashboard__region">
+					<ServerMetricCanvas Kind="workflows"
+									   UpdateIntervalSeconds="18"
+									   FrameFormat="@frameFormat"
+									   JpegQuality="@jpegQuality" />
+				</div>
+				<div class="server-dashboard__region">
+					<ServerMetricCanvas Kind="automation"
+									   UpdateIntervalSeconds="12"
+									   FrameFormat="@frameFormat"
+									   JpegQuality="@jpegQuality" />
+				</div>
+			</div>
+		</div>
+	</div>
+    
+
+    @* EXAMPLE B *@
+    @* DOM *@
+@* 	<p><strong>InteractiveServer fields:</strong></p>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 16px 0;">
+        <button class="btn btn-primary" @onclick="OnIncrementClicked">Increment</button>
+        <button class="btn btn-secondary" @onclick="OnResetClicked">Reset</button>
+    </div>
+    <p><strong>Clicks:</strong> @clickCount</p>
+	<p><strong>Status:</strong> @statusLabel</p>
+ *@    
+    <p style="margin-top: 24px;"><strong>B: Generated on server, auto-sized:</strong></p>
+
+    @* CANVAS *@
+    <div style="margin-top: 24px; width: 100%; max-width: 400px;">
+		<Canvas Content="@BuildCanvasContent()"
+				MaximumWidthRequest="400"
+				FrameFormat="@frameFormat"
+				JpegQuality="@jpegQuality"
+				Alt="DrawnUI server-rendered sample" />
+	</div>
+</div>
+
+@code {
+	private int clickCount;
+	private string statusLabel = "Ready";
+	private DrawnUiServerFrameFormat frameFormat = DrawnUiServerFrameFormat.Jpeg;
+	private int jpegQuality = 85;
+	private static readonly Color TitleColor = Colors.Black;
+	private static readonly Color BodyColor = new Color(0.18f, 0.18f, 0.18f, 1f);
+	private static readonly Color SurfaceColor = new Color(0.965f, 0.945f, 0.905f, 1f);
+	private static readonly Color SecondarySurfaceColor = new Color(0.93f, 0.9f, 0.84f, 1f);
+	private string frameFormatDescription => frameFormat == DrawnUiServerFrameFormat.Jpeg
+		? $"JPEG, quality {jpegQuality}, using the canvas background color or white when the canvas background is transparent."
+		: "PNG, preserving transparency.";
+
+	private SkiaControl BuildCanvasContent()
+	{
+		return new SkiaLayout()
+		{
+			MaximumWidthRequest = 400,
+			HorizontalOptions = LayoutOptions.Fill,
+			Padding = new Thickness(18),
+			BackgroundColor = SurfaceColor,
+			Type = LayoutType.Column,
+			Spacing = 12,
+			Children =
+			{
+				new SkiaLabel()
+				{
+					Text = "DrawnUI server canvas",
+					FontSize = 24,
+					TextColor = TitleColor
+				},
+				new SkiaLabel()
+				{
+					Text = "This image is rendered on the server from a DrawnUI tree, canvas is auto-sized to content and available size in browser.",
+					FontSize = 14,
+					TextColor = BodyColor
+				},
+				CreateDrawnButtonRow(),
+				CreateInfoRow("Clicks:", clickCount.ToString()),
+				CreateInfoRow("Status:", statusLabel)
+			}
+		};
+	}
+
+
+	private SkiaControl CreateDrawnButtonRow()
+	{
+		return new SkiaLayout()
+		{
+			Type = LayoutType.Row,
+			Spacing = 10,
+			Children =
+			{
+				new SkiaButton("Increment")
+				{
+					WidthRequest = 132,
+					HeightRequest = 38,
+                    ControlStyle = PrebuiltControlStyle.Cupertino,
+					//BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 1f),
+					//TextColor = Colors.White,
+					CornerRadius = 10,
+					Padding = new Thickness(10, 6)
+				}
+				.OnTapped(_ =>
+				{
+					OnIncrementClicked();
+				}),
+				new SkiaButton("Reset")
+				{
+					WidthRequest = 110,
+					HeightRequest = 38,
+					BackgroundColor = SecondarySurfaceColor,
+					TextColor = TitleColor,
+					CornerRadius = 10,
+					Padding = new Thickness(10, 6)
+				}
+				.OnTapped(_ =>
+				{
+					OnResetClicked();
+				})
+			}
+		};
+	}
+
+	private SkiaControl CreateInfoRow(string title, string value)
+	{
+		return new SkiaLayout()
+		{
+			Type = LayoutType.Column,
+			Spacing = 2,
+			Children =
+			{
+				new SkiaLabel()
+				{
+					Text = title,
+					FontSize = 13,
+					TextColor = BodyColor
+				},
+				CreateValueLabel(value)
+			}
+		};
+	}
+
+	private SkiaLabel CreateValueLabel(string value)
+	{
+		return new SkiaLabel()
+		{
+			Text = value,
+			FontSize = 15,
+			TextColor = TitleColor
+		};
+	}
+
+	private void OnIncrementClicked()
+	{
+		clickCount++;
+		statusLabel = $"Count is {clickCount}.";
+		_ = InvokeAsync(StateHasChanged);
+	}
+
+	private void OnResetClicked()
+	{
+		clickCount = 0;
+		statusLabel = "Reset to zero.";
+		_ = InvokeAsync(StateHasChanged);
+	}
+
+	private void UseJpeg()
+	{
+		if (frameFormat == DrawnUiServerFrameFormat.Jpeg)
+		{
+			return;
+		}
+
+		frameFormat = DrawnUiServerFrameFormat.Jpeg;
+		statusLabel = "Switched server delivery to JPEG.";
+		_ = InvokeAsync(StateHasChanged);
+	}
+
+	private void UsePng()
+	{
+		if (frameFormat == DrawnUiServerFrameFormat.Png)
+		{
+			return;
+		}
+
+		frameFormat = DrawnUiServerFrameFormat.Png;
+		statusLabel = "Switched server delivery to PNG.";
+		_ = InvokeAsync(StateHasChanged);
+	}
+
+	private void OnJpegQualityChanged(ChangeEventArgs args)
+	{
+		if (!int.TryParse(args.Value?.ToString(), out var parsedQuality))
+		{
+			return;
+		}
+
+		var nextQuality = Math.Clamp(parsedQuality, 0, 100);
+		if (nextQuality == jpegQuality)
+		{
+			return;
+		}
+
+		jpegQuality = nextQuality;
+		statusLabel = frameFormat == DrawnUiServerFrameFormat.Jpeg
+			? $"JPEG quality set to {jpegQuality}."
+			: $"JPEG quality set to {jpegQuality}. Switch to JPEG to test it.";
+		_ = InvokeAsync(StateHasChanged);
+	}
+
+}

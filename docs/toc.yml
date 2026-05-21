@@ -1,34 +1,68 @@
 - name: Home
   href: index.md
 
-- name: Getting Started
+- name: Platforms
   items:
-    - name: Installation and Setup
-      href: articles/getting-started.md
+    - name: Platforms and Packages
+      href: articles/platforms.md
+    - name: Tutorial Host Guide
+      href: articles/tutorials.md
     - name: Startup Settings
       href: articles/startup-settings.md
     - name: Drawn Layouts
       href: articles/layouts.md
     - name: Handling Gestures
       href: articles/gestures.md
+
+- name: .NET
+  href: articles/net/index.md
+  items:
+    - name: DrawnUi.Net Overview
+      href: articles/net/index.md
+      
+- name: .NET MAUI
+  href: articles/maui/index.md
+  items:
+    - name: Installation and Setup
+      href: articles/maui/getting-started.md
+    - name: MAUI Tutorials and Host Notes
+      href: articles/maui/tutorials.md
+    - name: Your First Drawn App (XAML, MAUI)
+      href: articles/first-app.md
+    - name: Your First Drawn App (C# Fluent, MAUI Host)
+      href: articles/first-app-code.md
+    - name: Interactive Cards (MAUI XAML)
+      href: articles/interactive-cards.md
+    - name: A Custom Drawn Control (MAUI Tutorial)
+      href: articles/interactive-button.md
+    - name: News Feed Scroller (MAUI Tutorial)
+      href: articles/news-feed-tutorial.md
     - name: Porting Native to Drawn
       href: articles/porting-maui.md
 
-- name: Tutorials
-  href: articles/tutorials.md
+- name: Blazor
+  href: articles/blazor/index.md
   items:
-    - name: Tutorials Overview
+    - name: Blazor Overview
+      href: articles/blazor/index.md
+    - name: Blazor Tutorial References
       href: articles/tutorials.md
-    - name: Your First Drawn App (XAML)
-      href: articles/first-app.md
-    - name: Your First Drawn App (C# Fluent)
-      href: articles/first-app-code.md
-    - name: Interactive Cards
-      href: articles/interactive-cards.md
-    - name: A Custom Drawn Control
-      href: articles/interactive-button.md
-    - name: News Feed Scroller
-      href: articles/news-feed-tutorial.md
+    - name: Blazor Packages
+      href: articles/blazor-packages.md
+    - name: Blazor WebAssembly
+      href: articles/blazor-wasm.md
+    - name: Blazor Server
+      href: articles/blazor-server.md
+    - name: Blazor Hybrid Web App
+      href: articles/blazor-hybrid.md
+    - name: Blazor Capabilities
+      href: articles/blazor-capabilities.md
+    - name: Blazor Migration
+      href: articles/blazor-migration.md
+    - name: Blazor FAQ
+      href: articles/blazor-faq.md
+
+
 
 - name: Controls
   href: articles/controls/index.md

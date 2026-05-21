@@ -1,0 +1,23 @@
+<div class="fullscreen-toggle-bar">
+    <button class="btn btn-primary" @onclick="ToggleFullscreen">@(IsFullscreen ? "Leave fullscreen" : "Enter fullscreen")</button>
+    <span>State: @(IsFullscreen ? "fullscreen" : "embedded")</span>
+</div>
+
+@code {
+    /// <summary>
+    /// Current fullscreen state shown by the reusable tutorial toolbar.
+    /// </summary>
+    [Parameter]
+    public bool IsFullscreen { get; set; }
+
+    /// <summary>
+    /// Raised when the toolbar toggles fullscreen mode.
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> IsFullscreenChanged { get; set; }
+
+    private Task ToggleFullscreen()
+    {
+        return IsFullscreenChanged.InvokeAsync(!IsFullscreen);
+    }
+}

@@ -118,6 +118,7 @@ items:
   - DrawnUi.Draw.IVisibilityAware
   - DrawnUi.Draw.IWithContent
   - DrawnUi.Draw.InfiniteLayout
+  - DrawnUi.Draw.InputKey
   - DrawnUi.Draw.KeyboardManager
   - DrawnUi.Draw.KeyedActionQueue`1
   - DrawnUi.Draw.LayoutStructure
@@ -132,7 +133,6 @@ items:
   - DrawnUi.Draw.LongKeyGenerator
   - DrawnUi.Draw.Looper
   - DrawnUi.Draw.LottieRefreshIndicator
-  - DrawnUi.Draw.MauiKey
   - DrawnUi.Draw.MauiKeyMapper
   - DrawnUi.Draw.MauiThemeProvider
   - DrawnUi.Draw.MeasureRequest
@@ -209,6 +209,8 @@ items:
   - DrawnUi.Draw.SkiaDoubleAttachedTexturesEffect
   - DrawnUi.Draw.SkiaDrawingContext
   - DrawnUi.Draw.SkiaEditor
+  - DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+  - DrawnUi.Draw.SkiaEditorSelection
   - DrawnUi.Draw.SkiaEffect
   - DrawnUi.Draw.SkiaFontManager
   - DrawnUi.Draw.SkiaFrame
@@ -307,6 +309,7 @@ items:
   - DrawnUi.Draw.UnderdampedSpringTimingParameters
   - DrawnUi.Draw.UnderdampedSpringTimingVectorParameters
   - DrawnUi.Draw.UnicodeBlock
+  - DrawnUi.Draw.UpdateModeType
   - DrawnUi.Draw.UsedGlyph
   - DrawnUi.Draw.VelocityAccumulator
   - DrawnUi.Draw.ViewportScrollType
@@ -330,197 +333,6 @@ items:
   assemblies:
   - DrawnUi.Maui
 references:
-- uid: DrawnUi.Draw.SkiaButton
-  commentId: T:DrawnUi.Draw.SkiaButton
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton
-  nameWithType: SkiaButton
-  fullName: DrawnUi.Draw.SkiaButton
-- uid: DrawnUi.Draw.SkiaButton.ButtonLabel
-  commentId: T:DrawnUi.Draw.SkiaButton.ButtonLabel
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton.ButtonLabel
-  nameWithType: SkiaButton.ButtonLabel
-  fullName: DrawnUi.Draw.SkiaButton.ButtonLabel
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.ButtonLabel
-    name: ButtonLabel
-    href: DrawnUi.Draw.SkiaButton.ButtonLabel.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.ButtonLabel
-    name: ButtonLabel
-    href: DrawnUi.Draw.SkiaButton.ButtonLabel.html
-- uid: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
-  commentId: T:DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton.ButtonElevationShadowEffect
-  nameWithType: SkiaButton.ButtonElevationShadowEffect
-  fullName: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
-    name: ButtonElevationShadowEffect
-    href: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
-    name: ButtonElevationShadowEffect
-    href: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect.html
-- uid: DrawnUi.Draw.SkiaButton.ButtonStyleType
-  commentId: T:DrawnUi.Draw.SkiaButton.ButtonStyleType
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton.ButtonStyleType
-  nameWithType: SkiaButton.ButtonStyleType
-  fullName: DrawnUi.Draw.SkiaButton.ButtonStyleType
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.ButtonStyleType
-    name: ButtonStyleType
-    href: DrawnUi.Draw.SkiaButton.ButtonStyleType.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.ButtonStyleType
-    name: ButtonStyleType
-    href: DrawnUi.Draw.SkiaButton.ButtonStyleType.html
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType
-  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton.IconPositionType
-  nameWithType: SkiaButton.IconPositionType
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
-- uid: DrawnUi.Draw.SkiaLabelFps
-  commentId: T:DrawnUi.Draw.SkiaLabelFps
-  href: DrawnUi.Draw.SkiaLabelFps.html
-  name: SkiaLabelFps
-  nameWithType: SkiaLabelFps
-  fullName: DrawnUi.Draw.SkiaLabelFps
-- uid: DrawnUi.Draw.SkiaRichLabel
-  commentId: T:DrawnUi.Draw.SkiaRichLabel
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaRichLabel.html
-  name: SkiaRichLabel
-  nameWithType: SkiaRichLabel
-  fullName: DrawnUi.Draw.SkiaRichLabel
-- uid: DrawnUi.Draw.SkiaMarkdownLabel
-  commentId: T:DrawnUi.Draw.SkiaMarkdownLabel
-  href: DrawnUi.Draw.SkiaMarkdownLabel.html
-  name: SkiaMarkdownLabel
-  nameWithType: SkiaMarkdownLabel
-  fullName: DrawnUi.Draw.SkiaMarkdownLabel
-- uid: DrawnUi.Draw.ProgressTrail
-  commentId: T:DrawnUi.Draw.ProgressTrail
-  href: DrawnUi.Draw.ProgressTrail.html
-  name: ProgressTrail
-  nameWithType: ProgressTrail
-  fullName: DrawnUi.Draw.ProgressTrail
-- uid: DrawnUi.Draw.SkiaProgress
-  commentId: T:DrawnUi.Draw.SkiaProgress
-  href: DrawnUi.Draw.SkiaProgress.html
-  name: SkiaProgress
-  nameWithType: SkiaProgress
-  fullName: DrawnUi.Draw.SkiaProgress
-- uid: DrawnUi.Draw.SkiaRangeBase
-  commentId: T:DrawnUi.Draw.SkiaRangeBase
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaRangeBase.html
-  name: SkiaRangeBase
-  nameWithType: SkiaRangeBase
-  fullName: DrawnUi.Draw.SkiaRangeBase
-- uid: DrawnUi.Draw.SkiaHoverMask
-  commentId: T:DrawnUi.Draw.SkiaHoverMask
-  href: DrawnUi.Draw.SkiaHoverMask.html
-  name: SkiaHoverMask
-  nameWithType: SkiaHoverMask
-  fullName: DrawnUi.Draw.SkiaHoverMask
-- uid: DrawnUi.Draw.SkiaSlider
-  commentId: T:DrawnUi.Draw.SkiaSlider
-  href: DrawnUi.Draw.SkiaSlider.html
-  name: SkiaSlider
-  nameWithType: SkiaSlider
-  fullName: DrawnUi.Draw.SkiaSlider
-- uid: DrawnUi.Draw.SliderThumb
-  commentId: T:DrawnUi.Draw.SliderThumb
-  href: DrawnUi.Draw.SliderThumb.html
-  name: SliderThumb
-  nameWithType: SliderThumb
-  fullName: DrawnUi.Draw.SliderThumb
-- uid: DrawnUi.Draw.SliderTrail
-  commentId: T:DrawnUi.Draw.SliderTrail
-  href: DrawnUi.Draw.SliderTrail.html
-  name: SliderTrail
-  nameWithType: SliderTrail
-  fullName: DrawnUi.Draw.SliderTrail
-- uid: DrawnUi.Draw.SliderValueDesc
-  commentId: T:DrawnUi.Draw.SliderValueDesc
-  href: DrawnUi.Draw.SliderValueDesc.html
-  name: SliderValueDesc
-  nameWithType: SliderValueDesc
-  fullName: DrawnUi.Draw.SliderValueDesc
-- uid: DrawnUi.Draw.SkiaCheckbox
-  commentId: T:DrawnUi.Draw.SkiaCheckbox
-  href: DrawnUi.Draw.SkiaCheckbox.html
-  name: SkiaCheckbox
-  nameWithType: SkiaCheckbox
-  fullName: DrawnUi.Draw.SkiaCheckbox
-- uid: DrawnUi.Draw.SkiaSwitch
-  commentId: T:DrawnUi.Draw.SkiaSwitch
-  href: DrawnUi.Draw.SkiaSwitch.html
-  name: SkiaSwitch
-  nameWithType: SkiaSwitch
-  fullName: DrawnUi.Draw.SkiaSwitch
-- uid: DrawnUi.Draw.SkiaToggle
-  commentId: T:DrawnUi.Draw.SkiaToggle
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaToggle.html
-  name: SkiaToggle
-  nameWithType: SkiaToggle
-  fullName: DrawnUi.Draw.SkiaToggle
-- uid: DrawnUi.Draw.ZoomContent
-  commentId: T:DrawnUi.Draw.ZoomContent
-  href: DrawnUi.Draw.ZoomContent.html
-  name: ZoomContent
-  nameWithType: ZoomContent
-  fullName: DrawnUi.Draw.ZoomContent
 - uid: DrawnUi.Draw.SkiaControl
   commentId: T:DrawnUi.Draw.SkiaControl
   parent: DrawnUi.Draw
@@ -595,19 +407,6 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.DisposableAction
     name: DisposableAction
     href: DrawnUi.Draw.SkiaControl.DisposableAction.html
-- uid: DrawnUi.Draw.SkiaCursor
-  commentId: T:DrawnUi.Draw.SkiaCursor
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaCursor.html
-  name: SkiaCursor
-  nameWithType: SkiaCursor
-  fullName: DrawnUi.Draw.SkiaCursor
-- uid: DrawnUi.Draw.SkiaEditor
-  commentId: T:DrawnUi.Draw.SkiaEditor
-  href: DrawnUi.Draw.SkiaEditor.html
-  name: SkiaEditor
-  nameWithType: SkiaEditor
-  fullName: DrawnUi.Draw.SkiaEditor
 - uid: DrawnUi.Draw.SkiaMauiElement
   commentId: T:DrawnUi.Draw.SkiaMauiElement
   parent: DrawnUi.Draw
@@ -615,93 +414,6 @@ references:
   name: SkiaMauiElement
   nameWithType: SkiaMauiElement
   fullName: DrawnUi.Draw.SkiaMauiElement
-- uid: DrawnUi.Draw.SkiaImage
-  commentId: T:DrawnUi.Draw.SkiaImage
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaImage.html
-  name: SkiaImage
-  nameWithType: SkiaImage
-  fullName: DrawnUi.Draw.SkiaImage
-- uid: DrawnUi.Draw.SkiaImage.RescaledBitmap
-  commentId: T:DrawnUi.Draw.SkiaImage.RescaledBitmap
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaImage.html
-  name: SkiaImage.RescaledBitmap
-  nameWithType: SkiaImage.RescaledBitmap
-  fullName: DrawnUi.Draw.SkiaImage.RescaledBitmap
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaImage
-    name: SkiaImage
-    href: DrawnUi.Draw.SkiaImage.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaImage.RescaledBitmap
-    name: RescaledBitmap
-    href: DrawnUi.Draw.SkiaImage.RescaledBitmap.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaImage
-    name: SkiaImage
-    href: DrawnUi.Draw.SkiaImage.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaImage.RescaledBitmap
-    name: RescaledBitmap
-    href: DrawnUi.Draw.SkiaImage.RescaledBitmap.html
-- uid: DrawnUi.Draw.SkiaImageTiles
-  commentId: T:DrawnUi.Draw.SkiaImageTiles
-  href: DrawnUi.Draw.SkiaImageTiles.html
-  name: SkiaImageTiles
-  nameWithType: SkiaImageTiles
-  fullName: DrawnUi.Draw.SkiaImageTiles
-- uid: DrawnUi.Draw.ContentLayout
-  commentId: T:DrawnUi.Draw.ContentLayout
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ContentLayout.html
-  name: ContentLayout
-  nameWithType: ContentLayout
-  fullName: DrawnUi.Draw.ContentLayout
-- uid: DrawnUi.Draw.InfiniteLayout
-  commentId: T:DrawnUi.Draw.InfiniteLayout
-  href: DrawnUi.Draw.InfiniteLayout.html
-  name: InfiniteLayout
-  nameWithType: InfiniteLayout
-  fullName: DrawnUi.Draw.InfiniteLayout
-- uid: DrawnUi.Draw.SkiaControlWithRect
-  commentId: T:DrawnUi.Draw.SkiaControlWithRect
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaControlWithRect.html
-  name: SkiaControlWithRect
-  nameWithType: SkiaControlWithRect
-  fullName: DrawnUi.Draw.SkiaControlWithRect
-- uid: DrawnUi.Draw.IRenderObject
-  commentId: T:DrawnUi.Draw.IRenderObject
-  href: DrawnUi.Draw.IRenderObject.html
-  name: IRenderObject
-  nameWithType: IRenderObject
-  fullName: DrawnUi.Draw.IRenderObject
-- uid: DrawnUi.Draw.ElementRenderer
-  commentId: T:DrawnUi.Draw.ElementRenderer
-  href: DrawnUi.Draw.ElementRenderer.html
-  name: ElementRenderer
-  nameWithType: ElementRenderer
-  fullName: DrawnUi.Draw.ElementRenderer
-- uid: DrawnUi.Draw.RenderTreeRenderer
-  commentId: T:DrawnUi.Draw.RenderTreeRenderer
-  href: DrawnUi.Draw.RenderTreeRenderer.html
-  name: RenderTreeRenderer
-  nameWithType: RenderTreeRenderer
-  fullName: DrawnUi.Draw.RenderTreeRenderer
-- uid: DrawnUi.Draw.RenderObject
-  commentId: T:DrawnUi.Draw.RenderObject
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.RenderObject.html
-  name: RenderObject
-  nameWithType: RenderObject
-  fullName: DrawnUi.Draw.RenderObject
-- uid: DrawnUi.Draw.RenderLabel
-  commentId: T:DrawnUi.Draw.RenderLabel
-  href: DrawnUi.Draw.RenderLabel.html
-  name: RenderLabel
-  nameWithType: RenderLabel
-  fullName: DrawnUi.Draw.RenderLabel
 - uid: DrawnUi.Draw.SkiaLayout
   commentId: T:DrawnUi.Draw.SkiaLayout
   parent: DrawnUi.Draw
@@ -911,153 +623,6 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.MeasuredItemInfo
     name: MeasuredItemInfo
     href: DrawnUi.Draw.SkiaLayout.MeasuredItemInfo.html
-- uid: DrawnUi.Draw.MeasuredListCell
-  commentId: T:DrawnUi.Draw.MeasuredListCell
-  href: DrawnUi.Draw.MeasuredListCell.html
-  name: MeasuredListCell
-  nameWithType: MeasuredListCell
-  fullName: DrawnUi.Draw.MeasuredListCell
-- uid: DrawnUi.Draw.MeasuredListCells
-  commentId: T:DrawnUi.Draw.MeasuredListCells
-  href: DrawnUi.Draw.MeasuredListCells.html
-  name: MeasuredListCells
-  nameWithType: MeasuredListCells
-  fullName: DrawnUi.Draw.MeasuredListCells
-- uid: DrawnUi.Draw.CellWIthHeight
-  commentId: T:DrawnUi.Draw.CellWIthHeight
-  href: DrawnUi.Draw.CellWIthHeight.html
-  name: CellWIthHeight
-  nameWithType: CellWIthHeight
-  fullName: DrawnUi.Draw.CellWIthHeight
-- uid: DrawnUi.Draw.ViewsAdapter
-  commentId: T:DrawnUi.Draw.ViewsAdapter
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ViewsAdapter.html
-  name: ViewsAdapter
-  nameWithType: ViewsAdapter
-  fullName: DrawnUi.Draw.ViewsAdapter
-- uid: DrawnUi.Draw.ViewsIterator
-  commentId: T:DrawnUi.Draw.ViewsIterator
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ViewsIterator.html
-  name: ViewsIterator
-  nameWithType: ViewsIterator
-  fullName: DrawnUi.Draw.ViewsIterator
-- uid: DrawnUi.Draw.DataContextIterator
-  commentId: T:DrawnUi.Draw.DataContextIterator
-  href: DrawnUi.Draw.DataContextIterator.html
-  name: DataContextIterator
-  nameWithType: DataContextIterator
-  fullName: DrawnUi.Draw.DataContextIterator
-- uid: DrawnUi.Draw.TemplatedViewsPool
-  commentId: T:DrawnUi.Draw.TemplatedViewsPool
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.TemplatedViewsPool.html
-  name: TemplatedViewsPool
-  nameWithType: TemplatedViewsPool
-  fullName: DrawnUi.Draw.TemplatedViewsPool
-- uid: DrawnUi.Draw.SnappingLayout
-  commentId: T:DrawnUi.Draw.SnappingLayout
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SnappingLayout.html
-  name: SnappingLayout
-  nameWithType: SnappingLayout
-  fullName: DrawnUi.Draw.SnappingLayout
-- uid: DrawnUi.Draw.StackLayoutStructure
-  commentId: T:DrawnUi.Draw.StackLayoutStructure
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.StackLayoutStructure.html
-  name: StackLayoutStructure
-  nameWithType: StackLayoutStructure
-  fullName: DrawnUi.Draw.StackLayoutStructure
-- uid: DrawnUi.Draw.LottieRefreshIndicator
-  commentId: T:DrawnUi.Draw.LottieRefreshIndicator
-  href: DrawnUi.Draw.LottieRefreshIndicator.html
-  name: LottieRefreshIndicator
-  nameWithType: LottieRefreshIndicator
-  fullName: DrawnUi.Draw.LottieRefreshIndicator
-- uid: DrawnUi.Draw.RefreshIndicator
-  commentId: T:DrawnUi.Draw.RefreshIndicator
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.RefreshIndicator.html
-  name: RefreshIndicator
-  nameWithType: RefreshIndicator
-  fullName: DrawnUi.Draw.RefreshIndicator
-- uid: DrawnUi.Draw.Plane
-  commentId: T:DrawnUi.Draw.Plane
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.Plane.html
-  name: Plane
-  nameWithType: Plane
-  fullName: DrawnUi.Draw.Plane
-- uid: DrawnUi.Draw.PlanesScroll
-  commentId: T:DrawnUi.Draw.PlanesScroll
-  href: DrawnUi.Draw.PlanesScroll.html
-  name: PlanesScroll
-  nameWithType: PlanesScroll
-  fullName: DrawnUi.Draw.PlanesScroll
-- uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-  commentId: T:DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-  href: DrawnUi.Draw.PlanesScroll.html
-  name: PlanesScroll.ViewLayoutInfo
-  nameWithType: PlanesScroll.ViewLayoutInfo
-  fullName: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-  spec.csharp:
-  - uid: DrawnUi.Draw.PlanesScroll
-    name: PlanesScroll
-    href: DrawnUi.Draw.PlanesScroll.html
-  - name: .
-  - uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-    name: ViewLayoutInfo
-    href: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo.html
-  spec.vb:
-  - uid: DrawnUi.Draw.PlanesScroll
-    name: PlanesScroll
-    href: DrawnUi.Draw.PlanesScroll.html
-  - name: .
-  - uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-    name: ViewLayoutInfo
-    href: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo.html
-- uid: DrawnUi.Draw.SkiaScroll
-  commentId: T:DrawnUi.Draw.SkiaScroll
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaScroll.html
-  name: SkiaScroll
-  nameWithType: SkiaScroll
-  fullName: DrawnUi.Draw.SkiaScroll
-- uid: DrawnUi.Draw.SkiaScrollLooped
-  commentId: T:DrawnUi.Draw.SkiaScrollLooped
-  href: DrawnUi.Draw.SkiaScrollLooped.html
-  name: SkiaScrollLooped
-  nameWithType: SkiaScrollLooped
-  fullName: DrawnUi.Draw.SkiaScrollLooped
-- uid: DrawnUi.Draw.VirtualScroll
-  commentId: T:DrawnUi.Draw.VirtualScroll
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.VirtualScroll.html
-  name: VirtualScroll
-  nameWithType: VirtualScroll
-  fullName: DrawnUi.Draw.VirtualScroll
-- uid: DrawnUi.Draw.SkiaBackdrop
-  commentId: T:DrawnUi.Draw.SkiaBackdrop
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaBackdrop.html
-  name: SkiaBackdrop
-  nameWithType: SkiaBackdrop
-  fullName: DrawnUi.Draw.SkiaBackdrop
-- uid: DrawnUi.Draw.SkiaHotspot
-  commentId: T:DrawnUi.Draw.SkiaHotspot
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaHotspot.html
-  name: SkiaHotspot
-  nameWithType: SkiaHotspot
-  fullName: DrawnUi.Draw.SkiaHotspot
-- uid: DrawnUi.Draw.SkiaHotspotZoom
-  commentId: T:DrawnUi.Draw.SkiaHotspotZoom
-  href: DrawnUi.Draw.SkiaHotspotZoom.html
-  name: SkiaHotspotZoom
-  nameWithType: SkiaHotspotZoom
-  fullName: DrawnUi.Draw.SkiaHotspotZoom
 - uid: DrawnUi.Draw.SkiaShape
   commentId: T:DrawnUi.Draw.SkiaShape
   parent: DrawnUi.Draw
@@ -1087,13 +652,6 @@ references:
   - uid: DrawnUi.Draw.SkiaShape.ShapePaintArguments
     name: ShapePaintArguments
     href: DrawnUi.Draw.SkiaShape.ShapePaintArguments.html
-- uid: DrawnUi.Draw.SkiaSvg
-  commentId: T:DrawnUi.Draw.SkiaSvg
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaSvg.html
-  name: SkiaSvg
-  nameWithType: SkiaSvg
-  fullName: DrawnUi.Draw.SkiaSvg
 - uid: DrawnUi.Draw.SkiaLabel
   commentId: T:DrawnUi.Draw.SkiaLabel
   parent: DrawnUi.Draw
@@ -1264,62 +822,12 @@ references:
   name: SvgSpan
   nameWithType: SvgSpan
   fullName: DrawnUi.Draw.SvgSpan
-- uid: DrawnUi.Draw.TextSpan
-  commentId: T:DrawnUi.Draw.TextSpan
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.TextSpan.html
-  name: TextSpan
-  nameWithType: TextSpan
-  fullName: DrawnUi.Draw.TextSpan
 - uid: DrawnUi.Draw.DebugImage
   commentId: T:DrawnUi.Draw.DebugImage
   href: DrawnUi.Draw.DebugImage.html
   name: DebugImage
   nameWithType: DebugImage
   fullName: DrawnUi.Draw.DebugImage
-- uid: DrawnUi.Draw.ChainDropShadowsEffect
-  commentId: T:DrawnUi.Draw.ChainDropShadowsEffect
-  href: DrawnUi.Draw.ChainDropShadowsEffect.html
-  name: ChainDropShadowsEffect
-  nameWithType: ChainDropShadowsEffect
-  fullName: DrawnUi.Draw.ChainDropShadowsEffect
-- uid: DrawnUi.Draw.ChainTintWithAlphaEffect
-  commentId: T:DrawnUi.Draw.ChainTintWithAlphaEffect
-  href: DrawnUi.Draw.ChainTintWithAlphaEffect.html
-  name: ChainTintWithAlphaEffect
-  nameWithType: ChainTintWithAlphaEffect
-  fullName: DrawnUi.Draw.ChainTintWithAlphaEffect
-- uid: DrawnUi.Draw.DropShadowEffect
-  commentId: T:DrawnUi.Draw.DropShadowEffect
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.DropShadowEffect.html
-  name: DropShadowEffect
-  nameWithType: DropShadowEffect
-  fullName: DrawnUi.Draw.DropShadowEffect
-- uid: DrawnUi.Draw.OuterGlowEffect
-  commentId: T:DrawnUi.Draw.OuterGlowEffect
-  href: DrawnUi.Draw.OuterGlowEffect.html
-  name: OuterGlowEffect
-  nameWithType: OuterGlowEffect
-  fullName: DrawnUi.Draw.OuterGlowEffect
-- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
-  commentId: T:DrawnUi.Draw.ShaderDoubleTexturesEffect
-  href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
-  name: ShaderDoubleTexturesEffect
-  nameWithType: ShaderDoubleTexturesEffect
-  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect
-- uid: DrawnUi.Draw.TintEffect
-  commentId: T:DrawnUi.Draw.TintEffect
-  href: DrawnUi.Draw.TintEffect.html
-  name: TintEffect
-  nameWithType: TintEffect
-  fullName: DrawnUi.Draw.TintEffect
-- uid: DrawnUi.Draw.TintWithAlphaEffect
-  commentId: T:DrawnUi.Draw.TintWithAlphaEffect
-  href: DrawnUi.Draw.TintWithAlphaEffect.html
-  name: TintWithAlphaEffect
-  nameWithType: TintWithAlphaEffect
-  fullName: DrawnUi.Draw.TintWithAlphaEffect
 - uid: DrawnUi.Draw.UnicodeBlock
   commentId: T:DrawnUi.Draw.UnicodeBlock
   parent: DrawnUi.Draw
@@ -1392,25 +900,6 @@ references:
   - uid: DrawnUi.Draw.SkiaImageManager.QueueItem
     name: QueueItem
     href: DrawnUi.Draw.SkiaImageManager.QueueItem.html
-- uid: DrawnUi.Draw.KeyboardManager
-  commentId: T:DrawnUi.Draw.KeyboardManager
-  href: DrawnUi.Draw.KeyboardManager.html
-  name: KeyboardManager
-  nameWithType: KeyboardManager
-  fullName: DrawnUi.Draw.KeyboardManager
-- uid: DrawnUi.Draw.MauiKey
-  commentId: T:DrawnUi.Draw.MauiKey
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.MauiKey.html
-  name: MauiKey
-  nameWithType: MauiKey
-  fullName: DrawnUi.Draw.MauiKey
-- uid: DrawnUi.Draw.MauiKeyMapper
-  commentId: T:DrawnUi.Draw.MauiKeyMapper
-  href: DrawnUi.Draw.MauiKeyMapper.html
-  name: MauiKeyMapper
-  nameWithType: MauiKeyMapper
-  fullName: DrawnUi.Draw.MauiKeyMapper
 - uid: DrawnUi.Draw.ColorExtensions
   commentId: T:DrawnUi.Draw.ColorExtensions
   href: DrawnUi.Draw.ColorExtensions.html
@@ -1451,37 +940,6 @@ references:
   name: ThemeBindingExtension
   nameWithType: ThemeBindingExtension
   fullName: DrawnUi.Draw.ThemeBindingExtension
-- uid: DrawnUi.Draw.SkiaSetter
-  commentId: T:DrawnUi.Draw.SkiaSetter
-  href: DrawnUi.Draw.SkiaSetter.html
-  name: SkiaSetter
-  nameWithType: SkiaSetter
-  fullName: DrawnUi.Draw.SkiaSetter
-- uid: DrawnUi.Draw.BindablePropertyExtension
-  commentId: T:DrawnUi.Draw.BindablePropertyExtension
-  href: DrawnUi.Draw.BindablePropertyExtension.html
-  name: BindablePropertyExtension
-  nameWithType: BindablePropertyExtension
-  fullName: DrawnUi.Draw.BindablePropertyExtension
-- uid: DrawnUi.Draw.BindToParentContextExtension
-  commentId: T:DrawnUi.Draw.BindToParentContextExtension
-  href: DrawnUi.Draw.BindToParentContextExtension.html
-  name: BindToParentContextExtension
-  nameWithType: BindToParentContextExtension
-  fullName: DrawnUi.Draw.BindToParentContextExtension
-- uid: DrawnUi.Draw.DrawnFontAttributesConverter
-  commentId: T:DrawnUi.Draw.DrawnFontAttributesConverter
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.DrawnFontAttributesConverter.html
-  name: DrawnFontAttributesConverter
-  nameWithType: DrawnFontAttributesConverter
-  fullName: DrawnUi.Draw.DrawnFontAttributesConverter
-- uid: DrawnUi.Draw.FindTagExtension
-  commentId: T:DrawnUi.Draw.FindTagExtension
-  href: DrawnUi.Draw.FindTagExtension.html
-  name: FindTagExtension
-  nameWithType: FindTagExtension
-  fullName: DrawnUi.Draw.FindTagExtension
 - uid: DrawnUi.Draw.IThemeProvider
   commentId: T:DrawnUi.Draw.IThemeProvider
   parent: DrawnUi.Draw
@@ -1515,12 +973,260 @@ references:
   name: ThemeBindings
   nameWithType: ThemeBindings
   fullName: DrawnUi.Draw.ThemeBindings
+- uid: DrawnUi.Draw.SkiaSetter
+  commentId: T:DrawnUi.Draw.SkiaSetter
+  href: DrawnUi.Draw.SkiaSetter.html
+  name: SkiaSetter
+  nameWithType: SkiaSetter
+  fullName: DrawnUi.Draw.SkiaSetter
+- uid: DrawnUi.Draw.BindablePropertyExtension
+  commentId: T:DrawnUi.Draw.BindablePropertyExtension
+  href: DrawnUi.Draw.BindablePropertyExtension.html
+  name: BindablePropertyExtension
+  nameWithType: BindablePropertyExtension
+  fullName: DrawnUi.Draw.BindablePropertyExtension
+- uid: DrawnUi.Draw.BindToParentContextExtension
+  commentId: T:DrawnUi.Draw.BindToParentContextExtension
+  href: DrawnUi.Draw.BindToParentContextExtension.html
+  name: BindToParentContextExtension
+  nameWithType: BindToParentContextExtension
+  fullName: DrawnUi.Draw.BindToParentContextExtension
+- uid: DrawnUi.Draw.DrawnFontAttributesConverter
+  commentId: T:DrawnUi.Draw.DrawnFontAttributesConverter
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.DrawnFontAttributesConverter.html
+  name: DrawnFontAttributesConverter
+  nameWithType: DrawnFontAttributesConverter
+  fullName: DrawnUi.Draw.DrawnFontAttributesConverter
+- uid: DrawnUi.Draw.FindTagExtension
+  commentId: T:DrawnUi.Draw.FindTagExtension
+  href: DrawnUi.Draw.FindTagExtension.html
+  name: FindTagExtension
+  nameWithType: FindTagExtension
+  fullName: DrawnUi.Draw.FindTagExtension
 - uid: DrawnUi.Draw.Super
   commentId: T:DrawnUi.Draw.Super
   href: DrawnUi.Draw.Super.html
   name: Super
   nameWithType: Super
   fullName: DrawnUi.Draw.Super
+- uid: DrawnUi.Draw.SkiaButton
+  commentId: T:DrawnUi.Draw.SkiaButton
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaButton.html
+  name: SkiaButton
+  nameWithType: SkiaButton
+  fullName: DrawnUi.Draw.SkiaButton
+- uid: DrawnUi.Draw.SkiaButton.ButtonLabel
+  commentId: T:DrawnUi.Draw.SkiaButton.ButtonLabel
+  href: DrawnUi.Draw.SkiaButton.html
+  name: SkiaButton.ButtonLabel
+  nameWithType: SkiaButton.ButtonLabel
+  fullName: DrawnUi.Draw.SkiaButton.ButtonLabel
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.ButtonLabel
+    name: ButtonLabel
+    href: DrawnUi.Draw.SkiaButton.ButtonLabel.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.ButtonLabel
+    name: ButtonLabel
+    href: DrawnUi.Draw.SkiaButton.ButtonLabel.html
+- uid: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
+  commentId: T:DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaButton.html
+  name: SkiaButton.ButtonElevationShadowEffect
+  nameWithType: SkiaButton.ButtonElevationShadowEffect
+  fullName: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
+    name: ButtonElevationShadowEffect
+    href: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect
+    name: ButtonElevationShadowEffect
+    href: DrawnUi.Draw.SkiaButton.ButtonElevationShadowEffect.html
+- uid: DrawnUi.Draw.SkiaButton.ButtonStyleType
+  commentId: T:DrawnUi.Draw.SkiaButton.ButtonStyleType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaButton.html
+  name: SkiaButton.ButtonStyleType
+  nameWithType: SkiaButton.ButtonStyleType
+  fullName: DrawnUi.Draw.SkiaButton.ButtonStyleType
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.ButtonStyleType
+    name: ButtonStyleType
+    href: DrawnUi.Draw.SkiaButton.ButtonStyleType.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.ButtonStyleType
+    name: ButtonStyleType
+    href: DrawnUi.Draw.SkiaButton.ButtonStyleType.html
+- uid: DrawnUi.Draw.SkiaButton.IconPositionType
+  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaButton.html
+  name: SkiaButton.IconPositionType
+  nameWithType: SkiaButton.IconPositionType
+  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
+    name: IconPositionType
+    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
+    name: IconPositionType
+    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
+- uid: DrawnUi.Draw.LottieRefreshIndicator
+  commentId: T:DrawnUi.Draw.LottieRefreshIndicator
+  href: DrawnUi.Draw.LottieRefreshIndicator.html
+  name: LottieRefreshIndicator
+  nameWithType: LottieRefreshIndicator
+  fullName: DrawnUi.Draw.LottieRefreshIndicator
+- uid: DrawnUi.Draw.RefreshIndicator
+  commentId: T:DrawnUi.Draw.RefreshIndicator
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.RefreshIndicator.html
+  name: RefreshIndicator
+  nameWithType: RefreshIndicator
+  fullName: DrawnUi.Draw.RefreshIndicator
+- uid: DrawnUi.Draw.SkiaLabelFps
+  commentId: T:DrawnUi.Draw.SkiaLabelFps
+  href: DrawnUi.Draw.SkiaLabelFps.html
+  name: SkiaLabelFps
+  nameWithType: SkiaLabelFps
+  fullName: DrawnUi.Draw.SkiaLabelFps
+- uid: DrawnUi.Draw.SkiaRichLabel
+  commentId: T:DrawnUi.Draw.SkiaRichLabel
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaRichLabel.html
+  name: SkiaRichLabel
+  nameWithType: SkiaRichLabel
+  fullName: DrawnUi.Draw.SkiaRichLabel
+- uid: DrawnUi.Draw.SkiaMarkdownLabel
+  commentId: T:DrawnUi.Draw.SkiaMarkdownLabel
+  href: DrawnUi.Draw.SkiaMarkdownLabel.html
+  name: SkiaMarkdownLabel
+  nameWithType: SkiaMarkdownLabel
+  fullName: DrawnUi.Draw.SkiaMarkdownLabel
+- uid: DrawnUi.Draw.ProgressTrail
+  commentId: T:DrawnUi.Draw.ProgressTrail
+  href: DrawnUi.Draw.ProgressTrail.html
+  name: ProgressTrail
+  nameWithType: ProgressTrail
+  fullName: DrawnUi.Draw.ProgressTrail
+- uid: DrawnUi.Draw.SkiaProgress
+  commentId: T:DrawnUi.Draw.SkiaProgress
+  href: DrawnUi.Draw.SkiaProgress.html
+  name: SkiaProgress
+  nameWithType: SkiaProgress
+  fullName: DrawnUi.Draw.SkiaProgress
+- uid: DrawnUi.Draw.SkiaRangeBase
+  commentId: T:DrawnUi.Draw.SkiaRangeBase
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaRangeBase.html
+  name: SkiaRangeBase
+  nameWithType: SkiaRangeBase
+  fullName: DrawnUi.Draw.SkiaRangeBase
+- uid: DrawnUi.Draw.SkiaHoverMask
+  commentId: T:DrawnUi.Draw.SkiaHoverMask
+  href: DrawnUi.Draw.SkiaHoverMask.html
+  name: SkiaHoverMask
+  nameWithType: SkiaHoverMask
+  fullName: DrawnUi.Draw.SkiaHoverMask
+- uid: DrawnUi.Draw.SkiaSlider
+  commentId: T:DrawnUi.Draw.SkiaSlider
+  href: DrawnUi.Draw.SkiaSlider.html
+  name: SkiaSlider
+  nameWithType: SkiaSlider
+  fullName: DrawnUi.Draw.SkiaSlider
+- uid: DrawnUi.Draw.SliderThumb
+  commentId: T:DrawnUi.Draw.SliderThumb
+  href: DrawnUi.Draw.SliderThumb.html
+  name: SliderThumb
+  nameWithType: SliderThumb
+  fullName: DrawnUi.Draw.SliderThumb
+- uid: DrawnUi.Draw.SliderTrail
+  commentId: T:DrawnUi.Draw.SliderTrail
+  href: DrawnUi.Draw.SliderTrail.html
+  name: SliderTrail
+  nameWithType: SliderTrail
+  fullName: DrawnUi.Draw.SliderTrail
+- uid: DrawnUi.Draw.SliderValueDesc
+  commentId: T:DrawnUi.Draw.SliderValueDesc
+  href: DrawnUi.Draw.SliderValueDesc.html
+  name: SliderValueDesc
+  nameWithType: SliderValueDesc
+  fullName: DrawnUi.Draw.SliderValueDesc
+- uid: DrawnUi.Draw.SkiaCheckbox
+  commentId: T:DrawnUi.Draw.SkiaCheckbox
+  href: DrawnUi.Draw.SkiaCheckbox.html
+  name: SkiaCheckbox
+  nameWithType: SkiaCheckbox
+  fullName: DrawnUi.Draw.SkiaCheckbox
+- uid: DrawnUi.Draw.SkiaSwitch
+  commentId: T:DrawnUi.Draw.SkiaSwitch
+  href: DrawnUi.Draw.SkiaSwitch.html
+  name: SkiaSwitch
+  nameWithType: SkiaSwitch
+  fullName: DrawnUi.Draw.SkiaSwitch
+- uid: DrawnUi.Draw.SkiaToggle
+  commentId: T:DrawnUi.Draw.SkiaToggle
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaToggle.html
+  name: SkiaToggle
+  nameWithType: SkiaToggle
+  fullName: DrawnUi.Draw.SkiaToggle
+- uid: DrawnUi.Draw.SkiaHotspot
+  commentId: T:DrawnUi.Draw.SkiaHotspot
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaHotspot.html
+  name: SkiaHotspot
+  nameWithType: SkiaHotspot
+  fullName: DrawnUi.Draw.SkiaHotspot
+- uid: DrawnUi.Draw.SkiaHotspotZoom
+  commentId: T:DrawnUi.Draw.SkiaHotspotZoom
+  href: DrawnUi.Draw.SkiaHotspotZoom.html
+  name: SkiaHotspotZoom
+  nameWithType: SkiaHotspotZoom
+  fullName: DrawnUi.Draw.SkiaHotspotZoom
+- uid: DrawnUi.Draw.ZoomContent
+  commentId: T:DrawnUi.Draw.ZoomContent
+  href: DrawnUi.Draw.ZoomContent.html
+  name: ZoomContent
+  nameWithType: ZoomContent
+  fullName: DrawnUi.Draw.ZoomContent
 - uid: DrawnUi.Draw.SKPaintExtensions
   commentId: T:DrawnUi.Draw.SKPaintExtensions
   href: DrawnUi.Draw.SKPaintExtensions.html
@@ -1565,6 +1271,221 @@ references:
   name: VisualLayer
   nameWithType: VisualLayer
   fullName: DrawnUi.Draw.VisualLayer
+- uid: DrawnUi.Draw.SkiaBackdrop
+  commentId: T:DrawnUi.Draw.SkiaBackdrop
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaBackdrop.html
+  name: SkiaBackdrop
+  nameWithType: SkiaBackdrop
+  fullName: DrawnUi.Draw.SkiaBackdrop
+- uid: DrawnUi.Draw.SkiaImage
+  commentId: T:DrawnUi.Draw.SkiaImage
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaImage.html
+  name: SkiaImage
+  nameWithType: SkiaImage
+  fullName: DrawnUi.Draw.SkiaImage
+- uid: DrawnUi.Draw.SkiaImage.RescaledBitmap
+  commentId: T:DrawnUi.Draw.SkiaImage.RescaledBitmap
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaImage.html
+  name: SkiaImage.RescaledBitmap
+  nameWithType: SkiaImage.RescaledBitmap
+  fullName: DrawnUi.Draw.SkiaImage.RescaledBitmap
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaImage.RescaledBitmap
+    name: RescaledBitmap
+    href: DrawnUi.Draw.SkiaImage.RescaledBitmap.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaImage.RescaledBitmap
+    name: RescaledBitmap
+    href: DrawnUi.Draw.SkiaImage.RescaledBitmap.html
+- uid: DrawnUi.Draw.SkiaImageTiles
+  commentId: T:DrawnUi.Draw.SkiaImageTiles
+  href: DrawnUi.Draw.SkiaImageTiles.html
+  name: SkiaImageTiles
+  nameWithType: SkiaImageTiles
+  fullName: DrawnUi.Draw.SkiaImageTiles
+- uid: DrawnUi.Draw.SkiaSvg
+  commentId: T:DrawnUi.Draw.SkiaSvg
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaSvg.html
+  name: SkiaSvg
+  nameWithType: SkiaSvg
+  fullName: DrawnUi.Draw.SkiaSvg
+- uid: DrawnUi.Draw.ContentLayout
+  commentId: T:DrawnUi.Draw.ContentLayout
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ContentLayout.html
+  name: ContentLayout
+  nameWithType: ContentLayout
+  fullName: DrawnUi.Draw.ContentLayout
+- uid: DrawnUi.Draw.InfiniteLayout
+  commentId: T:DrawnUi.Draw.InfiniteLayout
+  href: DrawnUi.Draw.InfiniteLayout.html
+  name: InfiniteLayout
+  nameWithType: InfiniteLayout
+  fullName: DrawnUi.Draw.InfiniteLayout
+- uid: DrawnUi.Draw.SkiaControlWithRect
+  commentId: T:DrawnUi.Draw.SkiaControlWithRect
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaControlWithRect.html
+  name: SkiaControlWithRect
+  nameWithType: SkiaControlWithRect
+  fullName: DrawnUi.Draw.SkiaControlWithRect
+- uid: DrawnUi.Draw.IRenderObject
+  commentId: T:DrawnUi.Draw.IRenderObject
+  href: DrawnUi.Draw.IRenderObject.html
+  name: IRenderObject
+  nameWithType: IRenderObject
+  fullName: DrawnUi.Draw.IRenderObject
+- uid: DrawnUi.Draw.ElementRenderer
+  commentId: T:DrawnUi.Draw.ElementRenderer
+  href: DrawnUi.Draw.ElementRenderer.html
+  name: ElementRenderer
+  nameWithType: ElementRenderer
+  fullName: DrawnUi.Draw.ElementRenderer
+- uid: DrawnUi.Draw.RenderTreeRenderer
+  commentId: T:DrawnUi.Draw.RenderTreeRenderer
+  href: DrawnUi.Draw.RenderTreeRenderer.html
+  name: RenderTreeRenderer
+  nameWithType: RenderTreeRenderer
+  fullName: DrawnUi.Draw.RenderTreeRenderer
+- uid: DrawnUi.Draw.RenderObject
+  commentId: T:DrawnUi.Draw.RenderObject
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.RenderObject.html
+  name: RenderObject
+  nameWithType: RenderObject
+  fullName: DrawnUi.Draw.RenderObject
+- uid: DrawnUi.Draw.RenderLabel
+  commentId: T:DrawnUi.Draw.RenderLabel
+  href: DrawnUi.Draw.RenderLabel.html
+  name: RenderLabel
+  nameWithType: RenderLabel
+  fullName: DrawnUi.Draw.RenderLabel
+- uid: DrawnUi.Draw.MeasuredListCell
+  commentId: T:DrawnUi.Draw.MeasuredListCell
+  href: DrawnUi.Draw.MeasuredListCell.html
+  name: MeasuredListCell
+  nameWithType: MeasuredListCell
+  fullName: DrawnUi.Draw.MeasuredListCell
+- uid: DrawnUi.Draw.MeasuredListCells
+  commentId: T:DrawnUi.Draw.MeasuredListCells
+  href: DrawnUi.Draw.MeasuredListCells.html
+  name: MeasuredListCells
+  nameWithType: MeasuredListCells
+  fullName: DrawnUi.Draw.MeasuredListCells
+- uid: DrawnUi.Draw.CellWIthHeight
+  commentId: T:DrawnUi.Draw.CellWIthHeight
+  href: DrawnUi.Draw.CellWIthHeight.html
+  name: CellWIthHeight
+  nameWithType: CellWIthHeight
+  fullName: DrawnUi.Draw.CellWIthHeight
+- uid: DrawnUi.Draw.ViewsAdapter
+  commentId: T:DrawnUi.Draw.ViewsAdapter
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ViewsAdapter.html
+  name: ViewsAdapter
+  nameWithType: ViewsAdapter
+  fullName: DrawnUi.Draw.ViewsAdapter
+- uid: DrawnUi.Draw.ViewsIterator
+  commentId: T:DrawnUi.Draw.ViewsIterator
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ViewsIterator.html
+  name: ViewsIterator
+  nameWithType: ViewsIterator
+  fullName: DrawnUi.Draw.ViewsIterator
+- uid: DrawnUi.Draw.DataContextIterator
+  commentId: T:DrawnUi.Draw.DataContextIterator
+  href: DrawnUi.Draw.DataContextIterator.html
+  name: DataContextIterator
+  nameWithType: DataContextIterator
+  fullName: DrawnUi.Draw.DataContextIterator
+- uid: DrawnUi.Draw.TemplatedViewsPool
+  commentId: T:DrawnUi.Draw.TemplatedViewsPool
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.TemplatedViewsPool.html
+  name: TemplatedViewsPool
+  nameWithType: TemplatedViewsPool
+  fullName: DrawnUi.Draw.TemplatedViewsPool
+- uid: DrawnUi.Draw.SnappingLayout
+  commentId: T:DrawnUi.Draw.SnappingLayout
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SnappingLayout.html
+  name: SnappingLayout
+  nameWithType: SnappingLayout
+  fullName: DrawnUi.Draw.SnappingLayout
+- uid: DrawnUi.Draw.StackLayoutStructure
+  commentId: T:DrawnUi.Draw.StackLayoutStructure
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.StackLayoutStructure.html
+  name: StackLayoutStructure
+  nameWithType: StackLayoutStructure
+  fullName: DrawnUi.Draw.StackLayoutStructure
+- uid: DrawnUi.Draw.Plane
+  commentId: T:DrawnUi.Draw.Plane
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.Plane.html
+  name: Plane
+  nameWithType: Plane
+  fullName: DrawnUi.Draw.Plane
+- uid: DrawnUi.Draw.PlanesScroll
+  commentId: T:DrawnUi.Draw.PlanesScroll
+  href: DrawnUi.Draw.PlanesScroll.html
+  name: PlanesScroll
+  nameWithType: PlanesScroll
+  fullName: DrawnUi.Draw.PlanesScroll
+- uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
+  commentId: T:DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
+  href: DrawnUi.Draw.PlanesScroll.html
+  name: PlanesScroll.ViewLayoutInfo
+  nameWithType: PlanesScroll.ViewLayoutInfo
+  fullName: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
+  spec.csharp:
+  - uid: DrawnUi.Draw.PlanesScroll
+    name: PlanesScroll
+    href: DrawnUi.Draw.PlanesScroll.html
+  - name: .
+  - uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
+    name: ViewLayoutInfo
+    href: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo.html
+  spec.vb:
+  - uid: DrawnUi.Draw.PlanesScroll
+    name: PlanesScroll
+    href: DrawnUi.Draw.PlanesScroll.html
+  - name: .
+  - uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
+    name: ViewLayoutInfo
+    href: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo.html
+- uid: DrawnUi.Draw.SkiaScroll
+  commentId: T:DrawnUi.Draw.SkiaScroll
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaScroll.html
+  name: SkiaScroll
+  nameWithType: SkiaScroll
+  fullName: DrawnUi.Draw.SkiaScroll
+- uid: DrawnUi.Draw.SkiaScrollLooped
+  commentId: T:DrawnUi.Draw.SkiaScrollLooped
+  href: DrawnUi.Draw.SkiaScrollLooped.html
+  name: SkiaScrollLooped
+  nameWithType: SkiaScrollLooped
+  fullName: DrawnUi.Draw.SkiaScrollLooped
+- uid: DrawnUi.Draw.VirtualScroll
+  commentId: T:DrawnUi.Draw.VirtualScroll
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.VirtualScroll.html
+  name: VirtualScroll
+  nameWithType: VirtualScroll
+  fullName: DrawnUi.Draw.VirtualScroll
 - uid: DrawnUi.Draw.Snapping
   commentId: T:DrawnUi.Draw.Snapping
   href: DrawnUi.Draw.Snapping.html
@@ -1577,12 +1498,81 @@ references:
   name: VisualTreeHandler
   nameWithType: VisualTreeHandler
   fullName: DrawnUi.Draw.VisualTreeHandler
+- uid: DrawnUi.Draw.TextSpan
+  commentId: T:DrawnUi.Draw.TextSpan
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.TextSpan.html
+  name: TextSpan
+  nameWithType: TextSpan
+  fullName: DrawnUi.Draw.TextSpan
+- uid: DrawnUi.Draw.SkiaCursor
+  commentId: T:DrawnUi.Draw.SkiaCursor
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaCursor.html
+  name: SkiaCursor
+  nameWithType: SkiaCursor
+  fullName: DrawnUi.Draw.SkiaCursor
+- uid: DrawnUi.Draw.SkiaEditor
+  commentId: T:DrawnUi.Draw.SkiaEditor
+  href: DrawnUi.Draw.SkiaEditor.html
+  name: SkiaEditor
+  nameWithType: SkiaEditor
+  fullName: DrawnUi.Draw.SkiaEditor
+- uid: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+  commentId: T:DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaEditor.html
+  name: SkiaEditor.SkiaEditorKeyboard
+  nameWithType: SkiaEditor.SkiaEditorKeyboard
+  fullName: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+    name: SkiaEditorKeyboard
+    href: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+    name: SkiaEditorKeyboard
+    href: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard.html
+- uid: DrawnUi.Draw.SkiaEditorSelection
+  commentId: T:DrawnUi.Draw.SkiaEditorSelection
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaEditorSelection.html
+  name: SkiaEditorSelection
+  nameWithType: SkiaEditorSelection
+  fullName: DrawnUi.Draw.SkiaEditorSelection
 - uid: DrawnUi.Draw.AnimatedShaderEffect
   commentId: T:DrawnUi.Draw.AnimatedShaderEffect
   href: DrawnUi.Draw.AnimatedShaderEffect.html
   name: AnimatedShaderEffect
   nameWithType: AnimatedShaderEffect
   fullName: DrawnUi.Draw.AnimatedShaderEffect
+- uid: DrawnUi.Draw.ChainDropShadowsEffect
+  commentId: T:DrawnUi.Draw.ChainDropShadowsEffect
+  href: DrawnUi.Draw.ChainDropShadowsEffect.html
+  name: ChainDropShadowsEffect
+  nameWithType: ChainDropShadowsEffect
+  fullName: DrawnUi.Draw.ChainDropShadowsEffect
+- uid: DrawnUi.Draw.ChainTintWithAlphaEffect
+  commentId: T:DrawnUi.Draw.ChainTintWithAlphaEffect
+  href: DrawnUi.Draw.ChainTintWithAlphaEffect.html
+  name: ChainTintWithAlphaEffect
+  nameWithType: ChainTintWithAlphaEffect
+  fullName: DrawnUi.Draw.ChainTintWithAlphaEffect
+- uid: DrawnUi.Draw.DropShadowEffect
+  commentId: T:DrawnUi.Draw.DropShadowEffect
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.DropShadowEffect.html
+  name: DropShadowEffect
+  nameWithType: DropShadowEffect
+  fullName: DrawnUi.Draw.DropShadowEffect
 - uid: DrawnUi.Draw.IColorEffect
   commentId: T:DrawnUi.Draw.IColorEffect
   parent: DrawnUi.Draw
@@ -1625,6 +1615,12 @@ references:
   name: IStateEffect
   nameWithType: IStateEffect
   fullName: DrawnUi.Draw.IStateEffect
+- uid: DrawnUi.Draw.OuterGlowEffect
+  commentId: T:DrawnUi.Draw.OuterGlowEffect
+  href: DrawnUi.Draw.OuterGlowEffect.html
+  name: OuterGlowEffect
+  nameWithType: OuterGlowEffect
+  fullName: DrawnUi.Draw.OuterGlowEffect
 - uid: DrawnUi.Draw.PostRendererEffectUseBackgroud
   commentId: T:DrawnUi.Draw.PostRendererEffectUseBackgroud
   parent: DrawnUi.Draw
@@ -1632,6 +1628,12 @@ references:
   name: PostRendererEffectUseBackgroud
   nameWithType: PostRendererEffectUseBackgroud
   fullName: DrawnUi.Draw.PostRendererEffectUseBackgroud
+- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
+  commentId: T:DrawnUi.Draw.ShaderDoubleTexturesEffect
+  href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
+  name: ShaderDoubleTexturesEffect
+  nameWithType: ShaderDoubleTexturesEffect
+  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect
 - uid: DrawnUi.Draw.SkiaEffect
   commentId: T:DrawnUi.Draw.SkiaEffect
   parent: DrawnUi.Draw
@@ -1652,6 +1654,37 @@ references:
   name: StateEffect
   nameWithType: StateEffect
   fullName: DrawnUi.Draw.StateEffect
+- uid: DrawnUi.Draw.TintEffect
+  commentId: T:DrawnUi.Draw.TintEffect
+  href: DrawnUi.Draw.TintEffect.html
+  name: TintEffect
+  nameWithType: TintEffect
+  fullName: DrawnUi.Draw.TintEffect
+- uid: DrawnUi.Draw.TintWithAlphaEffect
+  commentId: T:DrawnUi.Draw.TintWithAlphaEffect
+  href: DrawnUi.Draw.TintWithAlphaEffect.html
+  name: TintWithAlphaEffect
+  nameWithType: TintWithAlphaEffect
+  fullName: DrawnUi.Draw.TintWithAlphaEffect
+- uid: DrawnUi.Draw.KeyboardManager
+  commentId: T:DrawnUi.Draw.KeyboardManager
+  href: DrawnUi.Draw.KeyboardManager.html
+  name: KeyboardManager
+  nameWithType: KeyboardManager
+  fullName: DrawnUi.Draw.KeyboardManager
+- uid: DrawnUi.Draw.InputKey
+  commentId: T:DrawnUi.Draw.InputKey
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.InputKey.html
+  name: InputKey
+  nameWithType: InputKey
+  fullName: DrawnUi.Draw.InputKey
+- uid: DrawnUi.Draw.MauiKeyMapper
+  commentId: T:DrawnUi.Draw.MauiKeyMapper
+  href: DrawnUi.Draw.MauiKeyMapper.html
+  name: MauiKeyMapper
+  nameWithType: MauiKeyMapper
+  fullName: DrawnUi.Draw.MauiKeyMapper
 - uid: DrawnUi.Draw.ControlLifecycleState
   commentId: T:DrawnUi.Draw.ControlLifecycleState
   parent: DrawnUi.Draw
@@ -1910,6 +1943,13 @@ references:
   name: TransformAspect
   nameWithType: TransformAspect
   fullName: DrawnUi.Draw.TransformAspect
+- uid: DrawnUi.Draw.UpdateModeType
+  commentId: T:DrawnUi.Draw.UpdateModeType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UpdateModeType.html
+  name: UpdateModeType
+  nameWithType: UpdateModeType
+  fullName: DrawnUi.Draw.UpdateModeType
 - uid: DrawnUi.Draw.ViewportScrollType
   commentId: T:DrawnUi.Draw.ViewportScrollType
   parent: DrawnUi.Draw

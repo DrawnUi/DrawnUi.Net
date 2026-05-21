@@ -15,11 +15,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuredListCells
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
     startLine: 2766
   assemblies:
   - DrawnUi.Maui
@@ -70,11 +70,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
     startLine: 2768
   assemblies:
   - DrawnUi.Maui

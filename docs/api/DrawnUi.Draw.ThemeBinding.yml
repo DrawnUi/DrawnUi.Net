@@ -18,11 +18,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ThemeBinding
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 183
   assemblies:
   - DrawnUi.Maui
@@ -60,11 +60,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateTargetValue
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 239
   assemblies:
   - DrawnUi.Maui
@@ -93,11 +93,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 284
   assemblies:
   - DrawnUi.Maui
@@ -123,11 +123,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 302
   assemblies:
   - DrawnUi.Maui
@@ -155,11 +155,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 304
   assemblies:
   - DrawnUi.Maui

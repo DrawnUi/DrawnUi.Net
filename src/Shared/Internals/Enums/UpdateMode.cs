@@ -1,6 +1,6 @@
-﻿namespace DrawnUi.Infrastructure.Enums;
+﻿namespace DrawnUi.Draw;
 
-public enum UpdateMode
+public enum UpdateModeType
 {
     /// <summary>
     /// Will update when needed. 

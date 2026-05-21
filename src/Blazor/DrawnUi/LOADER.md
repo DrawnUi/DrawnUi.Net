@@ -1,0 +1,219 @@
+# DrawnUI Blazor Boot Loader
+
+Replaces the default Blazor SVG spinner with a branded animated loading screen.  
+Shipped inside `DrawnUi.Blazor.Core` — no extra package needed.
+
+---
+
+## Files (served at `_content/DrawnUi.Blazor.Core/`)
+
+| File | Description |
+|---|---|
+| `drawnui-loader.css` | All `.boot-*` styles and animations |
+| `drawnui-loader.js` | Shared Blazor startup helper for progress and initialization text |
+| `drawnui-logo.svg` | Gray DrawnUI logo — for dark backgrounds |
+| `drawnui-logo-black.svg` | Black DrawnUI logo — for light backgrounds |
+
+---
+
+## Setup
+
+### 1. `wwwroot/index.html` — add to `<head>`
+
+```html
+<link rel="stylesheet" href="_content/DrawnUi.Blazor.Core/drawnui-loader.css" />
+```
+
+Optional — use the DrawnUI logo as favicon:
+
+```html
+<link rel="icon" type="image/svg+xml" href="_content/DrawnUi.Blazor.Core/drawnui-logo.svg" />
+```
+
+### 2. `wwwroot/index.html` — replace `<div id="app">` content
+
+```html
+<div id="app">
+    <div class="boot-shell" data-loader-theme="dark" aria-label="Loading MyApp">
+        <div class="boot-stage">
+            <div class="boot-logo-wrap">
+                <img class="boot-logo"
+                     src="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-dark="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-light="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg"
+                     alt="DrawnUI" />
+                <span class="boot-spark" style="--a:15deg;--r:6.8rem;--du:2.1s;--de:0s;--c:#4b8ef9"></span>
+                <span class="boot-spark" style="--a:72deg;--r:6.4rem;--du:1.8s;--de:0.38s;--c:#f25536"></span>
+                <span class="boot-spark" style="--a:138deg;--r:7rem;--du:2.4s;--de:0.72s;--c:#e4a130"></span>
+                <span class="boot-spark" style="--a:195deg;--r:6.2rem;--du:1.9s;--de:1.08s;--c:#78549e"></span>
+                <span class="boot-spark" style="--a:252deg;--r:6.8rem;--du:2.2s;--de:1.44s;--c:#4b8ef9"></span>
+                <span class="boot-spark" style="--a:315deg;--r:6rem;--du:1.7s;--de:0.56s;--c:#f25536"></span>
+                <span class="boot-spark" style="--a:42deg;--r:7.4rem;--du:2.6s;--de:0.92s;--c:#e4a130"></span>
+                <span class="boot-spark" style="--a:172deg;--r:7.6rem;--du:2s;--de:1.6s;--c:#78549e"></span>
+            </div>
+            <div class="boot-foot">
+                <div class="boot-copy">My App Name</div>
+                <div class="boot-progress" aria-hidden="true">
+                    <div class="boot-progress-track">
+                        <div class="boot-progress-fill"></div>
+                    </div>
+                    <div class="boot-progress-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+Change `My App Name` and the `aria-label` to match your app.
+
+### 2a. Loader theme switching
+
+The loader theme is controlled in one place through `startBlazorWithLoader(...)`.
+
+Available themes:
+
+| Theme | Result |
+|---|---|
+| `dark` | Default dark loader styling |
+| `light` | Light card, darker footer text, black logo variant |
+| `auto` | Uses `prefers-color-scheme` before Blazor starts |
+|
+
+Recommended markup keeps both logo variants on the loader image:
+
+```html
+<div id="app">
+    <div class="boot-shell" data-loader-theme="auto" aria-label="Loading MyApp">
+        <div class="boot-stage">
+            <div class="boot-logo-wrap">
+                <img class="boot-logo"
+                     src="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-dark="_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+                     data-logo-light="_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg"
+                     alt="My App" />
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+Then set the theme in startup options:
+
+```html
+<script>
+    globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
+        theme: "auto",
+        initialLabel: "Loading",
+        initializingLabel: "Initializing...",
+        failureLabel: "Failed"
+    });
+</script>
+```
+
+If you already know the theme before Blazor starts, pass `theme: "light"` or `theme: "dark"` directly.
+
+If you need to override the loader theme before calling `startBlazorWithLoader(...)`, use:
+
+```html
+<script>
+    globalThis.DrawnUiLoader.applyTheme({
+        theme: "light",
+        lightLogoSrc: "_content/DrawnUi.Blazor.Core/drawnui-logo-black.svg",
+        darkLogoSrc: "_content/DrawnUi.Blazor.Core/drawnui-logo.svg"
+    });
+</script>
+```
+
+### 3. `wwwroot/css/app.css` — set background to match your app
+
+`.boot-shell` uses `min-height: 100svh` so it centers correctly regardless of whether the parent `#app` has an explicit height. It is transparent — it inherits the page background.
+
+Set `html/body` background to your app's theme color so there is no flash before CSS is parsed:
+
+```css
+html, body {
+    background: #090b10; /* dark app — adjust to your theme */
+}
+```
+
+Light-themed apps can skip this or use their own color; the loader will pick up whatever background is set.
+
+---
+
+## Progress bar
+
+Add the shared startup helper before `blazor.webassembly.js`, then start Blazor through it:
+
+```html
+<script src="_content/DrawnUi.Blazor.Core/drawnui-loader.js"></script>
+<script src="_framework/blazor.webassembly.js" autostart="false"></script>
+<script>
+    globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
+        theme: "auto",
+        initialLabel: "Loading",
+        initializingLabel: "Initializing...",
+        failureLabel: "Failed"
+    });
+</script>
+```
+
+The helper shows real download progress from `0%` to `100%`. Once resources are fully downloaded and Blazor is still starting, it switches the loader text to `initializingLabel` while keeping the fill at `100%`.
+
+All loader labels are app-provided, so they can be localized the same way you localize any other app-specific text in `index.html`.
+
+If your app already persists the selected language before Blazor starts, resolve the labels from that stored culture first so the boot screen matches the rest of the app without any extra network request. Breakout does this by reading `breakout.lang` from local storage and selecting the loader labels before calling `startBlazorWithLoader(...)`.
+
+Available loader label options:
+
+| Option | Default | Meaning |
+|---|---|---|
+| `initialLabel` | `Loading` | Initial text shown before download progress starts |
+| `initializingLabel` | `Initializing...` | Text shown after download reaches `100%` and Blazor is still booting |
+| `failureLabel` | `Failed` | Text shown if Blazor startup fails |
+| `theme` | `dark` | Loader theme: `dark`, `light`, or `auto` |
+| `shellSelector` | `.boot-shell` | Which loader root element to theme |
+| `logoSelector` | `.boot-logo` | Which logo inside the loader root should switch variants |
+| `lightLogoSrc` | `null` | Explicit logo source to use in light theme |
+| `darkLogoSrc` | `null` | Explicit logo source to use in dark theme |
+
+To preview the loader at a specific progress without running the app, open:
+
+```
+http://localhost:PORT/?loader-preview&theme=light&progress=65&label=Loading+assets
+```
+
+This requires the preview JS block from the Breakout `index.html` (optional, copy as needed).
+
+---
+
+## Custom logo
+
+Replace the `<img>` `src` with your own asset:
+
+```html
+<img class="boot-logo" src="images/my-logo.svg" alt="My App" />
+```
+
+---
+
+## Spark colors
+
+Each `<span class="boot-spark">` takes four CSS custom properties:
+
+| Property | Description |
+|---|---|
+| `--a` | angle on the orbit ring (deg) |
+| `--r` | orbit radius (rem) |
+| `--du` | animation duration |
+| `--de` | animation delay (stagger) |
+| `--c` | color (hex or any CSS color) |
+
+Add, remove, or recolor sparks freely.
+
+---
+
+## Reference implementations
+
+- `src/Blazor/Samples/BlazorSandbox/wwwroot/index.html` — sandbox example
+- `src/Web/Breakout.Web/wwwroot/index.html` — game app example (includes loader-preview JS)

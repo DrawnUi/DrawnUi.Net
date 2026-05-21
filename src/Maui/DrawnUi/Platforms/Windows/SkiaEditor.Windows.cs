@@ -1,17 +1,21 @@
-﻿using DrawnUi.Draw;
+using DrawnUi.Draw;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Input;
 using System.Diagnostics;
+using InputScope = Microsoft.UI.Xaml.Input.InputScope;
+using InputScopeName = Microsoft.UI.Xaml.Input.InputScopeName;
+using InputScopeNameValue = Microsoft.UI.Xaml.Input.InputScopeNameValue;
 using TextChangedEventArgs = Microsoft.UI.Xaml.Controls.TextChangedEventArgs;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace DrawnUi.Draw
 {
-    public partial class SkiaEditor : SkiaLayout, ISkiaGestureListener
+    public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
         private TextBox _hiddenTextBox;
         private bool _updatingText;
+        private bool _suppressSelectionChanged;
 
         public int NativeSelectionStart
         {
@@ -27,25 +31,26 @@ namespace DrawnUi.Draw
 
         public void SetCursorPositionNative(int position, int stop = -1)
         {
-            if (_hiddenTextBox != null)
+            if (_hiddenTextBox == null)
+                return;
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
                 try
                 {
-                    _hiddenTextBox.SelectionStart = Math.Min(position, _hiddenTextBox.Text?.Length ?? 0);
-                    if (stop >= 0)
-                    {
-                        _hiddenTextBox.SelectionLength = Math.Max(0, Math.Min(stop, _hiddenTextBox.Text?.Length ?? 0) - _hiddenTextBox.SelectionStart);
-                    }
-                    else
-                    {
-                        _hiddenTextBox.SelectionLength = 0;
-                    }
+                    if (_hiddenTextBox == null)
+                        return;
+                    var len = _hiddenTextBox.Text?.Length ?? 0;
+                    _hiddenTextBox.SelectionStart = Math.Min(position, len);
+                    _hiddenTextBox.SelectionLength = stop >= 0
+                        ? Math.Max(0, Math.Min(stop, len) - _hiddenTextBox.SelectionStart)
+                        : 0;
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine($"[SetCursorPositionNative] {e}");
                 }
-            }
+            });
         }
 
         public void DisposePlatform()
@@ -56,7 +61,10 @@ namespace DrawnUi.Draw
                 {
                     _hiddenTextBox.TextChanged -= HiddenTextBox_TextChanged;
                     _hiddenTextBox.SelectionChanged -= HiddenTextBox_SelectionChanged;
-                    
+                    _hiddenTextBox.GotFocus -= HiddenTextBox_GotFocus;
+                    _hiddenTextBox.PreviewKeyDown -= HiddenTextBox_PreviewKeyDown;
+                    _hiddenTextBox.KeyDown -= HiddenTextBox_KeyDown;
+
                     var layout = (Panel)Superview?.Handler?.PlatformView;
                     if (layout != null)
                     {
@@ -71,92 +79,127 @@ namespace DrawnUi.Draw
             }
         }
 
-        public void UpdateNativePosition()
+        // Block stray keystrokes during the 100 ms focus-delay window that follows a tap.
+        // IsReadOnly=true keeps the TextBox in the focus chain but silently discards input.
+        // SetFocusNative restores IsReadOnly=false before calling Focus(Programmatic).
+        partial void PlatformClearFocusNow()
         {
-            try
+            if (_hiddenTextBox != null)
+                _hiddenTextBox.IsReadOnly = true;
+        }
+
+        // TextBox is an off-screen keyboard sink — size and position are fixed.
+        public void UpdateNativePosition() { }
+
+        private void EnsureTextBox()
+        {
+            if (_hiddenTextBox != null)
+                return;
+
+            var layout = (Panel)Superview?.Handler?.PlatformView;
+            Debug.WriteLine($"[SkiaEditor] EnsureTextBox layout={layout?.GetType().Name ?? "NULL"} superview={Superview?.GetType().Name ?? "NULL"}");
+            if (layout == null)
+                return;
+
+            _hiddenTextBox = new TextBox
             {
-                if (_hiddenTextBox != null)
-                {
-                    var layout = (Panel)Superview?.Handler?.PlatformView;
-                    if (layout != null)
-                    {
-                        // Update size
-                        _hiddenTextBox.Width = DrawingRect.Width;
-                        _hiddenTextBox.Height = DrawingRect.Height;
+                IsReadOnly = false,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                Width = 1,
+                Height = 1,
+                Visibility = Visibility.Visible,
+                Name = "HiddenTextBox" + GenerateUniqueId(),
+                Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(1, 0, 0, 0))
+            };
 
-                        // Measure with the new size
-                        _hiddenTextBox.Measure(new Windows.Foundation.Size(DrawingRect.Width, DrawingRect.Height));
+            _hiddenTextBox.TextChanged += HiddenTextBox_TextChanged;
+            _hiddenTextBox.SelectionChanged += HiddenTextBox_SelectionChanged;
+            _hiddenTextBox.GotFocus += HiddenTextBox_GotFocus;
+            _hiddenTextBox.PreviewKeyDown += HiddenTextBox_PreviewKeyDown;
+            _hiddenTextBox.KeyDown += HiddenTextBox_KeyDown;
 
-                        // Arrange at the correct position
-                        _hiddenTextBox.Arrange(new Windows.Foundation.Rect(
-                            DrawingRect.Left,
-                            DrawingRect.Top,
-                            DrawingRect.Width,
-                            DrawingRect.Height));
+            layout.Children.Add(_hiddenTextBox);
 
-                        // Force layout update
-                        _hiddenTextBox.UpdateLayout();
-                    }
-                }
-            }
-            catch (Exception e)
+            // keep off-screen so WinUI native hit-testing never intercepts canvas taps
+            _hiddenTextBox.Measure(new Windows.Foundation.Size(1, 1));
+            _hiddenTextBox.Arrange(new Windows.Foundation.Rect(-10, -10, 1, 1));
+        }
+
+        public void ApplyKeyboardType()
+        {
+            if (_hiddenTextBox == null) return;
+
+            if (IsPassword || KeyboardType == SkiaEditorKeyboard.Default)
             {
-                Debug.WriteLine($"[UpdateNativePosition] {e}");
+                _hiddenTextBox.InputScope = null;
+                return;
             }
+
+            var nameValue = KeyboardType switch
+            {
+                SkiaEditorKeyboard.Numeric  => InputScopeNameValue.Number,
+                SkiaEditorKeyboard.Decimal  => InputScopeNameValue.Number,
+                SkiaEditorKeyboard.Phone    => InputScopeNameValue.TelephoneNumber,
+                SkiaEditorKeyboard.Email    => InputScopeNameValue.EmailSmtpAddress,
+                _                           => InputScopeNameValue.Default
+            };
+
+            var scope = new InputScope();
+            scope.Names.Add(new InputScopeName { NameValue = nameValue });
+            _hiddenTextBox.InputScope = scope;
         }
 
         public void SetFocusNative(bool focus)
         {
+            Debug.WriteLine($"[SkiaEditor] SetFocusNative focus={focus} textBox={_hiddenTextBox != null}");
             try
             {
-                var layout = (Panel)Superview.Handler?.PlatformView;
-
                 if (focus)
                 {
+                    EnsureTextBox();
+
                     if (_hiddenTextBox == null)
+                        return;
+
+                    // always sync text before focusing — TextBox may be stale if Text changed while unfocused
+                    if (!_updatingText)
                     {
-                        // Create the hidden TextBox if it does not exist
-                        _hiddenTextBox = new TextBox
-                        {
-                            IsReadOnly = false,
-                            AcceptsReturn = true,
-                            TextWrapping = TextWrapping.Wrap,
-                            Width = 0,
-                            Height = 0,
-                            Visibility = Visibility.Visible,
-                            Name = "HiddenTextBox" + GenerateUniqueId(),
-                            Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(1, 0, 0, 0))
-                        };
-
-                        _hiddenTextBox.TextChanged += HiddenTextBox_TextChanged;
-                        _hiddenTextBox.SelectionChanged += HiddenTextBox_SelectionChanged;
-
-                        // Add the TextBox to your layout
-                        layout.Children.Add(_hiddenTextBox);
-                        
-                        // Update position right away
-                        UpdateNativePosition();
+                        _updatingText = true;
+                        _hiddenTextBox.Text = this.Text ?? string.Empty;
+                        _updatingText = false;
                     }
 
-                    // Request focus and show the keyboard
+                    ApplyKeyboardType();
+
+                    // PlatformClearFocusNow sets IsReadOnly=true to block stray keystrokes
+                    // during the 100 ms focus delay. Restore before focusing.
+                    _hiddenTextBox.IsReadOnly = false;
+
+                    // GotFocus fires only on focus *transitions*. If this TextBox was already
+                    // focused (re-tap of same editor), GotFocus won't fire and
+                    // _suppressSelectionChanged stays true, blocking all future SelectionChanged.
+                    // Detect this case up-front so we can handle selection manually.
+                    bool alreadyFocused = _hiddenTextBox.FocusState != FocusState.Unfocused;
+
+                    _suppressSelectionChanged = true;
                     _hiddenTextBox.Focus(FocusState.Programmatic);
-                }
-                else
-                {
-                    if (_hiddenTextBox != null)
+
+                    if (alreadyFocused)
                     {
-                        // Remove focus and hide the keyboard
-                        _hiddenTextBox.IsTabStop = false;
-
-                        // Remove event handlers
-                        _hiddenTextBox.TextChanged -= HiddenTextBox_TextChanged;
-                        _hiddenTextBox.SelectionChanged -= HiddenTextBox_SelectionChanged;
-
-                        // Remove the hidden TextBox from the layout
-                        layout.Children.Remove(_hiddenTextBox);
-                        _hiddenTextBox = null;
+                        // GotFocus won't fire — manually position selection and clear flag.
+                        var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
+                        var len = SelectionLength > 0
+                            ? Math.Min(SelectionLength, (_hiddenTextBox.Text?.Length ?? 0) - pos)
+                            : 0;
+                        _hiddenTextBox.SelectionStart = pos;
+                        _hiddenTextBox.SelectionLength = len;
+                        _suppressSelectionChanged = false;
                     }
+                    // else: GotFocus fires synchronously during Focus() and clears the flag.
                 }
+                // on defocus: do nothing — TextBox stays in tree, just loses WinUI focus naturally.
+                // No destroy/recreate race possible.
             }
             catch (Exception e)
             {
@@ -166,18 +209,91 @@ namespace DrawnUi.Draw
 
         private void HiddenTextBox_TextChanged(object sender, TextChangedEventArgs textChangedEventArgs)
         {
+            //Debug.WriteLine($"[SkiaEditor] TextChanged updatingText={_updatingText} newText='{_hiddenTextBox?.Text}'");
             if (!_updatingText)
             {
                 _updatingText = true;
-                Text = _hiddenTextBox.Text;
+                // normalize Windows line endings
+                Text = _hiddenTextBox.Text?.Replace("\r\n", "\n").Replace("\r", "\n");
                 _updatingText = false;
+            }
+        }
+
+        // PreviewKeyDown fires before the TextBox processes the key — used for Up/Down so the
+        // 1×1-pixel TextBox never navigates its own (garbage) wrap layout and never fires
+        // a spurious SelectionChanged that would override the drawn cursor position.
+        private void HiddenTextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            // Must block Enter for single-line here, before TextBox processes it.
+            // KeyDown fires after TextBox inserts the character; AcceptsReturn=true
+            // means a \n would already be in the text by the time KeyDown runs.
+            if (!IsMultiline && e.Key == Windows.System.VirtualKey.Enter)
+            {
+                e.Handled = true;
+                ExecuteSubmit(clearFocus: false);
+                return;
+            }
+
+            if (IsMultiline && (e.Key == Windows.System.VirtualKey.Up || e.Key == Windows.System.VirtualKey.Down))
+            {
+                e.Handled = true;
+                HandleVerticalArrow(e.Key == Windows.System.VirtualKey.Up);
+                return;
+            }
+
+            var ctrl = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control);
+            if (ctrl.HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
+            {
+                if (e.Key == Windows.System.VirtualKey.C)
+                {
+                    e.Handled = true;
+                    CopySelection();
+                }
+                else if (e.Key == Windows.System.VirtualKey.X)
+                {
+                    e.Handled = true;
+                    CutSelection();
+                }
+                else if (e.Key == Windows.System.VirtualKey.V)
+                {
+                    e.Handled = true;
+                    PasteFromClipboard();
+                }
+            }
+        }
+
+        private void HiddenTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            var ctrl = Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control);
+            if (ctrl.HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down) && e.Key == Windows.System.VirtualKey.A)
+            {
+                e.Handled = true;
+                SelectAll();
             }
         }
 
         private void HiddenTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            // This allows parent control to track selection changes
-            SetCursorPositionWithDelay(50, _hiddenTextBox.SelectionStart);
+            if (_suppressSelectionChanged) return;
+            var start = _hiddenTextBox.SelectionStart;
+            var length = _hiddenTextBox.SelectionLength;
+            SelectionLength = length;
+            // CursorPosition tracks the start of the selection; UpdateCursorVisibility draws
+            // cursor at CursorPosition+SelectionLength (end) when selection is non-empty.
+            SetCursorPositionWithDelay(16, start);
+        }
+
+        private void HiddenTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine($"[SkiaEditor] GotFocus CursorPosition={CursorPosition} textLen={_hiddenTextBox?.Text?.Length ?? -1}");
+            if (_hiddenTextBox == null) return;
+            var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
+            var len = SelectionLength > 0
+                ? Math.Min(SelectionLength, (_hiddenTextBox.Text?.Length ?? 0) - pos)
+                : 0;
+            _hiddenTextBox.SelectionStart = pos;
+            _hiddenTextBox.SelectionLength = len;
+            _suppressSelectionChanged = false;
         }
 
         public int GenerateUniqueId()

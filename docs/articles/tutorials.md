@@ -1,48 +1,32 @@
 # Tutorials
 
-Step-by-step tutorials to help you learn and master DrawnUI, from basic concepts to advanced techniques.
+DrawnUI tutorials currently span two different host models:
 
-## 📚 Step-by-Step Tutorials
+- **.NET MAUI tutorials** use `DrawnUi.Maui` and usually show `Canvas` inside MAUI XAML pages or MAUI code-behind pages.
+- **Blazor tutorials and samples** use `DrawnUi.Blazor.*`, initialize DrawnUI with `UseDrawnUiAsync(...)`, and host drawn content inside a Razor `<Canvas ... />` component.
 
-### Beginner Tutorials
-- **[Your First DrawnUI App (XAML)](first-app.md)** 🚀 - Starting point for beginners:
-  - Complete setup from scratch
-  - Basic controls and layouts
-  - Simple animations
-  - Cross-platform deployment
+If you are choosing a host first, start with [Platforms and Packages](platforms.md).
 
-- **[Your First DrawnUI App (C# Fluent)](first-app-code.md)** 🔧 - Same app built with fluent C# syntax:
-  - Hot reload support
-  - Fluent API patterns
-  - Property observation
-  - Code-based UI construction
+## MAUI tutorial lane
 
-### Enhanced Tutorials
+For the full MAUI-first tutorial index, see [MAUI Tutorials](maui/tutorials.md).
 
-- **[Interactive Cards (XAML)](interactive-cards.md)** ✨ - Build a card gallery with animations and effects:
-  - Gesture handling
-  - Visual effects and shadows
-  - Performance optimization
-  - UI patterns
+## Blazor-compatible tutorial references
 
-- **[Interactive Cards (C# Fluent)](interactive-cards.md)** 🔧 - Same cards built with fluent C# syntax:
-  - Fluent API patterns
-  - Method chaining
-  - Code-based UI construction
-  - Advanced C# techniques
+These topics also have matching or near-matching Blazor sandbox pages in `src/Blazor/Samples/BlazorSandbox`:
 
-### Advanced Tutorials
+- [Your First DrawnUI App: C# Fluent Syntax](first-app-code.md) - Blazor sample route: `tutorial-first-app`
+- [A Custom Drawn Control](interactive-button.md) - Blazor sample route: `tutorial-custom-button`
+- [Interactive Cards](interactive-cards.md) - Blazor sample route: `cards`
+- [News Feed Scroller](news-feed-tutorial.md) - Blazor sample route: `tutorial-news-feed`
 
-- **[Create Custom Controls](interactive-button.md)** 🎮 - Create a custom game-style button with optional image inside:
-  - Custom control development
-  - Bevel/Emboss visual effects
-  - Gradient backgrounds
-  - Press animations and feedback
-  - Performance optimization techniques
+## Read host notes first
 
-- **[News Feed Tutorial](news-feed-tutorial.md)** 📱 - Build a news feed scroller:
-  - Data binding and MVVM
-  - Recycled cells and virtualization
-  - Large dataset handling
-  - Production-ready patterns
+Some tutorial articles are intentionally MAUI/XAML-only. Others describe shared DrawnUI concepts but need small host-specific adjustments for Blazor.
+
+Before following a tutorial literally:
+
+- If the article shows `ContentPage`, `MauiProgram.cs`, or `xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"`, read it as a MAUI tutorial.
+- If you are building the same concept in Blazor, keep the drawn control tree but switch startup to `UseDrawnUiAsync(...)` and host it inside a Razor `<Canvas ... />` component.
+- For current browser-side examples, use the Blazor sandbox pages as the executable reference implementation.
 

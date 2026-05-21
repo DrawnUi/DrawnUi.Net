@@ -1,0 +1,176 @@
+@page "/pickers-sheet"
+@using DrawnUi
+@using DrawnUi.Controls
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>Picker Sheet</PageTitle>
+
+<div class="docs-page">
+    <h1>SkiaPicker</h1>
+    <p class="docs-lead">SkiaPicker gives you a compact field-like selector inside the DrawnUI tree. This page isolates the control and shows how its built-in default content responds to `ControlStyle`.</p>
+    <p class="docs-note">The Platform picker follows the current target style. On Blazor it resolves to the Windows look, and selection uses the browser fallback sheet.</p>
+
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent" WidthRequest="392"
+                HeightRequest="782"
+                BackgroundColor="#F2EDE5"
+                Margin="0,8,0,0"
+                Gestures="@GesturesMode.Enabled" />
+    </div>
+
+    <pre class="docs-code"><code>@PickerSnippet</code></pre>
+</div>
+
+@code {
+    private const string PickerSnippet = """
+var picker = new SkiaPicker()
+{
+    Title = "Choose a habitat",
+    Placeholder = "Choose a habitat",
+    ControlStyle = PrebuiltControlStyle.Material,
+    Items = new List<string> { "Forest", "Wetlands", "Savanna" }
+};
+
+picker.SelectedIndexChanged += (_, index) => { /* use selection */ };
+""";
+
+    private readonly List<string> _habitats = ["Forest", "Wetlands", "Savanna", "Coast", "Highlands", "Tundra"];
+    private readonly Dictionary<SkiaPicker, SkiaLabel> _selectionLabels = new();
+    private SkiaControl _canvasContent;
+
+    public PickersSheet()
+    {
+        _canvasContent = new SkiaLayout()
+        {
+            Margin = new Thickness(16),
+            WidthRequest = 360,
+            HeightRequest = 748,
+            Padding = new Thickness(18),
+            BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
+            Type = LayoutType.Column,
+            Spacing = 14,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = "SkiaPicker",
+                    FontFamily = "FontTextTitle",
+                    FontSize = 24,
+                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                new SkiaLabel()
+                {
+                    Text = "A field-like selector that stays portable: native action sheet on MAUI, browser modal fallback on Blazor, with default content controlled by DrawnUI `ControlStyle`.",
+                    FontFamily = "FontText",
+                    FontSize = 13,
+                    TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                CreatePickerCard("Platform", PrebuiltControlStyle.Platform, "Uses the current target style. In Blazor that resolves to the Windows picker look."),
+                CreatePickerCard("Cupertino", PrebuiltControlStyle.Cupertino, "Rounded iOS-style chrome with lighter border tones."),
+                CreatePickerCard("Material", PrebuiltControlStyle.Material, "Denser spacing with Material-style emphasis and accent chevron."),
+                CreatePickerCard("Windows", PrebuiltControlStyle.Windows, "Squared corners and tighter padding for the Windows field treatment."),
+                new SkiaLabel()
+                {
+                    Text = "Every card is the same `SkiaPicker` control. Only `ControlStyle` changes the default content shape and defaults.",
+                    FontFamily = "FontText",
+                    FontSize = 12,
+                    TextColor = new Color(0.475f, 0.451f, 0.404f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill,
+                    HorizontalTextAlignment = DrawTextAlignment.Center
+                }
+            }
+        };
+    }
+
+    private SkiaShape CreatePickerCard(string title, PrebuiltControlStyle style, string description)
+    {
+        var selectionLabel = new SkiaLabel()
+        {
+            Text = "Selected: None",
+            FontFamily = "FontTextTitle",
+            FontSize = 16,
+            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+            HorizontalOptions = LayoutOptions.Fill,
+            HorizontalTextAlignment = DrawTextAlignment.Center
+        };
+
+        var picker = new SkiaPicker()
+        {
+            Title = $"{title} habitat",
+            Placeholder = "Choose a habitat",
+            CancelText = "dismiss",
+            ControlStyle = style,
+            Items = _habitats,
+            WidthRequest = 284,
+            HeightRequest = 50,
+            HorizontalOptions = LayoutOptions.Center,
+            FillColor = Colors.White,
+            StrokeColor = new Color(0.816f, 0.776f, 0.698f, 1f),
+            TextColor = new Color(0.188f, 0.251f, 0.353f, 1f),
+            PlaceholderColor = new Color(0.475f, 0.451f, 0.404f, 1f),
+            ChevronColor = new Color(0.545f, 0.482f, 0.376f, 1f),
+            FontSize = 15,
+            PlaceholderFontSize = 15,
+        };
+
+        _selectionLabels[picker] = selectionLabel;
+        picker.SelectedIndexChanged += OnSelectedIndexChanged;
+
+        return new SkiaShape()
+        {
+            Type = ShapeType.Rectangle,
+            CornerRadius = 18,
+            BackgroundColor = new Color(0.976f, 0.957f, 0.922f, 1f),
+            StrokeColor = new Color(0.851f, 0.827f, 0.776f, 1f),
+            StrokeWidth = 1,
+            HorizontalOptions = LayoutOptions.Fill,
+            Padding = new Thickness(14, 16),
+            Children =
+            {
+                new SkiaLayout()
+                {
+                    Type = LayoutType.Column,
+                    Spacing = 8,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    Children =
+                    {
+                        new SkiaLabel()
+                        {
+                            Text = title,
+                            FontFamily = "FontTextTitle",
+                            FontSize = 18,
+                            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        new SkiaLabel()
+                        {
+                            Text = description,
+                            FontFamily = "FontText",
+                            FontSize = 12,
+                            TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        picker,
+                        selectionLabel
+                    }
+                }
+            }
+        };
+    }
+
+    private void OnSelectedIndexChanged(object? sender, int index)
+    {
+        if (sender is not SkiaPicker picker || !_selectionLabels.TryGetValue(picker, out var label))
+        {
+            return;
+        }
+
+        label.Text = index >= 0 && index < _habitats.Count
+            ? $"Selected: {_habitats[index]}"
+            : "Selected: None";
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

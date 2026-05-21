@@ -1,36 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
     <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    <PackageId>DrawnUi.Blazor.Core</PackageId>
+    <Title>DrawnUI for Blazor Core</Title>
+    <Description>Core implementation foundation for DrawnUI Blazor runtimes.</Description>
+    <PackageTags>drawnui blazor core skia skiasharp</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controls\**" />
+    <Content Remove="Controls\**" />
+    <EmbeddedResource Remove="Controls\**" />
+    <None Remove="Controls\**" />
+  </ItemGroup>
 
     <ItemGroup>
         <SupportedPlatform Include="browser" />
     </ItemGroup>
 
     <PropertyGroup>
-        <DefineConstants>$(DefineConstants);BROWSER</DefineConstants>
+        <DefineConstants>$(DefineConstants);ONPLATFORM;BROWSER;NET;NET10</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
     
-      <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
+      <PackageReference Include="AppoMobi.Blazor.Gestures" Version="3.10.2" />
     
-      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.2" />
+      <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
+        <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="8.3.1.6-preview.2.1" />
 
-    <PackageReference Include="SkiaSharp.Views.Blazor" Version="3.119.2-preview.1" />
+      <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-preview.2.1" />
+      <PackageReference Include="Svg.Skia" Version="4.9.0" />
+    
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+
+    <PackageReference Include="SkiaSharp.Views.Blazor" Version="4.147.0-preview.2.1" />
+        <PackageReference Include="SkiaSharp.Skottie" Version="4.147.0-preview.2.1" />
 
   </ItemGroup>
+
+ 
+  <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
+  <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
 
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
+    <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
   </ItemGroup>
 
-  <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
  
 
 

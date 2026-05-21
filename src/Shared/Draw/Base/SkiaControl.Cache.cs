@@ -1,11 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
-using HarfBuzzSharp;
-using Microsoft.Maui.Controls;
-using SkiaSharp;
-
+﻿
 namespace DrawnUi.Draw;
 
 public partial class SkiaControl
@@ -118,11 +111,6 @@ public partial class SkiaControl
         }
     }
 
-
-
-#if BROWSER
-
-#else
     public static readonly BindableProperty AutoCacheProperty = BindableProperty.Create(nameof(AutoCache),
         typeof(bool),
         typeof(SkiaControl),
@@ -137,7 +125,7 @@ public partial class SkiaControl
         get { return (bool)GetValue(AutoCacheProperty); }
         set { SetValue(AutoCacheProperty, value); }
     }
-#endif
+ 
 
     public static readonly BindableProperty UseCacheProperty = BindableProperty.Create(nameof(UseCache),
         typeof(SkiaCacheType),
@@ -316,9 +304,9 @@ public partial class SkiaControl
     {
         get
         {
+           
             return CanUseCacheDoubleBuffering
                    && Super.Multithreaded
-                   //&& Parent is SkiaControl
                    || UsingCacheType == SkiaCacheType.ImageDoubleBuffered;
         }
     }

@@ -9,29 +9,133 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.Maui.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\RefreshIndicator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\SkiaSprite.SpriteFrameImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RecycledCells\SkiaDrawnCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RecycledCells\SkiaDynamicDrawnCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Drawer\SkiaDrawer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Labels\SkiaLabelFps.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Labels\SkiaMarkdownLabel.CommonMark.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Labels\SkiaRichLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Layouts\ContentWithBackdrop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Layouts\GridLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Layouts\SkiaCarousel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Layouts\SkiaDecoratedColumn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Layouts\SkiaDecoratedGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Layouts\SkiaTabsSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Layouts\SkiaViewSwitcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\SkiaPicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Wheels\Legacy\ScrollPickerLabelContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Wheels\Legacy\ScrollPickerWheel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Wheels\ScrollPickerLabelLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Wheels\SkiaWheelPicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Wheels\SkiaWheelPickerCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Wheels\SkiaWheelScroll.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Wheels\SkiaWheelStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Spinner\SkiaSpinner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Pickers\Spinner\SkiaWheelShape.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\AnimatedFramesRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\SkiaGif.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\SkiaLottie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\SkiaSprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\SkiaSpriteSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Progress\ProgressTrail.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Progress\SkiaProgress.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Progress\SkiaRangeBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RadioButtons\RadioButtons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RadioButtons\SkiaRadioButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Shapes\SkiaHoverMask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Slider\SkiaSlider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Slider\SliderThumb.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Slider\SliderTrail.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Slider\SliderValueDesc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Switches\SkiaCheckbox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Switches\SkiaSwitch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Switches\SkiaToggle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Touch\SkiaHotspot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Touch\SkiaHotspotZoom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Zoom\ZoomContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\SKPaintExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\ControlTappedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\ObservableAttachedItemsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\VisualLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\SkiaBackdrop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\FrameworkImageSourceConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\ImageSourceResourceStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\SkiaImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\SkiaImageTiles.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Svg\SkiaSvg.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\BuildRowLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\ContentLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\InfiniteLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaControlWithRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.BuildWrapLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.ColumnRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Grid.Cell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Grid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Grid.Structure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.IList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.ListView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.ViewsAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Wrap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SnappingLayout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\StackLayoutStructure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\Plane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\PlanesScroll.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Gestures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Planes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Scrolling.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScrollCells.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScrollLooped.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\VirtualScroll.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\SkiaShape.Bevel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\SkiaShape.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\SkiaShape.Shared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\SkiaControl.Cache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\SkiaControl.Effects.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\SkiaControl.Invalidation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\SkiaControl.Shared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\VisualTreeHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\TextSpan.Maui.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\RichCharFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaCursor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditorDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditorSelection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaRichEditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\AnimatedShaderEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainDropShadowsEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainTintWithAlphaEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\DropShadowEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\IColorEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\IImageEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\IRenderEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ISkiaEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ISkiaPostRendererEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\IStateEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\OuterGlowEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\PostRendererEffectUseBackgroud.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ShaderDoubleTexturesEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\SkiaEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\SkiaShaderEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\StateEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\TintEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\TintWithAlphaEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Keyboard\KeyboardManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Keyboard\MauiKeys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Shaders\SKSL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\ControlLifecycleState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\SkiaCacheType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\ThermalState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Extensions\PointFExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\IThermalStateService.cs">
+      <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\RangeF.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\CachedObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\AutoSizeType.cs" />
@@ -129,6 +233,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\ScaledRect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\ScaledSize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\SelectableAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\SkiaShadowsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\SkiaTouchResultContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\SortedGestureListeners.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\SpanKey.cs" />
@@ -220,6 +325,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\WheelCellInfo.cs" />
     <!-- Layout types moved from Maui -->
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\LayoutStructure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.StackWrap.Shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Render.Shared.cs" />
     <!-- Scroll types moved from Maui -->
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\ScrollToIndexOrder.cs" />
     <!-- Gesture types moved from Maui -->
@@ -262,10 +369,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Pdf\Pdf.cs" />
     <!-- Views utilities -->
     <Compile Include="$(MSBuildThisFileDirectory)Views\CanvasRestoreScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SKAutoCanvasRestoreFixed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DisposableManager.cs" />
     <!-- Controls -->
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\GifAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaRadioButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\SurfaceCacheManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Controls\Pickers\Spinner\" />
   </ItemGroup>
 </Project>

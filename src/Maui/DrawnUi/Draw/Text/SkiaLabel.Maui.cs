@@ -4,20 +4,20 @@
     public partial class SkiaLabel
     {
 
-        private static IFontRegistrar _registrar;
-        public static IFontRegistrar FontRegistrar
+        public static readonly BindableProperty FormattedTextProperty = BindableProperty.Create(
+            nameof(FormattedText),
+            typeof(FormattedString),
+            typeof(SkiaLabel),
+            defaultValue: null,
+            propertyChanged: NeedInvalidateMeasure);
+
+        public FormattedString FormattedText
         {
-            get
-            {
-                if (_registrar == null)
-                {
-                    _registrar = Super.Services.GetService<IFontRegistrar>();
-                }
-                return _registrar;
-            }
+            get { return (FormattedString)GetValue(FormattedTextProperty); }
+            set { SetValue(FormattedTextProperty, value); }
         }
 
-        const string TypicalFontAssetsPath = "../Fonts/";
+        //const string TypicalFontAssetsPath = "../Fonts/";
 
     }
 }

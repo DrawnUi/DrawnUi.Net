@@ -20,11 +20,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OuterGlowEffect
-    path: ../src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -98,11 +98,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorProperty
-    path: ../src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -125,11 +125,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Color
-    path: ../src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -154,11 +154,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: BlurProperty
-    path: ../src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -181,11 +181,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Blur
-    path: ../src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -210,11 +210,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateFilter
-    path: ../src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -243,11 +243,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
-      branch: dev
+      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
-    path: ../src/Maui/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
     startLine: 47
   assemblies:
   - DrawnUi.Maui

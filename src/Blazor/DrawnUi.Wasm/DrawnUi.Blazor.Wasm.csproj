@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AddRazorSupportForMvc>false</AddRazorSupportForMvc>
+    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    <CreatePackage>false</CreatePackage>
+    <PackageId>DrawnUi.Blazor.Wasm</PackageId>
+    <Title>DrawnUI for Blazor WebAssembly</Title>
+    <Description>Browser and WebAssembly runtime package for DrawnUI Blazor experiences.</Description>
+    <PackageTags>drawnui blazor wasm webassembly skia skiasharp</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DrawnUi\DrawnUi.Blazor.csproj" />
+  </ItemGroup>
+
+</Project>

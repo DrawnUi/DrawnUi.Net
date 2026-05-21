@@ -25,7 +25,7 @@
 
     <PropertyGroup>
         <Title>DrawnUI for .NET MAUI</Title>
-        <PackageId>DrawnUi.Maui</PackageId>
+        <PackageId>DrawnUi.Maui.Core</PackageId>
         <Description>Cross-platform rendering engine for .NET MAUI to draw your UI with SkiaSharp</Description>
         <PackageTags>maui drawnui skia skiasharp draw ui</PackageTags>
         <PackageIcon>icon128.png</PackageIcon>
@@ -61,6 +61,7 @@
         <Compile Remove="Platforms\Windows\ViewChainPanel.Windows.cs" />
         <Compile Remove="Platforms\Windows\Views\AngleSwapChainPanel.cs" />
         <Compile Remove="Controls\Extensions\**" />
+        <Compile Remove="Features\Effects\**" />
         <Compile Remove="Platforms\Windows\Controls\**" />
         <Compile Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
@@ -84,11 +85,18 @@
         <!--parsing markdown text-->
         <!--cannot use due to .net runtime bug still being worked out to be fixed-->
         <!--<PackageReference Include="Markdig" Version="0.41.1" />-->
+        <PackageReference Include="AppoMobi.Maui.Gestures" Version="3.10.2" />
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
-        <PackageReference Include="AppoMobi.Maui.Gestures" Version="1.11.9.2" />
-        <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.0" />
-        <PackageReference Include="SkiaSharp.Skottie" Version="3.119.0" />
-        <PackageReference Include="Svg.Skia" Version="3.0.3" />
+        <!--<PackageReference Include="AppoMobi.Maui.Gestures" Version="1.11.9.2" />-->
+        <PackageReference Include="Plugin.Maui.ApplePlatform" Version="1.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-preview.2.1" />
+        <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="4.147.0-pr.3779.2" />
+        <PackageReference Include="SkiaSharp.Views" Version="4.147.0-pr.3779.2" />
+        <PackageReference Include="SkiaSharp.Skottie" Version="4.147.0-preview.2.1" />
+        <PackageReference Include="Svg.Skia" Version="4.9.0" />
 
         <!--MIT open source-->
         <!--MIT open source .net helpers and extensions-->
@@ -112,6 +120,9 @@
 
     <!-- FIX for Windows unpackaged mode when library is referenced directly -->
     <ItemGroup Condition="$(TargetFramework.Contains('windows')) == true">
+
+        <PackageReference Include="SkiaSharp.Views.WinUI" Version="4.147.0-pr.3779.2" />
+
         <None Include="Platforms/Windows/Natives/libEGL.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <TargetPath>libEGL.dll</TargetPath>
@@ -147,38 +158,46 @@
     <!--ANDROID ONLY-->
     <ItemGroup Condition="$(TargetFramework.Contains('android')) == true">
         <!--fix android bad alignement-->
-        <PackageReference Include="HarfBuzzSharp" Version="8.3.1.1" />
+        <PackageReference Include="HarfBuzzSharp" Version="8.3.1.6-preview.2.1" />
         <!--native interop todo expose native source ? -->
        <PackageReference Include="AppoMobi.Maui.Native.Android" Version="2.1.1.0-pre" />
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Remove="Controls\Extensions\**" />
+        <EmbeddedResource Remove="Features\Effects\**" />
         <EmbeddedResource Remove="Platforms\Windows\Controls\**" />
         <EmbeddedResource Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
 
     <ItemGroup>
         <MauiXaml Remove="Controls\Extensions\**" />
+        <MauiXaml Remove="Features\Effects\**" />
         <MauiXaml Remove="Platforms\Windows\Controls\**" />
         <MauiXaml Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
 
     <ItemGroup>
         <MauiCss Remove="Controls\Extensions\**" />
+        <MauiCss Remove="Features\Effects\**" />
         <MauiCss Remove="Platforms\Windows\Controls\**" />
         <MauiCss Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
     <ItemGroup>
         <AndroidAarLibrary Remove="Controls\Extensions\**" />
+        <None Remove="Features\Effects\**" />
         <None Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Draw\Images\" />
+        <Folder Include="Draw\Scroll\" />
         <Folder Include="Internals\Handlers\" />
+        <Folder Include="Platforms\Apple\Extensions\" />
     </ItemGroup>
 
-    <ItemGroup>
+
+    <!--<ItemGroup>
         <Compile Remove="Shared/**/*.*pple.cs" />
         <None Include="Shared/**/*.*pple.cs" />
     </ItemGroup>
@@ -193,7 +212,7 @@
         <Compile Include="Shared/**/*.*pple.cs">
             <Link>Platforms/iOS/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </Compile>
-    </ItemGroup>
+    </ItemGroup>-->
 
     <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
 

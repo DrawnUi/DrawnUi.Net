@@ -1,0 +1,136 @@
+@using DrawnUi
+@using DrawnUi.Views
+@implements IDisposable
+
+<Canvas Content="@BuildCanvasContent()"
+		Width="@CanvasWidth"
+		MaximumWidthRequest="@ResponsiveCanvasMaximumWidth"
+		HeightRequest="120"
+		BackgroundColor="@CanvasBackgroundColor"
+		FrameFormat="@FrameFormat"
+		JpegQuality="@JpegQuality"
+		Alt="Server-rendered dashboard metric tile" />
+
+@code {
+	[Parameter, EditorRequired] public string Kind { get; set; } = string.Empty;
+	[Parameter] public double UpdateIntervalSeconds { get; set; } = 15;
+	[Parameter] public DrawnUiServerFrameFormat FrameFormat { get; set; } = DrawnUiServerFrameFormat.Jpeg;
+	[Parameter] public int JpegQuality { get; set; } = 85;
+
+	private const int CanvasWidth = 260;
+	private const int CanvasHeight = 120;
+	private const int ResponsiveCanvasMaximumWidth = 1600;
+	private static readonly Color CanvasBackgroundColor = new(0.082f, 0.118f, 0.192f, 1f);
+	private static readonly Color SurfaceColor = new(0.086f, 0.11f, 0.176f, 1f);
+	private static readonly Color BodyColor = new(0.576f, 0.651f, 0.839f, 1f);
+	private static readonly Color TitleColor = new(0.949f, 0.969f, 1f, 1f);
+	private CancellationTokenSource? loopCancellation;
+	private PeriodicTimer? loopTimer;
+	private int tick;
+	private string label = string.Empty;
+	private string value = string.Empty;
+	private string detail = string.Empty;
+	private Color accentColor = new(0.302f, 0.886f, 0.678f, 1f);
+
+	protected override void OnInitialized()
+	{
+		UpdateSnapshot();
+		loopCancellation = new CancellationTokenSource();
+		loopTimer = new PeriodicTimer(TimeSpan.FromSeconds(UpdateIntervalSeconds));
+		_ = RunLoopAsync(loopTimer, loopCancellation.Token);
+	}
+
+	private async Task RunLoopAsync(PeriodicTimer timer, CancellationToken cancellationToken)
+	{
+		try
+		{
+			while (await timer.WaitForNextTickAsync(cancellationToken))
+			{
+				tick++;
+				UpdateSnapshot();
+				await InvokeAsync(StateHasChanged);
+			}
+		}
+		catch (OperationCanceledException)
+		{
+		}
+	}
+
+	private void UpdateSnapshot()
+	{
+		switch (Kind.ToLowerInvariant())
+		{
+			case "workflows":
+				label = "Active workflows";
+				value = (126 + (int)Math.Round(14 * Math.Sin(tick * 0.7) + 7 * Math.Cos(tick * 0.31))).ToString();
+				detail = "Job fan-out remains stable, so this tile barely changes.";
+				accentColor = new Color(0.302f, 0.886f, 0.678f, 1f);
+				break;
+			case "automation":
+				label = "Automation coverage";
+				value = (0.84 + 0.05 * Math.Abs(Math.Sin(tick * 0.62))).ToString("P0");
+				detail = "Backoffice KPIs usually refresh on completed batches, not every chart sample.";
+				accentColor = new Color(0.369f, 0.745f, 0.98f, 1f);
+				break;
+			default:
+				label = "Metric";
+				value = "n/a";
+				detail = "Unknown metric kind.";
+				accentColor = new Color(0.969f, 0.729f, 0.286f, 1f);
+				break;
+		}
+	}
+
+	private SkiaControl BuildCanvasContent()
+	{
+		return new SkiaShape()
+		{
+			MaximumWidthRequest = ResponsiveCanvasMaximumWidth,
+			HeightRequest = CanvasHeight,
+			HorizontalOptions = LayoutOptions.Fill,
+			Type = ShapeType.Rectangle,
+			CornerRadius = 18,
+			BackgroundColor = SurfaceColor,
+			StrokeColor = accentColor,
+			StrokeWidth = 2,
+			Padding = new Thickness(14, 11),
+			Children =
+			{
+				new SkiaLayout()
+				{
+					Type = LayoutType.Column,
+					Spacing = 5,
+					Children =
+					{
+						new SkiaLabel()
+						{
+							Text = label,
+							FontSize = 12,
+							TextColor = BodyColor
+						},
+						new SkiaLabel()
+						{
+							Text = value,
+							FontSize = 28,
+							FontAttributes = FontAttributes.Bold,
+							TextColor = TitleColor
+						},
+						new SkiaLabel()
+						{
+							Text = detail,
+							FontSize = 11,
+							TextColor = accentColor
+						}
+					}
+				}
+			}
+		};
+	}
+
+	public void Dispose()
+	{
+		loopCancellation?.Cancel();
+		loopTimer?.Dispose();
+		loopCancellation?.Dispose();
+	}
+}

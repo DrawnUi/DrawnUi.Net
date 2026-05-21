@@ -1,0 +1,98 @@
+@page "/space-shooter"
+@using DrawnUi.Draw
+@using DrawnUi.Views
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Space Shooter</PageTitle>
+
+<div class="docs-page">
+    <h1>Space Shooter</h1>
+    <p class="docs-lead">This is the loudest DrawnUI-for-Blazor demo in the sandbox: a full-scene accelerated surface with continuous animation, gestures, sprite updates, overlays, and a real game loop running in the browser.</p>
+    <p class="docs-note">Try touch or mouse input, then switch to fullscreen. This page is less about individual controls and more about proving that DrawnUI can hold together under a much less polite workload than a normal UI sample.</p>
+</div>
+
+<FullscreenToggleBar
+    IsFullscreen="@_isFullscreen"
+    IsFullscreenChanged="OnFullscreenChanged" />
+
+<AspectLockedViewportHost
+    AspectWidth="@ViewportWidth"
+    AspectHeight="@ViewportHeight"
+    BackgroundColor="#020816"
+    IsFullscreen="@_isFullscreen"
+    EmbeddedMargin="12px auto 0"
+    FitVisibleHeight="true">
+    <AspectLockedCanvas 
+        @ref="_canvas"
+        Content="_canvasContent"
+        LogicalWidth="@ViewportWidth"
+        LogicalHeight="@ViewportHeight"
+        HorizontalOptions="LayoutOptions.Fill"
+        VerticalOptions="LayoutOptions.Fill"
+        BackgroundColor="#020816"
+        UpdateMode="@UpdateModeType.Constant"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Enabled"
+        IsFullscreen="@_isFullscreen"
+        IsFullscreenChanged="OnFullscreenChanged" />
+</AspectLockedViewportHost>
+
+@code {
+
+    /// <summary>
+    /// Tune the locked game aspect here. The canvas always scales this logical portrait viewport without stretching.
+    /// </summary>
+    private const float ViewportWidth = 480f;
+
+    /// <summary>
+    /// Tune the locked game aspect here. Keep this paired with <see cref="ViewportWidth"/> to change the playable field ratio.
+    /// </summary>
+    private const float ViewportHeight = 800f;
+
+    private SkiaControl _canvasContent;
+    private AspectLockedCanvas _canvas;
+    private bool _isFullscreen;
+
+    public SpaceShooter()
+    {
+
+        _canvasContent = new SkiaLayer()
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            HorizontalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new global::SpaceShooter.Game.SpaceShooter()
+                {
+                    WidthRequest = ViewportWidth,
+                    HeightRequest = ViewportHeight,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                },
+                
+                new SkiaLabelFps()
+                {
+                    UseCache = SkiaCacheType.GPU,
+                    Margin = new (0, 0, 4, 24),
+                    VerticalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.End,
+                    Rotation = -45,
+                    BackgroundColor = Colors.DarkRed,
+                    TextColor = Colors.White,
+                    ZIndex = 110,
+                }
+            }
+        };
+
+
+    }
+
+    private Task OnFullscreenChanged(bool isFullscreen)
+    {
+        _isFullscreen = isFullscreen;
+        _canvas?.InvalidateChildren();
+
+        return Task.CompletedTask;
+    }
+
+}

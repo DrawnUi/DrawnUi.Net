@@ -33,12 +33,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaGridStructure
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 9
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 8
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -70,12 +70,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: HeightConstraint
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 11
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -99,12 +99,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: WidthConstraint
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 12
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 11
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -128,12 +128,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Rows
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 33
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 32
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -157,12 +157,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Columns
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 35
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 34
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -186,12 +186,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Padding
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 40
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -213,12 +213,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: RowSpacing
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 41
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 40
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -240,12 +240,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnSpacing
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 42
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -267,12 +267,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: RowDefinitions
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 43
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 42
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -294,12 +294,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnDefinitions
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 44
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -321,12 +321,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 51
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 50
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -357,12 +357,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCellBoundsFor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 287
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 286
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -395,12 +395,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GridHeight
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 324
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 323
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -423,12 +423,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GridWidth
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 329
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 328
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -451,12 +451,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuredGridHeight
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 334
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 333
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -479,12 +479,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuredGridWidth
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 351
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 350
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -507,12 +507,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LeftEdgeOfColumn
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 620
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 619
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -541,12 +541,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TopEdgeOfRow
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 633
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 632
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -575,12 +575,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DecompressStarsInternal
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 843
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 842
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -604,12 +604,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DecompressStars
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Structure.cs
-    startLine: 872
+    path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.Structure.cs
+    startLine: 871
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

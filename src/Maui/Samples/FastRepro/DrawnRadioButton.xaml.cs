@@ -1,4 +1,5 @@
-using AppoMobi.Maui.Gestures;
+using AppoMobi.Gestures;
+ 
 
 namespace AppoMobi.Maui.DrawnUi.Demo.Views.Controls;
 

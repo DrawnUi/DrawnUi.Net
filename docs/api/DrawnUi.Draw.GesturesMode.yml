@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/GesturesMode.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GesturesMode
     path: ../src/Shared/Internals/Enums/GesturesMode.cs
@@ -48,7 +48,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/GesturesMode.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Disabled
     path: ../src/Shared/Internals/Enums/GesturesMode.cs
@@ -76,7 +76,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/GesturesMode.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Enabled
     path: ../src/Shared/Internals/Enums/GesturesMode.cs
@@ -104,11 +104,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/GesturesMode.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SoftLock
     path: ../src/Shared/Internals/Enums/GesturesMode.cs
-    startLine: 20
+    startLine: 21
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -132,11 +132,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/GesturesMode.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Lock
     path: ../src/Shared/Internals/Enums/GesturesMode.cs
-    startLine: 25
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

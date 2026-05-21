@@ -1,30 +1,96 @@
-﻿@page "/"
-@using SkiaSharp
-@using SkiaSharp.Views.Blazor
+@page "/"
+<PageTitle>DrawnUI for Blazor</PageTitle>
 
-<PageTitle>Home</PageTitle>
+<div class="home-shell">
+    <section class="home-hero">
+        <div class="home-eyebrow">Public preview for .NET 10 and Blazor WebAssembly</div>
+        <h1>DrawnUI for Blazor</h1>
+        <p class="home-lead">This is DrawnUI running in the browser: a rendering engine powered by SkiaSharp, made for .NET developers who want to be able to create drawn custom controls, UIs and games with a provided WPF-like layout system, gestures, keyboard support, animations, effects, all to work inside a SkiaSharp canvas.</p>
+        <p class="home-sublead">It is still in active development. Some parts are polished, some are experiments, and some probes are intentionally rough. That is the point of this sandbox: open the drawers, inspect the moving parts, and see what this stack can already do.</p>
 
-<h1>Hello, world!</h1>
+        <div class="home-tag-row" aria-label="Highlights">
+            <span class="home-tag">custom drawn controls</span>
+            <span class="home-tag">skia rendering</span>
+            <span class="home-tag">canvas gestures</span>
+            <span class="home-tag">cross-platform</span>
+        </div>
 
-Welcome to your new app.
+    </section>
 
-<SKCanvasView OnPaintSurface="OnPaintSurface" Width="400" Height="300" />
+    <section class="home-section">
+        <div class="home-section-heading">
+            <h2>Content</h2>
+            <p>All pages are split into different sections:</p>
+        </div>
 
-@code {
-    private void OnPaintSurface(SKPaintSurfaceEventArgs e)
-    {
-        var canvas = e.Surface.Canvas;
-        canvas.Clear(SKColors.White);
+        <div class="home-card-grid">
 
-        using var paint = new SKPaint
-        {
-            Color = SKColors.DeepSkyBlue,
-            IsAntialias = true,
-            StrokeWidth = 4,
-            Style = SKPaintStyle.Stroke
-        };
+            <a class="home-card" href="canvas">
+                <span class="home-card-kicker">Core primitive</span>
+                <h3>Canvas</h3>
+                <p>API is consistent across supported frameworks, making it easy to port apps between them using shared code.</p>
+            </a>
 
-        canvas.DrawCircle(150, 100, 80, paint);
-        canvas.DrawText("Hello Skia!", 80, 200, new SKPaint { Color = SKColors.Black, TextSize = 32 });
-    }
-}
+            <a class="home-card" href="scrolls-carousel">
+                <span class="home-card-kicker">Layout and motion</span>
+                <h3>Layouts</h3>
+                <p>Simple or even animated layouts are provided out-of-the box to be able to position elements on the canvas with ease.</p>
+            </a>
+            
+            <a class="home-card" href="graphics-shape">
+                <span class="home-card-kicker">Primitives</span>
+                <h3>Graphics</h3>
+                <p>Basic primitives to draw shapes, text, svg etc could be used to assemble custom controls for your app.</p>
+            </a>
+
+            <a class="home-card" href="pickers">
+                <span class="home-card-kicker">Interactive</span>
+                <h3>Controls</h3>
+                <p>Some controls are pre-created from primitives, not a fixed palette, normally one would create custom controls proper to a specific app.</p>
+            </a>
+
+            <a class="home-card" href="cards">
+                <span class="home-card-kicker">Fastest onboarding</span>
+                <h3>Tutorials</h3>
+                <p>Actually these are samples from .NET MAUI tutorials running inside Blazor.</p>
+            </a>
+
+            <a class="home-card" href="parallax-gameloop">
+                <span class="home-card-kicker">Max FPS</span>
+                <h3>Gaming</h3>
+                <p>Create games to run in browser, on mobile devices and on desktop.</p>
+            </a>
+            
+        </div>
+    </section>
+
+    <section class="home-section home-section-split">
+        <div class="home-panel">
+            <h2>What DrawnUI is good at</h2>
+            <ul>
+                <li>Building custom controls that do not want to look or behave like standard web components.</li>
+                <li>Running animation-heavy, gesture-heavy, or canvas-heavy UI in a way that still feels like a .NET app.</li>
+                <li>Keeping one mental model across MAUI and Blazor when your product is more "drawn surface" than CRUD website.</li>
+                <li>Exploring effects, imaging, scrolling, and graphics without dropping immediately into handwritten JavaScript rendering code.</li>
+            </ul>
+        </div>
+
+        <div class="home-panel">
+            <h2>How the sandbox is organized</h2>
+            <ul>
+                <li><strong>The Canvas</strong> explains the host surface and sizing behavior.</li>
+                <li><strong>Drawn Elements</strong> is where labels, shapes, images, layouts, scrolling, and controls live.</li>
+                <li><strong>Tutorials</strong> gives you more human examples instead of isolated probes.</li>
+                <li><strong>Gaming</strong> shows the engine under a heavier rendering load.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="home-section">
+        <div class="home-note-panel">
+            <h2>Small honest warning</h2>
+            <p>This is not pretending to be a polished enterprise component gallery. It is a working sandbox for a rendering engine, built by one developer, and it intentionally exposes unfinished edges alongside the strong parts.</p>
+            <p>If that sounds annoying, this probably is not your stack. If that sounds interesting, you are probably exactly the person this was made for. More info available at <a href="https://drawnui.net" target="_blank">drawnui.net</a>.</p>
+        </div>
+    </section>
+</div>

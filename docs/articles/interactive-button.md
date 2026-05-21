@@ -2,6 +2,31 @@
 
 We will be building a custom drawn control, using a game-style button as our example. 
 
+> **Host support**
+>
+> This article teaches a **shared DrawnUI control pattern**. The `GameButton` implementation itself is not MAUI-specific, but the article currently explains usage mostly in **MAUI/XAML** terms.
+>
+> If you are building this in **Blazor**, keep the same control composition and host it inside a Razor `Canvas` component after `UseDrawnUiAsync(...)` startup. The current Blazor sandbox reference route is `tutorial-custom-button`.
+
+## Blazor host equivalent
+
+In Blazor, the page shell becomes a Razor component that hosts the drawn content directly:
+
+```razor
+<Canvas Content="_canvasContent"
+        WidthRequest="420"
+        HeightRequest="780"
+        BackgroundColor="#483D8B"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Enabled" />
+
+@code {
+    private readonly SkiaControl _canvasContent = CreateCanvasContent();
+}
+```
+
+The custom control logic can stay in C# and be reused across MAUI and Blazor as long as it avoids MAUI-only page APIs.
+
 ## 🚀 This Tutorial Features:
 * **🏗️ Custom control architecture** - extending SkiaLayout
 * **🔗 Bindable properties system** - creating properties for data binding

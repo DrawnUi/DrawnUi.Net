@@ -23,6 +23,13 @@ namespace DrawnUi.Draw
         IHasAfterEffects,
         ISkiaControl, ISkiaDisposable
     {
+        /// <summary>
+        /// Any layout dimension larger than this is treated as "scroll-unconstrained" and skipped
+        /// for alignment offset calculations. No real display exceeds ~32K pixels even at extreme
+        /// device scale, so 1 million is a safe sentinel threshold.
+        /// </summary>
+        public const float MaxRealPixelSize = 1_000_000f;
+
         public SkiaControl()
         {
             Init();
@@ -37,6 +44,287 @@ namespace DrawnUi.Draw
         /// Lifecycle event
         /// </summary>
         public event EventHandler Destroyed;
+
+        public static Color GetRandomColor()
+        {
+            byte r = (byte)Random.Next(256);
+            byte g = (byte)Random.Next(256);
+            byte b = (byte)Random.Next(256);
+
+            return Color.FromRgb(r, g, b);
+        }
+
+        public virtual PrebuiltControlStyle UsingControlStyle
+        {
+            get
+            {
+                if (ControlStyle == PrebuiltControlStyle.Platform)
+                {
+#if IOS || MACCATALYST
+                    return PrebuiltControlStyle.Cupertino;
+#elif ANDROID
+                    return PrebuiltControlStyle.Material;
+#elif WINDOWS || BROWSER
+                    return PrebuiltControlStyle.Windows;
+#endif
+                }
+
+                return ControlStyle;
+            }
+        }
+
+
+
+        public static readonly BindableProperty ClearColorProperty = BindableProperty.Create(nameof(ClearColor),
+            typeof(Color), typeof(SkiaControl),
+            Colors.Transparent,
+            propertyChanged: NeedDraw);
+
+        private SkiaShadow platformShadow;
+        private SKPath platformClip;
+
+        public Color ClearColor
+        {
+            get { return (Color)GetValue(ClearColorProperty); }
+            set { SetValue(ClearColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Can override this for custom controls to apply padding differently from the default way
+        /// </summary>
+        /// <param name="padding"></param>
+        /// <returns></returns>
+        public virtual Thickness OnPaddingSet(Thickness padding)
+        {
+            return padding;
+        }
+
+        //public static readonly BindableProperty PaddingProperty = BindableProperty.Create(nameof(Padding),
+        //    typeof(Thickness),
+        //    typeof(SkiaControl), Thickness.Zero,
+        //    propertyChanged: NeedInvalidateMeasure);
+
+        //public Thickness Padding
+        //{
+        //    get { return (Thickness)GetValue(PaddingProperty); }
+        //    set { SetValue(PaddingProperty, value); }
+        //}
+
+        public virtual void AddSubView(SkiaControl control)
+        {
+            if (control == null)
+                return;
+
+            control.SetParent(this);
+
+            OnChildAdded(control);
+
+            if (Debugger.IsAttached)
+                Superview?.PostponeExecutionAfterDraw(() => { ReportHotreloadChildAdded(control); });
+
+            //if (control is IHotReloadableView ihr)
+            //{
+            //    ihr.ReloadHandler = this;
+            //    MauiHotReloadHelper.AddActiveView(ihr);
+            //}
+        }
+
+        public virtual void RemoveSubView(SkiaControl control)
+        {
+            if (control == null)
+                return;
+
+            if (Debugger.IsAttached)
+                Superview?.PostponeExecutionAfterDraw(() => { ReportHotreloadChildRemoved(control); });
+
+            try
+            {
+                control.SetParent(null);
+                OnChildRemoved(control);
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+        }
+
+        /// <summary>
+        /// DrawingRect size changed
+        /// </summary>
+        protected virtual void OnLayoutChanged()
+        {
+            var ready = this.Height > 0 && this.Width > 0;
+            if (ready)
+            {
+                if (!CompareSize(DrawingRect.Size, _lastSize, 1))
+                {
+                    _lastSize = DrawingRect.Size;
+
+                    //todo /do we need this here? just for MAUI and this must use main thread and slow everything down.
+                    //Frame = new Rect(DrawingRect.Left, DrawingRect.Top, DrawingRect.Width, DrawingRect.Height);
+                }
+            }
+
+            LayoutReady = ready;
+        }
+
+        /// <summary>
+        /// DrawingRect location changed. This will not be called if OnLayoutChanged was invoked for this frame!
+        /// </summary>
+        protected virtual void OnLayoutPositionChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// Creates Shader for gradient and sets it to passed SKPaint along with BlendMode
+        /// </summary>
+        /// <param name="paint"></param>
+        /// <param name="gradient"></param>
+        /// <param name="destination"></param>
+        public bool SetupGradient(SKPaint paint, SkiaGradient gradient, SKRect destination)
+        {
+            if (paint != null)
+            {
+                if (gradient != null)
+                {
+                    if (paint.Color.Alpha == 0)
+                    {
+                        paint.Color = SKColor.FromHsl(0, 0, 0);
+                    }
+
+                    paint.Color = SKColors.White;
+                    paint.BlendMode = gradient.BlendMode;
+
+                    var kill = paint.Shader;
+                    paint.Shader = CreateGradient(destination, gradient);
+                    kill?.Dispose();
+
+                    return true;
+                }
+                else
+                {
+                    var kill = paint.Shader;
+                    paint.Shader = null;
+                    kill?.Dispose();
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Caching overload: rebuilds the shader only when the gradient object, its version,
+        /// or the destination rect has changed since the last call. The caller owns the cached
+        /// shader and must dispose it in their OnDisposing(). Passing gradient=null disposes
+        /// and clears the cache.
+        /// </summary>
+        public bool SetupGradient(SKPaint paint, SkiaGradient gradient, SKRect destination,
+            ref SKShader cachedShader, ref int cachedVersion, ref SKRect cachedRect,
+            ref SkiaGradient cachedGradient)
+        {
+            if (paint == null) return false;
+
+            if (gradient != null)
+            {
+                if (cachedShader == null
+                    || !ReferenceEquals(cachedGradient, gradient)
+                    || cachedVersion != gradient.Version
+                    || cachedRect != destination)
+                {
+                    cachedShader?.Dispose();
+                    cachedShader = CreateGradient(destination, gradient);
+                    cachedGradient = gradient;
+                    cachedVersion = gradient.Version;
+                    cachedRect = destination;
+                }
+
+                paint.Color = SKColors.White;
+                paint.BlendMode = gradient.BlendMode;
+                paint.Shader = cachedShader;
+                return true;
+            }
+            else
+            {
+                if (cachedShader != null)
+                {
+                    cachedShader.Dispose();
+                    cachedShader = null;
+                    cachedGradient = null;
+                    cachedVersion = -1;
+                }
+                paint.Shader = null;
+                return false;
+            }
+        }
+
+        public static SKImageFilter CreateShadow(SkiaShadow shadow, float scale)
+        {
+            var colorShadow = shadow.Color;
+            if (colorShadow.Alpha == 1.0)
+            {
+                colorShadow = shadow.Color.WithAlpha((float)shadow.Opacity);
+            }
+
+            if (shadow.ShadowOnly)
+            {
+                return SKImageFilter.CreateDropShadowOnly(
+                    (float)(shadow.X * scale), (float)(shadow.Y * scale),
+                    (float)(shadow.Blur * scale), (float)(shadow.Blur * scale),
+                    colorShadow.ToSKColor());
+            }
+            else
+            {
+                return SKImageFilter.CreateDropShadow(
+                    (float)(shadow.X * scale), (float)(shadow.Y * scale),
+                    (float)(shadow.Blur * scale), (float)(shadow.Blur * scale),
+                    colorShadow.ToSKColor());
+            }
+        }
+
+        protected void UpdatePlatformShadow()
+        {
+            if (this.Shadow != null && Shadow.Brush != null)
+            {
+                PlatformShadow = this.Shadow.FromPlatform();
+            }
+            else
+            {
+                PlatformShadow = null;
+            }
+            InvalidateShadowPaint();
+        }
+
+        protected SkiaShadow PlatformShadow
+        {
+            get => platformShadow;
+            set
+            {
+                if (platformShadow != value)
+                {
+                    platformShadow = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private void GetPlatformClip(SKPath path, SKRect destination, float renderingScale)
+        {
+            if (this.Clip != null)
+            {
+                this.Clip.FromPlatform(path, destination, renderingScale);
+            }
+        }
+
+        protected bool HasPlatformClip()
+        {
+            return Clip != null;
+        }
+
+        public static float GetDensity()
+        {
+            return (float)Super.Screen.Density;
+        }
 
         /// <summary>
         /// For internat custom logic, use IsHovered for usual use.
@@ -113,13 +401,27 @@ namespace DrawnUi.Draw
             get { return RenderObject?.Image; }
         }
 
+        public static readonly BindableProperty LeftProperty
+            = BindableProperty.Create(nameof(Left),
+                typeof(double), typeof(SkiaControl),
+                0.0, propertyChanged: NeedRepaint);
+
         /// <summary>
         /// Offset cache (RenderObject) in points.
         /// This works similar to TranslationX but uses no matrix transform, works faster.
         /// For code-behind fast reposition of cached controls, background thread friendly, no bindings involved.
         /// Cached controls only, not a bindable property, doesn't trigger repaint, would need to do this manually if needed.
         /// </summary>
-        public double Left { get; set; }
+        public double Left
+        {
+            get { return (double)GetValue(LeftProperty); }
+            set { SetValue(LeftProperty, value); }
+        }
+
+        public static readonly BindableProperty TopProperty
+            = BindableProperty.Create(nameof(Top),
+                typeof(double), typeof(SkiaControl),
+                0.0, propertyChanged: NeedRepaint);
 
         /// <summary>
         /// Offset cache (RenderObject) in points.
@@ -127,7 +429,11 @@ namespace DrawnUi.Draw
         /// For code-behind fast reposition of cached controls, background thread friendly, no bindings involved.
         /// Cached controls only, not a bindable property, doesn't trigger repaint, would need to do this manually if needed.
         /// </summary>
-        public double Top { get; set; }
+        public double Top
+        {
+            get { return (double)GetValue(TopProperty); }
+            set { SetValue(TopProperty, value); }
+        }
 
         public static readonly BindableProperty ControlStyleProperty = BindableProperty.Create(
             nameof(PrebuiltControlStyle),
@@ -877,6 +1183,7 @@ namespace DrawnUi.Draw
             }
             catch 
             {
+                this.Rotation = end;
             }
         }
 
@@ -1862,7 +2169,7 @@ namespace DrawnUi.Draw
         public virtual void CheckHovered(SkiaGesturesParameters args)
         {
 
-#if WINDOWS || MACCATALYST || ANDROID
+#if WINDOWS || MACCATALYST || ANDROID || BROWSER
             if (args.Type == TouchActionResult.Pointer)
             {
                 SetHover(true);
@@ -2060,7 +2367,7 @@ namespace DrawnUi.Draw
                     }
                 } //end
 
-                if (manageChildFocus)
+                if (manageChildFocus && args.Type != TouchActionResult.Pointer)
                 {
                     Superview.FocusedChild = null;
                 }
@@ -2149,7 +2456,7 @@ namespace DrawnUi.Draw
                                 }
                             }
 
-                        if (manageChildFocus)
+                        if (manageChildFocus && args.Type != TouchActionResult.Pointer)
                         {
                             Superview.FocusedChild = null;
                         }
@@ -2271,31 +2578,32 @@ namespace DrawnUi.Draw
 
         #region View
 
-        public static readonly BindableProperty VerticalOptionsProperty = BindableProperty.Create(
+            public new static readonly BindableProperty VerticalOptionsProperty = BindableProperty.Create(
             nameof(VerticalOptions),
             typeof(LayoutOptions),
             typeof(SkiaControl),
             LayoutOptions.Start,
             propertyChanged: NeedInvalidateMeasure);
 
-        public LayoutOptions VerticalOptions
+            public new LayoutOptions VerticalOptions
         {
             get { return (LayoutOptions)GetValue(VerticalOptionsProperty); }
             set { SetValue(VerticalOptionsProperty, value); }
         }
 
-        public static readonly BindableProperty HorizontalOptionsProperty = BindableProperty.Create(
+            public new static readonly BindableProperty HorizontalOptionsProperty = BindableProperty.Create(
             nameof(HorizontalOptions),
             typeof(LayoutOptions),
             typeof(SkiaControl),
             LayoutOptions.Start,
             propertyChanged: NeedInvalidateMeasure);
 
-        public LayoutOptions HorizontalOptions
+            public new LayoutOptions HorizontalOptions
         {
             get { return (LayoutOptions)GetValue(HorizontalOptionsProperty); }
             set { SetValue(HorizontalOptionsProperty, value); }
         }
+ 
 
         /// <summary>
         /// todo override for templated skialayout to use ViewsProvider
@@ -2849,7 +3157,7 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Gets or sets Z-perspective translation. This is a bindable property.
         /// </summary>
-        /// <remarks>Rotation is applied relative to <see cref="Microsoft.Maui.Controls.VisualElement.AnchorX"/> and <see cref="Microsoft.Maui.Controls.VisualElement.AnchorY" />.</remarks>
+        /// <remarks>Rotation is applied relative to <see cref="VisualElement.AnchorX"/> and <see cref="VisualElement.AnchorY" />.</remarks>
         public double TranslationZ
         {
             get { return (double)GetValue(TranslationZProperty); }
@@ -2864,7 +3172,7 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Gets or sets the rotation (in degrees) about the Z-axis (perspective rotation) when the element is rendered. This is a bindable property.
         /// </summary>
-        /// <remarks>Rotation is applied relative to <see cref="Microsoft.Maui.Controls.VisualElement.AnchorX"/> and <see cref="Microsoft.Maui.Controls.VisualElement.AnchorY" />.</remarks>
+        /// <remarks>Rotation is applied relative to <see cref="VisualElement.AnchorX"/> and <see cref="VisualElement.AnchorY" />.</remarks>
         public double RotationZ
         {
             get { return (double)GetValue(RotationZProperty); }
@@ -3644,12 +3952,12 @@ namespace DrawnUi.Draw
             float marginVerticalDelta = (float)((Margins.Top - Margins.Bottom) * scale);
 
             var realWidth = useHorizontalThickness ? useMaxWidth + marginHorizontalDelta : useMaxWidth;
-            var realHeight = useVerticalThickness ? useMaxHeight + marginVerticalDelta : useMaxWidth;
+            var realHeight = useVerticalThickness ? useMaxHeight + marginVerticalDelta : useMaxHeight;
 
             // layoutHorizontal
             switch (layoutHorizontal.Alignment)
             {
-                case LayoutAlignment.Center when float.IsFinite(availableWidth) && availableWidth > useMaxWidth:
+                case LayoutAlignment.Center when float.IsFinite(availableWidth) && availableWidth < MaxRealPixelSize && availableWidth > useMaxWidth:
                 {
                     var half = availableWidth / 2.0f - realWidth / 2.0f;
                     if (RoundCenterAlignment)
@@ -3682,7 +3990,7 @@ namespace DrawnUi.Draw
 
                     break;
                 }
-                case LayoutAlignment.End when float.IsFinite(destination.Right) && availableWidth > useMaxWidth:
+                case LayoutAlignment.End when float.IsFinite(destination.Right) && availableWidth < MaxRealPixelSize && availableWidth > useMaxWidth:
                 {
                     right = destination.Right;
                     left = right - useMaxWidth;
@@ -3710,7 +4018,7 @@ namespace DrawnUi.Draw
             // VerticalOptions
             switch (layoutVertical.Alignment)
             {
-                case LayoutAlignment.Center when float.IsFinite(availableHeight) && availableHeight > useMaxHeight:
+                case LayoutAlignment.Center when float.IsFinite(availableHeight) && availableHeight < MaxRealPixelSize && availableHeight > useMaxHeight:
                 {
                     var half = availableHeight / 2.0f - realHeight / 2.0f;
                     if (RoundCenterAlignment)
@@ -3744,7 +4052,7 @@ namespace DrawnUi.Draw
 
                     break;
                 }
-                case LayoutAlignment.End when float.IsFinite(destination.Bottom) && availableHeight > useMaxHeight:
+                case LayoutAlignment.End when float.IsFinite(destination.Bottom) && availableHeight < MaxRealPixelSize && availableHeight > useMaxHeight:
                 {
                     bottom = destination.Bottom;
                     top = bottom - useMaxHeight;
@@ -3772,12 +4080,12 @@ namespace DrawnUi.Draw
 
             var offsetX = 0f;
             var offsetY = 0f;
-            if (float.IsFinite(availableHeight))
+            if (float.IsFinite(availableHeight) && availableHeight < MaxRealPixelSize)
             {
                 offsetY = (float)VerticalPositionOffsetRatio * layout.Height;
             }
 
-            if (float.IsFinite(availableWidth))
+            if (float.IsFinite(availableWidth) && availableWidth < MaxRealPixelSize)
             {
                 offsetX = (float)HorizontalPositionOffsetRatio * layout.Width;
             }
@@ -3832,8 +4140,12 @@ namespace DrawnUi.Draw
         }
 
         private SKRect _lastArrangedFor = new();
-        private float _lastArrangedWidth;
-        private float _lastArrangedHeight;
+
+        private double _lastArrangedWidth;
+        private double _lastArrangedHeight;
+
+        private float _lastArrangedWidthRequest;
+        private float _lastArrangedHeightRequest;
         public float _lastMeasuredForWidth { get; protected set; }
         public float _lastMeasuredForHeight { get; protected set; }
 
@@ -4420,8 +4732,8 @@ namespace DrawnUi.Draw
                  ViewportWidthLimit != _arrangedViewportWidthLimit ||
                  scale != _lastArrangedForScale ||
                  !CompareRects(arrangingFor, _lastArrangedFor, 0.5f) ||
-                 !AreEqual(_lastArrangedHeight, heightRequest, 0.5f) ||
-                 !AreEqual(_lastArrangedWidth, widthRequest, 0.5f)))
+                 !AreEqual(_lastArrangedHeightRequest, heightRequest, 0.5f) ||
+                 !AreEqual(_lastArrangedWidthRequest, widthRequest, 0.5f)))
             {
                 IsLayoutDirty = true;
             }
@@ -4451,11 +4763,15 @@ namespace DrawnUi.Draw
             _arrangedViewportWidthLimit = ViewportWidthLimit;
             _lastArrangedFor = arrangingFor;
             _lastArrangedForScale = scale;
-            _lastArrangedHeight = heightRequest;
-            _lastArrangedWidth = widthRequest;
+
+            _lastArrangedWidthRequest = widthRequest;
+            _lastArrangedHeightRequest = heightRequest;
 
             if (!AreEqual(oldDrawingRect.Height, DrawingRect.Height, 0.5)
-                || !AreEqual(oldDrawingRect.Width, DrawingRect.Width, 0.5))
+                || !AreEqual(oldDrawingRect.Width, DrawingRect.Width, 0.5) ||
+                !AreEqual(_lastArrangedHeight, Height, 0.5) ||
+                !AreEqual(_lastArrangedWidth, Width, 0.5)
+                )
             {
                 OnDrawingSizeChanged();
                 layoutChanged = true;
@@ -4465,6 +4781,9 @@ namespace DrawnUi.Draw
                 {
                     OnLayoutPositionChanged();
                 }
+
+                _lastArrangedWidth = Width;
+                _lastArrangedHeight = Height;
 
             if (layoutChanged)
                 OnLayoutChanged();
@@ -4793,6 +5112,22 @@ namespace DrawnUi.Draw
             //PASS 3 for those with partial Fill (only one dimension) - only if needed
             if (partialFill != null)
             {
+                // When this layout is Fill (NeedAutoWidth=false) but the incoming constraint is
+                // float.MaxValue (the "unconstrained" sentinel used by horizontal SkiaScroll),
+                // fall back to the previous frame's arranged width so Fill/Center/End children
+                // measure and position correctly instead of expanding into infinite space.
+                var effectiveWidth = rectForChildrenPixels.Width;
+                if (!NeedAutoWidth && effectiveWidth >= MaxRealPixelSize && DrawingRect.Width > 0 && DrawingRect.Width < MaxRealPixelSize)
+                {
+                    effectiveWidth = Math.Max(0f, DrawingRect.Width - (float)((Padding.Left + Padding.Right) * scale));
+                }
+
+                var effectiveHeight = rectForChildrenPixels.Height;
+                if (!NeedAutoHeight && effectiveHeight >= MaxRealPixelSize && DrawingRect.Height > 0 && DrawingRect.Height < MaxRealPixelSize)
+                {
+                    effectiveHeight = Math.Max(0f, DrawingRect.Height - (float)((Padding.Top + Padding.Bottom) * scale));
+                }
+
                 foreach (var (child, originalMeasured) in partialFill)
                 {
                     var hasHorizontalFill = child.NeedFillHorizontally;
@@ -4801,12 +5136,12 @@ namespace DrawnUi.Draw
                     bool remeasureX = false, remeasureY = false;
                     if (hasHorizontalFill)
                     {
-                        remeasureX = child.MeasuredSize.Pixels.Width != rectForChildrenPixels.Width;
+                        remeasureX = child.MeasuredSize.Pixels.Width != effectiveWidth;
                     }
 
                     if (hasVerticalFill)
                     {
-                        remeasureY = child.MeasuredSize.Pixels.Height != rectForChildrenPixels.Height;
+                        remeasureY = child.MeasuredSize.Pixels.Height != effectiveHeight;
                     }
 
                     if (!remeasureX && !remeasureY)
@@ -4815,12 +5150,12 @@ namespace DrawnUi.Draw
                     }
 
                     var provideWidth = hasHorizontalFill
-                        ? (NeedAutoWidth && maxWidth >= 0 ? maxWidth : rectForChildrenPixels.Width)
-                        : rectForChildrenPixels.Width;
+                        ? (NeedAutoWidth && maxWidth >= 0 ? maxWidth : effectiveWidth)
+                        : effectiveWidth;
 
                     var provideHeight = hasVerticalFill
-                        ? (NeedAutoHeight && maxHeight >= 0 ? maxHeight : rectForChildrenPixels.Height)
-                        : rectForChildrenPixels.Height;
+                        ? (NeedAutoHeight && maxHeight >= 0 ? maxHeight : effectiveHeight)
+                        : effectiveHeight;
 
                     var measured = MeasureChild(child, provideWidth, provideHeight, scale);
 
@@ -5861,8 +6196,7 @@ namespace DrawnUi.Draw
 
             if (NeedToMeasureSelf())
             {
-                //MeasureSelf(destination, widthRequest, heightRequest, scale);
-                MeasureSelf(destination, GetWidthRequestPixelsWIthMargins(scale), GetHeightRequestPixelsWIthMargins(scale), scale);
+                MeasureSelf(destination, widthRequest, heightRequest, scale);
             }
             else
             {
@@ -6996,12 +7330,13 @@ namespace DrawnUi.Draw
 
         private float independetScale = -1;
 
-        /// <summary>
-        /// Will not invalidate the measurement of parent if True
-        /// </summary>
+
         bool _isParentIndependent;
         long useParentIndependent;
 
+        /// <summary>
+        /// Will not invalidate the measurement of parent if True
+        /// </summary>
         public bool IsParentIndependent
         {
             get
@@ -7190,7 +7525,7 @@ namespace DrawnUi.Draw
                 }
             }
 
-            if (gradient != null && color == null)
+            if (gradient != null && (color == null || color.Alpha <= 0))
             {
                 color = Colors.Black;
             }
@@ -7403,7 +7738,7 @@ namespace DrawnUi.Draw
 
             LockUpdate(true);
 
-            foreach (var view in Views.ToList())
+            foreach (var view in GetUnorderedSubviews())
             {
                 InvalidateChildren(view as SkiaControl);
             }
@@ -7428,7 +7763,7 @@ namespace DrawnUi.Draw
             {
                 control.InvalidateInternal();
 
-                foreach (var view in control.Views.ToList())
+                foreach (var view in control.GetUnorderedSubviews())
                 {
                     InvalidateChildren(view as SkiaControl);
                 }

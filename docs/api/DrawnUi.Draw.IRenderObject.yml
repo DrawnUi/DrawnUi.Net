@@ -15,11 +15,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IRenderObject
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -42,11 +42,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaControlWithRect.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: UseRenderingObject
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
+    path: ../src/Shared/Draw/Layout/SkiaControlWithRect.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui

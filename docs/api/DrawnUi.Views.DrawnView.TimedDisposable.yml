@@ -18,12 +18,12 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TimedDisposable
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 1664
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 1600
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -54,12 +54,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Disposable
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 1666
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 1602
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -83,12 +83,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: EnqueuedTime
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 1667
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 1603
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -112,12 +112,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 1669
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 1605
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -144,12 +144,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.cs
-      branch: dev
+      path: src/Shared/Views/DrawnView.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Views/DrawnView.cs
-    startLine: 1675
+    path: ../src/Shared/Views/DrawnView.cs
+    startLine: 1611
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views

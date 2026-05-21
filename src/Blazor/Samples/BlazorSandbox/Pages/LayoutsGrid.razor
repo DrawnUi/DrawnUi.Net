@@ -1,0 +1,226 @@
+@page "/layouts-grid"
+@using DrawnUi
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>SkiaGrid</PageTitle>
+
+<div class="docs-page">
+    <h1>SkiaGrid</h1>
+    <p class="docs-lead">SkiaGrid is the drawn grid container for row and column layouts. It maps to the same layout intent as MAUI Grid, but it stays inside the DrawnUI layout and rendering pipeline.</p>
+    <p class="docs-note">The sample below keeps to a small two-by-two grid so the page shows the basic API without turning into a layout article.</p>
+
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent"
+                BackgroundColor="#F6F0E6"
+                Margin="0,8,0,0"
+                Gestures="@GesturesMode.Enabled"/>
+    </div>
+
+    <pre class="docs-code"><code>@GridSnippet</code></pre>
+</div>
+
+@code {
+    private const string GridSnippet = """
+var grid = new SkiaGrid()
+{
+    ColumnDefinitions = new() { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) },
+    RowDefinitions = new() { new RowDefinition(GridLength.Auto), new RowDefinition(GridLength.Auto) }
+};
+""";
+
+    private SkiaControl _canvasContent;
+
+    public LayoutsGrid()
+    {
+        var grid = new SkiaGrid()
+        {
+            WidthRequest = 292,
+            ColumnSpacing = 12,
+            RowSpacing = 12,
+            ColumnDefinitions = new ColumnDefinitionCollection
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions = new RowDefinitionCollection
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+        };
+
+        var summary = CreateGridHeroTile();
+        Grid.SetColumnSpan(summary, 2);
+
+        var leftTop = CreateMetricTile("Traffic", "128k", "Weekly", new Color(0.961f, 0.925f, 0.898f, 1f), new Color(0.812f, 0.427f, 0.216f, 1f));
+        Grid.SetRow(leftTop, 1);
+
+        var rightTop = CreateMetricTile("Latency", "12ms", "Runtime", new Color(0.918f, 0.941f, 0.976f, 1f), new Color(0.208f, 0.447f, 0.761f, 1f));
+        Grid.SetRow(rightTop, 1);
+        Grid.SetColumn(rightTop, 1);
+
+        grid.Children = new List<SkiaControl> { summary, leftTop, rightTop };
+
+        _canvasContent = new SkiaStack()
+        {
+            Margin = new Thickness(16),
+            WidthRequest = 328,
+            Padding = new Thickness(18),
+            BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
+            Spacing = 12,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = "SkiaGrid",
+                    FontFamily = "FontTextTitle",
+                    FontSize = 24,
+                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                new SkiaLabel()
+                {
+                    Text = "A grid lands better when each cell has a clear role. This one reads like a compact dashboard instead of anonymous boxes.",
+                    FontFamily = "FontText",
+                    FontSize = 13,
+                    TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill,
+                    WidthRequest = 252
+                },
+                grid
+            }
+        };
+    }
+
+    private static SkiaShape CreateGridHeroTile()
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Rectangle,
+            HeightRequest = 84,
+            CornerRadius = 20,
+            BackgroundColor = new Color(0.102f, 0.145f, 0.231f, 1f),
+            HorizontalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaLayout()
+                {
+                    Padding = new Thickness(16, 14, 16, 16),
+                    Type = LayoutType.Row,
+                    Spacing = 12,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Children =
+                    {
+                        new SkiaLayout()
+                        {
+                            Type = LayoutType.Column,
+                            Spacing = 2,
+                            HorizontalOptions = LayoutOptions.Fill,
+                            VerticalOptions = LayoutOptions.Center,
+                            Children =
+                            {
+                                new SkiaLabel()
+                                {
+                                    Text = "Grid dashboard",
+                                    FontFamily = "FontTextTitle",
+                                    FontSize = 17,
+                                    TextColor = Colors.White,
+                                    HorizontalOptions = LayoutOptions.Fill
+                                },
+                                new SkiaLabel()
+                                {
+                                    Text = "Hero row plus two supporting metrics.",
+                                    FontFamily = "FontText",
+                                    FontSize = 12,
+                                    TextColor = new Color(0.824f, 0.851f, 0.898f, 1f),
+                                    HorizontalOptions = LayoutOptions.Fill,
+                                    WidthRequest = 168
+                                }
+                            }
+                        },
+                        new SkiaShape()
+                        {
+                            BackgroundColor = new Color(0.208f, 0.447f, 0.761f, 1f),
+                            CornerRadius = 12,
+                            WidthRequest = 54,
+                            HeightRequest = 28,
+                            VerticalOptions = LayoutOptions.Center,
+                            Children =
+                            {
+                                new SkiaLabel()
+                                {
+                                    Text = "Live",
+                                    FontFamily = "FontTextTitle",
+                                    FontSize = 12,
+                                    TextColor = Colors.White,
+                                    HorizontalOptions = LayoutOptions.Center,
+                                    VerticalOptions = LayoutOptions.Center
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private static SkiaShape CreateMetricTile(string title, string value, string caption, Color backgroundColor, Color accentColor)
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Rectangle,
+            HeightRequest = 88,
+            CornerRadius = 18,
+            BackgroundColor = backgroundColor,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaLayout()
+                {
+                    Padding = new Thickness(14, 12, 14, 14),
+                    Type = LayoutType.Column,
+                    Spacing = 5,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Children =
+                    {
+                        new SkiaShape()
+                        {
+                            BackgroundColor = accentColor,
+                            CornerRadius = 99,
+                            WidthRequest = 34,
+                            HeightRequest = 6
+                        },
+                        new SkiaLabel()
+                        {
+                            Text = title,
+                            FontFamily = "FontText",
+                            FontSize = 12,
+                            TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        new SkiaLabel()
+                        {
+                            Text = value,
+                            FontFamily = "FontTextTitle",
+                            FontSize = 24,
+                            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        new SkiaLabel()
+                        {
+                            Text = caption,
+                            FontFamily = "FontText",
+                            FontSize = 11,
+                            TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        }
+                    }
+                }
+            }
+        };
+    }
+}

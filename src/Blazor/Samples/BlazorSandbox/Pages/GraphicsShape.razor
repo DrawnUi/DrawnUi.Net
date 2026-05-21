@@ -1,0 +1,355 @@
+@page "/graphics-shape"
+@using DrawnUi
+@using DrawnUi.Draw
+@using DrawnUi.Infrastructure.Xaml
+@using SkiaSharp
+@using DrawnUi.Views
+
+<PageTitle>SkiaShape</PageTitle>
+
+<div class="docs-page">
+    <h1>SkiaShape</h1>
+    <p class="docs-lead">SkiaShape is the basic building block for rectangles, circles, polygons, stroked paths, and clipped content. This sample mirrors the richer MAUI sandbox composition instead of a tiny three-card demo.</p>
+    <p class="docs-note">The grid below shows polygon clipping, gradient strokes, rotated ellipses, smooth line paths, inline SVG content, and a wide smoothed polygon strip in one surface.</p>
+
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent" WidthRequest="380"
+                HeightRequest="648"
+                BackgroundColor="#F6F1E7"
+                Margin="0,8,0,0"
+                 />
+    </div>
+
+    <pre class="docs-code"><code>@ShapeSnippet</code></pre>
+</div>
+
+@code {
+    private const string ShapeSnippet = """
+var route = new SkiaShape()
+{
+    Type = ShapeType.Line,
+    StrokeColor = Colors.Black,
+    StrokeWidth = 3,
+    SmoothPoints = 1,
+    StrokePath = new double[] { 16, 8 },
+    Points = new List<SkiaPoint>
+    {
+        new(0.0, 1.0),
+        new(0.2, 0.8),
+        new(0.0, 0.6),
+        new(0.8, 0.0)
+    }
+};
+""";
+
+    private const string PinSvg = """
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>pin</title>
+    <path d="M4 12q0-3.264 1.6-6.016t4.384-4.352 6.016-1.632 6.016 1.632 4.384 4.352 1.6 6.016q0 1.376-0.672 3.2t-1.696 3.68-2.336 3.776-2.56 3.584-2.336 2.944-1.728 2.080l-0.672 0.736q-0.256-0.256-0.672-0.768t-1.696-2.016-2.368-3.008-2.528-3.52-2.368-3.84-1.696-3.616-0.672-3.232zM8 12q0 3.328 2.336 5.664t5.664 2.336 5.664-2.336 2.336-5.664-2.336-5.632-5.664-2.368-5.664 2.368-2.336 5.632z"></path>
+</svg>
+""";
+
+    private SkiaControl _canvasContent;
+
+    public GraphicsShape()
+    {
+        var grid = CreateShapeGrid();
+
+        _canvasContent = new SkiaLayout()
+        {
+            Margin = new Thickness(16),
+            WidthRequest = 348,
+            HeightRequest = 603,
+            BackgroundColor = Colors.DarkSeaGreen,
+            Children =
+            {
+                grid
+            }
+        };
+    }
+
+    private static SkiaGrid CreateShapeGrid()
+    {
+        var grid = new SkiaGrid()
+        {
+            WidthRequest = 348,
+            HeightRequest = 603,
+            BackgroundColor = Color.FromArgb("#11000000"),
+            ColumnSpacing = 1,
+            RowSpacing = 1,
+            ColumnDefinitions = new ColumnDefinitionCollection
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions = new RowDefinitionCollection
+            {
+                new RowDefinition(new GridLength(150)),
+                new RowDefinition(new GridLength(150)),
+                new RowDefinition(new GridLength(150)),
+                new RowDefinition(new GridLength(150))
+            }
+        };
+
+        var triangle = CreateTriangleShape();
+        var star = CreateStarShape();
+        Grid.SetColumn(star, 1);
+
+        var dashedCircle = CreateDashedCircleShape();
+        Grid.SetRow(dashedCircle, 1);
+
+        var textCard = CreateTextCardShape();
+        Grid.SetRow(textCard, 1);
+        Grid.SetColumn(textCard, 1);
+
+        var ellipse = CreateRotatedEllipseShape();
+        Grid.SetRow(ellipse, 2);
+
+        var route = CreateRouteShape();
+        Grid.SetRow(route, 2);
+        Grid.SetColumn(route, 1);
+
+        var pin = CreateRoutePin();
+        Grid.SetRow(pin, 2);
+        Grid.SetColumn(pin, 1);
+
+        var strip = CreateBottomStripShape();
+        Grid.SetRow(strip, 3);
+        Grid.SetColumnSpan(strip, 2);
+
+        grid.Children = new List<SkiaControl>
+        {
+            triangle,
+            star,
+            dashedCircle,
+            textCard,
+            ellipse,
+            route,
+            pin,
+            strip
+        };
+
+        return grid;
+    }
+
+    private static SkiaShape CreateTriangleShape()
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Polygon,
+            Padding = new Thickness(16),
+            BackgroundColor = Colors.CornflowerBlue,
+            StrokeColor = Colors.Black,
+            StrokeWidth = 3,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Points = new List<SkiaPoint>
+            {
+                new(0.1, 0.1),
+                new(0.9, 0.1),
+                new(0.5, 0.9)
+            },
+            Shadows = new SkiaShadowsCollection
+            {
+                new SkiaShadow()
+                {
+                    Color = Colors.Black,
+                    Opacity = 0.33,
+                    Blur = 2,
+                    X = 3,
+                    Y = 3
+                }
+            },
+            Children =
+            {
+                new SkiaImage()
+                {
+                    Source = "/images/dotnetbotcar.png",
+                    Aspect = TransformAspect.AspectFit,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    TranslationY = -22
+                }
+            }
+        };
+    }
+
+    private static SkiaShape CreateStarShape()
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Polygon,
+            BackgroundColor = Colors.Yellow,
+            StrokeColor = Colors.Black,
+            StrokeWidth = 3,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Points = SkiaShape.PolygonStar,
+            Children =
+            {
+                new SkiaImage()
+                {
+                    Source = "/images/dotnetbotcar.png",
+                    Aspect = TransformAspect.AspectFit,
+                    BackgroundColor = Colors.Yellow,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                }
+            }
+        };
+    }
+
+    private static SkiaShape CreateDashedCircleShape()
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Circle,
+            BackgroundColor = Colors.Transparent,
+            StrokeColor = Colors.White,
+            StrokeWidth = 5,
+            StrokePath = new double[] { 8, 8 },
+            UseCache = SkiaCacheType.Operations,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            StrokeGradient = new SkiaGradient()
+            {
+                Type = GradientType.Linear,
+                StartXRatio = 0.2f,
+                StartYRatio = 0.2f,
+                EndXRatio = 0.8f,
+                EndYRatio = 0.8f,
+                Colors = new List<Color>
+                {
+                    Color.FromArgb("#777777"),
+                    Colors.Gray
+                }
+            },
+            Children =
+            {
+                new SkiaImage()
+                {
+                    Source = "/images/dotnetbotcar.png",
+                    BackgroundColor = Colors.GreenYellow,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Aspect = TransformAspect.AspectFit
+                }
+            }
+        };
+    }
+
+    private static SkiaShape CreateTextCardShape()
+    {
+        return new SkiaShape()
+        {
+            Margin = new Thickness(8),
+            Padding = new Thickness(8),
+            BackgroundColor = Colors.White,
+            StrokeColor = Colors.Black,
+            StrokeWidth = 3,
+            CornerRadius = new CornerRadius(12, 12, 12, 0),
+            UseCache = SkiaCacheType.Operations,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaLayout()
+                {
+                    Type = LayoutType.Column,
+                    Children =
+                    {
+                        new SkiaLabel() { Text = "Text 1" },
+                        new SkiaLabel() { Text = "Text 2" }
+                    }
+                }
+            }
+        };
+    }
+
+    private static SkiaShape CreateRotatedEllipseShape()
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Ellipse,
+            Margin = new Thickness(16),
+            HeightRequest = 50,
+            BackgroundColor = Colors.DarkSalmon,
+            StrokeColor = Colors.Black,
+            StrokeWidth = 3,
+            Rotation = -45,
+            UseCache = SkiaCacheType.Operations,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Center,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = "😀",
+                    FontSize = 20,
+                    AutoFont = true,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                }
+            }
+        };
+    }
+
+    private static SkiaShape CreateRouteShape()
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Line,
+            Margin = new Thickness(16),
+            StrokeColor = Colors.Black,
+            StrokeWidth = 3,
+            StrokePath = new double[] { 16, 8 },
+            SmoothPoints = 1,
+            UseCache = SkiaCacheType.Operations,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Points = new List<SkiaPoint>
+            {
+                new(0.0, 1.0),
+                new(0.2, 0.8),
+                new(0.0, 0.6),
+                new(0.8, 0.0)
+            }
+        };
+    }
+
+    private static SkiaSvg CreateRoutePin()
+    {
+        return new SkiaSvg()
+        {
+            SvgString = PinSvg,
+            HeightRequest = 28,
+            LockRatio = 1,
+            TintColor = Colors.Black,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        };
+    }
+
+    private static SkiaShape CreateBottomStripShape()
+    {
+        return new SkiaShape()
+        {
+            Type = ShapeType.Polygon,
+            Margin = new Thickness(16),
+            BackgroundColor = Color.FromArgb("#220000FF"),
+            StrokeColor = Colors.Black,
+            StrokeWidth = 3,
+            SmoothPoints = 0.9f,
+            UseCache = SkiaCacheType.Operations,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Points = new List<SkiaPoint>
+            {
+                new(0.0, 0.8),
+                new(0.0, 0.7),
+                new(1.0, 0.2),
+                new(1.0, 0.3)
+            }
+        };
+    }
+}

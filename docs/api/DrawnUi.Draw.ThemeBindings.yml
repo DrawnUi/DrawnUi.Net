@@ -17,11 +17,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ThemeBindings
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 316
   assemblies:
   - DrawnUi.Maui
@@ -54,11 +54,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SetThemeBinding
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 321
   assemblies:
   - DrawnUi.Maui
@@ -98,11 +98,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetThemeValue
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 343
   assemblies:
   - DrawnUi.Maui
@@ -141,11 +141,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: WithThemeBinding
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 357
   assemblies:
   - DrawnUi.Maui

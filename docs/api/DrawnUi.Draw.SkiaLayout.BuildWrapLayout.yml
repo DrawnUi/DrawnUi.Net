@@ -16,11 +16,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: BuildWrapLayout
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -65,11 +65,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -97,11 +97,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
-      branch: dev
+      path: src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Build
-    path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
+    path: ../src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui

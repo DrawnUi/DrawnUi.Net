@@ -1,0 +1,169 @@
+﻿using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
+
+namespace DrawnUi.Infrastructure;
+
+public static class SkSl
+{
+
+    private static async Task<Stream> OpenResourceStreamAsync(string fileName)
+    {
+#if BROWSER || DRAWNUI_NET
+        var httpClient = Super.Services.GetService(typeof(HttpClient)) as HttpClient ?? new HttpClient();
+        return await httpClient.GetStreamAsync(fileName);
+#else
+        return await FileSystem.OpenAppPackageFileAsync(fileName);
+#endif
+    }
+
+    public static async Task<string> LoadFromResourcesAsync(string fileName)
+    {
+        using var stream = await OpenResourceStreamAsync(fileName);
+        using var reader = new StreamReader(stream);
+        var json = await reader.ReadToEndAsync();
+        return json;
+    }
+
+    public static string LoadFromResources(string fileName)
+    {
+#if BROWSER || DRAWNUI_NET
+        throw new NotSupportedException($"Synchronous shader resource loading is not supported in the browser for '{fileName}'. Use LoadFromResourcesAsync instead.");
+#else
+        using var stream = FileSystem.OpenAppPackageFileAsync(fileName).GetAwaiter().GetResult();
+        using var reader = new StreamReader(stream);
+        var json = reader.ReadToEnd();
+        return json;
+#endif
+    }
+
+    public static void Precompile(params string[] filenames)
+    {
+        foreach (var filename in filenames)
+        {
+            if (!CompiledCache.TryGetValue(filename, out _))
+            {
+                string shaderCode = SkSl.LoadFromResources(filename);
+                SkSl.Compile(shaderCode, filename, true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Provides a thread-safe cache of compiled runtime effects, indexed by their string identifiers.
+    /// </summary>
+    /// <remarks>This static field enables efficient reuse of compiled SKRuntimeEffect instances by storing
+    /// them for quick retrieval. Access to the cache is thread-safe, allowing concurrent read and write operations from
+    /// multiple threads without additional synchronization.</remarks>
+    public static ConcurrentDictionary<string, SKRuntimeEffect> CompiledCache = new();
+
+    /// <summary>
+    /// Will compile your SKSL shader code into SKRuntimeEffect.
+    /// </summary>
+    /// <param name="shaderCode"></param>
+    /// <returns></returns>
+    public static SKRuntimeEffect Compile(string shaderCode)
+    {
+        return Compile(shaderCode, null, false);
+    }
+
+    /// <summary>
+    /// Will compile your SKSL shader code into SKRuntimeEffect.
+    /// The filename parameter is used for debugging and caching. Do not forget to disable caching if you edit/change shader code at runtime.
+    /// </summary>
+    /// <param name="shaderCode"></param>
+    /// <param name="filename"></param>
+    /// <returns></returns>
+    public static SKRuntimeEffect Compile(string shaderCode, string filename, bool useCache = true, Action<string> onError =null)
+    {
+        SKRuntimeEffect compiled = null;
+
+        if (useCache)
+        {
+            if (string.IsNullOrEmpty(filename))
+            {
+                throw new Exception("SKSL needs a filename to be able to cache shader code.");
+            }
+
+            if (CompiledCache.TryGetValue(filename, out compiled))
+            {
+                Debug.WriteLine($"[SKSL] Using cached shader {filename}!");
+
+                return compiled;
+            }
+        }
+
+        string errors;
+        compiled = SKRuntimeEffect.CreateShader(shaderCode, out errors);
+        if (!string.IsNullOrEmpty(errors))
+        {
+            if (onError != null)
+            {
+                onError?.Invoke(errors);
+                return null;
+            }
+            else
+            {
+                ThrowCompilationError(shaderCode, errors);
+            }
+        }
+
+        Debug.WriteLine($"[SKSL] Compiled shader {filename}!");
+
+        if (useCache)
+        {
+            CompiledCache[filename] = compiled;
+        }
+
+        return compiled;
+    }
+
+    public static void ThrowCompilationError(string shaderCode, string errors, string filename = null)
+    {
+        // Regular expression to find the line number in the error message
+        var regex = new Regex(@"error (\d+):");
+        var match = regex.Match(errors);
+
+        var error = string.Empty;
+        if (match.Success && int.TryParse(match.Groups[1].Value, out int lineNumber))
+        {
+            var lines = shaderCode.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            if (lineNumber - 1 < lines.Length)
+            {
+                error = ($"Error occurred at line {lineNumber}: {lines[lineNumber - 1]}");
+            }
+            else
+            {
+                error = ($"Error line number {lineNumber} exceeds shader code line count.");
+            }
+        }
+        else
+        {
+            error = errors;
+        }
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (!string.IsNullOrEmpty(filename))
+            {
+                throw new ApplicationException($"Shader compilation of '{filename}' failed:{Environment.NewLine}{errors}{Environment.NewLine}" + error);
+            }
+
+            throw new ApplicationException($"Shader compilation failed:{Environment.NewLine}{errors}{Environment.NewLine}" + error);
+        }
+    }
+
+ 
+    public static SKShader CreateShader(SKRuntimeEffect compiled, SKRuntimeEffectUniforms uniforms, Dictionary<string, SKShader> textures)
+    {
+
+        var children = new SKRuntimeEffectChildren(compiled);
+        foreach (var texture in textures)
+        {
+            children.Add(texture.Key, texture.Value);
+        }
+
+        return compiled.ToShader(uniforms, children); ;
+    }
+ 
+
+
+}

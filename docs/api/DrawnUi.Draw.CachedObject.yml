@@ -39,7 +39,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CachedObject
     path: ../src/Shared/Internals/Models/CachedObject.cs
@@ -79,7 +79,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateInputCoords
     path: ../src/Shared/Internals/Models/CachedObject.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculatePositionOffset
     path: ../src/Shared/Internals/Models/CachedObject.cs
@@ -141,7 +141,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Test
     path: ../src/Shared/Internals/Models/CachedObject.cs
@@ -172,7 +172,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Internals/Models/CachedObject.cs
@@ -210,11 +210,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LastDrawnAt
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 80
+    startLine: 86
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -239,11 +239,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: LastDestination
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 85
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -268,11 +268,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 94
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -312,11 +312,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 117
+    startLine: 129
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -350,11 +350,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 125
+    startLine: 137
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -388,11 +388,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Id
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 134
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -415,11 +415,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SurfaceIsRecycled
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 140
+    startLine: 152
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -446,11 +446,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Picture
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 142
+    startLine: 154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -475,11 +475,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Image
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 144
+    startLine: 156
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -504,11 +504,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Bounds
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 146
+    startLine: 158
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -533,11 +533,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: RecordingArea
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 148
+    startLine: 160
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -562,11 +562,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Type
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 150
+    startLine: 162
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -591,11 +591,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 152
+    startLine: 164
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -621,11 +621,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 174
+    startLine: 186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -650,11 +650,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Tag
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 176
+    startLine: 188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -679,11 +679,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: PreserveSourceFromDispose
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 178
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -708,11 +708,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetBitmap
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 180
+    startLine: 192
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -736,11 +736,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Surface
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 185
+    startLine: 197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -765,11 +765,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Children
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 187
+    startLine: 199
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -794,11 +794,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/CachedObject.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAlive
     path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 189
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

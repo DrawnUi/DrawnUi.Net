@@ -1,0 +1,392 @@
+/*
+ * DrawnUI Blazor boot loader
+ *
+ * Usage in index.html:
+ *   <link rel="stylesheet" href="_content/DrawnUi.Blazor.Core/drawnui-loader.css" />
+ *
+ * Required HTML inside <div id="app">:
+ *
+ *   <div class="boot-shell" aria-label="Loading MyApp">
+ *     <div class="boot-stage">
+ *       <div class="boot-logo-wrap">
+ *         <img class="boot-logo" src="_content/DrawnUi.Blazor.Core/drawnui-logo.svg" alt="DrawnUI" />
+ *         <span class="boot-spark" style="--a:15deg;--r:6.8rem;--du:2.1s;--de:0s;--c:#4b8ef9"></span>
+ *         <span class="boot-spark" style="--a:72deg;--r:6.4rem;--du:1.8s;--de:0.38s;--c:#f25536"></span>
+ *         <span class="boot-spark" style="--a:138deg;--r:7rem;--du:2.4s;--de:0.72s;--c:#e4a130"></span>
+ *         <span class="boot-spark" style="--a:195deg;--r:6.2rem;--du:1.9s;--de:1.08s;--c:#78549e"></span>
+ *         <span class="boot-spark" style="--a:252deg;--r:6.8rem;--du:2.2s;--de:1.44s;--c:#4b8ef9"></span>
+ *         <span class="boot-spark" style="--a:315deg;--r:6rem;--du:1.7s;--de:0.56s;--c:#f25536"></span>
+ *         <span class="boot-spark" style="--a:42deg;--r:7.4rem;--du:2.6s;--de:0.92s;--c:#e4a130"></span>
+ *         <span class="boot-spark" style="--a:172deg;--r:7.6rem;--du:2s;--de:1.6s;--c:#78549e"></span>
+ *       </div>
+ *       <div class="boot-foot">
+ *         <div class="boot-copy">My App Name</div>
+ *         <div class="boot-progress" aria-hidden="true">
+ *           <div class="boot-progress-track">
+ *             <div class="boot-progress-fill"></div>
+ *           </div>
+ *           <div class="boot-progress-text"></div>
+ *         </div>
+ *       </div>
+ *     </div>
+ *   </div>
+ *
+ * Progress bar reads --blazor-load-percentage and --blazor-load-percentage-text
+ * CSS custom properties set automatically by Blazor during WASM download.
+ */
+
+.boot-shell {
+    --boot-shell-background: transparent;
+    --boot-blob-primary: rgba(120, 84, 158, 0.48);
+    --boot-blob-secondary: rgba(75, 142, 249, 0.36);
+    --boot-stage-background: transparent;
+    --boot-stage-border: transparent;
+    --boot-stage-shadow: none;
+    --boot-logo-wrap-background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 62%);
+    --boot-logo-core-glow: radial-gradient(circle, rgba(75, 142, 249, 0.14), rgba(120, 84, 158, 0.08) 55%, transparent 72%);
+    --boot-logo-halo-glow: radial-gradient(circle, rgba(75, 142, 249, 0.09), rgba(120, 84, 158, 0.06) 50%, transparent 72%);
+    --boot-copy-color: #9aa3b6;
+    --boot-progress-track-background: rgba(255, 255, 255, 0.1);
+    --boot-progress-track-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --boot-progress-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.36) 48%, transparent 100%);
+    --boot-progress-cap-background: rgba(255, 255, 255, 0.95);
+    --boot-progress-cap-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.7), 0 0 14px 4px rgba(75, 142, 249, 0.6);
+    --boot-progress-text-color: rgba(221, 227, 239, 0.72);
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    width: 100%;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--boot-shell-background);
+}
+
+.boot-shell-light {
+    --boot-shell-background: linear-gradient(180deg, #f7f9fc 0%, #eef4fb 52%, #fbf7f1 100%);
+    --boot-blob-primary: rgba(120, 84, 158, 0.16);
+    --boot-blob-secondary: rgba(75, 142, 249, 0.18);
+    --boot-stage-background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(248, 250, 253, 0.82) 100%);
+    --boot-stage-border: rgba(140, 157, 181, 0.18);
+    --boot-stage-shadow: 0 24px 64px rgba(41, 54, 73, 0.08), 0 6px 18px rgba(75, 142, 249, 0.08);
+    --boot-logo-wrap-background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.96), rgba(236, 243, 253, 0.62) 52%, rgba(255, 255, 255, 0) 78%);
+    --boot-logo-core-glow: radial-gradient(circle, rgba(75, 142, 249, 0.18), rgba(228, 161, 48, 0.08) 56%, transparent 74%);
+    --boot-logo-halo-glow: radial-gradient(circle, rgba(75, 142, 249, 0.12), rgba(120, 84, 158, 0.08) 48%, transparent 72%);
+    --boot-copy-color: #435066;
+    --boot-progress-track-background: rgba(151, 163, 184, 0.2);
+    --boot-progress-track-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 0 0 1px rgba(148, 163, 184, 0.14);
+    --boot-progress-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.62) 48%, transparent 100%);
+    --boot-progress-cap-background: rgba(255, 255, 255, 0.82);
+    --boot-progress-cap-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.55), 0 0 12px 3px rgba(75, 142, 249, 0.22);
+    --boot-progress-text-color: rgba(68, 81, 104, 0.8);
+}
+
+.boot-shell-dark {
+    --boot-shell-background: transparent;
+    --boot-blob-primary: rgba(120, 84, 158, 0.48);
+    --boot-blob-secondary: rgba(75, 142, 249, 0.36);
+    --boot-stage-background: transparent;
+    --boot-stage-border: transparent;
+    --boot-stage-shadow: none;
+    --boot-logo-wrap-background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 62%);
+    --boot-logo-core-glow: radial-gradient(circle, rgba(75, 142, 249, 0.14), rgba(120, 84, 158, 0.08) 55%, transparent 72%);
+    --boot-logo-halo-glow: radial-gradient(circle, rgba(75, 142, 249, 0.09), rgba(120, 84, 158, 0.06) 50%, transparent 72%);
+    --boot-copy-color: #9aa3b6;
+    --boot-progress-track-background: rgba(255, 255, 255, 0.1);
+    --boot-progress-track-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --boot-progress-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.36) 48%, transparent 100%);
+    --boot-progress-cap-background: rgba(255, 255, 255, 0.95);
+    --boot-progress-cap-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.7), 0 0 14px 4px rgba(75, 142, 249, 0.6);
+    --boot-progress-text-color: rgba(221, 227, 239, 0.72);
+}
+
+.boot-shell::before,
+.boot-shell::after {
+    content: "";
+    position: absolute;
+    inset: auto;
+    border-radius: 999px;
+    pointer-events: none;
+    filter: blur(64px);
+}
+
+.boot-shell::before {
+    width: min(48vw, 22rem);
+    height: min(48vw, 22rem);
+    top: 5%;
+    right: 4%;
+    background: var(--boot-blob-primary);
+    animation: boot-blob 6s ease-in-out infinite;
+}
+
+.boot-shell::after {
+    width: min(52vw, 26rem);
+    height: min(52vw, 26rem);
+    bottom: 4%;
+    left: 3%;
+    background: var(--boot-blob-secondary);
+    animation: boot-blob 7.5s ease-in-out infinite reverse;
+}
+
+.boot-stage {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    width: min(28rem, calc(100vw - 2.75rem));
+    padding: 2.5rem 1.5rem 2rem;
+    border-radius: 2rem;
+    background: var(--boot-stage-background);
+    border: 1px solid var(--boot-stage-border);
+    box-shadow: var(--boot-stage-shadow);
+    backdrop-filter: blur(18px);
+    animation: boot-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.boot-logo-wrap {
+    margin-bottom: 1rem;
+    position: relative;
+    width: min(15rem, 56vw);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 2rem;
+    background: var(--boot-logo-wrap-background);
+    animation: boot-float 4.6s ease-in-out infinite;
+}
+
+.boot-logo-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    background: var(--boot-logo-core-glow);
+    filter: blur(18px);
+}
+
+.boot-logo-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -28%;
+    border-radius: 50%;
+    background: var(--boot-logo-halo-glow);
+    filter: blur(28px);
+}
+
+.boot-logo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    animation: boot-glow 3.4s ease-in-out infinite;
+}
+
+.boot-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    width: 100%;
+    justify-items: center;
+}
+
+.boot-copy {
+    text-transform: uppercase;
+    letter-spacing: 0.36em;
+    font-size: 1.3rem;
+    font-weight: 650;
+    text-align: center;
+    color: var(--boot-copy-color);
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+    line-height: 1.2;
+    animation: boot-title-pulse 4s ease-in-out infinite;
+}
+
+.boot-shell-light .boot-copy {
+    animation: boot-title-pulse-light 4s ease-in-out infinite;
+}
+
+.boot-progress {
+    display: grid;
+    gap: 0.65rem;
+    width: var(--boot-progress-width, auto);
+    max-width: 60%;
+    justify-self: center;
+}
+
+.boot-spark {
+    position: absolute;
+    width: 0.62rem;
+    height: 0.62rem;
+    top: calc(50% + sin(var(--a)) * var(--r) - 0.35rem);
+    left: calc(50% + cos(var(--a)) * var(--r) - 0.35rem);
+    clip-path: polygon(50% 0%, 55% 43%, 100% 50%, 55% 57%, 50% 100%, 45% 57%, 0% 50%, 45% 43%);
+    background: var(--c, white);
+    box-shadow:
+        0 0 0.4rem 0.15rem var(--c, white),
+        0 0 1rem 0.3rem var(--c, white);
+    filter: brightness(1.2);
+    animation: boot-sparkle var(--du, 2s) var(--de, 0s) ease-in-out infinite;
+    transform-origin: center;
+    pointer-events: none;
+}
+
+.boot-progress-track {
+    position: relative;
+    overflow: hidden;
+    height: 0.48rem;
+    border-radius: 999px;
+    background: var(--boot-progress-track-background);
+    box-shadow: var(--boot-progress-track-shadow);
+}
+
+.boot-progress-track::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -36%;
+    width: 36%;
+    background: var(--boot-progress-shimmer);
+    transform: translateX(0);
+    animation: boot-shimmer 1.8s ease-in-out infinite;
+}
+
+.boot-progress-fill {
+    position: relative;
+    height: 100%;
+    width: var(--drawnui-load-percentage, 8%);
+    min-width: 2.4rem;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #f25536 0%, #e4a130 30%, #4b8ef9 66%, #78549e 100%);
+    box-shadow: 0 0 18px rgba(75, 142, 249, 0.28);
+    transition: width 0.16s ease-out;
+    overflow: visible;
+}
+
+.boot-progress-fill::after {
+    content: "";
+    position: absolute;
+    right: -0.1rem;
+    top: -0.15rem;
+    bottom: -0.15rem;
+    width: 0.55rem;
+    border-radius: 999px;
+    background: var(--boot-progress-cap-background);
+    filter: blur(1.5px);
+    box-shadow: var(--boot-progress-cap-shadow);
+}
+
+.boot-progress-text {
+    min-height: 1em;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 0.75rem;
+    color: var(--boot-progress-text-color);
+}
+
+.boot-progress-text::after {
+    content: var(--drawnui-load-percentage-text, "Loading");
+}
+
+@keyframes boot-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes boot-float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+}
+
+@keyframes boot-glow {
+    0%, 100% {
+        transform: scale(0.985);
+        opacity: 0.88;
+        filter:
+            drop-shadow(0 12px 34px rgba(0, 0, 0, 0.42))
+            drop-shadow(0 0 18px rgba(75, 142, 249, 0.18));
+    }
+    50% {
+        transform: scale(1.018);
+        opacity: 1;
+        filter:
+            drop-shadow(0 8px 24px rgba(0, 0, 0, 0.28))
+            drop-shadow(0 0 38px rgba(75, 142, 249, 0.52))
+            drop-shadow(0 0 70px rgba(120, 84, 158, 0.28));
+    }
+}
+
+@keyframes boot-blob {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50%       { opacity: 0.85; transform: scale(1.1); }
+}
+
+@keyframes boot-enter {
+    from {
+        opacity: 0;
+        transform: scale(0.93) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes boot-sparkle {
+    0%        { transform: scale(0)   rotate(0deg)  translateY(0);        opacity: 0; }
+    15%       { transform: scale(1.1) rotate(15deg) translateY(-0.1rem);  opacity: 1; }
+    50%       { transform: scale(1.6) rotate(42deg) translateY(-0.32rem); opacity: 0.95; }
+    80%       { transform: scale(0.7) rotate(64deg) translateY(-0.52rem); opacity: 0.3; }
+    100%      { transform: scale(0)   rotate(78deg) translateY(-0.7rem);  opacity: 0; }
+}
+
+@keyframes boot-title-pulse {
+    0%, 100% {
+        text-shadow:
+            0 0 10px rgba(75, 142, 249, 0.4),
+            0 0 28px rgba(75, 142, 249, 0.18),
+            0 0 55px rgba(120, 84, 158, 0.12);
+    }
+    50% {
+        text-shadow:
+            0 0 18px rgba(75, 142, 249, 0.75),
+            0 0 48px rgba(75, 142, 249, 0.32),
+            0 0 88px rgba(120, 84, 158, 0.22);
+    }
+}
+
+@keyframes boot-title-pulse-light {
+    0%, 100% {
+        text-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.72),
+            0 0 16px rgba(75, 142, 249, 0.12),
+            0 0 32px rgba(120, 84, 158, 0.06);
+    }
+    50% {
+        text-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.86),
+            0 0 22px rgba(75, 142, 249, 0.2),
+            0 0 42px rgba(120, 84, 158, 0.1);
+    }
+}
+
+@keyframes boot-shimmer {
+    from { transform: translateX(0); }
+    to   { transform: translateX(380%); }
+}
+
+@media (max-width: 640px) {
+    .boot-stage {
+        width: min(22rem, calc(100vw - 2rem));
+        padding-top: 2rem;
+    }
+
+    .boot-copy {
+        letter-spacing: 0.24em;
+    }
+}

@@ -1,0 +1,16 @@
+.game-demo-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.game-demo-page > p {
+    margin-bottom: 0;
+}
+
+.game-demo-viewport-slot {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    place-items: start center;
+}

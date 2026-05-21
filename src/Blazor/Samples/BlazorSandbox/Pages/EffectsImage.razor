@@ -1,0 +1,324 @@
+@page "/effects-image"
+@using DrawnUi
+@using DrawnUi.Draw
+@using DrawnUi.Infrastructure.Xaml
+@using DrawnUi.Views
+
+<PageTitle>Image Effects</PageTitle>
+
+<div class="docs-page">
+    <h1>VisualEffects</h1>
+    <p class="docs-lead">Any element on the Canvas has a VisualEffects property of any drawn control can carry a full stack of color filters, shaders and other effects.</p>
+
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent"
+                WidthRequest="380"
+                BackgroundColor="#F4F1EA"
+                Margin="0,8,0,0"
+                Gestures="@GesturesMode.Enabled" />
+    </div>
+
+    <pre class="docs-code"><code>@EffectsSnippet</code></pre>
+</div>
+
+@code {
+    private const string EffectsSnippet = """
+var image = new SkiaImage()
+{
+    Source = "images/dotnetbotcar.png",
+    Aspect = TransformAspect.AspectFit,
+    UseCache = SkiaCacheType.ImageDoubleBuffered,
+    VisualEffects =
+    {
+        new DropShadowEffect() { Color = Colors.OrangeRed, Blur = 8, X = 1, Y = 2 },
+        new ChainDropShadowsEffect()
+        {
+            Shadows = new SkiaShadowsCollection
+            {
+                new SkiaShadow() { Color = Color.Parse("#00FF00"), Blur = 3, X = -4, Y = -4, Opacity = 1 },
+                new SkiaShadow() { Color = Color.Parse("#0000FF"), Blur = 3, X = 4, Y = 4, Opacity = 1 }
+            }
+        },
+        new ChainColorPresetEffect() { Preset = SkiaImageEffect.Sepia }
+    }
+};
+""";
+
+    private readonly (string Name, Color Color)[] _shadowOptions =
+    [
+        ("Crimson", new Color(0.929f, 0.255f, 0.247f, 1f)),
+        ("Cyan", new Color(0.122f, 0.612f, 0.922f, 1f)),
+        ("Amber", new Color(0.945f, 0.620f, 0.161f, 1f)),
+        ("Violet", new Color(0.490f, 0.337f, 0.875f, 1f))
+    ];
+
+    private readonly (string Name, SkiaImageEffect Effect)[] _presetOptions =
+    [
+        ("Sepia", SkiaImageEffect.Sepia),
+        ("Pastel", SkiaImageEffect.Pastel),
+        ("Black & White", SkiaImageEffect.BlackAndWhite),
+        ("Invert", SkiaImageEffect.InvertColors)
+    ];
+
+    private readonly DropShadowEffect _globalShadow;
+    private readonly ChainColorPresetEffect _presetEffect;
+    private readonly ChainDropShadowsEffect _localShadows;
+
+    private SkiaControl _canvasContent;
+    private SkiaImage _heroImage;
+    private SkiaLabel _selectionLabel;
+
+    private string _selectedShadowName = "Crimson";
+    private string _selectedPresetName = "Sepia";
+
+    public EffectsImage()
+    {
+        _globalShadow = new DropShadowEffect()
+        {
+            Blur = 8,
+            X = 1,
+            Y = 2,
+            Color = _shadowOptions[0].Color
+        };
+
+        _localShadows = new ChainDropShadowsEffect()
+        {
+            Shadows = new SkiaShadowsCollection
+            {
+                new SkiaShadow()
+                {
+                    Blur = 3,
+                    Opacity = 1,
+                    X = -4,
+                    Y = -4,
+                    Color = Color.Parse("#00FF00")
+                },
+                new SkiaShadow()
+                {
+                    Blur = 3,
+                    Opacity = 1,
+                    X = 4,
+                    Y = 4,
+                    Color = Color.Parse("#0000FF")
+                }
+            }
+        };
+
+        _presetEffect = new ChainColorPresetEffect()
+        {
+            Preset = _presetOptions[0].Effect
+        };
+
+        _selectionLabel = new SkiaLabel()
+        {
+            Text = BuildSelectionText(),
+            FontFamily = "FontText",
+            FontSize = 13,
+            TextColor = new Color(0.349f, 0.286f, 0.204f, 1f),
+            HorizontalOptions = LayoutOptions.Fill,
+            HorizontalTextAlignment = DrawTextAlignment.Center
+        };
+
+        _heroImage = new SkiaImage()
+        {
+            WidthRequest = 300,
+            HeightRequest = 185,
+            Aspect = TransformAspect.AspectFit,
+            HorizontalOptions = LayoutOptions.Center,
+            LoadSourceOnFirstDraw = false,
+            Source = "images/dotnetbotcar.png",
+            UseCache = SkiaCacheType.Image,
+            VisualEffects =
+            {
+                _globalShadow,
+                _localShadows,
+                _presetEffect
+            }
+        };
+
+        _canvasContent = new SkiaLayout()
+        {
+            Margin = new Thickness(16),
+            WidthRequest = 348,
+            HeightRequest = 760,
+            Type = LayoutType.Column,
+            Spacing = 14,
+            Children =
+            {
+                CreateHeroCard(),
+                CreateSelectorPanel("Shadow Tint", "Retint the global drop shadow.", CreateShadowButtons()),
+                CreateSelectorPanel("Image Tint", "Swap the chained color preset to tint the image live.", CreatePresetButtons())
+            }
+        };
+    }
+
+    private string BuildSelectionText()
+    {
+        return $"Global shadow: {_selectedShadowName}  |  Preset: {_selectedPresetName}";
+    }
+
+    private SkiaShape CreateHeroCard()
+    {
+        return new SkiaShape()
+        {
+            WidthRequest = 348,
+            Type = ShapeType.Rectangle,
+            CornerRadius = 0,
+            BackgroundColor = new Color(1f, 0.990f, 0.964f, 1f),
+            StrokeColor = new Color(0.851f, 0.827f, 0.776f, 1f),
+            StrokeWidth = 1,
+            Padding = new Thickness(18, 16),
+            UseCache = SkiaCacheType.Image,
+            Shadows = new SkiaShadowsCollection
+            {
+                new SkiaShadow()
+                {
+                    Blur = 8,
+                    Opacity = 1,
+                    X = 4,
+                    Y = 5,
+                    Color = new Color(0f, 0f, 0f, 0.12f)
+                }
+            },
+            Children =
+            {
+                new SkiaLayout()
+                {
+                    Type = LayoutType.Column,
+                    Spacing = 10,
+                    Children =
+                    {
+                        new SkiaLabel()
+                        {
+                            Text = "VisualEffects attached",
+                            FontFamily = "FontTextTitle",
+                            FontSize = 22,
+                            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        new SkiaLabel()
+                        {
+                            Text = "One image, three effects: global shadow, local shadow chain, and a color preset.",
+                            FontFamily = "FontText",
+                            FontSize = 14,
+                            TextColor = new Color(0.392f, 0.325f, 0.239f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        _heroImage,
+                        _selectionLabel
+                    }
+                }
+            }
+        };
+    }
+
+    private static SkiaShape CreateSelectorPanel(string title, string note, IList<SkiaControl> buttons)
+    {
+        return new SkiaShape()
+        {
+            WidthRequest = 348,
+            Type = ShapeType.Rectangle,
+            CornerRadius = 22,
+            BackgroundColor = Colors.White,
+            StrokeColor = new Color(0.890f, 0.867f, 0.816f, 1f),
+            StrokeWidth = 1,
+            Padding = new Thickness(18, 16),
+            Children =
+            {
+                new SkiaLayout()
+                {
+                    WidthRequest = 312,
+                    Type = LayoutType.Column,
+                    Spacing = 8,
+                    Children =
+                    {
+                        new SkiaLabel()
+                        {
+                            Text = title,
+                            FontFamily = "FontTextTitle",
+                            FontSize = 18,
+                            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        new SkiaLabel()
+                        {
+                            Text = note,
+                            WidthRequest = 312,
+                            FontFamily = "FontText",
+                            FontSize = 13,
+                            TextColor = new Color(0.424f, 0.353f, 0.259f, 1f),
+                            HorizontalOptions = LayoutOptions.Fill
+                        },
+                        new SkiaLayout()
+                        {
+                            WidthRequest = 312,
+                            Type = LayoutType.Wrap,
+                            Spacing = 8,
+                            HorizontalOptions = LayoutOptions.Center,
+                            Children = buttons
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private IList<SkiaControl> CreateShadowButtons()
+    {
+        return _shadowOptions
+            .Select(option =>
+                (SkiaControl)new SkiaButton()
+                {
+                    WidthRequest = 142,
+                    HeightRequest = 36,
+                    UseCache = SkiaCacheType.Image,
+                    Text = option.Name,
+                    BackgroundColor = option.Color,
+                    TextColor = Colors.White,
+                    CornerRadius = 12,
+                    FontSize = 12
+                }.OnTapped(me => SetShadowColor(option.Name, option.Color)))
+            .ToList();
+    }
+
+    private IList<SkiaControl> CreatePresetButtons()
+    {
+        return _presetOptions
+            .Select(option =>
+                (SkiaControl)new SkiaButton()
+                {
+                    WidthRequest = 142,
+                    HeightRequest = 36,
+                    UseCache = SkiaCacheType.Image,
+                    Text = option.Name,
+                    BackgroundColor = new Color(0.941f, 0.922f, 0.878f, 1f),
+                    TextColor = new Color(0.247f, 0.204f, 0.149f, 1f),
+                    CornerRadius = 12,
+                    FontSize = 12
+                }.OnTapped(me => SetPreset(option.Name, option.Effect)))
+            .ToList();
+    }
+
+    private void SetShadowColor(string name, Color color)
+    {
+        _selectedShadowName = name;
+        _globalShadow.Color = color;
+        RefreshHero();
+    }
+
+    private void SetPreset(string name, SkiaImageEffect effect)
+    {
+        _selectedPresetName = name;
+        _presetEffect.Preset = effect;
+        RefreshHero();
+    }
+
+    private void RefreshHero()
+    {
+        _selectionLabel.Text = BuildSelectionText();
+        _selectionLabel.Update();
+        _heroImage.Update();
+        _canvasContent.Update();
+        _ = InvokeAsync(StateHasChanged);
+    }
+}

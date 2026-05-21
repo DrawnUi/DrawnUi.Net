@@ -34,6 +34,7 @@ items:
   - DrawnUi.Controls.SkiaMauiEditor
   - DrawnUi.Controls.SkiaMauiEntry
   - DrawnUi.Controls.SkiaMediaImage
+  - DrawnUi.Controls.SkiaPicker
   - DrawnUi.Controls.SkiaRadioButton
   - DrawnUi.Controls.SkiaShell
   - DrawnUi.Controls.SkiaShell.IHandleGoBack
@@ -49,6 +50,7 @@ items:
   - DrawnUi.Controls.SkiaShellNavigatingArgs
   - DrawnUi.Controls.SkiaSpinner
   - DrawnUi.Controls.SkiaSprite
+  - DrawnUi.Controls.SkiaSprite.SpriteFrameImage
   - DrawnUi.Controls.SkiaSpriteSet
   - DrawnUi.Controls.SkiaTabsSelector
   - DrawnUi.Controls.SkiaTabsSelector.TabEntry
@@ -59,6 +61,7 @@ items:
   - DrawnUi.Controls.SkiaWheelScroll
   - DrawnUi.Controls.SkiaWheelShape
   - DrawnUi.Controls.SkiaWheelStack
+  - DrawnUi.Controls.SpritePlacementConfig
   - DrawnUi.Controls.WheelCellInfo
   langs:
   - csharp
@@ -70,55 +73,6 @@ items:
   assemblies:
   - DrawnUi.Maui
 references:
-- uid: DrawnUi.Controls.SkiaCarousel
-  commentId: T:DrawnUi.Controls.SkiaCarousel
-  href: DrawnUi.Controls.SkiaCarousel.html
-  name: SkiaCarousel
-  nameWithType: SkiaCarousel
-  fullName: DrawnUi.Controls.SkiaCarousel
-- uid: DrawnUi.Controls.SkiaCarousel.SnapPoint
-  commentId: T:DrawnUi.Controls.SkiaCarousel.SnapPoint
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaCarousel.html
-  name: SkiaCarousel.SnapPoint
-  nameWithType: SkiaCarousel.SnapPoint
-  fullName: DrawnUi.Controls.SkiaCarousel.SnapPoint
-  spec.csharp:
-  - uid: DrawnUi.Controls.SkiaCarousel
-    name: SkiaCarousel
-    href: DrawnUi.Controls.SkiaCarousel.html
-  - name: .
-  - uid: DrawnUi.Controls.SkiaCarousel.SnapPoint
-    name: SnapPoint
-    href: DrawnUi.Controls.SkiaCarousel.SnapPoint.html
-  spec.vb:
-  - uid: DrawnUi.Controls.SkiaCarousel
-    name: SkiaCarousel
-    href: DrawnUi.Controls.SkiaCarousel.html
-  - name: .
-  - uid: DrawnUi.Controls.SkiaCarousel.SnapPoint
-    name: SnapPoint
-    href: DrawnUi.Controls.SkiaCarousel.SnapPoint.html
-- uid: DrawnUi.Controls.SkiaDrawnCell
-  commentId: T:DrawnUi.Controls.SkiaDrawnCell
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaDrawnCell.html
-  name: SkiaDrawnCell
-  nameWithType: SkiaDrawnCell
-  fullName: DrawnUi.Controls.SkiaDrawnCell
-- uid: DrawnUi.Controls.SkiaDynamicDrawnCell
-  commentId: T:DrawnUi.Controls.SkiaDynamicDrawnCell
-  href: DrawnUi.Controls.SkiaDynamicDrawnCell.html
-  name: SkiaDynamicDrawnCell
-  nameWithType: SkiaDynamicDrawnCell
-  fullName: DrawnUi.Controls.SkiaDynamicDrawnCell
-- uid: DrawnUi.Controls.SkiaDrawer
-  commentId: T:DrawnUi.Controls.SkiaDrawer
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaDrawer.html
-  name: SkiaDrawer
-  nameWithType: SkiaDrawer
-  fullName: DrawnUi.Controls.SkiaDrawer
 - uid: DrawnUi.Controls.ISmartNative
   commentId: T:DrawnUi.Controls.ISmartNative
   parent: DrawnUi.Controls
@@ -166,31 +120,6 @@ references:
   name: SkiaMauiEntry
   nameWithType: SkiaMauiEntry
   fullName: DrawnUi.Controls.SkiaMauiEntry
-- uid: DrawnUi.Controls.ContentWithBackdrop
-  commentId: T:DrawnUi.Controls.ContentWithBackdrop
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.ContentWithBackdrop.html
-  name: ContentWithBackdrop
-  nameWithType: ContentWithBackdrop
-  fullName: DrawnUi.Controls.ContentWithBackdrop
-- uid: DrawnUi.Controls.GridLayout
-  commentId: T:DrawnUi.Controls.GridLayout
-  href: DrawnUi.Controls.GridLayout.html
-  name: GridLayout
-  nameWithType: GridLayout
-  fullName: DrawnUi.Controls.GridLayout
-- uid: DrawnUi.Controls.SkiaDecoratedColumn
-  commentId: T:DrawnUi.Controls.SkiaDecoratedColumn
-  href: DrawnUi.Controls.SkiaDecoratedColumn.html
-  name: SkiaDecoratedColumn
-  nameWithType: SkiaDecoratedColumn
-  fullName: DrawnUi.Controls.SkiaDecoratedColumn
-- uid: DrawnUi.Controls.SkiaDecoratedGrid
-  commentId: T:DrawnUi.Controls.SkiaDecoratedGrid
-  href: DrawnUi.Controls.SkiaDecoratedGrid.html
-  name: SkiaDecoratedGrid
-  nameWithType: SkiaDecoratedGrid
-  fullName: DrawnUi.Controls.SkiaDecoratedGrid
 - uid: DrawnUi.Controls.SkiaShell
   commentId: T:DrawnUi.Controls.SkiaShell
   parent: DrawnUi.Controls
@@ -413,106 +342,12 @@ references:
   - uid: DrawnUi.Controls.SkiaShell.PopupWrapper
     name: PopupWrapper
     href: DrawnUi.Controls.SkiaShell.PopupWrapper.html
-- uid: DrawnUi.Controls.SkiaSpinner
-  commentId: T:DrawnUi.Controls.SkiaSpinner
-  href: DrawnUi.Controls.SkiaSpinner.html
-  name: SkiaSpinner
-  nameWithType: SkiaSpinner
-  fullName: DrawnUi.Controls.SkiaSpinner
-- uid: DrawnUi.Controls.SkiaWheelShape
-  commentId: T:DrawnUi.Controls.SkiaWheelShape
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaWheelShape.html
-  name: SkiaWheelShape
-  nameWithType: SkiaWheelShape
-  fullName: DrawnUi.Controls.SkiaWheelShape
-- uid: DrawnUi.Controls.ScrollPickerLabelContainer
-  commentId: T:DrawnUi.Controls.ScrollPickerLabelContainer
-  href: DrawnUi.Controls.ScrollPickerLabelContainer.html
-  name: ScrollPickerLabelContainer
-  nameWithType: ScrollPickerLabelContainer
-  fullName: DrawnUi.Controls.ScrollPickerLabelContainer
-- uid: DrawnUi.Controls.ScrollPickerWheel
-  commentId: T:DrawnUi.Controls.ScrollPickerWheel
-  href: DrawnUi.Controls.ScrollPickerWheel.html
-  name: ScrollPickerWheel
-  nameWithType: ScrollPickerWheel
-  fullName: DrawnUi.Controls.ScrollPickerWheel
-- uid: DrawnUi.Controls.ScrollPickerLabelLayout
-  commentId: T:DrawnUi.Controls.ScrollPickerLabelLayout
-  href: DrawnUi.Controls.ScrollPickerLabelLayout.html
-  name: ScrollPickerLabelLayout
-  nameWithType: ScrollPickerLabelLayout
-  fullName: DrawnUi.Controls.ScrollPickerLabelLayout
-- uid: DrawnUi.Controls.SkiaWheelPicker
-  commentId: T:DrawnUi.Controls.SkiaWheelPicker
-  href: DrawnUi.Controls.SkiaWheelPicker.html
-  name: SkiaWheelPicker
-  nameWithType: SkiaWheelPicker
-  fullName: DrawnUi.Controls.SkiaWheelPicker
-- uid: DrawnUi.Controls.SkiaWheelPickerCell
-  commentId: T:DrawnUi.Controls.SkiaWheelPickerCell
-  href: DrawnUi.Controls.SkiaWheelPickerCell.html
-  name: SkiaWheelPickerCell
-  nameWithType: SkiaWheelPickerCell
-  fullName: DrawnUi.Controls.SkiaWheelPickerCell
-- uid: DrawnUi.Controls.SkiaWheelScroll
-  commentId: T:DrawnUi.Controls.SkiaWheelScroll
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaWheelScroll.html
-  name: SkiaWheelScroll
-  nameWithType: SkiaWheelScroll
-  fullName: DrawnUi.Controls.SkiaWheelScroll
-- uid: DrawnUi.Controls.SkiaWheelStack
-  commentId: T:DrawnUi.Controls.SkiaWheelStack
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaWheelStack.html
-  name: SkiaWheelStack
-  nameWithType: SkiaWheelStack
-  fullName: DrawnUi.Controls.SkiaWheelStack
-- uid: DrawnUi.Controls.AnimatedFramesRenderer
-  commentId: T:DrawnUi.Controls.AnimatedFramesRenderer
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.AnimatedFramesRenderer.html
-  name: AnimatedFramesRenderer
-  nameWithType: AnimatedFramesRenderer
-  fullName: DrawnUi.Controls.AnimatedFramesRenderer
-- uid: DrawnUi.Controls.SkiaGif
-  commentId: T:DrawnUi.Controls.SkiaGif
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaGif.html
-  name: SkiaGif
-  nameWithType: SkiaGif
-  fullName: DrawnUi.Controls.SkiaGif
-- uid: DrawnUi.Controls.SkiaLottie
-  commentId: T:DrawnUi.Controls.SkiaLottie
-  parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaLottie.html
-  name: SkiaLottie
-  nameWithType: SkiaLottie
-  fullName: DrawnUi.Controls.SkiaLottie
-- uid: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
-  commentId: T:DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
-  href: DrawnUi.Controls.SkiaLottie.html
-  name: SkiaLottie.ColorEqualityComparer
-  nameWithType: SkiaLottie.ColorEqualityComparer
-  fullName: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
-  spec.csharp:
-  - uid: DrawnUi.Controls.SkiaLottie
-    name: SkiaLottie
-    href: DrawnUi.Controls.SkiaLottie.html
-  - name: .
-  - uid: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
-    name: ColorEqualityComparer
-    href: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer.html
-  spec.vb:
-  - uid: DrawnUi.Controls.SkiaLottie
-    name: SkiaLottie
-    href: DrawnUi.Controls.SkiaLottie.html
-  - name: .
-  - uid: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
-    name: ColorEqualityComparer
-    href: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer.html
+- uid: DrawnUi.Controls.SkiaPicker
+  commentId: T:DrawnUi.Controls.SkiaPicker
+  href: DrawnUi.Controls.SkiaPicker.html
+  name: SkiaPicker
+  nameWithType: SkiaPicker
+  fullName: DrawnUi.Controls.SkiaPicker
 - uid: DrawnUi.Controls.SkiaMediaImage
   commentId: T:DrawnUi.Controls.SkiaMediaImage
   href: DrawnUi.Controls.SkiaMediaImage.html
@@ -526,26 +361,102 @@ references:
   name: SkiaSprite
   nameWithType: SkiaSprite
   fullName: DrawnUi.Controls.SkiaSprite
-- uid: DrawnUi.Controls.SkiaSpriteSet
-  commentId: T:DrawnUi.Controls.SkiaSpriteSet
+- uid: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+  commentId: T:DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+  href: DrawnUi.Controls.SkiaSprite.html
+  name: SkiaSprite.SpriteFrameImage
+  nameWithType: SkiaSprite.SpriteFrameImage
+  fullName: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+  spec.csharp:
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+    name: SpriteFrameImage
+    href: DrawnUi.Controls.SkiaSprite.SpriteFrameImage.html
+  spec.vb:
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+    name: SpriteFrameImage
+    href: DrawnUi.Controls.SkiaSprite.SpriteFrameImage.html
+- uid: DrawnUi.Controls.SkiaDrawnCell
+  commentId: T:DrawnUi.Controls.SkiaDrawnCell
   parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaSpriteSet.html
-  name: SkiaSpriteSet
-  nameWithType: SkiaSpriteSet
-  fullName: DrawnUi.Controls.SkiaSpriteSet
-- uid: DrawnUi.Controls.RadioButtons
-  commentId: T:DrawnUi.Controls.RadioButtons
+  href: DrawnUi.Controls.SkiaDrawnCell.html
+  name: SkiaDrawnCell
+  nameWithType: SkiaDrawnCell
+  fullName: DrawnUi.Controls.SkiaDrawnCell
+- uid: DrawnUi.Controls.SkiaDynamicDrawnCell
+  commentId: T:DrawnUi.Controls.SkiaDynamicDrawnCell
+  href: DrawnUi.Controls.SkiaDynamicDrawnCell.html
+  name: SkiaDynamicDrawnCell
+  nameWithType: SkiaDynamicDrawnCell
+  fullName: DrawnUi.Controls.SkiaDynamicDrawnCell
+- uid: DrawnUi.Controls.SkiaDrawer
+  commentId: T:DrawnUi.Controls.SkiaDrawer
   parent: DrawnUi.Controls
-  href: DrawnUi.Controls.RadioButtons.html
-  name: RadioButtons
-  nameWithType: RadioButtons
-  fullName: DrawnUi.Controls.RadioButtons
-- uid: DrawnUi.Controls.SkiaRadioButton
-  commentId: T:DrawnUi.Controls.SkiaRadioButton
-  href: DrawnUi.Controls.SkiaRadioButton.html
-  name: SkiaRadioButton
-  nameWithType: SkiaRadioButton
-  fullName: DrawnUi.Controls.SkiaRadioButton
+  href: DrawnUi.Controls.SkiaDrawer.html
+  name: SkiaDrawer
+  nameWithType: SkiaDrawer
+  fullName: DrawnUi.Controls.SkiaDrawer
+- uid: DrawnUi.Controls.ContentWithBackdrop
+  commentId: T:DrawnUi.Controls.ContentWithBackdrop
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.ContentWithBackdrop.html
+  name: ContentWithBackdrop
+  nameWithType: ContentWithBackdrop
+  fullName: DrawnUi.Controls.ContentWithBackdrop
+- uid: DrawnUi.Controls.GridLayout
+  commentId: T:DrawnUi.Controls.GridLayout
+  href: DrawnUi.Controls.GridLayout.html
+  name: GridLayout
+  nameWithType: GridLayout
+  fullName: DrawnUi.Controls.GridLayout
+- uid: DrawnUi.Controls.SkiaCarousel
+  commentId: T:DrawnUi.Controls.SkiaCarousel
+  href: DrawnUi.Controls.SkiaCarousel.html
+  name: SkiaCarousel
+  nameWithType: SkiaCarousel
+  fullName: DrawnUi.Controls.SkiaCarousel
+- uid: DrawnUi.Controls.SkiaCarousel.SnapPoint
+  commentId: T:DrawnUi.Controls.SkiaCarousel.SnapPoint
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaCarousel.html
+  name: SkiaCarousel.SnapPoint
+  nameWithType: SkiaCarousel.SnapPoint
+  fullName: DrawnUi.Controls.SkiaCarousel.SnapPoint
+  spec.csharp:
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaCarousel.SnapPoint
+    name: SnapPoint
+    href: DrawnUi.Controls.SkiaCarousel.SnapPoint.html
+  spec.vb:
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaCarousel.SnapPoint
+    name: SnapPoint
+    href: DrawnUi.Controls.SkiaCarousel.SnapPoint.html
+- uid: DrawnUi.Controls.SkiaDecoratedColumn
+  commentId: T:DrawnUi.Controls.SkiaDecoratedColumn
+  href: DrawnUi.Controls.SkiaDecoratedColumn.html
+  name: SkiaDecoratedColumn
+  nameWithType: SkiaDecoratedColumn
+  fullName: DrawnUi.Controls.SkiaDecoratedColumn
+- uid: DrawnUi.Controls.SkiaDecoratedGrid
+  commentId: T:DrawnUi.Controls.SkiaDecoratedGrid
+  href: DrawnUi.Controls.SkiaDecoratedGrid.html
+  name: SkiaDecoratedGrid
+  nameWithType: SkiaDecoratedGrid
+  fullName: DrawnUi.Controls.SkiaDecoratedGrid
 - uid: DrawnUi.Controls.SkiaTabsSelector
   commentId: T:DrawnUi.Controls.SkiaTabsSelector
   href: DrawnUi.Controls.SkiaTabsSelector.html
@@ -604,6 +515,133 @@ references:
   - uid: DrawnUi.Controls.SkiaViewSwitcher.NavigationStackEntry
     name: NavigationStackEntry
     href: DrawnUi.Controls.SkiaViewSwitcher.NavigationStackEntry.html
+- uid: DrawnUi.Controls.ScrollPickerLabelContainer
+  commentId: T:DrawnUi.Controls.ScrollPickerLabelContainer
+  href: DrawnUi.Controls.ScrollPickerLabelContainer.html
+  name: ScrollPickerLabelContainer
+  nameWithType: ScrollPickerLabelContainer
+  fullName: DrawnUi.Controls.ScrollPickerLabelContainer
+- uid: DrawnUi.Controls.ScrollPickerWheel
+  commentId: T:DrawnUi.Controls.ScrollPickerWheel
+  href: DrawnUi.Controls.ScrollPickerWheel.html
+  name: ScrollPickerWheel
+  nameWithType: ScrollPickerWheel
+  fullName: DrawnUi.Controls.ScrollPickerWheel
+- uid: DrawnUi.Controls.ScrollPickerLabelLayout
+  commentId: T:DrawnUi.Controls.ScrollPickerLabelLayout
+  href: DrawnUi.Controls.ScrollPickerLabelLayout.html
+  name: ScrollPickerLabelLayout
+  nameWithType: ScrollPickerLabelLayout
+  fullName: DrawnUi.Controls.ScrollPickerLabelLayout
+- uid: DrawnUi.Controls.SkiaWheelPicker
+  commentId: T:DrawnUi.Controls.SkiaWheelPicker
+  href: DrawnUi.Controls.SkiaWheelPicker.html
+  name: SkiaWheelPicker
+  nameWithType: SkiaWheelPicker
+  fullName: DrawnUi.Controls.SkiaWheelPicker
+- uid: DrawnUi.Controls.SkiaWheelPickerCell
+  commentId: T:DrawnUi.Controls.SkiaWheelPickerCell
+  href: DrawnUi.Controls.SkiaWheelPickerCell.html
+  name: SkiaWheelPickerCell
+  nameWithType: SkiaWheelPickerCell
+  fullName: DrawnUi.Controls.SkiaWheelPickerCell
+- uid: DrawnUi.Controls.SkiaWheelScroll
+  commentId: T:DrawnUi.Controls.SkiaWheelScroll
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaWheelScroll.html
+  name: SkiaWheelScroll
+  nameWithType: SkiaWheelScroll
+  fullName: DrawnUi.Controls.SkiaWheelScroll
+- uid: DrawnUi.Controls.SkiaWheelStack
+  commentId: T:DrawnUi.Controls.SkiaWheelStack
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaWheelStack.html
+  name: SkiaWheelStack
+  nameWithType: SkiaWheelStack
+  fullName: DrawnUi.Controls.SkiaWheelStack
+- uid: DrawnUi.Controls.SkiaSpinner
+  commentId: T:DrawnUi.Controls.SkiaSpinner
+  href: DrawnUi.Controls.SkiaSpinner.html
+  name: SkiaSpinner
+  nameWithType: SkiaSpinner
+  fullName: DrawnUi.Controls.SkiaSpinner
+- uid: DrawnUi.Controls.SkiaWheelShape
+  commentId: T:DrawnUi.Controls.SkiaWheelShape
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaWheelShape.html
+  name: SkiaWheelShape
+  nameWithType: SkiaWheelShape
+  fullName: DrawnUi.Controls.SkiaWheelShape
+- uid: DrawnUi.Controls.AnimatedFramesRenderer
+  commentId: T:DrawnUi.Controls.AnimatedFramesRenderer
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.AnimatedFramesRenderer.html
+  name: AnimatedFramesRenderer
+  nameWithType: AnimatedFramesRenderer
+  fullName: DrawnUi.Controls.AnimatedFramesRenderer
+- uid: DrawnUi.Controls.SkiaGif
+  commentId: T:DrawnUi.Controls.SkiaGif
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaGif.html
+  name: SkiaGif
+  nameWithType: SkiaGif
+  fullName: DrawnUi.Controls.SkiaGif
+- uid: DrawnUi.Controls.SkiaLottie
+  commentId: T:DrawnUi.Controls.SkiaLottie
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaLottie.html
+  name: SkiaLottie
+  nameWithType: SkiaLottie
+  fullName: DrawnUi.Controls.SkiaLottie
+- uid: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
+  commentId: T:DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
+  href: DrawnUi.Controls.SkiaLottie.html
+  name: SkiaLottie.ColorEqualityComparer
+  nameWithType: SkiaLottie.ColorEqualityComparer
+  fullName: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
+  spec.csharp:
+  - uid: DrawnUi.Controls.SkiaLottie
+    name: SkiaLottie
+    href: DrawnUi.Controls.SkiaLottie.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
+    name: ColorEqualityComparer
+    href: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer.html
+  spec.vb:
+  - uid: DrawnUi.Controls.SkiaLottie
+    name: SkiaLottie
+    href: DrawnUi.Controls.SkiaLottie.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
+    name: ColorEqualityComparer
+    href: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer.html
+- uid: DrawnUi.Controls.SpritePlacementConfig
+  commentId: T:DrawnUi.Controls.SpritePlacementConfig
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SpritePlacementConfig.html
+  name: SpritePlacementConfig
+  nameWithType: SpritePlacementConfig
+  fullName: DrawnUi.Controls.SpritePlacementConfig
+- uid: DrawnUi.Controls.SkiaSpriteSet
+  commentId: T:DrawnUi.Controls.SkiaSpriteSet
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaSpriteSet.html
+  name: SkiaSpriteSet
+  nameWithType: SkiaSpriteSet
+  fullName: DrawnUi.Controls.SkiaSpriteSet
+- uid: DrawnUi.Controls.RadioButtons
+  commentId: T:DrawnUi.Controls.RadioButtons
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.RadioButtons.html
+  name: RadioButtons
+  nameWithType: RadioButtons
+  fullName: DrawnUi.Controls.RadioButtons
+- uid: DrawnUi.Controls.SkiaRadioButton
+  commentId: T:DrawnUi.Controls.SkiaRadioButton
+  href: DrawnUi.Controls.SkiaRadioButton.html
+  name: SkiaRadioButton
+  nameWithType: SkiaRadioButton
+  fullName: DrawnUi.Controls.SkiaRadioButton
 - uid: DrawnUi.Controls.DrawerDirection
   commentId: T:DrawnUi.Controls.DrawerDirection
   parent: DrawnUi.Controls

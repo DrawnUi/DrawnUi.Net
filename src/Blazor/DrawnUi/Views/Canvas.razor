@@ -1,72 +1,722 @@
-﻿@using System.Drawing
-@using SkiaSharp.Views.Blazor
-@inherits VisualElement
+@namespace DrawnUi.Views
+@using AppoMobi.Gestures
+@using DrawnUi.Draw
+@using Microsoft.AspNetCore.Components
+@using DrawnUi
+@using Microsoft.JSInterop
+@using System
+@inherits DrawnView
+@implements IAsyncDisposable
+@inject IJSRuntime JS
 
 @if (IsVisible)
 {
-  
-    <div class="xaml-element xaml-contentview @Class" style="@CssMargins @CssPadding @CssGridPosition @CssStyle">
-        @if(RenderingMode == RenderingModeType.Default)
-        {
-            <SKCanvasView OnPaintSurface="OnPaintSurface" Width="100%" Height="100%"/>
-        }
-        else
-        {
-            <SKGLView OnPaintSurface="OnPaintSurfaceAccelerated" Width="100%" Height="100%"/>
-        }
+
+<div class="xaml-element xaml-contentview xaml-canvas @CanvasLayoutClass @Class"
+    @ref="_hostElement"
+    style="@CssMargins @CssPadding @CssGridPosition @CssStyle @GestureStyle">
+
+    <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" >
+        <div class="xaml-canvas-element" style="@CanvasSurfaceElementStyle">
+            @if(RenderingMode == RenderingModeType.Default)
+            {
+                <SkiaView Superview="@this" 
+                          DrawHandler="DrawFrame" 
+                          EnableRenderLoop="@IsRenderLoopEnabled" 
+                          Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
+            }
+            else
+            {
+                <SkiaViewAccelerated Superview="@this" 
+                                     DrawHandler="DrawFrame" 
+                                     EnableRenderLoop="@IsRenderLoopEnabled" 
+                                    Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
+            }
+        </div>
     </div>
- 
+
+    @*<div class="xaml-canvas-content">
+    @ChildContent
+    </div> *@
+    </div>
+
 }
+
+<style>
+    .xaml-canvas {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .xaml-canvas:fullscreen,
+    .xaml-canvas:-webkit-full-screen {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: none !important;
+        max-height: none !important;
+    }
+
+    .xaml-canvas-fill {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 0;
+        align-self: stretch;
+    }
+
+    .xaml-canvas-fixed {
+        flex: 0 0 auto !important;
+    }
+
+    .xaml-canvas-auto {
+        display: inline-block;
+    }
+
+    .xaml-canvas-surface {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    .xaml-canvas-element {
+        position: relative;
+        flex: 0 0 auto;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .xaml-canvas-element > * {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .xaml-canvas-element canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .xaml-canvas-surface.centered {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .xaml-canvas-content {
+        position: absolute;
+        inset: 0;
+    }
+</style>
 
 @code {
 
-    private void OnPaintSurfaceAccelerated(SKPaintGLSurfaceEventArgs obj)
+    private ElementReference _hostElement;
+    private TouchEffect? _gestureEffect;
+    private GesturesMode _attachedGesturesMode = GesturesMode.Disabled;
+    private IJSObjectReference? _resizeModule;
+    private DotNetObjectReference<Canvas>? _resizeCallbackRef;
+    private float _measuredCanvasWidth;
+    private float _measuredCanvasHeight;
+    private bool _isBrowserFullscreen;
+    private bool? _lastFullscreenRequest;
+    private float _reportedAutoCanvasWidth;
+    private float _reportedAutoCanvasHeight;
+    private bool _autoSizeRenderQueued;
+    private bool _isComputingIntrinsicAutoSize;
+
+    private static readonly string ResizeModulePath = $"./_content/DrawnUi.Blazor.Core/drawnui-canvas-resize.js?v={System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
+
+    [Parameter]
+    public SkiaControl? Content { get; set; }
+
+    [Parameter]
+    public new virtual UpdateModeType UpdateMode { get; set; } = UpdateModeType.Dynamic;
+
+    public bool IsRenderLoopEnabled 
     {
- 
+        get
+        {
+            return UpdateMode == UpdateModeType.Constant;
+        }
     }
 
-    private void OnPaintSurface(SKPaintSurfaceEventArgs e)
+    public virtual bool Focus()
     {
-        var canvas = e.Surface.Canvas;
+        return true;
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        base.Margin = ParsedMargin;
+        base.RenderingMode = RenderingMode;
+        base.CanRenderOffScreen = CanRenderOffScreen;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (_resizeModule != null && _lastFullscreenRequest != IsFullscreen)
+        {
+            await SyncFullscreenAsync();
+        }
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        if (Content != null)
+        {
+            SetChildren(new[]
+            {
+                Content
+            });
+        }
+        else
+        {
+            ClearChildren();
+        }
+
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            SetupRenderingLoop();
+            await EnsureResizeObserverAsync();
+            _reportedAutoCanvasWidth = AutoCanvasWidth;
+            _reportedAutoCanvasHeight = AutoCanvasHeight;
+        }
+
+        if (CaptureInput)
+        {
+            _gestureEffect ??= new TouchEffect(JS);
+            _gestureEffect.TouchMode = GestureTouchMode;
+            if (_attachedGesturesMode != Gestures)
+            {
+                await _gestureEffect.AttachAsync(_hostElement, this);
+                _attachedGesturesMode = Gestures;
+            }
+        }
+        else if (_gestureEffect != null)
+        {
+            await _gestureEffect.DetachAsync();
+            _attachedGesturesMode = GesturesMode.Disabled;
+        }
 
     }
 
+    private record HostSizeInfo(float Width, float Height);
 
+    private async Task EnsureResizeObserverAsync()
+    {
+        _resizeModule ??= await JS.InvokeAsync<IJSObjectReference>("import", ResizeModulePath);
+        _resizeCallbackRef ??= DotNetObjectReference.Create(this);
 
-    /// <summary>
-    /// Whether is using hardware acceleration or software rendering
-    /// </summary>
-    [Parameter]
-    public RenderingModeType RenderingMode { get; set; }
+        // Read the current host size immediately so the first real canvas render can use it
+        // without waiting for the async resize observer callback cycle.
+        var sz = await _resizeModule.InvokeAsync<HostSizeInfo>("getHostSize", _hostElement);
+        if (sz.Width > 0 && sz.Height > 0)
+        {
+            _measuredCanvasWidth = sz.Width;
+            _measuredCanvasHeight = sz.Height;
+            await InvokeAsync(StateHasChanged);
+        }
 
-    /// <summary>
-    ///  If this is check you view will be refreshed even off-screen or hidden
-    /// </summary>
-    [Parameter]
-    public bool CanRenderOffScreen { get; set; }
+        // attachCanvasHost fires notifySize immediately, but OnHostResized checks
+        // for size equality and returns early — no redundant StateHasChanged triggered.
+        await _resizeModule.InvokeVoidAsync("attachCanvasHost", _hostElement, _resizeCallbackRef, RenderingMode == RenderingModeType.Default);
+    }
+
+    [JSInvokable]
+    public virtual async Task OnHostResized(double width, double height)
+    {
+        if ((WidthRequest <= 0 && width <= 0) || (HeightRequest <= 0 && height <= 0))
+            return;
+
+        var shouldUseRequestedSize = WidthRequest > 0 && CanUseRequestedCanvasSize();
+        var shouldUseRequestedHeight = HeightRequest > 0 && CanUseRequestedCanvasSize();
+
+        var nextWidth = shouldUseRequestedSize ? (float)WidthRequest : (float)Math.Round(width);
+        var nextHeight = shouldUseRequestedHeight ? (float)HeightRequest : (float)Math.Round(height);
+
+        if (nextWidth == _measuredCanvasWidth && nextHeight == _measuredCanvasHeight)
+            return;
+
+        _measuredCanvasWidth = nextWidth;
+        _measuredCanvasHeight = nextHeight;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    [JSInvokable]
+    public async Task OnFullscreenChanged(bool isFullscreen)
+    {
+        if (_isBrowserFullscreen == isFullscreen)
+        {
+            return;
+        }
+
+        _isBrowserFullscreen = isFullscreen;
+
+        if (IsFullscreen != isFullscreen && IsFullscreenChanged.HasDelegate)
+        {
+            await IsFullscreenChanged.InvokeAsync(isFullscreen);
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task SyncFullscreenAsync()
+    {
+        if (_resizeModule == null || _lastFullscreenRequest == IsFullscreen)
+        {
+            return;
+        }
+
+        try
+        {
+            var isFullscreen = await _resizeModule.InvokeAsync<bool>("setCanvasFullscreen", _hostElement, IsFullscreen);
+            _lastFullscreenRequest = isFullscreen;
+
+            if (_isBrowserFullscreen != isFullscreen)
+            {
+                _isBrowserFullscreen = isFullscreen;
+                await InvokeAsync(StateHasChanged);
+            }
+
+            if (IsFullscreen != isFullscreen && IsFullscreenChanged.HasDelegate)
+            {
+                await IsFullscreenChanged.InvokeAsync(isFullscreen);
+            }
+        }
+        catch
+        {
+            _lastFullscreenRequest = _isBrowserFullscreen;
+        }
+    }
+
+    private float CanvasElementWidth => WidthRequest > 0 && CanUseRequestedCanvasSize()
+        ? (float)WidthRequest
+        : _measuredCanvasWidth > 0 ? _measuredCanvasWidth : AutoCanvasWidth;
+
+    private float CanvasElementHeight => HeightRequest > 0 && CanUseRequestedCanvasSize()
+        ? (float)HeightRequest
+        : _measuredCanvasHeight > 0 ? _measuredCanvasHeight : AutoCanvasHeight;
+
+    private string CanvasSurfaceElementStyle =>
+        $"width: {CanvasElementWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}px; height: {CanvasElementHeight.ToString(System.Globalization.CultureInfo.InvariantCulture)}px;";
+
+    private float AutoCanvasWidth
+    {
+        get
+        {
+            if (Content?.WidthRequest > 0)
+            {
+                return (float)Content.WidthRequest;
+            }
+
+            var intrinsic = GetIntrinsicAutoCanvasSize();
+            if (intrinsic?.Units.Width > 0)
+            {
+                return intrinsic.Units.Width;
+            }
+
+            if (Content?.MeasuredSize?.Units.Width > 0)
+            {
+                return Content.MeasuredSize.Units.Width;
+            }
+
+            return 1f;
+        }
+    }
+
+    private float AutoCanvasHeight
+    {
+        get
+        {
+            if (Content?.HeightRequest > 0)
+            {
+                return (float)Content.HeightRequest;
+            }
+
+            var intrinsic = GetIntrinsicAutoCanvasSize();
+            if (intrinsic?.Units.Height > 0)
+            {
+                return intrinsic.Units.Height;
+            }
+
+            if (Content?.MeasuredSize?.Units.Height > 0)
+            {
+                return Content.MeasuredSize.Units.Height;
+            }
+
+            return 1f;
+        }
+    }
+
+    private string AutoCanvasStyle
+    {
+        get
+        {
+            var style = string.Empty;
+
+            if (WidthRequest <= 0 && HorizontalOptions.Alignment != LayoutAlignment.Fill)
+            {
+                style += $"width: {AutoCanvasWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+            }
+
+            if (HeightRequest <= 0 && VerticalOptions.Alignment != LayoutAlignment.Fill)
+            {
+                style += $" height: {AutoCanvasHeight.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+            }
+
+            return style;
+        }
+    }
+
+    private string CanvasLayoutClass
+    {
+        get
+        {
+            if (UseRequestedSizeForHostLayout && (WidthRequest > 0 || HeightRequest > 0))
+            {
+                return "xaml-canvas-fixed";
+            }
+
+            if (HorizontalOptions.Alignment == LayoutAlignment.Fill || VerticalOptions.Alignment == LayoutAlignment.Fill)
+            {
+                return "xaml-canvas-fill";
+            }
+
+            return "xaml-canvas-auto";
+        }
+    }
 
     public MarkupString CssStyle
     {
         get
         {
-            var ret = $"background: {BackgroundColor}; {CssLayoutAlignment} {Style}";
-
+            var bg = BackgroundColorCss;
+            var ret = $"background: {bg}; {HostLayoutAlignmentCss} {AutoCanvasStyle} {Style}";
             return new MarkupString(ret);
         }
     }
 
+    private string HostLayoutAlignmentCss => BuildLayoutAlignmentCss(UseRequestedSizeForHostLayout);
 
+    private string BuildLayoutAlignmentCss(bool useRequestedSize)
+    {
+        var ret = string.Empty;
+        var hAlign = HorizontalOptions.Alignment;
+        var vAlign = VerticalOptions.Alignment;
 
+        var width = " width: fit-content;";
+        var height = " height: fit-content;";
 
+        if (useRequestedSize && WidthRequest >= 0)
+        {
+            width = $"width: {WidthRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+        else if (hAlign == LayoutAlignment.Fill)
+        {
+            width = "width: 100%;";
+        }
 
-    /// <summary>
-    /// Hex string
-    /// </summary>
+        var maxWidth = string.Empty;
+        if (!double.IsPositiveInfinity(MaximumWidthRequest) && MaximumWidthRequest >= 0)
+        {
+            maxWidth = $"max-width: {MaximumWidthRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+
+        var maxHeight = string.Empty;
+        if (!double.IsPositiveInfinity(MaximumHeightRequest) && MaximumHeightRequest >= 0)
+        {
+            maxHeight = $"max-height: {MaximumHeightRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+
+        if (useRequestedSize && HeightRequest >= 0)
+        {
+            height = $"height: {HeightRequest.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+        }
+        else if (vAlign == LayoutAlignment.Fill)
+        {
+            height = "height: 100%;";
+        }
+
+        if (hAlign == LayoutAlignment.Start || hAlign == LayoutAlignment.Fill)
+        {
+            ret += width + maxWidth;
+        }
+        else if (hAlign == LayoutAlignment.Center)
+        {
+            ret += "margin-left: auto; margin-right: auto;" + width + maxWidth;
+        }
+        else if (hAlign == LayoutAlignment.End)
+        {
+            ret += "margin-left: auto;" + width + maxWidth;
+        }
+
+        if (vAlign == LayoutAlignment.Start || vAlign == LayoutAlignment.Fill)
+        {
+            ret += height + maxHeight;
+        }
+        else if (vAlign == LayoutAlignment.Center)
+        {
+            ret += "margin-top: auto; margin-bottom: auto;" + height + maxHeight;
+        }
+        else if (vAlign == LayoutAlignment.End)
+        {
+            ret += "margin-top: auto;" + height + maxHeight;
+        }
+
+        return ret;
+    }
+
     [Parameter]
-    public string BackgroundColor { get; set; } = "#00000000";
+    public new RenderingModeType RenderingMode { get; set; }
 
+    [Parameter]
+    public new bool CanRenderOffScreen { get; set; }
 
+    // [Parameter]
+    // public RenderFragment ChildContent { get; set; }
 
+    [Parameter]
+    public bool IsFullscreen { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsFullscreenChanged { get; set; }
+
+    [Parameter]
+    public new GesturesMode Gestures { get; set; } = GesturesMode.Disabled;
+
+    private bool CaptureInput => Gestures != GesturesMode.Disabled;
+
+    private TouchHandlingStyle GestureTouchMode => Gestures switch
+    {
+        GesturesMode.Enabled => TouchHandlingStyle.Manual,
+        GesturesMode.Lock => TouchHandlingStyle.Lock,
+        _ => TouchHandlingStyle.Disabled
+    };
+
+    private string GestureStyle => Gestures switch
+    {
+        GesturesMode.Enabled or GesturesMode.Lock => "touch-action:none; user-select:none;",
+        _ => string.Empty
+    };
+
+    protected DrawingContext Context;
+
+    protected override void Draw(DrawingContext context)
+    {
+        Context = context;
+
+        double widthRequest = WidthRequest > 0
+            ? WidthRequest
+            : CanvasElementWidth;
+        double heightRequest = HeightRequest > 0
+            ? HeightRequest
+            : CanvasElementHeight;
+
+        if (Math.Abs(Width - widthRequest) > 0.01)
+        {
+            Width = widthRequest;
+        }
+
+        if (Math.Abs(Height - heightRequest) > 0.01)
+        {
+            Height = heightRequest;
+        }
+
+        Arrange(context.Destination, widthRequest, heightRequest, context.Scale);
+
+        var skia = Content as SkiaControl;
+
+        if (!IsGhost)
+        {
+            if (RenderingMode == RenderingModeType.AcceleratedRetained)
+            {
+                if (skia.NeedUpdate)
+                {
+                    Debug.WriteLine("PAINT");
+
+                    PaintTintBackground(context.Context.Canvas);
+                }
+                else
+                {
+                    Debug.WriteLine("RETAINED");
+                }
+
+                base.Draw(CreateContentContext(context.WithDestination(Destination)));
+            }
+            else
+            {
+                //usual immediate mode
+                if (BackgroundColor != null && base.BackgroundColor != Colors.Transparent)
+                {
+                    PaintTintBackground(context.Context.Canvas);
+                }
+                else
+                {
+                    context.Context.Canvas.Clear();
+                }
+
+                base.Draw(CreateContentContext(context.WithDestination(Destination)));
+            }
+        }
+
+        RequestAutoSizeHostLayoutRefresh();
+    }
+
+    protected virtual bool CenterSurface => false;
+
+    protected virtual bool KeepRequestedCanvasSizeInBrowserFullscreen => false;
+
+    protected virtual bool UseRequestedSizeForHostLayout => true;
+
+    protected virtual DrawingContext CreateContentContext(DrawingContext context) => context;
+
+    private bool CanUseRequestedCanvasSize()
+        => !_isBrowserFullscreen || KeepRequestedCanvasSizeInBrowserFullscreen;
+
+    private bool UsesAutoHostWidth => WidthRequest <= 0 && HorizontalOptions.Alignment != LayoutAlignment.Fill;
+
+    private bool UsesAutoHostHeight => HeightRequest <= 0 && VerticalOptions.Alignment != LayoutAlignment.Fill;
+
+    private void RequestAutoSizeHostLayoutRefresh()
+    {
+        if (_autoSizeRenderQueued || (!UsesAutoHostWidth && !UsesAutoHostHeight))
+        {
+            return;
+        }
+
+        var nextWidth = AutoCanvasWidth;
+        var nextHeight = AutoCanvasHeight;
+
+        var widthChanged = UsesAutoHostWidth && nextWidth > 1f && Math.Abs(nextWidth - _reportedAutoCanvasWidth) > 0.5f;
+        var heightChanged = UsesAutoHostHeight && nextHeight > 1f && Math.Abs(nextHeight - _reportedAutoCanvasHeight) > 0.5f;
+
+        if (!widthChanged && !heightChanged)
+        {
+            return;
+        }
+
+        _reportedAutoCanvasWidth = nextWidth;
+        _reportedAutoCanvasHeight = nextHeight;
+        _autoSizeRenderQueued = true;
+
+        _ = InvokeAsync(() =>
+        {
+            _autoSizeRenderQueued = false;
+            StateHasChanged();
+        });
+    }
+
+    private ScaledSize? GetIntrinsicAutoCanvasSize()
+    {
+        if (Content == null || _isComputingIntrinsicAutoSize)
+        {
+            return null;
+        }
+
+        var widthConstraint = GetIntrinsicWidthConstraint();
+        var heightConstraint = GetIntrinsicHeightConstraint();
+        var scale = RenderingScale > 0 ? RenderingScale : 1f;
+
+        try
+        {
+            _isComputingIntrinsicAutoSize = true;
+            return Content.Measure(widthConstraint, heightConstraint, scale);
+        }
+        finally
+        {
+            _isComputingIntrinsicAutoSize = false;
+        }
+    }
+
+    private float GetIntrinsicWidthConstraint()
+    {
+        if (WidthRequest > 0 && CanUseRequestedCanvasSize())
+        {
+            return (float)WidthRequest;
+        }
+
+        if (Content?.WidthRequest > 0)
+        {
+            return (float)Content.WidthRequest;
+        }
+
+        if (Content?.MeasuredSize?.Units.Width > 0)
+        {
+            return Content.MeasuredSize.Units.Width;
+        }
+
+        if (_measuredCanvasWidth > 0)
+        {
+            return _measuredCanvasWidth;
+        }
+
+        return float.PositiveInfinity;
+    }
+
+    private float GetIntrinsicHeightConstraint()
+    {
+        if (HeightRequest > 0 && CanUseRequestedCanvasSize())
+        {
+            return (float)HeightRequest;
+        }
+
+        if (Content?.HeightRequest > 0)
+        {
+            return (float)Content.HeightRequest;
+        }
+
+        if (Content?.MeasuredSize?.Units.Height > 0)
+        {
+            return Content.MeasuredSize.Units.Height;
+        }
+
+        if (_measuredCanvasHeight > 0)
+        {
+            return _measuredCanvasHeight;
+        }
+
+        return float.PositiveInfinity;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_resizeModule != null)
+        {
+            try { await _resizeModule.InvokeVoidAsync("detachCanvasHost", _hostElement); }
+            catch { }
+        }
+
+        if (_gestureEffect != null)
+        {
+            try { await _gestureEffect.DisposeAsync(); }
+            catch { }
+        }
+
+        if (_resizeModule != null)
+        {
+            try { await _resizeModule.DisposeAsync(); }
+            catch { }
+        }
+
+        _resizeCallbackRef?.Dispose();
+
+        OnDisposing();
+    }
 
 }
 

@@ -5,10 +5,10 @@ items:
   id: SkiaShader
   parent: DrawnUi.Infrastructure
   children:
-  - DrawnUi.Infrastructure.SkiaShader.#ctor
   - DrawnUi.Infrastructure.SkiaShader.ApplyTo(SkiaSharp.SKPaint,SkiaSharp.SKImage,System.Single,System.Single)
   - DrawnUi.Infrastructure.SkiaShader.ApplyTo(SkiaSharp.SKPaint,System.Single,System.Single)
   - DrawnUi.Infrastructure.SkiaShader.BlendMode
+  - DrawnUi.Infrastructure.SkiaShader.Code
   - DrawnUi.Infrastructure.SkiaShader.CompileFromCode(System.String,System.String,System.Boolean,System.Action{System.String})
   - DrawnUi.Infrastructure.SkiaShader.CompileFromResource(System.String,System.Boolean,System.Action{System.String})
   - DrawnUi.Infrastructure.SkiaShader.Compiled
@@ -21,8 +21,8 @@ items:
   - DrawnUi.Infrastructure.SkiaShader.DrawRect(SkiaSharp.SKCanvas,SkiaSharp.SKImage,SkiaSharp.SKRect)
   - DrawnUi.Infrastructure.SkiaShader.DrawRect(SkiaSharp.SKCanvas,SkiaSharp.SKRect)
   - DrawnUi.Infrastructure.SkiaShader.FilterMode
-  - DrawnUi.Infrastructure.SkiaShader.FromCode(System.String)
-  - DrawnUi.Infrastructure.SkiaShader.FromResource(System.String,System.Boolean)
+  - DrawnUi.Infrastructure.SkiaShader.FromCode(System.String,System.Action{System.String})
+  - DrawnUi.Infrastructure.SkiaShader.FromResource(System.String,System.Boolean,System.Action{System.String})
   - DrawnUi.Infrastructure.SkiaShader.GetPaint
   - DrawnUi.Infrastructure.SkiaShader.IsCompiled
   - DrawnUi.Infrastructure.SkiaShader.MipmapMode
@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShader
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -93,7 +93,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: _compiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -120,7 +120,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufResolution
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufImageResolution
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -174,7 +174,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufMouse
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -201,7 +201,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufOffset
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -228,7 +228,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Time
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -259,7 +259,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Mouse
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -290,7 +290,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MouseInitial
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -321,7 +321,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Offset
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -352,7 +352,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FilterMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -383,7 +383,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: MipmapMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -414,7 +414,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TileMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -445,7 +445,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: BlendMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -476,7 +476,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsCompiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -507,7 +507,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Compiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -524,109 +524,122 @@ items:
       type: SkiaSharp.SKRuntimeEffect
     content.vb: Public ReadOnly Property Compiled As SKRuntimeEffect
   overload: DrawnUi.Infrastructure.SkiaShader.Compiled*
-- uid: DrawnUi.Infrastructure.SkiaShader.#ctor
-  commentId: M:DrawnUi.Infrastructure.SkiaShader.#ctor
-  id: '#ctor'
+- uid: DrawnUi.Infrastructure.SkiaShader.FromResource(System.String,System.Boolean,System.Action{System.String})
+  commentId: M:DrawnUi.Infrastructure.SkiaShader.FromResource(System.String,System.Boolean,System.Action{System.String})
+  id: FromResource(System.String,System.Boolean,System.Action{System.String})
   parent: DrawnUi.Infrastructure.SkiaShader
   langs:
   - csharp
   - vb
-  name: SkiaShader()
-  nameWithType: SkiaShader.SkiaShader()
-  fullName: DrawnUi.Infrastructure.SkiaShader.SkiaShader()
-  type: Constructor
-  source:
-    remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
-      repo: https://github.com/taublast/DrawnUi.git
-    id: .ctor
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 83
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Infrastructure
-  syntax:
-    content: public SkiaShader()
-    content.vb: Public Sub New()
-  overload: DrawnUi.Infrastructure.SkiaShader.#ctor*
-  nameWithType.vb: SkiaShader.New()
-  fullName.vb: DrawnUi.Infrastructure.SkiaShader.New()
-  name.vb: New()
-- uid: DrawnUi.Infrastructure.SkiaShader.FromResource(System.String,System.Boolean)
-  commentId: M:DrawnUi.Infrastructure.SkiaShader.FromResource(System.String,System.Boolean)
-  id: FromResource(System.String,System.Boolean)
-  parent: DrawnUi.Infrastructure.SkiaShader
-  langs:
-  - csharp
-  - vb
-  name: FromResource(string, bool)
-  nameWithType: SkiaShader.FromResource(string, bool)
-  fullName: DrawnUi.Infrastructure.SkiaShader.FromResource(string, bool)
+  name: FromResource(string, bool, Action<string>)
+  nameWithType: SkiaShader.FromResource(string, bool, Action<string>)
+  fullName: DrawnUi.Infrastructure.SkiaShader.FromResource(string, bool, System.Action<string>)
   type: Method
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FromResource
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 90
+    startLine: 92
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Create and compile from a resource file path (e.g. "Shaders/myeffect.sksl").
   example: []
   syntax:
-    content: public static SkiaShader FromResource(string resourcePath, bool useCache = true)
+    content: public static SkiaShader FromResource(string resourcePath, bool useCache = true, Action<string> onError = null)
     parameters:
     - id: resourcePath
       type: System.String
+      description: ''
     - id: useCache
       type: System.Boolean
+      description: ''
+    - id: onError
+      type: System.Action{System.String}
+      description: ''
     return:
       type: DrawnUi.Infrastructure.SkiaShader
-    content.vb: Public Shared Function FromResource(resourcePath As String, useCache As Boolean = True) As SkiaShader
+      description: ''
+    content.vb: Public Shared Function FromResource(resourcePath As String, useCache As Boolean = True, onError As Action(Of String) = Nothing) As SkiaShader
   overload: DrawnUi.Infrastructure.SkiaShader.FromResource*
-  nameWithType.vb: SkiaShader.FromResource(String, Boolean)
-  fullName.vb: DrawnUi.Infrastructure.SkiaShader.FromResource(String, Boolean)
-  name.vb: FromResource(String, Boolean)
-- uid: DrawnUi.Infrastructure.SkiaShader.FromCode(System.String)
-  commentId: M:DrawnUi.Infrastructure.SkiaShader.FromCode(System.String)
-  id: FromCode(System.String)
+  nameWithType.vb: SkiaShader.FromResource(String, Boolean, Action(Of String))
+  fullName.vb: DrawnUi.Infrastructure.SkiaShader.FromResource(String, Boolean, System.Action(Of String))
+  name.vb: FromResource(String, Boolean, Action(Of String))
+- uid: DrawnUi.Infrastructure.SkiaShader.FromCode(System.String,System.Action{System.String})
+  commentId: M:DrawnUi.Infrastructure.SkiaShader.FromCode(System.String,System.Action{System.String})
+  id: FromCode(System.String,System.Action{System.String})
   parent: DrawnUi.Infrastructure.SkiaShader
   langs:
   - csharp
   - vb
-  name: FromCode(string)
-  nameWithType: SkiaShader.FromCode(string)
-  fullName: DrawnUi.Infrastructure.SkiaShader.FromCode(string)
+  name: FromCode(string, Action<string>)
+  nameWithType: SkiaShader.FromCode(string, Action<string>)
+  fullName: DrawnUi.Infrastructure.SkiaShader.FromCode(string, System.Action<string>)
   type: Method
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FromCode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 100
+    startLine: 105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Create and compile from inline SKSL code.
   example: []
   syntax:
-    content: public static SkiaShader FromCode(string skslCode)
+    content: public static SkiaShader FromCode(string skslCode, Action<string> onError = null)
     parameters:
     - id: skslCode
       type: System.String
+      description: ''
+    - id: onError
+      type: System.Action{System.String}
+      description: ''
     return:
       type: DrawnUi.Infrastructure.SkiaShader
-    content.vb: Public Shared Function FromCode(skslCode As String) As SkiaShader
+      description: ''
+    content.vb: Public Shared Function FromCode(skslCode As String, onError As Action(Of String) = Nothing) As SkiaShader
   overload: DrawnUi.Infrastructure.SkiaShader.FromCode*
-  nameWithType.vb: SkiaShader.FromCode(String)
-  fullName.vb: DrawnUi.Infrastructure.SkiaShader.FromCode(String)
-  name.vb: FromCode(String)
+  nameWithType.vb: SkiaShader.FromCode(String, Action(Of String))
+  fullName.vb: DrawnUi.Infrastructure.SkiaShader.FromCode(String, System.Action(Of String))
+  name.vb: FromCode(String, Action(Of String))
+- uid: DrawnUi.Infrastructure.SkiaShader.Code
+  commentId: P:DrawnUi.Infrastructure.SkiaShader.Code
+  id: Code
+  parent: DrawnUi.Infrastructure.SkiaShader
+  langs:
+  - csharp
+  - vb
+  name: Code
+  nameWithType: SkiaShader.Code
+  fullName: DrawnUi.Infrastructure.SkiaShader.Code
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Features/Shaders/SkiaShader.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Code
+    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    startLine: 117
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  summary: Gets the shader code used for last compilation
+  example: []
+  syntax:
+    content: public string Code { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Code As String
+  overload: DrawnUi.Infrastructure.SkiaShader.Code*
 - uid: DrawnUi.Infrastructure.SkiaShader.CompileFromResource(System.String,System.Boolean,System.Action{System.String})
   commentId: M:DrawnUi.Infrastructure.SkiaShader.CompileFromResource(System.String,System.Boolean,System.Action{System.String})
   id: CompileFromResource(System.String,System.Boolean,System.Action{System.String})
@@ -641,11 +654,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileFromResource
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 112
+    startLine: 130
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -679,11 +692,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileFromCode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 123
+    startLine: 141
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -719,11 +732,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeCompiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 131
+    startLine: 149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -745,11 +758,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyTo
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 161
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -794,11 +807,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyTo
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 178
+    startLine: 196
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -834,11 +847,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawRect
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 194
+    startLine: 212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -869,11 +882,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawRect
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 219
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -902,11 +915,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawImage
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 246
+    startLine: 264
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -947,11 +960,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateUniforms
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 282
+    startLine: 300
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1008,11 +1021,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateChildren
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 322
+    startLine: 340
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1058,11 +1071,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTextureShader
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 339
+    startLine: 357
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1100,11 +1113,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaint
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 366
+    startLine: 384
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1128,11 +1141,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: NormalizeLineEndings
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 376
+    startLine: 394
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1162,11 +1175,11 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
-    startLine: 383
+    startLine: 401
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1696,18 +1709,9 @@ references:
   name: Compiled
   nameWithType: SkiaShader.Compiled
   fullName: DrawnUi.Infrastructure.SkiaShader.Compiled
-- uid: DrawnUi.Infrastructure.SkiaShader.#ctor*
-  commentId: Overload:DrawnUi.Infrastructure.SkiaShader.#ctor
-  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader__ctor
-  name: SkiaShader
-  nameWithType: SkiaShader.SkiaShader
-  fullName: DrawnUi.Infrastructure.SkiaShader.SkiaShader
-  nameWithType.vb: SkiaShader.New
-  fullName.vb: DrawnUi.Infrastructure.SkiaShader.New
-  name.vb: New
 - uid: DrawnUi.Infrastructure.SkiaShader.FromResource*
   commentId: Overload:DrawnUi.Infrastructure.SkiaShader.FromResource
-  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_FromResource_System_String_System_Boolean_
+  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_FromResource_System_String_System_Boolean_System_Action_System_String__
   name: FromResource
   nameWithType: SkiaShader.FromResource
   fullName: DrawnUi.Infrastructure.SkiaShader.FromResource
@@ -1722,25 +1726,6 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: DrawnUi.Infrastructure.SkiaShader
-  commentId: T:DrawnUi.Infrastructure.SkiaShader
-  parent: DrawnUi.Infrastructure
-  href: DrawnUi.Infrastructure.SkiaShader.html
-  name: SkiaShader
-  nameWithType: SkiaShader
-  fullName: DrawnUi.Infrastructure.SkiaShader
-- uid: DrawnUi.Infrastructure.SkiaShader.FromCode*
-  commentId: Overload:DrawnUi.Infrastructure.SkiaShader.FromCode
-  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_FromCode_System_String_
-  name: FromCode
-  nameWithType: SkiaShader.FromCode
-  fullName: DrawnUi.Infrastructure.SkiaShader.FromCode
-- uid: DrawnUi.Infrastructure.SkiaShader.CompileFromResource*
-  commentId: Overload:DrawnUi.Infrastructure.SkiaShader.CompileFromResource
-  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_CompileFromResource_System_String_System_Boolean_System_Action_System_String__
-  name: CompileFromResource
-  nameWithType: SkiaShader.CompileFromResource
-  fullName: DrawnUi.Infrastructure.SkiaShader.CompileFromResource
 - uid: System.Action{System.String}
   commentId: T:System.Action{System.String}
   parent: System
@@ -1776,6 +1761,13 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Infrastructure.SkiaShader
+  commentId: T:DrawnUi.Infrastructure.SkiaShader
+  parent: DrawnUi.Infrastructure
+  href: DrawnUi.Infrastructure.SkiaShader.html
+  name: SkiaShader
+  nameWithType: SkiaShader
+  fullName: DrawnUi.Infrastructure.SkiaShader
 - uid: System.Action`1
   commentId: T:System.Action`1
   isExternal: true
@@ -1804,6 +1796,24 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: DrawnUi.Infrastructure.SkiaShader.FromCode*
+  commentId: Overload:DrawnUi.Infrastructure.SkiaShader.FromCode
+  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_FromCode_System_String_System_Action_System_String__
+  name: FromCode
+  nameWithType: SkiaShader.FromCode
+  fullName: DrawnUi.Infrastructure.SkiaShader.FromCode
+- uid: DrawnUi.Infrastructure.SkiaShader.Code*
+  commentId: Overload:DrawnUi.Infrastructure.SkiaShader.Code
+  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_Code
+  name: Code
+  nameWithType: SkiaShader.Code
+  fullName: DrawnUi.Infrastructure.SkiaShader.Code
+- uid: DrawnUi.Infrastructure.SkiaShader.CompileFromResource*
+  commentId: Overload:DrawnUi.Infrastructure.SkiaShader.CompileFromResource
+  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_CompileFromResource_System_String_System_Boolean_System_Action_System_String__
+  name: CompileFromResource
+  nameWithType: SkiaShader.CompileFromResource
+  fullName: DrawnUi.Infrastructure.SkiaShader.CompileFromResource
 - uid: DrawnUi.Infrastructure.SkiaShader.CompileFromCode*
   commentId: Overload:DrawnUi.Infrastructure.SkiaShader.CompileFromCode
   href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_CompileFromCode_System_String_System_String_System_Boolean_System_Action_System_String__

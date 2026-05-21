@@ -16,12 +16,12 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: dev
+      path: src/Shared/Controls/Button/SkiaButton.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IconPositionType
-    path: ../src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 879
+    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    startLine: 881
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -45,12 +45,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: dev
+      path: src/Shared/Controls/Button/SkiaButton.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Left
-    path: ../src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 884
+    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    startLine: 886
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -73,12 +73,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: dev
+      path: src/Shared/Controls/Button/SkiaButton.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Right
-    path: ../src/Maui/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 889
+    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    startLine: 891
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

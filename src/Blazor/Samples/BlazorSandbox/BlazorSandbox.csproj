@@ -1,29 +1,45 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
+<PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+  <DefineConstants>$(DefineConstants);SKIPMESH</DefineConstants>
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <WasmBuildNative>true</WasmBuildNative>
-        </PropertyGroup>
 
-            
-  <ItemGroup>
+    <!-- use nugets or ref drawnui source-->
+    <UseSource>false</UseSource>
 
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0-rc.2.25502.107" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0-rc.2.25502.107" PrivateAssets="all" />
-      
+</PropertyGroup>
 
-  </ItemGroup>  <ItemGroup>
-    <ProjectReference Include="..\..\DrawnUi\DrawnUi.Blazor.csproj" />
-  </ItemGroup>
+<ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+</ItemGroup>
 
-        
+<ItemGroup Condition="'$(UseSource)' != 'true'">
+    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.0.1-preview1.3" />
+</ItemGroup>
+
+<ItemGroup Condition="'$(UseSource)' == 'true'">
+  <ProjectReference Include="..\..\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj" />
+  <ProjectReference Include="..\..\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj" />
+</ItemGroup>
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="SkiaSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([System.String]::Copy('$(DefineConstants)').Contains('SKIPMESH'))">
+    <RazorComponent Remove="Pages\SKMesh*.*" />
+    <Content Remove="Pages\SKMesh*.*" />
+    <None Remove="Pages\SKMesh*.*" />
   </ItemGroup>
 
 </Project>

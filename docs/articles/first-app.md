@@ -2,6 +2,12 @@
 
 This quickstart guide will help you create your first DrawnUi.Maui application from scratch in just a few minutes.
 
+> **Host support**
+>
+> This article is a **.NET MAUI XAML tutorial**. It assumes a MAUI app host, `DrawnUi.Maui`, `MauiProgram.cs`, and a `ContentPage` containing a DrawnUI `Canvas`.
+>
+> If you are building the same idea in **Blazor**, use [Your First DrawnUI App: C# Fluent Syntax](first-app-code.md) for the shared control composition patterns, and host the drawn tree inside a Razor `Canvas` component after `UseDrawnUiAsync(...)` startup. The current Blazor sandbox reference route is `tutorial-first-app`.
+
 ## 🚀 Live Demo in Tutorials Project
 
 Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials) for:

@@ -20,12 +20,12 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: dev
+      path: src/Shared/Views/SurfaceCacheManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SurfaceKey
-    path: ../src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 137
+    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    startLine: 136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -54,12 +54,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: dev
+      path: src/Shared/Views/SurfaceCacheManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
-    path: ../src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 139
+    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    startLine: 138
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -81,12 +81,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: dev
+      path: src/Shared/Views/SurfaceCacheManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
-    path: ../src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 140
+    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    startLine: 139
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -108,12 +108,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: dev
+      path: src/Shared/Views/SurfaceCacheManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 142
+    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    startLine: 141
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -142,12 +142,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: dev
+      path: src/Shared/Views/SurfaceCacheManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 148
+    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    startLine: 147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -179,12 +179,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: dev
+      path: src/Shared/Views/SurfaceCacheManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 153
+    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    startLine: 152
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -218,12 +218,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: dev
+      path: src/Shared/Views/SurfaceCacheManager.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
-    path: ../src/Maui/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 158
+    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    startLine: 157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views

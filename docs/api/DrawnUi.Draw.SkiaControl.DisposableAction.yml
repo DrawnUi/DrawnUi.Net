@@ -17,11 +17,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Shared.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposableAction
     path: ../src/Shared/Draw/Base/SkiaControl.Shared.cs
-    startLine: 5706
+    startLine: 6043
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -56,11 +56,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Shared.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Base/SkiaControl.Shared.cs
-    startLine: 5710
+    startLine: 6047
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -88,11 +88,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/SkiaControl.Shared.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Draw/Base/SkiaControl.Shared.cs
-    startLine: 5714
+    startLine: 6051
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

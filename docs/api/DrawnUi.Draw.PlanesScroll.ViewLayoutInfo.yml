@@ -16,11 +16,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Scroll/PlanesScroll.cs
-      branch: dev
+      path: src/Shared/Draw/Scroll/PlanesScroll.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewLayoutInfo
-    path: ../src/Maui/DrawnUi/Draw/Scroll/PlanesScroll.cs
+    path: ../src/Shared/Draw/Scroll/PlanesScroll.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -52,11 +52,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Scroll/PlanesScroll.cs
-      branch: dev
+      path: src/Shared/Draw/Scroll/PlanesScroll.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Index
-    path: ../src/Maui/DrawnUi/Draw/Scroll/PlanesScroll.cs
+    path: ../src/Shared/Draw/Scroll/PlanesScroll.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -81,11 +81,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Scroll/PlanesScroll.cs
-      branch: dev
+      path: src/Shared/Draw/Scroll/PlanesScroll.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawingRect
-    path: ../src/Maui/DrawnUi/Draw/Scroll/PlanesScroll.cs
+    path: ../src/Shared/Draw/Scroll/PlanesScroll.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui

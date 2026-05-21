@@ -1,0 +1,104 @@
+@page "/effects-shader"
+@using DrawnUi
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>Shader Ripples</PageTitle>
+
+<div class="docs-page">
+    <h1>Shader Ripples</h1>
+    <p class="docs-lead">VisualEffects was set here to a custom Ripple shader, 100% match between Blazor with .NET MAUI. Press on Image below to see them ripples with reflection over.</p>
+
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent"
+                WidthRequest="375"
+                HeightRequest="400"
+                BackgroundColor="#F4F1EA"
+                Margin="0,8,0,0"
+                RenderingMode="@RenderingModeType.Accelerated"
+                Gestures="@GesturesMode.Enabled"/>
+    </div>
+    
+    
+    <pre class="docs-code"><code>@EffectsSnippet</code></pre>
+</div>
+
+@code {
+
+    private const string EffectsSnippet = """
+      new SkiaLayer()
+      {
+          VerticalOptions = LayoutOptions.Fill,
+          UseCache = SkiaCacheType.GPU,
+          VisualEffects =
+          {
+              new MultiRippleWithTouchEffect()
+              {
+                  SecondarySource = "images/maui1.png" //reflection
+              }
+          },
+      }
+      """;
+
+    private readonly SkiaControl _canvasContent;
+
+    public EffectsShader()
+    {
+        _canvasContent = new SkiaLayer()
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaLayer()
+                {
+                    Children =
+                    {
+                        new SkiaImage()
+                        {
+                            HorizontalOptions = LayoutOptions.Fill,
+                            VerticalOptions = LayoutOptions.Fill,
+                            Aspect = TransformAspect.AspectCover,
+                            LoadSourceOnFirstDraw = false,
+                            Source = "images/8.jpg",
+                            UseCache = SkiaCacheType.Image,
+                        },
+                        new SkiaRichLabel()
+                        {
+                            Margin = new Thickness(16),
+                            FontFamily = "FontText",
+                            FontSize = 14,
+                            VerticalOptions = LayoutOptions.End,
+                            HorizontalOptions = LayoutOptions.Center,
+                            HorizontalTextAlignment = DrawTextAlignment.Center,
+                            Text = "Infinite ripples with reflection! 😋 _#blazor_",
+                            TextColor = Colors.White,
+                            UseCache = SkiaCacheType.Image
+                        },
+                    },
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    UseCache = SkiaCacheType.GPU,
+                    VisualEffects =
+                    {
+                        new MultiRippleWithTouchEffect()
+                        {
+                            SecondarySource = "images/maui1.png" //reflection source
+                        }
+                    },
+                },
+                new SkiaLabelFps()
+                {
+                    Margin = new Thickness(0, 0, 4, 24),
+                    BackgroundColor = Colors.DarkRed,
+                    ForceRefresh = false,
+                    HorizontalOptions = LayoutOptions.End,
+                    Rotation = -45,
+                    TextColor = Colors.White,
+                    VerticalOptions = LayoutOptions.End,
+                    ZIndex = 100
+                }
+            }
+        };
+    }
+
+}

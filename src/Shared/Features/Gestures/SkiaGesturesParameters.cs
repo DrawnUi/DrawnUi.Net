@@ -22,12 +22,28 @@ public class SkiaGesturesParameters
     public TouchActionResult Type { get; set; }
     public TouchActionEventArgs Event { get; set; }
 
-    public static SkiaGesturesParameters Create(TouchActionResult action, TouchActionEventArgs args)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="args"></param>
+    /// <param name="scaleRatio"></param>
+    /// <returns></returns>
+    public static SkiaGesturesParameters Create(TouchActionResult action, TouchActionEventArgs args, float renderingScale)
     {
+        if (renderingScale != args.Scale)
+        {
+            return new SkiaGesturesParameters()
+            {
+                Type = action,
+                Event = args.Rescale(renderingScale)
+            };
+        }
+
         return new SkiaGesturesParameters()
         {
             Type = action,
-            Event = args//.Clone()
+            Event = args
         };
     }
 

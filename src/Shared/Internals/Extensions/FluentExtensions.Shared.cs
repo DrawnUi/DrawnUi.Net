@@ -453,6 +453,84 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Subscribes to one specific property changes on a source and a target control, executing callbacks in both
+        /// directions while guarding against re-entrant loops.
+        /// Use this to simulate MAUI XAML two-way property binding semantics in fluent C# code.
+        /// Will unsubscribe upon control disposal.
+        /// </summary>
+        /// <typeparam name="T">Type of the target control (the one being extended)</typeparam>
+        /// <typeparam name="TSource">Type of the source object being observed</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="targetPropertyName">Name of the source property to observe</param>
+        /// <param name="targetChanged">Callback executed when the source property changes</param>
+        /// <param name="controlPropertyName">Name of the control property to observe for reverse sync</param>
+        /// <param name="controlChanged">Callback executed when the control property changes</param>
+        /// <returns>The target control for chaining</returns>
+        public static T ObservePropertyTwoWay<T, TSource>(
+            this T control,
+            TSource target,
+            string targetPropertyName,
+            Action<T> targetChanged,
+            string controlPropertyName,
+            Action<TSource, T> controlChanged)
+            where T : SkiaControl, INotifyPropertyChanged
+            where TSource : INotifyPropertyChanged
+        {
+            string subscriptionKey = $"Subscribe2W_{target.GetHashCode()}_{Guid.NewGuid()}";
+            bool isSyncing = false;
+
+            void ExecuteGuarded(Action action)
+            {
+                if (isSyncing)
+                    return;
+
+                try
+                {
+                    isSyncing = true;
+                    action?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"ObservePropertyTwoWay: Error in callback: {ex.Message}");
+                }
+                finally
+                {
+                    isSyncing = false;
+                }
+            }
+
+            PropertyChangedEventHandler sourceHandler = (sender, args) =>
+            {
+                if (args.PropertyName != targetPropertyName && args.PropertyName != nameof(BindableObject.BindingContext))
+                    return;
+
+                ExecuteGuarded(() => targetChanged?.Invoke(control));
+            };
+
+            PropertyChangedEventHandler controlHandler = (sender, args) =>
+            {
+                if (args.PropertyName != controlPropertyName && args.PropertyName != nameof(BindableObject.BindingContext))
+                    return;
+
+                ExecuteGuarded(() => controlChanged?.Invoke(target, control));
+            };
+
+            target.PropertyChanged += sourceHandler;
+            control.PropertyChanged += controlHandler;
+
+            sourceHandler(target, new PropertyChangedEventArgs(nameof(BindableObject.BindingContext)));
+
+            control.ExecuteUponDisposal[subscriptionKey] = () =>
+            {
+                target.PropertyChanged -= sourceHandler;
+                control.PropertyChanged -= controlHandler;
+            };
+
+            return control;
+        }
+
+        /// <summary>
         /// Subscribes to one specific property changes on a source control obtained via lambda expression and executes a callback when they occur.
         /// Will unsubscribe upon control disposal.
         /// </summary>
@@ -987,35 +1065,7 @@ namespace DrawnUi.Draw
 
         #region GESTURES
 
-        /// <summary>
-        /// State change callback for SkiaToggle and related controls
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="view"></param>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        public static T OnToggled<T>(this T view, Action<T, bool> action) where T : SkiaToggle
-        {
-            try
-            {
-                void onToggled(object s, bool a)
-                {
-                    action?.Invoke(view, a);
-                }
-                view.Toggled += onToggled;
-                string subscriptionKey = $"toggled_{Guid.NewGuid()}";
-                view.ExecuteUponDisposal[subscriptionKey] = () =>
-                {
-                    view.Toggled -= onToggled;
-                };
-            }
-            catch (Exception e)
-            {
-                Super.Log(e);
-            }
 
-            return view;
-        }
         /// <summary>
         /// Uses an `AddGestures.SetCommandTapped` with this control, will invoke code in passed callback when tapped.
         /// </summary>
@@ -1071,19 +1121,6 @@ namespace DrawnUi.Draw
             return view;
         }
 
-        public static T OnLongPressing<T>(this T view, Action<T> action) where T : SkiaControl
-        {
-            try
-            {
-                AddGestures.SetCommandLongPressing(view, new Command((ctx) => { action?.Invoke(view); }));
-            }
-            catch (Exception e)
-            {
-                Super.Log(e);
-            }
-
-            return view;
-        }
 
         #endregion
 
@@ -1529,35 +1566,6 @@ namespace DrawnUi.Draw
 
         #endregion
 
-        #region ENTRY
-
-        /// <summary>
-        /// Registers a callback to be executed when the text of a SkiaMauiEntry changes.
-        /// </summary>
-        /// <param name="control">The entry control to observe</param>
-        /// <param name="action">Callback receiving the entry and new text</param>
-        /// <returns>The entry control for chaining</returns>
-        public static SkiaMauiEntry OnTextChanged(this SkiaMauiEntry control, Action<SkiaMauiEntry, string> action)
-        {
-            control.TextChanged += (sender, text) => { action?.Invoke(control, text); };
-
-            return control;
-        }
-
-        /// <summary>
-        /// Registers a callback to be executed when the text of a SkiaMauiEditor changes.
-        /// </summary>
-        /// <param name="control">The editor control to observe</param>
-        /// <param name="action">Callback receiving the editor and new text</param>
-        /// <returns>The editor control for chaining</returns>
-        public static SkiaMauiEditor OnTextChanged(this SkiaMauiEditor control, Action<SkiaMauiEditor, string> action)
-        {
-            control.TextChanged += (sender, text) => { action?.Invoke(control, text); };
-
-            return control;
-        }
-
-        #endregion
 
         /// <summary>
         /// Registers a callback to be executed when the text of a SkiaLabel changes.

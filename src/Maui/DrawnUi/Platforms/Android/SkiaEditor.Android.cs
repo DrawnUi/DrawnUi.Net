@@ -3,32 +3,70 @@ using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using AndroidX.AppCompat.Widget;
 using DrawnUi.Draw;
 using Java.Lang;
 using System.Diagnostics;
 
 namespace DrawnUi.Draw
 {
-    public partial class SkiaEditor : SkiaLayout, ISkiaGestureListener
+    public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
-
-
         private int _hiddenEditTextId;
         private ViewGroup _layout;
         private MyTextWatcher _textListener;
+        private EventHandler<Android.Views.View.FocusChangeEventArgs> _focusChangeListener;
+        private bool _updatingText;
         protected Android.Widget.EditText Control { get; set; }
+
+        public int NativeSelectionStart => Control?.SelectionStart ?? 0;
+
+        public void ApplyKeyboardType()
+        {
+            if (Control == null) return;
+
+            InputTypes inputType;
+            if (IsPassword)
+            {
+                inputType = InputTypes.ClassText | InputTypes.TextVariationPassword;
+                Control.TransformationMethod = Android.Text.Method.PasswordTransformationMethod.Instance;
+            }
+            else
+            {
+                Control.TransformationMethod = null;
+                inputType = KeyboardType switch
+                {
+                    SkiaEditorKeyboard.Numeric  => InputTypes.ClassNumber,
+                    SkiaEditorKeyboard.Decimal  => InputTypes.ClassNumber | InputTypes.NumberFlagDecimal,
+                    SkiaEditorKeyboard.Phone    => InputTypes.ClassPhone,
+                    SkiaEditorKeyboard.Email    => InputTypes.ClassText | InputTypes.TextVariationEmailAddress,
+                    _                           => InputTypes.ClassText
+                };
+                if (inputType == InputTypes.ClassText && MaxLines != 1)
+                    inputType |= InputTypes.TextFlagMultiLine;
+            }
+
+            Control.InputType = inputType;
+        }
+
+        partial void PlatformClearFocusNow()
+        {
+            // Remove input capture from this EditText without closing the keyboard.
+            // The keyboard stays visible; the next focused editor inherits it.
+            Control?.ClearFocus();
+        }
 
         public void DisposePlatform()
         {
             try
             {
-                //CloseKeyboard();
-
-                _layout.RemoveView(Control);
-                _layout = null;
-
                 AddObservers(false);
+                if (_focusChangeListener != null)
+                {
+                    Control.FocusChange -= _focusChangeListener;
+                    _focusChangeListener = null;
+                }
+                _layout?.RemoveView(Control);
+                _layout = null;
                 Control = null;
             }
             catch (System.Exception e)
@@ -62,20 +100,52 @@ namespace DrawnUi.Draw
                 _textListener = new MyTextWatcher(this);
                 Control.AddTextChangedListener(_textListener);
                 Control.EditorAction += Control_EditorAction;
+
+                _focusChangeListener = (s, e) =>
+                {
+                    if (e.HasFocus && Control != null)
+                    {
+                        var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
+                        try
+                        {
+                            if (SelectionLength > 0)
+                                Control.SetSelection(pos, System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
+                            else
+                                Control.SetSelection(pos);
+                        }
+                        catch { }
+                    }
+                };
+                Control.FocusChange += _focusChangeListener;
             }
             else
             {
-                Control.RemoveTextChangedListener(_textListener);
-                Control.EditorAction -= Control_EditorAction;
-                _textListener.Dispose();
+                if (Control != null)
+                {
+                    Control.RemoveTextChangedListener(_textListener);
+                    Control.EditorAction -= Control_EditorAction;
+                    if (_focusChangeListener != null)
+                    {
+                        Control.FocusChange -= _focusChangeListener;
+                        _focusChangeListener = null;
+                    }
+                }
+                _textListener?.Dispose();
                 _textListener = null;
             }
         }
 
         private void Control_EditorAction(object sender, TextView.EditorActionEventArgs e)
         {
+            if (IsMultiline)
+            {
+                // Let the native EditText insert the line break and advance selection.
+                e.Handled = false;
+                return;
+            }
+
             e.Handled = true;
-            Submit();
+            ExecuteSubmit(clearFocus: false);
             return;
 
             if (e.ActionId == ImeAction.Done ||
@@ -84,7 +154,7 @@ namespace DrawnUi.Draw
                 // User has pressed the "Done" key or the "Enter" key.
                 // Insert your own logic here.
                 e.Handled = true;
-                Submit();
+                ExecuteSubmit(clearFocus: false);
             }
             else
             {
@@ -97,6 +167,8 @@ namespace DrawnUi.Draw
             base.OnPropertyChanged(propertyName);
 
             //todo use mapper
+            if (Control == null)
+                return;
 
             if (propertyName == nameof(MaxLines))
             {
@@ -127,17 +199,18 @@ namespace DrawnUi.Draw
             _layout = (ViewGroup)Superview.Handler?.PlatformView;
             if (_layout != null)
             {
-                // Create the hidden EditText if it does not exist
-                Control = new AppCompatEditText(Platform.AppContext);
-                Control.LayoutParameters = new ViewGroup.LayoutParams(0, 0);
+                Control = new HiddenEditText(_layout.Context);
+                // 1x1 minimum — 0x0 blocks IME input connection on Android 10+
+                Control.LayoutParameters = new ViewGroup.LayoutParams(1, 1);
                 Control.Id = _hiddenEditTextId;
-                Control.Text = this.Text;
+                Control.Alpha = 0f;
+
+                _updatingText = true;
+                try { Control.Text = this.Text ?? string.Empty; }
+                finally { _updatingText = false; }
 
                 UpdateNativePosition();
-
                 AddObservers(true);
-
-                // Add the EditText to your layout
                 _layout.AddView(Control);
             }
         }
@@ -153,14 +226,44 @@ namespace DrawnUi.Draw
 
                 if (focus)
                 {
-                    SetReturnType(this.ReturnType);
+                    _updatingText = true;
+                    try { ApplyKeyboardType(); }
+                    finally { _updatingText = false; }
 
-                    // Request focus and show the keyboard
+                    // Guard SetReturnType: SetSingleLine() internally triggers onTextChanged
+                    // with SelectionStart=0 on first focus (selection not yet positioned),
+                    // which would queue SetCursorPositionWithDelay(50, 0) and jump cursor.
+                    _updatingText = true;
+                    try { SetReturnType(this.ReturnType); }
+                    finally { _updatingText = false; }
+
+                    if (!_updatingText)
+                    {
+                        _updatingText = true;
+                        try { Control.Text = this.Text ?? string.Empty; }
+                        finally { _updatingText = false; }
+                    }
+
                     Control.RequestFocus();
 
-                    InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
-                    imm.ShowSoftInput(Control, ShowFlags.Forced);
-                    imm.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.ImplicitOnly);
+                    // Defer IME show and cursor to after the view layout pass so:
+                    // 1. ShowSoftInput fires after the view is properly focused (no toggle needed)
+                    // 2. SetSelection fires after IME connects (prevents IME from resetting cursor to 0)
+                    Control.Post(() =>
+                    {
+                        if (Control == null) return;
+                        InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
+                        imm.ShowSoftInput(Control, ShowFlags.Implicit);
+                        var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
+                        try
+                        {
+                            if (SelectionLength > 0)
+                                Control.SetSelection(pos, System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
+                            else
+                                Control.SetSelection(pos);
+                        }
+                        catch { }
+                    });
                 }
                 else
                 {
@@ -183,20 +286,13 @@ namespace DrawnUi.Draw
             try
             {
                 if (stop > 0)
-                {
                     Control.SetSelection(position, stop);
-                }
                 else
-                {
-                    Debug.WriteLine($"[EDITOR] Native trying to set cursor at {position} for a text width {Control.Text.Length} length");
                     Control.SetSelection(position);
-                }
             }
             catch (System.Exception e)
             {
-                //todo investigate why and when this rarely happens trying to set out of bounds
                 Trace.WriteLine(e);
-                CursorPosition = 0;
             }
         }
 
@@ -248,7 +344,6 @@ namespace DrawnUi.Draw
 
         public class MyTextWatcher : Java.Lang.Object, ITextWatcher
         {
-            bool firstRun = true;
             protected override void Dispose(bool disposing)
             {
                 _parent = null;
@@ -282,17 +377,6 @@ namespace DrawnUi.Draw
             }
 
 
-            /// <summary>
-            /// This will be read by the parent to check the cursor position at will
-            /// </summary>
-            public int NativeSelectionStart
-            {
-                get
-                {
-                    return _parent.Control.SelectionStart;
-                }
-            }
-
             public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
             {
                 // Called before the text is changed.
@@ -301,23 +385,90 @@ namespace DrawnUi.Draw
 
             public void OnTextChanged(ICharSequence s, int start, int before, int count)
             {
-                _parent.Text = s.ToString();
-
-                // Called when the text is being changed.
-                if (firstRun)
-                {
-                    //text was set from code, not from user input
-                    firstRun = false;
+                if (_parent._updatingText)
                     return;
-                }
+
+                _parent._updatingText = true;
+                try { _parent.Text = s.ToString(); }
+                finally { _parent._updatingText = false; }
 
                 int selectionStart = _parent.Control.SelectionStart;
                 int selectionEnd = _parent.Control.SelectionEnd;
 
-                if (selectionStart == selectionEnd) // there is a text selection
+                if (selectionStart == selectionEnd)
                 {
                     _parent.SetCursorPositionWithDelay(50, selectionStart);
                 }
+            }
+        }
+
+        // Intercepts soft-keyboard deleteSurroundingText and deletes directly in the Editable
+        // buffer so the TextWatcher fires on every keyboard (Gboard, Samsung, MTK, CJK IMEs).
+        // sendKeyEvent(KEYCODE_DEL) re-enters the input dispatch system and is unreliable.
+        private class HiddenEditText : EditText
+        {
+            public HiddenEditText(Context context) : base(context) { }
+
+            public override IInputConnection OnCreateInputConnection(EditorInfo outAttrs)
+            {
+                var inner = base.OnCreateInputConnection(outAttrs);
+                return inner != null ? new BackspaceInputConnection(inner, true, this) : inner;
+            }
+        }
+
+        private class BackspaceInputConnection : Android.Views.InputMethods.InputConnectionWrapper
+        {
+            private readonly EditText _view;
+
+            public BackspaceInputConnection(IInputConnection target, bool mutable, EditText view)
+                : base(target, mutable)
+            {
+                _view = view;
+            }
+
+            private bool DeleteAtCursor()
+            {
+                var content = _view.EditableText;
+                if (content == null) return false;
+
+                int selStart = _view.SelectionStart;
+                int selEnd   = _view.SelectionEnd;
+
+                if (selStart != selEnd)
+                {
+                    int from = System.Math.Min(selStart, selEnd);
+                    int to   = System.Math.Max(selStart, selEnd);
+                    content.Delete(from, to);
+                    return true;
+                }
+                if (selStart > 0)
+                {
+                    content.Delete(selStart - 1, selStart);
+                    return true;
+                }
+                return false;
+            }
+
+            public override bool DeleteSurroundingText(int beforeLength, int afterLength)
+            {
+                if (beforeLength == 1 && afterLength == 0)
+                {
+                    DeleteAtCursor();
+                    return true;
+                }
+                return base.DeleteSurroundingText(beforeLength, afterLength);
+            }
+
+            // Some keyboards (e.g. older Samsung, AOSP) send KEYCODE_DEL via sendKeyEvent
+            // instead of deleteSurroundingText — intercept that path too.
+            public override bool SendKeyEvent(KeyEvent e)
+            {
+                if (e.Action == KeyEventActions.Down && e.KeyCode == Keycode.Del)
+                {
+                    if (DeleteAtCursor())
+                        return true;
+                }
+                return base.SendKeyEvent(e);
             }
         }
 

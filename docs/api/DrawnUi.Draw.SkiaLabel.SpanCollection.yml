@@ -17,12 +17,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: dev
+      path: src/Shared/Draw/Text/SkiaLabel.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SpanCollection
-    path: ../src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 290
+    path: ../src/Shared/Draw/Text/SkiaLabel.cs
+    startLine: 301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -93,12 +93,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: dev
+      path: src/Shared/Draw/Text/SkiaLabel.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: InsertItem
-    path: ../src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 292
+    path: ../src/Shared/Draw/Text/SkiaLabel.cs
+    startLine: 303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -132,12 +132,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: dev
+      path: src/Shared/Draw/Text/SkiaLabel.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SetItem
-    path: ../src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 295
+    path: ../src/Shared/Draw/Text/SkiaLabel.cs
+    startLine: 306
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -171,12 +171,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: dev
+      path: src/Shared/Draw/Text/SkiaLabel.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearItems
-    path: ../src/Maui/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 298
+    path: ../src/Shared/Draw/Text/SkiaLabel.cs
+    startLine: 309
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

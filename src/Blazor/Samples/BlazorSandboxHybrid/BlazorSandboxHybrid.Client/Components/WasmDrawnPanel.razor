@@ -1,0 +1,170 @@
+<div class="runtime-card runtime-card-wasm">
+    <p class="runtime-meta">Renderer: @RendererInfo.Name | Interactive: @RendererInfo.IsInteractive</p>
+
+    @if (!RendererInfo.IsInteractive)
+    {
+        <p>Downloading the WebAssembly runtime and DrawnUI client bundle...</p>
+    }
+
+    <div class="runtime-actions">
+        <button class="btn btn-primary" @onclick="OnIncrementClicked" disabled="@(!RendererInfo.IsInteractive)">Increment</button>
+        <button class="btn btn-secondary" @onclick="OnResetClicked" disabled="@(!RendererInfo.IsInteractive)">Reset</button>
+    </div>
+
+    <p><strong>Clicks:</strong> @clickCount</p>
+    <p><strong>Status:</strong> @statusLabel</p>
+
+    <div style="margin-top: 18px; width: 100%; max-width: 400px;">
+        <div style="position:relative; display:block; width:100%; overflow:hidden; border-radius:12px; border:1px solid #d8c6a8;">
+            <Canvas Content="_canvasContent"
+                    HorizontalOptions="LayoutOptions.Fill"
+                    Gestures="@GesturesMode.Enabled" />
+        </div>
+    </div>
+</div>
+
+@code {
+    private int clickCount;
+    private string statusLabel = "Ready";
+    private static readonly Color TitleColor = Colors.Black;
+    private static readonly Color BodyColor = new Color(0.18f, 0.18f, 0.18f, 1f);
+    private static readonly Color SurfaceColor = new Color(0.965f, 0.945f, 0.905f, 1f);
+    private static readonly Color SecondarySurfaceColor = new Color(0.93f, 0.9f, 0.84f, 1f);
+
+    private readonly SkiaLabel _drawnClicksValueLabel;
+    private readonly SkiaLabel _drawnStatusValueLabel;
+    private readonly SkiaControl _canvasContent;
+
+    public WasmDrawnPanel()
+    {
+        _drawnClicksValueLabel = CreateValueLabel();
+        _drawnStatusValueLabel = CreateValueLabel();
+        _canvasContent = CreateCanvasContent();
+        SynchronizeDrawnUiState();
+    }
+
+    private SkiaControl CreateCanvasContent()
+    {
+        return new SkiaLayout()
+        {
+            HeightRequest = 240,
+            MaximumWidthRequest = 400,
+            HorizontalOptions = LayoutOptions.Fill,
+            Padding = new Thickness(18),
+            BackgroundColor = SurfaceColor,
+            Type = LayoutType.Column,
+            Spacing = 12,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = "Hybrid WASM canvas",
+                    FontFamily = "FontTextTitle",
+                    FontSize = 24,
+                    TextColor = TitleColor
+                },
+                new SkiaLabel()
+                {
+                    Text = "Rendered locally in the browser through the DrawnUI WebAssembly runtime.",
+                    FontFamily = "FontText",
+                    FontSize = 14,
+                    TextColor = BodyColor,
+                    MaxLines = 2
+                },
+                CreateDrawnButtonRow(),
+                CreateInfoRow("Clicks:", _drawnClicksValueLabel),
+                CreateInfoRow("Status:", _drawnStatusValueLabel)
+            }
+        };
+    }
+
+    private SkiaControl CreateDrawnButtonRow()
+    {
+        return new SkiaLayout()
+        {
+            Type = LayoutType.Row,
+            Spacing = 10,
+            Children =
+            {
+                new SkiaButton("Increment")
+                {
+                    WidthRequest = 132,
+                    HeightRequest = 38,
+                    BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 1f),
+                    TextColor = Colors.White,
+                    CornerRadius = 10,
+                    Padding = new Thickness(10, 6)
+                }
+                .OnTapped(_ =>
+                {
+                    OnIncrementClicked();
+                }),
+                new SkiaButton("Reset")
+                {
+                    WidthRequest = 110,
+                    HeightRequest = 38,
+                    BackgroundColor = SecondarySurfaceColor,
+                    TextColor = TitleColor,
+                    CornerRadius = 10,
+                    Padding = new Thickness(10, 6)
+                }
+                .OnTapped(_ =>
+                {
+                    OnResetClicked();
+                })
+            }
+        };
+    }
+
+    private SkiaControl CreateInfoRow(string title, SkiaLabel valueLabel)
+    {
+        return new SkiaLayout()
+        {
+            Type = LayoutType.Column,
+            Spacing = 2,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = title,
+                    FontFamily = "FontText",
+                    FontSize = 13,
+                    TextColor = BodyColor
+                },
+                valueLabel
+            }
+        };
+    }
+
+    private SkiaLabel CreateValueLabel()
+    {
+        return new SkiaLabel()
+        {
+            FontFamily = "FontText",
+            FontSize = 15,
+            TextColor = TitleColor
+        };
+    }
+
+    private void OnIncrementClicked()
+    {
+        clickCount++;
+        statusLabel = $"Count is {clickCount}.";
+        SynchronizeDrawnUiState();
+        StateHasChanged();
+    }
+
+    private void OnResetClicked()
+    {
+        clickCount = 0;
+        statusLabel = "Reset to zero.";
+        SynchronizeDrawnUiState();
+        StateHasChanged();
+    }
+
+    private void SynchronizeDrawnUiState()
+    {
+        _drawnClicksValueLabel.Text = clickCount.ToString();
+        _drawnStatusValueLabel.Text = statusLabel;
+    }
+}

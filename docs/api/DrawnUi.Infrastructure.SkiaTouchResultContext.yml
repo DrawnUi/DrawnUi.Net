@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaTouchResultContext.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaTouchResultContext
     path: ../src/Shared/Internals/Models/SkiaTouchResultContext.cs
@@ -53,7 +53,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaTouchResultContext.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Context
     path: ../src/Shared/Internals/Models/SkiaTouchResultContext.cs
@@ -82,7 +82,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaTouchResultContext.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Control
     path: ../src/Shared/Internals/Models/SkiaTouchResultContext.cs
@@ -111,7 +111,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaTouchResultContext.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TouchArgs
     path: ../src/Shared/Internals/Models/SkiaTouchResultContext.cs
@@ -123,7 +123,7 @@ items:
     content: public TouchActionEventArgs TouchArgs { readonly get; set; }
     parameters: []
     return:
-      type: AppoMobi.Maui.Gestures.TouchActionEventArgs
+      type: AppoMobi.Gestures.TouchActionEventArgs
     content.vb: Public Property TouchArgs As TouchActionEventArgs
   overload: DrawnUi.Infrastructure.SkiaTouchResultContext.TouchArgs*
 - uid: DrawnUi.Infrastructure.SkiaTouchResultContext.TouchAction
@@ -140,7 +140,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaTouchResultContext.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: TouchAction
     path: ../src/Shared/Internals/Models/SkiaTouchResultContext.cs
@@ -152,7 +152,7 @@ items:
     content: public TouchActionResult TouchAction { readonly get; set; }
     parameters: []
     return:
-      type: AppoMobi.Maui.Gestures.TouchActionResult
+      type: AppoMobi.Gestures.TouchActionResult
     content.vb: Public Property TouchAction As TouchActionResult
   overload: DrawnUi.Infrastructure.SkiaTouchResultContext.TouchAction*
 references:
@@ -532,29 +532,25 @@ references:
   name: TouchArgs
   nameWithType: SkiaTouchResultContext.TouchArgs
   fullName: DrawnUi.Infrastructure.SkiaTouchResultContext.TouchArgs
-- uid: AppoMobi.Maui.Gestures.TouchActionEventArgs
-  commentId: T:AppoMobi.Maui.Gestures.TouchActionEventArgs
-  parent: AppoMobi.Maui.Gestures
+- uid: AppoMobi.Gestures.TouchActionEventArgs
+  commentId: T:AppoMobi.Gestures.TouchActionEventArgs
+  parent: AppoMobi.Gestures
   isExternal: true
   name: TouchActionEventArgs
   nameWithType: TouchActionEventArgs
-  fullName: AppoMobi.Maui.Gestures.TouchActionEventArgs
-- uid: AppoMobi.Maui.Gestures
-  commentId: N:AppoMobi.Maui.Gestures
+  fullName: AppoMobi.Gestures.TouchActionEventArgs
+- uid: AppoMobi.Gestures
+  commentId: N:AppoMobi.Gestures
   isExternal: true
-  name: AppoMobi.Maui.Gestures
-  nameWithType: AppoMobi.Maui.Gestures
-  fullName: AppoMobi.Maui.Gestures
+  name: AppoMobi.Gestures
+  nameWithType: AppoMobi.Gestures
+  fullName: AppoMobi.Gestures
   spec.csharp:
   - uid: AppoMobi
     name: AppoMobi
     isExternal: true
   - name: .
-  - uid: AppoMobi.Maui
-    name: Maui
-    isExternal: true
-  - name: .
-  - uid: AppoMobi.Maui.Gestures
+  - uid: AppoMobi.Gestures
     name: Gestures
     isExternal: true
   spec.vb:
@@ -562,11 +558,7 @@ references:
     name: AppoMobi
     isExternal: true
   - name: .
-  - uid: AppoMobi.Maui
-    name: Maui
-    isExternal: true
-  - name: .
-  - uid: AppoMobi.Maui.Gestures
+  - uid: AppoMobi.Gestures
     name: Gestures
     isExternal: true
 - uid: DrawnUi.Infrastructure.SkiaTouchResultContext.TouchAction*
@@ -575,10 +567,10 @@ references:
   name: TouchAction
   nameWithType: SkiaTouchResultContext.TouchAction
   fullName: DrawnUi.Infrastructure.SkiaTouchResultContext.TouchAction
-- uid: AppoMobi.Maui.Gestures.TouchActionResult
-  commentId: T:AppoMobi.Maui.Gestures.TouchActionResult
-  parent: AppoMobi.Maui.Gestures
+- uid: AppoMobi.Gestures.TouchActionResult
+  commentId: T:AppoMobi.Gestures.TouchActionResult
+  parent: AppoMobi.Gestures
   isExternal: true
   name: TouchActionResult
   nameWithType: TouchActionResult
-  fullName: AppoMobi.Maui.Gestures.TouchActionResult
+  fullName: AppoMobi.Gestures.TouchActionResult

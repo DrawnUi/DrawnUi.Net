@@ -1,0 +1,198 @@
+@page "/labels-fps"
+@implements IDisposable
+@using DrawnUi
+@using DrawnUi.Controls
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>SkiaLabelFps</PageTitle>
+
+<div class="docs-page">
+    <h1>SkiaLabelFps</h1>
+    <p class="docs-lead">SkiaLabelFps is a debugging overlay for live DrawnUI surfaces. Drop it on an animated page or a frequently redrawn surface and it reports the current frame rate without forcing you to build your own counter.</p>
+    <p class="docs-note">This page runs a tiny animation loop so the label has live frame updates instead of sitting on a static canvas.</p>
+
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent" WidthRequest="360"
+                HeightRequest="316"
+                BackgroundColor="#F4EEE4"
+                Margin="0,8,0,0"
+                Gestures="@GesturesMode.Enabled"
+                 />
+    </div>
+
+    <pre class="docs-code"><code>@FpsSnippet</code></pre>
+
+</div>
+
+@code {
+    private const string FpsSnippet = """
+var fps = new SkiaLabelFps()
+{
+    UseCache = SkiaCacheType.GPU,
+    BackgroundColor = Colors.DarkRed,
+    TextColor = Colors.White,
+    Rotation = -12
+};
+""";
+
+    private const float PulseTrackWidth = 220f;
+    private const float PulseBaseSize = 58f;
+    private const float PulseScaleMin = 0.86f;
+    private const float PulseScaleRange = 0.30f;
+    private const float PulseScaleMax = PulseScaleMin + PulseScaleRange;
+    private const float PulseInset = 0f;
+    private const float PulseTrackHalfWidth = PulseTrackWidth * 0.5f;
+    private const float PulseCenterOffset = (PulseTrackWidth - PulseBaseSize) * 0.5f;
+    private const float PulseInitialRadius = PulseBaseSize * PulseScaleMin * 0.5f;
+
+    private readonly CancellationTokenSource _animationCts = new();
+    private SkiaShape _pulse;
+    private SkiaControl _canvasContent;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+
+        CreateContent();
+    }
+
+    void CreateContent()
+    {
+        _pulse = new SkiaShape()
+        {
+            WidthRequest = PulseBaseSize,
+            HeightRequest = PulseBaseSize,
+            Type = ShapeType.Circle,
+            BackgroundColor = new Color(0.153f, 0.431f, 0.741f, 1f),
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Center,
+            Margin = new Thickness(PulseCenterOffset, 0, 0, 0),
+            TranslationX = -(PulseTrackHalfWidth - PulseInitialRadius - PulseInset)
+        };
+
+        _canvasContent = new SkiaLayout()
+        {
+            Margin = new Thickness(16),
+            WidthRequest = 328,
+            HeightRequest = 284,
+            Padding = new Thickness(18),
+            BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
+            Type = LayoutType.Column,
+            Spacing = 12,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = "SkiaLabelFps",
+                    FontFamily = "FontTextTitle",
+                    FontSize = 24,
+                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                new SkiaLabel()
+                {
+                    Text = "Best used as a live overlay on games, animations, carousels, camera previews, or diagnostics pages.",
+                    FontFamily = "FontText",
+                    FontSize = 13,
+                    TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                new SkiaShape()
+                {
+                    WidthRequest = 292,
+                    HeightRequest = 172,
+                    Type = ShapeType.Rectangle,
+                    CornerRadius = 20,
+                    BackgroundColor = new Color(0.149f, 0.176f, 0.278f, 1f),
+                    HorizontalOptions = LayoutOptions.Center,
+                    Children =
+                    {
+                        new SkiaLayout()
+                        {
+                            WidthRequest = PulseTrackWidth,
+                            HeightRequest = PulseBaseSize * PulseScaleMax,
+                            Type = LayoutType.Absolute,
+                            HorizontalOptions = LayoutOptions.Center,
+                            VerticalOptions = LayoutOptions.Center,
+                            Children =
+                            {
+                                new SkiaShape()
+                                {
+                                    WidthRequest = PulseTrackWidth,
+                                    HeightRequest = 10,
+                                    Type = ShapeType.Rectangle,
+                                    CornerRadius = 5,
+                                    BackgroundColor = new Color(1f, 1f, 1f, 0.16f),
+                                    HorizontalOptions = LayoutOptions.Center,
+                                    VerticalOptions = LayoutOptions.Center
+                                },
+                                _pulse
+                            }
+                        },
+                        new SkiaLabelFps()
+                        {
+                            UseCache = SkiaCacheType.GPU,
+                            Margin = new Thickness(0, 0, 12, 14),
+                            BackgroundColor = new Color(0.471f, 0.094f, 0.094f, 0.92f),
+                            FontFamily = "FontText",
+                            FontSize = 12,
+                            TextColor = Colors.White,
+                            HorizontalOptions = LayoutOptions.End,
+                            VerticalOptions = LayoutOptions.End,
+                            Rotation = -10,
+                            Padding = new Thickness(8, 4)
+                        }
+                    }
+                }
+            }
+        };
+
+        _ = AnimateAsync(_animationCts.Token);
+    }
+
+    public void Dispose()
+    {
+        _animationCts.Cancel();
+        _animationCts.Dispose();
+    }
+
+    /// <summary>
+    /// Very silly animation, not using drawnui animators
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    private async Task AnimateAsync(CancellationToken token)
+    {
+        var progress = 0f;
+
+        try
+        {
+            while (!token.IsCancellationRequested)
+            {
+                progress += 0.022f;
+                if (progress > 1f)
+                {
+                    progress -= 1f;
+                }
+
+                var eased = (float)((Math.Sin(progress * Math.PI * 2) + 1) * 0.5);
+                var pulseScale = PulseScaleMin + eased * PulseScaleRange;
+                var pulseRadius = PulseBaseSize * pulseScale * 0.5f;
+                var pulseTravel = PulseTrackHalfWidth - pulseRadius - PulseInset;
+
+                _pulse.TranslationX = -pulseTravel + eased * (pulseTravel * 2f);
+                _pulse.ScaleX = pulseScale;
+                _pulse.ScaleY = pulseScale;
+                _pulse.Rotation = eased * 360f;
+
+                _canvasContent.Update();
+                await Task.Delay(16, token);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+}

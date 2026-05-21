@@ -3,6 +3,12 @@ using System.Text;
 using System.Windows.Input;
 using static DrawnUi.Draw.SkiaControl;
 
+#if BROWSER || DRAWNUI_NET
+    using PropertyChangingEventArgs = System.ComponentModel.PropertyChangingEventArgs;
+#else
+    using PropertyChangingEventArgs = Microsoft.Maui.Controls.PropertyChangingEventArgs;
+#endif
+
 namespace DrawnUi.Draw;
 
 [DebuggerDisplay("{DebugString}")]
@@ -51,6 +57,16 @@ public partial class TextSpan : IDisposable
 
         foreach (var glyph in Glyphs)
         {
+            if (glyph.Length == 1)
+            {
+                var symbol = (char)glyph.Symbol;
+                if (symbol == '\n' || symbol == '\r' || symbol == '\u2028' || symbol == '\u2029')
+                {
+                    sb.Append(symbol);
+                    continue;
+                }
+            }
+
             if (!glyph.IsAvailable)
             {
                 sb.Append(((SkiaLabel)Parent).FallbackCharacter);
@@ -63,6 +79,12 @@ public partial class TextSpan : IDisposable
                     {
                         FontDetectedWith = glyph.Symbol;
                         NeedShape = SkiaLabel.UnicodeNeedsShaping(glyph.Symbol);
+//#if BROWSER || DRAWNUI_NET
+//                        if (SkiaLabel.EmojiData.IsEmoji(glyph.Symbol))
+//                        {
+//                            NeedShape = false;
+//                        }
+//#endif
                         _fontAutoSet = true;
                         TypeFace = typeFace;
                         CheckGlyphsCanBeRendered();

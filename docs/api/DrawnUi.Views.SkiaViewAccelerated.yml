@@ -5,7 +5,7 @@ items:
   id: SkiaViewAccelerated
   parent: DrawnUi.Views
   children:
-  - DrawnUi.Views.SkiaViewAccelerated.#ctor(DrawnUi.Views.DrawnView)
+  - DrawnUi.Views.SkiaViewAccelerated.#ctor
   - DrawnUi.Views.SkiaViewAccelerated.Dispose
   - DrawnUi.Views.SkiaViewAccelerated.FPS
   - DrawnUi.Views.SkiaViewAccelerated.FrameTime
@@ -30,11 +30,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaViewAccelerated
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 7
+    startLine: 4
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -289,11 +289,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Uid
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 9
+    startLine: 6
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -321,11 +321,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDraw
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 11
+    startLine: 8
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -340,38 +340,35 @@ items:
   overload: DrawnUi.Views.SkiaViewAccelerated.OnDraw*
   implements:
   - DrawnUi.Draw.ISkiaDrawable.OnDraw
-- uid: DrawnUi.Views.SkiaViewAccelerated.#ctor(DrawnUi.Views.DrawnView)
-  commentId: M:DrawnUi.Views.SkiaViewAccelerated.#ctor(DrawnUi.Views.DrawnView)
-  id: '#ctor(DrawnUi.Views.DrawnView)'
+- uid: DrawnUi.Views.SkiaViewAccelerated.#ctor
+  commentId: M:DrawnUi.Views.SkiaViewAccelerated.#ctor
+  id: '#ctor'
   parent: DrawnUi.Views.SkiaViewAccelerated
   langs:
   - csharp
   - vb
-  name: SkiaViewAccelerated(DrawnView)
-  nameWithType: SkiaViewAccelerated.SkiaViewAccelerated(DrawnView)
-  fullName: DrawnUi.Views.SkiaViewAccelerated.SkiaViewAccelerated(DrawnUi.Views.DrawnView)
+  name: SkiaViewAccelerated()
+  nameWithType: SkiaViewAccelerated.SkiaViewAccelerated()
+  fullName: DrawnUi.Views.SkiaViewAccelerated.SkiaViewAccelerated()
   type: Constructor
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 13
+    startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   syntax:
-    content: public SkiaViewAccelerated(DrawnView superview)
-    parameters:
-    - id: superview
-      type: DrawnUi.Views.DrawnView
-    content.vb: Public Sub New(superview As DrawnView)
+    content: public SkiaViewAccelerated()
+    content.vb: Public Sub New()
   overload: DrawnUi.Views.SkiaViewAccelerated.#ctor*
-  nameWithType.vb: SkiaViewAccelerated.New(DrawnView)
-  fullName.vb: DrawnUi.Views.SkiaViewAccelerated.New(DrawnUi.Views.DrawnView)
-  name.vb: New(DrawnView)
+  nameWithType.vb: SkiaViewAccelerated.New()
+  fullName.vb: DrawnUi.Views.SkiaViewAccelerated.New()
+  name.vb: New()
 - uid: DrawnUi.Views.SkiaViewAccelerated.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   commentId: M:DrawnUi.Views.SkiaViewAccelerated.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   id: OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
@@ -386,11 +383,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanging
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 27
+    startLine: 16
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -420,11 +417,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanged
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 38
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -450,16 +447,16 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Superview
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 63
+    startLine: 52
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   syntax:
-    content: public DrawnView Superview { get; protected set; }
+    content: public DrawnView Superview { get; set; }
     parameters: []
     return:
       type: DrawnUi.Views.DrawnView
@@ -479,11 +476,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 66
+    startLine: 56
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -509,11 +506,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Surface
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 80
+    startLine: 70
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -541,11 +538,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsHardwareAccelerated
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 88
+    startLine: 78
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -573,11 +570,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FPS
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 90
+    startLine: 80
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -605,11 +602,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDrawing
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 98
+    startLine: 88
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -637,11 +634,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: HasDrawn
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 109
+    startLine: 99
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -669,11 +666,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameTime
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 110
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -701,11 +698,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SignalFrame
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 112
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -736,11 +733,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Maui/DrawnUi/Views/SkiaViewAccelerated.cs
-    startLine: 117
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5238,20 +5235,13 @@ references:
   - name: )
 - uid: DrawnUi.Views.SkiaViewAccelerated.#ctor*
   commentId: Overload:DrawnUi.Views.SkiaViewAccelerated.#ctor
-  href: DrawnUi.Views.SkiaViewAccelerated.html#DrawnUi_Views_SkiaViewAccelerated__ctor_DrawnUi_Views_DrawnView_
+  href: DrawnUi.Views.SkiaViewAccelerated.html#DrawnUi_Views_SkiaViewAccelerated__ctor
   name: SkiaViewAccelerated
   nameWithType: SkiaViewAccelerated.SkiaViewAccelerated
   fullName: DrawnUi.Views.SkiaViewAccelerated.SkiaViewAccelerated
   nameWithType.vb: SkiaViewAccelerated.New
   fullName.vb: DrawnUi.Views.SkiaViewAccelerated.New
   name.vb: New
-- uid: DrawnUi.Views.DrawnView
-  commentId: T:DrawnUi.Views.DrawnView
-  parent: DrawnUi.Views
-  href: DrawnUi.Views.DrawnView.html
-  name: DrawnView
-  nameWithType: DrawnView
-  fullName: DrawnUi.Views.DrawnView
 - uid: Microsoft.Maui.Controls.Element.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   commentId: M:Microsoft.Maui.Controls.Element.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   parent: Microsoft.Maui.Controls.Element
@@ -5330,6 +5320,13 @@ references:
   name: Superview
   nameWithType: SkiaViewAccelerated.Superview
   fullName: DrawnUi.Views.SkiaViewAccelerated.Superview
+- uid: DrawnUi.Views.DrawnView
+  commentId: T:DrawnUi.Views.DrawnView
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.DrawnView.html
+  name: DrawnView
+  nameWithType: DrawnView
+  fullName: DrawnUi.Views.DrawnView
 - uid: DrawnUi.Views.SkiaViewAccelerated.Dispose*
   commentId: Overload:DrawnUi.Views.SkiaViewAccelerated.Dispose
   href: DrawnUi.Views.SkiaViewAccelerated.html#DrawnUi_Views_SkiaViewAccelerated_Dispose

@@ -2,6 +2,38 @@
 
 Learn how to build your first DrawnUI app using **pure C# with fluent syntax** - no XAML required! This tutorial shows you how to create the same beautiful UI from the [XAML version](first-app.md) but using DrawnUI's powerful fluent API with hot reload support.
 
+> **Host support**
+>
+> The control tree and fluent composition patterns in this article are **shared DrawnUI concepts**, but the page shell shown below is still **MAUI-first**.
+>
+> In **Blazor**, initialize DrawnUI with `UseDrawnUiAsync(...)` and host the same `SkiaControl` tree inside a Razor `Canvas` component instead of a MAUI `ContentPage`.
+
+## Blazor host equivalent
+
+For Blazor WebAssembly, the minimal hosting pattern looks like this:
+
+```csharp
+var host = await builder.UseDrawnUiAsync(new DrawnUiStartupSettings
+{
+    UseDesktopKeyboard = true
+});
+
+await host.RunAsync();
+```
+
+```razor
+<Canvas WidthRequest="400"
+        HeightRequest="220"
+        BackgroundColor="#F4F1E8"
+        Content="@RootControl" />
+
+@code {
+    private readonly SkiaControl RootControl = CreateMainLayout();
+}
+```
+
+The current Blazor sandbox reference route for this tutorial concept is `tutorial-first-app`.
+
 ## 🚀 Live Demo in Tutorials Project
 
 Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials) for:

@@ -1,8 +1,12 @@
-# Getting Started with DrawnUI
+# Getting Started moved
 
-This guide will help you get started with DrawnUI in your .NET MAUI application.
+<script>
+if (typeof window !== "undefined") {
+    window.location.replace("maui/getting-started.html");
+}
+</script>
 
-📚 You might also look at our [Tutorials](tutorials.md)
+The .NET MAUI getting started guide moved to [MAUI Installation and Setup](maui/getting-started.md).
 
 ## Installation
 

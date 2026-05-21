@@ -35,6 +35,8 @@ There are controls that are aliases for other controls, te make porting existing
 ### Graphics Controls
 - [SkiaImage](images.md#skiaimage): Image rendering with many options and filters
 - [SkiaSvg](shapes.md#skiasvg): SVG vector graphics rendering with styling and effects
+- [SkiaSprite](sprites.md#skiasprite): Sprite sheet animation control
+- [SkiaSpriteSet](sprites.md#skiaspriteset): Stateful wrapper for characters and enemies with multiple sprite states
 - [SkiaGif](images.md#skiagif): Animated GIF support - dedicated lightweight GIF-player with playback properties
 - [SkiaMediaImage](images.md#skiamediaimage): Media image, subclassed SkiaImage for displaying any kind of images (image/animated gif/more..)
 - [SkiaLottie](animations.md#skialottie): Lottie animation with tint customization, subclassed SkiaImage
@@ -54,6 +56,7 @@ It's important to notice that every control can behaive like a button with gestu
 - [SkiaViewSwitcher](shell.md#skiaviewswitcher): View switcher to switch your views, pop, push and slide, subclassed SkiaLayout
 
 ### Input Controls
+- [SkiaEditor](editor.md): Fully drawn text editor with keyboard support, cursor, selection, password mode, and keyboard type control
 - [SkiaSlider](input.md#skiaslider): Slider including range selection capability
 - [SkiaProgress](input.md#skiaprogress): Progress indicator to show that you are actually doing something
 - [SkiaWheelPicker](input.md#skiawheelpicker): iOS-look picker wheel

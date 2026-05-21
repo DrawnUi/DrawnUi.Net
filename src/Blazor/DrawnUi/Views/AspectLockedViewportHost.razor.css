@@ -1,0 +1,30 @@
+.aspect-locked-host {
+    position: relative;
+    display: block;
+    max-width: 100%;
+    margin: var(--host-margin, 16px auto 32px);
+    background: var(--host-background, #000000);
+    overflow: hidden;
+    aspect-ratio: var(--host-aspect, 1 / 1);
+}
+
+.aspect-locked-host.fit-width {
+    width: 100%;
+}
+
+.aspect-locked-host.fit-height {
+    width: min(100%, calc((100vh - var(--host-viewport-offset, 0px)) * var(--host-aspect-ratio, 1)));
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100vh - var(--host-viewport-offset, 0px));
+}
+
+.aspect-locked-host.fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    z-index: var(--host-z-index, 2000);
+    aspect-ratio: auto;
+}

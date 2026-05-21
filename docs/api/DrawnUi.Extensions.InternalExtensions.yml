@@ -21,6 +21,8 @@ items:
   - DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint)
   - DrawnUi.Extensions.InternalExtensions.IsEven(System.Int32)
   - DrawnUi.Extensions.InternalExtensions.ToDegrees(System.Single)
+  - DrawnUi.Extensions.InternalExtensions.ToMauiPointF(System.Drawing.PointF)
+  - DrawnUi.Extensions.InternalExtensions.ToSKPoint(System.Drawing.PointF)
   - DrawnUi.Extensions.InternalExtensions.ToSKRect(Microsoft.Maui.Graphics.Rect,System.Single)
   - DrawnUi.Extensions.InternalExtensions.WithCancellation(System.Threading.Tasks.Task,System.Threading.CancellationToken)
   - DrawnUi.Extensions.InternalExtensions.WithCancellation``1(System.Threading.Tasks.Task{``0},System.Threading.CancellationToken)
@@ -34,7 +36,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: InternalExtensions
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
@@ -55,6 +57,70 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: DrawnUi.Extensions.InternalExtensions.ToSKPoint(System.Drawing.PointF)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.ToSKPoint(System.Drawing.PointF)
+  id: ToSKPoint(System.Drawing.PointF)
+  isExtensionMethod: true
+  parent: DrawnUi.Extensions.InternalExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToSKPoint(PointF)
+  nameWithType: InternalExtensions.ToSKPoint(PointF)
+  fullName: DrawnUi.Extensions.InternalExtensions.ToSKPoint(System.Drawing.PointF)
+  type: Method
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ToSKPoint
+    path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
+    startLine: 8
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Extensions
+  syntax:
+    content: public static SKPoint ToSKPoint(this PointF pt)
+    parameters:
+    - id: pt
+      type: System.Drawing.PointF
+    return:
+      type: SkiaSharp.SKPoint
+    content.vb: Public Shared Function ToSKPoint(pt As PointF) As SKPoint
+  overload: DrawnUi.Extensions.InternalExtensions.ToSKPoint*
+- uid: DrawnUi.Extensions.InternalExtensions.ToMauiPointF(System.Drawing.PointF)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.ToMauiPointF(System.Drawing.PointF)
+  id: ToMauiPointF(System.Drawing.PointF)
+  isExtensionMethod: true
+  parent: DrawnUi.Extensions.InternalExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToMauiPointF(PointF)
+  nameWithType: InternalExtensions.ToMauiPointF(PointF)
+  fullName: DrawnUi.Extensions.InternalExtensions.ToMauiPointF(System.Drawing.PointF)
+  type: Method
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ToMauiPointF
+    path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
+    startLine: 10
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Extensions
+  syntax:
+    content: public static PointF ToMauiPointF(this PointF pt)
+    parameters:
+    - id: pt
+      type: System.Drawing.PointF
+    return:
+      type: System.Drawing.PointF
+    content.vb: Public Shared Function ToMauiPointF(pt As PointF) As PointF
+  overload: DrawnUi.Extensions.InternalExtensions.ToMauiPointF*
 - uid: DrawnUi.Extensions.InternalExtensions.FindMauiContext(Microsoft.Maui.Controls.Element,System.Boolean)
   commentId: M:DrawnUi.Extensions.InternalExtensions.FindMauiContext(Microsoft.Maui.Controls.Element,System.Boolean)
   id: FindMauiContext(Microsoft.Maui.Controls.Element,System.Boolean)
@@ -70,11 +136,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FindMauiContext
     path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-    startLine: 8
+    startLine: 16
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -107,11 +173,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetParentsPath
     path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-    startLine: 22
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -139,11 +205,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPlatform
     path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-    startLine: 38
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -174,11 +240,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPlatform
     path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-    startLine: 56
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -213,11 +279,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPlatform
     path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-    startLine: 62
+    startLine: 70
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -252,11 +318,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ToSKRect
     path: ../src/Maui/DrawnUi/Internals/Extensions/InternalExtensions.Maui.cs
-    startLine: 90
+    startLine: 98
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -289,7 +355,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ToDegrees
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
@@ -328,7 +394,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IntersectsWith
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
@@ -364,7 +430,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ContainsInclusive
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
@@ -403,7 +469,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ContainsInclusive
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
@@ -444,7 +510,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: GetItemAtIndex
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
@@ -483,11 +549,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeControlAndChildren
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 63
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -513,11 +579,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: WithCancellation
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 120
+    startLine: 121
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -547,11 +613,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: WithCancellation
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 131
+    startLine: 132
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -586,11 +652,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Clone
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 141
+    startLine: 142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -618,11 +684,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEven
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 146
+    startLine: 147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -653,11 +719,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Clamp
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 151
+    startLine: 152
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -692,11 +758,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Clamp
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 170
+    startLine: 171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -731,11 +797,11 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Extensions/InternalExtensions.cs
-      branch: dev
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Clamp
     path: ../src/Shared/Internals/Extensions/InternalExtensions.cs
-    startLine: 189
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -1015,6 +1081,68 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: DrawnUi.Extensions.InternalExtensions.ToSKPoint*
+  commentId: Overload:DrawnUi.Extensions.InternalExtensions.ToSKPoint
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_ToSKPoint_System_Drawing_PointF_
+  name: ToSKPoint
+  nameWithType: InternalExtensions.ToSKPoint
+  fullName: DrawnUi.Extensions.InternalExtensions.ToSKPoint
+- uid: System.Drawing.PointF
+  commentId: T:System.Drawing.PointF
+  parent: System.Drawing
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.drawing.pointf
+  name: PointF
+  nameWithType: PointF
+  fullName: System.Drawing.PointF
+- uid: SkiaSharp.SKPoint
+  commentId: T:SkiaSharp.SKPoint
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  name: SKPoint
+  nameWithType: SKPoint
+  fullName: SkiaSharp.SKPoint
+- uid: System.Drawing
+  commentId: N:System.Drawing
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Drawing
+  nameWithType: System.Drawing
+  fullName: System.Drawing
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Drawing
+    name: Drawing
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.drawing
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Drawing
+    name: Drawing
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.drawing
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Extensions.InternalExtensions.ToMauiPointF*
+  commentId: Overload:DrawnUi.Extensions.InternalExtensions.ToMauiPointF
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_ToMauiPointF_System_Drawing_PointF_
+  name: ToMauiPointF
+  nameWithType: InternalExtensions.ToMauiPointF
+  fullName: DrawnUi.Extensions.InternalExtensions.ToMauiPointF
 - uid: DrawnUi.Extensions.InternalExtensions.FindMauiContext*
   commentId: Overload:DrawnUi.Extensions.InternalExtensions.FindMauiContext
   href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FindMauiContext_Microsoft_Maui_Controls_Element_System_Boolean_
@@ -1335,13 +1463,6 @@ references:
     name: Shapes
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.shapes
-- uid: SkiaSharp
-  commentId: N:SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp
-  name: SkiaSharp
-  nameWithType: SkiaSharp
-  fullName: SkiaSharp
 - uid: DrawnUi.Extensions.InternalExtensions.ToSKRect*
   commentId: Overload:DrawnUi.Extensions.InternalExtensions.ToSKRect
   href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_ToSKRect_Microsoft_Maui_Graphics_Rect_System_Single_
@@ -1405,14 +1526,6 @@ references:
   name: IntersectsWith
   nameWithType: InternalExtensions.IntersectsWith
   fullName: DrawnUi.Extensions.InternalExtensions.IntersectsWith
-- uid: SkiaSharp.SKPoint
-  commentId: T:SkiaSharp.SKPoint
-  parent: SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
-  name: SKPoint
-  nameWithType: SKPoint
-  fullName: SkiaSharp.SKPoint
 - uid: DrawnUi.Extensions.InternalExtensions.ContainsInclusive*
   commentId: Overload:DrawnUi.Extensions.InternalExtensions.ContainsInclusive
   href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_ContainsInclusive_SkiaSharp_SKRect_SkiaSharp_SKPoint_

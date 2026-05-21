@@ -1,0 +1,167 @@
+@page "/layouts-stack"
+@using DrawnUi
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>SkiaStack</PageTitle>
+
+<div class="docs-page">
+    <h1>SkiaStack</h1>
+    <p class="docs-lead">SkiaStack is the vertical-stack alias for SkiaLayout. It fixes <strong>Type = LayoutType.Column</strong> so the control reads by intent instead of by configuration.</p>
+    <p class="docs-note">Use it when the layout is unambiguously vertical and you want the code to stay terse.</p>
+
+    <div class="docs-example-frame">
+        <Canvas Content="_canvasContent" 
+                WidthRequest="360"
+                BackgroundColor="#F6F0E6"
+                Margin="0,8,0,0"
+                Gestures="@GesturesMode.Enabled"/>
+    </div>
+
+    <pre class="docs-code"><code>@StackSnippet</code></pre>
+</div>
+
+@code {
+    private const string StackSnippet = """
+var stack = new SkiaStack()
+{
+    WidthRequest = 240,
+    Spacing = 10,
+    Children =
+    {
+        new SkiaShape() { HeightRequest = 64, HorizontalOptions = LayoutOptions.Fill },
+        new SkiaShape() { HeightRequest = 64, HorizontalOptions = LayoutOptions.Fill },
+        new SkiaShape() { HeightRequest = 64, HorizontalOptions = LayoutOptions.Fill }
+    }
+};
+""";
+
+    private SkiaControl _canvasContent;
+
+    public class DebugMe : SkiaStack
+    {
+        public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
+        {
+            var ret = base.OnMeasuring(widthConstraint, heightConstraint, scale);
+
+            return ret;
+        }
+
+    }
+
+
+    public LayoutsStack()
+    {
+        var stack = new SkiaStack()
+        {
+            Spacing = 12,
+            HorizontalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                CreateStackTile("Header", "Intent first", "Top section stays stable.", new Color(0.918f, 0.941f, 0.976f, 1f), new Color(0.208f, 0.447f, 0.761f, 1f)),
+                CreateStackTile("Body", "Consistent measure", "Children keep one rhythm.", new Color(0.961f, 0.925f, 0.898f, 1f), new Color(0.812f, 0.427f, 0.216f, 1f)),
+                CreateStackTile("Footer", "Predictable rhythm", "Spacing stays clean.", new Color(0.922f, 0.961f, 0.929f, 1f), new Color(0.224f, 0.522f, 0.365f, 1f))
+            }
+        };
+
+        _canvasContent = new DebugMe()
+        {
+            Margin = new Thickness(16),
+            WidthRequest = 328,
+            Padding = new Thickness(18),
+            BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
+            Type = LayoutType.Column,
+            Spacing = 12,
+            Children =
+            {
+                new SkiaLabel()
+                {
+                    Text = "SkiaStack",
+                    FontFamily = "FontTextTitle",
+                    FontSize = 24,
+                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill
+                },
+                new SkiaLabel()
+                {
+                    Text = "A presentation-ready stack reads like a compact feature list, not three unrelated rectangles.",
+                    FontFamily = "FontText",
+                    FontSize = 13,
+                    TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                    HorizontalOptions = LayoutOptions.Fill,
+                    WidthRequest = 252
+                },
+                stack
+            }
+        };
+    }
+
+    private static SkiaShape CreateStackTile(string title, string eyebrow, string body, Color backgroundColor, Color accentColor)
+    {
+        return new SkiaShape()
+        {
+            HeightRequest = 82,
+            Type = ShapeType.Rectangle,
+            CornerRadius = 18,
+            BackgroundColor = backgroundColor,
+            HorizontalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaLayout()
+                {
+                    Padding = new Thickness(16, 11),
+                    Type = LayoutType.Row,
+                    Spacing = 12,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Children =
+                    {
+                        new SkiaShape()
+                        {
+                            Type = ShapeType.Circle,
+                            HeightRequest = 32,
+                            LockRatio = 1,
+                            BackgroundColor = accentColor,
+                            VerticalOptions = LayoutOptions.Center
+                        },
+                        new SkiaLayout()
+                        {
+                            Type = LayoutType.Column,
+                            Spacing = 2,
+                            HorizontalOptions = LayoutOptions.Fill,
+                            VerticalOptions = LayoutOptions.Center,
+                            Children =
+                            {
+                                new SkiaLabel()
+                                {
+                                    Text = eyebrow,
+                                    FontFamily = "FontText",
+                                    FontSize = 11,
+                                    TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                                    HorizontalOptions = LayoutOptions.Fill
+                                },
+                                new SkiaLabel()
+                                {
+                                    Text = title,
+                                    FontFamily = "FontTextTitle",
+                                    FontSize = 16,
+                                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                                    HorizontalOptions = LayoutOptions.Fill
+                                },
+                                new SkiaLabel()
+                                {
+                                    Text = body,
+                                    FontFamily = "FontText",
+                                    FontSize = 11,
+                                    TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
+                                    HorizontalOptions = LayoutOptions.Fill,
+                                    WidthRequest = 176
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    }
+}

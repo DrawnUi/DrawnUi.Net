@@ -16,11 +16,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: IThemeProvider
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -45,11 +45,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentTheme
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -74,11 +74,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
-      branch: dev
+      path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
+      branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: ThemeChanged
-    path: ../src/Maui/DrawnUi/Shared/Extensions/ThemeBindingExtension.cs
+    path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
