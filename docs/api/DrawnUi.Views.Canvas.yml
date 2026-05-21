@@ -2974,6 +2974,7 @@ references:
 - uid: AppoMobi.Gestures.IGestureListener
   commentId: T:AppoMobi.Gestures.IGestureListener
   parent: AppoMobi.Gestures
+  isExternal: true
   name: IGestureListener
   nameWithType: IGestureListener
   fullName: AppoMobi.Gestures.IGestureListener
@@ -10695,21 +10696,26 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.collections
 - uid: AppoMobi.Gestures
   commentId: N:AppoMobi.Gestures
+  isExternal: true
   name: AppoMobi.Gestures
   nameWithType: AppoMobi.Gestures
   fullName: AppoMobi.Gestures
   spec.csharp:
   - uid: AppoMobi
     name: AppoMobi
+    isExternal: true
   - name: .
   - uid: AppoMobi.Gestures
     name: Gestures
+    isExternal: true
   spec.vb:
   - uid: AppoMobi
     name: AppoMobi
+    isExternal: true
   - name: .
   - uid: AppoMobi.Gestures
     name: Gestures
+    isExternal: true
 - uid: DrawnUi.Draw.DrawnExtensions.GetVelocityRatioForChild(DrawnUi.Draw.IDrawnBase,DrawnUi.Draw.ISkiaControl)
   commentId: M:DrawnUi.Draw.DrawnExtensions.GetVelocityRatioForChild(DrawnUi.Draw.IDrawnBase,DrawnUi.Draw.ISkiaControl)
   href: DrawnUi.Draw.DrawnExtensions.html#DrawnUi_Draw_DrawnExtensions_GetVelocityRatioForChild_DrawnUi_Draw_IDrawnBase_DrawnUi_Draw_ISkiaControl_
@@ -11777,6 +11783,7 @@ references:
 - uid: AppoMobi.Gestures.TouchEffect
   commentId: T:AppoMobi.Gestures.TouchEffect
   parent: AppoMobi.Gestures
+  isExternal: true
   name: TouchEffect
   nameWithType: TouchEffect
   fullName: AppoMobi.Gestures.TouchEffect
@@ -11992,6 +11999,7 @@ references:
 - uid: AppoMobi.Gestures.TouchActionResult
   commentId: T:AppoMobi.Gestures.TouchActionResult
   parent: AppoMobi.Gestures
+  isExternal: true
   name: TouchActionResult
   nameWithType: TouchActionResult
   fullName: AppoMobi.Gestures.TouchActionResult
@@ -12044,48 +12052,59 @@ references:
 - uid: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
   commentId: M:AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
   parent: AppoMobi.Gestures.IGestureListener
+  isExternal: true
   name: OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
   nameWithType: IGestureListener.OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
   fullName: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType, AppoMobi.Gestures.TouchActionEventArgs, AppoMobi.Gestures.TouchActionResult)
   spec.csharp:
   - uid: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
     name: OnGestureEvent
+    isExternal: true
   - name: (
   - uid: AppoMobi.Gestures.TouchActionType
     name: TouchActionType
+    isExternal: true
   - name: ','
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
   spec.vb:
   - uid: AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
     name: OnGestureEvent
+    isExternal: true
   - name: (
   - uid: AppoMobi.Gestures.TouchActionType
     name: TouchActionType
+    isExternal: true
   - name: ','
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
 - uid: AppoMobi.Gestures.TouchActionType
   commentId: T:AppoMobi.Gestures.TouchActionType
   parent: AppoMobi.Gestures
+  isExternal: true
   name: TouchActionType
   nameWithType: TouchActionType
   fullName: AppoMobi.Gestures.TouchActionType
 - uid: AppoMobi.Gestures.TouchActionEventArgs
   commentId: T:AppoMobi.Gestures.TouchActionEventArgs
   parent: AppoMobi.Gestures
+  isExternal: true
   name: TouchActionEventArgs
   nameWithType: TouchActionEventArgs
   fullName: AppoMobi.Gestures.TouchActionEventArgs

@@ -73,7 +73,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaWheelScroll
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 7
+    startLine: 5
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -512,6 +512,7 @@ items:
   - DrawnUi.Draw.SkiaControl.RenderingInvalidated
   - DrawnUi.Draw.SkiaControl.DirtyChildrenTracker
   - DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
+  - DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   - DrawnUi.Draw.SkiaControl.Initialized
   - DrawnUi.Draw.SkiaControl.Destroyed
   - DrawnUi.Draw.SkiaControl.GetRandomColor
@@ -535,7 +536,9 @@ items:
   - DrawnUi.Draw.SkiaControl.IsHovered
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
+  - DrawnUi.Draw.SkiaControl.LeftProperty
   - DrawnUi.Draw.SkiaControl.Left
+  - DrawnUi.Draw.SkiaControl.TopProperty
   - DrawnUi.Draw.SkiaControl.Top
   - DrawnUi.Draw.SkiaControl.ControlStyleProperty
   - DrawnUi.Draw.SkiaControl.ControlStyle
@@ -1219,6 +1222,7 @@ items:
   - DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaWheelScroll})
   - DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaWheelScroll})
   - DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll})
+  - DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll},System.String,System.Action{{TSource},DrawnUi.Controls.SkiaWheelScroll})
   - DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll})
   - DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObserveProperty``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll})
   - DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObserveSelf``1(System.Action{DrawnUi.Controls.SkiaWheelScroll,System.String})
@@ -1291,7 +1295,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: AvoidRemeasuring
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 9
+    startLine: 7
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1324,7 +1328,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 14
+    startLine: 12
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1359,7 +1363,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DebugWheel
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 41
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1388,7 +1392,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Helper3dChildren
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 43
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1415,7 +1419,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CellsPool
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 45
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1444,7 +1448,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DataSource
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 47
+    startLine: 45
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1471,7 +1475,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemsWrapper
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 49
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1498,7 +1502,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectedIndexChanged
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 56
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1527,7 +1531,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSelectedIndexChanged
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 61
+    startLine: 59
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1561,7 +1565,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalChildAlignement
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 71
+    startLine: 69
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1590,7 +1594,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Use3d
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 73
+    startLine: 71
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1619,7 +1623,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: HapticEnabledProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 75
+    startLine: 73
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1646,7 +1650,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: HapticEnabled
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 81
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1675,7 +1679,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FadeProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 87
+    startLine: 85
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1702,7 +1706,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Fade
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 93
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1731,7 +1735,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsLoopedProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 99
+    startLine: 97
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1758,7 +1762,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsLooped
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 105
+    startLine: 103
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1787,7 +1791,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LinesColorProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 111
+    startLine: 109
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1814,7 +1818,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LinesColor
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 117
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1843,7 +1847,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FadeStrengthProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 123
+    startLine: 121
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1870,7 +1874,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FadeStrength
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 132
+    startLine: 130
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1901,7 +1905,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FadeMinProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 138
+    startLine: 136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1928,7 +1932,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FadeMin
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 147
+    startLine: 145
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1959,7 +1963,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WheelScrollingOffset
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 155
+    startLine: 153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1988,7 +1992,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemHeight
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 170
+    startLine: 168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2017,7 +2021,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectedIndexProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 182
+    startLine: 180
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2044,7 +2048,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectedIndex
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 211
+    startLine: 209
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2075,7 +2079,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: VisibleItemCountProperty
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 217
+    startLine: 215
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2102,7 +2106,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: VisibleItemCount
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 231
+    startLine: 229
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2131,7 +2135,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateDefaultContent
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 254
+    startLine: 252
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2159,7 +2163,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureContent
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 261
+    startLine: 259
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2204,7 +2208,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetContentSize
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 268
+    startLine: 266
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2232,7 +2236,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutPositionChanged
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 281
+    startLine: 279
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2261,7 +2265,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 294
+    startLine: 292
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2290,7 +2294,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawVirtual
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 307
+    startLine: 305
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2323,7 +2327,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyVisibleItemCount
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 370
+    startLine: 368
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2349,7 +2353,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintSelectionIndicator
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 613
+    startLine: 611
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2381,7 +2385,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: StartToFlingFrom
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 647
+    startLine: 645
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2422,7 +2426,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PositionViewport
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 688
+    startLine: 686
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2479,7 +2483,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckNeedToSnap
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 717
+    startLine: 715
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2509,7 +2513,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Snap
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 727
+    startLine: 725
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2543,7 +2547,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrollCompleted
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 753
+    startLine: 751
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2572,7 +2576,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ActualizeSelectedIndex
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 765
+    startLine: 763
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2600,7 +2604,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ClampOffset
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 860
+    startLine: 858
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2642,7 +2646,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollToIndex
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 911
+    startLine: 909
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2678,7 +2682,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CellsCount
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 959
+    startLine: 957
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2707,7 +2711,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: VisibleCellsCountHalf
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 960
+    startLine: 958
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2736,7 +2740,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WheelHalfHeight
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 961
+    startLine: 959
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2765,7 +2769,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WheelVerticalCenter
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 962
+    startLine: 960
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2794,7 +2798,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UseSpacing
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 964
+    startLine: 962
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2823,7 +2827,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsIndexValid
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 978
+    startLine: 976
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2857,7 +2861,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemsSourceCount
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 991
+    startLine: 989
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2886,7 +2890,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCellPositionForIndex
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 1040
+    startLine: 1038
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2920,7 +2924,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetIndexAtCellPosition
     path: ../src/Shared/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 1055
+    startLine: 1053
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -9925,6 +9929,13 @@ references:
   name: DirtyChildrenInternal
   nameWithType: SkiaControl.DirtyChildrenInternal
   fullName: DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
+- uid: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize
+  name: MaxRealPixelSize
+  nameWithType: SkiaControl.MaxRealPixelSize
+  fullName: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
 - uid: DrawnUi.Draw.SkiaControl.Initialized
   commentId: E:DrawnUi.Draw.SkiaControl.Initialized
   parent: DrawnUi.Draw.SkiaControl
@@ -10440,6 +10451,13 @@ references:
   name: CachedImage
   nameWithType: SkiaControl.CachedImage
   fullName: DrawnUi.Draw.SkiaControl.CachedImage
+- uid: DrawnUi.Draw.SkiaControl.LeftProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.LeftProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty
+  name: LeftProperty
+  nameWithType: SkiaControl.LeftProperty
+  fullName: DrawnUi.Draw.SkiaControl.LeftProperty
 - uid: DrawnUi.Draw.SkiaControl.Left
   commentId: P:DrawnUi.Draw.SkiaControl.Left
   parent: DrawnUi.Draw.SkiaControl
@@ -10447,6 +10465,13 @@ references:
   name: Left
   nameWithType: SkiaControl.Left
   fullName: DrawnUi.Draw.SkiaControl.Left
+- uid: DrawnUi.Draw.SkiaControl.TopProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TopProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty
+  name: TopProperty
+  nameWithType: SkiaControl.TopProperty
+  fullName: DrawnUi.Draw.SkiaControl.TopProperty
 - uid: DrawnUi.Draw.SkiaControl.Top
   commentId: P:DrawnUi.Draw.SkiaControl.Top
   parent: DrawnUi.Draw.SkiaControl
@@ -12416,6 +12441,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12436,6 +12462,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12467,6 +12494,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12487,6 +12515,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12743,6 +12772,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12768,6 +12798,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12804,6 +12835,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12829,6 +12861,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -12866,6 +12899,7 @@ references:
 - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
   href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   name: CheckChildrenGesturesLocked(TouchActionResult)
   nameWithType: SkiaControl.CheckChildrenGesturesLocked(TouchActionResult)
@@ -12877,6 +12911,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
   spec.vb:
   - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
@@ -12885,6 +12920,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -26283,6 +26319,137 @@ references:
     href: DrawnUi.Controls.SkiaWheelScroll.html
   - name: )
   - name: )
+- uid: DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll},System.String,System.Action{{TSource},DrawnUi.Controls.SkiaWheelScroll})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<SkiaWheelScroll, TSource>(SkiaWheelScroll, TSource, string, Action<SkiaWheelScroll>, string, Action<TSource, SkiaWheelScroll>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<SkiaWheelScroll, TSource>(SkiaWheelScroll, TSource, string, Action<SkiaWheelScroll>, string, Action<TSource, SkiaWheelScroll>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<DrawnUi.Controls.SkiaWheelScroll, TSource>(DrawnUi.Controls.SkiaWheelScroll, TSource, string, System.Action<DrawnUi.Controls.SkiaWheelScroll>, string, System.Action<TSource, DrawnUi.Controls.SkiaWheelScroll>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of SkiaWheelScroll, TSource)(SkiaWheelScroll, TSource, String, Action(Of SkiaWheelScroll), String, Action(Of TSource, SkiaWheelScroll))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of DrawnUi.Controls.SkiaWheelScroll, TSource)(DrawnUi.Controls.SkiaWheelScroll, TSource, String, System.Action(Of DrawnUi.Controls.SkiaWheelScroll), String, System.Action(Of TSource, DrawnUi.Controls.SkiaWheelScroll))
+  name.vb: ObservePropertyTwoWay(Of SkiaWheelScroll, TSource)(SkiaWheelScroll, TSource, String, Action(Of SkiaWheelScroll), String, Action(Of TSource, SkiaWheelScroll))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Controls.SkiaWheelScroll,``1,System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll},System.String,System.Action{``1,DrawnUi.Controls.SkiaWheelScroll})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Controls.SkiaWheelScroll,``1,System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll},System.String,System.Action{``1,DrawnUi.Controls.SkiaWheelScroll})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelScroll
+    name: SkiaWheelScroll
+    href: DrawnUi.Controls.SkiaWheelScroll.html
+  - name: )
+  - name: )
 - uid: DrawnUi.Controls.SkiaWheelScroll.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Controls.SkiaWheelScroll})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   parent: DrawnUi.Draw.FluentExtensions
@@ -31437,6 +31604,120 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: (
   - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, System.Action<T>, string, System.Action<TSource, T>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, System.Action(Of T), String, System.Action(Of TSource, T))
+  name.vb: ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
   - name: " "
   - name: T
   - name: )

@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/taublast/drawnui/blob/main/docs/articles/blazor-faq.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -95,11 +95,14 @@
 <li><code>DrawnUi.Blazor.Core</code> is the shared implementation foundation, not the normal top-level package choice for app projects</li>
 </ul>
 <p>See also <a href="blazor-packages.html">Blazor Packages</a>.</p>
-<h2 id="what-is-the-difference-between-canvas-and-servercanvas">What is the difference between <code>Canvas</code> and <code>ServerCanvas</code>?</h2>
+<h2 id="does-blazor-still-use-different-canvas-names-for-wasm-and-server">Does Blazor still use different canvas names for WASM and Server?</h2>
+<p>No.</p>
 <ul>
-<li><code>Canvas</code> is the browser-side DrawnUI surface used by the WASM/browser runtime</li>
-<li><code>ServerCanvas</code> is a server-rendered DrawnUI surface that returns encoded image frames to the page and routes supported interactions back to the server</li>
-<li>if you expect browser-canvas semantics, local redraw, and local input processing, use <code>Canvas</code></li>
+<li>both runtimes now use <code>Canvas</code> as the public component name</li>
+<li><code>DrawnUi.Blazor.Wasm</code> provides the browser-side <code>Canvas</code></li>
+<li><code>DrawnUi.Blazor.Server</code> provides the server-backed <code>Canvas</code></li>
+<li>in single-host apps you do not set an extra host-selection property; the runtime comes from the package and component graph you use</li>
+<li>in mixed Blazor Web Apps, choose runtime at the component boundary and keep using <code>Canvas</code> on both sides</li>
 </ul>
 <h2 id="can-i-mix-normal-razorhtml-ui-with-drawnui-ui">Can I mix normal Razor/HTML UI with DrawnUI UI?</h2>
 <p>Yes.</p>
@@ -131,7 +134,7 @@
 <h3 id="strong-current-fit">Strong current fit</h3>
 <ul>
 <li>browser/WASM DrawnUI surfaces through <code>Canvas</code></li>
-<li>server-rendered DrawnUI surfaces through <code>ServerCanvas</code></li>
+<li>server-rendered DrawnUI surfaces through <code>Canvas</code></li>
 <li>standard Razor + DrawnUI coexistence on the same page</li>
 <li>same-app mixed server + WASM DrawnUI with sibling islands</li>
 <li>button / tap style interactions in the validated samples</li>
@@ -183,6 +186,7 @@ ln -sf $(ls blazor.webassembly.*.js | head -1) blazor.webassembly.js
 </article>
 
         <div class="contribution d-print-none">
+          <a href="https://github.com/taublast/drawnui/blob/main/docs/articles/blazor-faq.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

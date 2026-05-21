@@ -34,6 +34,7 @@ items:
   - DrawnUi.Controls.SkiaMauiEditor
   - DrawnUi.Controls.SkiaMauiEntry
   - DrawnUi.Controls.SkiaMediaImage
+  - DrawnUi.Controls.SkiaPicker
   - DrawnUi.Controls.SkiaRadioButton
   - DrawnUi.Controls.SkiaShell
   - DrawnUi.Controls.SkiaShell.IHandleGoBack
@@ -49,6 +50,7 @@ items:
   - DrawnUi.Controls.SkiaShellNavigatingArgs
   - DrawnUi.Controls.SkiaSpinner
   - DrawnUi.Controls.SkiaSprite
+  - DrawnUi.Controls.SkiaSprite.SpriteFrameImage
   - DrawnUi.Controls.SkiaSpriteSet
   - DrawnUi.Controls.SkiaTabsSelector
   - DrawnUi.Controls.SkiaTabsSelector.TabEntry
@@ -59,6 +61,7 @@ items:
   - DrawnUi.Controls.SkiaWheelScroll
   - DrawnUi.Controls.SkiaWheelShape
   - DrawnUi.Controls.SkiaWheelStack
+  - DrawnUi.Controls.SpritePlacementConfig
   - DrawnUi.Controls.WheelCellInfo
   langs:
   - csharp
@@ -339,12 +342,47 @@ references:
   - uid: DrawnUi.Controls.SkiaShell.PopupWrapper
     name: PopupWrapper
     href: DrawnUi.Controls.SkiaShell.PopupWrapper.html
+- uid: DrawnUi.Controls.SkiaPicker
+  commentId: T:DrawnUi.Controls.SkiaPicker
+  href: DrawnUi.Controls.SkiaPicker.html
+  name: SkiaPicker
+  nameWithType: SkiaPicker
+  fullName: DrawnUi.Controls.SkiaPicker
 - uid: DrawnUi.Controls.SkiaMediaImage
   commentId: T:DrawnUi.Controls.SkiaMediaImage
   href: DrawnUi.Controls.SkiaMediaImage.html
   name: SkiaMediaImage
   nameWithType: SkiaMediaImage
   fullName: DrawnUi.Controls.SkiaMediaImage
+- uid: DrawnUi.Controls.SkiaSprite
+  commentId: T:DrawnUi.Controls.SkiaSprite
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaSprite.html
+  name: SkiaSprite
+  nameWithType: SkiaSprite
+  fullName: DrawnUi.Controls.SkiaSprite
+- uid: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+  commentId: T:DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+  href: DrawnUi.Controls.SkiaSprite.html
+  name: SkiaSprite.SpriteFrameImage
+  nameWithType: SkiaSprite.SpriteFrameImage
+  fullName: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+  spec.csharp:
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+    name: SpriteFrameImage
+    href: DrawnUi.Controls.SkiaSprite.SpriteFrameImage.html
+  spec.vb:
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: .
+  - uid: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+    name: SpriteFrameImage
+    href: DrawnUi.Controls.SkiaSprite.SpriteFrameImage.html
 - uid: DrawnUi.Controls.SkiaDrawnCell
   commentId: T:DrawnUi.Controls.SkiaDrawnCell
   parent: DrawnUi.Controls
@@ -577,13 +615,13 @@ references:
   - uid: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer
     name: ColorEqualityComparer
     href: DrawnUi.Controls.SkiaLottie.ColorEqualityComparer.html
-- uid: DrawnUi.Controls.SkiaSprite
-  commentId: T:DrawnUi.Controls.SkiaSprite
+- uid: DrawnUi.Controls.SpritePlacementConfig
+  commentId: T:DrawnUi.Controls.SpritePlacementConfig
   parent: DrawnUi.Controls
-  href: DrawnUi.Controls.SkiaSprite.html
-  name: SkiaSprite
-  nameWithType: SkiaSprite
-  fullName: DrawnUi.Controls.SkiaSprite
+  href: DrawnUi.Controls.SpritePlacementConfig.html
+  name: SpritePlacementConfig
+  nameWithType: SpritePlacementConfig
+  fullName: DrawnUi.Controls.SpritePlacementConfig
 - uid: DrawnUi.Controls.SkiaSpriteSet
   commentId: T:DrawnUi.Controls.SkiaSpriteSet
   parent: DrawnUi.Controls

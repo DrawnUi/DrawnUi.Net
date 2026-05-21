@@ -5,8 +5,11 @@ items:
   id: SkiaEditorSelection
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride
+  - DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter
   - DrawnUi.Draw.SkiaEditorSelection.OnDisposing
   - DrawnUi.Draw.SkiaEditorSelection.Paint(DrawnUi.Draw.DrawingContext)
+  - DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter
   - DrawnUi.Draw.SkiaEditorSelection.SelectionColor
   - DrawnUi.Draw.SkiaEditorSelection.SelectionLength
   - DrawnUi.Draw.SkiaEditorSelection.SelectionStart
@@ -20,11 +23,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+      path: src/Shared/EditText/SkiaEditorSelection.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaEditorSelection
-    path: ../src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -154,6 +157,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DirtyChildrenTracker
   - DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
   - DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   - DrawnUi.Draw.SkiaControl.Initialized
   - DrawnUi.Draw.SkiaControl.Destroyed
   - DrawnUi.Draw.SkiaControl.GetRandomColor
@@ -179,7 +183,9 @@ items:
   - DrawnUi.Draw.SkiaControl.IsHovered
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
+  - DrawnUi.Draw.SkiaControl.LeftProperty
   - DrawnUi.Draw.SkiaControl.Left
+  - DrawnUi.Draw.SkiaControl.TopProperty
   - DrawnUi.Draw.SkiaControl.Top
   - DrawnUi.Draw.SkiaControl.ControlStyleProperty
   - DrawnUi.Draw.SkiaControl.ControlStyle
@@ -888,6 +894,7 @@ items:
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaEditorSelection})
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaEditorSelection})
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection})
+  - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaEditorSelection})
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection})
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObserveProperty``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection})
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObserveSelf``1(System.Action{DrawnUi.Draw.SkiaEditorSelection,System.String})
@@ -946,12 +953,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+      path: src/Shared/EditText/SkiaEditorSelection.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceLabel
-    path: ../src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
-    startLine: 6
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 7
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -962,6 +969,37 @@ items:
       type: DrawnUi.Draw.SkiaLabel
     content.vb: Public Property SourceLabel As SkiaLabel
   overload: DrawnUi.Draw.SkiaEditorSelection.SourceLabel*
+- uid: DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride
+  commentId: P:DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride
+  id: GetLineGlyphsOverride
+  parent: DrawnUi.Draw.SkiaEditorSelection
+  langs:
+  - csharp
+  - vb
+  name: GetLineGlyphsOverride
+  nameWithType: SkiaEditorSelection.GetLineGlyphsOverride
+  fullName: DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride
+  type: Property
+  source:
+    remote:
+      path: src/Shared/EditText/SkiaEditorSelection.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetLineGlyphsOverride
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 12
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: When set, used instead of Spans[0].Glyphs to support multi-span lines.
+  example: []
+  syntax:
+    content: public Func<TextLine, LineGlyph[]>? GetLineGlyphsOverride { get; set; }
+    parameters: []
+    return:
+      type: System.Func{DrawnUi.Draw.TextLine,DrawnUi.Draw.LineGlyph[]}
+    content.vb: Public Property GetLineGlyphsOverride As Func(Of TextLine, LineGlyph())
+  overload: DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride*
 - uid: DrawnUi.Draw.SkiaEditorSelection.SelectionStart
   commentId: P:DrawnUi.Draw.SkiaEditorSelection.SelectionStart
   id: SelectionStart
@@ -975,12 +1013,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+      path: src/Shared/EditText/SkiaEditorSelection.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionStart
-    path: ../src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
-    startLine: 8
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1004,12 +1042,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+      path: src/Shared/EditText/SkiaEditorSelection.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLength
-    path: ../src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
-    startLine: 9
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 15
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1033,12 +1071,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+      path: src/Shared/EditText/SkiaEditorSelection.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColor
-    path: ../src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
-    startLine: 10
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 16
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1049,6 +1087,64 @@ items:
       type: Microsoft.Maui.Graphics.Color
     content.vb: Public Property SelectionColor As Color
   overload: DrawnUi.Draw.SkiaEditorSelection.SelectionColor*
+- uid: DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter
+  commentId: P:DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter
+  id: LeftHandleCenter
+  parent: DrawnUi.Draw.SkiaEditorSelection
+  langs:
+  - csharp
+  - vb
+  name: LeftHandleCenter
+  nameWithType: SkiaEditorSelection.LeftHandleCenter
+  fullName: DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter
+  type: Property
+  source:
+    remote:
+      path: src/Shared/EditText/SkiaEditorSelection.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LeftHandleCenter
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public SKPoint LeftHandleCenter { get; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKPoint
+    content.vb: Public Property LeftHandleCenter As SKPoint
+  overload: DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter*
+- uid: DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter
+  commentId: P:DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter
+  id: RightHandleCenter
+  parent: DrawnUi.Draw.SkiaEditorSelection
+  langs:
+  - csharp
+  - vb
+  name: RightHandleCenter
+  nameWithType: SkiaEditorSelection.RightHandleCenter
+  fullName: DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter
+  type: Property
+  source:
+    remote:
+      path: src/Shared/EditText/SkiaEditorSelection.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RightHandleCenter
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 20
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public SKPoint RightHandleCenter { get; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKPoint
+    content.vb: Public Property RightHandleCenter As SKPoint
+  overload: DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter*
 - uid: DrawnUi.Draw.SkiaEditorSelection.Paint(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaEditorSelection.Paint(DrawnUi.Draw.DrawingContext)
   id: Paint(DrawnUi.Draw.DrawingContext)
@@ -1062,12 +1158,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+      path: src/Shared/EditText/SkiaEditorSelection.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
-    path: ../src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
-    startLine: 12
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 22
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1100,12 +1196,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
+      path: src/Shared/EditText/SkiaEditorSelection.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs
-    startLine: 62
+    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3287,6 +3383,13 @@ references:
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize
+  name: MaxRealPixelSize
+  nameWithType: SkiaControl.MaxRealPixelSize
+  fullName: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
 - uid: DrawnUi.Draw.SkiaControl.Initialized
   commentId: E:DrawnUi.Draw.SkiaControl.Initialized
   parent: DrawnUi.Draw.SkiaControl
@@ -3840,6 +3943,13 @@ references:
   name: CachedImage
   nameWithType: SkiaControl.CachedImage
   fullName: DrawnUi.Draw.SkiaControl.CachedImage
+- uid: DrawnUi.Draw.SkiaControl.LeftProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.LeftProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty
+  name: LeftProperty
+  nameWithType: SkiaControl.LeftProperty
+  fullName: DrawnUi.Draw.SkiaControl.LeftProperty
 - uid: DrawnUi.Draw.SkiaControl.Left
   commentId: P:DrawnUi.Draw.SkiaControl.Left
   parent: DrawnUi.Draw.SkiaControl
@@ -3847,6 +3957,13 @@ references:
   name: Left
   nameWithType: SkiaControl.Left
   fullName: DrawnUi.Draw.SkiaControl.Left
+- uid: DrawnUi.Draw.SkiaControl.TopProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TopProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty
+  name: TopProperty
+  nameWithType: SkiaControl.TopProperty
+  fullName: DrawnUi.Draw.SkiaControl.TopProperty
 - uid: DrawnUi.Draw.SkiaControl.Top
   commentId: P:DrawnUi.Draw.SkiaControl.Top
   parent: DrawnUi.Draw.SkiaControl
@@ -5835,6 +5952,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -5855,6 +5973,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -5886,6 +6005,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -5906,6 +6026,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -6162,6 +6283,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -6187,6 +6309,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -6223,6 +6346,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -6248,6 +6372,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -6285,6 +6410,7 @@ references:
 - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
   href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   name: CheckChildrenGesturesLocked(TouchActionResult)
   nameWithType: SkiaControl.CheckChildrenGesturesLocked(TouchActionResult)
@@ -6296,6 +6422,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
   spec.vb:
   - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
@@ -6304,6 +6431,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -20770,6 +20898,137 @@ references:
     href: DrawnUi.Draw.SkiaEditorSelection.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaEditorSelection})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<SkiaEditorSelection, TSource>(SkiaEditorSelection, TSource, string, Action<SkiaEditorSelection>, string, Action<TSource, SkiaEditorSelection>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<SkiaEditorSelection, TSource>(SkiaEditorSelection, TSource, string, Action<SkiaEditorSelection>, string, Action<TSource, SkiaEditorSelection>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<DrawnUi.Draw.SkiaEditorSelection, TSource>(DrawnUi.Draw.SkiaEditorSelection, TSource, string, System.Action<DrawnUi.Draw.SkiaEditorSelection>, string, System.Action<TSource, DrawnUi.Draw.SkiaEditorSelection>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of SkiaEditorSelection, TSource)(SkiaEditorSelection, TSource, String, Action(Of SkiaEditorSelection), String, Action(Of TSource, SkiaEditorSelection))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of DrawnUi.Draw.SkiaEditorSelection, TSource)(DrawnUi.Draw.SkiaEditorSelection, TSource, String, System.Action(Of DrawnUi.Draw.SkiaEditorSelection), String, System.Action(Of TSource, DrawnUi.Draw.SkiaEditorSelection))
+  name.vb: ObservePropertyTwoWay(Of SkiaEditorSelection, TSource)(SkiaEditorSelection, TSource, String, Action(Of SkiaEditorSelection), String, Action(Of TSource, SkiaEditorSelection))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Draw.SkiaEditorSelection,``1,System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection},System.String,System.Action{``1,DrawnUi.Draw.SkiaEditorSelection})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Draw.SkiaEditorSelection,``1,System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection},System.String,System.Action{``1,DrawnUi.Draw.SkiaEditorSelection})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditorSelection
+    name: SkiaEditorSelection
+    href: DrawnUi.Draw.SkiaEditorSelection.html
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Draw.SkiaEditorSelection})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   parent: DrawnUi.Draw.FluentExtensions
@@ -25866,6 +26125,120 @@ references:
   - name: T
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, System.Action<T>, string, System.Action<TSource, T>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, System.Action(Of T), String, System.Action(Of TSource, T))
+  name.vb: ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   isExternal: true
@@ -28316,6 +28689,93 @@ references:
   name: SkiaLabel
   nameWithType: SkiaLabel
   fullName: DrawnUi.Draw.SkiaLabel
+- uid: DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride*
+  commentId: Overload:DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride
+  href: DrawnUi.Draw.SkiaEditorSelection.html#DrawnUi_Draw_SkiaEditorSelection_GetLineGlyphsOverride
+  name: GetLineGlyphsOverride
+  nameWithType: SkiaEditorSelection.GetLineGlyphsOverride
+  fullName: DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride
+- uid: System.Func{DrawnUi.Draw.TextLine,DrawnUi.Draw.LineGlyph[]}
+  commentId: T:System.Func{DrawnUi.Draw.TextLine,DrawnUi.Draw.LineGlyph[]}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TextLine, LineGlyph[]>
+  nameWithType: Func<TextLine, LineGlyph[]>
+  fullName: System.Func<DrawnUi.Draw.TextLine, DrawnUi.Draw.LineGlyph[]>
+  nameWithType.vb: Func(Of TextLine, LineGlyph())
+  fullName.vb: System.Func(Of DrawnUi.Draw.TextLine, DrawnUi.Draw.LineGlyph())
+  name.vb: Func(Of TextLine, LineGlyph())
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: DrawnUi.Draw.TextLine
+    name: TextLine
+    href: DrawnUi.Draw.TextLine.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LineGlyph
+    name: LineGlyph
+    href: DrawnUi.Draw.LineGlyph.html
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.TextLine
+    name: TextLine
+    href: DrawnUi.Draw.TextLine.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LineGlyph
+    name: LineGlyph
+    href: DrawnUi.Draw.LineGlyph.html
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
 - uid: DrawnUi.Draw.SkiaEditorSelection.SelectionStart*
   commentId: Overload:DrawnUi.Draw.SkiaEditorSelection.SelectionStart
   href: DrawnUi.Draw.SkiaEditorSelection.html#DrawnUi_Draw_SkiaEditorSelection_SelectionStart
@@ -28390,6 +28850,33 @@ references:
     name: Graphics
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics
+- uid: DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter*
+  commentId: Overload:DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter
+  href: DrawnUi.Draw.SkiaEditorSelection.html#DrawnUi_Draw_SkiaEditorSelection_LeftHandleCenter
+  name: LeftHandleCenter
+  nameWithType: SkiaEditorSelection.LeftHandleCenter
+  fullName: DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter
+- uid: SkiaSharp.SKPoint
+  commentId: T:SkiaSharp.SKPoint
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  name: SKPoint
+  nameWithType: SKPoint
+  fullName: SkiaSharp.SKPoint
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter*
+  commentId: Overload:DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter
+  href: DrawnUi.Draw.SkiaEditorSelection.html#DrawnUi_Draw_SkiaEditorSelection_RightHandleCenter
+  name: RightHandleCenter
+  nameWithType: SkiaEditorSelection.RightHandleCenter
+  fullName: DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter
 - uid: DrawnUi.Draw.SkiaControl.Paint(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.Paint(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl

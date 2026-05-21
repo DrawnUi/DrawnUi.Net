@@ -1,4 +1,6 @@
 using SKBitmap = SkiaSharp.SKBitmap;
+using SKData = SkiaSharp.SKData;
+using SKMemoryStream = SkiaSharp.SKMemoryStream;
 
 namespace DrawnUi.Draw;
 
@@ -55,12 +57,18 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
                 { "iImage2", secondaryTexture } //secondary
             };
         }
-        else
+
+        if (primaryTexture != null)
         {
             return new SKRuntimeEffectChildren(CompiledShader)
             {
+                { "iImage1", primaryTexture }
             };
         }
+
+        return new SKRuntimeEffectChildren(CompiledShader)
+        {
+        };
     }
 
     //normally primary texture comes from the parent control
@@ -237,8 +245,7 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
             }
             else
             {
-                using var stream = await OpenPackageFileStreamAsync(fileName);
-                LoadedPrimaryBitmap = SKBitmap.Decode(stream);
+                LoadedPrimaryBitmap = await DecodePackageBitmapAsync(fileName);
             }
 
             _primarySourceBitmapResized = false;
@@ -393,8 +400,7 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
             }
             else
             {
-                using var stream = await OpenPackageFileStreamAsync(fileName);
-                LoadedSecondaryBitmap = SKBitmap.Decode(stream);
+                LoadedSecondaryBitmap = await DecodePackageBitmapAsync(fileName);
             }
 
             _secondarySourceSet = false;
@@ -412,13 +418,17 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
         }
     }
 
-        protected virtual async Task<Stream> OpenPackageFileStreamAsync(string fileName)
+        protected virtual async Task<SKBitmap> DecodePackageBitmapAsync(string fileName)
         {
     #if BROWSER || DRAWNUI_NET
         var httpClient = Super.Services.GetService(typeof(HttpClient)) as HttpClient ?? new HttpClient();
-        return await httpClient.GetStreamAsync(fileName);
+        var bytes = await httpClient.GetByteArrayAsync(fileName);
+        using var skStream = new SKMemoryStream(bytes);
+        using var data = skStream.GetData();
+        return data != null ? SKBitmap.Decode(data) : SKBitmap.Decode(skStream);
     #else
-        return await FileSystem.OpenAppPackageFileAsync(fileName);
+        using var stream = await FileSystem.OpenAppPackageFileAsync(fileName);
+        return SKBitmap.Decode(stream);
     #endif
         }
 

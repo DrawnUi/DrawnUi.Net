@@ -29,6 +29,8 @@ items:
   - DrawnUi.Draw.SkiaSvg.IconFilePathProperty
   - DrawnUi.Draw.SkiaSvg.InflateAmount
   - DrawnUi.Draw.SkiaSvg.InflateAmountProperty
+  - DrawnUi.Draw.SkiaSvg.InitializeAsync(System.Threading.CancellationToken)
+  - DrawnUi.Draw.SkiaSvg.Initialized
   - DrawnUi.Draw.SkiaSvg.LoadSource(System.String)
   - DrawnUi.Draw.SkiaSvg.LoadSvgFromBytes(System.Byte[])
   - DrawnUi.Draw.SkiaSvg.LoadedString
@@ -36,6 +38,8 @@ items:
   - DrawnUi.Draw.SkiaSvg.OnDisposing
   - DrawnUi.Draw.SkiaSvg.OnPropertyChanged(System.String)
   - DrawnUi.Draw.SkiaSvg.Paint(DrawnUi.Draw.DrawingContext)
+  - DrawnUi.Draw.SkiaSvg.RegisterSource(System.String)
+  - DrawnUi.Draw.SkiaSvg.RegisterSource(System.String,System.String)
   - DrawnUi.Draw.SkiaSvg.RenderingPaint
   - DrawnUi.Draw.SkiaSvg.ShadowBlur
   - DrawnUi.Draw.SkiaSvg.ShadowBlurProperty
@@ -216,7 +220,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DirtyChildrenTracker
   - DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
   - DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
-  - DrawnUi.Draw.SkiaControl.Initialized
+  - DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   - DrawnUi.Draw.SkiaControl.Destroyed
   - DrawnUi.Draw.SkiaControl.GetRandomColor
   - DrawnUi.Draw.SkiaControl.UsingControlStyle
@@ -241,7 +245,9 @@ items:
   - DrawnUi.Draw.SkiaControl.IsHovered
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
+  - DrawnUi.Draw.SkiaControl.LeftProperty
   - DrawnUi.Draw.SkiaControl.Left
+  - DrawnUi.Draw.SkiaControl.TopProperty
   - DrawnUi.Draw.SkiaControl.Top
   - DrawnUi.Draw.SkiaControl.ControlStyleProperty
   - DrawnUi.Draw.SkiaControl.ControlStyle
@@ -950,6 +956,7 @@ items:
   - DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaSvg})
   - DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaSvg})
   - DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Draw.SkiaSvg})
+  - DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaSvg},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaSvg})
   - DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Draw.SkiaSvg})
   - DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObserveProperty``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaSvg})
   - DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObserveSelf``1(System.Action{DrawnUi.Draw.SkiaSvg,System.String})
@@ -2496,7 +2503,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceProperty
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 432
+    startLine: 440
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2523,7 +2530,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Source
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 438
+    startLine: 446
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2534,6 +2541,132 @@ items:
       type: System.String
     content.vb: Public Property Source As String
   overload: DrawnUi.Draw.SkiaSvg.Source*
+- uid: DrawnUi.Draw.SkiaSvg.Initialized
+  commentId: P:DrawnUi.Draw.SkiaSvg.Initialized
+  id: Initialized
+  parent: DrawnUi.Draw.SkiaSvg
+  langs:
+  - csharp
+  - vb
+  name: Initialized
+  nameWithType: SkiaSvg.Initialized
+  fullName: DrawnUi.Draw.SkiaSvg.Initialized
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Draw/Svg/SkiaSvg.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Initialized
+    path: ../src/Shared/Draw/Svg/SkiaSvg.cs
+    startLine: 465
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static bool Initialized { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property Initialized As Boolean
+  overload: DrawnUi.Draw.SkiaSvg.Initialized*
+- uid: DrawnUi.Draw.SkiaSvg.RegisterSource(System.String)
+  commentId: M:DrawnUi.Draw.SkiaSvg.RegisterSource(System.String)
+  id: RegisterSource(System.String)
+  parent: DrawnUi.Draw.SkiaSvg
+  langs:
+  - csharp
+  - vb
+  name: RegisterSource(string)
+  nameWithType: SkiaSvg.RegisterSource(string)
+  fullName: DrawnUi.Draw.SkiaSvg.RegisterSource(string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Draw/Svg/SkiaSvg.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RegisterSource
+    path: ../src/Shared/Draw/Svg/SkiaSvg.cs
+    startLine: 541
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static void RegisterSource(string sourceUrl)
+    parameters:
+    - id: sourceUrl
+      type: System.String
+    content.vb: Public Shared Sub RegisterSource(sourceUrl As String)
+  overload: DrawnUi.Draw.SkiaSvg.RegisterSource*
+  nameWithType.vb: SkiaSvg.RegisterSource(String)
+  fullName.vb: DrawnUi.Draw.SkiaSvg.RegisterSource(String)
+  name.vb: RegisterSource(String)
+- uid: DrawnUi.Draw.SkiaSvg.RegisterSource(System.String,System.String)
+  commentId: M:DrawnUi.Draw.SkiaSvg.RegisterSource(System.String,System.String)
+  id: RegisterSource(System.String,System.String)
+  parent: DrawnUi.Draw.SkiaSvg
+  langs:
+  - csharp
+  - vb
+  name: RegisterSource(string, string)
+  nameWithType: SkiaSvg.RegisterSource(string, string)
+  fullName: DrawnUi.Draw.SkiaSvg.RegisterSource(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Draw/Svg/SkiaSvg.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RegisterSource
+    path: ../src/Shared/Draw/Svg/SkiaSvg.cs
+    startLine: 552
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static void RegisterSource(string alias, string sourceUrl)
+    parameters:
+    - id: alias
+      type: System.String
+    - id: sourceUrl
+      type: System.String
+    content.vb: Public Shared Sub RegisterSource([alias] As String, sourceUrl As String)
+  overload: DrawnUi.Draw.SkiaSvg.RegisterSource*
+  nameWithType.vb: SkiaSvg.RegisterSource(String, String)
+  fullName.vb: DrawnUi.Draw.SkiaSvg.RegisterSource(String, String)
+  name.vb: RegisterSource(String, String)
+- uid: DrawnUi.Draw.SkiaSvg.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:DrawnUi.Draw.SkiaSvg.InitializeAsync(System.Threading.CancellationToken)
+  id: InitializeAsync(System.Threading.CancellationToken)
+  parent: DrawnUi.Draw.SkiaSvg
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(CancellationToken)
+  nameWithType: SkiaSvg.InitializeAsync(CancellationToken)
+  fullName: DrawnUi.Draw.SkiaSvg.InitializeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Draw/Svg/SkiaSvg.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: InitializeAsync
+    path: ../src/Shared/Draw/Svg/SkiaSvg.cs
+    startLine: 567
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static Task InitializeAsync(CancellationToken cancellationToken = default)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function InitializeAsync(cancellationToken As CancellationToken = Nothing) As Task
+  overload: DrawnUi.Draw.SkiaSvg.InitializeAsync*
 - uid: DrawnUi.Draw.SkiaSvg.LoadSource(System.String)
   commentId: M:DrawnUi.Draw.SkiaSvg.LoadSource(System.String)
   id: LoadSource(System.String)
@@ -2552,7 +2685,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSource
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 494
+    startLine: 626
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2586,7 +2719,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Success
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 524
+    startLine: 656
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2613,7 +2746,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Error
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 525
+    startLine: 657
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2640,7 +2773,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateDisplayRect
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 527
+    startLine: 659
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2682,7 +2815,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawPicture
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 563
+    startLine: 695
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2723,7 +2856,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomProperty
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 621
+    startLine: 753
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2750,7 +2883,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Zoom
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 625
+    startLine: 757
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2779,7 +2912,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSvgFromBytes
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 631
+    startLine: 763
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2813,7 +2946,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateSvg
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 655
+    startLine: 787
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2847,7 +2980,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/Draw/Svg/SkiaSvg.cs
-    startLine: 753
+    startLine: 885
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4988,13 +5121,13 @@ references:
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.Initialized
-  commentId: E:DrawnUi.Draw.SkiaControl.Initialized
+- uid: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Initialized
-  name: Initialized
-  nameWithType: SkiaControl.Initialized
-  fullName: DrawnUi.Draw.SkiaControl.Initialized
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize
+  name: MaxRealPixelSize
+  nameWithType: SkiaControl.MaxRealPixelSize
+  fullName: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
 - uid: DrawnUi.Draw.SkiaControl.Destroyed
   commentId: E:DrawnUi.Draw.SkiaControl.Destroyed
   parent: DrawnUi.Draw.SkiaControl
@@ -5541,6 +5674,13 @@ references:
   name: CachedImage
   nameWithType: SkiaControl.CachedImage
   fullName: DrawnUi.Draw.SkiaControl.CachedImage
+- uid: DrawnUi.Draw.SkiaControl.LeftProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.LeftProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty
+  name: LeftProperty
+  nameWithType: SkiaControl.LeftProperty
+  fullName: DrawnUi.Draw.SkiaControl.LeftProperty
 - uid: DrawnUi.Draw.SkiaControl.Left
   commentId: P:DrawnUi.Draw.SkiaControl.Left
   parent: DrawnUi.Draw.SkiaControl
@@ -5548,6 +5688,13 @@ references:
   name: Left
   nameWithType: SkiaControl.Left
   fullName: DrawnUi.Draw.SkiaControl.Left
+- uid: DrawnUi.Draw.SkiaControl.TopProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TopProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty
+  name: TopProperty
+  nameWithType: SkiaControl.TopProperty
+  fullName: DrawnUi.Draw.SkiaControl.TopProperty
 - uid: DrawnUi.Draw.SkiaControl.Top
   commentId: P:DrawnUi.Draw.SkiaControl.Top
   parent: DrawnUi.Draw.SkiaControl
@@ -7536,6 +7683,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7556,6 +7704,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7587,6 +7736,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7607,6 +7757,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7863,6 +8014,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7888,6 +8040,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7924,6 +8077,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7949,6 +8103,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7986,6 +8141,7 @@ references:
 - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
   href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   name: CheckChildrenGesturesLocked(TouchActionResult)
   nameWithType: SkiaControl.CheckChildrenGesturesLocked(TouchActionResult)
@@ -7997,6 +8153,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
   spec.vb:
   - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
@@ -8005,6 +8162,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -22471,6 +22629,137 @@ references:
     href: DrawnUi.Draw.SkiaSvg.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaSvg},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaSvg})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<SkiaSvg, TSource>(SkiaSvg, TSource, string, Action<SkiaSvg>, string, Action<TSource, SkiaSvg>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<SkiaSvg, TSource>(SkiaSvg, TSource, string, Action<SkiaSvg>, string, Action<TSource, SkiaSvg>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<DrawnUi.Draw.SkiaSvg, TSource>(DrawnUi.Draw.SkiaSvg, TSource, string, System.Action<DrawnUi.Draw.SkiaSvg>, string, System.Action<TSource, DrawnUi.Draw.SkiaSvg>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of SkiaSvg, TSource)(SkiaSvg, TSource, String, Action(Of SkiaSvg), String, Action(Of TSource, SkiaSvg))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of DrawnUi.Draw.SkiaSvg, TSource)(DrawnUi.Draw.SkiaSvg, TSource, String, System.Action(Of DrawnUi.Draw.SkiaSvg), String, System.Action(Of TSource, DrawnUi.Draw.SkiaSvg))
+  name.vb: ObservePropertyTwoWay(Of SkiaSvg, TSource)(SkiaSvg, TSource, String, Action(Of SkiaSvg), String, Action(Of TSource, SkiaSvg))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Draw.SkiaSvg,``1,System.String,System.Action{DrawnUi.Draw.SkiaSvg},System.String,System.Action{``1,DrawnUi.Draw.SkiaSvg})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Draw.SkiaSvg,``1,System.String,System.Action{DrawnUi.Draw.SkiaSvg},System.String,System.Action{``1,DrawnUi.Draw.SkiaSvg})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaSvg
+    name: SkiaSvg
+    href: DrawnUi.Draw.SkiaSvg.html
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaSvg.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Draw.SkiaSvg})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   parent: DrawnUi.Draw.FluentExtensions
@@ -27567,6 +27856,120 @@ references:
   - name: T
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, System.Action<T>, string, System.Action<TSource, T>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, System.Action(Of T), String, System.Action(Of TSource, T))
+  name.vb: ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   isExternal: true
@@ -30409,12 +30812,32 @@ references:
   name: Source
   nameWithType: SkiaSvg.Source
   fullName: DrawnUi.Draw.SkiaSvg.Source
-- uid: DrawnUi.Draw.SkiaSvg.LoadSource*
-  commentId: Overload:DrawnUi.Draw.SkiaSvg.LoadSource
-  href: DrawnUi.Draw.SkiaSvg.html#DrawnUi_Draw_SkiaSvg_LoadSource_System_String_
-  name: LoadSource
-  nameWithType: SkiaSvg.LoadSource
-  fullName: DrawnUi.Draw.SkiaSvg.LoadSource
+- uid: DrawnUi.Draw.SkiaSvg.Initialized*
+  commentId: Overload:DrawnUi.Draw.SkiaSvg.Initialized
+  href: DrawnUi.Draw.SkiaSvg.html#DrawnUi_Draw_SkiaSvg_Initialized
+  name: Initialized
+  nameWithType: SkiaSvg.Initialized
+  fullName: DrawnUi.Draw.SkiaSvg.Initialized
+- uid: DrawnUi.Draw.SkiaSvg.RegisterSource*
+  commentId: Overload:DrawnUi.Draw.SkiaSvg.RegisterSource
+  href: DrawnUi.Draw.SkiaSvg.html#DrawnUi_Draw_SkiaSvg_RegisterSource_System_String_
+  name: RegisterSource
+  nameWithType: SkiaSvg.RegisterSource
+  fullName: DrawnUi.Draw.SkiaSvg.RegisterSource
+- uid: DrawnUi.Draw.SkiaSvg.InitializeAsync*
+  commentId: Overload:DrawnUi.Draw.SkiaSvg.InitializeAsync
+  href: DrawnUi.Draw.SkiaSvg.html#DrawnUi_Draw_SkiaSvg_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync
+  nameWithType: SkiaSvg.InitializeAsync
+  fullName: DrawnUi.Draw.SkiaSvg.InitializeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks.Task
   commentId: T:System.Threading.Tasks.Task
   parent: System.Threading.Tasks
@@ -30423,6 +30846,33 @@ references:
   name: Task
   nameWithType: Task
   fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Threading.Tasks
   commentId: N:System.Threading.Tasks
   isExternal: true
@@ -30460,6 +30910,12 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: DrawnUi.Draw.SkiaSvg.LoadSource*
+  commentId: Overload:DrawnUi.Draw.SkiaSvg.LoadSource
+  href: DrawnUi.Draw.SkiaSvg.html#DrawnUi_Draw_SkiaSvg_LoadSource_System_String_
+  name: LoadSource
+  nameWithType: SkiaSvg.LoadSource
+  fullName: DrawnUi.Draw.SkiaSvg.LoadSource
 - uid: System.EventHandler{System.String}
   commentId: T:System.EventHandler{System.String}
   parent: System

@@ -7,7 +7,10 @@ items:
   children:
   - DrawnUi.Controls.SkiaSpriteSet.#ctor
   - DrawnUi.Controls.SkiaSpriteSet.CurrentSprite
-  - DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean)
+  - DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean,DrawnUi.Controls.SpritePlacementConfig)
+  - DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto
+  - DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal
+  - DrawnUi.Controls.SkiaSpriteSet.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
   - DrawnUi.Controls.SkiaSpriteSet.OnChangeState(System.Int32,System.Int32)
   - DrawnUi.Controls.SkiaSpriteSet.State
   - DrawnUi.Controls.SkiaSpriteSet.StateProperty
@@ -25,7 +28,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaSpriteSet
     path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
-    startLine: 10
+    startLine: 21
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -111,6 +114,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.OnAfterDrawingVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack})
   - DrawnUi.Draw.SkiaLayout.GetStackChildDrawRect(System.Int32,System.Single,System.Single,DrawnUi.Draw.ControlInStack)
   - DrawnUi.Draw.SkiaLayout.DrawStack(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure)
+  - DrawnUi.Draw.SkiaLayout.OnScaleChanged
   - DrawnUi.Draw.SkiaLayout.PreArrange(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaLayout.IsGestureForChild(DrawnUi.Draw.SkiaControlWithRect,SkiaSharp.SKPoint)
   - DrawnUi.Draw.SkiaLayout.ApplyBindingContext
@@ -156,7 +160,6 @@ items:
   - DrawnUi.Draw.SkiaLayout.DrawChild(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.ISkiaControl)
   - DrawnUi.Draw.SkiaLayout.SetChildren(System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})
   - DrawnUi.Draw.SkiaLayout.OnMeasured
-  - DrawnUi.Draw.SkiaLayout.InvalidateInternal
   - DrawnUi.Draw.SkiaLayout.templatesInvalidated
   - DrawnUi.Draw.SkiaLayout.InvalidateViewsList
   - DrawnUi.Draw.SkiaLayout.ActualizeSubviews
@@ -359,6 +362,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DirtyChildrenTracker
   - DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
   - DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   - DrawnUi.Draw.SkiaControl.Initialized
   - DrawnUi.Draw.SkiaControl.Destroyed
   - DrawnUi.Draw.SkiaControl.GetRandomColor
@@ -383,7 +387,9 @@ items:
   - DrawnUi.Draw.SkiaControl.IsHovered
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
+  - DrawnUi.Draw.SkiaControl.LeftProperty
   - DrawnUi.Draw.SkiaControl.Left
+  - DrawnUi.Draw.SkiaControl.TopProperty
   - DrawnUi.Draw.SkiaControl.Top
   - DrawnUi.Draw.SkiaControl.ControlStyleProperty
   - DrawnUi.Draw.SkiaControl.ControlStyle
@@ -599,7 +605,6 @@ items:
   - DrawnUi.Draw.SkiaControl.RenderingScaleProperty
   - DrawnUi.Draw.SkiaControl.RenderingScale
   - DrawnUi.Draw.SkiaControl.RenderedAtDestination
-  - DrawnUi.Draw.SkiaControl.OnScaleChanged
   - DrawnUi.Draw.SkiaControl.SetPropertyValue(Microsoft.Maui.Controls.BindableProperty,System.Object)
   - DrawnUi.Draw.SkiaControl.Uid
   - DrawnUi.Draw.SkiaControl.DegreesToRadians(System.Single)
@@ -634,7 +639,6 @@ items:
   - DrawnUi.Draw.SkiaControl.DrawingRect
   - DrawnUi.Draw.SkiaControl.DirtyRegion
   - DrawnUi.Draw.SkiaControl.HitIsInside(System.Single,System.Single)
-  - DrawnUi.Draw.SkiaControl.HitBoxAuto
   - DrawnUi.Draw.SkiaControl.IsGestureForChild(DrawnUi.Draw.ISkiaGestureListener,SkiaSharp.SKPoint)
   - DrawnUi.Draw.SkiaControl.IsGestureForChild(DrawnUi.Draw.ISkiaGestureListener,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.ApplyTransforms(SkiaSharp.SKRect)
@@ -722,7 +726,6 @@ items:
   - DrawnUi.Draw.SkiaControl.UpdateWhenReturnedFromBackground
   - DrawnUi.Draw.SkiaControl.OnSuperviewShouldRenderChanged(System.Boolean)
   - DrawnUi.Draw.SkiaControl.NeedToMeasureSelf
-  - DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.IsRendering
   - DrawnUi.Draw.SkiaControl.NodeAttached
   - DrawnUi.Draw.SkiaControl.FindRenderedNode(DrawnUi.Draw.SkiaControl)
@@ -1062,6 +1065,7 @@ items:
   - DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaSpriteSet})
   - DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaSpriteSet})
   - DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet})
+  - DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet},System.String,System.Action{{TSource},DrawnUi.Controls.SkiaSpriteSet})
   - DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet})
   - DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObserveProperty``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet})
   - DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObserveSelf``1(System.Action{DrawnUi.Controls.SkiaSpriteSet,System.String})
@@ -1145,7 +1149,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
-    startLine: 13
+    startLine: 24
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1156,6 +1160,51 @@ items:
   nameWithType.vb: SkiaSpriteSet.New()
   fullName.vb: DrawnUi.Controls.SkiaSpriteSet.New()
   name.vb: New()
+- uid: DrawnUi.Controls.SkiaSpriteSet.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Controls.SkiaSpriteSet.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+  id: MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+  parent: DrawnUi.Controls.SkiaSpriteSet
+  langs:
+  - csharp
+  - vb
+  name: MeasureSelf(SKRect, float, float, float)
+  nameWithType: SkiaSpriteSet.MeasureSelf(SKRect, float, float, float)
+  fullName: DrawnUi.Controls.SkiaSpriteSet.MeasureSelf(SkiaSharp.SKRect, float, float, float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: MeasureSelf
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 29
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: Self measuring, for top controls and those invalidated-redrawn when parents didn't re-measure them
+  example: []
+  syntax:
+    content: protected override void MeasureSelf(SKRect destination, float widthRequest, float heightRequest, float scale)
+    parameters:
+    - id: destination
+      type: SkiaSharp.SKRect
+      description: ''
+    - id: widthRequest
+      type: System.Single
+      description: ''
+    - id: heightRequest
+      type: System.Single
+      description: ''
+    - id: scale
+      type: System.Single
+      description: ''
+    content.vb: Protected Overrides Sub MeasureSelf(destination As SKRect, widthRequest As Single, heightRequest As Single, scale As Single)
+  overridden: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+  overload: DrawnUi.Controls.SkiaSpriteSet.MeasureSelf*
+  nameWithType.vb: SkiaSpriteSet.MeasureSelf(SKRect, Single, Single, Single)
+  fullName.vb: DrawnUi.Controls.SkiaSpriteSet.MeasureSelf(SkiaSharp.SKRect, Single, Single, Single)
+  name.vb: MeasureSelf(SKRect, Single, Single, Single)
 - uid: DrawnUi.Controls.SkiaSpriteSet.StateProperty
   commentId: F:DrawnUi.Controls.SkiaSpriteSet.StateProperty
   id: StateProperty
@@ -1174,7 +1223,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: StateProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
-    startLine: 21
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1201,7 +1250,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: State
     path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
-    startLine: 28
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1214,16 +1263,45 @@ items:
       type: System.Int32
     content.vb: Public Property State As Integer
   overload: DrawnUi.Controls.SkiaSpriteSet.State*
-- uid: DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean)
-  commentId: M:DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean)
-  id: Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean)
+- uid: DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal
+  commentId: M:DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal
+  id: InvalidateInternal
   parent: DrawnUi.Controls.SkiaSpriteSet
   langs:
   - csharp
   - vb
-  name: Define(int, string, int, int, double, int, bool)
-  nameWithType: SkiaSpriteSet.Define(int, string, int, int, double, int, bool)
-  fullName: DrawnUi.Controls.SkiaSpriteSet.Define(int, string, int, int, double, int, bool)
+  name: InvalidateInternal()
+  nameWithType: SkiaSpriteSet.InvalidateInternal()
+  fullName: DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: InvalidateInternal
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 52
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
+  example: []
+  syntax:
+    content: public override void InvalidateInternal()
+    content.vb: Public Overrides Sub InvalidateInternal()
+  overridden: DrawnUi.Draw.SkiaLayout.InvalidateInternal
+  overload: DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal*
+- uid: DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean,DrawnUi.Controls.SpritePlacementConfig)
+  commentId: M:DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean,DrawnUi.Controls.SpritePlacementConfig)
+  id: Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean,DrawnUi.Controls.SpritePlacementConfig)
+  parent: DrawnUi.Controls.SkiaSpriteSet
+  langs:
+  - csharp
+  - vb
+  name: Define(int, string, int, int, double, int, bool, SpritePlacementConfig)
+  nameWithType: SkiaSpriteSet.Define(int, string, int, int, double, int, bool, SpritePlacementConfig)
+  fullName: DrawnUi.Controls.SkiaSpriteSet.Define(int, string, int, int, double, int, bool, DrawnUi.Controls.SpritePlacementConfig)
   type: Method
   source:
     remote:
@@ -1232,7 +1310,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Define
     path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
-    startLine: 38
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1242,7 +1320,7 @@ items:
     If this state equals the current State and no active sprite exists yet, it becomes active immediately.
   example: []
   syntax:
-    content: public SkiaSpriteSet Define(int state, string source, int columns, int rows, double fps = 15, int repeat = -1, bool autoPlay = true)
+    content: public SkiaSpriteSet Define(int state, string source, int columns, int rows, double fps = 15, int repeat = -1, bool autoPlay = true, SpritePlacementConfig placement = null)
     parameters:
     - id: state
       type: System.Int32
@@ -1258,13 +1336,15 @@ items:
       type: System.Int32
     - id: autoPlay
       type: System.Boolean
+    - id: placement
+      type: DrawnUi.Controls.SpritePlacementConfig
     return:
       type: DrawnUi.Controls.SkiaSpriteSet
-    content.vb: Public Function Define(state As Integer, source As String, columns As Integer, rows As Integer, fps As Double = 15, repeat As Integer = -1, autoPlay As Boolean = True) As SkiaSpriteSet
+    content.vb: Public Function Define(state As Integer, source As String, columns As Integer, rows As Integer, fps As Double = 15, repeat As Integer = -1, autoPlay As Boolean = True, placement As SpritePlacementConfig = Nothing) As SkiaSpriteSet
   overload: DrawnUi.Controls.SkiaSpriteSet.Define*
-  nameWithType.vb: SkiaSpriteSet.Define(Integer, String, Integer, Integer, Double, Integer, Boolean)
-  fullName.vb: DrawnUi.Controls.SkiaSpriteSet.Define(Integer, String, Integer, Integer, Double, Integer, Boolean)
-  name.vb: Define(Integer, String, Integer, Integer, Double, Integer, Boolean)
+  nameWithType.vb: SkiaSpriteSet.Define(Integer, String, Integer, Integer, Double, Integer, Boolean, SpritePlacementConfig)
+  fullName.vb: DrawnUi.Controls.SkiaSpriteSet.Define(Integer, String, Integer, Integer, Double, Integer, Boolean, DrawnUi.Controls.SpritePlacementConfig)
+  name.vb: Define(Integer, String, Integer, Integer, Double, Integer, Boolean, SpritePlacementConfig)
 - uid: DrawnUi.Controls.SkiaSpriteSet.CurrentSprite
   commentId: P:DrawnUi.Controls.SkiaSpriteSet.CurrentSprite
   id: CurrentSprite
@@ -1283,7 +1363,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentSprite
     path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
-    startLine: 66
+    startLine: 97
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1296,6 +1376,49 @@ items:
       type: DrawnUi.Controls.SkiaSprite
     content.vb: Public ReadOnly Property CurrentSprite As SkiaSprite
   overload: DrawnUi.Controls.SkiaSpriteSet.CurrentSprite*
+- uid: DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto
+  commentId: P:DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto
+  id: HitBoxAuto
+  parent: DrawnUi.Controls.SkiaSpriteSet
+  langs:
+  - csharp
+  - vb
+  name: HitBoxAuto
+  nameWithType: SkiaSpriteSet.HitBoxAuto
+  fullName: DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: HitBoxAuto
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 99
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: >-
+    This can be absolutely false if we are inside a cached 
+
+    rendering object parent that already moved somewhere.
+
+    So coords will be of the moment we were first drawn,
+
+    while if cached parent moved, our coords might differ.
+
+    todo detect if parent is cached somewhere and offset hotbox by cached parent movement offset...
+
+    todo think about it baby =) meanwhile just do not set gestures below cached level
+  example: []
+  syntax:
+    content: public override SKRect HitBoxAuto { get; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKRect
+    content.vb: Public Overrides ReadOnly Property HitBoxAuto As SKRect
+  overridden: DrawnUi.Draw.SkiaControl.HitBoxAuto
+  overload: DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto*
 - uid: DrawnUi.Controls.SkiaSpriteSet.OnChangeState(System.Int32,System.Int32)
   commentId: M:DrawnUi.Controls.SkiaSpriteSet.OnChangeState(System.Int32,System.Int32)
   id: OnChangeState(System.Int32,System.Int32)
@@ -1314,7 +1437,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChangeState
     path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
-    startLine: 96
+    startLine: 149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2732,6 +2855,25 @@ references:
     name: LayoutStructure
     href: DrawnUi.Draw.LayoutStructure.html
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.OnScaleChanged
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnScaleChanged
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnScaleChanged
+  name: OnScaleChanged()
+  nameWithType: SkiaLayout.OnScaleChanged()
+  fullName: DrawnUi.Draw.SkiaLayout.OnScaleChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnScaleChanged
+    name: OnScaleChanged
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnScaleChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnScaleChanged
+    name: OnScaleChanged
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnScaleChanged
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.PreArrange(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
   commentId: M:DrawnUi.Draw.SkiaLayout.PreArrange(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaLayout
@@ -3505,25 +3647,6 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.OnMeasured
     name: OnMeasured
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnMeasured
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaLayout.InvalidateInternal
-  commentId: M:DrawnUi.Draw.SkiaLayout.InvalidateInternal
-  parent: DrawnUi.Draw.SkiaLayout
-  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_InvalidateInternal
-  name: InvalidateInternal()
-  nameWithType: SkiaLayout.InvalidateInternal()
-  fullName: DrawnUi.Draw.SkiaLayout.InvalidateInternal()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaLayout.InvalidateInternal
-    name: InvalidateInternal
-    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_InvalidateInternal
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaLayout.InvalidateInternal
-    name: InvalidateInternal
-    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_InvalidateInternal
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.templatesInvalidated
@@ -7738,6 +7861,13 @@ references:
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize
+  name: MaxRealPixelSize
+  nameWithType: SkiaControl.MaxRealPixelSize
+  fullName: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
 - uid: DrawnUi.Draw.SkiaControl.Initialized
   commentId: E:DrawnUi.Draw.SkiaControl.Initialized
   parent: DrawnUi.Draw.SkiaControl
@@ -8272,6 +8402,13 @@ references:
   name: CachedImage
   nameWithType: SkiaControl.CachedImage
   fullName: DrawnUi.Draw.SkiaControl.CachedImage
+- uid: DrawnUi.Draw.SkiaControl.LeftProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.LeftProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty
+  name: LeftProperty
+  nameWithType: SkiaControl.LeftProperty
+  fullName: DrawnUi.Draw.SkiaControl.LeftProperty
 - uid: DrawnUi.Draw.SkiaControl.Left
   commentId: P:DrawnUi.Draw.SkiaControl.Left
   parent: DrawnUi.Draw.SkiaControl
@@ -8279,6 +8416,13 @@ references:
   name: Left
   nameWithType: SkiaControl.Left
   fullName: DrawnUi.Draw.SkiaControl.Left
+- uid: DrawnUi.Draw.SkiaControl.TopProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TopProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty
+  name: TopProperty
+  nameWithType: SkiaControl.TopProperty
+  fullName: DrawnUi.Draw.SkiaControl.TopProperty
 - uid: DrawnUi.Draw.SkiaControl.Top
   commentId: P:DrawnUi.Draw.SkiaControl.Top
   parent: DrawnUi.Draw.SkiaControl
@@ -10241,6 +10385,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10261,6 +10406,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10292,6 +10438,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10312,6 +10459,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10568,6 +10716,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10593,6 +10742,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10629,6 +10779,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10654,6 +10805,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -10691,6 +10843,7 @@ references:
 - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
   href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   name: CheckChildrenGesturesLocked(TouchActionResult)
   nameWithType: SkiaControl.CheckChildrenGesturesLocked(TouchActionResult)
@@ -10702,6 +10855,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
   spec.vb:
   - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
@@ -10710,6 +10864,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -12268,25 +12423,6 @@ references:
   name: RenderedAtDestination
   nameWithType: SkiaControl.RenderedAtDestination
   fullName: DrawnUi.Draw.SkiaControl.RenderedAtDestination
-- uid: DrawnUi.Draw.SkiaControl.OnScaleChanged
-  commentId: M:DrawnUi.Draw.SkiaControl.OnScaleChanged
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnScaleChanged
-  name: OnScaleChanged()
-  nameWithType: SkiaControl.OnScaleChanged()
-  fullName: DrawnUi.Draw.SkiaControl.OnScaleChanged()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.OnScaleChanged
-    name: OnScaleChanged
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnScaleChanged
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.OnScaleChanged
-    name: OnScaleChanged
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnScaleChanged
-  - name: (
-  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetPropertyValue(Microsoft.Maui.Controls.BindableProperty,System.Object)
   commentId: M:DrawnUi.Draw.SkiaControl.SetPropertyValue(Microsoft.Maui.Controls.BindableProperty,System.Object)
   parent: DrawnUi.Draw.SkiaControl
@@ -13149,13 +13285,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.HitBoxAuto
-  commentId: P:DrawnUi.Draw.SkiaControl.HitBoxAuto
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HitBoxAuto
-  name: HitBoxAuto
-  nameWithType: SkiaControl.HitBoxAuto
-  fullName: DrawnUi.Draw.SkiaControl.HitBoxAuto
 - uid: DrawnUi.Draw.SkiaControl.IsGestureForChild(DrawnUi.Draw.ISkiaGestureListener,SkiaSharp.SKPoint)
   commentId: M:DrawnUi.Draw.SkiaControl.IsGestureForChild(DrawnUi.Draw.ISkiaGestureListener,SkiaSharp.SKPoint)
   parent: DrawnUi.Draw.SkiaControl
@@ -15532,73 +15661,6 @@ references:
     name: NeedToMeasureSelf
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NeedToMeasureSelf
   - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
-  commentId: M:DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
-  parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_
-  name: MeasureSelf(SKRect, float, float, float)
-  nameWithType: SkiaControl.MeasureSelf(SKRect, float, float, float)
-  fullName: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect, float, float, float)
-  nameWithType.vb: SkiaControl.MeasureSelf(SKRect, Single, Single, Single)
-  fullName.vb: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect, Single, Single, Single)
-  name.vb: MeasureSelf(SKRect, Single, Single, Single)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
-    name: MeasureSelf
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_
-  - name: (
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: float
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: float
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: float
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
-    name: MeasureSelf
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_
-  - name: (
-  - uid: SkiaSharp.SKRect
-    name: SKRect
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: Single
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: Single
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
-  - name: ','
-  - name: " "
-  - uid: System.Single
-    name: Single
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsRendering
   commentId: P:DrawnUi.Draw.SkiaControl.IsRendering
@@ -23981,6 +24043,137 @@ references:
     href: DrawnUi.Controls.SkiaSpriteSet.html
   - name: )
   - name: )
+- uid: DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet},System.String,System.Action{{TSource},DrawnUi.Controls.SkiaSpriteSet})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<SkiaSpriteSet, TSource>(SkiaSpriteSet, TSource, string, Action<SkiaSpriteSet>, string, Action<TSource, SkiaSpriteSet>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<SkiaSpriteSet, TSource>(SkiaSpriteSet, TSource, string, Action<SkiaSpriteSet>, string, Action<TSource, SkiaSpriteSet>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<DrawnUi.Controls.SkiaSpriteSet, TSource>(DrawnUi.Controls.SkiaSpriteSet, TSource, string, System.Action<DrawnUi.Controls.SkiaSpriteSet>, string, System.Action<TSource, DrawnUi.Controls.SkiaSpriteSet>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of SkiaSpriteSet, TSource)(SkiaSpriteSet, TSource, String, Action(Of SkiaSpriteSet), String, Action(Of TSource, SkiaSpriteSet))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of DrawnUi.Controls.SkiaSpriteSet, TSource)(DrawnUi.Controls.SkiaSpriteSet, TSource, String, System.Action(Of DrawnUi.Controls.SkiaSpriteSet), String, System.Action(Of TSource, DrawnUi.Controls.SkiaSpriteSet))
+  name.vb: ObservePropertyTwoWay(Of SkiaSpriteSet, TSource)(SkiaSpriteSet, TSource, String, Action(Of SkiaSpriteSet), String, Action(Of TSource, SkiaSpriteSet))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Controls.SkiaSpriteSet,``1,System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet},System.String,System.Action{``1,DrawnUi.Controls.SkiaSpriteSet})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Controls.SkiaSpriteSet,``1,System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet},System.String,System.Action{``1,DrawnUi.Controls.SkiaSpriteSet})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSpriteSet
+    name: SkiaSpriteSet
+    href: DrawnUi.Controls.SkiaSpriteSet.html
+  - name: )
+  - name: )
 - uid: DrawnUi.Controls.SkiaSpriteSet.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Controls.SkiaSpriteSet})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   parent: DrawnUi.Draw.FluentExtensions
@@ -29820,6 +30013,120 @@ references:
   - name: T
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, System.Action<T>, string, System.Action<TSource, T>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, System.Action(Of T), String, System.Action(Of TSource, T))
+  name.vb: ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   isExternal: true
@@ -33451,6 +33758,105 @@ references:
   nameWithType.vb: SkiaSpriteSet.New
   fullName.vb: DrawnUi.Controls.SkiaSpriteSet.New
   name.vb: New
+- uid: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_
+  name: MeasureSelf(SKRect, float, float, float)
+  nameWithType: SkiaControl.MeasureSelf(SKRect, float, float, float)
+  fullName: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect, float, float, float)
+  nameWithType.vb: SkiaControl.MeasureSelf(SKRect, Single, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect, Single, Single, Single)
+  name.vb: MeasureSelf(SKRect, Single, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+    name: MeasureSelf
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
+    name: MeasureSelf
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Controls.SkiaSpriteSet.MeasureSelf*
+  commentId: Overload:DrawnUi.Controls.SkiaSpriteSet.MeasureSelf
+  href: DrawnUi.Controls.SkiaSpriteSet.html#DrawnUi_Controls_SkiaSpriteSet_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_
+  name: MeasureSelf
+  nameWithType: SkiaSpriteSet.MeasureSelf
+  fullName: DrawnUi.Controls.SkiaSpriteSet.MeasureSelf
+- uid: SkiaSharp.SKRect
+  commentId: T:SkiaSharp.SKRect
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  name: SKRect
+  nameWithType: SKRect
+  fullName: SkiaSharp.SKRect
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
 - uid: Microsoft.Maui.Controls.BindableProperty
   commentId: T:Microsoft.Maui.Controls.BindableProperty
   parent: Microsoft.Maui.Controls
@@ -33476,9 +33882,34 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+- uid: DrawnUi.Draw.SkiaLayout.InvalidateInternal
+  commentId: M:DrawnUi.Draw.SkiaLayout.InvalidateInternal
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_InvalidateInternal
+  name: InvalidateInternal()
+  nameWithType: SkiaLayout.InvalidateInternal()
+  fullName: DrawnUi.Draw.SkiaLayout.InvalidateInternal()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.InvalidateInternal
+    name: InvalidateInternal
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_InvalidateInternal
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.InvalidateInternal
+    name: InvalidateInternal
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_InvalidateInternal
+  - name: (
+  - name: )
+- uid: DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal*
+  commentId: Overload:DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal
+  href: DrawnUi.Controls.SkiaSpriteSet.html#DrawnUi_Controls_SkiaSpriteSet_InvalidateInternal
+  name: InvalidateInternal
+  nameWithType: SkiaSpriteSet.InvalidateInternal
+  fullName: DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal
 - uid: DrawnUi.Controls.SkiaSpriteSet.Define*
   commentId: Overload:DrawnUi.Controls.SkiaSpriteSet.Define
-  href: DrawnUi.Controls.SkiaSpriteSet.html#DrawnUi_Controls_SkiaSpriteSet_Define_System_Int32_System_String_System_Int32_System_Int32_System_Double_System_Int32_System_Boolean_
+  href: DrawnUi.Controls.SkiaSpriteSet.html#DrawnUi_Controls_SkiaSpriteSet_Define_System_Int32_System_String_System_Int32_System_Int32_System_Double_System_Int32_System_Boolean_DrawnUi_Controls_SpritePlacementConfig_
   name: Define
   nameWithType: SkiaSpriteSet.Define
   fullName: DrawnUi.Controls.SkiaSpriteSet.Define
@@ -33515,6 +33946,13 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Controls.SpritePlacementConfig
+  commentId: T:DrawnUi.Controls.SpritePlacementConfig
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SpritePlacementConfig.html
+  name: SpritePlacementConfig
+  nameWithType: SpritePlacementConfig
+  fullName: DrawnUi.Controls.SpritePlacementConfig
 - uid: DrawnUi.Controls.SkiaSpriteSet
   commentId: T:DrawnUi.Controls.SkiaSpriteSet
   parent: DrawnUi.Controls
@@ -33535,6 +33973,19 @@ references:
   name: SkiaSprite
   nameWithType: SkiaSprite
   fullName: DrawnUi.Controls.SkiaSprite
+- uid: DrawnUi.Draw.SkiaControl.HitBoxAuto
+  commentId: P:DrawnUi.Draw.SkiaControl.HitBoxAuto
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HitBoxAuto
+  name: HitBoxAuto
+  nameWithType: SkiaControl.HitBoxAuto
+  fullName: DrawnUi.Draw.SkiaControl.HitBoxAuto
+- uid: DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto*
+  commentId: Overload:DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto
+  href: DrawnUi.Controls.SkiaSpriteSet.html#DrawnUi_Controls_SkiaSpriteSet_HitBoxAuto
+  name: HitBoxAuto
+  nameWithType: SkiaSpriteSet.HitBoxAuto
+  fullName: DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto
 - uid: DrawnUi.Controls.SkiaSpriteSet.OnChangeState*
   commentId: Overload:DrawnUi.Controls.SkiaSpriteSet.OnChangeState
   href: DrawnUi.Controls.SkiaSpriteSet.html#DrawnUi_Controls_SkiaSpriteSet_OnChangeState_System_Int32_System_Int32_

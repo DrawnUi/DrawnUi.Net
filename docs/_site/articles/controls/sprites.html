@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/taublast/drawnui/blob/main/docs/articles/controls/sprites.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -352,6 +352,133 @@ SkiaSprite.RemoveFromCache(&quot;character.png&quot;);
 <li>Safe disposal when controls are no longer used</li>
 </ul>
 <h3 id="advanced-custom-animation-speed">Advanced: Custom Animation Speed</h3>
+<pre><code class="lang-csharp">mySprite.SpeedRatio = 0.5; // half speed
+mySprite.SpeedRatio = 2.0; // double speed
+</code></pre>
+<h2 id="skiaspriteset">SkiaSpriteSet</h2>
+<p><code>SkiaSpriteSet</code> is a stateful wrapper around multiple pre-created <code>SkiaSprite</code> instances. It is useful for characters or enemies that switch between states such as idle, run, jump, attack, appear, vanish, and so on.</p>
+<p>The usual pattern is:</p>
+<ol>
+<li>Define one sprite per integer state.</li>
+<li>Switch the active state by changing <code>State</code>.</li>
+<li>Wrap the integer state in your own semantic enum inside a subclass.</li>
+</ol>
+<pre><code class="lang-csharp">public class PlayerSprite : SkiaSpriteSet
+{
+    public enum PlayerAnimState
+    {
+        Idle,
+        Run,
+        Jump,
+        Attack,
+    }
+
+    public new PlayerAnimState State
+    {
+        get =&gt; _state;
+        set
+        {
+            _state = value;
+            base.State = value switch
+            {
+                PlayerAnimState.Idle =&gt; 0,
+                PlayerAnimState.Run =&gt; 1,
+                PlayerAnimState.Jump =&gt; 2,
+                _ =&gt; 3,
+            };
+        }
+    }
+
+    private PlayerAnimState _state;
+
+    public PlayerSprite()
+    {
+        Define(0, &quot;hero-idle.png&quot;, columns: 4, rows: 1, fps: 8);
+        Define(1, &quot;hero-run.png&quot;, columns: 7, rows: 1, fps: 12);
+        Define(2, &quot;hero-jump.png&quot;, columns: 4, rows: 1, fps: 10);
+        Define(3, &quot;hero-attack.png&quot;, columns: 5, rows: 1, fps: 18);
+    }
+}
+</code></pre>
+<p>Use a <code>SkiaSpriteSet</code> when you want a stable actor/control in the scene while the active sprite sheet changes underneath it.</p>
+<h2 id="dynamic-frame-sizing">Dynamic Frame Sizing</h2>
+<p><code>SkiaSprite</code> and <code>SkiaSpriteSet</code> support frames whose visible content changes from frame to frame.</p>
+<p>This works by separating two concepts:</p>
+<ol>
+<li><p>Logical frame size.
+This is the full frame cell size from the sprite sheet grid.</p>
+</li>
+<li><p>Visible content size.
+This is the actual opaque content inside the frame after transparent padding is trimmed.</p>
+</li>
+</ol>
+<p>At draw time, DrawnUi keeps the logical frame as the positioning and anchoring reference, but renders only the trimmed visible content. This gives you three important properties:</p>
+<ul>
+<li>Different transparent padding no longer bloats the rendered sprite.</li>
+<li>Grounding stays stable because anchoring still uses the logical frame, not the cropped visible pixels.</li>
+<li>Dynamic silhouettes such as wide attacks or compact idle frames render correctly without forcing every frame to have the same visible bounds.</li>
+</ul>
+<p>In other words, DrawnUi can handle changing visible frame bounds correctly, but it does not automatically normalize badly authored art that is fundamentally inconsistent in scale from one sheet to another.</p>
+<h2 id="sprite-placement-config">Sprite Placement Config</h2>
+<p><code>SkiaSpriteSet.Define(...)</code> accepts an optional <code>placement</code> argument of type <code>SpritePlacementConfig</code>.</p>
+<p>Most users do not need this for every sprite.</p>
+<p>Use it when different state sheets must share a stable scale, pivot, or offset in the scene. If your idle, run, jump, and attack sheets already line up correctly, you can skip it.</p>
+<p>Important placement settings include:</p>
+<ul>
+<li><code>UnitsPerPixel</code>: shared logical scale for a sprite state.</li>
+<li><code>AnchorX</code> and <code>AnchorY</code>: pivot used to place the sprite inside its logical actor slot.</li>
+<li><code>OffsetXUnits</code> and <code>OffsetYUnits</code>: optional state-specific offsets.</li>
+</ul>
+<p>Typical game usage is bottom-center anchoring with a shared <code>UnitsPerPixel</code> value across idle, run, jump, and attack sheets.</p>
+<pre><code class="lang-csharp">Define(0, &quot;hero-idle.png&quot;, columns: 4, rows: 1, fps: 8,
+    placement: new SpritePlacementConfig
+    {
+        UnitsPerPixel = 3f,
+        AnchorX = 0.5f,
+        AnchorY = 1f,
+    });
+</code></pre>
+<p>After you provide it once during sprite-state setup, the engine uses it internally. Your gameplay code usually should not touch it again.</p>
+<h2 id="hit-testing-for-games">Hit Testing for Games</h2>
+<p>For sprites, there are usually two different hit-testing needs:</p>
+<ol>
+<li><p>Visual hit box.
+This is the tight box around the currently visible sprite content.</p>
+</li>
+<li><p>Gameplay hit box.
+This is the box your game uses for damage, hurt, reach, pickups, or interactions.</p>
+</li>
+</ol>
+<p>DrawnUi provides a useful reusable base for the first part:</p>
+<ul>
+<li><code>SkiaSprite</code> computes a trimmed display rect for the active frame.</li>
+<li><code>SkiaSpriteSet.HitBoxAuto</code> returns that active frame rect in world space rather than the looser control slot.</li>
+</ul>
+<p>That means <code>HitBoxAuto</code> is a good default for visual body intersection.</p>
+<p>For gameplay, it is usually better to derive a box from <code>HitBoxAuto</code> instead of using it raw:</p>
+<pre><code class="lang-csharp">var body = enemySprite.HitBoxAuto;
+
+var hurtBox = new SKRect(
+    body.Left + body.Width * 0.10f,
+    body.Top + body.Height * 0.12f,
+    body.Right - body.Width * 0.10f,
+    body.Bottom - body.Height * 0.08f);
+</code></pre>
+<p>For a melee attack, project a custom box from the facing side of the current body box:</p>
+<pre><code class="lang-csharp">var body = playerSprite.HitBoxAuto;
+var attack = new SKRect(
+    body.Right - 16,
+    body.Top + body.Height * 0.2f,
+    body.Right + 80,
+    body.Bottom - body.Height * 0.2f);
+</code></pre>
+<p>This split is recommended for reusable game code:</p>
+<ul>
+<li>Use <code>HitBoxAuto</code> as the truthful visual frame body box.</li>
+<li>Derive scene-specific hurt boxes and attack boxes from it.</li>
+<li>Keep combat tuning in the game layer, not inside the sprite renderer.</li>
+</ul>
+<p>If you need fixed gameplay consistency independent of animation silhouette, use authored gameplay boxes instead of relying entirely on the visual bounds.</p>
 <p>Adjust animation speed using <code>SpeedRatio</code>:</p>
 <pre><code class="lang-xml">&lt;!-- Half speed --&gt;
 &lt;draw:SkiaSprite
@@ -466,6 +593,7 @@ SkiaSprite.RemoveFromCache(&quot;character.png&quot;);
 </article>
 
         <div class="contribution d-print-none">
+          <a href="https://github.com/taublast/drawnui/blob/main/docs/articles/controls/sprites.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

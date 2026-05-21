@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/taublast/drawnui/blob/main/docs/articles/fluent-extensions.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -245,6 +245,7 @@ layout.ClearChildren(); //clear them all
 <p><strong>Essential Methods (start here):</strong></p>
 <ul>
 <li><code>ObserveProperty()</code> - Single property observation</li>
+<li><code>ObservePropertyTwoWay()</code> - Two-way property observation to simulate XAML-style sync</li>
 <li><code>ObserveProperties()</code> - Multiple properties observation</li>
 </ul>
 <p><strong>Key Points:</strong></p>
@@ -278,6 +279,39 @@ layout.ClearChildren(); //clear them all
     me.Text = this.Text;
 })
 </code></pre>
+<h3 id="observepropertytwowaytarget-targetpropertyname-targetchanged-controlpropertyname-controlchanged---two-way-property"><code>.ObservePropertyTwoWay(target, targetPropertyName, targetChanged, controlPropertyName, controlChanged)</code> - Two-Way Property</h3>
+<p>Use this when the fluent C# version must mirror MAUI XAML two-way binding semantics instead of simple one-way observation.</p>
+<p>This is especially useful when the control can mutate its own state internally and that state must flow back into the ViewModel.</p>
+<pre><code class="lang-csharp">SkiaScroll scroll = null;
+
+scroll = new SkiaScroll()
+{
+    RefreshEnabled = true,
+    RefreshCommand = ViewModel.RefreshCommand,
+}
+.ObservePropertyTwoWay(
+    ViewModel,
+    nameof(ViewModel.IsRefreshing),
+    me =&gt;
+    {
+        me.IsRefreshing = ViewModel.IsRefreshing;
+    },
+    nameof(SkiaScroll.IsRefreshing),
+    (vm, me) =&gt;
+    {
+        vm.IsRefreshing = me.IsRefreshing;
+    });
+</code></pre>
+<p><strong>Use it when:</strong></p>
+<ul>
+<li>a DrawnUI control already exposes a two-way bindable property in shared code</li>
+<li>the fluent C# version should behave like XAML</li>
+<li>the control changes the property internally and the ViewModel must stay in sync</li>
+</ul>
+<p><strong>Typical example:</strong></p>
+<ul>
+<li><code>SkiaScroll.IsRefreshing</code> for pull-to-refresh, where the control can enter refresh state by gesture and the ViewModel must also receive that new value</li>
+</ul>
 <h3 id="observepropertiestarget-propertynames-callback---multiple-properties"><code>.ObserveProperties(target, propertyNames, callback)</code> - Multiple Properties</h3>
 <p>Observes multiple specific properties on a source. BindingContext is automatically included:</p>
 <pre><code class="lang-csharp">new SkiaButton(&quot;Submit&quot;)
@@ -857,6 +891,7 @@ public class MyViewModel : INotifyPropertyChanged
 </article>
 
         <div class="contribution d-print-none">
+          <a href="https://github.com/taublast/drawnui/blob/main/docs/articles/fluent-extensions.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

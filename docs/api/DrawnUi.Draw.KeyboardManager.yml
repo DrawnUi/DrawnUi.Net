@@ -8,8 +8,10 @@ items:
   - DrawnUi.Draw.KeyboardManager.IsAltPressed
   - DrawnUi.Draw.KeyboardManager.IsControlPressed
   - DrawnUi.Draw.KeyboardManager.IsShiftPressed
+  - DrawnUi.Draw.KeyboardManager.KeyChar
   - DrawnUi.Draw.KeyboardManager.KeyDown
   - DrawnUi.Draw.KeyboardManager.KeyUp
+  - DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
   - DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   langs:
@@ -99,6 +101,65 @@ items:
     return:
       type: System.EventHandler{DrawnUi.Draw.InputKey}
     content.vb: Public Shared Event KeyUp As EventHandler(Of InputKey)
+- uid: DrawnUi.Draw.KeyboardManager.KeyChar
+  commentId: E:DrawnUi.Draw.KeyboardManager.KeyChar
+  id: KeyChar
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: KeyChar
+  nameWithType: KeyboardManager.KeyChar
+  fullName: DrawnUi.Draw.KeyboardManager.KeyChar
+  type: Event
+  source:
+    remote:
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: KeyChar
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    startLine: 12
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static event EventHandler<string> KeyChar
+    return:
+      type: System.EventHandler{System.String}
+    content.vb: Public Shared Event KeyChar As EventHandler(Of String)
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
+  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
+  id: KeyboardChar(System.String)
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: KeyboardChar(string)
+  nameWithType: KeyboardManager.KeyboardChar(string)
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardChar(string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: KeyboardChar
+    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    startLine: 14
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static void KeyboardChar(string ch)
+    parameters:
+    - id: ch
+      type: System.String
+    content.vb: Public Shared Sub KeyboardChar(ch As String)
+  overload: DrawnUi.Draw.KeyboardManager.KeyboardChar*
+  nameWithType.vb: KeyboardManager.KeyboardChar(String)
+  fullName.vb: DrawnUi.Draw.KeyboardManager.KeyboardChar(String)
+  name.vb: KeyboardChar(String)
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
   commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
   id: KeyboardPressed(DrawnUi.Draw.InputKey)
@@ -117,7 +178,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardPressed
     path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
-    startLine: 12
+    startLine: 19
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -146,7 +207,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardReleased
     path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
-    startLine: 21
+    startLine: 28
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -175,7 +236,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsShiftPressed
     path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
-    startLine: 28
+    startLine: 35
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -204,7 +265,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAltPressed
     path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
-    startLine: 36
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -233,7 +294,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsControlPressed
     path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
-    startLine: 44
+    startLine: 51
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -655,6 +716,58 @@ references:
   - name: " "
   - name: TEventArgs
   - name: )
+- uid: System.EventHandler{System.String}
+  commentId: T:System.EventHandler{System.String}
+  parent: System
+  definition: System.EventHandler`1
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  name: EventHandler<string>
+  nameWithType: EventHandler<string>
+  fullName: System.EventHandler<string>
+  nameWithType.vb: EventHandler(Of String)
+  fullName.vb: System.EventHandler(Of String)
+  name.vb: EventHandler(Of String)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.eventhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardChar*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardChar
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardChar_System_String_
+  name: KeyboardChar
+  nameWithType: KeyboardManager.KeyboardChar
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardChar
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardPressed
   href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardPressed_DrawnUi_Draw_InputKey_

@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/taublast/drawnui/blob/main/docs/articles/blazor/index.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -91,7 +91,7 @@
 <p>DrawnUI for Blazor currently supports two runtime models:</p>
 <ul>
 <li><code>DrawnUi.Blazor.Wasm</code> for browser-side rendering with <code>Canvas</code></li>
-<li><code>DrawnUi.Blazor.Server</code> for server-rendered DrawnUI surfaces with <code>ServerCanvas</code></li>
+<li><code>DrawnUi.Blazor.Server</code> for server-rendered DrawnUI surfaces that also use <code>Canvas</code></li>
 </ul>
 <p><code>DrawnUi.Blazor.Core</code> is shared implementation infrastructure. It is not the normal package you install directly.</p>
 <h2 id="runtime-summary">Runtime summary</h2>
@@ -109,23 +109,23 @@
 <tr>
 <td>Blazor WebAssembly</td>
 <td><code>DrawnUi.Blazor.Wasm</code></td>
-<td>In the browser</td>
+<td>In the browser inside the <code>Canvas</code> component</td>
 <td>Animation-heavy, gesture-heavy, or fully drawn pages</td>
 <td><a href="https://drawnui-wasm.appomobi.com/" target="_blank" rel="noopener noreferrer">Open Demo</a></td>
 </tr>
 <tr>
 <td>Blazor Server</td>
 <td><code>DrawnUi.Blazor.Server</code></td>
-<td>On the server, delivered as image frames</td>
+<td>On the server, delivered as image frames through the <code>Canvas</code> component</td>
 <td>Event-driven widgets, dashboards, mixed Razor + DrawnUI pages</td>
-<td><a href="https://sample-blazor1.appomobi.com/drawn" target="_blank" rel="noopener noreferrer">Open Demo</a></td>
+<td><a href="https://sample-blazor1.appomobi.com/" target="_blank" rel="noopener noreferrer">Open Demo</a></td>
 </tr>
 <tr>
 <td>Blazor Hybrid</td>
 <td><code>DrawnUi.Blazor.Server</code> in host, <code>DrawnUi.Blazor.Wasm</code> in <code>.Client</code></td>
 <td>Different per component</td>
 <td>Apps that need one DrawnUI surface to stay local and another to stay server-owned</td>
-<td><a href="https://sample-blazor2.appomobi.com/hybrid" target="_blank" rel="noopener noreferrer">Open Demo</a></td>
+<td><a href="https://sample-blazor2.appomobi.com/" target="_blank" rel="noopener noreferrer">Open Demo</a></td>
 </tr>
 </tbody>
 </table>
@@ -144,6 +144,7 @@
 </article>
 
         <div class="contribution d-print-none">
+          <a href="https://github.com/taublast/drawnui/blob/main/docs/articles/blazor/index.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

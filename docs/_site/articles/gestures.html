@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/taublast/drawnui/blob/main/docs/articles/gestures.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -142,20 +142,20 @@
 }
 </code></pre>
 <p>For browser-side <code>Canvas</code>, the default is effectively disabled until you opt in with <code>GesturesMode.Enabled</code> or <code>GesturesMode.Lock</code>.</p>
-<h3 id="blazor-server-servercanvas">Blazor Server <code>ServerCanvas</code></h3>
+<h3 id="blazor-server-canvas">Blazor Server <code>Canvas</code></h3>
 <p>Blazor Server is different.</p>
-<p><code>ServerCanvas</code> does not expose the same <code>Gestures</code> parameter as browser-side <code>Canvas</code>. The surface is rendered on the server and interactions are routed back to the server through the <code>ServerCanvas</code> runtime.</p>
+<p>The server-backed <code>Canvas</code> does not expose the same <code>Gestures</code> parameter as browser-side <code>Canvas</code>. The surface is rendered on the server and interactions are routed back to the server through the server runtime.</p>
 <p>That means:</p>
 <ul>
-<li>you do not enable gestures with a <code>Gestures</code> property on <code>ServerCanvas</code></li>
+<li>you do not enable gestures with a <code>Gestures</code> property on the server <code>Canvas</code></li>
 <li>you still wire gesture-aware controls and handlers inside the DrawnUI tree</li>
-<li>the same control-level concepts apply, but the host model is <code>ServerCanvas</code>, not browser <code>Canvas</code></li>
+<li>the same control-level concepts apply, but the host model is the server-backed <code>Canvas</code>, not browser <code>Canvas</code></li>
 </ul>
 <p>Minimal server-side example:</p>
-<pre><code class="lang-razor">&lt;ServerCanvas RootControl=&quot;@BuildCanvasContent()&quot;
-              Width=&quot;400&quot;
-              Height=&quot;240&quot;
-              Alt=&quot;DrawnUI server-rendered sample&quot; /&gt;
+<pre><code class="lang-razor">&lt;Canvas Content=&quot;@BuildCanvasContent()&quot;
+    WidthRequest=&quot;400&quot;
+    HeightRequest=&quot;240&quot;
+    Alt=&quot;DrawnUI server-rendered sample&quot; /&gt;
 
 @code {
     private int clickCount;
@@ -168,7 +168,7 @@
             Spacing = 12,
             Children =
             {
-                new SkiaLabel { Text = &quot;ServerCanvas sample&quot;, FontSize = 24 },
+                new SkiaLabel { Text = &quot;Server Canvas sample&quot;, FontSize = 24 },
                 new SkiaButton(&quot;Increment&quot;).OnTapped(_ =&gt; clickCount++)
             }
         };
@@ -178,7 +178,7 @@
 <p>So yes, the same control-level gesture patterns still apply to Blazor Server, but the canvas-level enablement step is specific to MAUI <code>Canvas</code> and browser-side Blazor <code>Canvas</code>.</p>
 <h3 id="drawnuinet"><code>DrawnUi.Net</code></h3>
 <p><code>DrawnUi.Net</code> is different again because it is not a UI framework host by itself.</p>
-<p>There is no MAUI <code>Canvas</code>, browser <code>Canvas</code>, or Blazor <code>ServerCanvas</code> that automatically captures pointer input for you. <code>DrawnUi.Net</code> gives you the DrawnUI rendering and layout model, but the outer host or harness is responsible for delivering input.</p>
+<p>There is no MAUI <code>Canvas</code>, browser <code>Canvas</code>, or server-backed Blazor <code>Canvas</code> that automatically captures pointer input for you. <code>DrawnUi.Net</code> gives you the DrawnUI rendering and layout model, but the outer host or harness is responsible for delivering input.</p>
 <p>That means:</p>
 <ul>
 <li>there is no canvas-level <code>Gestures</code> property to enable in <code>DrawnUi.Net</code></li>
@@ -194,7 +194,7 @@
 <p>So the rule is:</p>
 <ul>
 <li>MAUI and browser Blazor need host-level gesture enablement on the canvas surface</li>
-<li>Blazor Server uses <code>ServerCanvas</code> host behavior instead of a <code>Gestures</code> property</li>
+<li>Blazor Server uses its server-backed <code>Canvas</code> host behavior instead of a <code>Gestures</code> property</li>
 <li><code>DrawnUi.Net</code> depends on whatever outer host or test harness you build around it to feed interaction into DrawnUI</li>
 </ul>
 <h2 id="then-wire-control-level-gestures">Then wire control-level gestures</h2>
@@ -294,7 +294,7 @@
 <li>configure the host first: <code>Canvas.Gestures</code> in MAUI or <code>GesturesMode</code> in browser Blazor</li>
 <li>use <code>SkiaButton</code> events or commands for button-like actions</li>
 <li>use <code>ConsumeGestures</code> when you need low-level gesture state such as pan, long press, or release</li>
-<li>on Blazor Server, use <code>ServerCanvas</code> plus the same control-level handlers inside the DrawnUI tree</li>
+<li>on Blazor Server, use <code>Canvas</code> plus the same control-level handlers inside the DrawnUI tree</li>
 </ul>
 <p>Options:</p>
 <ul>
@@ -373,6 +373,7 @@
 </article>
 
         <div class="contribution d-print-none">
+          <a href="https://github.com/taublast/drawnui/blob/main/docs/articles/gestures.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

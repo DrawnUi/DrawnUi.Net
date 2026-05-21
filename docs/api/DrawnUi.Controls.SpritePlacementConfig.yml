@@ -1,0 +1,628 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Controls.SpritePlacementConfig
+  commentId: T:DrawnUi.Controls.SpritePlacementConfig
+  id: SpritePlacementConfig
+  parent: DrawnUi.Controls
+  children:
+  - DrawnUi.Controls.SpritePlacementConfig.AnchorX
+  - DrawnUi.Controls.SpritePlacementConfig.AnchorY
+  - DrawnUi.Controls.SpritePlacementConfig.HeightUnits
+  - DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits
+  - DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits
+  - DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel
+  - DrawnUi.Controls.SpritePlacementConfig.WidthUnits
+  langs:
+  - csharp
+  - vb
+  name: SpritePlacementConfig
+  nameWithType: SpritePlacementConfig
+  fullName: DrawnUi.Controls.SpritePlacementConfig
+  type: Class
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SpritePlacementConfig
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 5
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public sealed class SpritePlacementConfig
+    content.vb: Public NotInheritable Class SpritePlacementConfig
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel
+  commentId: P:DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel
+  id: UnitsPerPixel
+  parent: DrawnUi.Controls.SpritePlacementConfig
+  langs:
+  - csharp
+  - vb
+  name: UnitsPerPixel
+  nameWithType: SpritePlacementConfig.UnitsPerPixel
+  fullName: DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: UnitsPerPixel
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 7
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float UnitsPerPixel { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property UnitsPerPixel As Single
+  overload: DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel*
+- uid: DrawnUi.Controls.SpritePlacementConfig.WidthUnits
+  commentId: P:DrawnUi.Controls.SpritePlacementConfig.WidthUnits
+  id: WidthUnits
+  parent: DrawnUi.Controls.SpritePlacementConfig
+  langs:
+  - csharp
+  - vb
+  name: WidthUnits
+  nameWithType: SpritePlacementConfig.WidthUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.WidthUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: WidthUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 8
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float WidthUnits { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property WidthUnits As Single
+  overload: DrawnUi.Controls.SpritePlacementConfig.WidthUnits*
+- uid: DrawnUi.Controls.SpritePlacementConfig.HeightUnits
+  commentId: P:DrawnUi.Controls.SpritePlacementConfig.HeightUnits
+  id: HeightUnits
+  parent: DrawnUi.Controls.SpritePlacementConfig
+  langs:
+  - csharp
+  - vb
+  name: HeightUnits
+  nameWithType: SpritePlacementConfig.HeightUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.HeightUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: HeightUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float HeightUnits { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property HeightUnits As Single
+  overload: DrawnUi.Controls.SpritePlacementConfig.HeightUnits*
+- uid: DrawnUi.Controls.SpritePlacementConfig.AnchorX
+  commentId: P:DrawnUi.Controls.SpritePlacementConfig.AnchorX
+  id: AnchorX
+  parent: DrawnUi.Controls.SpritePlacementConfig
+  langs:
+  - csharp
+  - vb
+  name: AnchorX
+  nameWithType: SpritePlacementConfig.AnchorX
+  fullName: DrawnUi.Controls.SpritePlacementConfig.AnchorX
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AnchorX
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 10
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float AnchorX { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property AnchorX As Single
+  overload: DrawnUi.Controls.SpritePlacementConfig.AnchorX*
+- uid: DrawnUi.Controls.SpritePlacementConfig.AnchorY
+  commentId: P:DrawnUi.Controls.SpritePlacementConfig.AnchorY
+  id: AnchorY
+  parent: DrawnUi.Controls.SpritePlacementConfig
+  langs:
+  - csharp
+  - vb
+  name: AnchorY
+  nameWithType: SpritePlacementConfig.AnchorY
+  fullName: DrawnUi.Controls.SpritePlacementConfig.AnchorY
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AnchorY
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float AnchorY { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property AnchorY As Single
+  overload: DrawnUi.Controls.SpritePlacementConfig.AnchorY*
+- uid: DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits
+  commentId: P:DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits
+  id: OffsetXUnits
+  parent: DrawnUi.Controls.SpritePlacementConfig
+  langs:
+  - csharp
+  - vb
+  name: OffsetXUnits
+  nameWithType: SpritePlacementConfig.OffsetXUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OffsetXUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 12
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float OffsetXUnits { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property OffsetXUnits As Single
+  overload: DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits*
+- uid: DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits
+  commentId: P:DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits
+  id: OffsetYUnits
+  parent: DrawnUi.Controls.SpritePlacementConfig
+  langs:
+  - csharp
+  - vb
+  name: OffsetYUnits
+  nameWithType: SpritePlacementConfig.OffsetYUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OffsetYUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float OffsetYUnits { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property OffsetYUnits As Single
+  overload: DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits*
+references:
+- uid: DrawnUi.Controls
+  commentId: N:DrawnUi.Controls
+  href: DrawnUi.html
+  name: DrawnUi.Controls
+  nameWithType: DrawnUi.Controls
+  fullName: DrawnUi.Controls
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Controls
+    name: Controls
+    href: DrawnUi.Controls.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Controls
+    name: Controls
+    href: DrawnUi.Controls.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel*
+  commentId: Overload:DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel
+  href: DrawnUi.Controls.SpritePlacementConfig.html#DrawnUi_Controls_SpritePlacementConfig_UnitsPerPixel
+  name: UnitsPerPixel
+  nameWithType: SpritePlacementConfig.UnitsPerPixel
+  fullName: DrawnUi.Controls.SpritePlacementConfig.UnitsPerPixel
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: DrawnUi.Controls.SpritePlacementConfig.WidthUnits*
+  commentId: Overload:DrawnUi.Controls.SpritePlacementConfig.WidthUnits
+  href: DrawnUi.Controls.SpritePlacementConfig.html#DrawnUi_Controls_SpritePlacementConfig_WidthUnits
+  name: WidthUnits
+  nameWithType: SpritePlacementConfig.WidthUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.WidthUnits
+- uid: DrawnUi.Controls.SpritePlacementConfig.HeightUnits*
+  commentId: Overload:DrawnUi.Controls.SpritePlacementConfig.HeightUnits
+  href: DrawnUi.Controls.SpritePlacementConfig.html#DrawnUi_Controls_SpritePlacementConfig_HeightUnits
+  name: HeightUnits
+  nameWithType: SpritePlacementConfig.HeightUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.HeightUnits
+- uid: DrawnUi.Controls.SpritePlacementConfig.AnchorX*
+  commentId: Overload:DrawnUi.Controls.SpritePlacementConfig.AnchorX
+  href: DrawnUi.Controls.SpritePlacementConfig.html#DrawnUi_Controls_SpritePlacementConfig_AnchorX
+  name: AnchorX
+  nameWithType: SpritePlacementConfig.AnchorX
+  fullName: DrawnUi.Controls.SpritePlacementConfig.AnchorX
+- uid: DrawnUi.Controls.SpritePlacementConfig.AnchorY*
+  commentId: Overload:DrawnUi.Controls.SpritePlacementConfig.AnchorY
+  href: DrawnUi.Controls.SpritePlacementConfig.html#DrawnUi_Controls_SpritePlacementConfig_AnchorY
+  name: AnchorY
+  nameWithType: SpritePlacementConfig.AnchorY
+  fullName: DrawnUi.Controls.SpritePlacementConfig.AnchorY
+- uid: DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits*
+  commentId: Overload:DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits
+  href: DrawnUi.Controls.SpritePlacementConfig.html#DrawnUi_Controls_SpritePlacementConfig_OffsetXUnits
+  name: OffsetXUnits
+  nameWithType: SpritePlacementConfig.OffsetXUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.OffsetXUnits
+- uid: DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits*
+  commentId: Overload:DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits
+  href: DrawnUi.Controls.SpritePlacementConfig.html#DrawnUi_Controls_SpritePlacementConfig_OffsetYUnits
+  name: OffsetYUnits
+  nameWithType: SpritePlacementConfig.OffsetYUnits
+  fullName: DrawnUi.Controls.SpritePlacementConfig.OffsetYUnits

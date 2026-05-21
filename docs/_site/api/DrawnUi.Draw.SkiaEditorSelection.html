@@ -89,7 +89,7 @@
 
 
   <h1 id="DrawnUi_Draw_SkiaEditorSelection" data-uid="DrawnUi.Draw.SkiaEditorSelection" class="text-break">
-Class SkiaEditorSelection  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L3"><i class="bi bi-code-slash"></i></a>
+Class SkiaEditorSelection  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L3"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -420,6 +420,9 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateByChild_DrawnUi_Draw_SkiaControl_">SkiaControl.UpdateByChild(SkiaControl)</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize">SkiaControl.MaxRealPixelSize</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Initialized">SkiaControl.Initialized</a>
     </div>
     <div>
@@ -495,7 +498,13 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CachedImage">SkiaControl.CachedImage</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty">SkiaControl.LeftProperty</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Left">SkiaControl.Left</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty">SkiaControl.TopProperty</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Top">SkiaControl.Top</a>
@@ -2624,6 +2633,9 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyOn__3___0___1_System_Func___2__System_String_System_String_System_Action___0__">FluentExtensions.ObservePropertyOn&lt;T, TParent, TTarget&gt;(T, TParent, Func&lt;TTarget&gt;, string, string, Action&lt;T&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__">FluentExtensions.ObservePropertyTwoWay&lt;T, TSource&gt;(T, TSource, string, Action&lt;T&gt;, string, Action&lt;TSource, T&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperty__2___0_System_Func___1__System_String_System_Action___0__">FluentExtensions.ObserveProperty&lt;T, TSource&gt;(T, Func&lt;TSource&gt;, string, Action&lt;T&gt;)</a>
   </div>
   <div>
@@ -2768,11 +2780,105 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
 </h2>
 
 
+  <a id="DrawnUi_Draw_SkiaEditorSelection_GetLineGlyphsOverride_" data-uid="DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride*"></a>
+
+  <h3 id="DrawnUi_Draw_SkiaEditorSelection_GetLineGlyphsOverride" data-uid="DrawnUi.Draw.SkiaEditorSelection.GetLineGlyphsOverride">
+  GetLineGlyphsOverride
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When set, used instead of Spans[0].Glyphs to support multi-span lines.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;TextLine, LineGlyph[]&gt;? GetLineGlyphsOverride { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="DrawnUi.Draw.TextLine.html">TextLine</a>, <a class="xref" href="DrawnUi.Draw.LineGlyph.html">LineGlyph</a>[]&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="DrawnUi_Draw_SkiaEditorSelection_LeftHandleCenter_" data-uid="DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter*"></a>
+
+  <h3 id="DrawnUi_Draw_SkiaEditorSelection_LeftHandleCenter" data-uid="DrawnUi.Draw.SkiaEditorSelection.LeftHandleCenter">
+  LeftHandleCenter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SKPoint LeftHandleCenter { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/skiasharp.skpoint">SKPoint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="DrawnUi_Draw_SkiaEditorSelection_RightHandleCenter_" data-uid="DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter*"></a>
+
+  <h3 id="DrawnUi_Draw_SkiaEditorSelection_RightHandleCenter" data-uid="DrawnUi.Draw.SkiaEditorSelection.RightHandleCenter">
+  RightHandleCenter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SKPoint RightHandleCenter { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/skiasharp.skpoint">SKPoint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="DrawnUi_Draw_SkiaEditorSelection_SelectionColor_" data-uid="DrawnUi.Draw.SkiaEditorSelection.SelectionColor*"></a>
 
   <h3 id="DrawnUi_Draw_SkiaEditorSelection_SelectionColor" data-uid="DrawnUi.Draw.SkiaEditorSelection.SelectionColor">
   SelectionColor
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2803,7 +2909,7 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
 
   <h3 id="DrawnUi_Draw_SkiaEditorSelection_SelectionLength" data-uid="DrawnUi.Draw.SkiaEditorSelection.SelectionLength">
   SelectionLength
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2834,7 +2940,7 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
 
   <h3 id="DrawnUi_Draw_SkiaEditorSelection_SelectionStart" data-uid="DrawnUi.Draw.SkiaEditorSelection.SelectionStart">
   SelectionStart
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2865,7 +2971,7 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
 
   <h3 id="DrawnUi_Draw_SkiaEditorSelection_SourceLabel" data-uid="DrawnUi.Draw.SkiaEditorSelection.SourceLabel">
   SourceLabel
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L7"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -2900,7 +3006,7 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
 
   <h3 id="DrawnUi_Draw_SkiaEditorSelection_OnDisposing" data-uid="DrawnUi.Draw.SkiaEditorSelection.OnDisposing">
   OnDisposing()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L103"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Base performs some cleanup actions with Superview</p>
@@ -2927,7 +3033,7 @@ Class SkiaEditorSelection  <a class="header-action link-secondary" title="View s
 
   <h3 id="DrawnUi_Draw_SkiaEditorSelection_Paint_DrawnUi_Draw_DrawingContext_" data-uid="DrawnUi.Draw.SkiaEditorSelection.Paint(DrawnUi.Draw.DrawingContext)">
   Paint(DrawingContext)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>This is the main drawing routine you should override to draw something.
@@ -2961,7 +3067,7 @@ Pass arguments if you want to use some time-frozen data for painting at any time
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/taublast/DrawnUi/blob/net10/src/Maui/DrawnUi/Draw/EditText/SkiaEditorSelection.cs/#L3" class="edit-link">Edit this page</a>
+          <a href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/EditText/SkiaEditorSelection.cs/#L3" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -120,6 +120,9 @@ items:
   - uid: DrawnUi.Controls.SkiaMediaImage
     name: SkiaMediaImage
     type: Class
+  - uid: DrawnUi.Controls.SkiaPicker
+    name: SkiaPicker
+    type: Class
   - uid: DrawnUi.Controls.SkiaRadioButton
     name: SkiaRadioButton
     type: Class
@@ -165,6 +168,9 @@ items:
   - uid: DrawnUi.Controls.SkiaSprite
     name: SkiaSprite
     type: Class
+  - uid: DrawnUi.Controls.SkiaSprite.SpriteFrameImage
+    name: SkiaSprite.SpriteFrameImage
+    type: Class
   - uid: DrawnUi.Controls.SkiaSpriteSet
     name: SkiaSpriteSet
     type: Class
@@ -194,6 +200,9 @@ items:
     type: Class
   - uid: DrawnUi.Controls.SkiaWheelStack
     name: SkiaWheelStack
+    type: Class
+  - uid: DrawnUi.Controls.SpritePlacementConfig
+    name: SpritePlacementConfig
     type: Class
   - uid: DrawnUi.Controls.WheelCellInfo
     name: WheelCellInfo
@@ -817,6 +826,9 @@ items:
   - uid: DrawnUi.Draw.SkiaEditor
     name: SkiaEditor
     type: Class
+  - uid: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+    name: SkiaEditor.SkiaEditorKeyboard
+    type: Enum
   - uid: DrawnUi.Draw.SkiaEditorSelection
     name: SkiaEditorSelection
     type: Class
@@ -1114,6 +1126,9 @@ items:
   - uid: DrawnUi.Draw.UnicodeBlock
     name: UnicodeBlock
     type: Enum
+  - uid: DrawnUi.Draw.UpdateModeType
+    name: UpdateModeType
+    type: Enum
   - uid: DrawnUi.Draw.UsedGlyph
     name: UsedGlyph
     type: Struct
@@ -1243,9 +1258,6 @@ items:
   items:
   - uid: DrawnUi.Infrastructure.Enums.DoubleViewTransitionType
     name: DoubleViewTransitionType
-    type: Enum
-  - uid: DrawnUi.Infrastructure.Enums.UpdateMode
-    name: UpdateMode
     type: Enum
 - uid: DrawnUi.Infrastructure.Helpers
   name: DrawnUi.Infrastructure.Helpers

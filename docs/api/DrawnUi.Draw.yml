@@ -209,6 +209,7 @@ items:
   - DrawnUi.Draw.SkiaDoubleAttachedTexturesEffect
   - DrawnUi.Draw.SkiaDrawingContext
   - DrawnUi.Draw.SkiaEditor
+  - DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
   - DrawnUi.Draw.SkiaEditorSelection
   - DrawnUi.Draw.SkiaEffect
   - DrawnUi.Draw.SkiaFontManager
@@ -308,6 +309,7 @@ items:
   - DrawnUi.Draw.UnderdampedSpringTimingParameters
   - DrawnUi.Draw.UnderdampedSpringTimingVectorParameters
   - DrawnUi.Draw.UnicodeBlock
+  - DrawnUi.Draw.UpdateModeType
   - DrawnUi.Draw.UsedGlyph
   - DrawnUi.Draw.VelocityAccumulator
   - DrawnUi.Draw.ViewportScrollType
@@ -405,26 +407,6 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.DisposableAction
     name: DisposableAction
     href: DrawnUi.Draw.SkiaControl.DisposableAction.html
-- uid: DrawnUi.Draw.SkiaCursor
-  commentId: T:DrawnUi.Draw.SkiaCursor
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaCursor.html
-  name: SkiaCursor
-  nameWithType: SkiaCursor
-  fullName: DrawnUi.Draw.SkiaCursor
-- uid: DrawnUi.Draw.SkiaEditor
-  commentId: T:DrawnUi.Draw.SkiaEditor
-  href: DrawnUi.Draw.SkiaEditor.html
-  name: SkiaEditor
-  nameWithType: SkiaEditor
-  fullName: DrawnUi.Draw.SkiaEditor
-- uid: DrawnUi.Draw.SkiaEditorSelection
-  commentId: T:DrawnUi.Draw.SkiaEditorSelection
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaEditorSelection.html
-  name: SkiaEditorSelection
-  nameWithType: SkiaEditorSelection
-  fullName: DrawnUi.Draw.SkiaEditorSelection
 - uid: DrawnUi.Draw.SkiaMauiElement
   commentId: T:DrawnUi.Draw.SkiaMauiElement
   parent: DrawnUi.Draw
@@ -1523,6 +1505,49 @@ references:
   name: TextSpan
   nameWithType: TextSpan
   fullName: DrawnUi.Draw.TextSpan
+- uid: DrawnUi.Draw.SkiaCursor
+  commentId: T:DrawnUi.Draw.SkiaCursor
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaCursor.html
+  name: SkiaCursor
+  nameWithType: SkiaCursor
+  fullName: DrawnUi.Draw.SkiaCursor
+- uid: DrawnUi.Draw.SkiaEditor
+  commentId: T:DrawnUi.Draw.SkiaEditor
+  href: DrawnUi.Draw.SkiaEditor.html
+  name: SkiaEditor
+  nameWithType: SkiaEditor
+  fullName: DrawnUi.Draw.SkiaEditor
+- uid: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+  commentId: T:DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaEditor.html
+  name: SkiaEditor.SkiaEditorKeyboard
+  nameWithType: SkiaEditor.SkiaEditorKeyboard
+  fullName: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+    name: SkiaEditorKeyboard
+    href: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard
+    name: SkiaEditorKeyboard
+    href: DrawnUi.Draw.SkiaEditor.SkiaEditorKeyboard.html
+- uid: DrawnUi.Draw.SkiaEditorSelection
+  commentId: T:DrawnUi.Draw.SkiaEditorSelection
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaEditorSelection.html
+  name: SkiaEditorSelection
+  nameWithType: SkiaEditorSelection
+  fullName: DrawnUi.Draw.SkiaEditorSelection
 - uid: DrawnUi.Draw.AnimatedShaderEffect
   commentId: T:DrawnUi.Draw.AnimatedShaderEffect
   href: DrawnUi.Draw.AnimatedShaderEffect.html
@@ -1918,6 +1943,13 @@ references:
   name: TransformAspect
   nameWithType: TransformAspect
   fullName: DrawnUi.Draw.TransformAspect
+- uid: DrawnUi.Draw.UpdateModeType
+  commentId: T:DrawnUi.Draw.UpdateModeType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UpdateModeType.html
+  name: UpdateModeType
+  nameWithType: UpdateModeType
+  fullName: DrawnUi.Draw.UpdateModeType
 - uid: DrawnUi.Draw.ViewportScrollType
   commentId: T:DrawnUi.Draw.ViewportScrollType
   parent: DrawnUi.Draw

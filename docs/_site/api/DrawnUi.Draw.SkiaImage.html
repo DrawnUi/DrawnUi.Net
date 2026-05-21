@@ -155,6 +155,7 @@ Class SkiaImage  <a class="header-action link-secondary" title="View source" hre
     <dt>Derived</dt>
     <dd>
       <div><a class="xref" href="DrawnUi.Controls.SkiaMediaImage.html">SkiaMediaImage</a></div>
+      <div><a class="xref" href="DrawnUi.Controls.SkiaSprite.SpriteFrameImage.html">SkiaSprite.SpriteFrameImage</a></div>
       <div><a class="xref" href="DrawnUi.Draw.SkiaImageTiles.html">SkiaImageTiles</a></div>
     </dd>
   </dl>
@@ -391,9 +392,6 @@ Class SkiaImage  <a class="header-action link-secondary" title="View source" hre
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DisableEffects">SkiaControl.DisableEffects</a>
     </div>
     <div>
-      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_InvalidateInternal">SkiaControl.InvalidateInternal()</a>
-    </div>
-    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ShouldInvalidateByChildren">SkiaControl.ShouldInvalidateByChildren</a>
     </div>
     <div>
@@ -422,6 +420,9 @@ Class SkiaImage  <a class="header-action link-secondary" title="View source" hre
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateByChild_DrawnUi_Draw_SkiaControl_">SkiaControl.UpdateByChild(SkiaControl)</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize">SkiaControl.MaxRealPixelSize</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Initialized">SkiaControl.Initialized</a>
@@ -493,7 +494,13 @@ Class SkiaImage  <a class="header-action link-secondary" title="View source" hre
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_VisualLayer">SkiaControl.VisualLayer</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty">SkiaControl.LeftProperty</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Left">SkiaControl.Left</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty">SkiaControl.TopProperty</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Top">SkiaControl.Top</a>
@@ -2599,6 +2606,9 @@ Class SkiaImage  <a class="header-action link-secondary" title="View source" hre
   </div>
   <div>
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyOn__3___0___1_System_Func___2__System_String_System_String_System_Action___0__">FluentExtensions.ObservePropertyOn&lt;T, TParent, TTarget&gt;(T, TParent, Func&lt;TTarget&gt;, string, string, Action&lt;T&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__">FluentExtensions.ObservePropertyTwoWay&lt;T, TSource&gt;(T, TSource, string, Action&lt;T&gt;, string, Action&lt;TSource, T&gt;)</a>
   </div>
   <div>
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperty__2___0_System_Func___1__System_String_System_Action___0__">FluentExtensions.ObserveProperty&lt;T, TSource&gt;(T, Func&lt;TSource&gt;, string, Action&lt;T&gt;)</a>
@@ -5245,7 +5255,7 @@ public ImageSource Source { get; set; }</code></pre>
 
   <h3 id="DrawnUi_Draw_SkiaImage_SourceHeight" data-uid="DrawnUi.Draw.SkiaImage.SourceHeight">
   SourceHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Images/SkiaImage.cs/#L1771"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Images/SkiaImage.cs/#L1778"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>From current set Source in points</p>
@@ -5308,7 +5318,7 @@ public ImageSource Source { get; set; }</code></pre>
 
   <h3 id="DrawnUi_Draw_SkiaImage_SourceWidth" data-uid="DrawnUi.Draw.SkiaImage.SourceWidth">
   SourceWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Images/SkiaImage.cs/#L1766"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Images/SkiaImage.cs/#L1773"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>From current set Source in points</p>
@@ -5721,7 +5731,7 @@ public ImageSource Source { get; set; }</code></pre>
 
   <h3 id="DrawnUi_Draw_SkiaImage_CalculateDisplayRect_SkiaSharp_SKRect_System_Single_System_Single_DrawnUi_Draw_DrawImageAlignment_DrawnUi_Draw_DrawImageAlignment_" data-uid="DrawnUi.Draw.SkiaImage.CalculateDisplayRect(SkiaSharp.SKRect,System.Single,System.Single,DrawnUi.Draw.DrawImageAlignment,DrawnUi.Draw.DrawImageAlignment)">
   CalculateDisplayRect(SKRect, float, float, DrawImageAlignment, DrawImageAlignment)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Images/SkiaImage.cs/#L1773"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Images/SkiaImage.cs/#L1780"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -6091,6 +6101,33 @@ public ImageSource Source { get; set; }</code></pre>
 
 
 
+  <a id="DrawnUi_Draw_SkiaImage_InvalidateInternal_" data-uid="DrawnUi.Draw.SkiaImage.InvalidateInternal*"></a>
+
+  <h3 id="DrawnUi_Draw_SkiaImage_InvalidateInternal" data-uid="DrawnUi.Draw.SkiaImage.InvalidateInternal">
+  InvalidateInternal()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Images/SkiaImage.cs/#L1761"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void InvalidateInternal()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="DrawnUi_Draw_SkiaImage_LoadImageManagedAsync_" data-uid="DrawnUi.Draw.SkiaImage.LoadImageManagedAsync*"></a>
 
   <h3 id="DrawnUi_Draw_SkiaImage_LoadImageManagedAsync_Microsoft_Maui_Controls_ImageSource_System_Threading_CancellationTokenSource_DrawnUi_Draw_LoadPriority_" data-uid="DrawnUi.Draw.SkiaImage.LoadImageManagedAsync(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource,DrawnUi.Draw.LoadPriority)">
@@ -6439,7 +6476,7 @@ Pass arguments if you want to use some time-frozen data for painting at any time
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void SetAspectScale(int pxWidth, int pxHeight, SKRect dest, TransformAspect stretch, float scale)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void SetAspectScale(int pxWidth, int pxHeight, SKRect dest, TransformAspect stretch, float scale)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>

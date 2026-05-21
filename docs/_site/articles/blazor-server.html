@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/taublast/drawnui/blob/main/docs/articles/blazor-server.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -89,7 +89,7 @@
 
 <p>Use <code>DrawnUi.Blazor.Server</code> when DrawnUI should live naturally inside a Blazor Server or <code>InteractiveServer</code> app and the target surface is event-driven rather than continuously animated.</p>
 <h2 id="mental-model">Mental Model</h2>
-<p><code>ServerCanvas</code> is not a live browser canvas.</p>
+<p>The server-backed <code>Canvas</code> is not a live browser canvas.</p>
 <p>It renders a DrawnUI control tree on the server, returns encoded image frames to the page, and routes supported interactions back to the server.</p>
 <p>This makes it a good fit for low-animation, event-driven UI, but not for high-FPS or drag-heavy rendering.</p>
 <h2 id="when-to-choose-it">When To Choose It</h2>
@@ -128,11 +128,12 @@ app.Run();
 <pre><code class="lang-razor">@page &quot;/drawn&quot;
 @rendermode InteractiveServer
 
-&lt;ServerCanvas RootControl=&quot;@BuildCanvasContent()&quot;
-              Width=&quot;400&quot;
-              Height=&quot;240&quot;
-              Alt=&quot;DrawnUI server-rendered sample&quot; /&gt;
+&lt;Canvas Content=&quot;@BuildCanvasContent()&quot;
+    WidthRequest=&quot;400&quot;
+    HeightRequest=&quot;240&quot;
+    Alt=&quot;DrawnUI server-rendered sample&quot; /&gt;
 </code></pre>
+<p><code>DrawnUi.Blazor.Server</code> exposes its <code>Canvas</code> component from <code>DrawnUi.Blazor.Server.Views</code>. In a pure server app you import that runtime package and use <code>Canvas</code> directly. No extra host-selection property is required.</p>
 <h2 id="scene-builder-example">Scene Builder Example</h2>
 <pre><code class="lang-csharp">using DrawnUi.Draw;
 using DrawnUi.Views;
@@ -159,7 +160,7 @@ private SkiaControl BuildCanvasContent()
 <h2 id="supported-slice-today">Supported Slice Today</h2>
 <p>Validated today:</p>
 <ul>
-<li>server rendering of DrawnUI trees through <code>ServerCanvas</code></li>
+<li>server rendering of DrawnUI trees through <code>Canvas</code></li>
 <li>standard Blazor Server state updates reflected in the DrawnUI scene</li>
 <li>clickable button-style interactions in the current samples</li>
 </ul>
@@ -179,7 +180,7 @@ private SkiaControl BuildCanvasContent()
 <h2 id="live-sample">Live Sample</h2>
 <p>Use the hosted sample to demonstrate the current server-rendered DrawnUI stack:</p>
 <ul>
-<li><a href="https://sample-blazor1.appomobi.com/drawn" target="_blank" rel="noopener noreferrer">Open Blazor Server sample</a></li>
+<li><a href="https://sample-blazor1.appomobi.com/" target="_blank" rel="noopener noreferrer">Open Blazor Server sample</a></li>
 </ul>
 <h2 id="related-docs">Related Docs</h2>
 <ul>
@@ -191,6 +192,7 @@ private SkiaControl BuildCanvasContent()
 </article>
 
         <div class="contribution d-print-none">
+          <a href="https://github.com/taublast/drawnui/blob/main/docs/articles/blazor-server.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

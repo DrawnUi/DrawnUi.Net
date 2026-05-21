@@ -89,7 +89,7 @@
 
 
   <h1 id="DrawnUi_Controls_SkiaSpriteSet" data-uid="DrawnUi.Controls.SkiaSpriteSet" class="text-break">
-Class SkiaSpriteSet  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L11"><i class="bi bi-code-slash"></i></a>
+Class SkiaSpriteSet  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -257,6 +257,9 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
       <a class="xref" href="DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DrawStack_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_LayoutStructure_">SkiaLayout.DrawStack(DrawingContext, LayoutStructure)</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnScaleChanged">SkiaLayout.OnScaleChanged()</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PreArrange_SkiaSharp_SKRect_System_Single_System_Single_System_Single_">SkiaLayout.PreArrange(SKRect, float, float, float)</a>
     </div>
     <div>
@@ -390,9 +393,6 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnMeasured">SkiaLayout.OnMeasured()</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_InvalidateInternal">SkiaLayout.InvalidateInternal()</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_templatesInvalidated">SkiaLayout.templatesInvalidated</a>
@@ -1001,6 +1001,9 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateByChild_DrawnUi_Draw_SkiaControl_">SkiaControl.UpdateByChild(SkiaControl)</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize">SkiaControl.MaxRealPixelSize</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Initialized">SkiaControl.Initialized</a>
     </div>
     <div>
@@ -1073,7 +1076,13 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CachedImage">SkiaControl.CachedImage</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty">SkiaControl.LeftProperty</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Left">SkiaControl.Left</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty">SkiaControl.TopProperty</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Top">SkiaControl.Top</a>
@@ -1721,9 +1730,6 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderedAtDestination">SkiaControl.RenderedAtDestination</a>
     </div>
     <div>
-      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnScaleChanged">SkiaControl.OnScaleChanged()</a>
-    </div>
-    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetPropertyValue_Microsoft_Maui_Controls_BindableProperty_System_Object_">SkiaControl.SetPropertyValue(BindableProperty, object)</a>
     </div>
     <div>
@@ -1824,9 +1830,6 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HitIsInside_System_Single_System_Single_">SkiaControl.HitIsInside(float, float)</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HitBoxAuto">SkiaControl.HitBoxAuto</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsGestureForChild_DrawnUi_Draw_ISkiaGestureListener_SkiaSharp_SKPoint_">SkiaControl.IsGestureForChild(ISkiaGestureListener, SKPoint)</a>
@@ -2088,9 +2091,6 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NeedToMeasureSelf">SkiaControl.NeedToMeasureSelf()</a>
-    </div>
-    <div>
-      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_">SkiaControl.MeasureSelf(SKRect, float, float, float)</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsRendering">SkiaControl.IsRendering</a>
@@ -3112,6 +3112,9 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyOn__3___0___1_System_Func___2__System_String_System_String_System_Action___0__">FluentExtensions.ObservePropertyOn&lt;T, TParent, TTarget&gt;(T, TParent, Func&lt;TTarget&gt;, string, string, Action&lt;T&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__">FluentExtensions.ObservePropertyTwoWay&lt;T, TSource&gt;(T, TSource, string, Action&lt;T&gt;, string, Action&lt;TSource, T&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperty__2___0_System_Func___1__System_String_System_Action___0__">FluentExtensions.ObserveProperty&lt;T, TSource&gt;(T, Func&lt;TSource&gt;, string, Action&lt;T&gt;)</a>
   </div>
   <div>
@@ -3320,7 +3323,7 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
 
   <h3 id="DrawnUi_Controls_SkiaSpriteSet__ctor" data-uid="DrawnUi.Controls.SkiaSpriteSet.#ctor">
   SkiaSpriteSet()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3349,7 +3352,7 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
 
   <h3 id="DrawnUi_Controls_SkiaSpriteSet_StateProperty" data-uid="DrawnUi.Controls.SkiaSpriteSet.StateProperty">
   StateProperty
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -3384,7 +3387,7 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
 
   <h3 id="DrawnUi_Controls_SkiaSpriteSet_CurrentSprite" data-uid="DrawnUi.Controls.SkiaSpriteSet.CurrentSprite">
   CurrentSprite
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L98"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The currently active SkiaSprite instance.</p>
@@ -3412,11 +3415,48 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
 
 
 
+  <a id="DrawnUi_Controls_SkiaSpriteSet_HitBoxAuto_" data-uid="DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto*"></a>
+
+  <h3 id="DrawnUi_Controls_SkiaSpriteSet_HitBoxAuto" data-uid="DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto">
+  HitBoxAuto
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>This can be absolutely false if we are inside a cached
+rendering object parent that already moved somewhere.
+So coords will be of the moment we were first drawn,
+while if cached parent moved, our coords might differ.
+todo detect if parent is cached somewhere and offset hotbox by cached parent movement offset...
+todo think about it baby =) meanwhile just do not set gestures below cached level</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override SKRect HitBoxAuto { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/skiasharp.skrect">SKRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="DrawnUi_Controls_SkiaSpriteSet_State_" data-uid="DrawnUi.Controls.SkiaSpriteSet.State*"></a>
 
   <h3 id="DrawnUi_Controls_SkiaSpriteSet_State" data-uid="DrawnUi.Controls.SkiaSpriteSet.State">
   State
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Current integer state. Setting this triggers OnChangeState.</p>
@@ -3450,9 +3490,9 @@ Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g
 
   <a id="DrawnUi_Controls_SkiaSpriteSet_Define_" data-uid="DrawnUi.Controls.SkiaSpriteSet.Define*"></a>
 
-  <h3 id="DrawnUi_Controls_SkiaSpriteSet_Define_System_Int32_System_String_System_Int32_System_Int32_System_Double_System_Int32_System_Boolean_" data-uid="DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean)">
-  Define(int, string, int, int, double, int, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <h3 id="DrawnUi_Controls_SkiaSpriteSet_Define_System_Int32_System_String_System_Int32_System_Int32_System_Double_System_Int32_System_Boolean_DrawnUi_Controls_SpritePlacementConfig_" data-uid="DrawnUi.Controls.SkiaSpriteSet.Define(System.Int32,System.String,System.Int32,System.Int32,System.Double,System.Int32,System.Boolean,DrawnUi.Controls.SpritePlacementConfig)">
+  Define(int, string, int, int, double, int, bool, SpritePlacementConfig)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Create and register a sprite for a state, preconfiguring Source, Columns, Rows, FPS and Repeat.
@@ -3461,7 +3501,7 @@ If this state equals the current State and no active sprite exists yet, it becom
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SkiaSpriteSet Define(int state, string source, int columns, int rows, double fps = 15, int repeat = -1, bool autoPlay = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public SkiaSpriteSet Define(int state, string source, int columns, int rows, double fps = 15, int repeat = -1, bool autoPlay = true, SpritePlacementConfig placement = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -3479,6 +3519,8 @@ If this state equals the current State and no active sprite exists yet, it becom
     <dt><code>repeat</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
     <dd></dd>
     <dt><code>autoPlay</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>placement</code> <a class="xref" href="DrawnUi.Controls.SpritePlacementConfig.html">SpritePlacementConfig</a></dt>
     <dd></dd>
   </dl>
 
@@ -3498,11 +3540,76 @@ If this state equals the current State and no active sprite exists yet, it becom
 
 
 
+  <a id="DrawnUi_Controls_SkiaSpriteSet_InvalidateInternal_" data-uid="DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal*"></a>
+
+  <h3 id="DrawnUi_Controls_SkiaSpriteSet_InvalidateInternal" data-uid="DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal">
+  InvalidateInternal()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void InvalidateInternal()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="DrawnUi_Controls_SkiaSpriteSet_MeasureSelf_" data-uid="DrawnUi.Controls.SkiaSpriteSet.MeasureSelf*"></a>
+
+  <h3 id="DrawnUi_Controls_SkiaSpriteSet_MeasureSelf_SkiaSharp_SKRect_System_Single_System_Single_System_Single_" data-uid="DrawnUi.Controls.SkiaSpriteSet.MeasureSelf(SkiaSharp.SKRect,System.Single,System.Single,System.Single)">
+  MeasureSelf(SKRect, float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Self measuring, for top controls and those invalidated-redrawn when parents didn't re-measure them</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void MeasureSelf(SKRect destination, float widthRequest, float heightRequest, float scale)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/skiasharp.skrect">SKRect</a></dt>
+    <dd></dd>
+    <dt><code>widthRequest</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>heightRequest</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="DrawnUi_Controls_SkiaSpriteSet_OnChangeState_" data-uid="DrawnUi.Controls.SkiaSpriteSet.OnChangeState*"></a>
 
   <h3 id="DrawnUi_Controls_SkiaSpriteSet_OnChangeState_System_Int32_System_Int32_" data-uid="DrawnUi.Controls.SkiaSpriteSet.OnChangeState(System.Int32,System.Int32)">
   OnChangeState(int, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L150"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Base: swap active child to the precreated sprite for newState.
@@ -3537,7 +3644,7 @@ Subclasses should call base first, then adjust CurrentSprite (e.g., ScaleX).</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L11" class="edit-link">Edit this page</a>
+          <a href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Controls/PlayFrames/SkiaSpriteSet.cs/#L22" class="edit-link">Edit this page</a>
         </div>
 
 

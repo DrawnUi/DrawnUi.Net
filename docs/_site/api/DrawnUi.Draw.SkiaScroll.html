@@ -418,6 +418,9 @@ public class SkiaScroll : SkiaControl, INotifyPropertyChanged, IEffectControlPro
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DirtyChildrenInternal">SkiaControl.DirtyChildrenInternal</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize">SkiaControl.MaxRealPixelSize</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Initialized">SkiaControl.Initialized</a>
     </div>
     <div>
@@ -493,7 +496,13 @@ public class SkiaScroll : SkiaControl, INotifyPropertyChanged, IEffectControlPro
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CachedImage">SkiaControl.CachedImage</a>
     </div>
     <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty">SkiaControl.LeftProperty</a>
+    </div>
+    <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Left">SkiaControl.Left</a>
+    </div>
+    <div>
+      <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty">SkiaControl.TopProperty</a>
     </div>
     <div>
       <a class="xref" href="DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Top">SkiaControl.Top</a>
@@ -2575,6 +2584,9 @@ public class SkiaScroll : SkiaControl, INotifyPropertyChanged, IEffectControlPro
   </div>
   <div>
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyOn__3___0___1_System_Func___2__System_String_System_String_System_Action___0__">FluentExtensions.ObservePropertyOn&lt;T, TParent, TTarget&gt;(T, TParent, Func&lt;TTarget&gt;, string, string, Action&lt;T&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__">FluentExtensions.ObservePropertyTwoWay&lt;T, TSource&gt;(T, TSource, string, Action&lt;T&gt;, string, Action&lt;TSource, T&gt;)</a>
   </div>
   <div>
       <a class="xref" href="DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperty__2___0_System_Func___1__System_String_System_Action___0__">FluentExtensions.ObserveProperty&lt;T, TSource&gt;(T, Func&lt;TSource&gt;, string, Action&lt;T&gt;)</a>
@@ -8511,7 +8523,7 @@ For a picker: 05 - 0.9.</p>
 
   <h3 id="DrawnUi_Draw_SkiaScroll_WillClipBounds" data-uid="DrawnUi.Draw.SkiaScroll.WillClipBounds">
   WillClipBounds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3290"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3292"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Used to check whether to apply IsClippedToBounds property</p>
@@ -8672,7 +8684,7 @@ For a picker: 05 - 0.9.</p>
 
   <h3 id="DrawnUi_Draw_SkiaScroll_AdaptToKeyboard" data-uid="DrawnUi.Draw.SkiaScroll.AdaptToKeyboard">
   AdaptToKeyboard()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3254"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3256"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -10343,7 +10355,7 @@ Normally pass your current destination you are drawing into as this parameter.</
 
   <h3 id="DrawnUi_Draw_SkiaScroll_InvalidateViewport" data-uid="DrawnUi.Draw.SkiaScroll.InvalidateViewport">
   InvalidateViewport()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3282"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3284"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicated that wants to be re-measured without invalidating cache</p>
@@ -10739,7 +10751,7 @@ Normally pass your current destination you are drawing into as this parameter.</
 
   <h3 id="DrawnUi_Draw_SkiaScroll_OnDrawn_DrawnUi_Draw_DrawingContext_" data-uid="DrawnUi.Draw.SkiaScroll.OnDrawn(DrawnUi.Draw.DrawingContext)">
   OnDrawn(DrawingContext)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3306"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3308"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -10823,7 +10835,7 @@ Normally pass your current destination you are drawing into as this parameter.</
 
   <h3 id="DrawnUi_Draw_SkiaScroll_OnPropertyChanged_System_String_" data-uid="DrawnUi.Draw.SkiaScroll.OnPropertyChanged(System.String)">
   OnPropertyChanged(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3271"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/taublast/DrawnUi/blob/net10/src/Shared/Draw/Scroll/SkiaScroll.cs/#L3273"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Method that is called when a bound property is changed.</p>

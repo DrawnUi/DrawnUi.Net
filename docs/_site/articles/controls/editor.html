@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>SkiaEditor | DrawnUI for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="SkiaEditor | DrawnUI for .NET ">
+      
+      <meta name="description" content="DrawnUI for .NET - hardware-accelerated rendering engine powered by SkiaSharp for MAUI, Blazor, and platform-agnostic hosts through DrawnUi.Net.">
+      <link rel="icon" href="../../images/draw.svg">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/taublast/drawnui/blob/main/docs/articles/controls/editor.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../images/draw.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="skiaeditor">SkiaEditor</h1>
+
+<p><code>SkiaEditor</code> is a fully drawn text editor rendered entirely on the SkiaSharp canvas. It uses a hidden native control (Android <code>EditText</code>, iOS <code>UITextView</code>, Windows <code>TextBox</code>) purely as a keyboard sink — all text rendering, cursor drawing, and selection happen in SkiaSharp. This gives pixel-perfect, fully styleable text input on every platform including Blazor WASM.</p>
+<h2 id="how-it-works">How it works</h2>
+<pre><code>User tap → SkiaEditor gesture handler
+             ↓ positions drawn cursor
+             ↓ focuses hidden native control (1×1 px, invisible)
+                   ↓ platform IME opens
+                   ↓ keystrokes → native TextWatcher / delegate
+                         ↓ Text property updated
+                         ↓ SkiaLabel re-renders with new text
+                         ↓ cursor repositioned
+</code></pre>
+<p>The native control is never visible — it exists solely so the platform IME has a valid input target.</p>
+<h2 id="basic-usage">Basic usage</h2>
+<h3 id="single-line">Single-line</h3>
+<pre><code class="lang-xml">&lt;draw:SkiaEditor
+    HorizontalOptions=&quot;Fill&quot;
+    MaxLines=&quot;1&quot;
+    FontSize=&quot;16&quot;
+    TextColor=&quot;Black&quot;
+    CursorColor=&quot;DodgerBlue&quot;
+    BackgroundColor=&quot;#F5F5F5&quot;
+    Padding=&quot;12,8&quot;
+    ReturnType=&quot;Done&quot;
+    Text=&quot;{Binding Username}&quot;
+    TextSubmitted=&quot;OnSubmit&quot; /&gt;
+</code></pre>
+<h3 id="multiline">Multiline</h3>
+<pre><code class="lang-xml">&lt;draw:SkiaEditor
+    HorizontalOptions=&quot;Fill&quot;
+    MaxLines=&quot;4&quot;
+    FontSize=&quot;16&quot;
+    TextColor=&quot;White&quot;
+    CursorColor=&quot;White&quot;
+    BackgroundColor=&quot;#1E1E2E&quot;
+    Padding=&quot;12,8&quot;
+    ReturnType=&quot;Send&quot;
+    TextSubmitted=&quot;OnSend&quot; /&gt;
+</code></pre>
+<h3 id="numeric-input">Numeric input</h3>
+<pre><code class="lang-xml">&lt;draw:SkiaEditor
+    MaxLines=&quot;1&quot;
+    KeyboardType=&quot;Numeric&quot;
+    ReturnType=&quot;Done&quot;
+    Text=&quot;{Binding Amount}&quot; /&gt;
+</code></pre>
+<h3 id="password">Password</h3>
+<pre><code class="lang-xml">&lt;draw:SkiaEditor
+    MaxLines=&quot;1&quot;
+    IsPassword=&quot;True&quot;
+    ReturnType=&quot;Done&quot;
+    Text=&quot;{Binding Password}&quot; /&gt;
+</code></pre>
+<h2 id="properties">Properties</h2>
+<h3 id="text">Text</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Text</code></td>
+<td>string</td>
+<td><code>&quot;&quot;</code></td>
+<td>Current text value</td>
+</tr>
+<tr>
+<td><code>MaxLines</code></td>
+<td>int</td>
+<td><code>1</code></td>
+<td><code>1</code> = single-line; <code>&gt;1</code> = multiline with that many visible lines</td>
+</tr>
+<tr>
+<td><code>IsMultiline</code></td>
+<td>bool</td>
+<td>—</td>
+<td>Read-only; <code>true</code> when <code>MaxLines != 1</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="appearance">Appearance</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FontSize</code></td>
+<td>double</td>
+<td><code>14</code></td>
+<td>Font size in logical pixels</td>
+</tr>
+<tr>
+<td><code>FontFamily</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Font family name</td>
+</tr>
+<tr>
+<td><code>FontWeight</code></td>
+<td>int</td>
+<td><code>400</code></td>
+<td>Weight (400 normal, 700 bold)</td>
+</tr>
+<tr>
+<td><code>TextColor</code></td>
+<td>Color</td>
+<td>Black</td>
+<td>Drawn text color</td>
+</tr>
+<tr>
+<td><code>CursorColor</code></td>
+<td>Color</td>
+<td>Black</td>
+<td>Blinking cursor color</td>
+</tr>
+<tr>
+<td><code>SelectionColor</code></td>
+<td>Color</td>
+<td>—</td>
+<td>Selection highlight color</td>
+</tr>
+<tr>
+<td><code>LineHeight</code></td>
+<td>double</td>
+<td><code>1.3</code></td>
+<td>Line height multiplier</td>
+</tr>
+<tr>
+<td><code>HorizontalTextAlignment</code></td>
+<td>DrawTextAlignment</td>
+<td><code>Start</code></td>
+<td>Text alignment</td>
+</tr>
+<tr>
+<td><code>Padding</code></td>
+<td>Thickness</td>
+<td><code>0</code></td>
+<td>Inner padding around text</td>
+</tr>
+<tr>
+<td><code>UseMarkdown</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Render text as Markdown</td>
+</tr>
+</tbody>
+</table>
+<h3 id="keyboard-and-input">Keyboard and input</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KeyboardType</code></td>
+<td><code>SkiaEditorKeyboard</code></td>
+<td><code>Default</code></td>
+<td>Software keyboard layout</td>
+</tr>
+<tr>
+<td><code>ReturnType</code></td>
+<td><code>ReturnType</code></td>
+<td><code>Done</code></td>
+<td>IME action button label and behavior</td>
+</tr>
+<tr>
+<td><code>IsPassword</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Masks drawn text with <code>•</code>; disables autocorrect</td>
+</tr>
+</tbody>
+</table>
+<h3 id="focus-and-selection">Focus and selection</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IsFocused</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Set to <code>true</code> to open keyboard programmatically</td>
+</tr>
+<tr>
+<td><code>CursorPosition</code></td>
+<td>int</td>
+<td><code>0</code></td>
+<td>Character index of the cursor</td>
+</tr>
+<tr>
+<td><code>SelectionLength</code></td>
+<td>int</td>
+<td><code>0</code></td>
+<td>Number of selected characters</td>
+</tr>
+</tbody>
+</table>
+<h2 id="keyboardtype">KeyboardType</h2>
+<p><code>SkiaEditorKeyboard</code> enum controls the software keyboard shown when the editor is focused.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Android <code>InputType</code></th>
+<th>iOS <code>UIKeyboardType</code></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Default</code></td>
+<td><code>TYPE_CLASS_TEXT</code></td>
+<td><code>Default</code></td>
+<td>Standard QWERTY, autocorrect on</td>
+</tr>
+<tr>
+<td><code>Numeric</code></td>
+<td><code>TYPE_CLASS_NUMBER</code></td>
+<td><code>NumberPad</code></td>
+<td>Integers only</td>
+</tr>
+<tr>
+<td><code>Decimal</code></td>
+<td><code>TYPE_CLASS_NUMBER \| FLAG_DECIMAL</code></td>
+<td><code>DecimalPad</code></td>
+<td>Numbers with decimal point</td>
+</tr>
+<tr>
+<td><code>Phone</code></td>
+<td><code>TYPE_CLASS_PHONE</code></td>
+<td><code>PhonePad</code></td>
+<td>Phone number layout</td>
+</tr>
+<tr>
+<td><code>Email</code></td>
+<td><code>TYPE_TEXT_VARIATION_EMAIL_ADDRESS</code></td>
+<td><code>EmailAddress</code></td>
+<td>Email keyboard with <code>@</code> and <code>.</code> keys</td>
+</tr>
+</tbody>
+</table>
+<h2 id="returntype">ReturnType</h2>
+<p>Controls the label/action of the IME confirm button.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Key label</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Done</code></td>
+<td>Done</td>
+<td>Closes keyboard, fires <code>TextSubmitted</code></td>
+</tr>
+<tr>
+<td><code>Go</code></td>
+<td>Go</td>
+<td>Fires <code>TextSubmitted</code></td>
+</tr>
+<tr>
+<td><code>Next</code></td>
+<td>Next</td>
+<td>Fires <code>TextSubmitted</code></td>
+</tr>
+<tr>
+<td><code>Search</code></td>
+<td>Search</td>
+<td>Fires <code>TextSubmitted</code></td>
+</tr>
+<tr>
+<td><code>Send</code></td>
+<td>Send</td>
+<td>Fires <code>TextSubmitted</code></td>
+</tr>
+</tbody>
+</table>
+<p>On multiline editors the confirm key inserts a newline instead of submitting, regardless of <code>ReturnType</code>.</p>
+<h2 id="events">Events</h2>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TextChanged</code></td>
+<td><code>EventHandler&lt;string&gt;</code></td>
+<td>Fires on every keystroke</td>
+</tr>
+<tr>
+<td><code>FocusChanged</code></td>
+<td><code>EventHandler&lt;bool&gt;</code></td>
+<td>Fires when keyboard opens or closes</td>
+</tr>
+<tr>
+<td><code>TextSubmitted</code></td>
+<td><code>EventHandler&lt;string&gt;</code></td>
+<td>Fires when IME action button is tapped</td>
+</tr>
+</tbody>
+</table>
+<h2 id="commands">Commands</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CommandOnSubmit</code></td>
+<td><code>string</code> (current text)</td>
+<td>Executed on submit</td>
+</tr>
+<tr>
+<td><code>CommandOnFocusChanged</code></td>
+<td><code>bool</code> (focus state)</td>
+<td>Executed on focus change</td>
+</tr>
+<tr>
+<td><code>CommandOnTextChanged</code></td>
+<td><code>string</code> (current text)</td>
+<td>Executed on every keystroke</td>
+</tr>
+</tbody>
+</table>
+<h2 id="programmatic-focus">Programmatic focus</h2>
+<pre><code class="lang-csharp">// Open keyboard
+myEditor.IsFocused = true;
+
+// Close keyboard
+myEditor.IsFocused = false;
+
+// Move cursor to end
+myEditor.CursorPosition = myEditor.Text?.Length ?? 0;
+</code></pre>
+<h2 id="c-construction">C# construction</h2>
+<pre><code class="lang-csharp">var editor = new SkiaEditor
+{
+    HorizontalOptions = LayoutOptions.Fill,
+    MaxLines = 1,
+    FontSize = 16,
+    TextColor = Colors.Black,
+    CursorColor = Colors.DodgerBlue,
+    BackgroundColor = Color.Parse(&quot;#F5F5F5&quot;),
+    Padding = new Thickness(12, 8),
+    ReturnType = ReturnType.Done,
+    KeyboardType = SkiaEditor.SkiaEditorKeyboard.Default,
+};
+editor.TextSubmitted += (s, text) =&gt; Console.WriteLine(text);
+</code></pre>
+<h2 id="chat-input-pattern">Chat input pattern</h2>
+<pre><code class="lang-xml">&lt;draw:SkiaEditor
+    MaxLines=&quot;4&quot;
+    ReturnType=&quot;Send&quot;
+    KeyboardType=&quot;Default&quot;
+    FontSize=&quot;16&quot;
+    TextColor=&quot;Black&quot;
+    CursorColor=&quot;Black&quot;
+    Padding=&quot;12,8&quot;
+    TextSubmitted=&quot;OnSendMessage&quot; /&gt;
+</code></pre>
+<p><code>MaxLines=&quot;4&quot;</code> caps visible height at 4 lines; the editor scrolls internally if the user types more. <code>ReturnType=&quot;Send&quot;</code> shows the Send button on the IME.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Cursor height adapts automatically to the rendered line height. Cursor width defaults to 2 px.</li>
+<li><code>IsPassword</code> masking (<code>•</code>) is drawn at the canvas layer. The hidden native control is always invisible, so OS-level password masking only affects Android's native <code>TransformationMethod</code> (irrelevant for display but prevents text leaking into autocomplete).</li>
+<li>On Blazor WASM the editor works without a native control — keyboard routing uses JS global key listeners.</li>
+<li>Embedding inside a <code>SkiaScroll</code> works — the editor scroll and the outer scroll coexist via gesture routing.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/taublast/drawnui/blob/main/docs/articles/controls/editor.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Made by <a href="https://taublast.github.io/about/">Nick Kovalsky aka AppoMobi (@taublast)</a><script>(function(){try{const fix=function(){const brand=document.querySelector('a.navbar-brand');if(brand){brand.setAttribute('href','/');}document.querySelectorAll('a[href]').forEach(function(a){var href=a.getAttribute('href');if(!href||href.startsWith('http'))return;if(href==='index.html'||href==='/index.html'||href==='../index.html'){a.setAttribute('href','/');return;}if(href.endsWith('/articles/index.html')||href==='articles/index.html'||href==='../articles/index.html'){a.setAttribute('href','/articles/');return;}var m=href.match(/^(?:\.?\.?\/)?articles\/.*\/index\.html(.*)$/);if(m){var p=href.replace(/\/index\.html(.*)$/,'/');if(!p.startsWith('/')){p='/' + p.replace(/^\/?/,'');}a.setAttribute('href',p);}});};if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fix);}else{fix();}}catch(e){})();</script>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

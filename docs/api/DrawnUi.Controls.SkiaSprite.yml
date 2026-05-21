@@ -9,6 +9,7 @@ items:
   - DrawnUi.Controls.SkiaSprite.#ctor(DrawnUi.Draw.SkiaImage)
   - DrawnUi.Controls.SkiaSprite.AnimationName
   - DrawnUi.Controls.SkiaSprite.AnimationNameProperty
+  - DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig(DrawnUi.Controls.SpritePlacementConfig)
   - DrawnUi.Controls.SkiaSprite.ApplySpeed
   - DrawnUi.Controls.SkiaSprite.CachedSpriteSheets
   - DrawnUi.Controls.SkiaSprite.CheckCanStartAnimator
@@ -44,7 +45,14 @@ items:
   - DrawnUi.Controls.SkiaSprite.RegisteredAnimations
   - DrawnUi.Controls.SkiaSprite.ReloadSource
   - DrawnUi.Controls.SkiaSprite.RemoveFromCache(System.String)
+  - DrawnUi.Controls.SkiaSprite.RenderAnchorX
+  - DrawnUi.Controls.SkiaSprite.RenderAnchorY
   - DrawnUi.Controls.SkiaSprite.RenderFrame(DrawnUi.Draw.DrawingContext)
+  - DrawnUi.Controls.SkiaSprite.RenderHeightUnits
+  - DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits
+  - DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits
+  - DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel
+  - DrawnUi.Controls.SkiaSprite.RenderWidthUnits
   - DrawnUi.Controls.SkiaSprite.Rows
   - DrawnUi.Controls.SkiaSprite.RowsProperty
   - DrawnUi.Controls.SkiaSprite.SetCurrentFrame(System.Int32)
@@ -232,6 +240,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DirtyChildrenTracker
   - DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
   - DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   - DrawnUi.Draw.SkiaControl.Initialized
   - DrawnUi.Draw.SkiaControl.Destroyed
   - DrawnUi.Draw.SkiaControl.GetRandomColor
@@ -256,7 +265,9 @@ items:
   - DrawnUi.Draw.SkiaControl.IsHovered
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
+  - DrawnUi.Draw.SkiaControl.LeftProperty
   - DrawnUi.Draw.SkiaControl.Left
+  - DrawnUi.Draw.SkiaControl.TopProperty
   - DrawnUi.Draw.SkiaControl.Top
   - DrawnUi.Draw.SkiaControl.ControlStyleProperty
   - DrawnUi.Draw.SkiaControl.ControlStyle
@@ -953,6 +964,7 @@ items:
   - DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaSprite})
   - DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaSprite})
   - DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Controls.SkiaSprite})
+  - DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaSprite},System.String,System.Action{{TSource},DrawnUi.Controls.SkiaSprite})
   - DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Controls.SkiaSprite})
   - DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObserveProperty``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaSprite})
   - DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObserveSelf``1(System.Action{DrawnUi.Controls.SkiaSprite,System.String})
@@ -1024,7 +1036,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CachedSpriteSheets
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 99
+    startLine: 37
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1053,7 +1065,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Display
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 108
+    startLine: 48
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1084,7 +1096,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 113
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1115,7 +1127,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 127
+    startLine: 70
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1153,7 +1165,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateAnimationSequence
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 144
+    startLine: 87
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1194,7 +1206,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: RegisteredAnimations
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 154
+    startLine: 97
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1223,7 +1235,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 160
+    startLine: 103
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1240,6 +1252,238 @@ items:
   nameWithType.vb: SkiaSprite.New(SkiaImage)
   fullName.vb: DrawnUi.Controls.SkiaSprite.New(DrawnUi.Draw.SkiaImage)
   name.vb: New(SkiaImage)
+- uid: DrawnUi.Controls.SkiaSprite.RenderWidthUnits
+  commentId: P:DrawnUi.Controls.SkiaSprite.RenderWidthUnits
+  id: RenderWidthUnits
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: RenderWidthUnits
+  nameWithType: SkiaSprite.RenderWidthUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderWidthUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RenderWidthUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 109
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float RenderWidthUnits { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property RenderWidthUnits As Single
+  overload: DrawnUi.Controls.SkiaSprite.RenderWidthUnits*
+- uid: DrawnUi.Controls.SkiaSprite.RenderHeightUnits
+  commentId: P:DrawnUi.Controls.SkiaSprite.RenderHeightUnits
+  id: RenderHeightUnits
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: RenderHeightUnits
+  nameWithType: SkiaSprite.RenderHeightUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderHeightUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RenderHeightUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 111
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float RenderHeightUnits { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property RenderHeightUnits As Single
+  overload: DrawnUi.Controls.SkiaSprite.RenderHeightUnits*
+- uid: DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel
+  commentId: P:DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel
+  id: RenderUnitsPerPixel
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: RenderUnitsPerPixel
+  nameWithType: SkiaSprite.RenderUnitsPerPixel
+  fullName: DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RenderUnitsPerPixel
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 113
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float RenderUnitsPerPixel { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property RenderUnitsPerPixel As Single
+  overload: DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel*
+- uid: DrawnUi.Controls.SkiaSprite.RenderAnchorX
+  commentId: P:DrawnUi.Controls.SkiaSprite.RenderAnchorX
+  id: RenderAnchorX
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: RenderAnchorX
+  nameWithType: SkiaSprite.RenderAnchorX
+  fullName: DrawnUi.Controls.SkiaSprite.RenderAnchorX
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RenderAnchorX
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 115
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float RenderAnchorX { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property RenderAnchorX As Single
+  overload: DrawnUi.Controls.SkiaSprite.RenderAnchorX*
+- uid: DrawnUi.Controls.SkiaSprite.RenderAnchorY
+  commentId: P:DrawnUi.Controls.SkiaSprite.RenderAnchorY
+  id: RenderAnchorY
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: RenderAnchorY
+  nameWithType: SkiaSprite.RenderAnchorY
+  fullName: DrawnUi.Controls.SkiaSprite.RenderAnchorY
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RenderAnchorY
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 117
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float RenderAnchorY { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property RenderAnchorY As Single
+  overload: DrawnUi.Controls.SkiaSprite.RenderAnchorY*
+- uid: DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits
+  commentId: P:DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits
+  id: RenderOffsetXUnits
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: RenderOffsetXUnits
+  nameWithType: SkiaSprite.RenderOffsetXUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RenderOffsetXUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 119
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float RenderOffsetXUnits { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property RenderOffsetXUnits As Single
+  overload: DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits*
+- uid: DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits
+  commentId: P:DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits
+  id: RenderOffsetYUnits
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: RenderOffsetYUnits
+  nameWithType: SkiaSprite.RenderOffsetYUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RenderOffsetYUnits
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 121
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public float RenderOffsetYUnits { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property RenderOffsetYUnits As Single
+  overload: DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits*
+- uid: DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig(DrawnUi.Controls.SpritePlacementConfig)
+  commentId: M:DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig(DrawnUi.Controls.SpritePlacementConfig)
+  id: ApplyPlacementConfig(DrawnUi.Controls.SpritePlacementConfig)
+  parent: DrawnUi.Controls.SkiaSprite
+  langs:
+  - csharp
+  - vb
+  name: ApplyPlacementConfig(SpritePlacementConfig)
+  nameWithType: SkiaSprite.ApplyPlacementConfig(SpritePlacementConfig)
+  fullName: DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig(DrawnUi.Controls.SpritePlacementConfig)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Controls/PlayFrames/SkiaSprite.cs
+      branch: net10
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ApplyPlacementConfig
+    path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
+    startLine: 123
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public virtual void ApplyPlacementConfig(SpritePlacementConfig placement)
+    parameters:
+    - id: placement
+      type: DrawnUi.Controls.SpritePlacementConfig
+    content.vb: Public Overridable Sub ApplyPlacementConfig(placement As SpritePlacementConfig)
+  overload: DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig*
 - uid: DrawnUi.Controls.SkiaSprite.LayoutDisplay
   commentId: M:DrawnUi.Controls.SkiaSprite.LayoutDisplay
   id: LayoutDisplay
@@ -1258,7 +1502,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LayoutDisplay
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 169
+    startLine: 166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1286,7 +1530,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateMeasure
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 178
+    startLine: 175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1315,7 +1559,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetAnimatorParent
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 192
+    startLine: 189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1347,7 +1591,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderFrame
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 206
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1380,7 +1624,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAnimatorUpdated
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 215
+    startLine: 212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1416,7 +1660,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAnimatorSeeking
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 226
+    startLine: 223
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1452,7 +1696,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetFrameNumberFromTime
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 245
+    startLine: 242
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1490,7 +1734,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAnimatorInitializing
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 268
+    startLine: 265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1519,7 +1763,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplySpeed
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 284
+    startLine: 281
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1548,7 +1792,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckCanStartAnimator
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 301
+    startLine: 298
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1580,7 +1824,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 310
+    startLine: 307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1616,7 +1860,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ReloadSource
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 361
+    startLine: 358
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1644,7 +1888,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSourceAsync
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 403
+    startLine: 400
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1682,7 +1926,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadLocalImageAsync
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 464
+    startLine: 461
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1720,7 +1964,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSpriteSheet
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 474
+    startLine: 471
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1758,7 +2002,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: RecalculateFrames
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 533
+    startLine: 530
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1786,7 +2030,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCurrentFrame
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 571
+    startLine: 570
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1821,7 +2065,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 620
+    startLine: 707
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1850,7 +2094,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SpriteSheet
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 636
+    startLine: 723
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1881,7 +2125,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearCache
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 652
+    startLine: 740
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1909,7 +2153,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveFromCache
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 666
+    startLine: 754
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1944,7 +2188,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 677
+    startLine: 765
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1973,7 +2217,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameSequenceProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 700
+    startLine: 788
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2002,7 +2246,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimationNameProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 710
+    startLine: 798
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2031,7 +2275,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameSequence
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 721
+    startLine: 809
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2065,7 +2309,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimationName
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 730
+    startLine: 818
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2096,7 +2340,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 739
+    startLine: 827
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2125,7 +2369,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Source
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 749
+    startLine: 837
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2156,7 +2400,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnsProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 758
+    startLine: 846
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2185,7 +2429,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Columns
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 768
+    startLine: 856
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2216,7 +2460,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: RowsProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 777
+    startLine: 865
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2245,7 +2489,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Rows
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 787
+    startLine: 875
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2276,7 +2520,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxFramesProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 796
+    startLine: 884
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2305,7 +2549,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxFrames
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 806
+    startLine: 894
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2336,7 +2580,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FramesPerSecondProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 815
+    startLine: 903
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2365,7 +2609,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FramesPerSecond
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 825
+    startLine: 913
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2396,7 +2640,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentFrameProperty
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 834
+    startLine: 922
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2425,7 +2669,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentFrame
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 844
+    startLine: 932
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2456,7 +2700,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameWidth
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 853
+    startLine: 941
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2487,7 +2731,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameHeight
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 858
+    startLine: 946
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2518,7 +2762,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TotalFrames
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 863
+    startLine: 951
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2549,7 +2793,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationMs
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 868
+    startLine: 956
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2580,7 +2824,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameDurationMs
     path: ../src/Shared/Controls/PlayFrames/SkiaSprite.cs
-    startLine: 873
+    startLine: 961
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -5204,6 +5448,13 @@ references:
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxRealPixelSize
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxRealPixelSize
+  name: MaxRealPixelSize
+  nameWithType: SkiaControl.MaxRealPixelSize
+  fullName: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
 - uid: DrawnUi.Draw.SkiaControl.Initialized
   commentId: E:DrawnUi.Draw.SkiaControl.Initialized
   parent: DrawnUi.Draw.SkiaControl
@@ -5738,6 +5989,13 @@ references:
   name: CachedImage
   nameWithType: SkiaControl.CachedImage
   fullName: DrawnUi.Draw.SkiaControl.CachedImage
+- uid: DrawnUi.Draw.SkiaControl.LeftProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.LeftProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LeftProperty
+  name: LeftProperty
+  nameWithType: SkiaControl.LeftProperty
+  fullName: DrawnUi.Draw.SkiaControl.LeftProperty
 - uid: DrawnUi.Draw.SkiaControl.Left
   commentId: P:DrawnUi.Draw.SkiaControl.Left
   parent: DrawnUi.Draw.SkiaControl
@@ -5745,6 +6003,13 @@ references:
   name: Left
   nameWithType: SkiaControl.Left
   fullName: DrawnUi.Draw.SkiaControl.Left
+- uid: DrawnUi.Draw.SkiaControl.TopProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TopProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TopProperty
+  name: TopProperty
+  nameWithType: SkiaControl.TopProperty
+  fullName: DrawnUi.Draw.SkiaControl.TopProperty
 - uid: DrawnUi.Draw.SkiaControl.Top
   commentId: P:DrawnUi.Draw.SkiaControl.Top
   parent: DrawnUi.Draw.SkiaControl
@@ -7733,6 +7998,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7753,6 +8019,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7784,6 +8051,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -7804,6 +8072,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8060,6 +8329,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8085,6 +8355,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8121,6 +8392,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8146,6 +8418,7 @@ references:
   - name: " "
   - uid: AppoMobi.Gestures.TouchActionEventArgs
     name: TouchActionEventArgs
+    isExternal: true
   - name: ','
   - name: " "
   - uid: System.Single
@@ -8183,6 +8456,7 @@ references:
 - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
   href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckChildrenGesturesLocked_AppoMobi_Gestures_TouchActionResult_
   name: CheckChildrenGesturesLocked(TouchActionResult)
   nameWithType: SkiaControl.CheckChildrenGesturesLocked(TouchActionResult)
@@ -8194,6 +8468,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
   spec.vb:
   - uid: DrawnUi.Draw.SkiaControl.CheckChildrenGesturesLocked(AppoMobi.Gestures.TouchActionResult)
@@ -8202,6 +8477,7 @@ references:
   - name: (
   - uid: AppoMobi.Gestures.TouchActionResult
     name: TouchActionResult
+    isExternal: true
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -22035,6 +22311,137 @@ references:
     href: DrawnUi.Controls.SkiaSprite.html
   - name: )
   - name: )
+- uid: DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaSprite},System.String,System.Action{{TSource},DrawnUi.Controls.SkiaSprite})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<SkiaSprite, TSource>(SkiaSprite, TSource, string, Action<SkiaSprite>, string, Action<TSource, SkiaSprite>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<SkiaSprite, TSource>(SkiaSprite, TSource, string, Action<SkiaSprite>, string, Action<TSource, SkiaSprite>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<DrawnUi.Controls.SkiaSprite, TSource>(DrawnUi.Controls.SkiaSprite, TSource, string, System.Action<DrawnUi.Controls.SkiaSprite>, string, System.Action<TSource, DrawnUi.Controls.SkiaSprite>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of SkiaSprite, TSource)(SkiaSprite, TSource, String, Action(Of SkiaSprite), String, Action(Of TSource, SkiaSprite))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of DrawnUi.Controls.SkiaSprite, TSource)(DrawnUi.Controls.SkiaSprite, TSource, String, System.Action(Of DrawnUi.Controls.SkiaSprite), String, System.Action(Of TSource, DrawnUi.Controls.SkiaSprite))
+  name.vb: ObservePropertyTwoWay(Of SkiaSprite, TSource)(SkiaSprite, TSource, String, Action(Of SkiaSprite), String, Action(Of TSource, SkiaSprite))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Controls.SkiaSprite,``1,System.String,System.Action{DrawnUi.Controls.SkiaSprite},System.String,System.Action{``1,DrawnUi.Controls.SkiaSprite})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(DrawnUi.Controls.SkiaSprite,``1,System.String,System.Action{DrawnUi.Controls.SkiaSprite},System.String,System.Action{``1,DrawnUi.Controls.SkiaSprite})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaSprite
+    name: SkiaSprite
+    href: DrawnUi.Controls.SkiaSprite.html
+  - name: )
+  - name: )
 - uid: DrawnUi.Controls.SkiaSprite.DrawnUi.Draw.FluentExtensions.ObserveProperty``2(System.Func{{TSource}},System.String,System.Action{DrawnUi.Controls.SkiaSprite})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   parent: DrawnUi.Draw.FluentExtensions
@@ -27142,6 +27549,120 @@ references:
   - name: T
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  name: ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  nameWithType: FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, Action<T>, string, Action<TSource, T>)
+  fullName: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay<T, TSource>(T, TSource, string, System.Action<T>, string, System.Action<TSource, T>)
+  nameWithType.vb: FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, System.Action(Of T), String, System.Action(Of TSource, T))
+  name.vb: ObservePropertyTwoWay(Of T, TSource)(T, TSource, String, Action(Of T), String, Action(Of TSource, T))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
+    name: ObservePropertyTwoWay
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObservePropertyTwoWay__2___0___1_System_String_System_Action___0__System_String_System_Action___1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperty``2(``0,System.Func{``1},System.String,System.Action{``0})
   isExternal: true
@@ -30404,6 +30925,72 @@ references:
   - name: (
   - name: )
   - name: )
+- uid: DrawnUi.Controls.SkiaSprite.RenderWidthUnits*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.RenderWidthUnits
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_RenderWidthUnits
+  name: RenderWidthUnits
+  nameWithType: SkiaSprite.RenderWidthUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderWidthUnits
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: DrawnUi.Controls.SkiaSprite.RenderHeightUnits*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.RenderHeightUnits
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_RenderHeightUnits
+  name: RenderHeightUnits
+  nameWithType: SkiaSprite.RenderHeightUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderHeightUnits
+- uid: DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_RenderUnitsPerPixel
+  name: RenderUnitsPerPixel
+  nameWithType: SkiaSprite.RenderUnitsPerPixel
+  fullName: DrawnUi.Controls.SkiaSprite.RenderUnitsPerPixel
+- uid: DrawnUi.Controls.SkiaSprite.RenderAnchorX*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.RenderAnchorX
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_RenderAnchorX
+  name: RenderAnchorX
+  nameWithType: SkiaSprite.RenderAnchorX
+  fullName: DrawnUi.Controls.SkiaSprite.RenderAnchorX
+- uid: DrawnUi.Controls.SkiaSprite.RenderAnchorY*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.RenderAnchorY
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_RenderAnchorY
+  name: RenderAnchorY
+  nameWithType: SkiaSprite.RenderAnchorY
+  fullName: DrawnUi.Controls.SkiaSprite.RenderAnchorY
+- uid: DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_RenderOffsetXUnits
+  name: RenderOffsetXUnits
+  nameWithType: SkiaSprite.RenderOffsetXUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderOffsetXUnits
+- uid: DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_RenderOffsetYUnits
+  name: RenderOffsetYUnits
+  nameWithType: SkiaSprite.RenderOffsetYUnits
+  fullName: DrawnUi.Controls.SkiaSprite.RenderOffsetYUnits
+- uid: DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig*
+  commentId: Overload:DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig
+  href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_ApplyPlacementConfig_DrawnUi_Controls_SpritePlacementConfig_
+  name: ApplyPlacementConfig
+  nameWithType: SkiaSprite.ApplyPlacementConfig
+  fullName: DrawnUi.Controls.SkiaSprite.ApplyPlacementConfig
+- uid: DrawnUi.Controls.SpritePlacementConfig
+  commentId: T:DrawnUi.Controls.SpritePlacementConfig
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SpritePlacementConfig.html
+  name: SpritePlacementConfig
+  nameWithType: SpritePlacementConfig
+  fullName: DrawnUi.Controls.SpritePlacementConfig
 - uid: DrawnUi.Controls.SkiaSprite.LayoutDisplay*
   commentId: Overload:DrawnUi.Controls.SkiaSprite.LayoutDisplay
   href: DrawnUi.Controls.SkiaSprite.html#DrawnUi_Controls_SkiaSprite_LayoutDisplay
