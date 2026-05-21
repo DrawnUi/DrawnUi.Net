@@ -17,12 +17,16 @@ namespace DrawnUi.Views
             Arrange(context.Destination, widthRequest, heightRequest, context.Scale);
 
             var skia = Content as SkiaControl;
+            if (skia == null && Views.Count > 0)
+            {
+                skia = Views[0];
+            }
 
             if (!IsGhost)
             {
                 if (RenderingMode == RenderingModeType.AcceleratedRetained)
                 {
-                    if (skia.NeedUpdate)
+                    if (skia == null || skia.NeedUpdate)
                     {
                         Debug.WriteLine("PAINT");
 
@@ -52,11 +56,13 @@ namespace DrawnUi.Views
             }
         }
 
-        public virtual bool SignalInput(ISkiaGestureListener listener, TouchActionResult gestureType) => true;
+        public virtual bool SignalInput(ISkiaGestureListener listener, TouchActionResult gestureType)
+            => SignalNetInput(listener, gestureType);
 
         public virtual bool Focus() => true;
 
-        public void OnGestureEvent(TouchActionType type, TouchActionEventArgs args, TouchActionResult action) { }
+        public void OnGestureEvent(TouchActionType type, TouchActionEventArgs args, TouchActionResult action)
+            => HandleNetGestureEvent(type, args, action);
 
         public bool InputTransparent => false;
     }
