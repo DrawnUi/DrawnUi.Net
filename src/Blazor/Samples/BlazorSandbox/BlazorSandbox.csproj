@@ -10,7 +10,7 @@
     <WasmBuildNative>true</WasmBuildNative>
 
     <!-- use nugets or ref drawnui source-->
-    <UseSource>true</UseSource>
+    <UseSource>false</UseSource>
 
 </PropertyGroup>
 
@@ -20,7 +20,7 @@
 </ItemGroup>
 
 <ItemGroup Condition="'$(UseSource)' != 'true'">
-    <PackageReference Include="DrawnUi.Gaming.Blazor" Version="1.10.0.1-preview1.1" />
+    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.0.1-preview1.1" />
 </ItemGroup>
 
 <ItemGroup Condition="'$(UseSource)' == 'true'">
