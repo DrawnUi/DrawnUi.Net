@@ -1,8 +1,10 @@
 using System.Diagnostics;
 using System.Drawing;
+using System.Collections.Concurrent;
 using AppoMobi.Gestures;
 using DrawnUi;
 using DrawnUi.Draw;
+using DrawnUi.Draw.ApplicationModel;
 using DrawnUi.Infrastructure.Enums;
 using DrawnUi.Views;
 using OpenTK.Graphics.OpenGL4;
@@ -35,6 +37,8 @@ window.Run();
 
 internal sealed class DrawnUiGpuWindow : GameWindow
 {
+    private int _windowThreadId;
+    private readonly ConcurrentQueue<Action> _mainThreadActions = new();
     private readonly Canvas _canvas;
     private readonly GpuDrawable _drawable;
     private readonly SkiaButton _button;
@@ -103,6 +107,9 @@ internal sealed class DrawnUiGpuWindow : GameWindow
     {
         base.OnLoad();
 
+        _windowThreadId = Environment.CurrentManagedThreadId;
+        MainThread.Configure(action => _mainThreadActions.Enqueue(action), () => Environment.CurrentManagedThreadId == _windowThreadId);
+
         GL.ClearColor(0.07f, 0.08f, 0.11f, 1f);
         VSync = VSyncMode.On;
 
@@ -124,6 +131,8 @@ internal sealed class DrawnUiGpuWindow : GameWindow
     protected override void OnRenderFrame(FrameEventArgs args)
     {
         base.OnRenderFrame(args);
+
+        DrainMainThreadActions();
 
         if (_grContext == null || _surface == null || ClientSize.X <= 0 || ClientSize.Y <= 0)
             return;
@@ -278,6 +287,7 @@ internal sealed class DrawnUiGpuWindow : GameWindow
 
     protected override void OnUnload()
     {
+        MainThread.Reset();
         _surface?.Dispose();
         _renderTarget?.Dispose();
         _grContext?.Dispose();
@@ -343,6 +353,14 @@ internal sealed class DrawnUiGpuWindow : GameWindow
     private bool IsPointerButtonDown(OpenTkMouseButton button)
     {
         return MouseState.IsButtonDown(button);
+    }
+
+    private void DrainMainThreadActions()
+    {
+        while (_mainThreadActions.TryDequeue(out var action))
+        {
+            action();
+        }
     }
 
     private static Canvas CreateScene(int width, int height, SkiaLabel status, SkiaEditor editor, SkiaButton button)
