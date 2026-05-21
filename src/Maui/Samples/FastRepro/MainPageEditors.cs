@@ -51,7 +51,7 @@ namespace Sandbox
                         {
                             new SkiaLabel()
                             {
-                                Text = "Single-line editor",
+                                Text = "Single-line",
                                 UseCache = SkiaCacheType.Operations,
                                 FontSize = 18,
                                 TextColor = Colors.Black,
@@ -75,7 +75,7 @@ namespace Sandbox
 
                             new SkiaLabel()
                             {
-                                Text = "Multiline editor",
+                                Text = "Multiline ",
                                 UseCache = SkiaCacheType.Operations,
                                 FontSize = 18,
                                 TextColor = Colors.Black,
@@ -86,60 +86,16 @@ namespace Sandbox
                             {
                                 UseCache = SkiaCacheType.Operations,
                                 HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 5,
+                                MaxLines = 6,
                                 BackgroundColor = Colors.DarkBlue,
                                 Padding = new Thickness(8),
                                 FontSize = 16,
                                 TextColor = Colors.Yellow,
                                 CursorColor = Colors.White,
-                                Text = "First line\nSecond line\nThird line\n4\n5\n6",
+                                Text = "First line\nSecond line\nThird line,
                             },
 
-                            new SkiaLabel()
-                            {
-                                Text = "Single-line placeholder",
-                                UseCache = SkiaCacheType.Operations,
-                                FontSize = 18,
-                                TextColor = Colors.Black,
-                                HorizontalOptions = LayoutOptions.Fill,
-                            },
-
-                            new SkiaEditor()
-                            {
-                                UseCache = SkiaCacheType.Operations,
-                                HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 1,
-                                BackgroundColor = Color.Parse("#F5F5F5"),
-                                Padding = new Thickness(8),
-                                FontSize = 16,
-                                TextColor = Colors.Black,
-                                CursorColor = Colors.DodgerBlue,
-                                PlaceholderText = "Type something…",
-                                PlaceholderColor = Color.Parse("#A0A0A0"),
-                            },
-
-                            new SkiaLabel()
-                            {
-                                Text = "Multiline placeholder",
-                                UseCache = SkiaCacheType.Operations,
-                                FontSize = 18,
-                                TextColor = Colors.Black,
-                                HorizontalOptions = LayoutOptions.Fill,
-                            },
-
-                            new SkiaEditor()
-                            {
-                                UseCache = SkiaCacheType.Operations,
-                                HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 5,
-                                BackgroundColor = Color.Parse("#1E1E2E"),
-                                Padding = new Thickness(8),
-                                FontSize = 16,
-                                TextColor = Colors.White,
-                                CursorColor = Colors.White,
-                                PlaceholderText = "Write your message…",
-                                PlaceholderColor = Color.Parse("#60FFFFFF"),
-                            },
+                          
 
                             new SkiaLabel()
                             {
@@ -162,7 +118,6 @@ namespace Sandbox
                                 CursorColor = Colors.OrangeRed,
                                 PlaceholderText = "Search…",
                                 PlaceholderColor = Color.Parse("#B0B0B0"),
-                                Text="123",
                                 PlaceholderHorizontalAlignment = DrawTextAlignment.Center,
                                 HorizontalTextAlignment = DrawTextAlignment.Center
                             },

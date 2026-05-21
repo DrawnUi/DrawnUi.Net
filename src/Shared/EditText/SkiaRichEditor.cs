@@ -147,14 +147,15 @@ public class SkiaRichEditor : SkiaEditor
         InsertTextAtCursor(NormalizeRich(value));
     }
 
-    public new void StubPressEnter()
+    public new void StubPressEnter(bool splitLine = false)
     {
         if (IsMultiline)
         {
-            InsertTextAtCursor("\n");
+            InsertTextAtCursor(GetEditorBreakText(splitLine));
             return;
         }
-        Submit();
+
+        ExecuteSubmit(clearFocus: false);
     }
 
     public new void StubBackspace(int count = 1) => DeleteBeforeCursor(count);
@@ -255,7 +256,7 @@ public class SkiaRichEditor : SkiaEditor
         var text = _document.GetText();
 
         var displayText = text;
-        if (IsMultiline && !string.IsNullOrEmpty(text) && text.EndsWith("\n", StringComparison.Ordinal))
+        if (IsMultiline && !string.IsNullOrEmpty(text) && IsTrailingEditorBreak(text))
             displayText += "​";
 
         if (string.IsNullOrEmpty(displayText))
@@ -350,7 +351,7 @@ public class SkiaRichEditor : SkiaEditor
     }
 
     private static string NormalizeRich(string? value)
-        => value?.Replace("\r\n", "\n", StringComparison.Ordinal).Replace('\r', '\n') ?? string.Empty;
+        => NormalizeEditorLineBreaks(value);
 
     // ---- Inner label type -------------------------------------------------------
 

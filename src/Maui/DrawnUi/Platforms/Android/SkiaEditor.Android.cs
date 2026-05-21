@@ -145,7 +145,7 @@ namespace DrawnUi.Draw
             }
 
             e.Handled = true;
-            Submit();
+            ExecuteSubmit(clearFocus: false);
             return;
 
             if (e.ActionId == ImeAction.Done ||
@@ -154,7 +154,7 @@ namespace DrawnUi.Draw
                 // User has pressed the "Done" key or the "Enter" key.
                 // Insert your own logic here.
                 e.Handled = true;
-                Submit();
+                ExecuteSubmit(clearFocus: false);
             }
             else
             {

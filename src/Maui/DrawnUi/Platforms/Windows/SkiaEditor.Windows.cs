@@ -230,7 +230,7 @@ namespace DrawnUi.Draw
             if (!IsMultiline && e.Key == Windows.System.VirtualKey.Enter)
             {
                 e.Handled = true;
-                Submit();
+                ExecuteSubmit(clearFocus: false);
                 return;
             }
 

@@ -34,18 +34,18 @@ public partial class SkiaEditor
         if (string.IsNullOrEmpty(value))
             return;
 
-        ReplaceSelection(NormalizeLineBreaks(value));
+        ReplaceSelection(value);
     }
 
-    public void StubPressEnter()
+    public void StubPressEnter(bool splitLine = false)
     {
         if (IsMultiline)
         {
-            ReplaceSelection("\n");
+            ReplaceSelection(GetEditorBreakText(splitLine));
             return;
         }
 
-        Submit();
+        ExecuteSubmit(clearFocus: false);
     }
 
     public void StubBackspace(int count = 1)
@@ -159,7 +159,7 @@ public partial class SkiaEditor
         var text = Text ?? string.Empty;
         var selectionStart = Math.Clamp(CursorPosition, 0, text.Length);
         var selectionLength = Math.Clamp(SelectionLength, 0, text.Length - selectionStart);
-        var normalizedInsertedText = NormalizeLineBreaks(insertedText);
+        var normalizedInsertedText = NormalizeEditorInput(insertedText);
 
         var updated = text.Remove(selectionStart, selectionLength).Insert(selectionStart, normalizedInsertedText);
 
@@ -167,13 +167,6 @@ public partial class SkiaEditor
         CursorPosition = selectionStart + normalizedInsertedText.Length;
         SelectionLength = 0;
         _stubSelectionStop = -1;
-    }
-
-    private static string NormalizeLineBreaks(string? value)
-    {
-        return value?
-            .Replace("\r\n", "\n", StringComparison.Ordinal)
-            .Replace('\r', '\n') ?? string.Empty;
     }
 
     private static int GetIndexFromLineColumn(string? value, int line, int column)

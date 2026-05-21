@@ -1610,9 +1610,14 @@ namespace DrawnUi.Draw
             var paragraphs = text.Split('\n');
             ret.CountParagraphs = paragraphs.Length;
 
-            foreach (var line in paragraphs)
+            foreach (var paragraph in paragraphs)
             {
-                bool isNewParagraph = firstLineOffset.X == 0; //really first
+                var paragraphLines = paragraph.Split('\u2028');
+
+                for (int paragraphLineIndex = 0; paragraphLineIndex < paragraphLines.Length; paragraphLineIndex++)
+                {
+                var line = paragraphLines[paragraphLineIndex];
+                bool isNewParagraph = paragraphLineIndex == 0 && firstLineOffset.X == 0; // explicit paragraph break only
 
                 countLines++;
 
@@ -1729,7 +1734,7 @@ namespace DrawnUi.Draw
                         {
                             NeedsShaping = needsShaping,
                             Glyphs = smartMeasure.Glyphs,
-                            Text = adding.Replace("\n", ""),
+                            Text = adding.Replace("\n", "").Replace("\u2028", ""),
                             Span = span,
                             Size = new(widthBlock, heightBlock)
                         };
@@ -1959,6 +1964,12 @@ namespace DrawnUi.Draw
                 }
 
                 if (isCut) // If the text is cut  break paragraphs loop
+                {
+                    break;
+                }
+                }
+
+                if (isCut)
                 {
                     break;
                 }
@@ -2459,7 +2470,10 @@ namespace DrawnUi.Draw
 
         public static bool IsGlyphAlwaysAvailable(string glyphText)
         {
-            return glyphText == "\n";
+            return glyphText == "\n"
+                || glyphText == "\r"
+                || glyphText == "\u2028"
+                || glyphText == "\u2029";
         }
 
         public static bool UnicodeNeedsShaping(int unicodeCharacter)

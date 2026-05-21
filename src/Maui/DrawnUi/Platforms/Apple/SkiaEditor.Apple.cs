@@ -46,7 +46,7 @@ namespace DrawnUi.Draw
             {
                 if (!_editor.IsMultiline && text == "\n")
                 {
-                    _editor.Submit();
+                    _editor.ExecuteSubmit(clearFocus: false);
                     return false;
                 }
                 return true;

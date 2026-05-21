@@ -39,6 +39,10 @@ namespace DrawnUi.Draw
         protected SkiaLayout _contentLayer;
         protected SkiaEditorSelection _selectionControl;
         protected SkiaLabel _placeholderLabel;
+        protected const char ParagraphBreakChar = '\n';
+        protected const char SoftLineBreakChar = '\u2028';
+        private float _autoMeasuredLineHeightPx = -1f;
+        private float _autoMeasuredLineSpacingPx = -1f;
 
         private void RecreateLabelIfNeeded()
         {
@@ -68,15 +72,17 @@ namespace DrawnUi.Draw
             if (Label == null)
                 return;
 
+            _autoMeasuredLineHeightPx = -1f;
+            _autoMeasuredLineSpacingPx = -1f;
+
             var displayText = Text;
             if (IsPassword && !string.IsNullOrEmpty(displayText))
             {
                 displayText = new string('\u2022', displayText.Length);
             }
-            else if (IsMultiline && !string.IsNullOrEmpty(displayText) && displayText.EndsWith("\n", StringComparison.Ordinal))
+            else
             {
-                // Preserve the visible trailing empty line for caret placement without mutating editor state.
-                displayText += "\u200B";
+                displayText = NormalizeDisplayText(displayText);
             }
 
             Label.Text = displayText;
@@ -110,6 +116,7 @@ namespace DrawnUi.Draw
 
             UpdateCursorVisibility();
             UpdatePlaceholder();
+            UpdateViewportHeight();
 
             Invalidate();
         }
@@ -249,22 +256,167 @@ namespace DrawnUi.Draw
                 var paddingPx = (float)(Padding.HorizontalThickness * ctx.Scale);
                 Label.ViewportConstraintWidth = Math.Max(0f, DrawingRect.Width - paddingPx);
             }
+
+            UpdateViewportHeight();
             base.Paint(ctx);
+        }
+
+        private string NormalizeDisplayText(string? value)
+        {
+            var normalized = NormalizeEditorInput(value);
+            if (string.IsNullOrEmpty(normalized))
+                return normalized;
+
+            if (IsMultiline && IsTrailingEditorBreak(normalized))
+            {
+                // Preserve the visible trailing empty line for caret placement without mutating editor state.
+                return normalized + "\u200B";
+            }
+
+            return normalized;
+        }
+
+        private string NormalizeEditorInput(string? value)
+        {
+            var normalized = NormalizeEditorLineBreaks(value);
+            return IsMultiline ? normalized : ReplaceEditorBreaksWithSpaces(normalized);
+        }
+
+        protected static string NormalizeEditorLineBreaks(string? value)
+        {
+            return value?
+                .Replace("\r\n", "\n", StringComparison.Ordinal)
+                .Replace('\r', '\n')
+                .Replace('\u2029', ParagraphBreakChar) ?? string.Empty;
+        }
+
+        protected static string GetEditorBreakText(bool splitLine)
+            => splitLine ? SoftLineBreakChar.ToString() : ParagraphBreakChar.ToString();
+
+        protected static bool IsEditorBreak(char value)
+            => value == ParagraphBreakChar || value == SoftLineBreakChar;
+
+        protected static bool IsTrailingEditorBreak(string value)
+            => value.Length > 0 && IsEditorBreak(value[^1]);
+
+        protected static string ReplaceEditorBreaksWithSpaces(string value)
+            => value.Replace(ParagraphBreakChar, ' ').Replace(SoftLineBreakChar, ' ');
+
+        private int CountVisibleParagraphBreaks(int visibleLines)
+        {
+            if (visibleLines <= 1 || string.IsNullOrEmpty(Text))
+                return 0;
+
+            var remainingVisibleBreaks = visibleLines - 1;
+            var paragraphBreaks = 0;
+
+            foreach (var symbol in Text)
+            {
+                if (!IsEditorBreak(symbol))
+                    continue;
+
+                if (symbol == ParagraphBreakChar)
+                    paragraphBreaks++;
+
+                remainingVisibleBreaks--;
+                if (remainingVisibleBreaks == 0)
+                    break;
+            }
+
+            return paragraphBreaks;
+        }
+
+        private float GetAutoLineHeightPixels(float scale)
+        {
+            if (_autoMeasuredLineHeightPx > 0)
+                return _autoMeasuredLineHeightPx;
+
+            if (Label?.MeasuredLineHeight > 0)
+                return Label.MeasuredLineHeight;
+
+            if (!IsMultiline && Label?.HeightRequest >= 0)
+                return (float)(Label.HeightRequest * scale);
+
+            if (Label?.LineHeightPixels > 0)
+                return Label.LineHeightPixels;
+
+            var lineHeight = FontSize > 0 ? FontSize * Math.Max(LineHeight, 1.0) : 20.0;
+            return (float)(lineHeight * scale);
+        }
+
+        private float GetAutoLineSpacingPixels(float lineHeightPixels)
+        {
+            if (_autoMeasuredLineSpacingPx >= 0 && _autoMeasuredLineHeightPx > 0
+                && Math.Abs(_autoMeasuredLineHeightPx - lineHeightPixels) < 0.5f)
+                return _autoMeasuredLineSpacingPx;
+
+            if (Label == null || lineHeightPixels <= 0)
+                return 0f;
+
+            return (float)Label.GetSpaceBetweenLines(lineHeightPixels);
+        }
+
+        private float GetAutoVisibleHeightPixels(float scale)
+        {
+            var lines = MaxLines > 0 ? MaxLines : 1;
+            var lineHeightPx = GetAutoLineHeightPixels(scale);
+            if (lineHeightPx <= 0)
+                return 0f;
+
+            var lineSpacingPx = lines > 1 ? GetAutoLineSpacingPixels(lineHeightPx) : 0f;
+            var contentHeightPx = lineHeightPx * lines + lineSpacingPx * Math.Max(0, lines - 1);
+            if (lines <= 1 || Label == null)
+                return contentHeightPx;
+
+            var paragraphBreaks = CountVisibleParagraphBreaks(lines);
+            if (paragraphBreaks == 0)
+                return contentHeightPx;
+
+            var paragraphSpacingPx = (lineHeightPx + lineSpacingPx) * (float)Label.ParagraphSpacing;
+            return contentHeightPx + paragraphSpacingPx * paragraphBreaks;
+        }
+
+        private void UpdateViewportHeight()
+        {
+            if (_scroll == null)
+                return;
+
+            if (HeightRequest >= 0)
+            {
+                _scroll.HeightRequest = -1;
+                return;
+            }
+
+            var scale = RenderingScale > 0 ? RenderingScale : 1f;
+            var viewportHeightPx = GetAutoVisibleHeightPixels(scale);
+            if (viewportHeightPx <= 0)
+                return;
+
+            var viewportHeightPoints = viewportHeightPx / scale;
+            if (Math.Abs(_scroll.HeightRequest - viewportHeightPoints) < 0.5f)
+                return;
+
+            _scroll.HeightRequest = viewportHeightPoints;
+            InvalidateMeasure();
         }
 
         public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
         {
-            if (HeightRequest < 0)
-            {
-                var lines = MaxLines > 0 ? MaxLines : 1;
-                var paddingPx = (float)(Padding.VerticalThickness * scale);
-                // use the label's own height for single-line; fall back to FontSize×1.3 for multiline
-                var lineH = Label?.HeightRequest >= 0
-                    ? Label.HeightRequest
-                    : (FontSize > 0 ? FontSize * (LineHeight > 0 ? LineHeight : 1.3) : 20.0);
-                heightConstraint = (float)(lines * lineH * scale + paddingPx);
-            }
             return base.OnMeasuring(widthConstraint, heightConstraint, scale);
+        }
+
+        protected override SKSize GetContentSizeForAutosizeInPixels()
+        {
+            var size = base.GetContentSizeForAutosizeInPixels();
+            if (HeightRequest >= 0 || MaxLines <= 0)
+                return size;
+
+            var heightPx = GetAutoVisibleHeightPixels(RenderingScale > 0 ? RenderingScale : 1f);
+            if (heightPx <= 0)
+                return size;
+
+            size.Height = heightPx;
+            return size;
         }
 
         /// <summary>
@@ -274,14 +426,21 @@ namespace DrawnUi.Draw
         {
             if (IsMultiline)
             {
-                Text += "\n";
+                Text += GetEditorBreakText(false);
             }
             else
             {
-                IsFocused = false;
-                TextSubmitted?.Invoke(this, Text);
-                CommandOnSubmit?.Execute(Text);
+                ExecuteSubmit(clearFocus: true);
             }
+        }
+
+        protected void ExecuteSubmit(bool clearFocus)
+        {
+            if (clearFocus)
+                IsFocused = false;
+
+            TextSubmitted?.Invoke(this, Text);
+            CommandOnSubmit?.Execute(Text);
         }
 
         public bool IsMultiline
@@ -360,9 +519,9 @@ namespace DrawnUi.Draw
 
                         //if we fallen here means we clicked outside the line.
                         var endPos = firstPosInLine + posInline;
-                        // If the glyph array included a trailing '\n', step back so cursor lands
-                        // at end-of-line (before \n) rather than at the start of the next line.
-                        if (Text != null && endPos > 0 && endPos - 1 < Text.Length && Text[endPos - 1] == '\n')
+                        // If the glyph array included a trailing editor break, step back so cursor lands
+                        // at end-of-line rather than at the start of the next line.
+                        if (Text != null && endPos > 0 && endPos - 1 < Text.Length && IsEditorBreak(Text[endPos - 1]))
                             endPos--;
                         // clamp — glyph array can have N+1 slots for N chars (end-of-text sentinel)
                         return Math.Min(endPos, Text?.Length ?? endPos);
@@ -585,7 +744,6 @@ namespace DrawnUi.Draw
                 var lineH = Label.MeasuredLineHeight / RenderingScale;
                 if (lineH > 0)
                     Cursor.HeightRequest = lineH;
-
                 if (cursorIndex < 0)
                 {
                     CursorPosition = 0;
@@ -645,7 +803,7 @@ namespace DrawnUi.Draw
                         var endsWithHardLineBreak = cursorIndex > 0
                             && Text != null
                             && cursorIndex == Text.Length
-                            && Text[cursorIndex - 1] == '\n';
+                            && IsEditorBreak(Text[cursorIndex - 1]);
 
                         double translateX;
                         double translateY;
@@ -694,7 +852,7 @@ namespace DrawnUi.Draw
                             var isHardLineBreak = cursorIndex > 0
                                 && Text != null
                                 && cursorIndex - 1 < Text.Length
-                                && Text[cursorIndex - 1] == '\n';
+                                && IsEditorBreak(Text[cursorIndex - 1]);
 
                             if (isHardLineBreak)
                             {
@@ -814,13 +972,13 @@ namespace DrawnUi.Draw
         {
             var nextIndex = currentIndex + glyphCount;
             // KeepSpacesOnLineBreaks causes the last glyph to be a synthetic space that
-            // covers the '\n' separator in the text. When that happens, the separator is
+            // covers the editor break separator in the text. When that happens, the separator is
             // already consumed and must NOT be skipped a second time.
             var lastGlyphIsNewline = glyphCount > 0
                 && Text != null
                 && nextIndex - 1 < Text.Length
-                && Text[nextIndex - 1] == '\n';
-            if (!lastGlyphIsNewline && Text != null && nextIndex < Text.Length && Text[nextIndex] == '\n')
+                && IsEditorBreak(Text[nextIndex - 1]);
+            if (!lastGlyphIsNewline && Text != null && nextIndex < Text.Length && IsEditorBreak(Text[nextIndex]))
             {
                 nextIndex++;
             }
@@ -910,7 +1068,7 @@ namespace DrawnUi.Draw
             }
 
             var pos = lineStart + glyphs.Length;
-            if (Text != null && pos > 0 && pos - 1 < Text.Length && Text[pos - 1] == '\n')
+            if (Text != null && pos > 0 && pos - 1 < Text.Length && IsEditorBreak(Text[pos - 1]))
                 pos--;
             CursorPosition = pos;
         }
@@ -1039,9 +1197,7 @@ namespace DrawnUi.Draw
             var existing = Text ?? string.Empty;
             var start = Math.Clamp(CursorPosition, 0, existing.Length);
             var len = Math.Clamp(SelectionLength, 0, existing.Length - start);
-            var normalized = value.Replace("\r\n", "\n").Replace("\r", "\n");
-            if (!IsMultiline)
-                normalized = normalized.Replace("\n", " ");
+            var normalized = NormalizeEditorInput(value);
             Text = existing.Remove(start, len).Insert(start, normalized);
             CursorPosition = start + normalized.Length;
             SelectionLength = 0;
@@ -1503,8 +1659,18 @@ namespace DrawnUi.Draw
                 e.UpdatePlaceholder();
         }
 
+        private static void OnMaxLinesChanged(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            if (bindable is SkiaEditor control)
+            {
+                control.UpdateLabel();
+                if (control.HeightRequest < 0)
+                    control.InvalidateMeasure();
+            }
+        }
+
         public static readonly BindableProperty MaxLinesProperty = BindableProperty.Create(nameof(MaxLines),
-            typeof(int), typeof(SkiaEditor), 1, propertyChanged: OnNeedUpdateText);
+            typeof(int), typeof(SkiaEditor), 1, propertyChanged: OnMaxLinesChanged);
         public int MaxLines
         {
             get { return (int)GetValue(MaxLinesProperty); }

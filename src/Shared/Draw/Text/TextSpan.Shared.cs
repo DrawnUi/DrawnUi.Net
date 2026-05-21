@@ -57,6 +57,16 @@ public partial class TextSpan : IDisposable
 
         foreach (var glyph in Glyphs)
         {
+            if (glyph.Length == 1)
+            {
+                var symbol = (char)glyph.Symbol;
+                if (symbol == '\n' || symbol == '\r' || symbol == '\u2028' || symbol == '\u2029')
+                {
+                    sb.Append(symbol);
+                    continue;
+                }
+            }
+
             if (!glyph.IsAvailable)
             {
                 sb.Append(((SkiaLabel)Parent).FallbackCharacter);
