@@ -679,11 +679,17 @@ namespace DrawnUi.Draw
 
         protected void SetFocusInternal(bool value)
         {
+#if BROWSER
+            var focusDelayMs = 50;
+#else
+            var focusDelayMs = 100;
+#endif
+
             // 100 ms: on Android/iOS the IME needs time to connect before ShowSoftInput +
             // SetSelection fire. On Windows, WinUI shifts keyboard focus to the Canvas on
             // every tap — 100 ms lets that settle before we steal it back with Focus(Programmatic).
             // Stray keystrokes during the window are blocked by PlatformClearFocusNow().
-            Tasks.StartDelayed(TimeSpan.FromMilliseconds(100), () =>
+            Tasks.StartDelayed(TimeSpan.FromMilliseconds(focusDelayMs), () =>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {

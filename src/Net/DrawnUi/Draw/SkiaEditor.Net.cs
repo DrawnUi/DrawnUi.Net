@@ -131,26 +131,7 @@ public partial class SkiaEditor
         StubSelectRange(0, Text?.Length ?? 0);
     }
 
-    public void StubMoveCursorToLineColumn(int line, int column, bool extendSelection = false)
-    {
-        var target = GetIndexFromLineColumn(Text, line, column);
-        var delta = target - CursorPosition;
-        StubMoveCursor(delta, extendSelection);
-    }
-
-    public void StubSelectLineColumnRange(int startLine, int startColumn, int endLine, int endColumn)
-    {
-        var text = Text ?? string.Empty;
-        var start = GetIndexFromLineColumn(text, startLine, startColumn);
-        var end = GetIndexFromLineColumn(text, endLine, endColumn);
-
-        if (end < start)
-        {
-            (start, end) = (end, start);
-        }
-
-        StubSelectRange(start, end - start);
-    }
+ 
 
     private bool HasSelection => SelectionLength > 0;
 
@@ -169,32 +150,5 @@ public partial class SkiaEditor
         _stubSelectionStop = -1;
     }
 
-    private static int GetIndexFromLineColumn(string? value, int line, int column)
-    {
-        var text = NormalizeLineBreaks(value);
-        var targetLine = Math.Max(0, line);
-        var targetColumn = Math.Max(0, column);
-        var index = 0;
-        var currentLine = 0;
-
-        while (currentLine < targetLine && index < text.Length)
-        {
-            var lineBreak = text.IndexOf('\n', index);
-            if (lineBreak < 0)
-            {
-                return text.Length;
-            }
-
-            index = lineBreak + 1;
-            currentLine++;
-        }
-
-        var lineEnd = text.IndexOf('\n', index);
-        if (lineEnd < 0)
-        {
-            lineEnd = text.Length;
-        }
-
-        return Math.Min(index + targetColumn, lineEnd);
-    }
+ 
 }

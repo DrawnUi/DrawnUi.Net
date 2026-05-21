@@ -41,7 +41,7 @@
                     new SkiaLabel()
                     {
                         UseCache = SkiaCacheType.Operations,
-                        Text = "Single-line",
+                        Text = "Single-line (MaxLines = 1)",
                         FontSize = 18,
                         TextColor = Colors.Black,
                         HorizontalOptions = LayoutOptions.Fill,
@@ -58,12 +58,14 @@
                         TextColor = Colors.Black,
                         CursorColor = Colors.Red,
                         Text = "Hello world!",
+                        PlaceholderText = "Enter text.."
                     },
 
                     new SkiaLabel()
                     {
+                        Margin = new(0,8,0,0),
                         UseCache = SkiaCacheType.Operations,
-                        Text = "Multiline",
+                        Text = "Multiline (MaxLines = 6)",
                         FontSize = 18,
                         TextColor = Colors.Black,
                         HorizontalOptions = LayoutOptions.Fill,
@@ -79,7 +81,8 @@
                         FontSize = 16,
                         TextColor = Colors.Yellow,
                         CursorColor = Colors.White,
-                        Text = "First line\nSecond line\nThird line\nFourth line\nFifth line\nSixth line",
+                        Text = "First line\nSecond line\nThird line",
+                        PlaceholderText = "..."
                     },
  
                 }
