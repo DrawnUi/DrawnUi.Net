@@ -629,9 +629,7 @@
         }
 
         var widthConstraint = GetIntrinsicWidthConstraint();
-        var heightConstraint = Content.HeightRequest > 0
-            ? (float)Content.HeightRequest
-            : float.PositiveInfinity;
+        var heightConstraint = GetIntrinsicHeightConstraint();
         var scale = RenderingScale > 0 ? RenderingScale : 1f;
 
         try
@@ -647,6 +645,11 @@
 
     private float GetIntrinsicWidthConstraint()
     {
+        if (WidthRequest > 0 && CanUseRequestedCanvasSize())
+        {
+            return (float)WidthRequest;
+        }
+
         if (Content?.WidthRequest > 0)
         {
             return (float)Content.WidthRequest;
@@ -660,6 +663,31 @@
         if (_measuredCanvasWidth > 0)
         {
             return _measuredCanvasWidth;
+        }
+
+        return float.PositiveInfinity;
+    }
+
+    private float GetIntrinsicHeightConstraint()
+    {
+        if (HeightRequest > 0 && CanUseRequestedCanvasSize())
+        {
+            return (float)HeightRequest;
+        }
+
+        if (Content?.HeightRequest > 0)
+        {
+            return (float)Content.HeightRequest;
+        }
+
+        if (Content?.MeasuredSize?.Units.Height > 0)
+        {
+            return Content.MeasuredSize.Units.Height;
+        }
+
+        if (_measuredCanvasHeight > 0)
+        {
+            return _measuredCanvasHeight;
         }
 
         return float.PositiveInfinity;
