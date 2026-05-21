@@ -166,9 +166,9 @@ public partial class PongGame : DrawnGame
 
     public void SetPlayerMovement(float dir) => _playerMovement = dir;
 
-    public void Serve()
+    public void Serve(bool triggeredByAi = false)
     {
-        if (_phase == GamePhase.WaitingToStart || _phase == GamePhase.Scored)
+        if (_phase == GamePhase.WaitingToStart && (!_aiServes || triggeredByAi))
         {
             Ball.IsMoving = true;
             Ball.Speed = BALL_SPEED;

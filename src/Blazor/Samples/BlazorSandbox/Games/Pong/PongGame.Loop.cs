@@ -36,7 +36,7 @@ public partial class PongGame
                 Ball.Left = AiPaddle.Left + (PADDLE_WIDTH - 14) / 2.0;
 
                 if (_autoServeTimer <= 0)
-                    Serve();
+                    Serve(triggeredByAi: true);
             }
             else
             {
