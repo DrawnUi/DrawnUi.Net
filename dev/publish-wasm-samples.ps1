@@ -59,7 +59,20 @@ foreach ($sample in $samples) {
     }
 
     $indexHtml = Get-Content -LiteralPath $indexPath -Raw
-    $indexHtml = $indexHtml.Replace('%BASE_HREF%', $sample.BaseHref)
+    if ($indexHtml.Contains('%BASE_HREF%')) {
+        $indexHtml = $indexHtml.Replace('%BASE_HREF%', $sample.BaseHref)
+    } else {
+        $baseTagPattern = '<base\s+href="[^"]*"\s*/?>'
+        $baseTagReplacement = "<base href=\"$($sample.BaseHref)\" />"
+        $updatedIndexHtml = [System.Text.RegularExpressions.Regex]::Replace($indexHtml, $baseTagPattern, $baseTagReplacement, 1)
+
+        if ($updatedIndexHtml -eq $indexHtml) {
+            throw "Publish failed for sample '$($sample.Name)': base href tag not found."
+        }
+
+        $indexHtml = $updatedIndexHtml
+    }
+
     Set-Content -LiteralPath $indexPath -Value $indexHtml -NoNewline
 
     Get-ChildItem -LiteralPath $siteRoot -Force | ForEach-Object {
