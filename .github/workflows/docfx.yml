@@ -28,6 +28,9 @@ jobs:
       - name: Install DocFX
         run: dotnet tool install --global docfx
 
+      - name: Install WASM workload
+        run: sudo dotnet workload install wasm-tools
+
       - name: Build DocFX site
         shell: pwsh
         run: |
