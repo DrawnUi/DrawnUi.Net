@@ -1,29 +1,27 @@
-# DrawnUI for .NET MAUI and Blazor
+# DrawnUI for .NET
 ![License](https://img.shields.io/github/license/taublast/DrawnUi.svg)
-![NuGet Version](https://img.shields.io/nuget/v/AppoMobi.Maui.DrawnUi.svg)
-![NuGet Downloads](https://img.shields.io/nuget/dt/AppoMobi.Maui.DrawnUi.svg)
+![NuGet DrawnUi.Maui](https://img.shields.io/nuget/v/DrawnUi.Maui.svg)
+![NuGet DrawnUi.Blazor.Wasm](https://img.shields.io/nuget/v/DrawnUi.Blazor.Wasm.svg)
+![NuGet DrawnUi.Net](https://img.shields.io/nuget/v/DrawnUi.Net.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/taublast/drawnui/blob/master/CONTRIBUTING.md)
 
-[Docs and Samples](https://drawnui.net) 👈
 
-Rendering engine for .NET MAUI, with an in-progress Blazor WebAssembly target, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).   
+DrawnUI is a rendering and UI composition engine for .NET, powered by [SkiaSharp](https://github.com/mono/SkiaSharp) with optional hardware acceleration.
 
-MAUI supports **iOS**, **MacCatalyst**, **Android**, **Windows** with hardware acceleration.
+Currently supports host models:
 
-* To use inside a usual MAUI app, by wrapping drawn controls into `Canvas` views.
-* To create a totally drawn apps with just one `Canvas` as root view.
-* Drawn controls are totally virtual, no native views/handlers.
-* Design in XAML or [code-behind](https://drawnui.net/articles/first-app-code.html)
-* Blazor WebAssembly support is available under active development with shared DrawnUI controls and `Canvas` hosting in Razor pages.
-* Free to use under the MIT license, nuget package available.
+* `DrawnUi.Net` for platform-agnostic console/server rendering scenarios.
+* `DrawnUi.Maui` for native app UI on iOS, Android, MacCatalyst, and Windows.
+* `DrawnUi.Blazor.Wasm` for browser-side / WebAssembly rendering with `Canvas` in Razor pages.
+* `DrawnUi.Blazor.Server` for server-backed DrawnUI surfaces inside Blazor Server / `InteractiveServer` apps.
+
 
 ## Features
 
-* __Create visuals totally matching designer's image__, no more compromises with native controls
-* __Use virtual controls to draw your UI__
-* __Create your own animated pixel-perfect controls__
+* __Your toolbox to create drawn controls__, no more compromises with pre-built controls
+* __Draw your own UI__ with virtual pixel-perfect elements
 * __Port existing native controls to drawn__
-* __Design in XAML or code-behind__
+* __Design in XAML, Razor + Canvas, or code-behind__
 * __2D and 3D Transforms__
 * __Visual effects__ for every control, filters and shaders
 * __Animations__ targeting max FPS
@@ -31,120 +29,11 @@ MAUI supports **iOS**, **MacCatalyst**, **Android**, **Windows** with hardware a
 * __Optimized for performance__, rendering only visible elements, recycling templates etc
 * __Gestures__ support for anything, panning, scrolling, zooming etc
 * __Keyboard support__, track any key
-* __Navigate__ on the canvas with MAUI Shell-like techniques 
-
-## To Note
-
-* Still targeting .NET9 library: entry controls not fully compatible with .NET10.
-* The Blazor target currently uses `net10.0` and is still building toward full MAUI parity.
- 
----
-
-## 🆕 What's new for 1.9.7.4
-
-* `SKSL` helper improvements: concurrent cache, error callbacks for static creation methods.
- 
-## 💡 Hint of the Day
-
-**❓ Q: How to expand button hitbox?**
-
-**💡 A:** Every drawn control can do that:
-
-```csharp
-public override SKRect CreateHitRect()
-{
-    var ret = base.CreateHitRect();
-    ret.Inflate(10*RenderingScale, 10*RenderingScale);
-    return ret;
-}
-```
-
-## 👍 Latest Showcase
-
-* [SolTempo](https://github.com/taublast/SolTempo)  - Audio Processing App with SKSL Shaders, read the [blog article](https://taublast.github.io/posts/SolTempo/).
+* __Navigate__ on the canvas with shell-like techniques 
 
 ---
 
-
-## Quick Start
-
-### .NET MAUI
-
-Install the package:
-```bash
-dotnet add package DrawnUi.Maui
-```
-
-Initialize in `MauiProgram.cs`:
-```csharp
-builder.UseDrawnUi();
-```
-
-Use in XAML:
-```xml
-<ContentPage xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw">
-    <draw:Canvas Gestures="Enabled">
-        <draw:SkiaLayout Type="Column" Spacing="16" Padding="32">
-            <draw:SkiaLabel Text="Hello DrawnUI" FontSize="24" />
-            <draw:SkiaButton Text="Click Me" Tapped="OnButtonClicked" />
-        </draw:SkiaLayout>
-    </draw:Canvas>
-</ContentPage>
-```
-
-Need more performance? Set canvas `RenderingMode` to `Accelerated`.
-
-See the [Getting Started Guide](https://drawnui.net/articles/getting-started.html) for details.
-
-Do not miss the [Tutorials Project](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials) on how to create your custom control, a recycled cells scroller and more.
-
-### Blazor WebAssembly
-
-For Blazor setup, package installation, startup, trimming notes, and the current validated slice, see the [Blazor README](src/Blazor/README.md).
-
+[Docs and Samples](https://drawnui.net) 👈
 ---
-
-## Sample Apps
-
-**Demo Projects:**
-- [Tutorials](https://github.com/taublast/DrawnUi/tree/main/src/Maui/Samples/Tutorials) - First steps, bindings, recycled cells
-- [Sandbox Project](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Sandbox) - Playground for custom controls, shaders, camera, maps etc
-- [Blazor Sandbox](https://github.com/taublast/DrawnUi/tree/main/src/Blazor/Samples/BlazorSandbox) - WebAssembly playground for cards, scrolling, lottie, and keyboard probes
-- [Engine Demo](https://github.com/taublast/AppoMobi.Maui.DrawnUi.Demo) - Navigation, recycled cells, camera integration
-- [Shaders Carousel](https://github.com/taublast/ShadersCarousel/) - Advanced SkiaSharp v3 effects
-- [Space Shooter](https://github.com/taublast/Maui.Game.SpaceShooter/) - 2D Arcade Game Etude
-
-**Open-Source Published Apps:**
-- [Filters Camera](https://github.com/taublast/ShadersCamera) - Real-time camera filters ([AppStore](https://apps.apple.com/us/app/filters-camera/id6749823005), [Google Play](https://play.google.com/store/apps/details?id=com.appomobi.drawnui.shaderscam))
-- [Bricks Breaker](https://github.com/taublast/DrawnUi.Breakout) - 2D Arkanoid/Breakout arcade game ([AppStore](https://apps.apple.com/us/app/bricks-breaker/id6749823869), [Google Play](https://play.google.com/store/apps/details?id=com.appomobi.drawnui.breakout))
-
----
-
-___Please star ⭐ if you like it!___
-
-## FAQ
-
-**Q: What is the difference between DrawnUi and other drawn frameworks?**  
-A: It is not a framework but a library for .NET MAUI, to make creating drawn UI easy for everyone.
-
-**Q: Why use DrawnUI instead of native controls?**  
-A: Gives you complete control over rendering and appearance and can be much more performant for complex UIs. 
-
-**Q: Do I need to know SkiaSharp?**  
-A: No. Use the prebuilt controls and customize them. All controls are designed to be subclassed and most methods are virtual.
-
-**Q: Can I use XAML/code-behind?**  
-A: Yes, both XAML and code-behind are supported.
-
-**Q: Can I embed native MAUI controls?**  
-A: Yes, use `SkiaMauiElement` to wrap native controls like WebView inside your drawn UI.
-
-**Q: Can I embed drawn controls into my usual MAUI app?**  
-A: Yes, use `Canvas` to wrap drawn controls inside your MAUI UI.
-
-[Full FAQ](https://drawnui.net/articles/faq.html) • [Ask Questions](https://github.com/taublast/DrawnUi/discussions)
-
----
-
-[Documentation](https://drawnui.net) • [Tutorials](https://drawnui.net/articles/tutorials.html) • [Controls Reference](https://drawnui.net/articles/controls/index.html) Under development
+MIT | Free to use and customize
 
