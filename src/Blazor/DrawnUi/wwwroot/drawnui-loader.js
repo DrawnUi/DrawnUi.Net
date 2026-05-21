@@ -63,6 +63,25 @@
         globalThis.document.documentElement.style.setProperty('--drawnui-load-percentage-text', `"${progressText}"`);
     }
 
+    function updateLoaderWidth(shell) {
+        const resolvedShell = shell || getLoaderShell();
+        const title = resolvedShell?.querySelector('.boot-copy');
+        if (!title || !title.firstChild) {
+            return;
+        }
+
+        const range = globalThis.document.createRange();
+        range.selectNodeContents(title);
+
+        const titleWidth = Array.from(range.getClientRects()).reduce(function (maxWidth, rect) {
+            return Math.max(maxWidth, rect.width || 0);
+        }, 0);
+
+        if (titleWidth > 0) {
+            globalThis.document.documentElement.style.setProperty('--boot-progress-width', `${titleWidth * 0.85}px`);
+        }
+    }
+
     function resolvePreview(state, loaderOptions) {
         const searchParams = new URLSearchParams(globalThis.location.search);
         if (!searchParams.has('loader-preview')) {
@@ -94,7 +113,33 @@
             downloadsCompleted: false
         };
 
-        applyLoaderTheme(resolvedLoaderOptions);
+        const appliedTheme = applyLoaderTheme(resolvedLoaderOptions);
+        const shell = getLoaderShell(resolvedLoaderOptions.shellSelector);
+        updateLoaderWidth(shell);
+
+        globalThis.requestAnimationFrame(function () {
+            updateLoaderWidth(shell);
+        });
+
+        globalThis.document.fonts?.ready?.then(function () {
+            updateLoaderWidth(shell);
+        });
+
+        if (shell && !shell.dataset.loaderWidthBound) {
+            const updateWidth = function () {
+                updateLoaderWidth(shell);
+            };
+            const title = shell.querySelector('.boot-copy');
+
+            globalThis.addEventListener('resize', updateWidth);
+
+            if (title && globalThis.ResizeObserver) {
+                const resizeObserver = new globalThis.ResizeObserver(updateWidth);
+                resizeObserver.observe(title);
+            }
+
+            shell.dataset.loaderWidthBound = 'true';
+        }
 
         if (resolvePreview(state, resolvedLoaderOptions)) {
             return Promise.resolve();

@@ -145,7 +145,7 @@
 }
 
 .boot-logo-wrap {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     position: relative;
     width: min(15rem, 56vw);
     aspect-ratio: 1;
@@ -212,6 +212,9 @@
 .boot-progress {
     display: grid;
     gap: 0.65rem;
+    width: var(--boot-progress-width, auto);
+    max-width: 60%;
+    justify-self: center;
 }
 
 .boot-spark {
