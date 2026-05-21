@@ -36,6 +36,7 @@ namespace DrawnUi.Draw
         private static readonly object NativeAppLifecycleLock = new();
         private static CancellationTokenSource _frameLoopCancellation;
         private static IJSObjectReference? _nativeAppLifecycleModule;
+        private static DotNetObjectReference<AppLifecycleProxy>? _lifecycleProxyRef;
         private static bool _loopStarted;
         private static bool _nativeAppCreated;
         private static bool _nativeAppDestroyed;
@@ -94,7 +95,8 @@ namespace DrawnUi.Draw
                     "import",
                     NativeAppLifecycleModulePath);
 
-                await _nativeAppLifecycleModule.InvokeVoidAsync("attachNativeAppLifecycle");
+                _lifecycleProxyRef ??= DotNetObjectReference.Create(new AppLifecycleProxy());
+                await _nativeAppLifecycleModule.InvokeVoidAsync("attachNativeAppLifecycle", _lifecycleProxyRef);
             }
             catch
             {
@@ -319,6 +321,14 @@ namespace DrawnUi.Draw
         static partial void OnMaxFpsChanged(int fps)
         {
             RestartFrameLoop();
+        }
+
+        public class AppLifecycleProxy
+        {
+            [JSInvokable] public void HandleNativeAppCreated() => Super.HandleNativeAppCreated();
+            [JSInvokable] public void HandleNativeAppHidden() => Super.HandleNativeAppHidden();
+            [JSInvokable] public void HandleNativeAppVisible() => Super.HandleNativeAppVisible();
+            [JSInvokable] public void HandleNativeAppDestroyed() => Super.HandleNativeAppDestroyed();
         }
     }
 }

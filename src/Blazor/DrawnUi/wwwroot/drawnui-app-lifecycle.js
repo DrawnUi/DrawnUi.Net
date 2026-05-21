@@ -1,9 +1,13 @@
 const lifecycleState = globalThis.__drawnUiNativeAppLifecycle ??= {
     attached: false,
-    destroyed: false
+    destroyed: false,
+    dotNetRef: null
 };
 
 function invoke(methodName) {
+    if (lifecycleState.dotNetRef) {
+        return lifecycleState.dotNetRef.invokeMethodAsync(methodName);
+    }
     return globalThis.DotNet?.invokeMethodAsync('DrawnUi.Blazor', methodName);
 }
 
@@ -41,11 +45,12 @@ function signalDestroyed() {
     invoke('HandleNativeAppDestroyed');
 }
 
-export function attachNativeAppLifecycle() {
+export function attachNativeAppLifecycle(dotNetRef) {
     if (lifecycleState.attached) {
         return;
     }
 
+    lifecycleState.dotNetRef = dotNetRef ?? null;
     lifecycleState.attached = true;
     lifecycleState.destroyed = false;
 
