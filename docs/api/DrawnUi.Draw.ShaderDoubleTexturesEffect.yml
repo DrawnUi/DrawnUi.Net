@@ -13,6 +13,7 @@ items:
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.ControlTo
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.ControlToProperty
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.CreateTexturesUniforms(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect,SkiaSharp.SKShader)
+  - DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync(System.String)
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.GetPrimaryTextureImage(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.GetSecondaryTexture
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.ImportCacheTo
@@ -21,7 +22,6 @@ items:
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadedPrimaryBitmap
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadedSecondaryBitmap
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.OnDisposing
-  - DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(System.String)
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.ParentReady
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.PrimarySource
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.PrimarySourceProperty
@@ -47,7 +47,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ShaderDoubleTexturesEffect
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 7
+    startLine: 9
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -174,7 +174,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ParentReady
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 9
+    startLine: 11
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -202,7 +202,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldDisposePreviousTexture
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 14
+    startLine: 16
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -239,7 +239,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 29
+    startLine: 31
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -267,7 +267,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TilingSecondaryTexture
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 43
+    startLine: 45
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -294,7 +294,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTexturesUniforms
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 45
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -332,7 +332,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPrimaryTextureImage
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 71
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -375,7 +375,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlFromProperty
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 119
+    startLine: 127
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -402,7 +402,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlFrom
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 125
+    startLine: 133
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -431,7 +431,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PrimarySourceProperty
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 137
+    startLine: 145
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -458,7 +458,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PrimarySource
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 144
+    startLine: 152
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -487,7 +487,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizePrimaryLoadedBitmap
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 170
+    startLine: 178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -513,7 +513,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizedPrimaryImage
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 209
+    startLine: 217
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -544,7 +544,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedPrimaryBitmap
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 210
+    startLine: 218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -573,7 +573,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadPrimarySource
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 219
+    startLine: 227
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -611,7 +611,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSecondaryTexture
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 264
+    startLine: 271
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -639,7 +639,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondaryTexture
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 289
+    startLine: 296
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -668,7 +668,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileSecondaryTexture
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 291
+    startLine: 298
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -697,7 +697,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedSecondaryBitmap
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 310
+    startLine: 317
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -724,7 +724,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondarySourceProperty
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 314
+    startLine: 321
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -751,7 +751,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondarySource
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 321
+    startLine: 328
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -780,7 +780,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizeSecondaryLoadedBitmapAndCompileTexture
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 348
+    startLine: 355
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -806,7 +806,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSecondarySource
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 378
+    startLine: 385
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -826,40 +826,40 @@ items:
   nameWithType.vb: ShaderDoubleTexturesEffect.LoadSecondarySource(String)
   fullName.vb: DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadSecondarySource(String)
   name.vb: LoadSecondarySource(String)
-- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(System.String)
-  commentId: M:DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(System.String)
-  id: OpenPackageFileStreamAsync(System.String)
+- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync(System.String)
+  commentId: M:DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync(System.String)
+  id: DecodePackageBitmapAsync(System.String)
   parent: DrawnUi.Draw.ShaderDoubleTexturesEffect
   langs:
   - csharp
   - vb
-  name: OpenPackageFileStreamAsync(string)
-  nameWithType: ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(string)
-  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(string)
+  name: DecodePackageBitmapAsync(string)
+  nameWithType: ShaderDoubleTexturesEffect.DecodePackageBitmapAsync(string)
+  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync(string)
   type: Method
   source:
     remote:
       path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: net10
       repo: https://github.com/taublast/DrawnUi.git
-    id: OpenPackageFileStreamAsync
+    id: DecodePackageBitmapAsync
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 414
+    startLine: 420
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: protected virtual Task<Stream> OpenPackageFileStreamAsync(string fileName)
+    content: protected virtual Task<SKBitmap> DecodePackageBitmapAsync(string fileName)
     parameters:
     - id: fileName
       type: System.String
     return:
-      type: System.Threading.Tasks.Task{System.IO.Stream}
-    content.vb: Protected Overridable Function OpenPackageFileStreamAsync(fileName As String) As Task(Of Stream)
-  overload: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync*
-  nameWithType.vb: ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(String)
-  fullName.vb: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync(String)
-  name.vb: OpenPackageFileStreamAsync(String)
+      type: System.Threading.Tasks.Task{SkiaSharp.SKBitmap}
+    content.vb: Protected Overridable Function DecodePackageBitmapAsync(fileName As String) As Task(Of SKBitmap)
+  overload: DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync*
+  nameWithType.vb: ShaderDoubleTexturesEffect.DecodePackageBitmapAsync(String)
+  fullName.vb: DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync(String)
+  name.vb: DecodePackageBitmapAsync(String)
 - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.AssignedControlTo
   commentId: F:DrawnUi.Draw.ShaderDoubleTexturesEffect.AssignedControlTo
   id: AssignedControlTo
@@ -878,7 +878,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: AssignedControlTo
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 428
+    startLine: 438
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -905,7 +905,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ImportCacheTo
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 430
+    startLine: 440
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -931,7 +931,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyControlTo
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 445
+    startLine: 455
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -960,7 +960,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlToProperty
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 476
+    startLine: 486
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -987,7 +987,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlTo
     path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 482
+    startLine: 492
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3633,33 +3633,33 @@ references:
   name: LoadSecondarySource
   nameWithType: ShaderDoubleTexturesEffect.LoadSecondarySource
   fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.LoadSecondarySource
-- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync*
-  commentId: Overload:DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync
-  href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html#DrawnUi_Draw_ShaderDoubleTexturesEffect_OpenPackageFileStreamAsync_System_String_
-  name: OpenPackageFileStreamAsync
-  nameWithType: ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync
-  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.OpenPackageFileStreamAsync
-- uid: System.Threading.Tasks.Task{System.IO.Stream}
-  commentId: T:System.Threading.Tasks.Task{System.IO.Stream}
+- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync*
+  commentId: Overload:DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync
+  href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html#DrawnUi_Draw_ShaderDoubleTexturesEffect_DecodePackageBitmapAsync_System_String_
+  name: DecodePackageBitmapAsync
+  nameWithType: ShaderDoubleTexturesEffect.DecodePackageBitmapAsync
+  fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.DecodePackageBitmapAsync
+- uid: System.Threading.Tasks.Task{SkiaSharp.SKBitmap}
+  commentId: T:System.Threading.Tasks.Task{SkiaSharp.SKBitmap}
   parent: System.Threading.Tasks
   definition: System.Threading.Tasks.Task`1
   href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  name: Task<Stream>
-  nameWithType: Task<Stream>
-  fullName: System.Threading.Tasks.Task<System.IO.Stream>
-  nameWithType.vb: Task(Of Stream)
-  fullName.vb: System.Threading.Tasks.Task(Of System.IO.Stream)
-  name.vb: Task(Of Stream)
+  name: Task<SKBitmap>
+  nameWithType: Task<SKBitmap>
+  fullName: System.Threading.Tasks.Task<SkiaSharp.SKBitmap>
+  nameWithType.vb: Task(Of SKBitmap)
+  fullName.vb: System.Threading.Tasks.Task(Of SkiaSharp.SKBitmap)
+  name.vb: Task(Of SKBitmap)
   spec.csharp:
   - uid: System.Threading.Tasks.Task`1
     name: Task
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
   - name: <
-  - uid: System.IO.Stream
-    name: Stream
+  - uid: SkiaSharp.SKBitmap
+    name: SKBitmap
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skbitmap
   - name: '>'
   spec.vb:
   - uid: System.Threading.Tasks.Task`1
@@ -3669,10 +3669,10 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: System.IO.Stream
-    name: Stream
+  - uid: SkiaSharp.SKBitmap
+    name: SKBitmap
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skbitmap
   - name: )
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1

@@ -15,6 +15,17 @@
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <script>
+        globalThis.preloadModule = (src) => import(src);
+
+        globalThis.ensureBlazorRuntime = () => {
+            if (!globalThis.blazorSandboxBlazorModule) {
+                globalThis.blazorSandboxBlazorModule = globalThis.preloadModule('./_framework/blazor.webassembly.js');
+            }
+
+            return globalThis.blazorSandboxBlazorModule;
+        };
+    </script>
     <script type="importmap"></script>
 </head>
 
@@ -85,14 +96,14 @@
         })();
     </script>
     <script src="_content/DrawnUi.Blazor.Core/drawnui-loader.js"></script>
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
     <script>
-        globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
-            theme: 'light',
-            initialLabel: 'Loading',
-            initializingLabel: 'Initializing...',
-            failureLabel: 'Failed'
-        })
+        globalThis.ensureBlazorRuntime()
+            .then(() => globalThis.DrawnUiLoader.startBlazorWithLoader({}, {
+                theme: 'light',
+                initialLabel: 'Loading',
+                initializingLabel: 'Initializing...',
+                failureLabel: 'Failed'
+            }))
             .catch(error => {
                 console.error(error);
             });

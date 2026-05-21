@@ -1,5 +1,5 @@
 param(
-    [string]$OutputRoot = ".\docs\_site\samples\wasm"
+    [string]$OutputRoot = ".\docs\_site"
 )
 
 $ErrorActionPreference = 'Stop'
@@ -18,9 +18,9 @@ if (-not (Test-Path -LiteralPath $publishRoot)) {
 
 $samples = @(
     @{
-        Name = 'blazor-sandbox'
+        Name = 'sandbox'
         Project = 'src/Blazor/Samples/BlazorSandbox/BlazorSandbox.csproj'
-        BaseHref = '/samples/wasm/blazor-sandbox/'
+        BaseHref = '/sandbox/'
     }
 )
 

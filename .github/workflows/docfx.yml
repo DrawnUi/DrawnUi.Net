@@ -1,4 +1,4 @@
-name: Deploy Pre-built DocFX Site
+name: Build And Deploy Pages
 
 on:
   push:
@@ -7,19 +7,17 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      pages-artifact-id: ${{ steps.upload-pages-artifact.outputs.artifact_id }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,20 +25,62 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.x
+          global-json-file: ./global.json
+
+      - name: Install DocFX
+        run: dotnet tool install --global docfx
+
+      - name: Build DocFX site
+        shell: pwsh
+        run: |
+          Set-Location ./docs
+          if (Test-Path ./_site) {
+              Remove-Item ./_site -Recurse -Force
+          }
+          docfx ./docfx.json
 
       - name: Publish WASM samples
         shell: pwsh
         run: ./dev/publish-wasm-samples.ps1
         
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
         
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        id: upload-pages-artifact
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./docs/_site
-          
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  cleanup:
+    needs:
+      - build
+      - deploy
+    if: ${{ needs.build.outputs.pages-artifact-id != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+
+    steps:
+      - name: Delete Pages artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ARTIFACT_ID: ${{ needs.build.outputs.pages-artifact-id }}
+        run: gh api -X DELETE "/repos/${REPOSITORY}/actions/artifacts/${ARTIFACT_ID}"

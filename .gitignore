@@ -17,8 +17,9 @@
 **/Android/**/[Rr]esource.[Dd]esigner.cs
 **/Droid/**/[Rr]esource.[Dd]esigner.cs
 
-# Allow DocFX generated site for GitHub Pages
-!docs/_site/
+# Generated docs and Pages output
+docs/_site/
+docs/_site-content/
 
 # DocFX temporary files
 .docfx/

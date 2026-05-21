@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastRepro", "Maui\Samples\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawnUi.Blazor.Game", "Blazor\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj", "{85D50DF4-70CB-1CF6-1B0C-04D4E225CF89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawnUi.MauiGraphics", "Maui\Addons\DrawnUi.MauiGraphics\DrawnUi.MauiGraphics.csproj", "{446BA69A-8BE0-A502-8478-E6DFAFDDF50E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,10 @@ Global
 		{85D50DF4-70CB-1CF6-1B0C-04D4E225CF89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85D50DF4-70CB-1CF6-1B0C-04D4E225CF89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85D50DF4-70CB-1CF6-1B0C-04D4E225CF89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{446BA69A-8BE0-A502-8478-E6DFAFDDF50E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{446BA69A-8BE0-A502-8478-E6DFAFDDF50E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{446BA69A-8BE0-A502-8478-E6DFAFDDF50E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{446BA69A-8BE0-A502-8478-E6DFAFDDF50E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +138,7 @@ Global
 		{8D99F129-8B66-1848-BE06-F93F65B0E242} = {9E06E6F0-4214-4D7B-9D29-F26B0B44E84D}
 		{DA3890E5-27F6-AFA3-CE6A-B32052050764} = {32FF08BC-102F-411B-930A-F1561250A7BE}
 		{85D50DF4-70CB-1CF6-1B0C-04D4E225CF89} = {9E06E6F0-4214-4D7B-9D29-F26B0B44E84D}
+		{446BA69A-8BE0-A502-8478-E6DFAFDDF50E} = {BC365F4E-F39C-440B-9D0F-05048A884E98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {329E3D0C-A3F7-4A3E-B61C-6B2D1BD7F708}

@@ -14,12 +14,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
 
         <!-- use nugets or ref drawnui source-->
-        <UseSource>true</UseSource>
+        <UseSource>false</UseSource>
 
     </PropertyGroup>
 
     <ItemGroup Condition="'$(UseSource)' != 'true'">
-        <PackageReference Include="DrawnUi.Maui" Version="1.9.7.3" />
+        <PackageReference Include="DrawnUi.Maui" Version="1.10.0.1-preview1.1" />
     </ItemGroup>
 
 	<PropertyGroup>
