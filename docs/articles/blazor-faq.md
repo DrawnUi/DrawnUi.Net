@@ -1,6 +1,11 @@
 # Blazor FAQ
 
-## Which package do I install?
+For host-agnostic questions, also see the main [Frequently Asked Questions](faq.md).
+
+## 🤔 Onboarding
+
+**Q: Which package do I install?**  
+A: Choose by where DrawnUI should render:
 
 - install `DrawnUi.Blazor.Wasm` for browser-side / WebAssembly rendering
 - install `DrawnUi.Blazor.Server` for Blazor Server and `InteractiveServer`
@@ -9,9 +14,8 @@
 
 See also [Blazor Packages](blazor-packages.md).
 
-## Does Blazor still use different canvas names for WASM and Server?
-
-No.
+**Q: Does Blazor still use different canvas names for WASM and Server?**  
+A: No.
 
 - both runtimes now use `Canvas` as the public component name
 - `DrawnUi.Blazor.Wasm` provides the browser-side `Canvas`
@@ -19,41 +23,32 @@ No.
 - in single-host apps you do not set an extra host-selection property; the runtime comes from the package and component graph you use
 - in mixed Blazor Web Apps, choose runtime at the component boundary and keep using `Canvas` on both sides
 
-## Can I mix normal Razor/HTML UI with DrawnUI UI?
-
-Yes.
+**Q: Can I mix normal Razor/HTML UI with DrawnUI UI?**  
+A: Yes.
 
 This is one of the main intended use cases, especially for `DrawnUi.Blazor.Server` and mixed Blazor Web Apps.
 
-## Can I use server and WASM DrawnUI in the same app?
-
-Yes.
+**Q: Can I use server and WASM DrawnUI in the same app?**  
+A: Yes.
 
 The supported pattern is to choose runtime at the component boundary and use sibling render-mode islands where needed.
 
 See [Blazor Hybrid Web App](blazor-hybrid.md).
 
-## Do normal Blazor concepts still apply?
-
-Yes.
+**Q: Do normal Blazor concepts still apply?**  
+A: Yes.
 
 Routing, dependency injection, layouts, render modes, component composition, and ordinary Blazor state patterns remain the host app model.
 
 What changes is the rendering surface and, in server mode, where rendering and interaction processing happen.
 
-## Why do static assets still come from `DrawnUi.Blazor.Core` in mixed apps?
-
-Because the current shared browser static asset flow is still anchored on the core browser implementation project.
-
-This is an incremental packaging state in the repository, not the intended long-term consumer-facing mental model.
-
-## Do I need a separate `.Client` project for WebAssembly render mode in a Blazor Web App?
-
-Yes.
+**Q: Do I need a separate `.Client` project for WebAssembly render mode in a Blazor Web App?**  
+A: Yes.
 
 This follows the normal Blazor Web App mixed-render-mode rules. Components rendered with `InteractiveWebAssembly` must come from the client-side graph.
 
-## What is the migration path for an existing Blazor app?
+**Q: What is the migration path for an existing Blazor app?**  
+A: Start small and choose the runtime by interaction needs:
 
 - start with a normal Blazor shell
 - add one DrawnUI island where custom rendering pays off
@@ -63,9 +58,24 @@ This follows the normal Blazor Web App mixed-render-mode rules. Components rende
 
 See also [Blazor Migration](blazor-migration.md).
 
-## What is supported today?
+**Q: Which runtime should I choose?**  
+A: Use this rule of thumb:
 
-### Strong current fit
+- choose `DrawnUi.Blazor.Wasm` when the DrawnUI surface should stay local and responsive
+- choose `DrawnUi.Blazor.Server` when the surface should be server-owned and event-driven
+- choose a mixed Blazor Web App when one app needs both kinds of DrawnUI surfaces
+
+## Thechnical Questions
+
+**Q: Why do static assets still come from `DrawnUi.Blazor.Core` in mixed apps?**  
+A: Because the current shared browser static asset flow is still anchored on the core browser implementation project.
+
+This is an incremental packaging state in the repository, not the intended long-term consumer-facing mental model.
+
+**Q: What is supported today?**  
+A: The current support split looks like this.
+
+**Strong current fit:**
 
 - browser/WASM DrawnUI surfaces through `Canvas`
 - server-rendered DrawnUI surfaces through `Canvas`
@@ -73,7 +83,7 @@ See also [Blazor Migration](blazor-migration.md).
 - same-app mixed server + WASM DrawnUI with sibling islands
 - button / tap style interactions in the validated samples
 
-### Not solved well yet
+**Not solved well yet:**
 
 - `DrawnUi.Blazor.Server` is not a live browser canvas
 - server-side high-FPS animation is not a good fit
@@ -83,9 +93,8 @@ See also [Blazor Migration](blazor-migration.md).
 
 See also [Blazor Capabilities](blazor-capabilities.md).
 
-## Why does `DrawnUi.Blazor.Server` crash on Linux with `DllNotFoundException: libSkiaSharp`?
-
-Two things are required for SkiaSharp to load on a Linux server:
+**Q: Why does `DrawnUi.Blazor.Server` crash on Linux with `DllNotFoundException: libSkiaSharp`?**  
+A: Two things are required for SkiaSharp to load on a Linux server.
 
 **1. The native Linux package must be in the publish output.**
 
@@ -107,9 +116,10 @@ apt-get install -y libfontconfig1
 
 Both are required. Missing either one produces a circuit-terminating exception on the first SkiaSharp call.
 
-## Why do navigation links point to `%BASE_HREF%` after deploying WASM to nginx?
+## Troubleshooting
 
-The `%BASE_HREF%` token in `wwwroot/index.html` is substituted only when an ASP.NET host processes the publish output. On a standalone nginx static deploy the token stays literal, so `<base href="%BASE_HREF%">` becomes the actual base and all Blazor Router links resolve against it.
+**Q: Why do navigation links point to `%BASE_HREF%` after deploying WASM to nginx?**  
+A: The `%BASE_HREF%` token in `wwwroot/index.html` is substituted only when an ASP.NET host processes the publish output. On a standalone nginx static deploy the token stays literal, so `<base href="%BASE_HREF%">` becomes the actual base and all Blazor Router links resolve against it.
 
 Fix: edit `wwwroot/index.html` in source before publishing:
 
@@ -124,11 +134,10 @@ Then republish and redeploy. If users already hit the site, their service worker
 // then hard-reload
 ```
 
-## Why does my Blazor WASM app show the loading spinner forever with `Unexpected token '<'` in the console?
+**Q: Why does my Blazor WASM app show the loading spinner forever with `Unexpected token '<'` in the console?**  
+A: `dotnet publish` emits a fingerprinted JS file (`blazor.webassembly.abc123.js`) but `index.html` references the bare name `blazor.webassembly.js`. nginx has no such file and returns `index.html` instead due to SPA fallback routing, which the browser then tries to parse as JavaScript and fails.
 
-`dotnet publish` emits a fingerprinted JS file (`blazor.webassembly.abc123.js`) but `index.html` references the bare name `blazor.webassembly.js`. nginx has no such file and returns `index.html` instead (due to SPA fallback routing), which the browser then tries to parse as JavaScript and fails.
-
-Fix — create a symlink in `_framework/` on the server after each deploy:
+Fix: create a symlink in `_framework/` on the server after each deploy:
 
 ```bash
 cd /var/www/{domain}/www/_framework
@@ -137,8 +146,9 @@ ln -sf $(ls blazor.webassembly.*.js | head -1) blazor.webassembly.js
 
 Re-run this after every redeploy because rsync replaces real files and does not restore the symlink.
 
-## Which runtime should I choose?
+---
 
-- choose `DrawnUi.Blazor.Wasm` when the DrawnUI surface should stay local and responsive
-- choose `DrawnUi.Blazor.Server` when the surface should be server-owned and event-driven
-- choose a mixed Blazor Web App when one app needs both kinds of DrawnUI surfaces
+**Can't find the answer to your question?** → 
+* Please check [Blazor Overview](blazor/index.md), [Blazor Packages](blazor-packages.md), and [Blazor Capabilities](blazor-capabilities.md).
+* For host-agnostic questions, check the main [Frequently Asked Questions](faq.md).
+* [Ask in GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)** - The community is here to help!

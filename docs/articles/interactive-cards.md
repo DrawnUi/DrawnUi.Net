@@ -2,6 +2,29 @@
 
 Ready for something **impressive**? Let's build an animated, interactive card gallery that showcases the true power of DrawnUI! You'll create smooth animations, beautiful visual effects, and responsive touch interactions - all with better performance than native controls.
 
+> **Host support**
+>
+> This article is written as a **.NET MAUI XAML walkthrough**, but the card composition, gradients, effects, and gesture patterns are also applicable to **Blazor**.
+>
+> If you are building the browser version, keep the drawn control tree and host it inside a Razor `Canvas` component after `UseDrawnUiAsync(...)` startup. The current Blazor sandbox reference route is `cards`.
+
+## Blazor host equivalent
+
+For Blazor, the page shell is a Razor component that hosts the card tree directly:
+
+```razor
+<Canvas Content="_canvasContent"
+        WidthRequest="400"
+        HeightRequest="760"
+        BackgroundColor="#F0F0F5"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Enabled" />
+
+@code {
+    private readonly SkiaControl _canvasContent = CreateCardsLayout();
+}
+```
+
 > 💡 **Prerequisites**: Complete [Your First DrawnUI App](first-app.md) before starting this tutorial.
 
 ## What We're Building

@@ -1,9 +1,28 @@
 # Frequently Asked Questions
 
+If you are using DrawnUI in the browser or inside a Blazor app, also see the dedicated [Blazor FAQ](blazor-faq.md).
+
 ## 🤔 Onboarding
 
 **Q: What is the difference between DrawnUi and other drawn frameworks?**  
-A: Not really comparable since DrawnUI is just a library for **.NET MAUI**, to let you draw UI instead of using native views.
+A: DrawnUI is an umbrella for multiple .NET targets. It doesn't tend to replace those, but to marry them. It gives you the same drawn layout and controls model across:
+
+- `DrawnUi.Maui` for .NET MAUI
+- `DrawnUi.Blazor.Wasm` for browser-side Blazor rendering
+- `DrawnUi.Blazor.Server` for server-backed Blazor rendering
+- `DrawnUi.Net` for console/server and headless .NET scenarios
+
+If you are choosing a host first, start with [Platforms and Packages](platforms.md).
+
+**Q: Which package do I install?**  
+A: Choose by host:
+
+- install `DrawnUi.Maui` for native MAUI apps
+- install `DrawnUi.Blazor.Wasm` when DrawnUI should render locally in the browser
+- install `DrawnUi.Blazor.Server` for Blazor Server and `InteractiveServer`
+- install `DrawnUi.Net` for platform-agnostic, headless, or harness-style .NET usage
+
+See also [Platforms and Packages](platforms.md), [Blazor FAQ](blazor-faq.md), and [DrawnUi.Net](net/index.md).
 
 **Q: Why choose drawn over native UI?**  
 A: Rather a freedom choice to draw what you want and how you see it.  
@@ -13,19 +32,33 @@ It also can bemore performant to draw a complex UI on just one canvas instead of
 A: No, you can start by using prebuilt drawn controls and customize them. All controls are initially designed to be subclassed, customized, and almost every method is virtual. 
 
 **Q: Can I still use XAML?**  
-A: Yes you can use both XAML and code-behind to create your UI.  
+A: Yes, in the **MAUI** host. DrawnUI on MAUI supports both XAML and code-behind. In **Blazor**, the host surface is Razor with a `Canvas` component instead of XAML. In `DrawnUi.Net`, there is no XAML host at all.
 
 **Q: Can I avoid using XAML at all costs?**  
-A: Yes feel free to use code-behind to create your UI, up to using background thread to access and modify drawn controls properties.
+A: Yes. You can build DrawnUI entirely in C#.
+
+- on MAUI, use code-behind instead of XAML
+- on Blazor, build your drawn tree in C# and host it inside Razor `Canvas`
+- on `DrawnUi.Net`, use the same drawn control tree without a UI framework host
 
 **Q: How do I create custom controls with DrawnUI?**  
 A: Inherit from `SkiaControl` for basic controls or `SkiaLayout` for containers etc. Override the `Paint` method to draw with SkiaSharp.
 
 **Q: Can I embed native MAUI controls inside DrawnUI?**  
-A: Yes! Use `SkiaMauiElement` to embed native MAUI controls like WebView inside your DrawnUI canvas. This allows you to combine the best of both worlds.
+A: Yes, on the **MAUI** host. Use `SkiaMauiElement` to embed native MAUI controls like WebView inside your DrawnUI canvas. That answer is MAUI-specific and does not apply to Blazor or `DrawnUi.Net`.
+
+**Q: Can I use DrawnUI in Blazor?**  
+A: Yes. Use `DrawnUi.Blazor.Wasm` when the DrawnUI surface should stay local in the browser, and `DrawnUi.Blazor.Server` when the surface should be server-owned. See [Blazor FAQ](blazor-faq.md).
+
+**Q: Can I use DrawnUI without MAUI or Blazor?**  
+A: Yes. Use `DrawnUi.Net` for platform-agnostic .NET scenarios such as headless rendering, image/PDF generation, control harnesses, and shared-layout debugging. See [DrawnUi.Net](net/index.md).
 
 **Q: Possible to create a game with DrawnUI?**  
 A: Well, since you draw, why not just draw a game instead of a business app. DrawnUI comes with gaming helpers and custom accelerated platform views to assure a smooth display-synched rendering.
+
+**Q: Why is SkiaWhatever control is missing from DrawnUI?**  
+A: Initially this library was created to allow one to create custom drawn controls with ease, and it is a toolbox for crafters. Please consider making a  PR with your drawn control or open a discussion about a drawn control to be included along with DrawnUI.
+
 
 ## Thechnical Questions
 
@@ -33,7 +66,7 @@ A: Well, since you draw, why not just draw a game instead of a business app. Dra
 A: Subclass `SkiaControl` for custom, `SkiaLayout` for container etc, . Override the `Paint` method to draw with SkiaSharp on the canvas provided inside drawing context.
 
 **Q: Can I embed native MAUI controls inside DrawnUI?**  
-A: Yes! Use `SkiaMauiElement` to embed native MAUI controls like WebView inside your DrawnUI canvas. This allows you to combine the best of both worlds.
+A: Yes, on the **MAUI** host. Use `SkiaMauiElement` to embed native MAUI controls like WebView inside your DrawnUI canvas.
 
 **Q: Can I use MAUI's default `Resources/Images` folder?**  
 A: Sorry, no, drawn resources lives inside `Resources/Raw` and subfolders. Note that MAUI supports only lowercase filenames of resources and while uppercase might works for you on some plaforms they will not be read on iOS.
@@ -119,7 +152,9 @@ A: Might be Apple Metal specifics, cap FPS:
 
 
 **Can't find the answer to your question?** → 
-* Please check out [samples source code](tutorials.md), covers many scenarios.
+* Please start with [Platforms and Packages](platforms.md) to pick the correct host and sample lane.
+* For MAUI-oriented walkthroughs, check out [MAUI Tutorials and Host Notes](maui/tutorials.md).
+* For browser-hosted questions, check out [Blazor FAQ](blazor-faq.md).
 * [Ask in GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)** - The community is here to help!
 
 

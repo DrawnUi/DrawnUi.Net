@@ -10,6 +10,28 @@ image: /images/scroller.jpg
 When .NET MAUI CollectionView is not enough.. Think Drawn!  
 We will be building a news feed scroller with mixed content: text posts, images, videos, articles, ads: an infinite scroll of **recycled cells** with LoadMore mechanics. 
 
+> **Host support**
+>
+> This article is written as a **.NET MAUI tutorial** and its code samples use MAUI XAML. The virtualization, recycled-cell, caching, and scrolling patterns are still relevant to **Blazor**.
+>
+> If you are building the browser version, keep the drawn layout structure and host it inside a Razor `Canvas` component after `UseDrawnUiAsync(...)` startup. The current Blazor sandbox reference route is `tutorial-news-feed`.
+
+## Blazor host equivalent
+
+In Blazor, the page shell becomes a Razor component and the feed layout is hosted directly in `Canvas`:
+
+```razor
+<Canvas Content="_canvasContent"
+        MaxWidthRequest="430"
+        BackgroundColor="#DCDCDC"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Lock" />
+
+@code {
+    private readonly SkiaControl _canvasContent = new NewsFeedLayout();
+}
+```
+
 ## 🚀 This Tutorial Features:
 * **🔄 Recycled cells** - one cell type handles all content variations with memory efficiency
 * **📏 Uneven row heights** - because real content isn't uniform!

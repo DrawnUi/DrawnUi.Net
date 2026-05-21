@@ -1,12 +1,12 @@
 # Platform-Specific Styling
 
-DrawnUi controls support platform-specific styling to ensure your app looks and feels native on each platform.
+Some of the DrawnUi controls support platform-specific styling to ensure your app looks and feels native on each platform. When you create your own controls you can support that feature too.
 
 ## Using Platform Styles
 
 ### The ControlStyle Property
 
-Many DrawnUi controls include a `ControlStyle` property that determines their visual appearance:
+Some DrawnUi controls include a `ControlStyle` property that determines their visual appearance:
 
 - `Unset`: Default styling defined by the control
 - `Platform`: Automatically selects the appropriate style for the current platform
@@ -35,6 +35,7 @@ The following controls support platform-specific styling:
 - `SkiaButton`: Different button appearances across platforms
 - `SkiaSwitch`: Toggle switches with platform-specific track and thumb styling
 - `SkiaCheckbox`: Checkbox controls with platform-appropriate checkmarks and animations
+- `SkiaSlider`: Change values with platform-specific track and thumb styling
 
 ## Platform Style Characteristics
 

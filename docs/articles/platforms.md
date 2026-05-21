@@ -1,6 +1,6 @@
 # Platforms and Packages
 
-DrawnUI is now an umbrella for multiple .NET targets.
+DrawnUI is an umbrella for multiple .NET targets.
 
 Use this page first when you need to decide which package to install and which runtime model fits your use case.
 

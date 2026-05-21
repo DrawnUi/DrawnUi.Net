@@ -5,6 +5,8 @@
   items:
     - name: Platforms and Packages
       href: articles/platforms.md
+    - name: Tutorial Host Guide
+      href: articles/tutorials.md
     - name: Startup Settings
       href: articles/startup-settings.md
     - name: Drawn Layouts
@@ -23,17 +25,17 @@
   items:
     - name: Installation and Setup
       href: articles/maui/getting-started.md
-    - name: MAUI Tutorials
+    - name: MAUI Tutorials and Host Notes
       href: articles/maui/tutorials.md
-    - name: Your First Drawn App (XAML)
+    - name: Your First Drawn App (XAML, MAUI)
       href: articles/first-app.md
-    - name: Your First Drawn App (C# Fluent)
+    - name: Your First Drawn App (C# Fluent, MAUI Host)
       href: articles/first-app-code.md
-    - name: Interactive Cards
+    - name: Interactive Cards (MAUI XAML)
       href: articles/interactive-cards.md
-    - name: A Custom Drawn Control
+    - name: A Custom Drawn Control (MAUI Tutorial)
       href: articles/interactive-button.md
-    - name: News Feed Scroller
+    - name: News Feed Scroller (MAUI Tutorial)
       href: articles/news-feed-tutorial.md
     - name: Porting Native to Drawn
       href: articles/porting-maui.md
@@ -43,6 +45,8 @@
   items:
     - name: Blazor Overview
       href: articles/blazor/index.md
+    - name: Blazor Tutorial References
+      href: articles/tutorials.md
     - name: Blazor Packages
       href: articles/blazor-packages.md
     - name: Blazor WebAssembly
