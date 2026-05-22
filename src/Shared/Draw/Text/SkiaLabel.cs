@@ -3433,14 +3433,15 @@ namespace DrawnUi.Draw
             }
         }
 
+        private string _textInternal;
         protected string TextInternal
         {
-            get => field;
+            get => _textInternal;
             set
             {
-                if (field != value)
+                if (_textInternal != value)
                 {
-                    field = value;
+                    _textInternal = value;
                     OnTextInternalChanged();
                 }
             }
