@@ -38,9 +38,9 @@ else
 }
 
 @code {
-#if xDEBUG
-    private const bool IsDebugBuild = true;
-#else
+#if DEBUG
     private const bool IsUnderConstruction = false;
+#else
+    private const bool IsUnderConstruction = true;
 #endif
 }
