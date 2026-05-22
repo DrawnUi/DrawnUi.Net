@@ -1,6 +1,27 @@
-﻿<Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)">
+﻿@using BlazorSandbox.Helpers
+@inject NavigationManager Navigation
+
+<Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
 </Router>
+
+@code {
+    protected override void OnInitialized()
+    {
+        var lastSeenVersion = AppSettings.Get(AppConstants.LastSeenVersionKey, string.Empty);
+        if (string.IsNullOrWhiteSpace(lastSeenVersion))
+        {
+            AppSettings.Set(AppConstants.LastSeenVersionKey, AppConstants.Version);
+            return;
+        }
+
+        if (!string.Equals(lastSeenVersion, AppConstants.Version, StringComparison.Ordinal))
+        {
+            AppSettings.Set(AppConstants.LastSeenVersionKey, AppConstants.Version);
+            Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+        }
+    }
+}

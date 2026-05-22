@@ -18,6 +18,22 @@
     <script>
         globalThis.preloadModule = (src) => import(src);
 
+        globalThis.blazorSandboxStorage = {
+            get(key) {
+                try {
+                    return globalThis.localStorage.getItem(key);
+                } catch {
+                    return null;
+                }
+            },
+            set(key, value) {
+                try {
+                    globalThis.localStorage.setItem(key, value);
+                } catch {
+                }
+            }
+        };
+
         globalThis.ensureBlazorRuntime = () => {
             if (!globalThis.blazorSandboxBlazorModule) {
                 globalThis.blazorSandboxBlazorModule = globalThis.preloadModule('./_framework/blazor.webassembly.js');
