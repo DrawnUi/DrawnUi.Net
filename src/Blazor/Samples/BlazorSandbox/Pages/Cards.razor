@@ -42,7 +42,7 @@
                 new SkiaLayout()
                 {
                     Type = LayoutType.Column,
-                    HorizontalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Fill,
                     Margin = new Thickness(16),
                     UseCache = SkiaCacheType.Image,
                     Spacing = 8,
@@ -71,12 +71,12 @@
                 {
                     IgnoreWrongDirection = true,
                     VerticalOptions = LayoutOptions.Fill,
-                    Orientation = ScrollOrientation.Vertical,
+                    HorizontalOptions = LayoutOptions.Fill,
                     Spacing = 20,
                     Content = 
                     new SkiaStack()
                     {
-                        Type = LayoutType.Column,
+                        HorizontalOptions = LayoutOptions.Fill,
                         Tag = "Cells",
                         Padding = new Thickness(0, 5),
                         Spacing = 0,

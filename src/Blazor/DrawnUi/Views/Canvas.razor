@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Components
 @using DrawnUi
 @using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components.Web
 @using System
 @inherits DrawnView
 @implements IAsyncDisposable
@@ -16,24 +17,42 @@
     @ref="_hostElement"
     style="@CssMargins @CssPadding @CssGridPosition @CssStyle @GestureStyle">
 
-    <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" >
+    <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" aria-hidden="true">
         <div class="xaml-canvas-element" style="@CanvasSurfaceElementStyle">
             @if(RenderingMode == RenderingModeType.Default)
             {
-                <SkiaView Superview="@this" 
-                          DrawHandler="DrawFrame" 
-                          EnableRenderLoop="@IsRenderLoopEnabled" 
+                <SkiaView Superview="@this"
+                          DrawHandler="DrawFrame"
+                          EnableRenderLoop="@IsRenderLoopEnabled"
                           Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
             }
             else
             {
-                <SkiaViewAccelerated Superview="@this" 
-                                     DrawHandler="DrawFrame" 
-                                     EnableRenderLoop="@IsRenderLoopEnabled" 
+                <SkiaViewAccelerated Superview="@this"
+                                     DrawHandler="DrawFrame"
+                                     EnableRenderLoop="@IsRenderLoopEnabled"
                                     Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
             }
         </div>
     </div>
+
+    @if (_accessibilityNodes.Length > 0)
+    {
+        <div class="xaml-a11y-overlay">
+            @foreach (var node in _accessibilityNodes)
+            {
+                <div role="@node.Role"
+                     aria-label="@node.Label"
+                     title="@node.Hint"
+                     tabindex="0"
+                     class="xaml-a11y-element"
+                     style="@A11yNodeStyle(node)"
+                     @onclick="() => OnA11yActivated(node)"
+                     @onkeydown="(e) => OnA11yKeyDown(e, node)">
+                </div>
+            }
+        </div>
+    }
 
     @*<div class="xaml-canvas-content">
     @ChildContent
@@ -109,6 +128,29 @@
         position: absolute;
         inset: 0;
     }
+
+    .xaml-a11y-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .xaml-a11y-element {
+        position: absolute;
+        background: transparent;
+        border: 0;
+        color: transparent;
+        pointer-events: auto;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .xaml-a11y-element:focus-visible {
+        outline: 3px solid rgba(0, 103, 244, 0.85);
+        outline-offset: 1px;
+        border-radius: 3px;
+    }
 </style>
 
 @code {
@@ -124,10 +166,21 @@
     private bool? _lastFullscreenRequest;
     private float _reportedAutoCanvasWidth;
     private float _reportedAutoCanvasHeight;
+    private float _pendingAutoCanvasWidth;
+    private float _pendingAutoCanvasHeight;
+    private int _pendingAutoCanvasWidthFrames;
+    private int _pendingAutoCanvasHeightFrames;
     private bool _autoSizeRenderQueued;
     private bool _isComputingIntrinsicAutoSize;
+    private SkiaControl? _cachedIntrinsicAutoCanvasContent;
+    private ScaledSize? _cachedIntrinsicAutoCanvasSize;
+    private float _cachedIntrinsicAutoCanvasWidthConstraint;
+    private float _cachedIntrinsicAutoCanvasHeightConstraint;
+    private float _cachedIntrinsicAutoCanvasScale;
 
     private static readonly string ResizeModulePath = $"./_content/DrawnUi.Blazor.Core/drawnui-canvas-resize.js?v={System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
+
+    private AccessibilityNode[] _accessibilityNodes = [];
 
     [Parameter]
     public SkiaControl? Content { get; set; }
@@ -151,6 +204,11 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+
+        if (!ReferenceEquals(_cachedIntrinsicAutoCanvasContent, Content))
+        {
+            ResetIntrinsicAutoSizeCache();
+        }
 
         base.Margin = ParsedMargin;
         base.RenderingMode = RenderingMode;
@@ -194,6 +252,7 @@
             await EnsureResizeObserverAsync();
             _reportedAutoCanvasWidth = AutoCanvasWidth;
             _reportedAutoCanvasHeight = AutoCanvasHeight;
+            AccessibilityManager.Changed += OnA11yChanged;
         }
 
         if (CaptureInput)
@@ -329,7 +388,21 @@
                 return (float)Content.WidthRequest;
             }
 
-            if (Content?.MeasuredSize?.Units.Width > 0)
+            if (UsesAutoHostWidth)
+            {
+                if (Content is { IsMeasuring: true } && _reportedAutoCanvasWidth > 1f)
+                {
+                    return _reportedAutoCanvasWidth;
+                }
+
+                var autoHostIntrinsic = GetIntrinsicAutoCanvasSize();
+                if (autoHostIntrinsic?.Units.Width > 0)
+                {
+                    return autoHostIntrinsic.Units.Width;
+                }
+            }
+
+            if (Content?.MeasuredSize?.Units.Width > 0 && Content is { NeedMeasure: false })
             {
                 return Content.MeasuredSize.Units.Width;
             }
@@ -353,7 +426,21 @@
                 return (float)Content.HeightRequest;
             }
 
-            if (Content?.MeasuredSize?.Units.Height > 0)
+            if (UsesAutoHostHeight)
+            {
+                if (Content is { IsMeasuring: true } && _reportedAutoCanvasHeight > 1f)
+                {
+                    return _reportedAutoCanvasHeight;
+                }
+
+                var autoHostIntrinsic = GetIntrinsicAutoCanvasSize();
+                if (autoHostIntrinsic?.Units.Height > 0)
+                {
+                    return autoHostIntrinsic.Units.Height;
+                }
+            }
+
+            if (Content?.MeasuredSize?.Units.Height > 0 && Content is { NeedMeasure: false })
             {
                 return Content.MeasuredSize.Units.Height;
             }
@@ -376,17 +463,25 @@
 
             if (WidthRequest <= 0 && HorizontalOptions.Alignment != LayoutAlignment.Fill)
             {
-                style += $"width: {AutoCanvasWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+                style += $"width: {ReportedAutoCanvasWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
             }
 
             if (HeightRequest <= 0 && VerticalOptions.Alignment != LayoutAlignment.Fill)
             {
-                style += $" height: {AutoCanvasHeight.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
+                style += $" height: {ReportedAutoCanvasHeight.ToString(System.Globalization.CultureInfo.InvariantCulture)}{Units};";
             }
 
             return style;
         }
     }
+
+    private float ReportedAutoCanvasWidth => _reportedAutoCanvasWidth > 1f
+        ? _reportedAutoCanvasWidth
+        : AutoCanvasWidth;
+
+    private float ReportedAutoCanvasHeight => _reportedAutoCanvasHeight > 1f
+        ? _reportedAutoCanvasHeight
+        : AutoCanvasHeight;
 
     private string CanvasLayoutClass
     {
@@ -607,16 +702,14 @@
         var nextWidth = AutoCanvasWidth;
         var nextHeight = AutoCanvasHeight;
 
-        var widthChanged = UsesAutoHostWidth && nextWidth > 1f && Math.Abs(nextWidth - _reportedAutoCanvasWidth) > 0.5f;
-        var heightChanged = UsesAutoHostHeight && nextHeight > 1f && Math.Abs(nextHeight - _reportedAutoCanvasHeight) > 0.5f;
+        var widthChanged = TryApplyAutoCanvasWidth(nextWidth);
+        var heightChanged = TryApplyAutoCanvasHeight(nextHeight);
 
         if (!widthChanged && !heightChanged)
         {
             return;
         }
 
-        _reportedAutoCanvasWidth = nextWidth;
-        _reportedAutoCanvasHeight = nextHeight;
         _autoSizeRenderQueued = true;
 
         _ = InvokeAsync(() =>
@@ -626,9 +719,70 @@
         });
     }
 
+    private bool TryApplyAutoCanvasWidth(float nextWidth)
+    {
+        if (!UsesAutoHostWidth || nextWidth <= 1f)
+        {
+            return false;
+        }
+
+        return TryApplyAutoCanvasSize(ref _reportedAutoCanvasWidth, nextWidth,
+            ref _pendingAutoCanvasWidth, ref _pendingAutoCanvasWidthFrames);
+    }
+
+    private bool TryApplyAutoCanvasHeight(float nextHeight)
+    {
+        if (!UsesAutoHostHeight || nextHeight <= 1f)
+        {
+            return false;
+        }
+
+        return TryApplyAutoCanvasSize(ref _reportedAutoCanvasHeight, nextHeight,
+            ref _pendingAutoCanvasHeight, ref _pendingAutoCanvasHeightFrames);
+    }
+
+    private static bool TryApplyAutoCanvasSize(ref float reported, float next,
+        ref float pending, ref int pendingFrames)
+    {
+        if (reported <= 1f)
+        {
+            pending = 0f;
+            pendingFrames = 0;
+            reported = next;
+            return true;
+        }
+
+        if (Math.Abs(next - reported) <= 0.5f)
+        {
+            pending = 0f;
+            pendingFrames = 0;
+            return false;
+        }
+
+        if (Math.Abs(next - pending) <= 0.5f)
+        {
+            pendingFrames++;
+        }
+        else
+        {
+            pending = next;
+            pendingFrames = 1;
+        }
+
+        if (pendingFrames < 2)
+        {
+            return false;
+        }
+
+        pending = 0f;
+        pendingFrames = 0;
+        reported = next;
+        return true;
+    }
+
     private ScaledSize? GetIntrinsicAutoCanvasSize()
     {
-        if (Content == null || _isComputingIntrinsicAutoSize)
+        if (Content == null || _isComputingIntrinsicAutoSize || Content.IsMeasuring)
         {
             return null;
         }
@@ -637,15 +791,49 @@
         var heightConstraint = GetIntrinsicHeightConstraint();
         var scale = RenderingScale > 0 ? RenderingScale : 1f;
 
+        if (CanReuseIntrinsicAutoSize(widthConstraint, heightConstraint, scale))
+        {
+            return _cachedIntrinsicAutoCanvasSize;
+        }
+
         try
         {
             _isComputingIntrinsicAutoSize = true;
-            return Content.Measure(widthConstraint, heightConstraint, scale);
+            var measured = Content.Measure(widthConstraint, heightConstraint, scale);
+            _cachedIntrinsicAutoCanvasContent = Content;
+            _cachedIntrinsicAutoCanvasSize = measured;
+            _cachedIntrinsicAutoCanvasWidthConstraint = widthConstraint;
+            _cachedIntrinsicAutoCanvasHeightConstraint = heightConstraint;
+            _cachedIntrinsicAutoCanvasScale = scale;
+            return measured;
         }
         finally
         {
             _isComputingIntrinsicAutoSize = false;
         }
+    }
+
+    private bool CanReuseIntrinsicAutoSize(float widthConstraint, float heightConstraint, float scale)
+    {
+        if (_cachedIntrinsicAutoCanvasSize == null
+            || !ReferenceEquals(_cachedIntrinsicAutoCanvasContent, Content)
+            || Content is { NeedMeasure: true })
+        {
+            return false;
+        }
+
+        return _cachedIntrinsicAutoCanvasWidthConstraint == widthConstraint
+               && _cachedIntrinsicAutoCanvasHeightConstraint == heightConstraint
+               && Math.Abs(_cachedIntrinsicAutoCanvasScale - scale) < 0.001f;
+    }
+
+    private void ResetIntrinsicAutoSizeCache()
+    {
+        _cachedIntrinsicAutoCanvasContent = Content;
+        _cachedIntrinsicAutoCanvasSize = null;
+        _cachedIntrinsicAutoCanvasWidthConstraint = 0f;
+        _cachedIntrinsicAutoCanvasHeightConstraint = 0f;
+        _cachedIntrinsicAutoCanvasScale = 0f;
     }
 
     private float GetIntrinsicWidthConstraint()
@@ -670,7 +858,7 @@
             return _measuredCanvasWidth;
         }
 
-        if (Content?.MeasuredSize?.Units.Width > 0)
+            if (Content?.MeasuredSize?.Units.Width > 0 && Content is { NeedMeasure: false })
         {
             return Content.MeasuredSize.Units.Width;
         }
@@ -700,7 +888,7 @@
             return _measuredCanvasHeight;
         }
 
-        if (Content?.MeasuredSize?.Units.Height > 0)
+            if (Content?.MeasuredSize?.Units.Height > 0 && Content is { NeedMeasure: false })
         {
             return Content.MeasuredSize.Units.Height;
         }
@@ -730,7 +918,32 @@
 
         _resizeCallbackRef?.Dispose();
 
+        AccessibilityManager.Changed -= OnA11yChanged;
+
         OnDisposing();
+    }
+
+    private void OnA11yChanged()
+    {
+        _accessibilityNodes = AccessibilityManager.Snapshot;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void OnA11yActivated(AccessibilityNode node)
+    {
+        node.Source?.OnAccessibilityActivated();
+    }
+
+    private void OnA11yKeyDown(KeyboardEventArgs e, AccessibilityNode node)
+    {
+        if (e.Key is "Enter" or " ")
+            node.Source?.OnAccessibilityActivated();
+    }
+
+    private static string A11yNodeStyle(AccessibilityNode node)
+    {
+        var c = System.Globalization.CultureInfo.InvariantCulture;
+        return $"left:{node.Rect.Left.ToString(c)}px; top:{node.Rect.Top.ToString(c)}px; width:{node.Rect.Width.ToString(c)}px; height:{node.Rect.Height.ToString(c)}px;";
     }
 
 }

@@ -169,7 +169,7 @@ button.Tapped += (_, _) => button.Text = "Saved";
             TextColor = Colors.White,
             CornerRadius = 10,
             Padding = new Thickness(12, 6)
-        };
+        }.WithAccessibility("button", text);
 
         if (style.HasValue)
         {

@@ -14,7 +14,6 @@
     <div class="docs-example-frame">
         <Canvas Content="_canvasContent"
                 WidthRequest="400"
-                HeightRequest="700"
                 BackgroundColor="#FFF5E8"
                 Margin="0,16,0,0"
                 Gestures="@GesturesMode.Enabled" />
@@ -36,6 +35,14 @@
 
 gesturePad.Tapped += OnGesturePadTapped;
 gesturePad.ConsumeGestures += OnGesturePadGestures;
+
+_isDraggingBlock = _dragTarget.HitIsInside(
+    e.Args.Event.Location.X,
+    e.Args.Event.Location.Y);
+
+var scale = Math.Max(_dragTarget.RenderingScale, 1f);
+_dragTarget.TranslationX += e.Args.Event.Distance.Delta.X / scale;
+_dragTarget.TranslationY += e.Args.Event.Distance.Delta.Y / scale;
 """;
 
     private readonly SkiaLabel _heroLabel = new()
@@ -74,6 +81,7 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
 
     private readonly SkiaShape _dragTarget = new()
     {
+        UseCache = SkiaCacheType.Image,
         WidthRequest = DragSize,
         HeightRequest = DragSize,
         Type = ShapeType.Rectangle,
@@ -108,7 +116,7 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
     {
         _gesturePad = new SkiaShape()
         {
-            WidthRequest = 336,
+            HorizontalOptions = LayoutOptions.Fill,
             HeightRequest = 340,
             Type = ShapeType.Rectangle,
             BackgroundColor = new Color(0.961f, 0.929f, 0.855f, 1f),
@@ -116,16 +124,15 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
             StrokeWidth = 1,
             CornerRadius = 18,
             Padding = new Thickness(16),
-            HorizontalOptions = LayoutOptions.Fill,
             Children =
             {
-                new SkiaLayout()
+                new SkiaLayer()
                 {
-                    Type = LayoutType.Absolute,
                     Children =
                     {
                         new SkiaLabel()
                         {
+                            UseCache = SkiaCacheType.Operations,
                             Text = "Gesture pad",
                             FontFamily = "FontTextTitle",
                             FontSize = 18,
@@ -134,6 +141,7 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
                         },
                         new SkiaLabel()
                         {
+                            UseCache = SkiaCacheType.Operations,
                             Text = "Tap anywhere, drag the amber block, and use pointer or wheel on the same surface.",
                             FontFamily = "FontText",
                             FontSize = 14,
@@ -143,7 +151,8 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
                         },
                         new SkiaShape()
                         {
-                            WidthRequest = 304,
+                            UseCache = SkiaCacheType.Operations,
+                            HorizontalOptions = LayoutOptions.Fill,
                             HeightRequest = 188,
                             Type = ShapeType.Rectangle,
                             BackgroundColor = new Color(0.157f, 0.216f, 0.322f, 1f),
@@ -164,8 +173,7 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
         _canvasContent = new SkiaLayout()
         {
             Margin = new Thickness(16),
-            WidthRequest = 368,
-            HeightRequest = 668,
+            HorizontalOptions = LayoutOptions.Fill,
             Padding = new Thickness(18),
             BackgroundColor = new Color(0.996f, 0.992f, 0.965f, 1f),
             Type = LayoutType.Column,
@@ -185,7 +193,7 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
                 _gestureStatus,
                 new SkiaLayout()
                 {
-                    WidthRequest = 336,
+                    HorizontalOptions = LayoutOptions.Fill,
                     Padding = new Thickness(14),
                     BackgroundColor = new Color(0.949f, 0.929f, 0.878f, 1f),
                     Type = LayoutType.Column,
@@ -225,7 +233,9 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
         }
         else if (e.Args.Type == TouchActionResult.Down)
         {
-            _isDraggingBlock = IsInsideDragBlock(e.Args.Event.Location.X, e.Args.Event.Location.Y);
+            _isDraggingBlock = _dragTarget.HitIsInside(
+                e.Args.Event.Location.X,
+                e.Args.Event.Location.Y);
             _gestureStatus.Text = _isDraggingBlock
                 ? "Gesture pad: drag block and move"
                 : $"Gesture pad: down at {e.Args.Event.Location.X:0},{e.Args.Event.Location.Y:0}";
@@ -235,8 +245,9 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
         {
             if (_isDraggingBlock)
             {
-                _dragTarget.TranslationX += e.Args.Event.Distance.Delta.X;
-                _dragTarget.TranslationY += e.Args.Event.Distance.Delta.Y;
+                var scale = Math.Max(_dragTarget.RenderingScale, 1f);
+                _dragTarget.TranslationX += e.Args.Event.Distance.Delta.X / scale;
+                _dragTarget.TranslationY += e.Args.Event.Distance.Delta.Y / scale;
                 _gestureStatus.Text = $"Gesture pad: drag dx {e.Args.Event.Distance.Delta.X:0}, dy {e.Args.Event.Distance.Delta.Y:0}";
                 e.Consumed = true;
             }
@@ -263,17 +274,6 @@ gesturePad.ConsumeGestures += OnGesturePadGestures;
         }
 
         RequestRender();
-    }
-
-    private bool IsInsideDragBlock(double x, double y)
-    {
-        var left = DragStartX + _dragTarget.TranslationX;
-        var top = DragStartY + _dragTarget.TranslationY;
-
-        return x >= left
-            && x <= left + DragSize
-            && y >= top
-            && y <= top + DragSize;
     }
 
     private void PushHistory(string text)
