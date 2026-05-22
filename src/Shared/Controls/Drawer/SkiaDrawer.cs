@@ -318,7 +318,12 @@ namespace DrawnUi.Controls
         {
             base.OnLayoutChanged();
 
-            if (Parent != null)
+            MaybeInit();
+        }
+
+        void MaybeInit()
+        {
+            if (Parent != null && Viewport != Parent.DrawingRect)
             {
                 Viewport = Parent.DrawingRect;
 
@@ -497,6 +502,8 @@ namespace DrawnUi.Controls
         {
             if (IsOpen && !LayoutReady)
                 return;
+
+            MaybeInit();
 
             base.Paint(ctx);
         }

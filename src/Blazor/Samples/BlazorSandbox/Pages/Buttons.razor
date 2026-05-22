@@ -95,9 +95,11 @@ button.Tapped += (_, _) => button.Text = "Saved";
                     TextColor = new Color(0.365f, 0.314f, 0.231f, 1f),
                     HorizontalOptions = LayoutOptions.Fill
                 },
+                
                 _primaryButton,
                 _materialButton,
                 _windowsButton,
+
                 _statusLabel
             }
         };
@@ -169,7 +171,7 @@ button.Tapped += (_, _) => button.Text = "Saved";
             TextColor = Colors.White,
             CornerRadius = 10,
             Padding = new Thickness(12, 6)
-        }.WithAccessibility("button", text);
+        }.WithAccessibility("button", text, canInteract: true);
 
         if (style.HasValue)
         {

@@ -12,26 +12,26 @@
     <p class="docs-note">Use the button or drag the sheet handle. The drawer content here is just a small vertical scroll to keep the example focused.</p>
 
     <div class="docs-example-frame">
-        <Canvas Content="_canvasContent" 
+        <Canvas Content="_canvasContent"
                 WidthRequest="360"
                 BackgroundColor="#F6F0E6"
                 Margin="0,8,0,0"
-                Gestures="@GesturesMode.Enabled"
-                 />
+                Gestures="@GesturesMode.Enabled"/>
     </div>
 
     <pre class="docs-code"><code>@DrawerSnippet</code></pre>
 </div>
 
 @code {
+
     private const string DrawerSnippet = """
-var drawer = new SkiaDrawer()
-{
-    Direction = DrawerDirection.FromBottom,
-    HeaderSize = 36,
-    IsOpen = false
-};
-""";
+                                         var drawer = new SkiaDrawer()
+                                         {
+                                             Direction = DrawerDirection.FromBottom,
+                                             HeaderSize = 36,
+                                             IsOpen = false
+                                         };
+                                         """;
 
     private readonly SkiaDrawer _drawer;
     private readonly SkiaButton _toggleButton;
@@ -39,63 +39,64 @@ var drawer = new SkiaDrawer()
 
     public ScrollsDrawer()
     {
-        var drawerContent = new SkiaLayout()
-        {
-            Type = LayoutType.Column,
-            Spacing = 10,
-            Padding = new Thickness(14, 12, 14, 14),
-            HorizontalOptions = LayoutOptions.Fill,
-            VerticalOptions = LayoutOptions.Fill,
-            Children =
+        var drawerContent =
+            new SkiaShape()
             {
-                new SkiaShape()
+                HeightRequest = 274,
+                Type = ShapeType.Rectangle,
+                CornerRadius = 20,
+                BackgroundColor = new Color(0.918f, 0.941f, 0.976f, 1f),
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Children =
                 {
-                    WidthRequest = 48,
-                    HeightRequest = 6,
-                    BackgroundColor = new Color(0.631f, 0.682f, 0.784f, 1f),
-                    CornerRadius = 99,
-                    HorizontalOptions = LayoutOptions.Center,
-                    Children =
+                    new SkiaStack()
                     {
+                        Spacing = 10,
+                        Padding = new Thickness(14, 12, 14, 14),
+                        HorizontalOptions = LayoutOptions.Fill,
+                        VerticalOptions = LayoutOptions.Fill,
+                        Children =
+                        {
+                            new SkiaShape()
+                            {
+                                WidthRequest = 48,
+                                HeightRequest = 6,
+                                BackgroundColor = new Color(0.631f, 0.682f, 0.784f, 1f),
+                                CornerRadius = 99,
+                                HorizontalOptions = LayoutOptions.Center,
+                                Children =
+                                {
+                                }
+                            },
+                            new SkiaLabel()
+                            {
+                                Text = "Sprint sheet",
+                                FontFamily = "FontTextTitle",
+                                FontSize = 18,
+                                TextColor = new Color(0.173f, 0.204f, 0.286f, 1f),
+                                HorizontalOptions = LayoutOptions.Fill
+                            },
+                            new SkiaLabel()
+                            {
+                                Text = "Use the sheet for quick tasks, context, and a short scrolling list without leaving the current surface.",
+                                FontFamily = "FontText",
+                                FontSize = 12,
+                                TextColor = new Color(0.404f, 0.431f, 0.486f, 1f),
+                                HorizontalOptions = LayoutOptions.Fill
+                            },
+                            new SkiaScroll()
+                            {
+                                HeightRequest = 152,
+                                BackgroundColor = new Color(0.973f, 0.978f, 0.988f, 1f),
+                                HorizontalOptions = LayoutOptions.Fill,
+                                VerticalOptions = LayoutOptions.Fill,
+                                Content = CreateDrawerList()
+                            }
+                        }
                     }
-                },
-                new SkiaLabel()
-                {
-                    Text = "Sprint sheet",
-                    FontFamily = "FontTextTitle",
-                    FontSize = 18,
-                    TextColor = new Color(0.173f, 0.204f, 0.286f, 1f),
-                    HorizontalOptions = LayoutOptions.Fill
-                },
-                new SkiaLabel()
-                {
-                    Text = "Use the sheet for quick tasks, context, and a short scrolling list without leaving the current surface.",
-                    FontFamily = "FontText",
-                    FontSize = 12,
-                    TextColor = new Color(0.404f, 0.431f, 0.486f, 1f),
-                    HorizontalOptions = LayoutOptions.Fill
-                },
-                new SkiaScroll()
-                {
-                    HeightRequest = 152,
-                    BackgroundColor = new Color(0.973f, 0.978f, 0.988f, 1f),
-                    HorizontalOptions = LayoutOptions.Fill,
-                    VerticalOptions = LayoutOptions.Fill,
-                    Content = CreateDrawerList()
                 }
-            }
-        };
-
-        _drawer = new SkiaDrawer()
-        {
-            HeightRequest = 240,
-            HeaderSize = 36,
-            Direction = DrawerDirection.FromBottom,
-            IsOpen = true,
-            HorizontalOptions = LayoutOptions.Fill,
-            VerticalOptions = LayoutOptions.End,
-            Content = drawerContent
-        };
+            };
 
         _toggleButton = new SkiaButton("Close drawer")
         {
@@ -110,9 +111,8 @@ var drawer = new SkiaDrawer()
 
         _canvasContent = new SkiaLayout()
         {
-            Margin = new Thickness(16),
             HorizontalOptions = LayoutOptions.Fill,
-            Padding = new Thickness(20),
+            Padding = new Thickness(20,0,20,-20),
             BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
             Type = LayoutType.Column,
             Spacing = 12,
@@ -126,30 +126,20 @@ var drawer = new SkiaDrawer()
                     TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
                     HorizontalOptions = LayoutOptions.Fill
                 },
+
                 _toggleButton,
-                new SkiaShape()
+
+                new SkiaDrawer()
                 {
-                    HeightRequest = 274,
-                    Type = ShapeType.Rectangle,
-                    CornerRadius = 20,
-                    BackgroundColor = new Color(0.918f, 0.941f, 0.976f, 1f),
+                    HeightRequest = 240,
+                    HeaderSize = 44,
+                    Direction = DrawerDirection.FromBottom,
+                    IsOpen = true,
                     HorizontalOptions = LayoutOptions.Fill,
-                    VerticalOptions = LayoutOptions.Fill,
-                    Children =
-                    {
-                        new SkiaLabel()
-                        {
-                            Text = "Release board",
-                            FontFamily = "FontTextTitle",
-                            FontSize = 18,
-                            TextColor = new Color(0.157f, 0.278f, 0.420f, 1f),
-                            HorizontalOptions = LayoutOptions.Start,
-                            VerticalOptions = LayoutOptions.Start,
-                            Margin = new Thickness(18, 16, 0, 0)
-                        },
-                        _drawer
-                    }
-                }
+                    VerticalOptions = LayoutOptions.End,
+                    Content = drawerContent
+                }.Assign(out _drawer)
+
             }
         };
     }
@@ -215,4 +205,5 @@ var drawer = new SkiaDrawer()
 
         return layout;
     }
+
 }
