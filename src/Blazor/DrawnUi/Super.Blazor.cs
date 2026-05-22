@@ -220,6 +220,123 @@ namespace DrawnUi.Draw
             }
         }
 
+        private static bool IsClose(double left, double right, double tolerance)
+        {
+            return Math.Abs(left - right) <= tolerance;
+        }
+
+        [JSInvokable]
+        public static void HandleScreenMetricsChanged(
+            double density,
+            double widthDip,
+            double heightDip,
+            double topInset,
+            double rightInset,
+            double bottomInset,
+            double leftInset)
+        {
+            EnsureNativeAppCreated();
+
+            if (!double.IsFinite(density) || density <= 0)
+            {
+                density = 1;
+            }
+
+            if (!double.IsFinite(widthDip) || widthDip < 0)
+            {
+                widthDip = 0;
+            }
+
+            if (!double.IsFinite(heightDip) || heightDip < 0)
+            {
+                heightDip = 0;
+            }
+
+            if (!double.IsFinite(topInset) || topInset < 0)
+            {
+                topInset = 0;
+            }
+
+            if (!double.IsFinite(rightInset) || rightInset < 0)
+            {
+                rightInset = 0;
+            }
+
+            if (!double.IsFinite(bottomInset) || bottomInset < 0)
+            {
+                bottomInset = 0;
+            }
+
+            if (!double.IsFinite(leftInset) || leftInset < 0)
+            {
+                leftInset = 0;
+            }
+
+            var densityChanged = !IsClose(Screen.Density, density, 0.01);
+            var widthChanged = !IsClose(Screen.WidthDip, widthDip, 0.5);
+            var heightChanged = !IsClose(Screen.HeightDip, heightDip, 0.5);
+            var topInsetChanged = !IsClose(Screen.TopInset, topInset, 0.5);
+            var rightInsetChanged = !IsClose(Screen.RightInset, rightInset, 0.5);
+            var bottomInsetChanged = !IsClose(Screen.BottomInset, bottomInset, 0.5);
+            var leftInsetChanged = !IsClose(Screen.LeftInset, leftInset, 0.5);
+            var insetChanged = topInsetChanged || rightInsetChanged || bottomInsetChanged || leftInsetChanged;
+
+            if (densityChanged)
+            {
+                Screen.Density = density;
+            }
+
+            if (widthChanged)
+            {
+                Screen.WidthDip = widthDip;
+            }
+
+            if (heightChanged)
+            {
+                Screen.HeightDip = heightDip;
+            }
+
+            if (topInsetChanged)
+            {
+                Screen.TopInset = topInset;
+            }
+
+            if (rightInsetChanged)
+            {
+                Screen.RightInset = rightInset;
+            }
+
+            if (bottomInsetChanged)
+            {
+                Screen.BottomInset = bottomInset;
+            }
+
+            if (leftInsetChanged)
+            {
+                Screen.LeftInset = leftInset;
+            }
+
+            if (!IsClose(StatusBarHeight, topInset, 0.5))
+            {
+                StatusBarHeight = topInset;
+            }
+
+            if (!IsClose(NavigationBarHeight, bottomInset, 0.5))
+            {
+                NavigationBarHeight = bottomInset;
+            }
+
+            if (insetChanged)
+            {
+                InsetsChanged?.Invoke(null, EventArgs.Empty);
+            }
+
+            if (!densityChanged && (widthChanged || heightChanged || insetChanged))
+            {
+                NeedGlobalUpdate();
+            }
+        }
+
         [JSInvokable]
         public static void HandleNativeAppCreated()
         {
@@ -329,6 +446,16 @@ namespace DrawnUi.Draw
             [JSInvokable] public void HandleNativeAppHidden() => Super.HandleNativeAppHidden();
             [JSInvokable] public void HandleNativeAppVisible() => Super.HandleNativeAppVisible();
             [JSInvokable] public void HandleNativeAppDestroyed() => Super.HandleNativeAppDestroyed();
+            [JSInvokable]
+            public void HandleScreenMetricsChanged(
+                double density,
+                double widthDip,
+                double heightDip,
+                double topInset,
+                double rightInset,
+                double bottomInset,
+                double leftInset)
+                => Super.HandleScreenMetricsChanged(density, widthDip, heightDip, topInset, rightInset, bottomInset, leftInset);
         }
     }
 }

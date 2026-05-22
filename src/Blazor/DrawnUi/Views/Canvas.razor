@@ -240,16 +240,21 @@
     public virtual async Task OnHostResized(double width, double height)
     {
         if ((WidthRequest <= 0 && width <= 0) || (HeightRequest <= 0 && height <= 0))
+        {
             return;
+        }
 
         var shouldUseRequestedSize = WidthRequest > 0 && CanUseRequestedCanvasSize();
         var shouldUseRequestedHeight = HeightRequest > 0 && CanUseRequestedCanvasSize();
 
-        var nextWidth = shouldUseRequestedSize ? (float)WidthRequest : (float)Math.Round(width);
-        var nextHeight = shouldUseRequestedHeight ? (float)HeightRequest : (float)Math.Round(height);
+        var nextWidth = shouldUseRequestedSize ? (float)WidthRequest : (float)width;
+        var nextHeight = shouldUseRequestedHeight ? (float)HeightRequest : (float)height;
 
-        if (nextWidth == _measuredCanvasWidth && nextHeight == _measuredCanvasHeight)
+        if (Math.Abs(nextWidth - _measuredCanvasWidth) < 0.01f
+            && Math.Abs(nextHeight - _measuredCanvasHeight) < 0.01f)
+        {
             return;
+        }
 
         _measuredCanvasWidth = nextWidth;
         _measuredCanvasHeight = nextHeight;
@@ -306,11 +311,11 @@
 
     private float CanvasElementWidth => WidthRequest > 0 && CanUseRequestedCanvasSize()
         ? (float)WidthRequest
-        : _measuredCanvasWidth > 0 ? _measuredCanvasWidth : AutoCanvasWidth;
+        : UsesAutoHostWidth ? AutoCanvasWidth : _measuredCanvasWidth > 0 ? _measuredCanvasWidth : AutoCanvasWidth;
 
     private float CanvasElementHeight => HeightRequest > 0 && CanUseRequestedCanvasSize()
         ? (float)HeightRequest
-        : _measuredCanvasHeight > 0 ? _measuredCanvasHeight : AutoCanvasHeight;
+        : UsesAutoHostHeight ? AutoCanvasHeight : _measuredCanvasHeight > 0 ? _measuredCanvasHeight : AutoCanvasHeight;
 
     private string CanvasSurfaceElementStyle =>
         $"width: {CanvasElementWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}px; height: {CanvasElementHeight.ToString(System.Globalization.CultureInfo.InvariantCulture)}px;";
@@ -324,15 +329,15 @@
                 return (float)Content.WidthRequest;
             }
 
+            if (Content?.MeasuredSize?.Units.Width > 0)
+            {
+                return Content.MeasuredSize.Units.Width;
+            }
+
             var intrinsic = GetIntrinsicAutoCanvasSize();
             if (intrinsic?.Units.Width > 0)
             {
                 return intrinsic.Units.Width;
-            }
-
-            if (Content?.MeasuredSize?.Units.Width > 0)
-            {
-                return Content.MeasuredSize.Units.Width;
             }
 
             return 1f;
@@ -348,15 +353,15 @@
                 return (float)Content.HeightRequest;
             }
 
+            if (Content?.MeasuredSize?.Units.Height > 0)
+            {
+                return Content.MeasuredSize.Units.Height;
+            }
+
             var intrinsic = GetIntrinsicAutoCanvasSize();
             if (intrinsic?.Units.Height > 0)
             {
                 return intrinsic.Units.Height;
-            }
-
-            if (Content?.MeasuredSize?.Units.Height > 0)
-            {
-                return Content.MeasuredSize.Units.Height;
             }
 
             return 1f;

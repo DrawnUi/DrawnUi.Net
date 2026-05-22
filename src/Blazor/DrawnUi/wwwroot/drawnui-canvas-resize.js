@@ -31,16 +31,16 @@ function notifyFullscreen(element, dotNetRef, simulatedFullscreen) {
 }
 
 function notifySize(element, dotNetRef, width, height) {
-    const nextWidth = Math.max(1, Math.round(width));
-    const nextHeight = Math.max(1, Math.round(height));
+    const nextWidth = Math.max(1, width);
+    const nextHeight = Math.max(1, height);
     dotNetRef.invokeMethodAsync('OnHostResized', nextWidth, nextHeight);
 }
 
 export function getHostSize(element) {
     const rect = element.getBoundingClientRect();
     return {
-        width: Math.max(1, Math.round(rect.width)),
-        height: Math.max(1, Math.round(rect.height))
+        width: Math.max(1, rect.width),
+        height: Math.max(1, rect.height)
     };
 }
 
@@ -97,6 +97,7 @@ export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
         onSimulatedFullscreen: null,
         simulatedFullscreen: false,
         snapshotImg: null,
+        mutationObserver: null,
         allowSnapshot: allowSnapshot === true,
         get resizeTimer() { return resizeTimer; },
         clearTimer() { clearTimeout(resizeTimer); resizeTimer = null; }
@@ -140,9 +141,11 @@ export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     state.resizeObserver = resizeObserver;
     state.onFullscreenChange = onFullscreenChange;
     state.onSimulatedFullscreen = onSimulatedFullscreen;
+    state.mutationObserver = new MutationObserver(() => {});
     observers.set(element, state);
 
     resizeObserver.observe(element);
+    state.mutationObserver.observe(element, { childList: true, subtree: true, attributes: true, attributeFilter: ['width', 'height', 'style'] });
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
     document.addEventListener('drawnui-simulated-fullscreen', onSimulatedFullscreen);
@@ -162,6 +165,7 @@ export function detachCanvasHost(element) {
     state.clearTimer();
     fadeSnapshot(state);
     state.resizeObserver.disconnect();
+    state.mutationObserver?.disconnect();
     document.removeEventListener('fullscreenchange', state.onFullscreenChange);
     document.removeEventListener('webkitfullscreenchange', state.onFullscreenChange);
     document.removeEventListener('drawnui-simulated-fullscreen', state.onSimulatedFullscreen);

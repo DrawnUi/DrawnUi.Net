@@ -47,37 +47,22 @@ namespace DrawnUi.Views
 
         protected void FixDensity()
         {
-            //Console.WriteLine($"CANVAS {RenderingScale} FixDensity: {PhisicalWidth:0}x{PhisicalHeight:0}");
+            Console.WriteLine($"CANVAS {RenderingScale} FixDensity: {PhisicalWidth:0}x{PhisicalHeight:0}");
 
-            var canvasWidth =  PhisicalWidth;
+            var canvasWidth = PhisicalWidth;
             var canvasHeight = PhisicalHeight;
 
-            var logicalWidth = WidthRequest > 0.1
-                ? WidthRequest
-                : Width > 0.1 && Math.Abs(Width - canvasWidth) > 0.5
-                    ? Width
-                    : 0;
-            var logicalHeight = HeightRequest > 0.1
-                ? HeightRequest
-                : Height > 0.1 && Math.Abs(Height - canvasHeight) > 0.5
-                    ? Height
-                    : 0;
+            var widthScale = WidthRequest > 0.1 && canvasWidth > 0
+                ? (float)(canvasWidth / WidthRequest)
+                : 0f;
+            var heightScale = HeightRequest > 0.1 && canvasHeight > 0
+                ? (float)(canvasHeight / HeightRequest)
+                : 0f;
 
-            var inferredScale = 0f;
-            if (logicalWidth > 0.1 && canvasWidth > 0)
-            {
-                inferredScale = (float)(canvasWidth / logicalWidth);
-            }
+            var scale = widthScale > 0.0f
+                ? widthScale
+                : heightScale;
 
-            if (logicalHeight > 0.1 && canvasHeight > 0)
-            {
-                var heightScale = (float)(canvasHeight / logicalHeight);
-                inferredScale = inferredScale > 0.0f
-                    ? MathF.Max(inferredScale, heightScale)
-                    : heightScale;
-            }
-
-            var scale = inferredScale;
             if (scale <= 0.0f)
             {
                 scale = (float)GetDensity();
@@ -88,6 +73,11 @@ namespace DrawnUi.Views
                 scale = _renderingScale > 0.0f ? _renderingScale : 1.0f;
             }
 
+            if (Math.Abs(RenderingScale - scale) > 0.01f)
+            {
+                RenderingScale = scale;
+            }
+
             var measured = OnMeasure(WidthRequest, HeightRequest);
             Width = measured.Width;
             Height = measured.Height;
@@ -96,11 +86,6 @@ namespace DrawnUi.Views
 
             //Width = canvasWidth;
             //Height = canvasHeight;
-
-            if (Math.Abs(RenderingScale - scale) > 0.01f)
-            {
-                RenderingScale = scale;
-            }
         }
 
         protected Dictionary<Guid, SkiaControl> DirtyChildren = new();

@@ -73,8 +73,7 @@ var drawer = new SkiaDrawer()
                     FontFamily = "FontText",
                     FontSize = 12,
                     TextColor = new Color(0.404f, 0.431f, 0.486f, 1f),
-                    HorizontalOptions = LayoutOptions.Fill,
-                    WidthRequest = 224
+                    HorizontalOptions = LayoutOptions.Fill
                 },
                 new SkiaScroll()
                 {
@@ -89,12 +88,11 @@ var drawer = new SkiaDrawer()
 
         _drawer = new SkiaDrawer()
         {
-            WidthRequest = 292,
             HeightRequest = 240,
             HeaderSize = 36,
             Direction = DrawerDirection.FromBottom,
             IsOpen = true,
-            HorizontalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.End,
             Content = drawerContent
         };
@@ -113,8 +111,8 @@ var drawer = new SkiaDrawer()
         _canvasContent = new SkiaLayout()
         {
             Margin = new Thickness(16),
-            WidthRequest = 328,
-                    Padding = new Thickness(20),
+            HorizontalOptions = LayoutOptions.Fill,
+            Padding = new Thickness(20),
             BackgroundColor = new Color(1f, 0.989f, 0.959f, 1f),
             Type = LayoutType.Column,
             Spacing = 12,
@@ -131,12 +129,11 @@ var drawer = new SkiaDrawer()
                 _toggleButton,
                 new SkiaShape()
                 {
-                    WidthRequest = 292,
                     HeightRequest = 274,
                     Type = ShapeType.Rectangle,
                     CornerRadius = 20,
                     BackgroundColor = new Color(0.918f, 0.941f, 0.976f, 1f),
-                    HorizontalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Fill,
                     Children =
                     {
@@ -179,12 +176,11 @@ var drawer = new SkiaDrawer()
         {
             layout.AddSubView(new SkiaShape()
             {
-                WidthRequest = 244,
                 HeightRequest = 54,
                 Type = ShapeType.Rectangle,
                 CornerRadius = 14,
                 BackgroundColor = index % 2 == 0 ? new Color(0.961f, 0.925f, 0.898f, 1f) : new Color(0.918f, 0.941f, 0.976f, 1f),
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
                 Children =
                 {
                     new SkiaLayout()
