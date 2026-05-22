@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@if (IsDebugBuild)
+@if (IsUnderConstruction)
 {
     <div class="page">
         <div class="sidebar">
@@ -38,9 +38,9 @@ else
 }
 
 @code {
-#if DEBUG
+#if xDEBUG
     private const bool IsDebugBuild = true;
 #else
-    private const bool IsDebugBuild = false;
+    private const bool IsUnderConstruction = false;
 #endif
 }
