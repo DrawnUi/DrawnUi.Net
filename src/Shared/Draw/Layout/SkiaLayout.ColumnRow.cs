@@ -636,53 +636,43 @@ else
 
                     foreach (var secondPass in listSecondPass)
                     {
-                        if (Type == LayoutType.Column)
+                        if (float.IsInfinity(secondPass.Cell.Area.Bottom))
                         {
-                            if (float.IsInfinity(secondPass.Cell.Area.Right))
-                            {
-                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                    secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
-                            }
-                            else if (float.IsInfinity(secondPass.Cell.Area.Left))
-                            {
-                                secondPass.Cell.Area = new(secondPass.Cell.Area.Right - stackWidth,
-                                    secondPass.Cell.Area.Top,
-                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
-                            }
-
-                            if (secondPass.Cell.Area.Width > stackWidth)
-                            {
-                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                    secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
-                            }
+                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
                         }
-                        else
+                        else if (float.IsInfinity(secondPass.Cell.Area.Top))
                         {
-                            if (float.IsInfinity(secondPass.Cell.Area.Bottom))
-                            {
-                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
-                            }
-                            else if (float.IsInfinity(secondPass.Cell.Area.Top))
-                            {
-                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left,
-                                    secondPass.Cell.Area.Bottom - stackHeight,
-                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
-                            }
-
-                            if (secondPass.Cell.Area.Height > stackHeight)
-                            {
-                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
-                            }
+                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left,
+                                secondPass.Cell.Area.Bottom - stackHeight,
+                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
                         }
 
-                        var measuredSecondPass = MeasureChild(secondPass.Child,
-                            secondPass.Cell.Area.Width,
-                            secondPass.Cell.Area.Height,
-                            secondPass.Scale);
+                        if (secondPass.Cell.Area.Height > stackHeight)
+                        {
+                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
+                        }
 
-                        LayoutCell(measuredSecondPass, secondPass.Cell, secondPass.Child,
+                        if (float.IsInfinity(secondPass.Cell.Area.Right))
+                        {
+                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
+                        }
+                        else if (float.IsInfinity(secondPass.Cell.Area.Left))
+                        {
+                            secondPass.Cell.Area = new(secondPass.Cell.Area.Right - stackWidth,
+                                secondPass.Cell.Area.Top,
+                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
+                        }
+
+                        if (secondPass.Cell.Area.Width > stackWidth)
+                        {
+                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
+                        }
+
+                        LayoutCell(secondPass.Child.MeasuredSize, secondPass.Cell, secondPass.Child,
                             autoRect,
                             secondPass.Scale);
                     }
@@ -1304,18 +1294,18 @@ else
                         stackWidth = maxWidth;
                     stackHeight += maxRowHeight + GetSpacingForIndex(row, scale);
 
-                        stackY += maxRowHeight;
-                    }
+                    stackY += maxRowHeight;
+                }
 
-                    // Apply minimum dimensions from Fill children in perpendicular direction
-                    if (minStackWidthFromFill > stackWidth)
-                        stackWidth = minStackWidthFromFill;
-                    if (minStackHeightFromFill > stackHeight)
-                        stackHeight = minStackHeightFromFill;
+                // Apply minimum dimensions from Fill children in perpendicular direction
+                if (minStackWidthFromFill > stackWidth)
+                    stackWidth = minStackWidthFromFill;
+                if (minStackHeightFromFill > stackHeight)
+                    stackHeight = minStackHeightFromFill;
 
-                    // apply fill constraints
-                    if (float.IsFinite(rectForChildrenPixels.Width) && HorizontalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Width >= 0)
-                        stackWidth = rectForChildrenPixels.Width;
+                // apply fill constraints
+                if (float.IsFinite(rectForChildrenPixels.Width) && HorizontalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Width >= 0)
+                    stackWidth = rectForChildrenPixels.Width;
 
                 if (float.IsFinite(rectForChildrenPixels.Height) && VerticalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Height >= 0)
                     stackHeight = rectForChildrenPixels.Height;
@@ -1622,9 +1612,17 @@ else
                     needRemeasure = true;
                 }
 
-                var measured = MeasureChild(secondPass.Child, secondPass.Cell.Area.Width,
-                    secondPass.Cell.Area.Height, secondPass.Scale);
-                secondPass.Cell.Measured = measured;
+                ScaledSize measured;
+                if (needRemeasure)
+                {
+                    measured = MeasureChild(secondPass.Child, secondPass.Cell.Area.Width,
+                        secondPass.Cell.Area.Height, secondPass.Scale);
+                    secondPass.Cell.Measured = measured;
+                }
+                else
+                {
+                    measured = secondPass.Child.MeasuredSize;
+                }
 
                 LayoutCell(measured, secondPass.Cell, secondPass.Child, autoRect,
                     secondPass.Scale);
@@ -1633,25 +1631,6 @@ else
 
         private void AdjustSecondPassCell(ControlInStack cell, float stackWidth, float stackHeight)
         {
-            if (Type == LayoutType.Column)
-            {
-                if (float.IsInfinity(cell.Area.Right))
-                {
-                    cell.Area = new(cell.Area.Left, cell.Area.Top, cell.Area.Left + stackWidth, cell.Area.Bottom);
-                }
-                else if (float.IsInfinity(cell.Area.Left))
-                {
-                    cell.Area = new(cell.Area.Right - stackWidth, cell.Area.Top, cell.Area.Right, cell.Area.Bottom);
-                }
-
-                if (cell.Area.Width > stackWidth)
-                {
-                    cell.Area = new(cell.Area.Left, cell.Area.Top, cell.Area.Left + stackWidth, cell.Area.Bottom);
-                }
-
-                return;
-            }
-
             if (float.IsInfinity(cell.Area.Bottom))
             {
                 cell.Area = new(cell.Area.Left, cell.Area.Top, cell.Area.Right, cell.Area.Top + stackHeight);
@@ -2035,7 +2014,9 @@ else
             // Cache the result
             _visibleAreaCache = new VisibleAreaCache
             {
-                Destination = ctx.Destination, VisibleArea = visibleArea, CalculatedAt = now
+                Destination = ctx.Destination,
+                VisibleArea = visibleArea,
+                CalculatedAt = now
             };
 
             return visibleArea;
@@ -2294,7 +2275,7 @@ else
                         }
                     }
 
-  
+
                     foreach (var cell in CollectionsMarshal.AsSpan(visibleElements))
                     {
                         // Update measured items access time for visible items
@@ -2380,7 +2361,9 @@ else
 
                                             var measuredItem = new MeasuredItemInfo
                                             {
-                                                Cell = cell, LastAccessed = DateTime.UtcNow, IsInViewport = true,
+                                                Cell = cell,
+                                                LastAccessed = DateTime.UtcNow,
+                                                IsInViewport = true,
                                             };
                                             _pendingStructureChanges.Add(
                                                 new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
