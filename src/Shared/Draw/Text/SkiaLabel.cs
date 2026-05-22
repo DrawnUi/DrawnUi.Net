@@ -112,8 +112,6 @@ namespace DrawnUi.Draw
 
         void Constructor()
         {
-            AccessibilityRole = Aria.RoleText;
-
             _spans.CollectionChanged += OnCollectionChanged;
 
             UpdateFont();

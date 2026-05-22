@@ -3,29 +3,30 @@ using DrawnUi.Draw;
 
 namespace DrawnUi.Views
 {
-    public record AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect, bool CanInteract)
+    public record AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect, bool CanInteract, bool? IsPressed)
     {
-        internal SkiaControl? Source { get; init; }
+        internal ISkiaAccessibilityNode? Source { get; init; }
 
-        internal static AccessibilityNode From(SkiaControl control, float scale)
+        internal static AccessibilityNode From(ISkiaAccessibilityNode node, float scale)
         {
-            var px = control.VisualLayer?.HitBoxWithTransforms.Pixels ?? control.DrawingRect;
+            var px = node.GetAccessibilityPixelRect();
             return new AccessibilityNode(
-                control.AccessibilityLabel,
-                control.AccessibilityHint,
-                control.AccessibilityRole,
+                node.AccessibilityLabel,
+                node.AccessibilityHint,
+                node.AccessibilityRole,
                 new SKRect(px.Left / scale, px.Top / scale, px.Right / scale, px.Bottom / scale),
-                control.AccessibilityCanInteract)
+                node.AccessibilityCanInteract,
+                node.AccessibilityIsPressed)
             {
-                Source = control
+                Source = node
             };
         }
     }
 
     public class SkiaAccessibilityManager
     {
-        private readonly ConcurrentDictionary<SkiaControl, byte> _nodes = new();
-        private readonly List<SkiaControl> _sortBuffer = new();
+        private readonly ConcurrentDictionary<ISkiaAccessibilityNode, byte> _nodes = new();
+        private readonly List<ISkiaAccessibilityNode> _sortBuffer = new();
         private volatile bool _dirty;
         private long _lastRebuildTick;
 
@@ -38,31 +39,37 @@ namespace DrawnUi.Views
 
         public event Action? Changed;
 
-        public void Register(SkiaControl control)
+        public void Register(ISkiaAccessibilityNode node)
         {
-            _nodes.TryAdd(control, 0);
+            _nodes.TryAdd(node, 0);
             _dirty = true;
         }
 
-        public void NotifyUpdated(SkiaControl control)
+        public void NotifyUpdated(ISkiaAccessibilityNode node)
         {
-            if (!_nodes.ContainsKey(control)) return;
+            if (!_nodes.ContainsKey(node)) return;
             if (!_dirty) _dirty = true;
         }
 
-        public void Unregister(SkiaControl control)
+        public void Unregister(ISkiaAccessibilityNode node)
         {
-            if (_nodes.TryRemove(control, out _))
+            if (_nodes.TryRemove(node, out _))
+            {
+                node.OnAccessibilityUnregistered();
                 _dirty = true;
+            }
         }
 
-        public void UnregisterSubtree(SkiaControl root)
+        public void UnregisterSubtree(ISkiaAccessibilityNode root)
         {
             bool any = false;
             foreach (var key in _nodes.Keys)
             {
                 if (IsDescendantOrSelf(key, root) && _nodes.TryRemove(key, out _))
+                {
+                    key.OnAccessibilityUnregistered();
                     any = true;
+                }
             }
             if (any) _dirty = true;
         }
@@ -81,10 +88,10 @@ namespace DrawnUi.Views
             _lastRebuildTick = now;
 
             _sortBuffer.Clear();
-            foreach (var control in _nodes.Keys)
+            foreach (var node in _nodes.Keys)
             {
-                if (control.IsVisible && !control.IsDisposed)
-                    _sortBuffer.Add(control);
+                if (node is SkiaControl control && control.IsVisible && !control.IsDisposed)
+                    _sortBuffer.Add(node);
             }
 
             _sortBuffer.Sort(RectComparer);
@@ -97,20 +104,23 @@ namespace DrawnUi.Views
             Changed?.Invoke();
         }
 
-        private static readonly Comparison<SkiaControl> RectComparer = (a, b) =>
+        private static readonly Comparison<ISkiaAccessibilityNode> RectComparer = (a, b) =>
         {
-            var ra = a.VisualLayer?.HitBoxWithTransforms.Pixels ?? a.DrawingRect;
-            var rb = b.VisualLayer?.HitBoxWithTransforms.Pixels ?? b.DrawingRect;
+            var ra = a.GetAccessibilityPixelRect();
+            var rb = b.GetAccessibilityPixelRect();
             var cmp = ra.Top.CompareTo(rb.Top);
             return cmp != 0 ? cmp : ra.Left.CompareTo(rb.Left);
         };
 
-        private static bool IsDescendantOrSelf(SkiaControl candidate, SkiaControl ancestor)
+        private static bool IsDescendantOrSelf(ISkiaAccessibilityNode candidate, ISkiaAccessibilityNode ancestor)
         {
-            IDrawnBase? current = candidate;
+            if (candidate is not SkiaControl || ancestor is not SkiaControl ancestorControl)
+                return ReferenceEquals(candidate, ancestor);
+
+            IDrawnBase? current = candidate as SkiaControl;
             while (current is SkiaControl c)
             {
-                if (ReferenceEquals(c, ancestor)) return true;
+                if (ReferenceEquals(c, ancestorControl)) return true;
                 current = c.Parent;
             }
             return false;

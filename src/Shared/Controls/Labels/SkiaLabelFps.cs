@@ -8,7 +8,7 @@ public class SkiaLabelFps : SkiaLabel, ISkiaAnimator
     {
         IsParentIndependent = true;
         WillNotUpdateParent = true;
-
+        AccessibilityRole = null;
         Tag = "FPS";
         Format = "FPS {0}";
         MonoForDigits = "8";

@@ -83,6 +83,68 @@ namespace DrawnUi.Draw
             return control;
         }
 
+        public static T WithAccessibility<T>(this T control,
+            string role,
+            string? label = null,
+            bool canInteract = false) where T : SkiaControl
+        {
+            return control.WithAccessibility(role, label, label, canInteract);
+        }
+
+        public static T WithAccessibilityButton<T>(this T control,
+            string label,
+            string? hint = null) where T : SkiaControl
+        {
+            return control.WithAccessibility(Aria.RoleButton, label, hint, true);
+        }
+
+        public static T WithAccessibilityButton<T>(this T control) where T : SkiaButton
+        {
+            return control.WithAccessibility(Aria.RoleButton, control.Text, control.Text, true);
+        }
+
+        public static T WithAccessibilityButton<T>(this T control,
+            string label) where T : SkiaControl
+        {
+            return control.WithAccessibility(Aria.RoleButton, label, label, true);
+        }
+
+        public static T WithAccessibilityText<T>(this T control, string text) where T : SkiaControl
+        {
+            control.AccessibilityRole = Aria.RoleText;
+            control.AccessibilityLabel = text;
+            return control;
+        }
+
+        public static T WithAccessibilityText<T>(this T control) where T : SkiaLabel
+        {
+            control.AccessibilityRole = Aria.RoleText;
+            control.AccessibilityLabel = control.Text;
+            return control;
+        }
+
+        /// <summary>Sets aria-pressed for a toggle button. null = not a toggle (attribute absent).</summary>
+        public static T WithAccessibilityPressed<T>(this T control, bool? pressed) where T : SkiaControl
+        {
+            control.AccessibilityIsPressed = pressed;
+            return control;
+        }
+
+        /// <summary>
+        /// Marks a SkiaToggle as an accessible toggle button and keeps aria-pressed in sync with IsToggled automatically.
+        /// Unsubscribes on control disposal via ExecuteUponDisposal.
+        /// </summary>
+        public static T WithAccessibilityToggle<T>(this T control, string label, string? hint = null) where T : SkiaToggle
+        {
+            control.AccessibilityRole = Aria.RoleSwitch;
+            control.AccessibilityLabel = label;
+            control.AccessibilityHint = hint;
+            control.AccessibilityCanInteract = true;
+            control.AccessibilityIsPressed = control.IsToggled;
+            control.ObserveProperty(control, nameof(SkiaToggle.IsToggled), me => me.AccessibilityIsPressed = me.IsToggled);
+            return control;
+        }
+
         public static T WithGestures<T>(this T view, Func<T, SkiaGesturesParameters, GestureEventProcessingInfo, ISkiaGestureListener> func) where T : SkiaLayout
         {
             view.OnGestures = (a, b) =>

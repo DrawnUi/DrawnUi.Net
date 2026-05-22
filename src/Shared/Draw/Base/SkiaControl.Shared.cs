@@ -20,6 +20,7 @@ namespace DrawnUi.Draw
     [DebuggerDisplay("{DebugString}")]
     public partial class SkiaControl :
         ISkiaGestureListener,
+        ISkiaAccessibilityNode,
         IHasAfterEffects,
         ISkiaControl, ISkiaDisposable
     {
@@ -2622,6 +2623,18 @@ namespace DrawnUi.Draw
 
             ParentVisibilityChanged?.Invoke(this, newvalue);
 
+            if (IsAccessibilityElement)
+            {
+                if (!newvalue)
+                {
+                    UnregisterAccessibility();
+                }
+                else
+                {
+                    NotifyAccessibility();
+                }
+            }
+
             if (!newvalue)
             {
                 if (IsCacheGPU)
@@ -2671,6 +2684,18 @@ namespace DrawnUi.Draw
         /// <param name="newvalue"></param>
         public virtual void OnVisibilityChanged(bool newvalue)
         {
+            if (IsAccessibilityElement)
+            {
+                if (!newvalue)
+                {
+                    UnregisterAccessibility();
+                }
+                else
+                {
+                    NotifyAccessibility();
+                }
+            }
+
             if (!newvalue)
             {
                 if (IsCacheGPU)
@@ -4622,9 +4647,22 @@ namespace DrawnUi.Draw
 
         #region Accessibility
 
+        public virtual void UnregisterAccessibility()
+        {
+            var mgr = Superview?.AccessibilityManager;
+            mgr?.Unregister(this);
+            _registeredWithAccessibility = false;
+        }
         public virtual void AccessibilityChanged()
         {
-            NotifyAccessibility();
+            if (!IsAccessibilityElement && _registeredWithAccessibility)
+            {
+                UnregisterAccessibility();
+            }
+            else
+            {
+                NotifyAccessibility();
+            }
         }
 
         private string? _accessibilityRole;
@@ -4671,6 +4709,9 @@ namespace DrawnUi.Draw
 
         public bool IsAccessibilityElement => _accessibilityRole != null;
 
+        public SKRect GetAccessibilityPixelRect() =>
+            VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
+
         private bool _accessibilityCanInteract;
         public bool AccessibilityCanInteract
         {
@@ -4685,7 +4726,26 @@ namespace DrawnUi.Draw
             }
         }
 
+        private bool? _accessibilityIsPressed;
+        public bool? AccessibilityIsPressed
+        {
+            get => _accessibilityIsPressed;
+            set
+            {
+                if (_accessibilityIsPressed != value)
+                {
+                    _accessibilityIsPressed = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
+
         private bool _registeredWithAccessibility;
+
+        public void OnAccessibilityUnregistered()
+        {
+            _registeredWithAccessibility = false;
+        }
 
         /// <summary>
         /// Called by platform accessibility layer when this element is activated (clicked, Enter pressed).
@@ -4712,7 +4772,7 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Called automatically on first layout. Call manually when label, hint, or state changes.
         /// </summary>
-        protected virtual void NotifyAccessibility()
+        public virtual void NotifyAccessibility()
         {
             if (!IsAccessibilityElement) return;
             var mgr = Superview?.AccessibilityManager;
@@ -8501,6 +8561,7 @@ namespace DrawnUi.Draw
                     return;
 
                 var iAmGestureListener = this as ISkiaGestureListener;
+                var iAmAccessibilityNode = this as ISkiaAccessibilityNode;
 
                 //clear previous
                 if (Parent is IDrawnBase oldParent)
@@ -8509,6 +8570,12 @@ namespace DrawnUi.Draw
                     if (iAmGestureListener != null)
                     {
                         oldParent.UnregisterGestureListener(iAmGestureListener);
+                    }
+
+                    //kill accessibility
+                    if (iAmAccessibilityNode != null)
+                    {
+                        Superview?.AccessibilityManager.UnregisterSubtree(iAmAccessibilityNode);
                     }
 
                     //fill animations

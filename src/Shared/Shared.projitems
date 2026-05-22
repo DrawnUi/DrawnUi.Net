@@ -199,6 +199,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaDisposable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaDrawable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaAccessibilityNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaGestureListener.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaGestureProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaGridLayout.cs" />
