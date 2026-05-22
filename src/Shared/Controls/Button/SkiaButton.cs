@@ -13,10 +13,13 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 {
     public SkiaButton()
     {
+        AccessibilityRole = Aria.RoleButton;
     }
 
     public SkiaButton(string caption)
     {
+        AccessibilityRole = Aria.RoleButton;
+
         Text = caption;
     }
 
@@ -483,8 +486,13 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
     public virtual void ApplyProperties()
     {
+        AccessibilityLabel = Text;
+        AccessibilityCanInteract = !IsDisabled;
+
         if (MainLabel != null)
         {
+            MainLabel.AccessibilityRole = null;
+
             MainLabel.Text = this.Text;
 
             // Apply text case transformation if specified

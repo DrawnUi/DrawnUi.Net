@@ -3,7 +3,7 @@ using DrawnUi.Draw;
 
 namespace DrawnUi.Views
 {
-    public record AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect)
+    public record AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect, bool CanInteract)
     {
         internal SkiaControl? Source { get; init; }
 
@@ -14,7 +14,8 @@ namespace DrawnUi.Views
                 control.AccessibilityLabel,
                 control.AccessibilityHint,
                 control.AccessibilityRole,
-                new SKRect(px.Left / scale, px.Top / scale, px.Right / scale, px.Bottom / scale))
+                new SKRect(px.Left / scale, px.Top / scale, px.Right / scale, px.Bottom / scale),
+                control.AccessibilityCanInteract)
             {
                 Source = control
             };

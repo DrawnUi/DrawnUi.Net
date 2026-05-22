@@ -133,6 +133,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\SkiaCacheType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\ThermalState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Extensions\PointFExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\Aria.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\IThermalStateService.cs">
       <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
     </Compile>

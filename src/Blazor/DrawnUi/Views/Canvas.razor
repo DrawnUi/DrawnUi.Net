@@ -18,7 +18,7 @@
     style="@CssMargins @CssPadding @CssGridPosition @CssStyle @GestureStyle">
 
     <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" aria-hidden="true">
-        <div class="xaml-canvas-element" style="@CanvasSurfaceElementStyle">
+        <div class="xaml-canvas-element" @ref="_inputElement" style="@CanvasSurfaceElementStyle">
             @if(RenderingMode == RenderingModeType.Default)
             {
                 <SkiaView Superview="@this"
@@ -41,15 +41,29 @@
         <div class="xaml-a11y-overlay">
             @foreach (var node in _accessibilityNodes)
             {
-                <div role="@node.Role"
-                     aria-label="@node.Label"
-                     title="@node.Hint"
-                     tabindex="0"
-                     class="xaml-a11y-element"
-                     style="@A11yNodeStyle(node)"
-                     @onclick="() => OnA11yActivated(node)"
-                     @onkeydown="(e) => OnA11yKeyDown(e, node)">
-                </div>
+                @if (node.CanInteract)
+                {
+                    <div role="@node.Role"
+                         aria-label="@node.Label"
+                         title="@node.Hint"
+                         tabindex="0"
+                         class="xaml-a11y-element xaml-a11y-interactive"
+                         style="@A11yNodeStyle(node)"
+                         @onclick="() => OnA11yActivated(node)"
+                         @onkeydown="(e) => OnA11yKeyDown(e, node)">
+                            @node.Label
+                    </div>
+                }
+                else
+                {
+                    <div role="@node.Role"
+                         aria-label="@node.Label"
+                         title="@node.Hint"
+                         class="xaml-a11y-element"
+                         style="@A11yNodeStyle(node)">
+                        @node.Label
+                    </div>
+                }
             }
         </div>
     }
@@ -131,31 +145,31 @@
 
     .xaml-a11y-overlay {
         position: absolute;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
     }
 
     .xaml-a11y-element {
         position: absolute;
         background: transparent;
-        border: 0;
         color: transparent;
-        pointer-events: auto;
-        cursor: pointer;
-        outline: none;
     }
 
-    .xaml-a11y-element:focus-visible {
+    .xaml-a11y-interactive {
+        cursor: pointer;
+    }
+
+    .xaml-a11y-interactive:focus-visible {
         outline: 3px solid rgba(0, 103, 244, 0.85);
         outline-offset: 1px;
         border-radius: 3px;
     }
+
+
 </style>
 
 @code {
 
     private ElementReference _hostElement;
+    private ElementReference _inputElement;
     private TouchEffect? _gestureEffect;
     private GesturesMode _attachedGesturesMode = GesturesMode.Disabled;
     private IJSObjectReference? _resizeModule;
@@ -261,7 +275,7 @@
             _gestureEffect.TouchMode = GestureTouchMode;
             if (_attachedGesturesMode != Gestures)
             {
-                await _gestureEffect.AttachAsync(_hostElement, this);
+                await _gestureEffect.AttachAsync(_inputElement, this);
                 _attachedGesturesMode = Gestures;
             }
         }
@@ -388,6 +402,7 @@
                 return (float)Content.WidthRequest;
             }
 
+            if (Content?.MeasuredSize?.Units.Width > 0)
             if (UsesAutoHostWidth)
             {
                 if (Content is { IsMeasuring: true } && _reportedAutoCanvasWidth > 1f)

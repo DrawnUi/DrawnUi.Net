@@ -73,11 +73,13 @@ namespace DrawnUi.Draw
         public static T WithAccessibility<T>(this T control,
             string role,
             string? label = null,
-            string? hint = null) where T : SkiaControl
+            string? hint = null,
+            bool canInteract = false) where T : SkiaControl
         {
-            control.AccessibilityRole  = role;
-            control.AccessibilityLabel = label;
-            control.AccessibilityHint  = hint;
+            control.AccessibilityRole        = role;
+            control.AccessibilityLabel       = label;
+            control.AccessibilityHint        = hint;
+            control.AccessibilityCanInteract = canInteract;
             return control;
         }
 

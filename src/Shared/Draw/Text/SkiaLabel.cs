@@ -112,6 +112,8 @@ namespace DrawnUi.Draw
 
         void Constructor()
         {
+            AccessibilityRole = Aria.RoleText;
+
             _spans.CollectionChanged += OnCollectionChanged;
 
             UpdateFont();
@@ -3431,7 +3433,23 @@ namespace DrawnUi.Draw
             }
         }
 
-        protected string TextInternal { get; set; }
+        protected string TextInternal
+        {
+            get => field;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnTextInternalChanged();
+                }
+            }
+        }
+
+        protected virtual void OnTextInternalChanged()
+        {
+            AccessibilityLabel = TextInternal;
+        }
 
         public static readonly BindableProperty FallbackCharacterProperty = BindableProperty.Create(
             nameof(FallbackCharacter),
