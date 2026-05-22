@@ -16,7 +16,8 @@
                 WidthRequest="400"
                 BackgroundColor="#FFF5E8"
                 Margin="0,16,0,0"
-                Gestures="@GesturesMode.Enabled" />
+                RenderingMode="@RenderingModeType.Accelerated"
+                Gestures="@GesturesMode.Lock" />
     </div>
 
     <pre class="docs-code"><code>@GestureSnippet</code></pre>
@@ -45,17 +46,31 @@ _dragTarget.TranslationX += e.Args.Event.Distance.Delta.X / scale;
 _dragTarget.TranslationY += e.Args.Event.Distance.Delta.Y / scale;
 """;
 
+
+    public class CheckMe : SkiaLayer
+    {
+        public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
+        {
+            var ret = base.OnMeasuring(widthConstraint, heightConstraint, scale);
+
+            return ret;
+        }
+    }
+
     private readonly SkiaLabel _heroLabel = new()
     {
         Text = "Canvas gestures ready",
         FontFamily = "FontTextTitle",
         FontSize = 26,
         TextColor = new Color(0.145f, 0.169f, 0.216f, 1f),
-        HorizontalOptions = LayoutOptions.Fill
+        HorizontalOptions = LayoutOptions.Fill,
+        UseCache = SkiaCacheType.Operations,
     };
 
     private readonly SkiaLabel _gestureStatus = new()
     {
+        IsParentIndependent = true,
+        UseCache = SkiaCacheType.Operations,
         Text = "Gesture pad: waiting",
         FontFamily = "FontText",
         FontSize = 14,
@@ -81,7 +96,7 @@ _dragTarget.TranslationY += e.Args.Event.Distance.Delta.Y / scale;
 
     private readonly SkiaShape _dragTarget = new()
     {
-        UseCache = SkiaCacheType.Image,
+        UseCache = SkiaCacheType.GPU,
         WidthRequest = DragSize,
         HeightRequest = DragSize,
         Type = ShapeType.Rectangle,
@@ -130,37 +145,47 @@ _dragTarget.TranslationY += e.Args.Event.Distance.Delta.Y / scale;
                 {
                     Children =
                     {
-                        new SkiaLabel()
+                        new CheckMe()
                         {
-                            UseCache = SkiaCacheType.Operations,
-                            Text = "Gesture pad",
-                            FontFamily = "FontTextTitle",
-                            FontSize = 18,
-                            TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
-                            HorizontalOptions = LayoutOptions.Fill
+                            UseCache = SkiaCacheType.Image,
+                            Children =
+                            {
+                                new SkiaLabel()
+                                {
+                                    IsParentIndependent = true,
+                                    UseCache = SkiaCacheType.Operations,
+                                    Text = "Gesture pad",
+                                    FontFamily = "FontTextTitle",
+                                    FontSize = 18,
+                                    TextColor = new Color(0.208f, 0.169f, 0.118f, 1f),
+                                    HorizontalOptions = LayoutOptions.Fill
+                                },
+                                new SkiaLabel()
+                                {
+                                    UseCache = SkiaCacheType.Operations,
+                                    IsParentIndependent = true,
+                                    Text = "Tap anywhere, drag the amber block, and use pointer or wheel on the same surface.",
+                                    FontFamily = "FontText",
+                                    FontSize = 14,
+                                    TextColor = new Color(0.388f, 0.435f, 0.502f, 1f),
+                                    HorizontalOptions = LayoutOptions.Fill,
+                                    Margin = new Thickness(0, 32, 0, 0)
+                                },
+                                new SkiaShape()
+                                {
+                                    UseCache = SkiaCacheType.Operations,
+                                    HorizontalOptions = LayoutOptions.Fill,
+                                    HeightRequest = 188,
+                                    Type = ShapeType.Rectangle,
+                                    BackgroundColor = new Color(0.157f, 0.216f, 0.322f, 1f),
+                                    StrokeColor = new Color(0.424f, 0.518f, 0.639f, 1f),
+                                    StrokeWidth = 1,
+                                    CornerRadius = 18,
+                                    Margin = new Thickness(0, 96, 0, 0)
+                                },
+                            }
                         },
-                        new SkiaLabel()
-                        {
-                            UseCache = SkiaCacheType.Operations,
-                            Text = "Tap anywhere, drag the amber block, and use pointer or wheel on the same surface.",
-                            FontFamily = "FontText",
-                            FontSize = 14,
-                            TextColor = new Color(0.388f, 0.435f, 0.502f, 1f),
-                            HorizontalOptions = LayoutOptions.Fill,
-                            Margin = new Thickness(0, 32, 0, 0)
-                        },
-                        new SkiaShape()
-                        {
-                            UseCache = SkiaCacheType.Operations,
-                            HorizontalOptions = LayoutOptions.Fill,
-                            HeightRequest = 188,
-                            Type = ShapeType.Rectangle,
-                            BackgroundColor = new Color(0.157f, 0.216f, 0.322f, 1f),
-                            StrokeColor = new Color(0.424f, 0.518f, 0.639f, 1f),
-                            StrokeWidth = 1,
-                            CornerRadius = 18,
-                            Margin = new Thickness(0, 96, 0, 0)
-                        },
+                       
                         _dragTarget
                     }
                 }
@@ -181,18 +206,25 @@ _dragTarget.TranslationY += e.Args.Event.Distance.Delta.Y / scale;
             Children =
             {
                 _heroLabel,
+
                 new SkiaLabel()
                 {
+                    UseCache = SkiaCacheType.Operations,
                     Text = "Canvas gestures are enabled on this surface. Tap, drag, pointer hover, and wheel input all stay inside the DrawnUI event pipeline.",
                     FontFamily = "FontText",
                     FontSize = 14,
                     TextColor = new Color(0.388f, 0.435f, 0.502f, 1f),
                     HorizontalOptions = LayoutOptions.Fill
                 },
+
                 _gesturePad,
+
                 _gestureStatus,
+
                 new SkiaLayout()
                 {
+                    IsParentIndependent = true,
+                    UseCache = SkiaCacheType.Operations,
                     HorizontalOptions = LayoutOptions.Fill,
                     Padding = new Thickness(14),
                     BackgroundColor = new Color(0.949f, 0.929f, 0.878f, 1f),

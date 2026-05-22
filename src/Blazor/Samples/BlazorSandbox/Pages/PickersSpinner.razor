@@ -14,7 +14,8 @@
     <p class="docs-note">This example keeps the setup small: items source, selected index feedback, and an indicator arrow so the chosen sector is obvious at a glance.</p>
 
     <div class="docs-example-frame">
-        <Canvas Content="_canvasContent" WidthRequest="380"
+        <Canvas Content="_canvasContent" 
+                WidthRequest="380"
                 HeightRequest="452"
                 BackgroundColor="#102338"
                 Margin="0,8,0,0"
@@ -59,6 +60,8 @@ var spinner = new SkiaSpinner()
 
         _selectionLabel = new SkiaLabel()
         {
+            UseCache = SkiaCacheType.Operations,
+            IsParentIndependent = true,
             Text = "Selected: None",
             FontFamily = "FontTextTitle",
             FontSize = 18,
@@ -127,7 +130,9 @@ var spinner = new SkiaSpinner()
                         }
                     }
                 },
+                
                 _selectionLabel,
+
                 new SkiaLayout()
                 {
                     Type = LayoutType.Row,
@@ -168,7 +173,6 @@ var spinner = new SkiaSpinner()
     private void OnSpinnerSelectionChanged(object? sender, int index)
     {
         _selectionLabel.Text = FormatSelectedText(index);
-        _ = InvokeAsync(StateHasChanged);
     }
 
     private string FormatSelectedText(int index)

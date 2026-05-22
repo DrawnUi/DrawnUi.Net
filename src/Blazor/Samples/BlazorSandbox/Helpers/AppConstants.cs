@@ -2,7 +2,7 @@ namespace BlazorSandbox.Helpers;
 
 public static class AppConstants
 {
-    public const string Version = "1.0.0.6";
+    public const string Version = "1.0.0.7";
 
     public const string LastSeenVersionKey = "app.version";
 }
