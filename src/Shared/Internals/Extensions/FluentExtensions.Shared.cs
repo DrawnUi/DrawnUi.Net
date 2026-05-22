@@ -70,6 +70,17 @@ namespace DrawnUi.Draw
         /// <param name="view">The layout to attach gestures to</param>
         /// <param name="func">A function that returns a gesture listener for the layout</param>
         /// <returns>The layout for chaining</returns>
+        public static T WithAccessibility<T>(this T control,
+            string role,
+            string? label = null,
+            string? hint = null) where T : SkiaControl
+        {
+            control.AccessibilityRole  = role;
+            control.AccessibilityLabel = label;
+            control.AccessibilityHint  = hint;
+            return control;
+        }
+
         public static T WithGestures<T>(this T view, Func<T, SkiaGesturesParameters, GestureEventProcessingInfo, ISkiaGestureListener> func) where T : SkiaLayout
         {
             view.OnGestures = (a, b) =>

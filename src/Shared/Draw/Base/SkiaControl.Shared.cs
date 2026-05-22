@@ -2742,6 +2742,7 @@ namespace DrawnUi.Draw
             Disposing?.Invoke(this, null);
             Superview?.UnregisterGestureListener(this as ISkiaGestureListener);
             Superview?.UnregisterAllAnimatorsByParent(this);
+            Superview?.AccessibilityManager.UnregisterSubtree(this);
         }
 
         protected object lockPausingAnimators = new();
@@ -4613,7 +4614,68 @@ namespace DrawnUi.Draw
         {
             IsLayoutReady = true;
             LayoutIsReady?.Invoke(this, null);
+            if (IsAccessibilityElement)
+                NotifyAccessibility();
         }
+
+        #region Accessibility
+
+        public string? AccessibilityRole  { get; set; }
+        public string? AccessibilityLabel { get; set; }
+        public string? AccessibilityHint  { get; set; }
+
+        public bool IsAccessibilityElement => AccessibilityRole != null;
+
+        private bool _registeredWithAccessibility;
+
+        /// <summary>
+        /// Called by platform accessibility layer when this element is activated (clicked, Enter pressed).
+        /// Injects a synthetic tap at the center of HitBoxWithTransforms into the normal gesture pipeline.
+        /// </summary>
+        public virtual void OnAccessibilityActivated()
+        {
+            var scale = Superview?.RenderingScale ?? 1f;
+            var hitbox = VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
+            var center = new PointF(hitbox.MidX, hitbox.MidY);
+
+            var args = new TouchActionEventArgs(0, TouchActionType.Released, center, null, scale)
+            {
+                IsInsideView    = true,
+                IsInContact     = false,
+                NumberOfTouches = 1,
+                StartingLocation = center
+            };
+
+            var gestureParams = SkiaGesturesParameters.Create(TouchActionResult.Tapped, args, scale);
+            OnSkiaGestureEvent(gestureParams, GestureEventProcessingInfo.Empty);
+        }
+
+        /// <summary>
+        /// Called automatically on first layout. Call manually when label, hint, or state changes.
+        /// </summary>
+        protected virtual void NotifyAccessibility()
+        {
+            if (!IsAccessibilityElement) return;
+            var mgr = Superview?.AccessibilityManager;
+            if (mgr == null) return;
+
+            if (!_registeredWithAccessibility)
+            {
+                mgr.Register(this);
+                _registeredWithAccessibility = true;
+                ExecuteUponDisposal["AccessibilityManager"] = () =>
+                {
+                    mgr.Unregister(this);
+                    _registeredWithAccessibility = false;
+                };
+            }
+            else
+            {
+                mgr.NotifyUpdated(this);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Will be set by OnLayoutReady

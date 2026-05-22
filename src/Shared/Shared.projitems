@@ -376,6 +376,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\GifAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaRadioButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SurfaceCacheManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\SkiaAccessibilityManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Controls\Pickers\Spinner\" />
