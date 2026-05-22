@@ -1392,6 +1392,10 @@ namespace DrawnUi.Views
             return true;
         }
 
+        public SkiaAccessibilityManager AccessibilityManager { get; } = new();
+
+        public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args, TouchActionResult touchAction) { }
+
         protected virtual void OnFinalizeRendering()
         {
             TimeDrawingComplete = DateTime.Now;
@@ -1420,6 +1424,8 @@ namespace DrawnUi.Views
             InvalidatedCanvas = monitor;
 
             WasDrawn?.Invoke(this, null);
+
+            AccessibilityManager.OnFrameEnd(RenderingScale);
         }
 
         public virtual void OnDisposing()
