@@ -126,6 +126,42 @@ You can mix game elements with standard DrawnUi controls:
 </draw:SkiaLayout>
 ```
 
+## Browser Games With Fixed Aspect Ratio
+
+For Blazor game pages, keep the browser host sizing separate from the fitted game canvas.
+
+Use `AspectLockedViewportHost` as the HTML/CSS space provider and `AspectLockedCanvas` as the DrawnUI canvas that fits your logical game resolution into that host.
+
+```razor
+<AspectLockedViewportHost
+    AspectWidth="940"
+    AspectHeight="430"
+    BackgroundColor="#060A12"
+    EmbeddedMargin="12px auto 0"
+    FitVisibleHeight="true">
+
+    <AspectLockedCanvas
+        Content="_canvasContent"
+        LogicalWidth="940"
+        LogicalHeight="430"
+        HorizontalOptions="LayoutOptions.Fill"
+        VerticalOptions="LayoutOptions.Fill"
+        UpdateMode="@UpdateModeType.Constant"
+        RenderingMode="@RenderingModeType.Accelerated"
+        Gestures="@GesturesMode.Enabled" />
+
+</AspectLockedViewportHost>
+```
+
+Important behavior:
+
+- Default host mode is width-driven. If you omit `FitVisibleHeight`, the embedded game area uses page width and derives height from the aspect ratio.
+- Set `FitVisibleHeight="true"` when the game should fit the remaining visible browser height below page chrome instead of only following width.
+- Keep `AspectWidth` and `AspectHeight` on the host aligned with `LogicalWidth` and `LogicalHeight` on the canvas.
+- `AspectLockedCanvas` fits the inner canvas to the host bounds without Skia translate/scale hacks, so pointer and gesture coordinates stay correct.
+
+This pattern is the right default for browser-playable samples such as Pong, Parallax, arcade loops, and other fixed-resolution game scenes.
+
 ## Example: Simple Tap Game
 
 ```xml
