@@ -34,11 +34,9 @@ public partial class SkiaLayout
     {
         cell.Area = destination;
 
-        ScaledSize measured = child.MeasuredSize;
-        if (IsTemplated || child.NeedMeasure)
-        {
-            measured = MeasureChild(child, cell.Area.Width, cell.Area.Height, scale);
-        }
+        // Always route through the child's Measure path so constraint changes
+        // use its built-in measurement cache instead of blindly reusing a stale size.
+        var measured = MeasureChild(child, cell.Area.Width, cell.Area.Height, scale);
 
         cell.Measured = measured;
         cell.WasMeasured = true;

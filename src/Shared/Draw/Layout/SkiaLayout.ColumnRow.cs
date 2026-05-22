@@ -636,43 +636,53 @@ else
 
                     foreach (var secondPass in listSecondPass)
                     {
-                        if (float.IsInfinity(secondPass.Cell.Area.Bottom))
+                        if (Type == LayoutType.Column)
                         {
-                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
+                            if (float.IsInfinity(secondPass.Cell.Area.Right))
+                            {
+                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                    secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
+                            }
+                            else if (float.IsInfinity(secondPass.Cell.Area.Left))
+                            {
+                                secondPass.Cell.Area = new(secondPass.Cell.Area.Right - stackWidth,
+                                    secondPass.Cell.Area.Top,
+                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
+                            }
+
+                            if (secondPass.Cell.Area.Width > stackWidth)
+                            {
+                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                    secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
+                            }
                         }
-                        else if (float.IsInfinity(secondPass.Cell.Area.Top))
+                        else
                         {
-                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left,
-                                secondPass.Cell.Area.Bottom - stackHeight,
-                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
+                            if (float.IsInfinity(secondPass.Cell.Area.Bottom))
+                            {
+                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
+                            }
+                            else if (float.IsInfinity(secondPass.Cell.Area.Top))
+                            {
+                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left,
+                                    secondPass.Cell.Area.Bottom - stackHeight,
+                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
+                            }
+
+                            if (secondPass.Cell.Area.Height > stackHeight)
+                            {
+                                secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
+                                    secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
+                            }
                         }
 
-                        if (secondPass.Cell.Area.Height > stackHeight)
-                        {
-                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Top + stackHeight);
-                        }
+                        var measuredSecondPass = MeasureChild(secondPass.Child,
+                            secondPass.Cell.Area.Width,
+                            secondPass.Cell.Area.Height,
+                            secondPass.Scale);
 
-                        if (float.IsInfinity(secondPass.Cell.Area.Right))
-                        {
-                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
-                        }
-                        else if (float.IsInfinity(secondPass.Cell.Area.Left))
-                        {
-                            secondPass.Cell.Area = new(secondPass.Cell.Area.Right - stackWidth,
-                                secondPass.Cell.Area.Top,
-                                secondPass.Cell.Area.Right, secondPass.Cell.Area.Bottom);
-                        }
-
-                        if (secondPass.Cell.Area.Width > stackWidth)
-                        {
-                            secondPass.Cell.Area = new(secondPass.Cell.Area.Left, secondPass.Cell.Area.Top,
-                                secondPass.Cell.Area.Left + stackWidth, secondPass.Cell.Area.Bottom);
-                        }
-
-                        LayoutCell(secondPass.Child.MeasuredSize, secondPass.Cell, secondPass.Child,
+                        LayoutCell(measuredSecondPass, secondPass.Cell, secondPass.Child,
                             autoRect,
                             secondPass.Scale);
                     }
@@ -1612,17 +1622,9 @@ else
                     needRemeasure = true;
                 }
 
-                ScaledSize measured;
-                if (needRemeasure)
-                {
-                    measured = MeasureChild(secondPass.Child, secondPass.Cell.Area.Width,
-                        secondPass.Cell.Area.Height, secondPass.Scale);
-                    secondPass.Cell.Measured = measured;
-                }
-                else
-                {
-                    measured = secondPass.Child.MeasuredSize;
-                }
+                var measured = MeasureChild(secondPass.Child, secondPass.Cell.Area.Width,
+                    secondPass.Cell.Area.Height, secondPass.Scale);
+                secondPass.Cell.Measured = measured;
 
                 LayoutCell(measured, secondPass.Cell, secondPass.Child, autoRect,
                     secondPass.Scale);
@@ -1631,6 +1633,25 @@ else
 
         private void AdjustSecondPassCell(ControlInStack cell, float stackWidth, float stackHeight)
         {
+            if (Type == LayoutType.Column)
+            {
+                if (float.IsInfinity(cell.Area.Right))
+                {
+                    cell.Area = new(cell.Area.Left, cell.Area.Top, cell.Area.Left + stackWidth, cell.Area.Bottom);
+                }
+                else if (float.IsInfinity(cell.Area.Left))
+                {
+                    cell.Area = new(cell.Area.Right - stackWidth, cell.Area.Top, cell.Area.Right, cell.Area.Bottom);
+                }
+
+                if (cell.Area.Width > stackWidth)
+                {
+                    cell.Area = new(cell.Area.Left, cell.Area.Top, cell.Area.Left + stackWidth, cell.Area.Bottom);
+                }
+
+                return;
+            }
+
             if (float.IsInfinity(cell.Area.Bottom))
             {
                 cell.Area = new(cell.Area.Left, cell.Area.Top, cell.Area.Right, cell.Area.Top + stackHeight);
