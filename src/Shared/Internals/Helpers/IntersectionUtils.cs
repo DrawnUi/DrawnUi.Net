@@ -2,6 +2,7 @@
 
 namespace DrawnUi.Infrastructure.Helpers;
 
+
 public static class IntersectionUtils
 {
 

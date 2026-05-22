@@ -4615,16 +4615,75 @@ namespace DrawnUi.Draw
             IsLayoutReady = true;
             LayoutIsReady?.Invoke(this, null);
             if (IsAccessibilityElement)
-                NotifyAccessibility();
+            {
+                AccessibilityChanged();
+            }
         }
 
         #region Accessibility
 
-        public string? AccessibilityRole  { get; set; }
-        public string? AccessibilityLabel { get; set; }
-        public string? AccessibilityHint  { get; set; }
+        public virtual void AccessibilityChanged()
+        {
+            NotifyAccessibility();
+        }
 
-        public bool IsAccessibilityElement => AccessibilityRole != null;
+        private string? _accessibilityRole;
+        public string? AccessibilityRole
+        {
+            get => _accessibilityRole;
+            set
+            {
+                if (_accessibilityRole != value)
+                {
+                    _accessibilityRole = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
+
+        private string? _accessibilityLabel;
+        public string? AccessibilityLabel
+        {
+            get => _accessibilityLabel;
+            set
+            {
+                if (_accessibilityLabel != value)
+                {
+                    _accessibilityLabel = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
+
+        private string? _accessibilityHint;
+        public string? AccessibilityHint
+        {
+            get => _accessibilityHint;
+            set
+            {
+                if (_accessibilityHint != value)
+                {
+                    _accessibilityHint = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
+
+        public bool IsAccessibilityElement => _accessibilityRole != null;
+
+        private bool _accessibilityCanInteract;
+        public bool AccessibilityCanInteract
+        {
+            get => _accessibilityCanInteract;
+            set
+            {
+                if (_accessibilityCanInteract != value)
+                {
+                    _accessibilityCanInteract = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
 
         private bool _registeredWithAccessibility;
 
