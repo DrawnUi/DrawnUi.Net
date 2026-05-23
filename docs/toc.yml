@@ -1,7 +1,7 @@
 - name: Home
   href: index.md
 
-- name: Platforms
+ - name: Platforms
   items:
     - name: Platforms and Packages
       href: articles/platforms.md
@@ -9,10 +9,6 @@
       href: articles/tutorials.md
     - name: Startup Settings
       href: articles/startup-settings.md
-    - name: Drawn Layouts
-      href: articles/layouts.md
-    - name: Handling Gestures
-      href: articles/gestures.md
 
 - name: .NET
   href: articles/net/index.md
@@ -69,6 +65,10 @@
   items:
     - name: Controls Overview
       href: articles/controls/index.md
+    - name: Drawn Layouts
+      href: articles/layouts.md
+    - name: Handling Gestures
+      href: articles/gestures.md
     - name: Buttons
       href: articles/controls/buttons.md
     - name: Switches and Toggles
