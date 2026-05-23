@@ -18,11 +18,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpanCollection
     path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 301
+    startLine: 304
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -94,16 +94,16 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InsertItem
     path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 303
+    startLine: 306
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Inserts an item into the collection at the specified index.
-  example: []
+  example: ""
   syntax:
     content: protected override void InsertItem(int index, TextSpan item)
     parameters:
@@ -133,16 +133,16 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetItem
     path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 306
+    startLine: 309
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Replaces the element at the specified index.
-  example: []
+  example: ""
   syntax:
     content: protected override void SetItem(int index, TextSpan item)
     parameters:
@@ -172,16 +172,16 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearItems
     path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 309
+    startLine: 312
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Removes all items from the collection.
-  example: []
+  example: ""
   syntax:
     content: protected override void ClearItems()
     content.vb: Protected Overrides Sub ClearItems()
@@ -2980,3 +2980,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
   - name: (
   - name: )
+

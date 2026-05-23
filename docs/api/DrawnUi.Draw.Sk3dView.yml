@@ -32,7 +32,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Sk3dView
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -41,7 +41,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Custom implementation of Android's Camera 3D helper for SkiaSharp
-  example: []
+  example: ""
   syntax:
     content: public class Sk3dView
     content.vb: Public Class Sk3dView
@@ -71,7 +71,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -100,7 +100,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidated
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -127,7 +127,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CameraDistance
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -136,7 +136,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 3D camera distance (8 inches in pixels, similar to Android implementation)
-  example: []
+  example: ""
   syntax:
     content: public float CameraDistance
     return:
@@ -156,7 +156,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Save
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -165,7 +165,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Saves the current transformation state
-  example: []
+  example: ""
   syntax:
     content: public void Save()
     content.vb: Public Sub Save()
@@ -184,7 +184,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Restore
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -193,7 +193,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Restores the previously saved transformation state
-  example: []
+  example: ""
   syntax:
     content: public void Restore()
     content.vb: Public Sub Restore()
@@ -212,7 +212,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyToCanvas
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -221,7 +221,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies the current 3D transformation to the canvas
-  example: []
+  example: ""
   syntax:
     content: public void ApplyToCanvas(SKCanvas canvas)
     parameters:
@@ -243,7 +243,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reset
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -252,7 +252,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Resets the current state and clears all saved states
-  example: []
+  example: ""
   syntax:
     content: public void Reset()
     content.vb: Public Sub Reset()
@@ -271,7 +271,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnReset
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -297,7 +297,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnRestore
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -323,7 +323,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotateXDegrees
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -332,7 +332,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Rotates around the X axis
-  example: []
+  example: ""
   syntax:
     content: public void RotateXDegrees(float degrees)
     parameters:
@@ -357,7 +357,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotateYDegrees
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -366,7 +366,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Rotates around the Y axis
-  example: []
+  example: ""
   syntax:
     content: public void RotateYDegrees(float degrees)
     parameters:
@@ -391,7 +391,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotateZDegrees
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -400,7 +400,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Rotates around the Z axis
-  example: []
+  example: ""
   syntax:
     content: public void RotateZDegrees(float degrees)
     parameters:
@@ -425,7 +425,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateX
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -434,7 +434,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Translates along the X axis
-  example: []
+  example: ""
   syntax:
     content: public void TranslateX(float value)
     parameters:
@@ -459,7 +459,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateY
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -468,7 +468,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Translates along the Y axis
-  example: []
+  example: ""
   syntax:
     content: public void TranslateY(float value)
     parameters:
@@ -493,7 +493,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateZ
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -502,7 +502,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Translates along the Z axis
-  example: []
+  example: ""
   syntax:
     content: public void TranslateZ(float value)
     parameters:
@@ -527,7 +527,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Translate
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -536,7 +536,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Translates along all axes
-  example: []
+  example: ""
   syntax:
     content: public void Translate(float x, float y, float z)
     parameters:
@@ -565,7 +565,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Matrix
     path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
@@ -574,7 +574,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the current transformation matrix
-  example: []
+  example: ""
   syntax:
     content: public SKMatrix Matrix { get; }
     parameters: []
@@ -1070,3 +1070,4 @@ references:
   name: SKMatrix
   nameWithType: SKMatrix
   fullName: SkiaSharp.SKMatrix
+

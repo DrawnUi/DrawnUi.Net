@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PooledStringBuilder
     path: ../src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
@@ -28,7 +28,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Helper struct for managing pooled StringBuilder with automatic return
-  example: []
+  example: ""
   syntax:
     content: 'public readonly struct SkiaLabel.PooledStringBuilder : IDisposable'
     content.vb: Public Structure SkiaLabel.PooledStringBuilder Implements IDisposable
@@ -57,7 +57,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StringBuilder
     path: ../src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
@@ -86,7 +86,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
@@ -118,7 +118,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Get
     path: ../src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
@@ -146,7 +146,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Draw/Text/SkiaLabel.ObjectPools.cs
@@ -155,7 +155,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -607,3 +607,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
+

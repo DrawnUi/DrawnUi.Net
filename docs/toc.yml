@@ -1,7 +1,7 @@
 - name: Home
   href: index.md
 
- - name: Platforms
+- name: Platforms
   items:
     - name: Platforms and Packages
       href: articles/platforms.md
@@ -15,6 +15,12 @@
   items:
     - name: DrawnUi.Net Overview
       href: articles/net/index.md
+
+- name: OpenTK
+  href: articles/opentk/index.md
+  items:
+    - name: DrawnUI for OpenTK
+      href: articles/opentk/index.md
       
 - name: .NET MAUI
   href: articles/maui/index.md
@@ -44,19 +50,19 @@
     - name: Blazor Tutorial References
       href: articles/tutorials.md
     - name: Blazor Packages
-      href: articles/blazor-packages.md
+      href: articles/blazor/packages.md
     - name: Blazor WebAssembly
-      href: articles/blazor-wasm.md
+      href: articles/blazor/wasm.md
     - name: Blazor Server
-      href: articles/blazor-server.md
+      href: articles/blazor/server.md
     - name: Blazor Hybrid Web App
-      href: articles/blazor-hybrid.md
+      href: articles/blazor/hybrid.md
     - name: Blazor Capabilities
-      href: articles/blazor-capabilities.md
+      href: articles/blazor/capabilities.md
     - name: Blazor Migration
-      href: articles/blazor-migration.md
+      href: articles/blazor/migration.md
     - name: Blazor FAQ
-      href: articles/blazor-faq.md
+      href: articles/blazor/faq.md
 
 
 

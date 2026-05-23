@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IVisibilityAware.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IVisibilityAware
     path: ../src/Shared/Internals/Interfaces/IVisibilityAware.cs
@@ -46,7 +46,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IVisibilityAware.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAppearing
     path: ../src/Shared/Internals/Interfaces/IVisibilityAware.cs
@@ -55,7 +55,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This can sometimes be omitted,
-  example: []
+  example: ""
   syntax:
     content: void OnAppearing()
     content.vb: Sub OnAppearing()
@@ -74,7 +74,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IVisibilityAware.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAppeared
     path: ../src/Shared/Internals/Interfaces/IVisibilityAware.cs
@@ -83,7 +83,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This event can sometimes be called without prior OnAppearing
-  example: []
+  example: ""
   syntax:
     content: void OnAppeared()
     content.vb: Sub OnAppeared()
@@ -102,7 +102,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IVisibilityAware.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisappeared
     path: ../src/Shared/Internals/Interfaces/IVisibilityAware.cs
@@ -128,7 +128,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IVisibilityAware.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisappearing
     path: ../src/Shared/Internals/Interfaces/IVisibilityAware.cs
@@ -277,3 +277,4 @@ references:
   name: OnDisappearing
   nameWithType: IVisibilityAware.OnDisappearing
   fullName: DrawnUi.Draw.IVisibilityAware.OnDisappearing
+

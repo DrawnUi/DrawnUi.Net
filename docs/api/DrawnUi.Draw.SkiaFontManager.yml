@@ -41,7 +41,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaFontManager
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -78,7 +78,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Initialized
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -107,7 +107,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DefaultTypeface
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -136,7 +136,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Initialize
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -162,7 +162,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThrowIfFailedToCreateFont
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -189,7 +189,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Manager
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -218,7 +218,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DetectUnicodeBlock
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -230,7 +230,7 @@ items:
     Detects the Unicode block category for a given code point.
 
     This is cross-platform logic used to optimize font matching.
-  example: []
+  example: ""
   syntax:
     content: public static UnicodeBlock DetectUnicodeBlock(int codePoint)
     parameters:
@@ -259,7 +259,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MatchCharacter
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -271,7 +271,7 @@ items:
     Matches a Unicode character to an appropriate typeface with caching.
 
     This method is thread-safe and optimized for high-frequency calls.
-  example: []
+  example: ""
   syntax:
     content: public static SKTypeface MatchCharacter(int character)
     parameters:
@@ -300,7 +300,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearCharacterCache
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -312,7 +312,7 @@ items:
     Clears the character-to-typeface cache.
 
     Call this if fonts are dynamically loaded/unloaded at runtime.
-  example: []
+  example: ""
   syntax:
     content: public static void ClearCharacterCache()
     content.vb: Public Shared Sub ClearCharacterCache()
@@ -331,7 +331,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCharacterCacheSize
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -340,7 +340,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the current size of the character cache for diagnostics.
-  example: []
+  example: ""
   syntax:
     content: public static int GetCharacterCacheSize()
     return:
@@ -361,7 +361,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FindBestTypefaceForString
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -395,7 +395,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanRender
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -431,7 +431,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StringToUnicodeValues
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -465,7 +465,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetFont
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -499,7 +499,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RegisterWeight
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -533,7 +533,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetRegisteredAlias
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -569,7 +569,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetFont
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -605,7 +605,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetWeightEnum
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -614,7 +614,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the closest enum value to the given weight. Like 590 would return Semibold.
-  example: []
+  example: ""
   syntax:
     content: public static FontWeight GetWeightEnum(int weight)
     parameters:
@@ -643,7 +643,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetAlias
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -679,7 +679,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetAlias
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -715,7 +715,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEmbeddedResourceStream
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -724,7 +724,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Takes the full name of a resource and loads it in to a stream.
-  example: []
+  example: ""
   syntax:
     content: public static Stream GetEmbeddedResourceStream(string resourceName)
     parameters:
@@ -758,7 +758,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEmbeddedResourceStream
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -794,7 +794,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEmbeddedResourceNames
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -803,7 +803,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Get the list of all emdedded resources in the assembly.
-  example: []
+  example: ""
   syntax:
     content: public static string[] GetEmbeddedResourceNames()
     return:
@@ -825,7 +825,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Instance
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -854,7 +854,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Fonts
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -883,7 +883,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontRegistrar
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -912,7 +912,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEmbeededFont
     path: ../src/Maui/DrawnUi/Features/Fonts/SkiaFontManager.cs
@@ -1860,3 +1860,4 @@ references:
   name: GetEmbeededFont
   nameWithType: SkiaFontManager.GetEmbeededFont
   fullName: DrawnUi.Draw.SkiaFontManager.GetEmbeededFont
+

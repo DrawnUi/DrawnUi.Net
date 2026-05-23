@@ -9,42 +9,33 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-var assetBaseUri = new Uri(builder.HostEnvironment.BaseAddress);
-
-DrawnExtensions.RegisterFont("FontEmoji", BuildAssetUrl(assetBaseUri, "fonts/NotoColorEmoji-Regular.ttf"));
-
-DrawnExtensions.RegisterFont("FontText", FontWeight.Regular, BuildAssetUrl(assetBaseUri, "fonts/OpenSans-Regular.ttf"));
-DrawnExtensions.RegisterFont("FontTextBol", BuildAssetUrl(assetBaseUri, "fonts/OpenSans-Semibold.ttf"));
-DrawnExtensions.RegisterFont("FontTextTitle", BuildAssetUrl(assetBaseUri, "fonts/OpenSans-Semibold.ttf"));
-
-DrawnExtensions.RegisterFont("FontBrand", BuildAssetUrl(assetBaseUri, "fonts/DOM.TTF"));
-DrawnExtensions.RegisterFont("FontBrandBold", BuildAssetUrl(assetBaseUri, "fonts/DOMB.TTF"));
-
-DrawnExtensions.RegisterFont("FontGame", FontWeight.Regular, BuildAssetUrl(assetBaseUri, "fonts/Orbitron-Regular.ttf"));
-DrawnExtensions.RegisterFont("FontGame", FontWeight.Medium, BuildAssetUrl(assetBaseUri, "fonts/Orbitron-Medium.ttf"));
-DrawnExtensions.RegisterFont("FontGame", FontWeight.SemiBold, BuildAssetUrl(assetBaseUri, "fonts/Orbitron-SemiBold.ttf"));
-DrawnExtensions.RegisterFont("FontGame", FontWeight.Bold, BuildAssetUrl(assetBaseUri, "fonts/Orbitron-Bold.ttf"));
-DrawnExtensions.RegisterFont("FontGame", FontWeight.ExtraBold, BuildAssetUrl(assetBaseUri, "fonts/Orbitron-ExtraBold.ttf"));
-
-DrawnExtensions.RegisterFont("FontGameMedium", BuildAssetUrl(assetBaseUri, "fonts/Orbitron-Medium.ttf"));
-DrawnExtensions.RegisterFont("FontGameSemiBold", BuildAssetUrl(assetBaseUri, "fonts/Orbitron-SemiBold.ttf"));
-DrawnExtensions.RegisterFont("FontGameBold", BuildAssetUrl(assetBaseUri, "fonts/Orbitron-Bold.ttf"));
-DrawnExtensions.RegisterFont("FontGameExtraBold", BuildAssetUrl(assetBaseUri, "fonts/Orbitron-ExtraBold.ttf"));
-
-DrawnExtensions.RegisterImage("favicon.png", BuildAssetUrl(assetBaseUri, "favicon.png"));
-DrawnExtensions.RegisterImage("icon-192.png", BuildAssetUrl(assetBaseUri, "icon-192.png"));
-DrawnExtensions.RegisterImage("dotnetbotcar.png", BuildAssetUrl(assetBaseUri, "images/dotnetbotcar.png"));
-DrawnExtensions.RegisterImage(@"Images\banana.gif", BuildAssetUrl(assetBaseUri, "media/banana.gif"));
-DrawnExtensions.RegisterSvg(BuildAssetUrl(assetBaseUri, "media/dotnet_bot.svg"));
-
-var host = await builder.UseDrawnUiAsync(new DrawnUiStartupSettings
-{
-	UseDesktopKeyboard = true
-});
-
-await host.RunAsync();
-
-static string BuildAssetUrl(Uri baseUri, string relativePath)
-{
-    return new Uri(baseUri, relativePath).ToString();
-}
+await Super.UseDrawnUi(builder)
+    .WithBaseUrl(builder.HostEnvironment.BaseAddress)
+    .WithOptions(o => o.UseDesktopKeyboard = true)
+    .PreloadAssets(assets =>
+    {
+        assets.AddImage("favicon.png",        "favicon.png");
+        assets.AddImage("icon-192.png",       "icon-192.png");
+        assets.AddImage("dotnetbotcar.png",   "images/dotnetbotcar.png");
+        assets.AddImage(@"Images\banana.gif", "media/banana.gif");
+        assets.AddSvg("media/dotnet_bot.svg");
+    })
+    .ConfigureFonts(fonts =>
+    {
+        fonts.AddFont("fonts/NotoColorEmoji-Regular.ttf", "FontEmoji");
+        fonts.AddFont("fonts/OpenSans-Regular.ttf",   "FontText",      FontWeight.Regular);
+        fonts.AddFont("fonts/OpenSans-Semibold.ttf",  "FontTextBol");
+        fonts.AddFont("fonts/OpenSans-Semibold.ttf",  "FontTextTitle");
+        fonts.AddFont("fonts/DOM.TTF",                "FontBrand");
+        fonts.AddFont("fonts/DOMB.TTF",               "FontBrandBold");
+        fonts.AddFont("fonts/Orbitron-Regular.ttf",   "FontGame",      FontWeight.Regular);
+        fonts.AddFont("fonts/Orbitron-Medium.ttf",    "FontGame",      FontWeight.Medium);
+        fonts.AddFont("fonts/Orbitron-SemiBold.ttf",  "FontGame",      FontWeight.SemiBold);
+        fonts.AddFont("fonts/Orbitron-Bold.ttf",      "FontGame",      FontWeight.Bold);
+        fonts.AddFont("fonts/Orbitron-ExtraBold.ttf", "FontGame",      FontWeight.ExtraBold);
+        fonts.AddFont("fonts/Orbitron-Medium.ttf",    "FontGameMedium");
+        fonts.AddFont("fonts/Orbitron-SemiBold.ttf",  "FontGameSemiBold");
+        fonts.AddFont("fonts/Orbitron-Bold.ttf",      "FontGameBold");
+        fonts.AddFont("fonts/Orbitron-ExtraBold.ttf", "FontGameExtraBold");
+    })
+    .BuildAndRunAsync();

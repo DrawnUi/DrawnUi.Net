@@ -19,11 +19,11 @@ items:
   source:
     remote:
       path: src/Shared/Views/DrawnView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TimedDisposable
     path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1600
+    startLine: 1609
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -55,11 +55,11 @@ items:
   source:
     remote:
       path: src/Shared/Views/DrawnView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Disposable
     path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1602
+    startLine: 1611
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -84,11 +84,11 @@ items:
   source:
     remote:
       path: src/Shared/Views/DrawnView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnqueuedTime
     path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1603
+    startLine: 1612
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -113,11 +113,11 @@ items:
   source:
     remote:
       path: src/Shared/Views/DrawnView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1605
+    startLine: 1614
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -145,16 +145,16 @@ items:
   source:
     remote:
       path: src/Shared/Views/DrawnView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1611
+    startLine: 1620
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -559,3 +559,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
+

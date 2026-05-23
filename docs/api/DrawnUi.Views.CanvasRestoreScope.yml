@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/CanvasRestoreScope.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanvasRestoreScope
     path: ../src/Shared/Views/CanvasRestoreScope.cs
@@ -29,7 +29,7 @@ items:
     Zero-allocation canvas save/restore scope for use in hot rendering paths.
 
     Struct equivalent of SKAutoCanvasRestore — no heap allocation in using statements.
-  example: []
+  example: ""
   syntax:
     content: 'public struct CanvasRestoreScope : IDisposable'
     content.vb: Public Structure CanvasRestoreScope Implements IDisposable
@@ -58,7 +58,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/CanvasRestoreScope.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Views/CanvasRestoreScope.cs
@@ -90,7 +90,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/CanvasRestoreScope.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Views/CanvasRestoreScope.cs
@@ -99,7 +99,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -496,3 +496,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
+

@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposableManager
     path: ../src/Shared/Views/DisposableManager.cs
@@ -61,7 +61,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Views/DisposableManager.cs
@@ -70,7 +70,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Initializes a new instance of the DisposableManager class.
-  example: []
+  example: ""
   syntax:
     content: public DisposableManager(int framesToHold = 3)
     parameters:
@@ -96,7 +96,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnqueueDisposable
     path: ../src/Shared/Views/DisposableManager.cs
@@ -105,7 +105,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Enqueues an IDisposable object with the specified frame number.
-  example: []
+  example: ""
   syntax:
     content: public void EnqueueDisposable(IDisposable disposable, long frameNumber)
     parameters:
@@ -134,7 +134,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Count
     path: ../src/Shared/Views/DisposableManager.cs
@@ -163,7 +163,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeDisposables
     path: ../src/Shared/Views/DisposableManager.cs
@@ -175,7 +175,7 @@ items:
     Disposes of all IDisposable objects that are old enough based on frame count.
 
     Call this before every frame start.
-  example: []
+  example: ""
   syntax:
     content: public void DisposeDisposables(long currentFrameNumber)
     parameters:
@@ -201,7 +201,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Views/DisposableManager.cs
@@ -210,7 +210,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Disposes all remaining disposables immediately.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -231,7 +231,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PendingDisposalCount
     path: ../src/Shared/Views/DisposableManager.cs
@@ -240,7 +240,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Gets the number of items waiting for disposal.
-  example: []
+  example: ""
   syntax:
     content: public int PendingDisposalCount { get; }
     parameters: []
@@ -262,7 +262,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
     path: ../src/Shared/Views/DisposableManager.cs
@@ -735,3 +735,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

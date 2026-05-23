@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/ICanBeUpdated.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ICanBeUpdated
     path: ../src/Shared/Internals/Interfaces/ICanBeUpdated.cs
@@ -43,7 +43,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/ICanBeUpdated.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Shared/Internals/Interfaces/ICanBeUpdated.cs
@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Force redrawing, without invalidating the measured size
-  example: []
+  example: ""
   syntax:
     content: void Update()
     content.vb: Sub Update()
@@ -176,3 +176,4 @@ references:
   name: Update
   nameWithType: ICanBeUpdated.Update
   fullName: DrawnUi.Draw.ICanBeUpdated.Update
+

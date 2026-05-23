@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViscousFluidInterpolator
     path: ../src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
@@ -25,7 +25,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Ported from google android
-  example: []
+  example: ""
   syntax:
     content: 'public class ViscousFluidInterpolator : IInterpolator'
     content.vb: Public Class ViscousFluidInterpolator Implements IInterpolator
@@ -57,7 +57,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetInterpolation
     path: ../src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
@@ -65,7 +65,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public float GetInterpolation(float input)
     parameters:
@@ -485,3 +485,4 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
+

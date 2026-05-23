@@ -51,7 +51,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaGradient
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -116,7 +116,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -145,7 +145,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clone
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -154,7 +154,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates a new object that is a copy of the current instance.
-  example: []
+  example: ""
   syntax:
     content: public object Clone()
     return:
@@ -178,7 +178,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromBrush
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -209,7 +209,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LinearGradientAngleToPoints
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -243,7 +243,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Version
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -255,7 +255,7 @@ items:
     Incremented whenever any gradient property changes. Consumers can cache shaders
 
     keyed on this version to avoid rebuilding native objects every frame.
-  example: []
+  example: ""
   syntax:
     content: public int Version { get; }
     parameters: []
@@ -277,7 +277,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -286,7 +286,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: []
+  example: ""
   syntax:
     content: public int CompareTo(object obj)
     parameters:
@@ -324,7 +324,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -333,7 +333,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: []
+  example: ""
   syntax:
     content: public int CompareTo(SkiaGradient other)
     parameters:
@@ -364,7 +364,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -373,7 +373,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicates whether the current object is equal to another object of the same type.
-  example: []
+  example: ""
   syntax:
     content: public bool Equals(SkiaGradient other)
     parameters:
@@ -401,7 +401,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -410,7 +410,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the specified object is equal to the current object.
-  example: []
+  example: ""
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -440,7 +440,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -449,7 +449,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Serves as the default hash function.
-  example: []
+  example: ""
   syntax:
     content: public override int GetHashCode()
     return:
@@ -472,7 +472,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Equality
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -508,7 +508,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Inequality
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -544,7 +544,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AngleProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -571,7 +571,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Angle
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -600,7 +600,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TypeProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -627,7 +627,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Type
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -656,7 +656,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlendModeProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -683,7 +683,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlendMode
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -712,7 +712,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TileModeProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -739,7 +739,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TileMode
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -768,7 +768,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LightProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -795,7 +795,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Light
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -824,7 +824,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OpacityProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -851,7 +851,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Opacity
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -880,7 +880,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartXRatioProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -907,7 +907,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartXRatio
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -936,7 +936,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartYRatioProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -963,7 +963,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartYRatio
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -992,7 +992,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndXRatioProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -1019,7 +1019,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndXRatio
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -1048,7 +1048,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndYRatioProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -1075,7 +1075,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndYRatio
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -1104,7 +1104,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorsProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -1131,7 +1131,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Colors
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -1160,7 +1160,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorPositionsProperty
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -1187,7 +1187,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaGradient.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorPositions
     path: ../src/Shared/Internals/Models/SkiaGradient.cs
@@ -3311,3 +3311,4 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
   - name: )
+

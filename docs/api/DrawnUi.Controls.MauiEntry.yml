@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MauiEntry
     path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
@@ -329,7 +329,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
@@ -358,7 +358,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLinesProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
@@ -385,7 +385,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLines
     path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
@@ -394,7 +394,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: WIth 1 will behave like an ordinary Entry, with -1 (auto) or explicitly set you get an Editor
-  example: []
+  example: ""
   syntax:
     content: public int MaxLines { get; set; }
     parameters: []
@@ -416,7 +416,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCompleted
     path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
@@ -425,7 +425,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Occurs when the user finalizes the text in an entry with the return key.
-  example: []
+  example: ""
   syntax:
     content: public event EventHandler OnCompleted
     return:
@@ -445,7 +445,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Completed
     path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
@@ -454,7 +454,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Occurs when the user finalizes the text in an editor with the return key.
-  example: []
+  example: ""
   syntax:
     content: public void Completed()
     content.vb: Public Sub Completed()
@@ -475,7 +475,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanging
     path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
@@ -485,7 +485,7 @@ items:
   namespace: DrawnUi.Controls
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnHandlerChanging(HandlerChangingEventArgs args)
     parameters:
@@ -5474,3 +5474,4 @@ references:
   name: HandlerChangingEventArgs
   nameWithType: HandlerChangingEventArgs
   fullName: Microsoft.Maui.Controls.HandlerChangingEventArgs
+

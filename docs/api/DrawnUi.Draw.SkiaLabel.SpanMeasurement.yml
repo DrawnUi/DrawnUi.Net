@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpanMeasurement
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -32,7 +32,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Span-based measurement methods to avoid string allocations
-  example: []
+  example: ""
   syntax:
     content: public static class SkiaLabel.SpanMeasurement
     content.vb: Public Module SkiaLabel.SpanMeasurement
@@ -60,7 +60,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureTextWidthWithAdvanceSpan
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -69,7 +69,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measures text width using ReadOnlySpan without converting to string
-  example: []
+  example: ""
   syntax:
     content: public static float MeasureTextWidthWithAdvanceSpan(SKPaint paint, ReadOnlySpan<char> textSpan)
     parameters:
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsSpaceSpan
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -107,7 +107,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Checks if a span represents a single space character
-  example: []
+  example: ""
   syntax:
     content: public static bool IsSpaceSpan(ReadOnlySpan<char> span, char spaceChar)
     parameters:
@@ -136,7 +136,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastNonSpaceIndexSpan
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -145,7 +145,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Finds the last non-space character index in a span
-  example: []
+  example: ""
   syntax:
     content: public static int LastNonSpaceIndexSpan(ReadOnlySpan<char> textSpan)
     parameters:
@@ -172,7 +172,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGlyphAlwaysAvailableSpan
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -181,7 +181,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Checks if glyph is always available without string conversion
-  example: []
+  example: ""
   syntax:
     content: public static bool IsGlyphAlwaysAvailableSpan(ReadOnlySpan<char> glyphSpan)
     parameters:
@@ -208,7 +208,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpanToStringForCache
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -220,7 +220,7 @@ items:
     Converts ReadOnlySpan to string only when absolutely necessary for cache keys
 
     This is the only place where we allow span-to-string conversion for caching
-  example: []
+  example: ""
   syntax:
     content: public static string SpanToStringForCache(ReadOnlySpan<char> span)
     parameters:
@@ -247,7 +247,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasurePartialTextWidthSpan
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -259,7 +259,7 @@ items:
     Measures partial text width using span-based operations where possible
 
     Falls back to string conversion only for cache compatibility
-  example: []
+  example: ""
   syntax:
     content: public static float MeasurePartialTextWidthSpan(SKPaint paint, ReadOnlySpan<char> textSpan, bool needsShaping, float scale, SKTypeface paintTypeface)
     parameters:
@@ -294,7 +294,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AppendSpan
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -303,7 +303,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Appends a ReadOnlySpan to StringBuilder without intermediate string allocation
-  example: []
+  example: ""
   syntax:
     content: public static void AppendSpan(StringBuilder sb, ReadOnlySpan<char> span)
     parameters:
@@ -330,7 +330,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AppendChar
     path: ../src/Shared/Draw/Text/SkiaLabel.SpanMeasurement.cs
@@ -339,7 +339,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Appends a single character to StringBuilder
-  example: []
+  example: ""
   syntax:
     content: public static void AppendChar(StringBuilder sb, char c)
     parameters:
@@ -836,3 +836,4 @@ references:
   name: AppendChar
   nameWithType: SkiaLabel.SpanMeasurement.AppendChar
   fullName: DrawnUi.Draw.SkiaLabel.SpanMeasurement.AppendChar
+

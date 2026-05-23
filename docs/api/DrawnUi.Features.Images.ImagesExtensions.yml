@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Images/ImagesExtensions.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImagesExtensions
     path: ../src/Maui/DrawnUi/Features/Images/ImagesExtensions.cs
@@ -52,7 +52,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Images/ImagesExtensions.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HttpClientKey
     path: ../src/Maui/DrawnUi/Features/Images/ImagesExtensions.cs
@@ -61,7 +61,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Features.Images
   summary: Can customize this to your needs
-  example: []
+  example: ""
   syntax:
     content: public static string HttpClientKey
     return:
@@ -82,7 +82,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Features/Images/ImagesExtensions.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateHttpClient
     path: ../src/Maui/DrawnUi/Features/Images/ImagesExtensions.cs
@@ -96,7 +96,7 @@ items:
     You can define your own delegate to create HttpClient by setting Super.CreateHttpClient.
 
     Do not forget to dispose the client after usage, we do not use IHttpClientFactory by default.
-  example: []
+  example: ""
   syntax:
     content: public static HttpClient? CreateHttpClient(this IServiceProvider services)
     parameters:
@@ -446,3 +446,4 @@ references:
     name: Http
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.net.http
+

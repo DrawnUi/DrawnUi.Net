@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IAnimatorsManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IAnimatorsManager
     path: ../src/Shared/Internals/Interfaces/IAnimatorsManager.cs
@@ -26,7 +26,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This control is responsible for updating screen for running animators
-  example: []
+  example: ""
   syntax:
     content: public interface IAnimatorsManager
     content.vb: Public Interface IAnimatorsManager
@@ -46,7 +46,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IAnimatorsManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddAnimator
     path: ../src/Shared/Internals/Interfaces/IAnimatorsManager.cs
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IAnimatorsManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveAnimator
     path: ../src/Shared/Internals/Interfaces/IAnimatorsManager.cs
@@ -237,3 +237,4 @@ references:
   name: System
   nameWithType: System
   fullName: System
+

@@ -151,7 +151,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaImage
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -160,8 +160,8 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: 'public class SkiaImage : SkiaControl, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable'
-    content.vb: Public Class SkiaImage Inherits SkiaControl Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable
+    content: 'public class SkiaImage : SkiaControl, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable'
+    content.vb: Public Class SkiaImage Inherits SkiaControl Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -192,6 +192,7 @@ items:
   - System.Collections.Generic.IEnumerable{Microsoft.Maui.IView}
   - System.Collections.IEnumerable
   - DrawnUi.Draw.ISkiaGestureListener
+  - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.IHasAfterEffects
   - DrawnUi.Draw.ISkiaControl
   - DrawnUi.Draw.IDrawnBase
@@ -585,6 +586,18 @@ items:
   - DrawnUi.Draw.SkiaControl.LayoutIsReady
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.OnLayoutReady
+  - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.AccessibilityHint
+  - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
   - DrawnUi.Draw.SkiaControl.LayoutReady
   - DrawnUi.Draw.SkiaControl.CheckIsGhost
@@ -1031,6 +1044,12 @@ items:
   - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.StartY``1
   - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Draw.SkiaImage,System.Object},System.String[])
   - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Draw.SkiaImage,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
   - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAspect``1(DrawnUi.Draw.TransformAspect)
   - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   - DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithCache``1(DrawnUi.Draw.SkiaCacheType)
@@ -1075,7 +1094,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1104,7 +1123,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1136,7 +1155,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CachedImage
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1145,7 +1164,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Provides a cached  image if any
-  example: []
+  example: ""
   syntax:
     content: public override SKImage CachedImage { get; }
     parameters: []
@@ -1168,7 +1187,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScaleChanged
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1176,7 +1195,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void OnScaleChanged()
     content.vb: Public Overrides Sub OnScaleChanged()
@@ -1196,7 +1215,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HasUnstableSize
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1205,7 +1224,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Set this to true for cases when your image is auto-sized and changing the source should re-measure it again.
-  example: []
+  example: ""
   syntax:
     content: public bool HasUnstableSize { get; set; }
     parameters: []
@@ -1227,7 +1246,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetImage
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1236,7 +1255,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Do not call this directly, use InstancedBitmap prop
-  example: []
+  example: ""
   syntax:
     content: protected virtual LoadedImageSource SetImage(LoadedImageSource loaded)
     parameters:
@@ -1261,7 +1280,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetRenderedSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1270,7 +1289,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will render on an off-screen surface and return result. Contains all the effects and other rendering properties applied, size will correspond to source.
-  example: []
+  example: ""
   syntax:
     content: public virtual SKImage GetRenderedSource()
     return:
@@ -1292,7 +1311,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CancelLoading
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1319,7 +1338,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1348,7 +1367,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LogEnabled
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1375,7 +1394,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseAssemblyProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1402,7 +1421,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseAssembly
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1431,7 +1450,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AspectProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1458,7 +1477,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Aspect
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1467,7 +1486,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Apspect to render image with, default is AspectCover.
-  example: []
+  example: ""
   syntax:
     content: public TransformAspect Aspect { get; set; }
     parameters: []
@@ -1489,7 +1508,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalAlignmentProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1516,7 +1535,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalAlignment
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1545,7 +1564,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalAlignmentProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1572,7 +1591,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalAlignment
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1601,7 +1620,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1628,7 +1647,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Source
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1669,7 +1688,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageBitmapProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1696,7 +1715,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageBitmap
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1705,7 +1724,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: this is the source loaded, doesn't reflect any effects or any other rendering properties
-  example: []
+  example: ""
   syntax:
     content: public LoadedImageSource ImageBitmap { get; set; }
     parameters: []
@@ -1727,7 +1746,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSourceOnFirstDrawProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1754,7 +1773,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSourceOnFirstDraw
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1772,7 +1791,7 @@ items:
     While images are loaded in async manner this still has its impact.
 
     Useful to set True for for SkiaCarousel cells etc..
-  example: []
+  example: ""
   syntax:
     content: public bool LoadSourceOnFirstDraw { get; set; }
     parameters: []
@@ -1794,7 +1813,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RescalingQualityProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1821,7 +1840,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RescalingQuality
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1830,7 +1849,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Default value is Low.
-  example: []
+  example: ""
   syntax:
     content: public SKFilterQuality RescalingQuality { get; set; }
     parameters: []
@@ -1852,7 +1871,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CacheRescaledSourceProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1879,7 +1898,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CacheRescaledSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1888,7 +1907,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Defines if we should cached the rescaled source when RescalingQuality is set or apply the quality on every draw instead. Default is true. You might want to set this to false for very fast changing source, like camera/video feed etc.
-  example: []
+  example: ""
   syntax:
     content: public bool CacheRescaledSource { get; set; }
     parameters: []
@@ -1910,7 +1929,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RescaleSourceProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1937,7 +1956,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RescaleSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1946,7 +1965,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should rescale source if output viewport size changed and RescalingQuality&gt;none. Default value is false.
-  example: []
+  example: ""
   syntax:
     content: public bool RescaleSource { get; set; }
     parameters: []
@@ -1968,7 +1987,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreviewBase64Property
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -1995,7 +2014,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreviewBase64
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2004,7 +2023,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If setting in code-behind must be set BEFORE you change the Source
-  example: []
+  example: ""
   syntax:
     content: public string PreviewBase64 { get; set; }
     parameters: []
@@ -2026,7 +2045,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2038,7 +2057,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: []
+  example: ""
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -2058,7 +2077,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2090,7 +2109,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2119,7 +2138,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2151,7 +2170,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFromBase64
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2183,7 +2202,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyNewSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2212,7 +2231,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetBitmapInternal
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2224,7 +2243,7 @@ items:
     Use only if you know what to do, this internally just sets the new bitmap without any invalidations and not forcing an update.
 
     You would want to set InstancedBitmap prop for a usual approach.
-  example: []
+  example: ""
   syntax:
     content: public LoadedImageSource SetBitmapInternal(SKBitmap bitmap, bool protectFromDispose = false)
     parameters:
@@ -2254,7 +2273,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetImageInternal
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2290,7 +2309,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsLoading
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2319,7 +2338,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2348,7 +2367,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StopLoading
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2374,7 +2393,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReloadSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2400,7 +2419,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cleared
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2427,7 +2446,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadImageManagedAsync
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2462,7 +2481,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetImageSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2491,7 +2510,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2500,7 +2519,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Last source that we where loading. Td be reused for reload..
-  example: []
+  example: ""
   syntax:
     content: public ImageSource LastSource { get; protected set; }
     parameters: []
@@ -2522,7 +2541,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2551,7 +2570,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddEffectProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2578,7 +2597,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddEffect
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2607,7 +2626,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorTintProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2634,7 +2653,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorTint
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2663,7 +2682,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomXProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2690,7 +2709,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomX
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2719,7 +2738,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomYProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2746,7 +2765,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomY
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2775,7 +2794,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DarkenProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2802,7 +2821,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Darken
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2831,7 +2850,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LightenProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2858,7 +2877,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Lighten
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2887,7 +2906,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContrastProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2914,7 +2933,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Contrast
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2943,7 +2962,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BrightnessProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2970,7 +2989,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Brightness
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -2999,7 +3018,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GammaProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3026,7 +3045,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Gamma
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3055,7 +3074,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlurProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3082,7 +3101,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Blur
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3111,7 +3130,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SaturationProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3138,7 +3157,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Saturation
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3167,7 +3186,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InflateAmountProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3194,7 +3213,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InflateAmount
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3223,7 +3242,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseGradientProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3250,7 +3269,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseGradient
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3279,7 +3298,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EraseChangedContentProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3306,7 +3325,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EraseChangedContent
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3315,7 +3334,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should we erase the existing image when another Source is set but wasn't applied yet (not loaded yet)
-  example: []
+  example: ""
   syntax:
     content: public bool EraseChangedContent { get; set; }
     parameters: []
@@ -3337,7 +3356,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartColorProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3364,7 +3383,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartColor
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3393,7 +3412,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndColorProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3420,7 +3439,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndColor
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3449,7 +3468,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EffectBlendModeProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3476,7 +3495,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EffectBlendMode
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3505,7 +3524,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalOffsetProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3532,7 +3551,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalOffset
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3561,7 +3580,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalOffsetProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3588,7 +3607,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalOffset
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3617,7 +3636,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawWhenEmptyProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3644,7 +3663,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawWhenEmpty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3673,7 +3692,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpriteHeightProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3700,7 +3719,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpriteHeight
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3729,7 +3748,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpriteWidthProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3756,7 +3775,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpriteWidth
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3785,7 +3804,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpriteIndexProperty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3812,7 +3831,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpriteIndex
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3841,7 +3860,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanDraw
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3849,7 +3868,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool CanDraw { get; }
     parameters: []
@@ -3872,7 +3891,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearBitmap
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3898,7 +3917,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnError
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3930,7 +3949,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSuccess
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3962,7 +3981,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SubscribeToCanReload
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -3988,7 +4007,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HasError
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4017,7 +4036,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Error
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4044,7 +4063,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Success
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4071,7 +4090,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImagePaint
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4080,7 +4099,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Reusing this
-  example: []
+  example: ""
   syntax:
     content: protected SKPaint ImagePaint
     return:
@@ -4100,7 +4119,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintImageFilter
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4109,7 +4128,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Reusing this
-  example: []
+  example: ""
   syntax:
     content: public SKImageFilter PaintImageFilter
     return:
@@ -4129,7 +4148,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintColorFilter
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4138,7 +4157,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Reusing this
-  example: []
+  example: ""
   syntax:
     content: protected SKColorFilter PaintColorFilter
     return:
@@ -4158,7 +4177,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedInvalidateImageFilter
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4187,7 +4206,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateImageFilter
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4213,7 +4232,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedInvalidateColorFilter
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4242,7 +4261,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateColorFilter
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4268,7 +4287,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4282,7 +4301,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: []
+  example: ""
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -4306,7 +4325,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClipSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4333,7 +4352,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSourceIfNeeded
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4359,7 +4378,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4368,7 +4387,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: []
+  example: ""
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -4388,7 +4407,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SwapSources
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4397,7 +4416,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: returns whether should abort pipeline
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool SwapSources(float scale)
     parameters:
@@ -4425,7 +4444,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4433,7 +4452,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -4456,7 +4475,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4465,7 +4484,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: []
+  example: ""
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -4485,7 +4504,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4494,7 +4513,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: []
+  example: ""
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -4514,7 +4533,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AspectScale
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4543,7 +4562,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScaledSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4572,7 +4591,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSamplingOptions
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4581,7 +4600,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets sampling options based on quality level
-  example: []
+  example: ""
   syntax:
     content: public static SKSamplingOptions GetSamplingOptions(SKFilterQuality quality, bool isUpscaling)
     parameters:
@@ -4613,7 +4632,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawSourceBitmap
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4650,7 +4669,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawSourceImage
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4687,7 +4706,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawSource
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4696,7 +4715,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Updated DrawSource with professional-quality resizing
-  example: []
+  example: ""
   syntax:
     content: protected virtual void DrawSource(DrawingContext ctx, LoadedImageSource source, TransformAspect stretch, DrawImageAlignment horizontal = DrawImageAlignment.Center, DrawImageAlignment vertical = DrawImageAlignment.Center, SKPaint paint = null)
     parameters:
@@ -4728,7 +4747,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisplayRect
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4757,7 +4776,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisplayRectChanged
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4784,7 +4803,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextureScale
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4813,7 +4832,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceImageSize
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4842,7 +4861,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetAspectScale
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4882,7 +4901,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetMeasuredAsEmpty
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4890,7 +4909,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override ScaledSize SetMeasuredAsEmpty(float scale)
     parameters:
@@ -4918,7 +4937,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AvoidRemeasuring
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4926,7 +4945,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool AvoidRemeasuring(MeasureRequest request)
     parameters:
@@ -4951,7 +4970,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasuring
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -4960,7 +4979,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Input in POINTS
-  example: []
+  example: ""
   syntax:
     content: public override ScaledSize OnMeasuring(float widthRequest, float heightRequest, float dscale)
     parameters:
@@ -4993,7 +5012,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateInternal
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -5002,7 +5021,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
-  example: []
+  example: ""
   syntax:
     content: public override void InvalidateInternal()
     content.vb: Public Overrides Sub InvalidateInternal()
@@ -5022,7 +5041,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceWidth
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -5031,7 +5050,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: From current set Source in points
-  example: []
+  example: ""
   syntax:
     content: public float SourceWidth { get; protected set; }
     parameters: []
@@ -5053,7 +5072,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceHeight
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -5062,7 +5081,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: From current set Source in points
-  example: []
+  example: ""
   syntax:
     content: public float SourceHeight { get; protected set; }
     parameters: []
@@ -5084,7 +5103,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/SkiaImage.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateDisplayRect
     path: ../src/Shared/Draw/Images/SkiaImage.cs
@@ -5409,6 +5428,13 @@ references:
   name: ISkiaGestureListener
   nameWithType: ISkiaGestureListener
   fullName: DrawnUi.Draw.ISkiaGestureListener
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
 - uid: DrawnUi.Draw.IHasAfterEffects
   commentId: T:DrawnUi.Draw.IHasAfterEffects
   parent: DrawnUi.Draw
@@ -13300,6 +13326,162 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.OnLayoutReady
     name: OnLayoutReady
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnLayoutReady
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  name: UnregisterAccessibility()
+  nameWithType: SkiaControl.UnregisterAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.UnregisterAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  commentId: M:DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  name: AccessibilityChanged()
+  nameWithType: SkiaControl.AccessibilityChanged()
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: SkiaControl.AccessibilityRole
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: SkiaControl.AccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityHint
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityHint
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: SkiaControl.AccessibilityHint
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityHint
+- uid: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: SkiaControl.IsAccessibilityElement
+  fullName: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  name: GetAccessibilityPixelRect()
+  nameWithType: SkiaControl.GetAccessibilityPixelRect()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: SkiaControl.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: SkiaControl.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  name: OnAccessibilityUnregistered()
+  nameWithType: SkiaControl.OnAccessibilityUnregistered()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  name: NotifyAccessibility()
+  nameWithType: SkiaControl.NotifyAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.NotifyAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -25986,6 +26168,398 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<SkiaImage>(SkiaImage, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaImage>(SkiaImage, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaImage>(DrawnUi.Draw.SkiaImage, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaImage)(SkiaImage, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaImage)(DrawnUi.Draw.SkiaImage, String)
+  name.vb: WithAccessibilityButton(Of SkiaImage)(SkiaImage, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaImage,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaImage,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<SkiaImage>(SkiaImage, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaImage>(SkiaImage, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaImage>(DrawnUi.Draw.SkiaImage, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaImage)(SkiaImage, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaImage)(DrawnUi.Draw.SkiaImage, String, String)
+  name.vb: WithAccessibilityButton(Of SkiaImage)(SkiaImage, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaImage,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaImage,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<SkiaImage>(SkiaImage, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<SkiaImage>(SkiaImage, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<DrawnUi.Draw.SkiaImage>(DrawnUi.Draw.SkiaImage, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of SkiaImage)(SkiaImage, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of DrawnUi.Draw.SkiaImage)(DrawnUi.Draw.SkiaImage, Boolean?)
+  name.vb: WithAccessibilityPressed(Of SkiaImage)(SkiaImage, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaImage,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaImage,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<SkiaImage>(SkiaImage, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<SkiaImage>(SkiaImage, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<DrawnUi.Draw.SkiaImage>(DrawnUi.Draw.SkiaImage, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of SkiaImage)(SkiaImage, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of DrawnUi.Draw.SkiaImage)(DrawnUi.Draw.SkiaImage, String)
+  name.vb: WithAccessibilityText(Of SkiaImage)(SkiaImage, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaImage,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaImage,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaImage>(SkiaImage, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaImage>(SkiaImage, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaImage>(DrawnUi.Draw.SkiaImage, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaImage)(SkiaImage, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaImage)(DrawnUi.Draw.SkiaImage, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaImage)(SkiaImage, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaImage,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaImage,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaImage>(SkiaImage, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaImage>(SkiaImage, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaImage>(DrawnUi.Draw.SkiaImage, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaImage)(SkiaImage, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaImage)(DrawnUi.Draw.SkiaImage, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaImage)(SkiaImage, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaImage,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaImage,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaImage
+    name: SkiaImage
+    href: DrawnUi.Draw.SkiaImage.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaImage.DrawnUi.Draw.FluentExtensions.WithAspect``1(DrawnUi.Draw.TransformAspect)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAspect``1(``0,DrawnUi.Draw.TransformAspect)
   parent: DrawnUi.Draw.FluentExtensions
@@ -31053,6 +31627,344 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<T>(T, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityPressed(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  name.vb: WithAccessibilityText(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAspect``1(``0,DrawnUi.Draw.TransformAspect)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAspect``1(``0,DrawnUi.Draw.TransformAspect)
   href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAspect__1___0_DrawnUi_Draw_TransformAspect_
@@ -33880,3 +34792,4 @@ references:
   name: CalculateDisplayRect
   nameWithType: SkiaImage.CalculateDisplayRect
   fullName: DrawnUi.Draw.SkiaImage.CalculateDisplayRect
+

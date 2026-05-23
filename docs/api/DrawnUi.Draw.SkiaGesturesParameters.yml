@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaGesturesParameters
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -56,7 +56,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Type
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -85,7 +85,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Event
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -114,7 +114,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Create
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -123,7 +123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: []
+  example: ""
   syntax:
     content: public static SkiaGesturesParameters Create(TouchActionResult action, TouchActionEventArgs args, float renderingScale)
     parameters:
@@ -157,7 +157,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Gestures/SkiaGesturesParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Empty
     path: ../src/Shared/Features/Gestures/SkiaGesturesParameters.cs
@@ -600,3 +600,4 @@ references:
   name: Empty
   nameWithType: SkiaGesturesParameters.Empty
   fullName: DrawnUi.Draw.SkiaGesturesParameters.Empty
+

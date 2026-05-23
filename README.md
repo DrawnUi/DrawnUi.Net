@@ -12,6 +12,7 @@ Currently supports host models:
 * `DrawnUi.Maui` for native app UI on iOS, Android, MacCatalyst, and Windows.
 * `DrawnUi.Blazor.Wasm` for browser-side / WebAssembly rendering with `Canvas` in Razor pages.
 * `DrawnUi.Blazor.Server` for server-backed DrawnUI surfaces inside Blazor Server / `InteractiveServer` apps.
+* `DrawnUi.OpenTk.Game` for native OpenGL window apps on Windows and Linux — 2D/3D games, desktop tools, GPU overlays.
 
 [See in browser](https://drawnui.net/sandbox)
 

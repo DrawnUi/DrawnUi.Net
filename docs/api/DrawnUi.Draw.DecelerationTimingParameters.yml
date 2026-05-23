@@ -29,7 +29,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DecelerationTimingParameters
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -68,7 +68,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialValue
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -97,7 +97,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialVelocity
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -126,7 +126,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DecelerationRate
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -155,7 +155,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DecelerationK
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -184,7 +184,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Threshold
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -213,7 +213,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -251,7 +251,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -260,7 +260,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates timing parameters specifically for scrolling to a target position in a specified time
-  example: []
+  example: ""
   syntax:
     content: public DecelerationTimingParameters(float currentValue, float targetValue, float durationSecs, float decelerationRate, float threshold = 0.1)
     parameters:
@@ -298,7 +298,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Destination
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -327,7 +327,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationSecs
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -335,7 +335,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public float DurationSecs { get; }
     parameters: []
@@ -359,7 +359,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueAt
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -367,7 +367,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public float ValueAt(float offsetSecs)
     parameters:
@@ -396,7 +396,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityAt
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -430,7 +430,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationToValue
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -464,7 +464,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityTo
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -502,7 +502,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityToZero
     path: ../src/Shared/Features/Animations/Parameters/DecelerationTimingParameters.cs
@@ -1026,3 +1026,4 @@ references:
   name: VelocityToZero
   nameWithType: DecelerationTimingParameters.VelocityToZero
   fullName: DrawnUi.Draw.DecelerationTimingParameters.VelocityToZero
+

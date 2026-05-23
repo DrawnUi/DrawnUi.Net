@@ -26,7 +26,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaBevel
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -35,7 +35,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Defines properties for creating bevel or emboss effects on shapes.
-  example: []
+  example: ""
   syntax:
     content: 'public class SkiaBevel : BindableObject, INotifyPropertyChanged'
     content.vb: Public Class SkiaBevel Inherits BindableObject Implements INotifyPropertyChanged
@@ -91,7 +91,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -120,7 +120,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Attach
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -149,7 +149,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dettach
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -175,7 +175,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DepthProperty
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -184,7 +184,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the depth of the bevel effect in logical pixels.
-  example: []
+  example: ""
   syntax:
     content: public static readonly BindableProperty DepthProperty
     return:
@@ -204,7 +204,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Depth
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -233,7 +233,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LightColorProperty
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -242,7 +242,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the light color for the highlight edges.
-  example: []
+  example: ""
   syntax:
     content: public static readonly BindableProperty LightColorProperty
     return:
@@ -262,7 +262,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LightColor
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -291,7 +291,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowColorProperty
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -300,7 +300,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the shadow color for the shadowed edges.
-  example: []
+  example: ""
   syntax:
     content: public static readonly BindableProperty ShadowColorProperty
     return:
@@ -320,7 +320,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowColor
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -349,7 +349,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OpacityProperty
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -358,7 +358,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the opacity for the bevel effect (applies to both light and shadow).
-  example: []
+  example: ""
   syntax:
     content: public static readonly BindableProperty OpacityProperty
     return:
@@ -378,7 +378,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaBevel.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Opacity
     path: ../src/Shared/Internals/Models/SkiaBevel.cs
@@ -1733,3 +1733,4 @@ references:
   name: Opacity
   nameWithType: SkiaBevel.Opacity
   fullName: DrawnUi.Draw.SkiaBevel.Opacity
+

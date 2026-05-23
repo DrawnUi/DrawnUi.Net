@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SvgSpan
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -182,7 +182,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -211,7 +211,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalAlignement
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -219,7 +219,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public DrawImageAlignment VerticalAlignement { get; set; }
     parameters: []
@@ -243,7 +243,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -272,7 +272,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -301,7 +301,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TintColor
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -330,7 +330,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Source
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -359,7 +359,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SvgString
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -388,7 +388,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Control
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -415,7 +415,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
@@ -424,7 +424,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public override void Dispose()
     content.vb: Public Overrides Sub Dispose()
@@ -3249,3 +3249,4 @@ references:
   name: Dispose
   nameWithType: SvgSpan.Dispose
   fullName: DrawnUi.Draw.SvgSpan.Dispose
+

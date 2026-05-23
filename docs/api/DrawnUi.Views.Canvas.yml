@@ -76,7 +76,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Canvas
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -90,7 +90,7 @@ items:
     For all drawn app put this directly inside the ContentPage as root view.
 
     If you put this inside some Maui control like Grid whatever expect more GC collections during animations making them somewhat less fluid.
-  example: []
+  example: ""
   syntax:
     content: >-
       [ContentProperty("Content")]
@@ -270,6 +270,7 @@ items:
   - DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface,SkiaSharp.SKRect)
   - DrawnUi.Views.DrawnView.CanRender
   - DrawnUi.Views.DrawnView.OnStartRendering(SkiaSharp.SKCanvas)
+  - DrawnUi.Views.DrawnView.AccessibilityManager
   - DrawnUi.Views.DrawnView.OnFinalizeRendering
   - DrawnUi.Views.DrawnView.AvailableDestination
   - DrawnUi.Views.DrawnView.GetOrderedSubviews
@@ -577,7 +578,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LayoutVisibilityChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -603,7 +604,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetChildren
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -611,7 +612,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: []
+  example: ""
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -637,7 +638,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DumpDebug
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -663,7 +664,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChildAdded
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -671,7 +672,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: []
+  example: ""
   syntax:
     content: protected override void OnChildAdded(SkiaControl child)
     parameters:
@@ -694,7 +695,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetContent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -703,7 +704,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Use Content property for direct access
-  example: []
+  example: ""
   syntax:
     content: protected virtual void SetContent(SkiaControl view)
     parameters:
@@ -725,7 +726,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSizeChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -733,7 +734,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: []
+  example: ""
   syntax:
     content: protected override void OnSizeChanged()
     content.vb: Protected Overrides Sub OnSizeChanged()
@@ -753,7 +754,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateMeasure
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -762,7 +763,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Marks the current measure of an element as invalidated.
-  example: []
+  example: ""
   syntax:
     content: protected override void InvalidateMeasure()
     content.vb: Protected Overrides Sub InvalidateMeasure()
@@ -782,7 +783,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptSizeToContentIfNeeded
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -820,7 +821,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ArrangeOverride
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -832,7 +833,7 @@ items:
     We need this mainly to autosize inside grid cells
 
     This is also called when parent visibilty changes
-  example: []
+  example: ""
   syntax:
     content: protected override Size ArrangeOverride(Rect bounds)
     parameters:
@@ -859,7 +860,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureOverride
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -868,7 +869,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Allows subclasses to implement custom Measure logic during a controls measure pass.
-  example: []
+  example: ""
   syntax:
     content: protected override Size MeasureOverride(double widthConstraint, double heightConstraint)
     parameters:
@@ -901,7 +902,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -910,7 +911,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Makes the control dirty, in need to be remeasured and rendered but this doesn't call Update, it's up yo you
-  example: []
+  example: ""
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -930,7 +931,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptWidthContraintToRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -964,7 +965,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptHeightContraintToRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -998,7 +999,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Measure
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1006,7 +1007,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: []
+  example: ""
   syntax:
     content: public override ScaledSize Measure(float widthConstraintPts, float heightConstraintPts)
     parameters:
@@ -1036,7 +1037,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetMeasuringRectForChildren
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1045,7 +1046,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: All in in UNITS, OUT in PIXELS
-  example: []
+  example: ""
   syntax:
     content: public SKRect GetMeasuringRectForChildren(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -1080,7 +1081,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptWidthContraintToContentRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1118,7 +1119,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptHeightContraintToContentRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1156,7 +1157,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptSizeRequestToContent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1165,7 +1166,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: In UNITS
-  example: []
+  example: ""
   syntax:
     content: protected Size AdaptSizeRequestToContent(double widthRequest, double heightRequest)
     parameters:
@@ -1197,7 +1198,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentSize
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1226,7 +1227,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureChild
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1235,7 +1236,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: PIXELS
-  example: []
+  example: ""
   syntax:
     content: protected ScaledSize MeasureChild(SkiaControl child, double availableWidth, double availableHeight, double scale)
     parameters:
@@ -1273,7 +1274,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1283,7 +1284,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnHandlerChanged()
     content.vb: Protected Overrides Sub OnHandlerChanged()
@@ -1303,7 +1304,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnHandlerChanging
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1313,7 +1314,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnHandlerChanging(HandlerChangingEventArgs args)
     parameters:
@@ -1337,7 +1338,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DetachGestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1363,7 +1364,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDestroyingVew
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1371,7 +1372,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: []
+  example: ""
   syntax:
     content: protected override void OnDestroyingVew()
     content.vb: Protected Overrides Sub OnDestroyingVew()
@@ -1391,7 +1392,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnGesturesAttachChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1417,7 +1418,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AttachedTouchEffect
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1446,7 +1447,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateDebugPointer
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1474,7 +1475,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DebugPointer
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1503,7 +1504,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1511,7 +1512,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: []
+  example: ""
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1531,7 +1532,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Context
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1558,7 +1559,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReceivedInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1567,7 +1568,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Got input during current pass
-  example: []
+  example: ""
   syntax:
     content: public HashSet<ISkiaGestureListener> ReceivedInput { get; }
     parameters: []
@@ -1589,7 +1590,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HadInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1598,7 +1599,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Have consumed input in previous or current pass. To notify them about UP (release) even if they don't get it via touch.
-  example: []
+  example: ""
   syntax:
     content: public Dictionary<Guid, ISkiaGestureListener> HadInput { get; }
     parameters: []
@@ -1620,7 +1621,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsSavedGesture
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1629,7 +1630,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Define if consuming this gesture will register child inside `HadInput`
-  example: []
+  example: ""
   syntax:
     content: protected bool IsSavedGesture(TouchActionResult type)
     parameters:
@@ -1655,7 +1656,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1684,7 +1685,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HasHover
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1693,7 +1694,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Exchange point to set itsself or read who has hover
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl HasHover { get; set; }
     parameters: []
@@ -1715,7 +1716,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SignalInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1724,7 +1725,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Gets signal from a listener that in has processed gestures. Return false if should not process gestures.
-  example: []
+  example: ""
   syntax:
     content: public bool SignalInput(ISkiaGestureListener listener, TouchActionResult gestureType)
     parameters:
@@ -1750,7 +1751,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Tapped
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1777,7 +1778,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnGestureEvent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1786,7 +1787,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: IGestureListener implementation
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
     parameters:
@@ -1817,7 +1818,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BreakLine
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1843,7 +1844,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LineBreaks
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1870,7 +1871,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1899,7 +1900,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlayRippleAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1937,7 +1938,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlayShimmerAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -1977,7 +1978,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TimeLastGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2006,7 +2007,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DelayNanosBetweenGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2035,7 +2036,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CollectGarbage
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2067,7 +2068,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPropertyChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2076,7 +2077,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Method that is called when a bound property is changed.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -2103,7 +2104,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GesturesDebugColorProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2130,7 +2131,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GesturesDebugColor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2159,7 +2160,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReserveSpaceAroundProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2186,7 +2187,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReserveSpaceAround
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2215,7 +2216,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GesturesProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2242,7 +2243,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Gestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2271,7 +2272,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2298,7 +2299,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Content
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2327,7 +2328,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnParentChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2337,7 +2338,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.ParentChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.ParentChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnParentChanged()
     content.vb: Protected Overrides Sub OnParentChanged()
@@ -2357,7 +2358,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2366,7 +2367,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Enable canvas rendering itsself
-  example: []
+  example: ""
   syntax:
     content: public virtual void EnableUpdates()
     content.vb: Public Overridable Sub EnableUpdates()
@@ -2385,7 +2386,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2394,7 +2395,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Disable invalidating and drawing on the canvas
-  example: []
+  example: ""
   syntax:
     content: public virtual void DisableUpdates()
     content.vb: Public Overridable Sub DisableUpdates()
@@ -2413,7 +2414,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2421,7 +2422,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: []
+  example: ""
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -2444,7 +2445,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetGesturePositionInsideControl
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2462,7 +2463,7 @@ items:
     taking into account all transforms and scroll offsets along the path.
 
     Returns points (DIPs).
-  example: []
+  example: ""
   syntax:
     content: public virtual SKPoint GetGesturePositionInsideControl(SkiaControl view, SKPoint screenPointPixels)
     parameters:
@@ -2491,7 +2492,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FindViewCoordinatesRecursive
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
@@ -2500,7 +2501,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: ''
-  example: []
+  example: ""
   syntax:
     content: protected virtual SKPoint? FindViewCoordinatesRecursive(SkiaControl current, SkiaControl target, SKPoint pointInCurrent)
     parameters:
@@ -5301,6 +5302,13 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skcanvas
   - name: )
+- uid: DrawnUi.Views.DrawnView.AccessibilityManager
+  commentId: P:DrawnUi.Views.DrawnView.AccessibilityManager
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_AccessibilityManager
+  name: AccessibilityManager
+  nameWithType: DrawnView.AccessibilityManager
+  fullName: DrawnUi.Views.DrawnView.AccessibilityManager
 - uid: DrawnUi.Views.DrawnView.OnFinalizeRendering
   commentId: M:DrawnUi.Views.DrawnView.OnFinalizeRendering
   parent: DrawnUi.Views.DrawnView
@@ -12487,3 +12495,4 @@ references:
   - name: " "
   - name: T
   - name: )
+

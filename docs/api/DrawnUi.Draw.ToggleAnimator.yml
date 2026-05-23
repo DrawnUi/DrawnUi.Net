@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/BlinkAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ToggleAnimator
     path: ../src/Shared/Features/Animators/BlinkAnimator.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/BlinkAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/BlinkAnimator.cs
@@ -142,7 +142,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/BlinkAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnProgressChanged
     path: ../src/Shared/Features/Animators/BlinkAnimator.cs
@@ -150,7 +150,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnProgressChanged(double progress)
     parameters:
@@ -176,7 +176,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/BlinkAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: State
     path: ../src/Shared/Features/Animators/BlinkAnimator.cs
@@ -205,7 +205,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/BlinkAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Ratio
     path: ../src/Shared/Features/Animators/BlinkAnimator.cs
@@ -1424,3 +1424,4 @@ references:
   name: Ratio
   nameWithType: ToggleAnimator.Ratio
   fullName: DrawnUi.Draw.ToggleAnimator.Ratio
+

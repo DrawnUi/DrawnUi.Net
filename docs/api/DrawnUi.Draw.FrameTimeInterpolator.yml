@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameTimeInterpolator
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -33,7 +33,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Interpolated time between frames, works in seconds. See examples..
-  example: []
+  example: ""
   syntax:
     content: public class FrameTimeInterpolator
     content.vb: Public Class FrameTimeInterpolator
@@ -63,7 +63,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TargetFps
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -72,7 +72,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the target FPS for the application
-  example: []
+  example: ""
   syntax:
     content: public float TargetFps { get; set; }
     parameters: []
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FpsBuffer
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -103,7 +103,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the FPS buffer below target where frame skipping begins
-  example: []
+  example: ""
   syntax:
     content: public float FpsBuffer { get; set; }
     parameters: []
@@ -125,7 +125,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastFrameStep
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -154,7 +154,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsSkippingFrames
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -183,7 +183,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldReduceQuality
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -212,7 +212,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetDeltaTimeFromDelta
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -224,7 +224,7 @@ items:
     Calculates the delta time for the current frame based on performance monitoring
 
     and the target FPS
-  example: []
+  example: ""
   syntax:
     content: public float GetDeltaTimeFromDelta(float actualDeltaTime)
     parameters:
@@ -253,7 +253,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetDeltaTime
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -265,7 +265,7 @@ items:
     Calculates the delta time for the current frame based on performance monitoring
 
     and the target FPS
-  example: []
+  example: ""
   syntax:
     content: public float GetDeltaTime(float currentFrameTime)
     parameters:
@@ -294,7 +294,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reset
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -303,7 +303,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Resets the time interpolation state
-  example: []
+  example: ""
   syntax:
     content: public void Reset()
     content.vb: Public Sub Reset()
@@ -322,7 +322,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/FrameTimeInterpolator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Instance
     path: ../src/Shared/Features/Animations/FrameTimeInterpolator.cs
@@ -770,3 +770,4 @@ references:
   name: FrameTimeInterpolator
   nameWithType: FrameTimeInterpolator
   fullName: DrawnUi.Draw.FrameTimeInterpolator
+

@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChainDropShadowsEffect
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -109,7 +109,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowsProperty
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -136,7 +136,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Shadows
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -165,7 +165,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnBindingContextChanged
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -174,7 +174,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Raises the <xref href="Microsoft.Maui.Controls.BindableObject.BindingContextChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -194,7 +194,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -203,7 +203,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You MUST clear any cached resources as soon as this is called. Not on next draw!
-  example: []
+  example: ""
   syntax:
     content: public override void Update()
     content.vb: Public Overrides Sub Update()
@@ -223,7 +223,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -231,7 +231,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -251,7 +251,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -260,7 +260,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns true if has drawn control itsself, otherwise it will be drawn over it
-  example: []
+  example: ""
   syntax:
     content: public override ChainEffectResult Draw(DrawingContext ctx, Action<DrawingContext> drawControl)
     parameters:
@@ -293,7 +293,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainDropShadowsEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
     path: ../src/Shared/Features/Effects/ChainDropShadowsEffect.cs
@@ -301,7 +301,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool NeedApply { get; }
     parameters: []
@@ -2045,3 +2045,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

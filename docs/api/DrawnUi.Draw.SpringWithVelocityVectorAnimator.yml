@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpringWithVelocityVectorAnimator
     path: ../src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
@@ -111,7 +111,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Initialize
     path: ../src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
@@ -151,7 +151,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parameters
     path: ../src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
@@ -180,7 +180,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateValue
     path: ../src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
@@ -192,7 +192,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: []
+  example: ""
   syntax:
     content: protected override bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -224,7 +224,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/SpringWithVelocityVectorAnimator.cs
@@ -1497,3 +1497,4 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
+

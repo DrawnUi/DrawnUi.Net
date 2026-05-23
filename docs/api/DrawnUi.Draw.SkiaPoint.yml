@@ -28,7 +28,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaPoint
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -121,7 +121,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -155,7 +155,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: XProperty
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -182,7 +182,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: X
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -211,7 +211,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: YProperty
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -238,7 +238,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Y
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -267,7 +267,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -276,7 +276,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: []
+  example: ""
   syntax:
     content: public int CompareTo(object obj)
     parameters:
@@ -314,7 +314,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -323,7 +323,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: []
+  example: ""
   syntax:
     content: public int CompareTo(SkiaPoint other)
     parameters:
@@ -354,7 +354,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -363,7 +363,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicates whether the current object is equal to another object of the same type.
-  example: []
+  example: ""
   syntax:
     content: public bool Equals(SkiaPoint other)
     parameters:
@@ -391,7 +391,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -400,7 +400,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the specified object is equal to the current object.
-  example: []
+  example: ""
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -430,7 +430,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -439,7 +439,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Serves as the default hash function.
-  example: []
+  example: ""
   syntax:
     content: public override int GetHashCode()
     return:
@@ -462,7 +462,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Equality
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -498,7 +498,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaPoint.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Inequality
     path: ../src/Shared/Internals/Models/SkiaPoint.cs
@@ -2144,3 +2144,4 @@ references:
   - uid: DrawnUi.Draw.SkiaPoint.op_Inequality*
     name: '!='
     href: DrawnUi.Draw.SkiaPoint.html#DrawnUi_Draw_SkiaPoint_op_Inequality_DrawnUi_Draw_SkiaPoint_DrawnUi_Draw_SkiaPoint_
+

@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IDisposeManager
     path: ../src/Shared/Views/DisposableManager.cs
@@ -43,7 +43,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/DisposableManager.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeObject
     path: ../src/Shared/Views/DisposableManager.cs

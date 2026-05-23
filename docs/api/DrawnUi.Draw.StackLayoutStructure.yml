@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StackLayoutStructure
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -62,7 +62,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _layout
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -89,7 +89,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChildrenCount
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -116,7 +116,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -148,7 +148,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnumerateViewsForMeasurement
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -176,7 +176,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Build
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -185,7 +185,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will measure children and build appropriate stack structure for the layout
-  example: []
+  example: ""
   syntax:
     content: public abstract ScaledSize Build(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -214,7 +214,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureCell
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -254,7 +254,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSpacingForIndex
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -290,7 +290,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/StackLayoutStructure.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateWrapper
     path: ../src/Shared/Draw/Layout/StackLayoutStructure.cs
@@ -875,3 +875,4 @@ references:
   name: CreateWrapper
   nameWithType: StackLayoutStructure.CreateWrapper
   fullName: DrawnUi.Draw.StackLayoutStructure.CreateWrapper
+

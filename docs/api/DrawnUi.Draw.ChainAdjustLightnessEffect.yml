@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChainAdjustLightnessEffect
     path: ../src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueProperty
     path: ../src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
@@ -125,7 +125,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value
     path: ../src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
@@ -154,7 +154,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
@@ -163,7 +163,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns true if has drawn control itsself, otherwise it will be drawn over it
-  example: []
+  example: ""
   syntax:
     content: public override ChainEffectResult Draw(DrawingContext ctx, Action<DrawingContext> drawControl)
     parameters:
@@ -196,7 +196,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateLightnessFilter
     path: ../src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
@@ -205,7 +205,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: -1 -&gt; 0 -&gt; 1
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter CreateLightnessFilter(float value)
     parameters:
@@ -234,7 +234,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
     path: ../src/Shared/Features/Effects/ChainAdjustLightnessEffect.cs
@@ -242,7 +242,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool NeedApply { get; }
     parameters: []
@@ -1902,3 +1902,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

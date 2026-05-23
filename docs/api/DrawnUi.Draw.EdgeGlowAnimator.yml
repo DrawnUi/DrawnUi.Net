@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EdgeGlowAnimator
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -120,7 +120,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -152,7 +152,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: count
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -179,7 +179,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -208,7 +208,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -237,7 +237,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: X
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -266,7 +266,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Y
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -295,7 +295,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GlowPosition
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -324,7 +324,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnRendering
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -333,7 +333,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: return true if has drawn something and rendering needs to be applied
-  example: []
+  example: ""
   syntax:
     content: protected override bool OnRendering(DrawingContext context, IDrawnBase control)
     parameters:
@@ -363,7 +363,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/EdgeGlowAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TransformReportedValue
     path: ../src/Shared/Features/Animators/EdgeGlowAnimator.cs
@@ -372,7 +372,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: []
+  example: ""
   syntax:
     content: protected override double TransformReportedValue(long deltaT)
     parameters:
@@ -1830,3 +1830,4 @@ references:
   name: TransformReportedValue
   nameWithType: EdgeGlowAnimator.TransformReportedValue
   fullName: DrawnUi.Draw.EdgeGlowAnimator.TransformReportedValue
+

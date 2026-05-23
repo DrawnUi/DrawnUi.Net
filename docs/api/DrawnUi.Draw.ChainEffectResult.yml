@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainEffectResult.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChainEffectResult
     path: ../src/Shared/Features/Effects/ChainEffectResult.cs
@@ -52,7 +52,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainEffectResult.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawnControl
     path: ../src/Shared/Features/Effects/ChainEffectResult.cs
@@ -61,7 +61,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Set this to true if you drawn the control of false if you just rendered something else
-  example: []
+  example: ""
   syntax:
     content: public bool DrawnControl { readonly get; set; }
     parameters: []
@@ -83,7 +83,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainEffectResult.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Create
     path: ../src/Shared/Features/Effects/ChainEffectResult.cs
@@ -117,7 +117,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainEffectResult.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Default
     path: ../src/Shared/Features/Effects/ChainEffectResult.cs
@@ -498,3 +498,4 @@ references:
   name: Default
   nameWithType: ChainEffectResult.Default
   fullName: DrawnUi.Draw.ChainEffectResult.Default
+

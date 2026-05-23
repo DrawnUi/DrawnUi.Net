@@ -25,7 +25,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollFlingAnimator
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -113,7 +113,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelfFinished
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -142,7 +142,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueThreshold
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -171,7 +171,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunAsync
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -211,7 +211,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeWithVelocity
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -220,7 +220,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Initialize with velocity and optional value threshold for early termination
-  example: []
+  example: ""
   syntax:
     content: public void InitializeWithVelocity(float position, float velocity, float deceleration = 0.998, float valueThreshold = 1.85)
     parameters:
@@ -255,7 +255,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeWithDestination
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -264,7 +264,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Initialize to reach a specific destination in given time
-  example: []
+  example: ""
   syntax:
     content: public void InitializeWithDestination(float position, float target, float timeSecs, float deceleration = 0.998, float valueThreshold = 0.1)
     parameters:
@@ -302,7 +302,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parameters
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -331,7 +331,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentVelocity
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -360,7 +360,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -368,7 +368,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void Start(double delayMs = 0)
     parameters:
@@ -394,7 +394,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateValue
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -406,7 +406,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: []
+  example: ""
   syntax:
     content: protected override bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -438,7 +438,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
@@ -1753,3 +1753,4 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
+

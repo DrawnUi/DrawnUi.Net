@@ -29,7 +29,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawingContext
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -63,7 +63,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -101,7 +101,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithContext
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -132,7 +132,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithDestination
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -163,7 +163,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithScale
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -197,7 +197,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithParameters
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -231,7 +231,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithArguments
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -240,7 +240,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will add arguments to parameters, without removing those already existing if they have different keys. To replace all use `WithParameters`.
-  example: []
+  example: ""
   syntax:
     content: public DrawingContext WithArguments(params KeyValuePair<string, object?>[]? values)
     parameters:
@@ -269,7 +269,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithArgument
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -303,7 +303,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetArgument
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -315,7 +315,7 @@ items:
     Gets the argument associated with the specified key or returns null if not found.
 
     Example: `if (ctx.GetArgument(ContextArguments.Scale.ToString()) is float zoomedScale) {}`
-  example: []
+  example: ""
   syntax:
     content: public object? GetArgument(string key)
     parameters:
@@ -344,7 +344,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateForRecordingImage
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -377,7 +377,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateForRecordingOperations
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -410,7 +410,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Context
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -419,7 +419,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Platform rendering context
-  example: []
+  example: ""
   syntax:
     content: public SkiaDrawingContext Context { readonly get; set; }
     parameters: []
@@ -441,7 +441,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Scale
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -450,7 +450,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Scale pixels/points to use for output
-  example: []
+  example: ""
   syntax:
     content: public float Scale { readonly get; set; }
     parameters: []
@@ -472,7 +472,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Destination
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -481,7 +481,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Destination to use for output
-  example: []
+  example: ""
   syntax:
     content: public SKRect Destination { readonly get; set; }
     parameters: []
@@ -503,7 +503,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawingContext.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parameters
     path: ../src/Shared/Internals/Models/DrawingContext.cs
@@ -512,7 +512,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Optional parameters
-  example: []
+  example: ""
   syntax:
     content: public object? Parameters { readonly get; set; }
     parameters: []
@@ -1138,3 +1138,4 @@ references:
   name: Parameters
   nameWithType: DrawingContext.Parameters
   fullName: DrawnUi.Draw.DrawingContext.Parameters
+

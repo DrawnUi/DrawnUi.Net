@@ -55,7 +55,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewsAdapter
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Top level class for working with ItemTemplates. Holds visible views.
-  example: []
+  example: ""
   syntax:
     content: 'public class ViewsAdapter : IDisposable'
     content.vb: Public Class ViewsAdapter Implements IDisposable
@@ -96,7 +96,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LogEnabled
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -123,7 +123,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPoolInBackgroundAsync
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -132,7 +132,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Safely fills the pool in background with cancellation support. Cancels any previous background filling operation.
-  example: []
+  example: ""
   syntax:
     content: public Task FillPoolInBackgroundAsync(int size)
     parameters:
@@ -161,7 +161,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CancelBackgroundPoolFilling
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -170,7 +170,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cancels any ongoing background pool filling operation
-  example: []
+  example: ""
   syntax:
     content: public void CancelBackgroundPoolFilling()
     content.vb: Public Sub CancelBackgroundPoolFilling()
@@ -189,7 +189,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPool
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -201,7 +201,7 @@ items:
     Use to manually pre-create views from item templates so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This will respect pool MaxSize in order not to overpass it.
-  example: []
+  example: ""
   syntax:
     content: public void FillPool(int size, CancellationToken cancellationToken = default)
     parameters:
@@ -230,7 +230,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeTemplates
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -239,7 +239,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Main method to initialize templates, can use InitializeTemplatesInBackground as an option.
-  example: []
+  example: ""
   syntax:
     content: public void InitializeTemplates(NotifyCollectionChangedEventArgs args, Func<object> template, IList dataContexts, int poolSize, int reserve = 0)
     parameters:
@@ -276,7 +276,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeSoft
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -312,7 +312,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _HandleSmartCollectionChange
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -321,7 +321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced collection change handling with validation and better error handling
-  example: []
+  example: ""
   syntax:
     content: public bool _HandleSmartCollectionChange(NotifyCollectionChangedEventArgs args, IList newDataContexts, int poolSize, int reserve = 0)
     parameters:
@@ -354,7 +354,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReleaseViewInUse
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -388,7 +388,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetViewForIndex
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -402,7 +402,7 @@ items:
     This uses cached views and tends to return same views matching index they already used.
 
     When cell recycling is off this will be a perfect match at all times.
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl GetViewForIndex(int index, SkiaControl template = null, float height = 0, bool isMeasuring = false)
     parameters:
@@ -440,7 +440,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrCreateViewForIndexInternal
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -478,7 +478,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReleaseViewToPool
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -487,7 +487,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Retuns view to the POOL and set parent to null. Doesn't set BindingContext to null !
-  example: []
+  example: ""
   syntax:
     content: public void ReleaseViewToPool(SkiaControl view, bool reset = false)
     parameters:
@@ -516,7 +516,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -543,7 +543,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -575,7 +575,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -584,7 +584,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -605,7 +605,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateVisibleViews
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -631,7 +631,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeVisibleViews
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -657,7 +657,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeViews
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -683,7 +683,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AttachView
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -719,7 +719,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PoolMaxSize
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -748,7 +748,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PoolSize
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -777,7 +777,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MarkAllViewsAsHidden
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -803,7 +803,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MarkViewAsHidden
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -835,7 +835,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddedMore
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -864,7 +864,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddMoreToPool
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -876,7 +876,7 @@ items:
     Keep pool size with `n` templated more oversized, so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This method is likely to reserve templated views once on layout size changed.
-  example: []
+  example: ""
   syntax:
     content: public void AddMoreToPool(int oversize)
     parameters:
@@ -902,7 +902,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPool
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -914,7 +914,7 @@ items:
     Use to manually pre-create views from item templates so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This will respect pool MaxSize in order not to overpass it.
-  example: []
+  example: ""
   syntax:
     content: public void FillPool(int size, IList context)
     parameters:
@@ -942,7 +942,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPool
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -954,7 +954,7 @@ items:
     Use to manually pre-create views from item templates so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This will respect pool MaxSize in order not to overpass it.
-  example: []
+  example: ""
   syntax:
     content: public void FillPool(int size)
     parameters:
@@ -980,7 +980,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateAllPooledCells
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -992,7 +992,7 @@ items:
     Invalidates all existing cells currently stored in the recycling pools (generic, sized, and standalone).
 
     Use this when container constraints change so pooled cells are forced to re-measure next time they are reused.
-  example: []
+  example: ""
   syntax:
     content: public void InvalidateAllPooledCells()
     content.vb: Public Sub InvalidateAllPooledCells()
@@ -1011,7 +1011,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetDebugInfo
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1039,7 +1039,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetChildrenCount
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1067,7 +1067,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _lockTemplates
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1094,7 +1094,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplesInvalidating
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1121,7 +1121,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatesInvalidated
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1150,7 +1150,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatesBusy
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1177,7 +1177,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateViews
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1209,7 +1209,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatesAvailable
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1218,7 +1218,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: An important check to consider before consuming templates especially if you initialize templates in background
-  example: []
+  example: ""
   syntax:
     content: public bool TemplatesAvailable { get; }
     parameters: []
@@ -1240,7 +1240,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetViewsIterator
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1268,7 +1268,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeWrapper
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1294,7 +1294,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrintDebugVisible
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1320,7 +1320,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetTemplateInstance
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1348,7 +1348,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReleaseTemplateInstance
     path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
@@ -1357,7 +1357,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns standalone view, used for measuring to its own separate pool.
-  example: []
+  example: ""
   syntax:
     content: public void ReleaseTemplateInstance(SkiaControl viewModel, bool reset = false)
     parameters:
@@ -2339,3 +2339,4 @@ references:
   name: ReleaseTemplateInstance
   nameWithType: ViewsAdapter.ReleaseTemplateInstance
   fullName: DrawnUi.Draw.ViewsAdapter.ReleaseTemplateInstance
+

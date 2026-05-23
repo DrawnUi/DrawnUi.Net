@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShellNavigatedArgs
     path: ../src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
@@ -58,7 +58,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Route
     path: ../src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
@@ -103,7 +103,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Is never null.
-  example: []
+  example: ""
   syntax:
     content: public string Route { get; }
     parameters: []
@@ -125,7 +125,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: View
     path: ../src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
@@ -134,7 +134,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: The SkiaControl that went upfront
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl View { get; }
     parameters: []
@@ -156,7 +156,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Source
     path: ../src/Shared/Internals/Models/SkiaShellNavigatedArgs.cs
@@ -611,3 +611,4 @@ references:
   name: Source
   nameWithType: SkiaShellNavigatedArgs.Source
   fullName: DrawnUi.Controls.SkiaShellNavigatedArgs.Source
+

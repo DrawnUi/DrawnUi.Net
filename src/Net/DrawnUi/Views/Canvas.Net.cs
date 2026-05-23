@@ -39,13 +39,12 @@ namespace DrawnUi.Views
                 {
                     if (skia == null || skia.NeedUpdate)
                     {
-                        Debug.WriteLine("PAINT");
-
+                        //Debug.WriteLine("PAINT");
                         PaintTintBackground(context.Context.Canvas);
                     }
                     else
                     {
-                        Debug.WriteLine("RETAINED");
+                        //Debug.WriteLine("RETAINED");
                     }
 
                     base.Draw(context.WithDestination(Destination));                    

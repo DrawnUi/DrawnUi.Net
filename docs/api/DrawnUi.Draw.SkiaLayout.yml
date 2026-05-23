@@ -208,7 +208,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Render.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaLayout
     path: ../src/Shared/Draw/Layout/SkiaLayout.Render.Shared.cs
@@ -217,8 +217,8 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: 'public class SkiaLayout : SkiaControl, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
-    content.vb: Public Class SkiaLayout Inherits SkiaControl Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
+    content: 'public class SkiaLayout : SkiaControl, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
+    content.vb: Public Class SkiaLayout Inherits SkiaControl Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -273,6 +273,7 @@ items:
   - System.Collections.Generic.IEnumerable{Microsoft.Maui.IView}
   - System.Collections.IEnumerable
   - DrawnUi.Draw.ISkiaGestureListener
+  - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.IHasAfterEffects
   - DrawnUi.Draw.ISkiaDisposable
   - DrawnUi.Draw.ISkiaGridLayout
@@ -662,6 +663,18 @@ items:
   - DrawnUi.Draw.SkiaControl.ArrangedDestination
   - DrawnUi.Draw.SkiaControl.LayoutIsReady
   - DrawnUi.Draw.SkiaControl.Disposing
+  - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.AccessibilityHint
+  - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
   - DrawnUi.Draw.SkiaControl.LayoutReady
   - DrawnUi.Draw.SkiaControl.CheckIsGhost
@@ -1097,6 +1110,12 @@ items:
   - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Draw.SkiaLayout,System.Object},System.String[])
   - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WhenItemsSourceChangesApplied``1(System.Action{DrawnUi.Draw.SkiaLayout},System.String[])
   - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Draw.SkiaLayout,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
   - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithCache``1(DrawnUi.Draw.SkiaCacheType)
   - DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithChildren``1(DrawnUi.Draw.SkiaControl[])
@@ -1150,7 +1169,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetColumn
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1159,7 +1178,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the column of the child element.
-  example: []
+  example: ""
   syntax:
     content: public int GetColumn(BindableObject bindable)
     parameters:
@@ -1186,7 +1205,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetColumnSpan
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1195,7 +1214,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row span of the child element.
-  example: []
+  example: ""
   syntax:
     content: public int GetColumnSpan(BindableObject bindable)
     parameters:
@@ -1222,7 +1241,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetRow
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1231,7 +1250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row of the child element.
-  example: []
+  example: ""
   syntax:
     content: public int GetRow(BindableObject bindable)
     parameters:
@@ -1258,7 +1277,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetRowSpan
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1267,7 +1286,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row span of the child element.
-  example: []
+  example: ""
   syntax:
     content: public int GetRowSpan(BindableObject bindable)
     parameters:
@@ -1294,7 +1313,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetColumn
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1328,7 +1347,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetColumnSpan
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1362,7 +1381,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetRow
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1396,7 +1415,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetRowSpan
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Grid.Maui.cs
@@ -1430,7 +1449,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clear
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
@@ -1456,7 +1475,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReportHotreloadChildRemoved
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
@@ -1464,7 +1483,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void ReportHotreloadChildRemoved(SkiaControl control)
     parameters:
@@ -1487,7 +1506,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReportHotreloadChildAdded
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
@@ -1495,7 +1514,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void ReportHotreloadChildAdded(SkiaControl child)
     parameters:
@@ -1518,7 +1537,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetVisualChildren
     path: ../src/Maui/DrawnUi/Draw/Layout/SkiaLayout.Maui.cs
@@ -1527,7 +1546,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For Xaml HotReload. This is semetimes not called when we add and remove views.
-  example: []
+  example: ""
   syntax:
     content: public override IReadOnlyList<IVisualTreeElement> GetVisualChildren()
     return:
@@ -1550,7 +1569,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSpacingForIndex
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
@@ -1586,7 +1605,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSizeKey
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
@@ -1617,7 +1636,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureStackLegacy
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
@@ -1626,7 +1645,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring column/row
-  example: []
+  example: ""
   syntax:
     content: public virtual ScaledSize MeasureStackLegacy(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -1658,7 +1677,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureStackNonTemplated
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
@@ -1667,7 +1686,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring column/row with 3-pass approach to handle Fill options correctly
-  example: []
+  example: ""
   syntax:
     content: public virtual ScaledSize MeasureStackNonTemplated(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -1696,7 +1715,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureStackTemplated
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
@@ -1705,7 +1724,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring column/row for templated for fastest way possible
-  example: []
+  example: ""
   syntax:
     content: public virtual ScaledSize MeasureStackTemplated(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -1734,7 +1753,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureStack
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
@@ -1743,7 +1762,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Core measurement logic shared between templated and non-templated scenarios
-  example: []
+  example: ""
   syntax:
     content: protected virtual ScaledSize MeasureStack(SKRect rectForChildrenPixels, float scale, LayoutStructure layoutStructure, bool isTemplated, SkiaControl template, SkiaControl[] nonTemplated)
     parameters:
@@ -1780,16 +1799,16 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnBeforeDrawingVisibleChildren
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 2026
+    startLine: 2028
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be called by some layouts after they calculated the list of visible children to be drawn, but have not drawn them yet
-  example: []
+  example: ""
   syntax:
     content: protected virtual void OnBeforeDrawingVisibleChildren(DrawingContext ctx, LayoutStructure structure, List<ControlInStack> visibleElements)
     parameters:
@@ -1818,16 +1837,16 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAfterDrawingVisibleChildren
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 2034
+    startLine: 2036
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be called by some layouts after they draw visible children
-  example: []
+  example: ""
   syntax:
     content: protected virtual void OnAfterDrawingVisibleChildren(DrawingContext ctx, LayoutStructure structure, List<ControlInStack> visibleElements)
     parameters:
@@ -1856,11 +1875,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetStackChildDrawRect
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 2041
+    startLine: 2043
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1896,11 +1915,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawStack
     path: ../src/Shared/Draw/Layout/SkiaLayout.ColumnRow.cs
-    startLine: 2059
+    startLine: 2061
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1908,7 +1927,7 @@ items:
     Renders stack/wrap layout.
 
     Returns number of drawn children.
-  example: []
+  example: ""
   syntax:
     content: protected virtual int DrawStack(DrawingContext ctx, LayoutStructure structure)
     parameters:
@@ -1934,7 +1953,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScaleChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -1942,7 +1961,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void OnScaleChanged()
     content.vb: Public Overrides Sub OnScaleChanged()
@@ -1962,7 +1981,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreArrange
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -1971,7 +1990,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns false if should not render
-  example: []
+  example: ""
   syntax:
     content: public override bool PreArrange(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -2006,7 +2025,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGestureForChild
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2014,7 +2033,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool IsGestureForChild(SkiaControlWithRect child, SKPoint point)
     parameters:
@@ -2041,7 +2060,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyBindingContext
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2050,7 +2069,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: []
+  example: ""
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -2070,7 +2089,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldInvalidateByChildren
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2078,7 +2097,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool ShouldInvalidateByChildren { get; }
     parameters: []
@@ -2103,7 +2122,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTemplatesAvailable
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2129,7 +2148,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetMeasured
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2138,7 +2157,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Parameters in PIXELS. sets IsLayoutDirty = true;
-  example: []
+  example: ""
   syntax:
     content: protected override ScaledSize SetMeasured(float width, float height, bool widthCut, bool heightCut, float scale)
     parameters:
@@ -2178,7 +2197,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RecyclingTemplateProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2205,7 +2224,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RecyclingTemplate
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2217,7 +2236,7 @@ items:
     In case of ItemsSource+ItemTemplate set will define should we reuse already created views: hidden items views will be reused for currently visible items on screen.
 
     If set to true inside a SkiaScrollLooped will cause it to redraw constantly even when idle because of the looped scroll mechanics.
-  example: []
+  example: ""
   syntax:
     content: public RecyclingTemplate RecyclingTemplate { get; set; }
     parameters: []
@@ -2239,7 +2258,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invert
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2248,7 +2267,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layouts can use this property for custom logic appropriate to layout type.
-  example: []
+  example: ""
   syntax:
     content: public bool Invert { get; set; }
     parameters: []
@@ -2270,7 +2289,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvertProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2297,7 +2316,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatedHeaderProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2324,7 +2343,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatedHeader
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2333,7 +2352,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Kind of BindableLayout.DrawnTemplate
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl TemplatedHeader { get; set; }
     parameters: []
@@ -2355,7 +2374,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatedFooterProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2382,7 +2401,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatedFooter
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2391,7 +2410,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Kind of BindableLayout.DrawnTemplate
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl TemplatedFooter { get; set; }
     parameters: []
@@ -2413,7 +2432,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsTemplated
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2421,7 +2440,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool IsTemplated { get; }
     parameters: []
@@ -2444,7 +2463,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetChildRect
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2478,7 +2497,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetChildRect
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2509,7 +2528,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetChildAt
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2545,7 +2564,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2574,7 +2593,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RecyclingBufferProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2601,7 +2620,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RecyclingBuffer
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2613,7 +2632,7 @@ items:
     Extra buffer zone for avoiding recycling  
 
     Default is 500pts - increase for less jaggy scroll, decrease for more memory efficiency
-  example: []
+  example: ""
   syntax:
     content: public double RecyclingBuffer { get; set; }
     parameters: []
@@ -2635,7 +2654,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChildrenGrid
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2664,7 +2683,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BreakLine
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2690,7 +2709,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LineBreaks
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2717,7 +2736,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOnScreenVisibleArea
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2731,7 +2750,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: []
+  example: ""
   syntax:
     content: public override ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -2762,7 +2781,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawRenderObject
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2771,7 +2790,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Todo where is this used i forgot completely
-  example: []
+  example: ""
   syntax:
     content: public override void DrawRenderObject(DrawingContext context, CachedObject cache)
     parameters:
@@ -2798,7 +2817,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _emptyView
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2825,7 +2844,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetupViews
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2851,7 +2870,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEmpty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2880,7 +2899,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEmptyChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2907,7 +2926,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyIsEmpty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2939,7 +2958,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckAndSetupIfEmpty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2967,7 +2986,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DebugString
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -2975,7 +2994,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override string DebugString { get; }
     parameters: []
@@ -2998,7 +3017,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChildrenFactory
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3027,7 +3046,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SplitProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3054,7 +3073,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Split
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3063,7 +3082,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For Wrap number of columns/rows to split into, If 0 will use auto, if 1+ will have 1+ columns.
-  example: []
+  example: ""
   syntax:
     content: public int Split { get; set; }
     parameters: []
@@ -3087,7 +3106,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SplitAlignProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3114,7 +3133,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SplitAlign
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3123,7 +3142,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether should keep same column width among rows
-  example: []
+  example: ""
   syntax:
     content: public bool SplitAlign { get; set; }
     parameters: []
@@ -3145,7 +3164,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SplitSpaceProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3172,7 +3191,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SplitSpace
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3181,7 +3200,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: How to distribute free space between children TODO
-  example: []
+  example: ""
   syntax:
     content: public SpaceDistribution SplitSpace { get; set; }
     parameters: []
@@ -3203,7 +3222,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DynamicColumnsProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3230,7 +3249,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DynamicColumns
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3239,7 +3258,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If true, will not create additional columns to match SplitMax if there are less real columns, and take additional space for drawing
-  example: []
+  example: ""
   syntax:
     content: public bool DynamicColumns { get; set; }
     parameters: []
@@ -3261,7 +3280,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewportWasChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3290,7 +3309,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawChild
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3323,7 +3342,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetChildren
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3331,7 +3350,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -3359,7 +3378,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasured
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3367,7 +3386,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnMeasured()
     content.vb: Protected Overrides Sub OnMeasured()
@@ -3387,7 +3406,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateInternal
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3396,7 +3415,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
-  example: []
+  example: ""
   syntax:
     content: public override void InvalidateInternal()
     content.vb: Public Overrides Sub InvalidateInternal()
@@ -3416,7 +3435,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: templatesInvalidated
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3443,7 +3462,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateViewsList
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3451,7 +3470,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void InvalidateViewsList()
     content.vb: Public Overrides Sub InvalidateViewsList()
@@ -3473,7 +3492,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActualizeSubviews
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3499,7 +3518,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetTemplatesPoolPrefill
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3527,7 +3546,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetTemplatesPoolLimit
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3555,7 +3574,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChildrenChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3564,7 +3583,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: []
+  example: ""
   syntax:
     content: public override void OnChildrenChanged()
     content.vb: Public Overrides Sub OnChildrenChanged()
@@ -3584,7 +3603,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3593,7 +3612,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: []
+  example: ""
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -3615,7 +3634,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTemplatesInBackground
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3643,7 +3662,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureAbsolute
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3652,7 +3671,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measure children inside absolute layout
-  example: []
+  example: ""
   syntax:
     content: public override ScaledSize MeasureAbsolute(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -3685,7 +3704,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: lockMeasureLayout
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3712,7 +3731,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureLayout
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3748,7 +3767,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _lockTemplates
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3775,7 +3794,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasuring
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3784,7 +3803,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you call this while measurement is in process (IsMeasuring==True) will return last measured value.
-  example: []
+  example: ""
   syntax:
     content: public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -3820,7 +3839,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyMeasureResult
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3832,7 +3851,7 @@ items:
     Normally get a a Measure by parent then parent calls Draw and we can apply the measure result.
 
     But in a case we have measured us ourselves inside PreArrange etc we must call ApplyMeasureResult because this would happen after the Draw and not before.
-  example: []
+  example: ""
   syntax:
     content: public override void ApplyMeasureResult()
     content.vb: Public Overrides Sub ApplyMeasureResult()
@@ -3852,7 +3871,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidatedChildrenInternal
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3861,7 +3880,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will use this when drawing
-  example: []
+  example: ""
   syntax:
     content: protected HashSet<SkiaControl> InvalidatedChildrenInternal { get; set; }
     parameters: []
@@ -3883,7 +3902,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3891,7 +3910,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -3914,7 +3933,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidatedChildren
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3923,7 +3942,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be modified by InvalidateByChild
-  example: []
+  example: ""
   syntax:
     content: protected HashSet<SkiaControl> InvalidatedChildren { get; set; }
     parameters: []
@@ -3945,7 +3964,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateByChild
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -3954,7 +3973,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To be able to fast track dirty children
-  example: []
+  example: ""
   syntax:
     content: public override void InvalidateByChild(SkiaControl child)
     parameters:
@@ -3980,7 +3999,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillDrawFromFreshItemssSource
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4007,7 +4026,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillMeasureFromFreshItemssSource
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4034,7 +4053,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4048,7 +4067,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: []
+  example: ""
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -4072,7 +4091,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4081,7 +4100,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: []
+  example: ""
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -4101,7 +4120,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawViews
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4113,7 +4132,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: []
+  example: ""
   syntax:
     content: protected override int DrawViews(DrawingContext context)
     parameters:
@@ -4140,7 +4159,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsStack
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4149,7 +4168,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Column/Row/Stack
-  example: []
+  example: ""
   syntax:
     content: public bool IsStack { get; }
     parameters: []
@@ -4171,7 +4190,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TypeProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4198,7 +4217,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Type
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4227,7 +4246,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureItemsStrategyProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4254,7 +4273,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureItemsStrategy
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4283,7 +4302,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemTemplatePoolSizeProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4310,7 +4329,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemTemplatePoolSize
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4326,7 +4345,7 @@ items:
     Beware that if you set this to a number that will not be enough to fill the viewport
 
     binding contexts will contasntly be changing triggering screen update.
-  example: []
+  example: ""
   syntax:
     content: public int ItemTemplatePoolSize { get; set; }
     parameters: []
@@ -4348,7 +4367,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReserveTemplatesProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4375,7 +4394,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReserveTemplates
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4384,7 +4403,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'For recycled cells: Default is 2, how many item templates above visible in viewport we must reserve in pool.'
-  example: []
+  example: ""
   syntax:
     content: public int ReserveTemplates { get; set; }
     parameters: []
@@ -4406,7 +4425,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EmptyViewProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4433,7 +4452,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EmptyView
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4462,7 +4481,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemsSourceProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4489,7 +4508,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemsSource
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4518,7 +4537,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnItemTemplateChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4526,7 +4545,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void OnItemTemplateChanged()
     content.vb: Public Overrides Sub OnItemTemplateChanged()
@@ -4546,7 +4565,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyNewItemsSource
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4575,7 +4594,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnItemSourceChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4601,7 +4620,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyItemsSource
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4610,7 +4629,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Invalidate and re-apply ItemsSource
-  example: []
+  example: ""
   syntax:
     content: public virtual void ApplyItemsSource()
     content.vb: Public Overridable Sub ApplyItemsSource()
@@ -4629,7 +4648,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetScroll
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4655,7 +4674,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldPreserveStructureOnCollectionChange
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4664,7 +4683,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines if collection changes should preserve existing measurement structure
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool ShouldPreserveStructureOnCollectionChange(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4688,7 +4707,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnItemsSourceCollectionChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4697,7 +4716,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced collection change handler with smart handling and fallback
-  example: []
+  example: ""
   syntax:
     content: protected virtual void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4724,7 +4743,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnItemsSourceChangesApplied
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4733,7 +4752,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Triggers after a new ItemsSource was set or an observable collection of an existing one was changed
-  example: []
+  example: ""
   syntax:
     content: protected virtual void OnItemsSourceChangesApplied()
     content.vb: Protected Overridable Sub OnItemsSourceChangesApplied()
@@ -4752,7 +4771,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ItemsSourceChangesApplied
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4779,7 +4798,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleCollectionChangeWithStructurePreservation
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4788,7 +4807,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles collection changes while preserving existing measurement structure
-  example: []
+  example: ""
   syntax:
     content: protected virtual void HandleCollectionChangeWithStructurePreservation(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4810,7 +4829,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StageStructureChange
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4819,7 +4838,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Stages a structure change for processing during rendering pipeline
-  example: []
+  example: ""
   syntax:
     content: protected virtual void StageStructureChange(SkiaLayout.StructureChange change)
     parameters:
@@ -4841,7 +4860,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReportChildVisibilityChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4853,7 +4872,7 @@ items:
     Called by templated cells to report visibility changes.
 
     This stages the visibility change to be applied during the next rendering cycle.
-  example: []
+  example: ""
   syntax:
     content: public virtual void ReportChildVisibilityChanged(int cellIndex, bool isVisible)
     parameters:
@@ -4882,7 +4901,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReportChildVisibilityChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4894,7 +4913,7 @@ items:
     Called by templated cells to report visibility changes for multiple cells.
 
     This stages the visibility change to be applied during the next rendering cycle.
-  example: []
+  example: ""
   syntax:
     content: public virtual void ReportChildVisibilityChanged(int startIndex, int count, bool isVisible)
     parameters:
@@ -4926,7 +4945,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleStructurePreservingAdd
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4935,7 +4954,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Add collection changes while preserving existing structure
-  example: []
+  example: ""
   syntax:
     content: protected virtual void HandleStructurePreservingAdd(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4957,7 +4976,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleStructurePreservingRemove
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4966,7 +4985,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Remove collection changes while preserving existing structure
-  example: []
+  example: ""
   syntax:
     content: protected virtual void HandleStructurePreservingRemove(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4988,7 +5007,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleStructurePreservingReplace
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -4997,7 +5016,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Replace collection changes while preserving existing structure
-  example: []
+  example: ""
   syntax:
     content: protected virtual void HandleStructurePreservingReplace(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -5019,7 +5038,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleStructurePreservingMove
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5028,7 +5047,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Move collection changes while preserving existing structure
-  example: []
+  example: ""
   syntax:
     content: protected virtual void HandleStructurePreservingMove(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -5050,7 +5069,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleStructurePreservingReset
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5059,7 +5078,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Reset collection changes while preserving existing structure
-  example: []
+  example: ""
   syntax:
     content: protected virtual void HandleStructurePreservingReset(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -5081,7 +5100,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshAllViews
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5090,7 +5109,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Force a full refresh of all cached views (useful for debugging)
-  example: []
+  example: ""
   syntax:
     content: public void RefreshAllViews()
     content.vb: Public Sub RefreshAllViews()
@@ -5109,7 +5128,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCacheDebugInfo
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5118,7 +5137,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Get debug information about cached views
-  example: []
+  example: ""
   syntax:
     content: public string GetCacheDebugInfo()
     return:
@@ -5139,7 +5158,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPrintDebug
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5148,7 +5167,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced debug printing
-  example: []
+  example: ""
   syntax:
     content: public override void OnPrintDebug()
     content.vb: Public Overrides Sub OnPrintDebug()
@@ -5168,7 +5187,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutReady
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5177,7 +5196,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: []
+  example: ""
   syntax:
     content: protected override void OnLayoutReady()
     content.vb: Protected Overrides Sub OnLayoutReady()
@@ -5197,7 +5216,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5206,7 +5225,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: []
+  example: ""
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -5226,7 +5245,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAppearing
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5235,7 +5254,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This can sometimes be omitted,
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnAppearing()
     content.vb: Public Overridable Sub OnAppearing()
@@ -5256,7 +5275,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisappearing
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5264,7 +5283,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnDisappearing()
     content.vb: Public Overridable Sub OnDisappearing()
@@ -5285,7 +5304,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAppeared
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5294,7 +5313,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This event can sometimes be called without prior OnAppearing
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnAppeared()
     content.vb: Public Overridable Sub OnAppeared()
@@ -5315,7 +5334,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisappeared
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5323,7 +5342,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnDisappeared()
     content.vb: Public Overridable Sub OnDisappeared()
@@ -5344,7 +5363,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLoaded
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5353,7 +5372,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'IInsideViewport interface: loaded is called when the view is created, but not yet visible'
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnLoaded()
     content.vb: Public Overridable Sub OnLoaded()
@@ -5374,7 +5393,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetVisibleChildIndexAt
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5383,7 +5402,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The point here is the rendering location, always on screen
-  example: []
+  example: ""
   syntax:
     content: public virtual ContainsPointResult GetVisibleChildIndexAt(SKPoint point)
     parameters:
@@ -5411,7 +5430,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetChildIndexAt
     path: ../src/Shared/Draw/Layout/SkiaLayout.Shared.cs
@@ -5420,7 +5439,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The point here is the position inside parent, can be offscreen
-  example: []
+  example: ""
   syntax:
     content: public ContainsPointResult GetChildIndexAt(SKPoint point)
     parameters:
@@ -5448,7 +5467,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrderedSubviews
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5456,7 +5475,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override List<SkiaControl> GetOrderedSubviews(bool recalculate = false)
     parameters:
@@ -5484,7 +5503,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureGrid
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5493,7 +5512,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measures the grid layout and ensures columns fill available width when NeedAutoWidth is false
-  example: []
+  example: ""
   syntax:
     content: public virtual ScaledSize MeasureGrid(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -5525,7 +5544,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawChildrenGrid
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5534,7 +5553,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns number of drawn children
-  example: []
+  example: ""
   syntax:
     content: protected virtual int DrawChildrenGrid(DrawingContext context)
     parameters:
@@ -5560,7 +5579,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BuildGridLayout
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5589,7 +5608,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GridStructure
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5616,7 +5635,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GridStructureMeasured
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5643,7 +5662,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DefaultColumnDefinitionProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5670,7 +5689,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DefaultColumnDefinition
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5679,7 +5698,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will use this to create a missing but required ColumnDefinition
-  example: []
+  example: ""
   syntax:
     content: >-
       [TypeConverter(typeof(ColumnDefinitionTypeConverter))]
@@ -5715,7 +5734,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DefaultRowDefinitionProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5742,7 +5761,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DefaultRowDefinition
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5751,7 +5770,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will use this to create a missing but required RowDefinition
-  example: []
+  example: ""
   syntax:
     content: >-
       [TypeConverter(typeof(RowDefinitionTypeConverter))]
@@ -5787,7 +5806,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RowSpacingProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5814,7 +5833,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RowSpacing
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5823,7 +5842,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the amount of space left between rows in the GridLayout.
-  example: []
+  example: ""
   syntax:
     content: public double RowSpacing { get; set; }
     parameters: []
@@ -5847,7 +5866,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnSpacingProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5874,7 +5893,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnSpacing
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5883,7 +5902,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the amount of space left between columns in the GridLayout.
-  example: []
+  example: ""
   syntax:
     content: public double ColumnSpacing { get; set; }
     parameters: []
@@ -5907,7 +5926,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnDefinitionsProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5934,7 +5953,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnDefinitions
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -5975,7 +5994,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RowDefinitionsProperty
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -6002,7 +6021,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RowDefinitions
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -6043,7 +6062,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateSizeChangedHandlers
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -6079,7 +6098,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -6115,7 +6134,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Grid.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateRowColumnBindingContexts
     path: ../src/Shared/Draw/Layout/SkiaLayout.Grid.cs
@@ -6141,7 +6160,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnViewportWasChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6150,7 +6169,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be called when viewport containing this view has changed
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnViewportWasChanged(ScaledRect viewport)
     parameters:
@@ -6175,7 +6194,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldTriggerLoadMore
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6187,7 +6206,7 @@ items:
     Determines whether LoadMore should be triggered based on viewport position and measurement state.
 
     This prevents race conditions by considering background measurement progress.
-  example: []
+  example: ""
   syntax:
     content: public virtual bool ShouldTriggerLoadMore(ScaledRect viewport)
     parameters:
@@ -6213,7 +6232,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsViewportAtEndOfMeasuredContent
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6222,7 +6241,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Checks if we allow scroll to load more
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool IsViewportAtEndOfMeasuredContent(ScaledRect viewport)
     parameters:
@@ -6246,7 +6265,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsBackgroundMeasuring
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6275,7 +6294,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BackgroundMeasurementProgress
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6304,7 +6323,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TotalMeasuredItems
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6333,7 +6352,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FirstMeasuredIndex
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6362,7 +6381,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastMeasuredIndex
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6391,7 +6410,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FirstVisibleIndex
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6420,7 +6439,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastVisibleIndex
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6449,7 +6468,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuredItemsPercentage
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6458,7 +6477,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Percentage of items that have been measured (0.0 to 1.0)
-  example: []
+  example: ""
   syntax:
     content: protected float MeasuredItemsPercentage { get; }
     parameters: []
@@ -6480,7 +6499,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CancelBackgroundMeasurement
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6489,7 +6508,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cancels any ongoing background measurement
-  example: []
+  example: ""
   syntax:
     content: public void CancelBackgroundMeasurement()
     content.vb: Public Sub CancelBackgroundMeasurement()
@@ -6508,7 +6527,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemeasureSingleItemInBackground
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6517,7 +6536,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Remeasures a single item in the background and updates it in the existing structure
-  example: []
+  example: ""
   syntax:
     content: public void RemeasureSingleItemInBackground(int itemIndex)
     parameters:
@@ -6542,7 +6561,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureStamp
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6569,7 +6588,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureList
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6578,7 +6597,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced MeasureList with background measurement support
-  example: []
+  example: ""
   syntax:
     content: public virtual ScaledSize MeasureList(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -6607,7 +6626,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedMeasure
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6615,7 +6634,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool NeedMeasure { get; set; }
     parameters: []
@@ -6638,7 +6657,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyStructureChanges
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6647,7 +6666,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies all pending structure changes to StackStructure - called from rendering pipeline
-  example: []
+  example: ""
   syntax:
     content: public void ApplyStructureChanges()
     content.vb: Public Sub ApplyStructureChanges()
@@ -6666,7 +6685,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyResetChange
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6675,7 +6694,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies Reset changes to StackStructure
-  example: []
+  example: ""
   syntax:
     content: protected void ApplyResetChange()
     content.vb: Protected Sub ApplyResetChange()
@@ -6694,7 +6713,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureSingleItem
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6706,7 +6725,7 @@ items:
     Measures a single item in the background and stages it for structure update.
 
     For MeasureVisible Only.
-  example: []
+  example: ""
   syntax:
     content: public void MeasureSingleItem(int itemIndex, SKRect constraints, float scale, CancellationToken cancellationToken, bool inBackground)
     parameters:
@@ -6739,7 +6758,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawList
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6748,7 +6767,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Renders Templated Column/Row todo in some cases..
-  example: []
+  example: ""
   syntax:
     content: protected virtual int DrawList(DrawingContext ctx, LayoutStructure structure)
     parameters:
@@ -6776,7 +6795,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EstimatedTotalItems
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6805,7 +6824,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetMeasuredContentEnd
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6833,7 +6852,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEstimatedContentSize
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6842,7 +6861,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets estimated total content size for virtualized lists with unmeasured items
-  example: []
+  example: ""
   syntax:
     content: public ScaledSize GetEstimatedContentSize(float scale)
     parameters:
@@ -6869,7 +6888,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureAdditionalItems
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
@@ -6907,7 +6926,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Wrap.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureWrap
     path: ../src/Shared/Draw/Layout/SkiaLayout.Wrap.cs
@@ -6916,7 +6935,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: TODO for templated measure only visible?! and just reserve predicted scroll amount for scrolling
-  example: []
+  example: ""
   syntax:
     content: public virtual ScaledSize MeasureWrap(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -6948,7 +6967,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Wrap.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PropagateVisibilityChanged
     path: ../src/Shared/Draw/Layout/SkiaLayout.Wrap.cs
@@ -6956,7 +6975,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void PropagateVisibilityChanged(bool newvalue)
     parameters:
@@ -6982,7 +7001,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StackStructure
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
@@ -6991,7 +7010,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used for stack-like layouts such as Column, Row, and Wrap.
-  example: []
+  example: ""
   syntax:
     content: public LayoutStructure StackStructure { get; set; }
     parameters: []
@@ -7013,7 +7032,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StackStructureMeasured
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
@@ -7022,7 +7041,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Set during measure and swapped into StackStructure when measure result is applied.
-  example: []
+  example: ""
   syntax:
     content: public LayoutStructure StackStructureMeasured { get; set; }
     parameters: []
@@ -7044,7 +7063,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LatestStackStructure
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
@@ -7073,7 +7092,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LatestMeasuredStackStructure
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
@@ -7102,7 +7121,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyStackMeasureResult
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
@@ -7128,7 +7147,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureAndArrangeCell
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
@@ -7170,11 +7189,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LayoutCell
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-    startLine: 50
+    startLine: 48
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7210,11 +7229,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureStackBase
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-    startLine: 166
+    startLine: 164
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7246,11 +7265,11 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureWrapBase
     path: ../src/Shared/Draw/Layout/SkiaLayout.StackWrap.Shared.cs
-    startLine: 253
+    startLine: 251
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7282,7 +7301,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.Render.Shared.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawAndTrackChild
     path: ../src/Shared/Draw/Layout/SkiaLayout.Render.Shared.cs
@@ -7607,6 +7626,13 @@ references:
   name: ISkiaGestureListener
   nameWithType: ISkiaGestureListener
   fullName: DrawnUi.Draw.ISkiaGestureListener
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
 - uid: DrawnUi.Draw.IHasAfterEffects
   commentId: T:DrawnUi.Draw.IHasAfterEffects
   parent: DrawnUi.Draw
@@ -15315,6 +15341,162 @@ references:
   name: Disposing
   nameWithType: SkiaControl.Disposing
   fullName: DrawnUi.Draw.SkiaControl.Disposing
+- uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  name: UnregisterAccessibility()
+  nameWithType: SkiaControl.UnregisterAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.UnregisterAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  commentId: M:DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  name: AccessibilityChanged()
+  nameWithType: SkiaControl.AccessibilityChanged()
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: SkiaControl.AccessibilityRole
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: SkiaControl.AccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityHint
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityHint
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: SkiaControl.AccessibilityHint
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityHint
+- uid: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: SkiaControl.IsAccessibilityElement
+  fullName: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  name: GetAccessibilityPixelRect()
+  nameWithType: SkiaControl.GetAccessibilityPixelRect()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: SkiaControl.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: SkiaControl.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  name: OnAccessibilityUnregistered()
+  nameWithType: SkiaControl.OnAccessibilityUnregistered()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  name: NotifyAccessibility()
+  nameWithType: SkiaControl.NotifyAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.NotifyAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsLayoutReady
   commentId: P:DrawnUi.Draw.SkiaControl.IsLayoutReady
   parent: DrawnUi.Draw.SkiaControl
@@ -27673,6 +27855,398 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<SkiaLayout>(SkiaLayout, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaLayout>(SkiaLayout, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaLayout>(DrawnUi.Draw.SkiaLayout, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaLayout)(SkiaLayout, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaLayout)(DrawnUi.Draw.SkiaLayout, String)
+  name.vb: WithAccessibilityButton(Of SkiaLayout)(SkiaLayout, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaLayout,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaLayout,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<SkiaLayout>(SkiaLayout, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaLayout>(SkiaLayout, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaLayout>(DrawnUi.Draw.SkiaLayout, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaLayout)(SkiaLayout, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaLayout)(DrawnUi.Draw.SkiaLayout, String, String)
+  name.vb: WithAccessibilityButton(Of SkiaLayout)(SkiaLayout, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaLayout,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaLayout,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<SkiaLayout>(SkiaLayout, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<SkiaLayout>(SkiaLayout, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<DrawnUi.Draw.SkiaLayout>(DrawnUi.Draw.SkiaLayout, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of SkiaLayout)(SkiaLayout, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of DrawnUi.Draw.SkiaLayout)(DrawnUi.Draw.SkiaLayout, Boolean?)
+  name.vb: WithAccessibilityPressed(Of SkiaLayout)(SkiaLayout, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaLayout,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaLayout,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<SkiaLayout>(SkiaLayout, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<SkiaLayout>(SkiaLayout, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<DrawnUi.Draw.SkiaLayout>(DrawnUi.Draw.SkiaLayout, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of SkiaLayout)(SkiaLayout, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of DrawnUi.Draw.SkiaLayout)(DrawnUi.Draw.SkiaLayout, String)
+  name.vb: WithAccessibilityText(Of SkiaLayout)(SkiaLayout, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaLayout,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaLayout,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaLayout>(SkiaLayout, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaLayout>(SkiaLayout, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaLayout>(DrawnUi.Draw.SkiaLayout, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaLayout)(SkiaLayout, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaLayout)(DrawnUi.Draw.SkiaLayout, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaLayout)(SkiaLayout, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaLayout,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaLayout,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaLayout>(SkiaLayout, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaLayout>(SkiaLayout, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaLayout>(DrawnUi.Draw.SkiaLayout, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaLayout)(SkiaLayout, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaLayout)(DrawnUi.Draw.SkiaLayout, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaLayout)(SkiaLayout, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaLayout,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaLayout,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   parent: DrawnUi.Draw.FluentExtensions
@@ -33357,6 +33931,344 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<T>(T, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityPressed(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  name.vb: WithAccessibilityText(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   isExternal: true
@@ -38446,3 +39358,4 @@ references:
     name: SkiaControlWithRect
     href: DrawnUi.Draw.SkiaControlWithRect.html
   - name: )
+

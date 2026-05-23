@@ -1173,7 +1173,40 @@ namespace DrawnUi.Draw
             return view;
         }
 
-         public static T OnTapped<T>(this T view, Action<T, ControlTappedEventArgs> action) where T : SkiaControl
+
+        /// <summary>
+        /// Attaches a handler to the TextChanged event with automatic cleanup on disposal.
+        /// </summary>
+        /// <remarks>The event subscription is automatically removed when the view is disposed to prevent
+        /// memory leaks.</remarks>
+        /// <typeparam name="T">The type of the view, constrained to SkiaEditor or its derived types.</typeparam>
+        /// <param name="view">The editor control to attach the event handler to.</param>
+        /// <param name="action">The callback to invoke when the text changes, receiving the new text value.</param>
+        /// <returns>The same view instance for fluent chaining.</returns>
+        public static T OnTextChanged<T>(this T view, Action<string> action) where T : SkiaEditor
+        {
+            try
+            {
+                void onText(object? s, string s1)
+                {
+                    action?.Invoke(s1);
+                }
+                view.TextChanged += onText;
+                string subscriptionKey = $"text_changed_{Guid.NewGuid()}";
+                view.ExecuteUponDisposal[subscriptionKey] = () =>
+                {
+                    view.TextChanged -= onText;
+                };
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+
+            return view;
+        }
+
+        public static T OnTapped<T>(this T view, Action<T, ControlTappedEventArgs> action) where T : SkiaControl
         {
             try
             {

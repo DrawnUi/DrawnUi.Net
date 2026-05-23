@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseRenderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BaseChainedEffect
     path: ../src/Shared/Features/Effects/BaseRenderEffect.cs
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseRenderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/Features/Effects/BaseRenderEffect.cs
@@ -132,7 +132,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseRenderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Features/Effects/BaseRenderEffect.cs
@@ -141,7 +141,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns true if has drawn control itsself, otherwise it will be drawn over it
-  example: []
+  example: ""
   syntax:
     content: public virtual ChainEffectResult Draw(DrawingContext ctx, Action<DrawingContext> drawControl)
     parameters:
@@ -175,7 +175,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseRenderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Shared/Features/Effects/BaseRenderEffect.cs
@@ -184,7 +184,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You MUST clear any cached resources as soon as this is called. Not on next draw!
-  example: []
+  example: ""
   syntax:
     content: public override void Update()
     content.vb: Public Overrides Sub Update()
@@ -206,7 +206,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseRenderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Features/Effects/BaseRenderEffect.cs
@@ -214,7 +214,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -1846,3 +1846,4 @@ references:
   name: OnDisposing
   nameWithType: BaseChainedEffect.OnDisposing
   fullName: DrawnUi.Draw.BaseChainedEffect.OnDisposing
+

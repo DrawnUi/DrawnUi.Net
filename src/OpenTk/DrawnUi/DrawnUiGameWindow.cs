@@ -1,9 +1,11 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 using DrawnUi.Draw;
 using DrawnUi.Draw.ApplicationModel;
 using DrawnUi.Views;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -21,16 +23,35 @@ public class DrawnUiGameWindow : GameWindow
     private GRBackendRenderTarget? _renderTarget;
     private SKSurface? _surface;
     private GpuDrawable? _drawable;
+    private long _lastRenderTicks;
+
+    // WndProc subclass hook — kept alive to prevent GC collection
+    private delegate nint WndProcDelegate(nint hwnd, uint msg, nint wParam, nint lParam);
+    private WndProcDelegate? _wndProcDelegate;
+    private nint _oldWndProc;
+    private nint _hwnd;
+
+    // Constant: render every VSync frame (games).
+    // Dynamic:  render only when dirty, sleep via GLFW between frames (apps).
+    private UpdateModeType UpdateMode => _canvas.UpdateMode;
 
     public DrawnUiGameWindow(GameWindowSettings gameSettings, NativeWindowSettings nativeSettings, Canvas canvas)
-        : base(gameSettings, nativeSettings)
+        : base(gameSettings, HideUntilCentered(nativeSettings))
     {
         _canvas = canvas;
+    }
+
+    private static NativeWindowSettings HideUntilCentered(NativeWindowSettings s)
+    {
+        s.StartVisible = false;
+        return s;
     }
 
     protected override void OnLoad()
     {
         base.OnLoad();
+
+        Super.Init();
 
         _windowThreadId = Environment.CurrentManagedThreadId;
         MainThread.Configure(
@@ -38,7 +59,6 @@ public class DrawnUiGameWindow : GameWindow
             () => Environment.CurrentManagedThreadId == _windowThreadId);
 
         GL.ClearColor(0.07f, 0.08f, 0.11f, 1f);
-        VSync = VSyncMode.On;
 
         var glInterface = GRGlInterface.Create();
         _grContext = GRContext.CreateGl(glInterface);
@@ -46,19 +66,62 @@ public class DrawnUiGameWindow : GameWindow
         _drawable = new GpuDrawable();
         _canvas.ConnectDesktopDrawable(_drawable);
 
-        // Start DrawnUI animation ticker (drives cursor blink, animated controls, etc.)
-        // When it fires, wake the idle event loop so we render the next animation frame.
-        Super.EnsureFrameLoopStarted();
-        Super.OnFrame += OnSuperFrame;
+        Super.MaxFps = GetPrimaryMonitorRefreshRate();
+
+        if (UpdateMode == UpdateModeType.Constant)
+        {
+            // Hardware VSync is the sole pacemaker — no software timer needed.
+            VSync = VSyncMode.On;
+        }
+        else
+        {
+            // Event-driven: wake the GLFW loop from the DrawnUI software timer.
+            VSync = VSyncMode.Off;
+            Super.EnsureFrameLoopStarted();
+            Super.OnFrame += OnSuperFrame;
+        }
 
         RecreateSurface(ClientSize.X, ClientSize.Y);
+        CenterOnScreen();
+        IsVisible = true;
+
+        if (OperatingSystem.IsWindows())
+        {
+            unsafe
+            {
+                _hwnd = GLFW.GetWin32Window(WindowPtr);
+                if (_hwnd != IntPtr.Zero)
+                {
+                    WindowChrome.AddFullscreenMenuItem(_hwnd);
+                    _wndProcDelegate = WndProcHook;
+                    _oldWndProc = WindowChrome.SetWindowLongPtr(_hwnd, -4,
+                        Marshal.GetFunctionPointerForDelegate(_wndProcDelegate));
+                    ConfigureWindowChrome(_hwnd);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Override to apply custom DWM title bar / border colors on Windows.
+    /// Use <see cref="WindowChrome"/> helpers. Never called on non-Windows platforms.
+    /// </summary>
+    [SupportedOSPlatform("windows")]
+    protected virtual void ConfigureWindowChrome(IntPtr hwnd) { }
+
+    [SupportedOSPlatform("windows")]
+    private nint WndProcHook(nint hwnd, uint msg, nint wParam, nint lParam)
+    {
+        if (msg == WindowChrome.WM_SYSCOMMAND && wParam == WindowChrome.ID_TOGGLE_FULLSCREEN)
+        {
+            ToggleFullscreen();
+            return 0;
+        }
+        return WindowChrome.CallWindowProc(_oldWndProc, hwnd, msg, wParam, lParam);
     }
 
     // Called from DrawnUI background timer thread — wake the GLFW event loop.
-    private void OnSuperFrame(object? sender, EventArgs e)
-    {
-        GLFW.PostEmptyEvent();
-    }
+    private void OnSuperFrame(object? sender, EventArgs e) => GLFW.PostEmptyEvent();
 
     protected override void OnResize(ResizeEventArgs e)
     {
@@ -76,23 +139,48 @@ public class DrawnUiGameWindow : GameWindow
         if (_grContext == null || _surface == null || _drawable == null || ClientSize.X <= 0 || ClientSize.Y <= 0)
             return;
 
-        // Only render when canvas has pending updates.
-        // Skip GL.Clear and SwapBuffers so front buffer keeps showing last frame.
-        if (_canvas.WasRendered && !_canvas.IsDirty)
-            return;
+        if (UpdateMode == UpdateModeType.Constant)
+        {
+            // Render unconditionally — VSync already caps the rate.
+            RenderDrawnUi();
+        }
+        else
+        {
+            var frameInterval = 1.0 / Super.MaxFps;
 
+            if (_canvas.WasRendered && !_canvas.IsDirty)
+            {
+                GLFW.WaitEventsTimeout(frameInterval);
+                return;
+            }
+
+            var now = Stopwatch.GetTimestamp();
+            var elapsed = (now - _lastRenderTicks) / (double)Stopwatch.Frequency;
+            if (elapsed < frameInterval)
+            {
+                GLFW.WaitEventsTimeout(frameInterval - elapsed);
+                return;
+            }
+            _lastRenderTicks = Stopwatch.GetTimestamp();
+
+            RenderDrawnUi();
+        }
+    }
+
+    protected virtual void RenderDrawnUi()
+    {
         var frameTime = GetFrameTimestampNanos();
-        _drawable.CanvasSize = new SKSize(ClientSize.X, ClientSize.Y);
+        _drawable!.CanvasSize = new SKSize(ClientSize.X, ClientSize.Y);
         _drawable.SignalFrame(frameTime);
 
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
         _canvas.WidthRequest = ClientSize.X;
         _canvas.HeightRequest = ClientSize.Y;
-        _canvas.RenderExternalSurface(_surface, new SKRect(0, 0, ClientSize.X, ClientSize.Y), frameTime);
+        _canvas.RenderExternalSurface(_surface!, new SKRect(0, 0, ClientSize.X, ClientSize.Y), frameTime);
 
-        _surface.Canvas.Flush();
-        _grContext.Flush();
+        _surface!.Canvas.Flush();
+        _grContext!.Flush();
 
         SwapBuffers();
     }
@@ -136,6 +224,9 @@ public class DrawnUiGameWindow : GameWindow
         var ctrl = KeyboardState.IsKeyDown(Keys.LeftControl) || KeyboardState.IsKeyDown(Keys.RightControl);
         switch (e.Key)
         {
+            case Keys.F11: ToggleFullscreen(); break;
+            case Keys.Escape when WindowState == WindowState.Fullscreen:
+                WindowState = WindowState.Normal; break;
             case Keys.Backspace: _canvas.DesktopEditorBackspace(); break;
             case Keys.Delete: _canvas.DesktopEditorDelete(); break;
             case Keys.Enter: _canvas.DesktopEditorEnter(); break;
@@ -148,9 +239,21 @@ public class DrawnUiGameWindow : GameWindow
         }
     }
 
+    public void ToggleFullscreen()
+    {
+        WindowState = WindowState == WindowState.Fullscreen
+            ? WindowState.Normal
+            : WindowState.Fullscreen;
+    }
+
     protected override void OnUnload()
     {
-        Super.OnFrame -= OnSuperFrame;
+        if (UpdateMode != UpdateModeType.Constant)
+            Super.OnFrame -= OnSuperFrame;
+
+        if (OperatingSystem.IsWindows() && _oldWndProc != 0)
+            WindowChrome.SetWindowLongPtr(_hwnd, -4, _oldWndProc);
+
         MainThread.Reset();
         _surface?.Dispose();
         _renderTarget?.Dispose();
@@ -190,9 +293,36 @@ public class DrawnUiGameWindow : GameWindow
             action();
     }
 
-    private static long GetFrameTimestampNanos()
+    private static long GetFrameTimestampNanos() => Super.GetCurrentTimeNanos();
+
+    private unsafe void CenterOnScreen()
     {
-        var timestamp = Stopwatch.GetTimestamp();
-        return (long)(1_000_000_000.0 * timestamp / Stopwatch.Frequency);
+        try
+        {
+            var monitor = GLFW.GetPrimaryMonitor();
+            if (monitor == null) return;
+            var mode = GLFW.GetVideoMode(monitor);
+            if (mode == null) return;
+            Location = new Vector2i(
+                (mode->Width  - ClientSize.X) / 2,
+                (mode->Height - ClientSize.Y) / 2);
+        }
+        catch { }
+    }
+
+    private static unsafe int GetPrimaryMonitorRefreshRate()
+    {
+        try
+        {
+            var monitor = GLFW.GetPrimaryMonitor();
+            if (monitor != null)
+            {
+                var mode = GLFW.GetVideoMode(monitor);
+                if (mode != null && mode->RefreshRate > 0)
+                    return mode->RefreshRate;
+            }
+        }
+        catch { }
+        return 60;
     }
 }

@@ -31,7 +31,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedImageSource
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -70,7 +70,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clone
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawImageOnCpuSurface
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -112,7 +112,7 @@ items:
     by drawing it onto a new raster (CPU) SKSurface. 
 
     Returns the resulting SKSurface (caller is responsible for disposing it).
-  example: []
+  example: ""
   syntax:
     content: public static SKImage DrawImageOnCpuSurface(SKImage image)
     parameters:
@@ -136,7 +136,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Id
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -165,7 +165,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProtectFromDispose
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -174,7 +174,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: As this can be disposed automatically by the consuming control like SkiaImage etc we can manually prohibit this for cases this instance is used elsewhere.
-  example: []
+  example: ""
   syntax:
     content: public bool ProtectFromDispose { get; set; }
     parameters: []
@@ -196,7 +196,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProtectBitmapFromDispose
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -205,7 +205,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should be set to true for loaded with SkiaImageManager.ReuseBitmaps
-  example: []
+  example: ""
   syntax:
     content: public bool ProtectBitmapFromDispose { get; set; }
     parameters: []
@@ -227,7 +227,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -236,7 +236,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -257,7 +257,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -289,7 +289,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -321,7 +321,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -353,7 +353,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -382,7 +382,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -411,7 +411,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -440,7 +440,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -469,7 +469,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Bitmap
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -498,7 +498,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Image
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -527,7 +527,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Images/LoadedImageSource.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetBitmap
     path: ../src/Shared/Draw/Images/LoadedImageSource.cs
@@ -1085,3 +1085,4 @@ references:
   name: GetBitmap
   nameWithType: LoadedImageSource.GetBitmap
   fullName: DrawnUi.Draw.LoadedImageSource.GetBitmap
+

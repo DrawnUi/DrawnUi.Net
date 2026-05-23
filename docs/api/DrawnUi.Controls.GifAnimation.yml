@@ -28,7 +28,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GifAnimation
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -67,7 +67,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LockFrames
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Frames
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -123,7 +123,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Frame
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -132,7 +132,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Current frame bitmap, can change with SeekFrame method
-  example: []
+  example: ""
   syntax:
     content: public SKBitmap Frame { get; protected set; }
     parameters: []
@@ -154,7 +154,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SeekFrame
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -163,7 +163,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Select frame. If you pass a negative value the last frame will be set.
-  example: []
+  example: ""
   syntax:
     content: public void SeekFrame(int frame)
     parameters:
@@ -189,7 +189,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetFrameNumber
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -223,7 +223,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -252,7 +252,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -281,7 +281,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationMs
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -310,7 +310,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TotalFrames
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -339,7 +339,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FramesPositionsMs
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -368,7 +368,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -397,7 +397,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -406,7 +406,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public virtual void Dispose()
     content.vb: Public Overridable Sub Dispose()
@@ -427,7 +427,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/PlayFrames/GifAnimation.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadFromStream
     path: ../src/Shared/Controls/PlayFrames/GifAnimation.cs
@@ -1023,3 +1023,4 @@ references:
     name: IO
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.io
+

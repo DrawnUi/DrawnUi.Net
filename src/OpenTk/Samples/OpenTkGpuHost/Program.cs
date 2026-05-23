@@ -7,8 +7,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-
-
+Super.UseDrawnUi().Build();
 
 // UpdateFrequency = 0: no continuous game loop timer.
 // DrawnUiGameWindow renders only when canvas is dirty and wakes via GLFW.PostEmptyEvent.

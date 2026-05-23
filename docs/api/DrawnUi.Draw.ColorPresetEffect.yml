@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ColorPresetEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorPresetEffect
     path: ../src/Shared/Features/Effects/ColorPresetEffect.cs
@@ -97,7 +97,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ColorPresetEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PresetProperty
     path: ../src/Shared/Features/Effects/ColorPresetEffect.cs
@@ -124,7 +124,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ColorPresetEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Preset
     path: ../src/Shared/Features/Effects/ColorPresetEffect.cs
@@ -153,7 +153,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ColorPresetEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateFilter
     path: ../src/Shared/Features/Effects/ColorPresetEffect.cs
@@ -161,7 +161,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override SKColorFilter CreateFilter(SKRect destination)
     parameters:
@@ -186,7 +186,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ColorPresetEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
     path: ../src/Shared/Features/Effects/ColorPresetEffect.cs
@@ -194,7 +194,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool NeedApply { get; }
     parameters: []
@@ -1752,3 +1752,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

@@ -4,6 +4,7 @@ items:
   commentId: N:DrawnUi.Models
   id: DrawnUi.Models
   children:
+  - DrawnUi.Models.Aria
   - DrawnUi.Models.DefinitionInfo
   - DrawnUi.Models.GridLengthType
   - DrawnUi.Models.GridSpan
@@ -28,6 +29,12 @@ references:
   name: Screen
   nameWithType: Screen
   fullName: DrawnUi.Models.Screen
+- uid: DrawnUi.Models.Aria
+  commentId: T:DrawnUi.Models.Aria
+  href: DrawnUi.Models.Aria.html
+  name: Aria
+  nameWithType: Aria
+  fullName: DrawnUi.Models.Aria
 - uid: DrawnUi.Models.GridLengthType
   commentId: T:DrawnUi.Models.GridLengthType
   parent: DrawnUi.Models

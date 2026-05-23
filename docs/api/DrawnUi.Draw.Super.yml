@@ -80,7 +80,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Super
     path: ../src/Shared/Super.cs
@@ -117,7 +117,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HotReload
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -126,7 +126,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be triggered only if debugger is attached
-  example: []
+  example: ""
   syntax:
     content: public static event Action<Type[]?>? HotReload
     return:
@@ -146,7 +146,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorAccent
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -175,7 +175,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorPrimary
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -204,7 +204,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: App
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -233,7 +233,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisplayException
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -242,7 +242,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Display xaml page creation exception
-  example: []
+  example: ""
   syntax:
     content: public static void DisplayException(VisualElement view, Exception e)
     parameters:
@@ -268,7 +268,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Log
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -277,7 +277,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Logs a message. By convention, string-only calls are Warning level.
-  example: []
+  example: ""
   syntax:
     content: public static void Log(string message, LogLevel logLevel = LogLevel.Warning, string caller = null)
     parameters:
@@ -306,7 +306,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Log
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -315,7 +315,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Logs a message at the specified level.
-  example: []
+  example: ""
   syntax:
     content: public static void Log(LogLevel level, string message, string caller = null)
     parameters:
@@ -344,7 +344,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Services
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -373,7 +373,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AppContext
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -402,7 +402,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizeWindow
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -411,7 +411,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For desktop platforms, will resize app window and eventually lock it from being resized.
-  example: []
+  example: ""
   syntax:
     content: public static void ResizeWindow(Window window, int width, int height, bool isFixed)
     parameters:
@@ -446,7 +446,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseFrozenVisualLayers
     path: ../src/Shared/Super.cs
@@ -473,7 +473,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateHttpClient
     path: ../src/Shared/Super.cs
@@ -485,7 +485,7 @@ items:
     Since we removed IHttpClientFactory for faster app startup on mobile
 
     one can set this delegate to be used to create a custom client that would be used for loading internet sources.
-  example: []
+  example: ""
   syntax:
     content: public static Func<IServiceProvider, HttpClient> CreateHttpClient
     return:
@@ -506,7 +506,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendTapsOnMainThread
     path: ../src/Shared/Super.cs
@@ -515,7 +515,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by Tapped event handler, default is false
-  example: []
+  example: ""
   syntax:
     content: public static bool SendTapsOnMainThread
     return:
@@ -535,7 +535,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Multithreaded
     path: ../src/Shared/Super.cs
@@ -547,7 +547,7 @@ items:
     Experimental for dev use. Set OffscreenRenderingAtCanvasLevel to true when this is true.
 
     Default is False
-  example: []
+  example: ""
   syntax:
     content: public static bool Multithreaded
     return:
@@ -567,7 +567,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreloadRegisteredFonts
     path: ../src/Shared/Super.cs
@@ -594,7 +594,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OffscreenRenderingAtCanvasLevel
     path: ../src/Shared/Super.cs
@@ -606,7 +606,7 @@ items:
     If set to True will process all ofscreen rendering in one background thread at canvas level, otherwise every control will launch its own background processing thread.
 
     Default is False
-  example: []
+  example: ""
   syntax:
     content: public static bool OffscreenRenderingAtCanvasLevel { get; set; }
     parameters: []
@@ -628,7 +628,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetupFrameLooper
     path: ../src/Shared/Super.cs
@@ -654,7 +654,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxFps
     path: ../src/Shared/Super.cs
@@ -670,7 +670,7 @@ items:
     On Android you might want to set a bit higher like 35 to get around 30to and avoid never reaching 30.
 
     Can be changed at runtime on all platforms.
-  example: []
+  example: ""
   syntax:
     content: public static int MaxFps { get; set; }
     parameters: []
@@ -692,7 +692,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanUseHardwareAcceleration
     path: ../src/Shared/Super.cs
@@ -701,7 +701,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can optionally disable hardware-acceleration with this flag, for example on iOS you would want to avoid creating many metal views.
-  example: []
+  example: ""
   syntax:
     content: public static bool CanUseHardwareAcceleration
     return:
@@ -721,7 +721,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPrerenderingEnabled
     path: ../src/Shared/Super.cs
@@ -735,7 +735,7 @@ items:
     Set to false to skip software pre-render (saves memory but may show blank frame during GPU init).
 
     Default is true.
-  example: []
+  example: ""
   syntax:
     content: public static bool IsPrerenderingEnabled
     return:
@@ -755,7 +755,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Log
     path: ../src/Shared/Super.cs
@@ -764,7 +764,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Logs an exception at Error level. If a startup logger is configured, delegates to it; otherwise falls back to Trace/Console.
-  example: []
+  example: ""
   syntax:
     content: public static void Log(Exception e, string caller = null)
     parameters:
@@ -793,7 +793,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetLocale
     path: ../src/Shared/Super.cs
@@ -825,7 +825,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Initialized
     path: ../src/Shared/Super.cs
@@ -854,7 +854,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitShared
     path: ../src/Shared/Super.cs
@@ -880,7 +880,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnableRendering
     path: ../src/Shared/Super.cs
@@ -909,7 +909,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRtl
     path: ../src/Shared/Super.cs
@@ -918,7 +918,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: RTL support UNDER CONSTRUCTION
-  example: []
+  example: ""
   syntax:
     content: public static bool IsRtl { get; set; }
     parameters: []
@@ -940,7 +940,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSubPixelRendering
     path: ../src/Shared/Super.cs
@@ -949,7 +949,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enables sub-pixel font rendering, might provide better antialiasing on some platforms. Default is True;
-  example: []
+  example: ""
   syntax:
     content: public static bool FontSubPixelRendering { get; set; }
     parameters: []
@@ -971,7 +971,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InsetsChanged
     path: ../src/Shared/Super.cs
@@ -980,7 +980,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Subscribe your navigation bar to react
-  example: []
+  example: ""
   syntax:
     content: public static EventHandler InsetsChanged
     return:
@@ -1000,7 +1000,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Screen
     path: ../src/Shared/Super.cs
@@ -1029,7 +1029,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CapMicroSecs
     path: ../src/Shared/Super.cs
@@ -1038,7 +1038,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Capping FPS,at 120
-  example: []
+  example: ""
   syntax:
     content: public static float CapMicroSecs
     return:
@@ -1058,7 +1058,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCurrentTimeMs
     path: ../src/Shared/Super.cs
@@ -1086,7 +1086,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCurrentTimeNanos
     path: ../src/Shared/Super.cs
@@ -1114,7 +1114,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NavBarHeight
     path: ../src/Shared/Super.cs
@@ -1123,7 +1123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In DP
-  example: []
+  example: ""
   syntax:
     content: public static double NavBarHeight { get; set; }
     parameters: []
@@ -1145,7 +1145,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StatusBarHeight
     path: ../src/Shared/Super.cs
@@ -1154,7 +1154,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In DP
-  example: []
+  example: ""
   syntax:
     content: public static double StatusBarHeight { get; set; }
     parameters: []
@@ -1176,7 +1176,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NavigationBarHeight
     path: ../src/Shared/Super.cs
@@ -1185,7 +1185,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In DP, actually Android only
-  example: []
+  example: ""
   syntax:
     content: public static double NavigationBarHeight { get; set; }
     parameters: []
@@ -1207,7 +1207,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BottomTabsHeight
     path: ../src/Shared/Super.cs
@@ -1216,7 +1216,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In DP
-  example: []
+  example: ""
   syntax:
     content: public static double BottomTabsHeight { get; set; }
     parameters: []
@@ -1238,7 +1238,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxFrameLengthMs
     path: ../src/Shared/Super.cs
@@ -1267,7 +1267,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThermalState
     path: ../src/Shared/Super.cs
@@ -1296,7 +1296,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThermalStateChanged
     path: ../src/Shared/Super.cs
@@ -1323,7 +1323,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppCreated
     path: ../src/Shared/Super.cs
@@ -1332,7 +1332,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: App was launched and UI is ready to be created
-  example: []
+  example: ""
   syntax:
     content: public static event EventHandler OnNativeAppCreated
     return:
@@ -1352,7 +1352,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppPaused
     path: ../src/Shared/Super.cs
@@ -1379,7 +1379,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppResumed
     path: ../src/Shared/Super.cs
@@ -1406,7 +1406,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppDestroyed
     path: ../src/Shared/Super.cs
@@ -1433,7 +1433,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialWindowSize
     path: ../src/Shared/Super.cs
@@ -1460,7 +1460,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCreated
     path: ../src/Shared/Super.cs
@@ -1486,7 +1486,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWentBackground
     path: ../src/Shared/Super.cs
@@ -1512,7 +1512,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWentForeground
     path: ../src/Shared/Super.cs
@@ -1538,7 +1538,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMauiAppCreated
     path: ../src/Shared/Super.cs
@@ -1547,7 +1547,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Maui App was launched and UI is ready to be consumed
-  example: []
+  example: ""
   syntax:
     content: public static Action OnMauiAppCreated
     return:
@@ -1567,7 +1567,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedGlobalRefresh
     path: ../src/Shared/Super.cs
@@ -1576,7 +1576,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This will force recalculate canvas visibility in ViewTree and update those visible. Also when GRContext changes, all references must be cleared to avoid crash on next draw
-  example: []
+  example: ""
   syntax:
     content: public static event EventHandler NeedGlobalRefresh
     return:
@@ -1596,7 +1596,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedGlobalUpdate
     path: ../src/Shared/Super.cs
@@ -1605,7 +1605,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This will force recalculate canvas visibility in ViewTree and update those visible. Also when GRContext changes, all references must be cleared to avoid crash on next draw
-  example: []
+  example: ""
   syntax:
     content: public static void NeedGlobalUpdate()
     content.vb: Public Shared Sub NeedGlobalUpdate()
@@ -1624,7 +1624,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InBackground
     path: ../src/Shared/Super.cs
@@ -1653,7 +1653,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StopRenderingInBackground
     path: ../src/Shared/Super.cs
@@ -1682,7 +1682,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunOnMainThreadAndWait
     path: ../src/Shared/Super.cs
@@ -1713,7 +1713,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunOnMainThreadAndWaitAsync
     path: ../src/Shared/Super.cs
@@ -1749,7 +1749,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CacheEnabled
     path: ../src/Shared/Super.cs
@@ -1778,7 +1778,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GpuCacheEnabled
     path: ../src/Shared/Super.cs
@@ -1807,7 +1807,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UserAgent
     path: ../src/Shared/Super.cs
@@ -1836,7 +1836,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaGeneration
     path: ../src/Shared/Super.cs
@@ -1863,7 +1863,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnqueueBackgroundTask
     path: ../src/Shared/Super.cs
@@ -1895,7 +1895,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessBackgroundQueue
     path: ../src/Shared/Super.cs
@@ -1923,7 +1923,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotationChanged
     path: ../src/Shared/Super.cs
@@ -1950,7 +1950,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeviceRotation
     path: ../src/Shared/Super.cs
@@ -1959,7 +1959,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Degrees
-  example: []
+  example: ""
   syntax:
     content: public static int DeviceRotation { get; set; }
     parameters: []
@@ -1981,7 +1981,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrientationChanged
     path: ../src/Shared/Super.cs
@@ -2008,7 +2008,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeviceOrientation
     path: ../src/Shared/Super.cs
@@ -2037,7 +2037,7 @@ items:
   source:
     remote:
       path: src/Shared/Super.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeviceRotationSnap
     path: ../src/Shared/Super.cs
@@ -3409,3 +3409,4 @@ references:
   name: DeviceRotationSnap
   nameWithType: Super.DeviceRotationSnap
   fullName: DrawnUi.Draw.Super.DeviceRotationSnap
+

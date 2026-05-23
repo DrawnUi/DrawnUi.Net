@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/PlanesScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewLayoutInfo
     path: ../src/Shared/Draw/Scroll/PlanesScroll.cs
@@ -26,7 +26,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Holds layout information for a rendered month cell.
-  example: []
+  example: ""
   syntax:
     content: public struct PlanesScroll.ViewLayoutInfo
     content.vb: Public Structure PlanesScroll.ViewLayoutInfo
@@ -53,7 +53,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/PlanesScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Index
     path: ../src/Shared/Draw/Scroll/PlanesScroll.cs
@@ -62,7 +62,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Relative month index (0 for current, negative for past, positive for future).
-  example: []
+  example: ""
   syntax:
     content: public int Index
     return:
@@ -82,7 +82,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/PlanesScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawingRect
     path: ../src/Shared/Draw/Scroll/PlanesScroll.cs
@@ -451,3 +451,4 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
+

@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/TitleWithStringId.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TitleWithStringId
     path: ../src/Shared/Internals/Models/TitleWithStringId.cs
@@ -60,7 +60,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/TitleWithStringId.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Id
     path: ../src/Shared/Internals/Models/TitleWithStringId.cs
@@ -68,7 +68,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Internals
-  example: []
+  example: ""
   syntax:
     content: public string Id { get; set; }
     parameters: []
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/TitleWithStringId.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Title
     path: ../src/Shared/Internals/Models/TitleWithStringId.cs
@@ -100,7 +100,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Internals
-  example: []
+  example: ""
   syntax:
     content: public string Title { get; set; }
     parameters: []
@@ -540,3 +540,4 @@ references:
   name: Title
   nameWithType: IHasStringTitle.Title
   fullName: AppoMobi.Specials.IHasStringTitle.Title
+

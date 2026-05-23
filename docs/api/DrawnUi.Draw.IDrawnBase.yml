@@ -57,7 +57,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IDrawnBase
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -89,7 +89,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawingRect
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -118,7 +118,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Tag
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsVisible
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -176,7 +176,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -205,7 +205,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposing
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -234,7 +234,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsVisibleInViewTree
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -262,7 +262,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOnScreenVisibleArea
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -276,7 +276,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: []
+  example: ""
   syntax:
     content: ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -304,7 +304,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -313,7 +313,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Invalidates the measured size. May or may not call Update() inside, depends on control
-  example: []
+  example: ""
   syntax:
     content: void Invalidate()
     content.vb: Sub Invalidate()
@@ -332,7 +332,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateParents
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -341,7 +341,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If need the re-measure all parents because child-auto-size has changed
-  example: []
+  example: ""
   syntax:
     content: void InvalidateParents()
     content.vb: Sub InvalidateParents()
@@ -360,7 +360,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClipSmart
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -369,7 +369,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Clip using internal custom settings of the control
-  example: []
+  example: ""
   syntax:
     content: void ClipSmart(SKCanvas canvas, SKPath path, SKClipOperation operation = SKClipOperation.Intersect)
     parameters:
@@ -398,7 +398,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateClip
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -414,7 +414,7 @@ items:
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
 
     If applyPosition is false will create clip without using drawing posiition, like if was drawing at 0,0.
-  example: []
+  example: ""
   syntax:
     content: SKPath CreateClip(object arguments, bool usePosition, SKPath path = null)
     parameters:
@@ -446,7 +446,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RegisterAnimator
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -477,7 +477,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterAnimator
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -506,7 +506,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterAllAnimatorsByType
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -537,7 +537,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RegisterGestureListener
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -566,7 +566,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterGestureListener
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -595,7 +595,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PostAnimators
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -604,7 +604,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Executed after the rendering
-  example: []
+  example: ""
   syntax:
     content: List<IOverlayEffect> PostAnimators { get; }
     parameters: []
@@ -626,7 +626,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Views
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -635,7 +635,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For code-behind access of children, XAML is using Children property
-  example: []
+  example: ""
   syntax:
     content: List<SkiaControl> Views { get; }
     parameters: []
@@ -657,7 +657,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddSubView
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -666,7 +666,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Directly adds a view to the control, without any layouting. Use this instead of Views.Add() to avoid memory leaks etc
-  example: []
+  example: ""
   syntax:
     content: void AddSubView(SkiaControl view)
     parameters:
@@ -689,7 +689,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveSubView
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -701,7 +701,7 @@ items:
     Directly removes a view from the control, without any layouting.
 
     Use this instead of Views.Remove() to avoid memory leaks etc
-  example: []
+  example: ""
   syntax:
     content: void RemoveSubView(SkiaControl view)
     parameters:
@@ -724,7 +724,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuredSize
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -753,7 +753,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Destination
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -782,7 +782,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeightRequest
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -811,7 +811,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WidthRequest
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -840,7 +840,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -869,7 +869,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -898,7 +898,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslationX
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -927,7 +927,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslationY
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -956,7 +956,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InputTransparent
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -985,7 +985,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsClippedToBounds
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1014,7 +1014,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClipEffects
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1043,7 +1043,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateLocks
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1072,7 +1072,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateByChild
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1081,7 +1081,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is needed by layout to track which child changed to sometimes avoid recalculating other children
-  example: []
+  example: ""
   syntax:
     content: void InvalidateByChild(SkiaControl skiaControl)
     parameters:
@@ -1104,7 +1104,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateByChild
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1113,7 +1113,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To track dirty area when Updating parent
-  example: []
+  example: ""
   syntax:
     content: void UpdateByChild(SkiaControl skiaControl)
     parameters:
@@ -1136,7 +1136,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldInvalidateByChildren
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1165,7 +1165,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderingScale
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1194,7 +1194,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: X
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1223,7 +1223,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Y
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1252,7 +1252,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateViewport
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1278,7 +1278,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Repaint
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1304,7 +1304,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateViewsList
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -1330,7 +1330,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IDrawnBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeObject
     path: ../src/Shared/Internals/Interfaces/IDrawnBase.cs
@@ -2259,3 +2259,4 @@ references:
   name: DisposeObject
   nameWithType: IDrawnBase.DisposeObject
   fullName: DrawnUi.Draw.IDrawnBase.DisposeObject
+

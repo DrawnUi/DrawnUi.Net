@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollFlingVectorAnimator
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -114,7 +114,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelfFinished
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -143,7 +143,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunAsync
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -185,7 +185,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Initialize
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -223,7 +223,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parameters
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -252,7 +252,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentVelocity
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -281,7 +281,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -289,7 +289,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void Start(double delayMs = 0)
     parameters:
@@ -315,7 +315,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateValue
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -327,7 +327,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: []
+  example: ""
   syntax:
     content: protected override bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -359,7 +359,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/ScrollFlingVectorAnimator.cs
@@ -1718,3 +1718,4 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
+

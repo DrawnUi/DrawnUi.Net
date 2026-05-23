@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RangeAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RangeAnimator
     path: ../src/Shared/Features/Animators/RangeAnimator.cs
@@ -111,7 +111,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RangeAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _callback
     path: ../src/Shared/Features/Animators/RangeAnimator.cs
@@ -138,7 +138,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RangeAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/RangeAnimator.cs
@@ -170,7 +170,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RangeAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Features/Animators/RangeAnimator.cs
@@ -212,7 +212,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RangeAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Distance
     path: ../src/Shared/Features/Animators/RangeAnimator.cs
@@ -241,7 +241,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RangeAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateValue
     path: ../src/Shared/Features/Animators/RangeAnimator.cs
@@ -253,7 +253,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: []
+  example: ""
   syntax:
     content: protected override bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -285,7 +285,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RangeAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TransformReportedValue
     path: ../src/Shared/Features/Animators/RangeAnimator.cs
@@ -294,7 +294,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: []
+  example: ""
   syntax:
     content: protected override double TransformReportedValue(long deltaT)
     parameters:
@@ -1599,3 +1599,4 @@ references:
   name: TransformReportedValue
   nameWithType: RangeAnimator.TransformReportedValue
   fullName: DrawnUi.Draw.RangeAnimator.TransformReportedValue
+

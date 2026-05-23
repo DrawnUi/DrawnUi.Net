@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Pdf
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -57,7 +57,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaperSizePixels
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -66,7 +66,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Gets the paper size in pixels for a given paper format and DPI.
-  example: []
+  example: ""
   syntax:
     content: public static SKSize GetPaperSizePixels(PaperFormat format, int dpi)
     parameters:
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaperSizePixels
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -107,7 +107,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Gets the paper size in pixels for a custom paper size in inches and DPI.
-  example: []
+  example: ""
   syntax:
     content: public static SKSize GetPaperSizePixels(SKSize paperSizeInInches, int dpi)
     parameters:
@@ -139,7 +139,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaperSizePixelsFromMillimeters
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -148,7 +148,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Gets the paper size in pixels for a custom paper size in millimeters and DPI.
-  example: []
+  example: ""
   syntax:
     content: public static SKSize GetPaperSizePixelsFromMillimeters(SKSize paperSizeInMillimeters, int dpi)
     parameters:
@@ -180,7 +180,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SplitToPages
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -189,7 +189,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Splits a SkiaStack content into multiple pages based on the provided paper size, considering height only.
-  example: []
+  example: ""
   syntax:
     content: public static List<PdfPagePosition> SplitToPages(SKSize content, SKSize paper)
     parameters:
@@ -218,7 +218,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SplitStackToPages
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -232,7 +232,7 @@ items:
     Must specify if stack is templated.
 
     If no stack is found will split to pages as usual.
-  example: []
+  example: ""
   syntax:
     content: public static List<PdfPagePosition> SplitStackToPages(SkiaControl control, bool isTemplated, SKSize paper, float scale = 1)
     parameters:
@@ -270,7 +270,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaperSizePixels
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -279,7 +279,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Calculates the paper size in pixels based on the paper size in inches and DPI.
-  example: []
+  example: ""
   syntax:
     content: public static SKSize GetPaperSizePixels(SKSize paperSizeInInches, float dpi)
     parameters:
@@ -311,7 +311,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Pdf/Pdf.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaperSizeInInches
     path: ../src/Shared/Features/Pdf/Pdf.cs
@@ -320,7 +320,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Gets the paper size in inches for a given paper format.
-  example: []
+  example: ""
   syntax:
     content: public static SKSize GetPaperSizeInInches(PaperFormat format)
     parameters:
@@ -804,3 +804,4 @@ references:
   name: GetPaperSizeInInches
   nameWithType: Pdf.GetPaperSizeInInches
   fullName: DrawnUi.Infrastructure.Pdf.GetPaperSizeInInches
+

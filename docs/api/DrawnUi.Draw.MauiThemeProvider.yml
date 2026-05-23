@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MauiThemeProvider
     path: ../src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
@@ -27,7 +27,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: MAUI-specific theme provider implementation
-  example: []
+  example: ""
   syntax:
     content: 'public class MauiThemeProvider : IThemeProvider'
     content.vb: Public Class MauiThemeProvider Implements IThemeProvider
@@ -59,7 +59,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentTheme
     path: ../src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
@@ -67,7 +67,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public AppTheme CurrentTheme { get; }
     parameters: []
@@ -91,7 +91,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThemeChanged
     path: ../src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
@@ -99,7 +99,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public event EventHandler<ThemeChangedEventArgs> ThemeChanged
     return:
@@ -121,7 +121,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Internals/Extensions/ThemeBindingExtension.cs
@@ -628,3 +628,4 @@ references:
   nameWithType.vb: MauiThemeProvider.New
   fullName.vb: DrawnUi.Draw.MauiThemeProvider.New
   name.vb: New
+

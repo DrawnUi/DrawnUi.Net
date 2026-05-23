@@ -1,6 +1,6 @@
 # Frequently Asked Questions
 
-If you are using DrawnUI in the browser or inside a Blazor app, also see the dedicated [Blazor FAQ](blazor-faq.md).
+If you are using DrawnUI in the browser or inside a Blazor app, also see the dedicated [Blazor FAQ](blazor/faq.md).
 
 ## 🤔 Onboarding
 
@@ -22,7 +22,7 @@ A: Choose by host:
 - install `DrawnUi.Blazor.Server` for Blazor Server and `InteractiveServer`
 - install `DrawnUi.Net` for platform-agnostic, headless, or harness-style .NET usage
 
-See also [Platforms and Packages](platforms.md), [Blazor FAQ](blazor-faq.md), and [DrawnUi.Net](net/index.md).
+See also [Platforms and Packages](platforms.md), [Blazor FAQ](blazor/faq.md), and [DrawnUi.Net](net/index.md).
 
 **Q: Why choose drawn over native UI?**  
 A: Rather a freedom choice to draw what you want and how you see it.  
@@ -48,7 +48,7 @@ A: Inherit from `SkiaControl` for basic controls or `SkiaLayout` for containers 
 A: Yes, on the **MAUI** host. Use `SkiaMauiElement` to embed native MAUI controls like WebView inside your DrawnUI canvas. That answer is MAUI-specific and does not apply to Blazor or `DrawnUi.Net`.
 
 **Q: Can I use DrawnUI in Blazor?**  
-A: Yes. Use `DrawnUi.Blazor.Wasm` when the DrawnUI surface should stay local in the browser, and `DrawnUi.Blazor.Server` when the surface should be server-owned. See [Blazor FAQ](blazor-faq.md).
+A: Yes. Use `DrawnUi.Blazor.Wasm` when the DrawnUI surface should stay local in the browser, and `DrawnUi.Blazor.Server` when the surface should be server-owned. See [Blazor FAQ](blazor/faq.md).
 
 **Q: Can I use DrawnUI without MAUI or Blazor?**  
 A: Yes. Use `DrawnUi.Net` for platform-agnostic .NET scenarios such as headless rendering, image/PDF generation, control harnesses, and shared-layout debugging. See [DrawnUi.Net](net/index.md).
@@ -154,7 +154,7 @@ A: Might be Apple Metal specifics, cap FPS:
 **Can't find the answer to your question?** → 
 * Please start with [Platforms and Packages](platforms.md) to pick the correct host and sample lane.
 * For MAUI-oriented walkthroughs, check out [MAUI Tutorials and Host Notes](maui/tutorials.md).
-* For browser-hosted questions, check out [Blazor FAQ](blazor-faq.md).
+* For browser-hosted questions, check out [Blazor FAQ](blazor/faq.md).
 * [Ask in GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)** - The community is here to help!
 
 

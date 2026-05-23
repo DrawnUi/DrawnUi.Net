@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChainAdjustBrightnessEffect
     path: ../src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
@@ -97,7 +97,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueProperty
     path: ../src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
@@ -124,7 +124,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value
     path: ../src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
@@ -153,7 +153,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
@@ -162,7 +162,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns true if has drawn control itsself, otherwise it will be drawn over it
-  example: []
+  example: ""
   syntax:
     content: public override ChainEffectResult Draw(DrawingContext ctx, Action<DrawingContext> drawControl)
     parameters:
@@ -195,7 +195,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
     path: ../src/Shared/Features/Effects/ChainAdjustBrightnessEffect.cs
@@ -203,7 +203,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool NeedApply { get; }
     parameters: []
@@ -1842,3 +1842,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

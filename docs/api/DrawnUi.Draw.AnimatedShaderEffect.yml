@@ -25,7 +25,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimatedShaderEffect
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -44,7 +44,7 @@ items:
       fx.Completed += (s, e) =&gt; { _backgroundImage.FX.Remove(fx); fx.Dispose(); };
       _backgroundImage.FX.Add(fx);
       fx.Play(_backgroundImage);
-  example: []
+  example: ""
   syntax:
     content: 'public class AnimatedShaderEffect : SkiaShaderEffect, INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable<SkiaShaderEffect>, IEquatable<SkiaShaderEffect>'
     content.vb: Public Class AnimatedShaderEffect Inherits SkiaShaderEffect Implements INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable(Of SkiaShaderEffect), IEquatable(Of SkiaShaderEffect)
@@ -164,7 +164,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Center
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -173,7 +173,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Normalized center position of the effect (0.0–1.0 in each axis).
-  example: []
+  example: ""
   syntax:
     content: public SKPoint Center { get; set; }
     parameters: []
@@ -195,7 +195,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCompleted
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -221,7 +221,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Completed
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -248,7 +248,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationMs
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -257,7 +257,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Total animation duration in milliseconds. Default 2500.
-  example: []
+  example: ""
   syntax:
     content: public uint DurationMs { get; set; }
     parameters: []
@@ -279,7 +279,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Progress
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -291,7 +291,7 @@ items:
     Current animation progress 0.0 → 1.0.
 
     Set automatically by Play(); can also be set manually for debugging.
-  example: []
+  example: ""
   syntax:
     content: public double Progress { get; set; }
     parameters: []
@@ -313,7 +313,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Animator
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -340,7 +340,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Play
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -352,7 +352,7 @@ items:
     Starts the celebration animation on the given parent control.
 
     Safe to call multiple times — restarts from zero each time.
-  example: []
+  example: ""
   syntax:
     content: public virtual void Play()
     content.vb: Public Overridable Sub Play()
@@ -371,7 +371,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -380,7 +380,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Stops the animation without firing Completed.
-  example: []
+  example: ""
   syntax:
     content: public virtual void Stop()
     content.vb: Public Overridable Sub [Stop]()
@@ -399,7 +399,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateUniforms
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -408,7 +408,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates standard uniforms via engine. Override to add custom uniforms.
-  example: []
+  example: ""
   syntax:
     content: protected override SKRuntimeEffectUniforms CreateUniforms(SKRect destination)
     parameters:
@@ -433,7 +433,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
@@ -441,7 +441,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -2958,3 +2958,4 @@ references:
   name: OnDisposing
   nameWithType: AnimatedShaderEffect.OnDisposing
   fullName: DrawnUi.Draw.AnimatedShaderEffect.OnDisposing
+

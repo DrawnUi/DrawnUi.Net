@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ICanRenderOnCanvas
     path: ../src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
@@ -43,7 +43,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Render
     path: ../src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Renders effect overlay to canvas, return true if has drawn something and rendering needs to be applied.
-  example: []
+  example: ""
   syntax:
     content: bool Render(DrawingContext context, IDrawnBase control)
     parameters:
@@ -218,3 +218,4 @@ references:
   name: System
   nameWithType: System
   fullName: System
+

@@ -1,6 +1,6 @@
 ---
 title: DrawnUI for .NET - SkiaSharp Rendering Engine
-description: Hardware-accelerated rendering engine for .NET, including MAUI, Blazor, and platform-agnostic hosts through DrawnUi.Net. Choose the right package and runtime for your app or rendering workflow.
+description: Hardware-accelerated rendering engine for .NET, including MAUI, Blazor, OpenTK, and platform-agnostic hosts through DrawnUi.Net. Choose the right package and runtime for your app or rendering workflow.
 ---
 
 <div style="position: relative; text-align: center; padding: 30px 0 70px 0; border-radius: 12px; overflow: hidden; background: #0b1220; color: white;">
@@ -15,7 +15,7 @@ description: Hardware-accelerated rendering engine for .NET, including MAUI, Bla
       DrawnUI for .NET
     </h1>
     <p style="font-size: 1.4em; margin: 20px auto; opacity: 0.95; max-width: 680px;">
-      Hardware-accelerated <strong>rendering engine</strong> for .NET, including MAUI and Blazor, powered by SkiaSharp
+      Hardware-accelerated <strong>rendering engine</strong> for .NET, including MAUI, Blazor, and OpenTK, powered by SkiaSharp
     </p>
     <div class="hero-buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
       <a href="articles/maui/getting-started.md" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
@@ -66,7 +66,7 @@ void main() {
 </script>
 
 <div style="margin: 22px 0 0 0; padding: 16px 20px; border: 1px solid rgba(37,99,235,0.22); border-radius: 10px; background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(37,99,235,0.02)); color: #dbeafe; text-align: center;">
-  Choose your target from the <a href="articles/platforms.md" style="color: white; font-weight: 700; text-decoration: underline;">platform and package guide</a>: .NET MAUI, Blazor, or DrawnUi.Net. More platform targets are planned.
+  Choose your target from the <a href="articles/platforms.md" style="color: white; font-weight: 700; text-decoration: underline;">platform and package guide</a>: .NET MAUI, Blazor, OpenTK, or DrawnUi.Net.
 </div>
 
 <script id="fragShader" type="x-shader/x-fragment">
@@ -274,7 +274,7 @@ window.addEventListener('load', function() {
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 20px 0 28px 0;">
 
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
-  <h3 style="margin-top: 0; color: white;">.NET MAUI</h3>
+  <h3 style="margin-top: 0; color: white;">MAUI</h3>
   <p>Use <strong>DrawnUi.Maui</strong> when you are building a native app for iOS, Android, MacCatalyst, or Windows.</p>
   <p><strong>Install:</strong></p>
   <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Maui</code></pre>
@@ -291,17 +291,21 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
 </div>
 
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
-  <h3 style="margin-top: 0; color: white;">DrawnUi.Net</h3>
+  <h3 style="margin-top: 0; color: white;">OpenTK</h3>
+  <p>Use <strong>DrawnUi.OpenTk.Game</strong> for native OpenGL window apps on Windows and Linux — fully drawn apps, games, GPU overlays.</p>
+  <p><strong>Reference:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.OpenTk</code></pre>
+  <p><a href="articles/opentk/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">OpenTK guide →</a></p>
+</div>
+
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">.NET</h3>
   <p>Use <strong>DrawnUi.Net</strong> when you need platform-agnostic rendering, headless harnesses, server-side image generation, or shared-logic debugging without a UI host.</p>
   <p><strong>Install:</strong></p>
   <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Net</code></pre>
   <p><a href="articles/net/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Net guide →</a></p>
 </div>
 
-</div>
-
-<div style="margin: 20px 0 0 0; padding: 16px 20px; border-radius: 10px; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border: 1px dashed rgba(255,255,255,0.18); color: #d6e4ff;">
-  <strong>More platforms coming soon:</strong> the DrawnUI umbrella is expanding beyond the current MAUI, Blazor, and DrawnUi.Net targets.
 </div>
 
 <div style="text-align: center; margin: 30px 0;">
@@ -341,9 +345,10 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 
 ### 👨‍💻 **Familiar Yet Powerful**
 - **MAUI/WFP-like** properties for layout etc
-- **MAUI Shell-like** navigation on canvas
+- **Shell-like** navigation on canvas (MAUI only, others soon)
 - **XAML + Hot Reload** support
-- **Fluent C#** syntax for code-behind UI
+- **Fluent C#** syntax for code-behind UI with bindings
+- **Accessible** canvas (Blazor only, others soon)
 
 </div>
 
@@ -360,6 +365,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
   <p style="margin-bottom: 20px; ">Complete guides and API reference</p>
   <a href="articles/platforms.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Choose Your Target →</a><br>
   <a href="articles/net/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">DrawnUi.Net →</a><br>
+  <a href="articles/opentk/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">OpenTK →</a><br>
   <a href="articles/maui/getting-started.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Getting Started →</a><br>
   <a href="articles/blazor/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Blazor →</a><br>
   <a href="articles/controls/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Controls Reference →</a><br>

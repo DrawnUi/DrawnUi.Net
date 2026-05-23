@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/IRenderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IRenderEffect
     path: ../src/Shared/Features/Effects/IRenderEffect.cs
@@ -49,7 +49,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/IRenderEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Features/Effects/IRenderEffect.cs
@@ -58,7 +58,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns true if has drawn control itsself, otherwise it will be drawn over it
-  example: []
+  example: ""
   syntax:
     content: ChainEffectResult Draw(DrawingContext ctx, Action<DrawingContext> drawControl)
     parameters:
@@ -375,3 +375,4 @@ references:
   name: System
   nameWithType: System
   fullName: System
+

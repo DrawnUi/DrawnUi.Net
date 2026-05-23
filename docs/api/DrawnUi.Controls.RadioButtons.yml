@@ -31,7 +31,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RadioButtons
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -43,7 +43,7 @@ items:
     Manages radio button groups, ensuring only one button is selected per group.
 
     Supports grouping by parent control or by string name.
-  example: []
+  example: ""
   syntax:
     content: public class RadioButtons
     content.vb: Public Class RadioButtons
@@ -73,7 +73,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: All
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the singleton instance of the RadioButtons manager.
-  example: []
+  example: ""
   syntax:
     content: public static RadioButtons All { get; }
     parameters: []
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Changed
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -113,7 +113,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Occurs when a radio button selection changes in any group.
-  example: []
+  example: ""
   syntax:
     content: public event EventHandler Changed
     return:
@@ -133,7 +133,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelected
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -142,7 +142,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the currently selected radio button in the group associated with the specified parent control.
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl GetSelected(SkiaControl parent)
     parameters:
@@ -168,7 +168,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelected
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -177,7 +177,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the currently selected radio button in the group with the specified name.
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl GetSelected(string groupName)
     parameters:
@@ -206,7 +206,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelectedIndex
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -215,7 +215,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the index of the currently selected radio button in the group associated with the specified parent control.
-  example: []
+  example: ""
   syntax:
     content: public int GetSelectedIndex(SkiaControl parent)
     parameters:
@@ -241,7 +241,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelectedIndex
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -250,7 +250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the index of the currently selected radio button in the group with the specified name.
-  example: []
+  example: ""
   syntax:
     content: public int GetSelectedIndex(string groupName)
     parameters:
@@ -279,7 +279,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Select
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -288,7 +288,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Selects the radio button at the specified index in the group associated with the container control.
-  example: []
+  example: ""
   syntax:
     content: public void Select(SkiaControl container, int index)
     parameters:
@@ -317,7 +317,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GroupsByName
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -346,7 +346,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GroupsByParent
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -375,7 +375,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -384,7 +384,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Initializes a new instance of the RadioButtons class.
-  example: []
+  example: ""
   syntax:
     content: public RadioButtons()
     content.vb: Public Sub New()
@@ -406,7 +406,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddToGroup
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -415,7 +415,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Adds a radio button control to a named group. Ensures at least one button in the group is selected.
-  example: []
+  example: ""
   syntax:
     content: public void AddToGroup(ISkiaRadioButton control, string groupName)
     parameters:
@@ -444,7 +444,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddToGroup
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -453,7 +453,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Adds a radio button control to a parent-based group. Ensures at least one button in the group is selected.
-  example: []
+  example: ""
   syntax:
     content: public void AddToGroup(ISkiaRadioButton control, SkiaControl parent)
     parameters:
@@ -479,7 +479,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveFromGroup
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -488,7 +488,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Removes a radio button control from a named group. Ensures at least one button remains selected in the group.
-  example: []
+  example: ""
   syntax:
     content: public void RemoveFromGroup(string groupName, ISkiaRadioButton control)
     parameters:
@@ -517,7 +517,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveFromGroup
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -526,7 +526,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Removes a radio button control from a parent-based group. Ensures at least one button remains selected in the group.
-  example: []
+  example: ""
   syntax:
     content: public void RemoveFromGroup(SkiaControl parent, ISkiaRadioButton control)
     parameters:
@@ -552,7 +552,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveFromGroups
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -561,7 +561,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Removes a radio button control from all groups it belongs to. Ensures at least one button remains selected in affected groups.
-  example: []
+  example: ""
   syntax:
     content: public void RemoveFromGroups(ISkiaRadioButton control)
     parameters:
@@ -584,7 +584,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/RadioButtons/RadioButtons.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReportValueChange
     path: ../src/Shared/Controls/RadioButtons/RadioButtons.cs
@@ -593,7 +593,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Called by radio button controls to report value changes. Manages mutual exclusion within groups and fires the Changed event.
-  example: []
+  example: ""
   syntax:
     content: public void ReportValueChange(ISkiaRadioButton control, bool newValue)
     parameters:
@@ -1298,3 +1298,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

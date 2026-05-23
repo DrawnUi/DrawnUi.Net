@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/MeasuringConstraints.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuringConstraints
     path: ../src/Shared/Internals/Models/MeasuringConstraints.cs
@@ -53,7 +53,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/MeasuringConstraints.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ToString
     path: ../src/Shared/Internals/Models/MeasuringConstraints.cs
@@ -62,7 +62,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Returns the fully qualified type name of this instance.
-  example: []
+  example: ""
   syntax:
     content: public override string ToString()
     return:
@@ -85,7 +85,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/MeasuringConstraints.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Margins
     path: ../src/Shared/Internals/Models/MeasuringConstraints.cs
@@ -114,7 +114,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/MeasuringConstraints.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TotalMargins
     path: ../src/Shared/Internals/Models/MeasuringConstraints.cs
@@ -123,7 +123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Include padding
-  example: []
+  example: ""
   syntax:
     content: public Thickness TotalMargins { readonly get; set; }
     parameters: []
@@ -145,7 +145,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/MeasuringConstraints.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Request
     path: ../src/Shared/Internals/Models/MeasuringConstraints.cs
@@ -174,7 +174,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/MeasuringConstraints.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Content
     path: ../src/Shared/Internals/Models/MeasuringConstraints.cs
@@ -618,3 +618,4 @@ references:
   name: SKRect
   nameWithType: SKRect
   fullName: SkiaSharp.SKRect
+

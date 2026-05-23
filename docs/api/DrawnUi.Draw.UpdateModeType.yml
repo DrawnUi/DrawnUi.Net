@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/UpdateMode.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateModeType
     path: ../src/Shared/Internals/Enums/UpdateMode.cs
@@ -45,7 +45,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/UpdateMode.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dynamic
     path: ../src/Shared/Internals/Enums/UpdateMode.cs
@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will update when needed.
-  example: []
+  example: ""
   syntax:
     content: Dynamic = 0
     return:
@@ -73,7 +73,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/UpdateMode.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Constant
     path: ../src/Shared/Internals/Enums/UpdateMode.cs
@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Constantly invalidating the canvas after every frame
-  example: []
+  example: ""
   syntax:
     content: Constant = 1
     return:
@@ -101,7 +101,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/UpdateMode.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Manual
     path: ../src/Shared/Internals/Enums/UpdateMode.cs
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will not update until manually invalidated.
-  example: []
+  example: ""
   syntax:
     content: Manual = 2
     return:
@@ -235,3 +235,4 @@ references:
   name: UpdateModeType
   nameWithType: UpdateModeType
   fullName: DrawnUi.Draw.UpdateModeType
+

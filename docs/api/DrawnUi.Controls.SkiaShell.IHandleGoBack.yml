@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IHandleGoBack
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -43,7 +43,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnShellGoBack
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Return true if comsumed, false will use default system behaivour.
-  example: []
+  example: ""
   syntax:
     content: bool OnShellGoBack(bool animate)
     parameters:
@@ -203,3 +203,4 @@ references:
   name: System
   nameWithType: System
   fullName: System
+

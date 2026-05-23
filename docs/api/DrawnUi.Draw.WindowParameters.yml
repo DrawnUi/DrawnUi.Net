@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/WindowParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WindowParameters
     path: ../src/Shared/Internals/Models/WindowParameters.cs
@@ -52,7 +52,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/WindowParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
     path: ../src/Shared/Internals/Models/WindowParameters.cs
@@ -81,7 +81,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/WindowParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
     path: ../src/Shared/Internals/Models/WindowParameters.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/WindowParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFixedSize
     path: ../src/Shared/Internals/Models/WindowParameters.cs
@@ -119,7 +119,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'For desktop: if you set this to true the app window will not be allowed to be resized manually.'
-  example: []
+  example: ""
   syntax:
     content: public bool IsFixedSize { readonly get; set; }
     parameters: []
@@ -497,3 +497,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

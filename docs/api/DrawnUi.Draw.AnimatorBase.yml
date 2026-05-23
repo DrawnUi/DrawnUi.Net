@@ -40,7 +40,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimatorBase
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -83,7 +83,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPostAnimator
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -112,7 +112,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsHiddenInViewTree
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -121,7 +121,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use by the engine
-  example: []
+  example: ""
   syntax:
     content: public bool IsHiddenInViewTree { get; set; }
     parameters: []
@@ -145,7 +145,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -177,7 +177,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Radians
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -211,7 +211,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: runDelayMs
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -238,7 +238,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Register
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -266,7 +266,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Unregister
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -292,7 +292,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cancel
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -318,7 +318,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -326,7 +326,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public virtual void Start(double delayMs = 0)
     parameters:
@@ -353,7 +353,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TickFrame
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -362,7 +362,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time in NANOS
-  example: []
+  example: ""
   syntax:
     content: public virtual bool TickFrame(long frameTimeNanos)
     parameters:
@@ -393,7 +393,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Pause
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -402,7 +402,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: []
+  example: ""
   syntax:
     content: public virtual void Pause()
     content.vb: Public Overridable Sub Pause()
@@ -423,7 +423,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Resume
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -432,7 +432,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: []
+  example: ""
   syntax:
     content: public virtual void Resume()
     content.vb: Public Overridable Sub [Resume]()
@@ -453,7 +453,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPaused
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -462,7 +462,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just should not execute on tick
-  example: []
+  example: ""
   syntax:
     content: public bool IsPaused { get; set; }
     parameters: []
@@ -486,7 +486,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -494,7 +494,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public virtual void Stop()
     content.vb: Public Overridable Sub [Stop]()
@@ -515,7 +515,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnStop
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -544,7 +544,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnStart
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -573,7 +573,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -581,7 +581,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public IDrawnBase Parent { get; protected set; }
     parameters: []
@@ -605,7 +605,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDeactivated
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -614,7 +614,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can and will be removed
-  example: []
+  example: ""
   syntax:
     content: public bool IsDeactivated { get; set; }
     parameters: []
@@ -638,7 +638,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastFrameTimeNanos
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -667,7 +667,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartFrameTimeNanos
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -696,7 +696,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Uid
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -704,7 +704,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public Guid Uid { get; set; }
     parameters: []
@@ -728,7 +728,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -737,7 +737,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public virtual void Dispose()
     content.vb: Public Overridable Sub Dispose()
@@ -758,7 +758,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnRunningStateChanged
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -790,7 +790,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRunning
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -798,7 +798,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public bool IsRunning { get; set; }
     parameters: []
@@ -822,7 +822,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/AnimatorBase.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WasStarted
     path: ../src/Shared/Features/Animators/AnimatorBase.cs
@@ -831,7 +831,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Main flag to detect if animator stopped after being started (WasStarted) or stop was just called on an already stopped animator.
-  example: []
+  example: ""
   syntax:
     content: public bool WasStarted { get; protected set; }
     parameters: []
@@ -1599,3 +1599,4 @@ references:
   name: WasStarted
   nameWithType: ISkiaAnimator.WasStarted
   fullName: DrawnUi.Draw.ISkiaAnimator.WasStarted
+

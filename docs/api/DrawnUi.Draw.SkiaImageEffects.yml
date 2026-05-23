@@ -30,7 +30,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaImageEffects
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -65,7 +65,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Tint
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -74,7 +74,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'If you want to Tint: SKBlendMode.SrcATop + ColorTint with alpha below 1'
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Tint(Color color, SKBlendMode mode)
     parameters:
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TintSL
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -143,7 +143,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HSL
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -183,7 +183,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Darken
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -217,7 +217,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Lighten
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -251,7 +251,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Grayscale
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -260,7 +260,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'This effect turns an image to grayscale. This particular version uses the NTSC/PAL/SECAM standard luminance value weights: 0.2989 for red, 0.587 for green, and 0.114 for blue.'
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Grayscale()
     return:
@@ -282,7 +282,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Grayscale2
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -291,7 +291,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This effect turns an image to grayscale.
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Grayscale2()
     return:
@@ -313,7 +313,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Pastel
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -341,7 +341,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Sepia
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -350,7 +350,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The sepia effect can give your photos a warm, brownish tone that mimics the look of an older photo.
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Sepia()
     return:
@@ -372,7 +372,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvertColors
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -381,7 +381,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This effect inverts the colors in an image. NOT WORKING!
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter InvertColors()
     return:
@@ -403,7 +403,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Contrast
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -412,7 +412,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This effect adjusts the contrast of an image. amount is the adjustment level. Negative values decrease contrast, positive values increase contrast, and 0 means no change.
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Contrast(float amount)
     parameters:
@@ -441,7 +441,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Saturation
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -450,7 +450,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This effect adjusts the saturation of an image. amount is the adjustment level. Negative values desaturate the image, positive values increase saturation, and 0 means no change.
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Saturation(float amount)
     parameters:
@@ -479,7 +479,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Brightness
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -488,7 +488,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This effect increases the brightness of an image. amount is between 0 (no change) and 1 (white).
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Brightness(float amount)
     parameters:
@@ -517,7 +517,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Lightness
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -526,7 +526,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'Adjusts the brightness of an image:'
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Lightness(float amount)
     parameters:
@@ -555,7 +555,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaImageEffects.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Gamma
     path: ../src/Shared/Internals/Enums/SkiaImageEffects.cs
@@ -564,7 +564,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This effect applies gamma correction to an image. gamma must be greater than 0. A .
-  example: []
+  example: ""
   syntax:
     content: public static SKColorFilter Gamma(float gamma)
     parameters:
@@ -1019,3 +1019,4 @@ references:
   name: Gamma
   nameWithType: SkiaImageEffects.Gamma
   fullName: DrawnUi.Draw.SkiaImageEffects.Gamma
+

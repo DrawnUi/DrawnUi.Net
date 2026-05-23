@@ -37,7 +37,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VisualLayer
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -74,7 +74,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFrozen
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -83,7 +83,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Child of a cached object
-  example: []
+  example: ""
   syntax:
     content: public bool IsFrozen { get; set; }
     parameters: []
@@ -105,7 +105,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Control
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -114,7 +114,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The SkiaControl this layer represents
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl Control { get; set; }
     parameters: []
@@ -136,7 +136,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Children
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -145,7 +145,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Child layers contained within this layer
-  example: []
+  example: ""
   syntax:
     content: public List<VisualLayer> Children { get; set; }
     parameters: []
@@ -167,7 +167,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cache
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -176,7 +176,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cached rendering object, null means render control directly
-  example: []
+  example: ""
   syntax:
     content: public CachedObject Cache { get; set; }
     parameters: []
@@ -198,7 +198,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cached
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -207,7 +207,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Type of caching applied to this layer
-  example: []
+  example: ""
   syntax:
     content: public SkiaCacheType Cached { get; set; }
     parameters: []
@@ -229,7 +229,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Destination
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -238,7 +238,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout bounds in local coordinates
-  example: []
+  example: ""
   syntax:
     content: public SKRect Destination { get; set; }
     parameters: []
@@ -260,7 +260,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Origin
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -269,7 +269,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout bounds in local coordinates at time of creation
-  example: []
+  example: ""
   syntax:
     content: public SKRect Origin { get; }
     parameters: []
@@ -291,7 +291,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Transforms
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -300,7 +300,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Local transformation matrix applied to this layer
-  example: []
+  example: ""
   syntax:
     content: public SKMatrix Transforms { get; protected set; }
     parameters: []
@@ -322,7 +322,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TransformsTotal
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -331,7 +331,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Combined transformation matrix including all parent transforms
-  example: []
+  example: ""
   syntax:
     content: public SKMatrix TransformsTotal { get; protected set; }
     parameters: []
@@ -353,7 +353,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OpacityTotal
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -362,7 +362,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Combined opacity including all parent opacities
-  example: []
+  example: ""
   syntax:
     content: public double OpacityTotal { get; set; }
     parameters: []
@@ -384,7 +384,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotationTotal
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -393,7 +393,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Total rotation in degrees extracted from transform matrix
-  example: []
+  example: ""
   syntax:
     content: public double RotationTotal { get; set; }
     parameters: []
@@ -415,7 +415,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScaleTotal
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -424,7 +424,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Total scale factors extracted from transform matrix
-  example: []
+  example: ""
   syntax:
     content: public SKPoint ScaleTotal { get; set; }
     parameters: []
@@ -446,7 +446,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslationTotal
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -455,7 +455,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Total translation extracted from transform matrix
-  example: []
+  example: ""
   syntax:
     content: public SKPoint TranslationTotal { get; set; }
     parameters: []
@@ -477,7 +477,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HitBox
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -486,7 +486,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: A hitbox rather for internal use, because it is same as LastDrawnAt. For exact position on canvas use HitBoxWithTransforms.
-  example: []
+  example: ""
   syntax:
     content: public ScaledRect HitBox { get; set; }
     parameters: []
@@ -508,7 +508,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HitBoxWithTransforms
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -517,7 +517,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Exact position on canvas use HitBoxWithTransforms, all matrix transforms and Left, Top offset applied.
-  example: []
+  example: ""
   syntax:
     content: public ScaledRect HitBoxWithTransforms { get; set; }
     parameters: []
@@ -539,7 +539,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Render
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -568,7 +568,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DecomposeMatrix
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -606,7 +606,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AttachFromCache
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -615,7 +615,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Attaches cached children and relocates them to account for new parent position
-  example: []
+  example: ""
   syntax:
     content: public void AttachFromCache(CachedObject cache)
     parameters:
@@ -638,7 +638,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -647,7 +647,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Create this ONLY when DrawingRect and RenderTransformMatrix are ready
-  example: []
+  example: ""
   syntax:
     content: public VisualLayer(SkiaControl control, VisualLayer parent, SKRect destination, float scale)
     parameters:
@@ -682,7 +682,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -711,7 +711,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateEmpty
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -739,7 +739,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Base/VisualLayer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TransformRect
     path: ../src/Shared/Draw/Base/VisualLayer.cs
@@ -748,7 +748,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Helper to transform a rectangle using a matrix
-  example: []
+  example: ""
   syntax:
     content: public static SKRect TransformRect(SKRect rect, SKMatrix matrix)
     parameters:
@@ -1446,3 +1446,4 @@ references:
   name: TransformRect
   nameWithType: VisualLayer.TransformRect
   fullName: DrawnUi.Draw.VisualLayer.TransformRect
+

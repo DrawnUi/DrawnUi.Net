@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EmojiData
     path: ../src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
@@ -55,7 +55,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEmojiModifierSequence
     path: ../src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns the length of EmojiModifierSequence if found at index ins
-  example: []
+  example: ""
   syntax:
     content: public static int IsEmojiModifierSequence(string text, int index)
     parameters:
@@ -96,7 +96,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsModifier
     path: ../src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
@@ -132,7 +132,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsZeroWidthJoiner
     path: ../src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
@@ -168,7 +168,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EmojiModifiers
     path: ../src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
@@ -195,7 +195,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEmoji
     path: ../src/Shared/Draw/Text/SkiaLabel.EmojiData.cs
@@ -632,3 +632,4 @@ references:
   name: IsEmoji
   nameWithType: SkiaLabel.EmojiData.IsEmoji
   fullName: DrawnUi.Draw.SkiaLabel.EmojiData.IsEmoji
+

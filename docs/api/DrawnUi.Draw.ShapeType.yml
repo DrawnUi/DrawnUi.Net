@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShapeType
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -51,7 +51,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Rectangle
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -60,7 +60,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Default type for SkiaShape
-  example: []
+  example: ""
   syntax:
     content: Rectangle = 0
     return:
@@ -79,7 +79,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Circle
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -105,7 +105,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Ellipse
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -131,7 +131,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Arc
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -157,7 +157,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Squricle
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -166,7 +166,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: TODO unimplemented yet
-  example: []
+  example: ""
   syntax:
     content: Squricle = 4
     return:
@@ -185,7 +185,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Path
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -194,7 +194,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: []
+  example: ""
   syntax:
     content: Path = 5
     return:
@@ -213,7 +213,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Polygon
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -222,7 +222,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Uses multiple Points
-  example: []
+  example: ""
   syntax:
     content: Polygon = 6
     return:
@@ -241,7 +241,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Line
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -250,7 +250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Uses multiple Points
-  example: []
+  example: ""
   syntax:
     content: Line = 7
     return:
@@ -269,7 +269,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/ShapeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Custom
     path: ../src/Shared/Internals/Enums/ShapeType.cs
@@ -278,7 +278,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: unimplemented
-  example: []
+  example: ""
   syntax:
     content: Custom = 8
     return:
@@ -403,3 +403,4 @@ references:
   name: ShapeType
   nameWithType: ShapeType
   fullName: DrawnUi.Draw.ShapeType
+

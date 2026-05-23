@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaEffect
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -95,7 +95,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -104,7 +104,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For public set use Attach/Detach
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl Parent { get; protected set; }
     parameters: []
@@ -126,7 +126,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -152,7 +152,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Attach
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -181,7 +181,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dettach
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -207,7 +207,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -216,7 +216,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -237,7 +237,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -246,7 +246,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You MUST clear any cached resources as soon as this is called. Not on next draw!
-  example: []
+  example: ""
   syntax:
     content: public virtual void Update()
     content.vb: Public Overridable Sub Update()
@@ -267,7 +267,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedUpdate
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -303,7 +303,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/SkiaEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
     path: ../src/Shared/Features/Effects/SkiaEffect.cs
@@ -1674,3 +1674,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

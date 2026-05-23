@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/SKAutoCanvasRestoreFixed.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SKAutoCanvasRestoreFixed
     path: ../src/Shared/Views/SKAutoCanvasRestoreFixed.cs
@@ -58,7 +58,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/SKAutoCanvasRestoreFixed.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Views/SKAutoCanvasRestoreFixed.cs
@@ -90,7 +90,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/SKAutoCanvasRestoreFixed.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Views/SKAutoCanvasRestoreFixed.cs
@@ -124,7 +124,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/SKAutoCanvasRestoreFixed.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Views/SKAutoCanvasRestoreFixed.cs
@@ -133,7 +133,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -154,7 +154,7 @@ items:
   source:
     remote:
       path: src/Shared/Views/SKAutoCanvasRestoreFixed.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Restore
     path: ../src/Shared/Views/SKAutoCanvasRestoreFixed.cs
@@ -166,7 +166,7 @@ items:
     Perform the restore now, instead of waiting for the Dispose.
 
     Will only do this once.
-  example: []
+  example: ""
   syntax:
     content: public void Restore()
     content.vb: Public Sub Restore()
@@ -598,3 +598,4 @@ references:
   name: Restore
   nameWithType: SKAutoCanvasRestoreFixed.Restore
   fullName: DrawnUi.Views.SKAutoCanvasRestoreFixed.Restore
+

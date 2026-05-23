@@ -38,7 +38,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShadow
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -102,7 +102,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -131,7 +131,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Attach
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -160,7 +160,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dettach
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -186,7 +186,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Tag
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -215,7 +215,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -224,7 +224,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: []
+  example: ""
   syntax:
     content: public int CompareTo(object obj)
     parameters:
@@ -262,7 +262,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -271,7 +271,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: []
+  example: ""
   syntax:
     content: public int CompareTo(SkiaShadow other)
     parameters:
@@ -302,7 +302,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -311,7 +311,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicates whether the current object is equal to another object of the same type.
-  example: []
+  example: ""
   syntax:
     content: public bool Equals(SkiaShadow other)
     parameters:
@@ -339,7 +339,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -348,7 +348,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the specified object is equal to the current object.
-  example: []
+  example: ""
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -378,7 +378,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -387,7 +387,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Serves as the default hash function.
-  example: []
+  example: ""
   syntax:
     content: public override int GetHashCode()
     return:
@@ -410,7 +410,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Equality
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -446,7 +446,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Inequality
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -482,7 +482,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OpacityProperty
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -509,7 +509,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Opacity
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -538,7 +538,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorProperty
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -565,7 +565,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -594,7 +594,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: XProperty
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -621,7 +621,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: X
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -650,7 +650,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: YProperty
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -677,7 +677,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Y
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -706,7 +706,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlurProperty
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -733,7 +733,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Blur
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -762,7 +762,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowOnlyProperty
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -789,7 +789,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowOnly
     path: ../src/Shared/Internals/Models/SkiaShadow.cs
@@ -2530,3 +2530,4 @@ references:
   name: ShadowOnly
   nameWithType: SkiaShadow.ShadowOnly
   fullName: DrawnUi.Draw.SkiaShadow.ShadowOnly
+

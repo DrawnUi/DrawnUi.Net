@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeight
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -51,7 +51,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Thin
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -60,7 +60,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The thin
-  example: []
+  example: ""
   syntax:
     content: Thin = 100
     return:
@@ -79,7 +79,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExtraLight
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -88,7 +88,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Also known as Ultra Light
-  example: []
+  example: ""
   syntax:
     content: ExtraLight = 200
     return:
@@ -107,7 +107,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Light
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -116,7 +116,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The light
-  example: []
+  example: ""
   syntax:
     content: Light = 300
     return:
@@ -135,7 +135,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Regular
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -144,7 +144,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Also known as Normal
-  example: []
+  example: ""
   syntax:
     content: Regular = 400
     return:
@@ -163,7 +163,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Medium
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -172,7 +172,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The medium
-  example: []
+  example: ""
   syntax:
     content: Medium = 500
     return:
@@ -191,7 +191,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SemiBold
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -200,7 +200,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The semi bold
-  example: []
+  example: ""
   syntax:
     content: SemiBold = 600
     return:
@@ -219,7 +219,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Bold
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -228,7 +228,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The bold
-  example: []
+  example: ""
   syntax:
     content: Bold = 700
     return:
@@ -247,7 +247,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExtraBold
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -256,7 +256,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Also known as Heavy or UltraBold
-  example: []
+  example: ""
   syntax:
     content: ExtraBold = 800
     return:
@@ -275,7 +275,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/FontWeight.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Black
     path: ../src/Shared/Internals/Enums/FontWeight.cs
@@ -284,7 +284,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The black
-  example: []
+  example: ""
   syntax:
     content: Black = 900
     return:
@@ -409,3 +409,4 @@ references:
   name: FontWeight
   nameWithType: FontWeight
   fullName: DrawnUi.Draw.FontWeight
+

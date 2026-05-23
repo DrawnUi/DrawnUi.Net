@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PingPongAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PingPongAnimator
     path: ../src/Shared/Features/Animators/PingPongAnimator.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PingPongAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/PingPongAnimator.cs
@@ -142,7 +142,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PingPongAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FinishedRunning
     path: ../src/Shared/Features/Animators/PingPongAnimator.cs
@@ -150,7 +150,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override bool FinishedRunning()
     return:
@@ -1413,3 +1413,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

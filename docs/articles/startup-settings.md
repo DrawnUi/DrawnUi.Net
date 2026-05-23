@@ -44,22 +44,58 @@ See also: Getting Started → Installation and Setup.
 
 ## Blazor
 
-Blazor WebAssembly uses the same settings type, but passes it to `UseDrawnUiAsync`:
+Blazor WebAssembly uses a fluent builder returned by `Super.UseDrawnUi(builder)`:
 
 ```csharp
 using DrawnUi.Draw;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-var host = await builder.UseDrawnUiAsync(new DrawnUiStartupSettings
-{
-  UseDesktopKeyboard = true
-});
-
-await host.RunAsync();
+await Super.UseDrawnUi(builder)
+    .WithBaseUrl(builder.HostEnvironment.BaseAddress) // resolve relative font/asset paths
+    .WithOptions(o =>
+    {
+        o.UseDesktopKeyboard = true;
+    })
+    .ConfigureFonts(fonts =>
+    {
+        fonts.AddFont("fonts/OpenSans-Regular.ttf", "FontText", FontWeight.Regular);
+        fonts.AddFont("fonts/NotoColorEmoji-Regular.ttf", "FontEmoji");
+    })
+    .PreloadAssets(assets =>
+    {
+        assets.AddImage("dotnetbot.png", "images/dotnetbot.png");
+    })
+    .BuildAndRunAsync();
 ```
 
+**`WithBaseUrl`** sets the base for resolving relative font and asset paths. Pass `builder.HostEnvironment.BaseAddress` to resolve paths relative to the Blazor app's deployment root.
+
+**`WithOptions`** provides the same `DrawnUiStartupSettings` properties shown in the MAUI quick start above.
+
 In Blazor, `UseDesktopKeyboard` attaches browser `keydown` and `keyup` listeners and forwards them to `KeyboardManager`.
+
+## .NET / OpenTK
+
+Plain .NET apps and OpenTK window apps use the non-async fluent builder returned by `Super.UseDrawnUi()` (no host builder argument):
+
+```csharp
+using DrawnUi.Draw;
+
+Super.UseDrawnUi()
+    .ConfigureFonts(fonts =>
+    {
+        fonts.AddFont("fonts/OpenSans-Regular.ttf", "FontText", FontWeight.Regular);
+        fonts.AddFont("fonts/NotoColorEmoji-Regular.ttf", "FontEmoji");
+    })
+    .Build();
+
+// Then open your window (OpenTK) or run headless rendering:
+using var window = new MyGameWindow(gameSettings, nativeSettings, canvas);
+window.Run();
+```
+
+Call `Build()` once before creating any DrawnUI canvases or windows. `BuildAsync()` is also available when async font loading is needed.
 
 ## Properties
 

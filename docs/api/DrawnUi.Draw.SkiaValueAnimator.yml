@@ -45,7 +45,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaValueAnimator
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -114,7 +114,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -123,7 +123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public override void Dispose()
     content.vb: Public Overrides Sub Dispose()
@@ -143,7 +143,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -151,7 +151,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -171,7 +171,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunAsync
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -204,7 +204,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnRunningStateChanged
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -212,7 +212,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnRunningStateChanged(bool isRunning)
     parameters:
@@ -238,7 +238,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Seek
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -270,7 +270,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CycleFInished
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -279,7 +279,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Animator self finished a cycle, might still repeat
-  example: []
+  example: ""
   syntax:
     content: public Action CycleFInished { get; set; }
     parameters: []
@@ -301,7 +301,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Finished
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -310,7 +310,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Animator self finished running without being stopped manually
-  example: []
+  example: ""
   syntax:
     content: public Action Finished { get; set; }
     parameters: []
@@ -332,7 +332,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FinishedRunning
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -360,7 +360,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameTimeInterpolator
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -387,7 +387,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseInterpolator
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -416,7 +416,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TickFrame
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -425,7 +425,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time in NANOS
-  example: []
+  example: ""
   syntax:
     content: public override bool TickFrame(long frameTimeNanos)
     parameters:
@@ -455,7 +455,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Repeat
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -464,7 +464,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: -1 means forever..
-  example: []
+  example: ""
   syntax:
     content: public int Repeat { get; set; }
     parameters: []
@@ -486,7 +486,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: mValue
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -515,7 +515,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: mStartValueIsSet
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -544,7 +544,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: mMaxValue
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -573,7 +573,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: mMinValue
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -602,7 +602,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Easing
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -631,7 +631,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Speed
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -660,7 +660,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TransformReportedValue
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -669,7 +669,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: []
+  example: ""
   syntax:
     content: protected virtual double TransformReportedValue(long deltaT)
     parameters:
@@ -698,7 +698,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Debug
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -725,7 +725,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetNanoseconds
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -753,7 +753,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateValue
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -765,7 +765,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -796,7 +796,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ElapsedMs
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -825,7 +825,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Progress
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -834,7 +834,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: We are using this internally to apply easing. Can be above 1 when finishing. If you need progress 0-1 use ProgressAnimator.
-  example: []
+  example: ""
   syntax:
     content: protected double Progress { get; set; }
     parameters: []
@@ -856,7 +856,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnUpdated
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -885,7 +885,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClampOnStart
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -911,7 +911,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -919,7 +919,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void Start(double delayMs = 0)
     parameters:
@@ -945,7 +945,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetValue
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -979,7 +979,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSpeed
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -1013,7 +1013,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/SkiaValueAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/SkiaValueAnimator.cs
@@ -2184,3 +2184,4 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
+

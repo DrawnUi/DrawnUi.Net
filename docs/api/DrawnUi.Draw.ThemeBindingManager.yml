@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThemeBindingManager
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -33,7 +33,7 @@ items:
     Simplified theme binding manager using DrawnUI's disposal mechanism
 
     No periodic cleanup needed - controls clean up themselves!
-  example: []
+  example: ""
   syntax:
     content: public static class ThemeBindingManager
     content.vb: Public Module ThemeBindingManager
@@ -61,7 +61,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentTheme
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -70,7 +70,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Current theme from the active theme provider
-  example: []
+  example: ""
   syntax:
     content: public static AppTheme CurrentTheme { get; }
     parameters: []
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetThemeProvider
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -101,7 +101,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Sets a custom theme provider (for Blazor, testing, etc.)
-  example: []
+  example: ""
   syntax:
     content: public static void SetThemeProvider(IThemeProvider themeProvider)
     parameters:
@@ -123,7 +123,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateBinding
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -132,7 +132,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates and registers a new theme binding
-  example: []
+  example: ""
   syntax:
     content: public static ThemeBinding CreateBinding(ThemeBindingExtension extension, BindableObject target, BindableProperty property)
     parameters:
@@ -160,7 +160,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateAllBindings
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -169,7 +169,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Forces update of all active bindings (useful for manual theme changes)
-  example: []
+  example: ""
   syntax:
     content: public static void UpdateAllBindings()
     content.vb: Public Shared Sub UpdateAllBindings()
@@ -188,7 +188,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActiveBindingCount
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -197,7 +197,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the current number of active bindings (for diagnostics)
-  example: []
+  example: ""
   syntax:
     content: public static int ActiveBindingCount { get; }
     parameters: []
@@ -219,7 +219,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cleanup
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -228,7 +228,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Manually triggers cleanup of dead references
-  example: []
+  example: ""
   syntax:
     content: public static void Cleanup()
     content.vb: Public Shared Sub Cleanup()
@@ -659,3 +659,4 @@ references:
   name: Cleanup
   nameWithType: ThemeBindingManager.Cleanup
   fullName: DrawnUi.Draw.ThemeBindingManager.Cleanup
+

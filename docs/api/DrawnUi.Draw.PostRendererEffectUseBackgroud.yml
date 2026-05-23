@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PostRendererEffectUseBackgroud
     path: ../src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
@@ -27,7 +27,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Controls how the effect acquires the background texture for its shader.
-  example: []
+  example: ""
   syntax:
     content: public enum PostRendererEffectUseBackgroud
     content.vb: Public Enum PostRendererEffectUseBackgroud
@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Always
     path: ../src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
@@ -56,7 +56,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Live snapshot every frame (glass/blur effects). Default.
-  example: []
+  example: ""
   syntax:
     content: Always = 0
     return:
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Once
     path: ../src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
@@ -84,7 +84,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Snapshot taken once on first render, then frozen (transition effects). You can set AquiredBackground property to false to re-request background aquisition.
-  example: []
+  example: ""
   syntax:
     content: Once = 1
     return:
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Never
     path: ../src/Shared/Features/Effects/PostRendererEffectUseBackgroud.cs
@@ -112,7 +112,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'No background texture — effect renders on transparent (generative: confetti, fireworks).'
-  example: []
+  example: ""
   syntax:
     content: Never = 2
     return:
@@ -237,3 +237,4 @@ references:
   name: PostRendererEffectUseBackgroud
   nameWithType: PostRendererEffectUseBackgroud
   fullName: DrawnUi.Draw.PostRendererEffectUseBackgroud
+

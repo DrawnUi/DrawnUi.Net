@@ -105,7 +105,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaButton
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -119,10 +119,10 @@ items:
     or can include any content inside, and properties will by applied by convention to a SkiaLabel with Tag `MainLabel`, SkiaShape with Tag `MainFrame`. At the same time you can override ApplyProperties() and apply them to your content yourself.
 
     Convention elements tags: BtnText, BtnShape.
-  example: []
+  example: ""
   syntax:
-    content: 'public class SkiaButton : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener'
-    content.vb: Public Class SkiaButton Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener
+    content: 'public class SkiaButton : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener'
+    content.vb: Public Class SkiaButton Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -149,6 +149,7 @@ items:
   - System.Collections.Generic.ICollection{Microsoft.Maui.IView}
   - System.Collections.Generic.IEnumerable{Microsoft.Maui.IView}
   - System.Collections.IEnumerable
+  - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.IHasAfterEffects
   - DrawnUi.Draw.ISkiaDisposable
   - DrawnUi.Draw.ISkiaGridLayout
@@ -725,6 +726,18 @@ items:
   - DrawnUi.Draw.SkiaControl.ArrangedDestination
   - DrawnUi.Draw.SkiaControl.LayoutIsReady
   - DrawnUi.Draw.SkiaControl.Disposing
+  - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.AccessibilityHint
+  - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
   - DrawnUi.Draw.SkiaControl.LayoutReady
   - DrawnUi.Draw.SkiaControl.CheckIsGhost
@@ -1151,6 +1164,13 @@ items:
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Draw.SkiaButton,System.Object},System.String[])
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WhenItemsSourceChangesApplied``1(System.Action{DrawnUi.Draw.SkiaButton},System.String[])
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Draw.SkiaButton,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithCache``1(DrawnUi.Draw.SkiaCacheType)
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithChildren``1(DrawnUi.Draw.SkiaControl[])
@@ -1211,7 +1231,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Controls/Button/SkiaButton.cs
@@ -1240,11 +1260,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 17
+    startLine: 18
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1272,11 +1292,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ButtonPadding
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1301,16 +1321,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPaddingSet
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can override this for custom controls to apply padding differently from the default way
-  example: []
+  example: ""
   syntax:
     content: public override Thickness OnPaddingSet(Thickness padding)
     parameters:
@@ -1337,15 +1357,15 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateDefaultContent
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 47
+    startLine: 48
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -1365,11 +1385,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateDefaultStyleContent
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 95
+    startLine: 96
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1391,11 +1411,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateCupertinoStyleContent
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 132
+    startLine: 133
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1417,11 +1437,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateMaterialStyleContent
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 190
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1443,11 +1463,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateWindowsStyleContent
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 247
+    startLine: 248
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1469,11 +1489,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsInsideTapRegion
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 302
+    startLine: 303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1500,11 +1520,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateElevation
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 313
+    startLine: 314
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1528,11 +1548,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnButtonPropertyChanged
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 321
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1562,16 +1582,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateClip
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 440
+    startLine: 441
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Clip effects with rounded rect of the frame inside
-  example: []
+  example: ""
   syntax:
     content: public override SKPath CreateClip(object arguments, bool usePosition, SKPath path = null)
     parameters:
@@ -1604,11 +1624,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MainWrapper
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 454
+    startLine: 455
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1631,11 +1651,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MainLabel
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 455
+    startLine: 456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1658,11 +1678,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MainFrame
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 456
+    startLine: 457
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1685,16 +1705,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChildrenChanged
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 458
+    startLine: 459
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: []
+  example: ""
   syntax:
     content: public override void OnChildrenChanged()
     content.vb: Public Overrides Sub OnChildrenChanged()
@@ -1714,11 +1734,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FindViews
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 465
+    startLine: 466
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1740,11 +1760,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyProperties
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 483
+    startLine: 484
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1766,11 +1786,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDown
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 649
+    startLine: 658
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1799,11 +1819,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnUp
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 678
+    startLine: 687
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1830,11 +1850,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTapped
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 683
+    startLine: 692
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1863,11 +1883,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PanThreshold
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 715
+    startLine: 724
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1890,15 +1910,15 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 717
+    startLine: 726
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1925,16 +1945,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DelayCallbackMs
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 793
+    startLine: 802
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You might want to pause to show effect before executing command. Default is 0.
-  example: []
+  example: ""
   syntax:
     content: public static int DelayCallbackMs
     return:
@@ -1954,16 +1974,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 795
+    startLine: 804
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: []
+  example: ""
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1983,11 +2003,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Up
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 806
+    startLine: 815
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2010,11 +2030,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Down
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 807
+    startLine: 816
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2037,16 +2057,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clicked
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 813
+    startLine: 822
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Occurs when the button is clicked/tapped (Tapped event).
-  example: []
+  example: ""
   syntax:
     content: public Action<SkiaButton, SkiaGesturesParameters> Clicked
     return:
@@ -2066,16 +2086,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Released
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 818
+    startLine: 827
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Occurs when the button is released (Up event).
-  example: []
+  example: ""
   syntax:
     content: public Action<SkiaButton, SkiaGesturesParameters> Released
     return:
@@ -2095,16 +2115,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Pressed
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 823
+    startLine: 832
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Occurs when the button is pressed (Down event).
-  example: []
+  example: ""
   syntax:
     content: public Action<SkiaButton, SkiaGesturesParameters> Pressed
     return:
@@ -2124,11 +2144,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TotalTapped
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 827
+    startLine: 836
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2153,11 +2173,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TotalDown
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 842
+    startLine: 851
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2182,11 +2202,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ButtonStyleProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 894
+    startLine: 903
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2209,16 +2229,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ButtonStyle
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 904
+    startLine: 913
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the style variant of the button (Contained, Outlined, or Text).
-  example: []
+  example: ""
   syntax:
     content: public SkiaButton.ButtonStyleType ButtonStyle { get; set; }
     parameters: []
@@ -2240,11 +2260,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextCaseProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 910
+    startLine: 919
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2267,16 +2287,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextCase
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 920
+    startLine: 929
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets how the button text case is transformed (None, Uppercase, Lowercase).
-  example: []
+  example: ""
   syntax:
     content: public TextTransform TextCase { get; set; }
     parameters: []
@@ -2298,11 +2318,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ElevationEnabledProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 926
+    startLine: 935
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2325,16 +2345,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ElevationEnabled
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 936
+    startLine: 945
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets whether the button has elevation (shadow effect).
-  example: []
+  example: ""
   syntax:
     content: public bool ElevationEnabled { get; set; }
     parameters: []
@@ -2356,11 +2376,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IconPositionProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 942
+    startLine: 951
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2383,16 +2403,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IconPosition
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 952
+    startLine: 961
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the position of the icon relative to the button text.
-  example: []
+  example: ""
   syntax:
     content: public SkiaButton.IconPositionType IconPosition { get; set; }
     parameters: []
@@ -2414,11 +2434,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LockPanningProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 966
+    startLine: 975
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2441,11 +2461,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LockPanning
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 971
+    startLine: 980
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2470,11 +2490,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSizeProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 977
+    startLine: 986
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2497,11 +2517,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSize
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 984
+    startLine: 993
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2526,11 +2546,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamilyProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 990
+    startLine: 999
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2553,11 +2573,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamily
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 997
+    startLine: 1006
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2582,11 +2602,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisabledProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1003
+    startLine: 1012
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2609,11 +2629,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisabled
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1009
+    startLine: 1018
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2638,11 +2658,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPressedProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1015
+    startLine: 1024
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2665,16 +2685,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPressed
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1025
+    startLine: 1034
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets whether the button is pressed, readonly.
-  example: []
+  example: ""
   syntax:
     content: public bool IsPressed { get; set; }
     parameters: []
@@ -2696,11 +2716,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1031
+    startLine: 1040
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2723,16 +2743,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Text
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1040
+    startLine: 1049
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Bind to your own content!
-  example: []
+  example: ""
   syntax:
     content: public string Text { get; set; }
     parameters: []
@@ -2754,11 +2774,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectColorProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1046
+    startLine: 1055
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2781,11 +2801,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectColor
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1052
+    startLine: 1061
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2810,11 +2830,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectAngleProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1058
+    startLine: 1067
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2837,11 +2857,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectAngle
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1064
+    startLine: 1073
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2866,11 +2886,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectWidthProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1070
+    startLine: 1079
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2893,11 +2913,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectWidth
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1076
+    startLine: 1085
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2922,11 +2942,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectSpeedProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1082
+    startLine: 1091
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2949,11 +2969,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShimmerEffectSpeed
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1088
+    startLine: 1097
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2978,11 +2998,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyEffectProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1095
+    startLine: 1104
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3005,11 +3025,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyEffect
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1099
+    startLine: 1108
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3034,11 +3054,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandTappedProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1106
+    startLine: 1115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3061,11 +3081,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandTapped
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1111
+    startLine: 1120
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3090,11 +3110,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandTappedParameterProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1117
+    startLine: 1126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3117,11 +3137,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandTappedParameter
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1122
+    startLine: 1131
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3146,11 +3166,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandLongPressingProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1128
+    startLine: 1137
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3173,11 +3193,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandLongPressing
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1133
+    startLine: 1142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3202,11 +3222,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandLongPressingParameterProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1139
+    startLine: 1148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3229,11 +3249,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandLongPressingParameter
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1144
+    startLine: 1153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3258,11 +3278,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrokeColorProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1150
+    startLine: 1159
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3285,11 +3305,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrokeColor
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1157
+    startLine: 1166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3314,11 +3334,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrokeWidthProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1163
+    startLine: 1172
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3341,11 +3361,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrokeWidth
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1169
+    startLine: 1178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3370,11 +3390,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _lastDownPts
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1175
+    startLine: 1184
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3397,11 +3417,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColorProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1177
+    startLine: 1186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3424,11 +3444,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColor
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1184
+    startLine: 1193
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3453,11 +3473,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextStrokeColorProperty
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1190
+    startLine: 1199
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3480,11 +3500,11 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextStrokeColor
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1197
+    startLine: 1206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3509,16 +3529,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPropertyChanged
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1213
+    startLine: 1222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -3545,16 +3565,16 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetupBackgroundPaint
     path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 1238
+    startLine: 1247
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will never paint background, it's up to the button shape to do it.
-  example: []
+  example: ""
   syntax:
     content: protected override bool SetupBackgroundPaint(SKPaint paint, SKRect destination)
     parameters:
@@ -3584,7 +3604,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CornerRadiusProperty
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -3611,7 +3631,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CornerRadius
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -3652,7 +3672,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BevelProperty
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -3679,7 +3699,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Bevel
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -3708,7 +3728,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BevelTypeProperty
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -3735,7 +3755,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BevelType
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -3764,7 +3784,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialBackgroundColor
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -3791,7 +3811,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Button/SkiaButton.Maui.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialBackground
     path: ../src/Shared/Controls/Button/SkiaButton.Maui.cs
@@ -4101,6 +4121,13 @@ references:
   name: IEnumerable
   nameWithType: IEnumerable
   fullName: System.Collections.IEnumerable
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
 - uid: DrawnUi.Draw.IHasAfterEffects
   commentId: T:DrawnUi.Draw.IHasAfterEffects
   parent: DrawnUi.Draw
@@ -15930,6 +15957,162 @@ references:
   name: Disposing
   nameWithType: SkiaControl.Disposing
   fullName: DrawnUi.Draw.SkiaControl.Disposing
+- uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  name: UnregisterAccessibility()
+  nameWithType: SkiaControl.UnregisterAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.UnregisterAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  commentId: M:DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  name: AccessibilityChanged()
+  nameWithType: SkiaControl.AccessibilityChanged()
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: SkiaControl.AccessibilityRole
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: SkiaControl.AccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityHint
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityHint
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: SkiaControl.AccessibilityHint
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityHint
+- uid: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: SkiaControl.IsAccessibilityElement
+  fullName: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  name: GetAccessibilityPixelRect()
+  nameWithType: SkiaControl.GetAccessibilityPixelRect()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: SkiaControl.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: SkiaControl.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  name: OnAccessibilityUnregistered()
+  nameWithType: SkiaControl.OnAccessibilityUnregistered()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  name: NotifyAccessibility()
+  nameWithType: SkiaControl.NotifyAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.NotifyAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsLayoutReady
   commentId: P:DrawnUi.Draw.SkiaControl.IsLayoutReady
   parent: DrawnUi.Draw.SkiaControl
@@ -27684,6 +27867,439 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_
+  name: WithAccessibilityButton<SkiaButton>(SkiaButton)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaButton>(SkiaButton)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaButton>(DrawnUi.Draw.SkiaButton)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaButton)(SkiaButton)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaButton)(DrawnUi.Draw.SkiaButton)
+  name.vb: WithAccessibilityButton(Of SkiaButton)(SkiaButton)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaButton)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaButton)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<SkiaButton>(SkiaButton, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaButton>(SkiaButton, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaButton>(DrawnUi.Draw.SkiaButton, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaButton)(SkiaButton, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaButton)(DrawnUi.Draw.SkiaButton, String)
+  name.vb: WithAccessibilityButton(Of SkiaButton)(SkiaButton, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaButton,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaButton,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<SkiaButton>(SkiaButton, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaButton>(SkiaButton, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaButton>(DrawnUi.Draw.SkiaButton, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaButton)(SkiaButton, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaButton)(DrawnUi.Draw.SkiaButton, String, String)
+  name.vb: WithAccessibilityButton(Of SkiaButton)(SkiaButton, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaButton,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaButton,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<SkiaButton>(SkiaButton, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<SkiaButton>(SkiaButton, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<DrawnUi.Draw.SkiaButton>(DrawnUi.Draw.SkiaButton, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of SkiaButton)(SkiaButton, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of DrawnUi.Draw.SkiaButton)(DrawnUi.Draw.SkiaButton, Boolean?)
+  name.vb: WithAccessibilityPressed(Of SkiaButton)(SkiaButton, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaButton,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaButton,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<SkiaButton>(SkiaButton, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<SkiaButton>(SkiaButton, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<DrawnUi.Draw.SkiaButton>(DrawnUi.Draw.SkiaButton, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of SkiaButton)(SkiaButton, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of DrawnUi.Draw.SkiaButton)(DrawnUi.Draw.SkiaButton, String)
+  name.vb: WithAccessibilityText(Of SkiaButton)(SkiaButton, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaButton,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaButton,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaButton>(SkiaButton, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaButton>(SkiaButton, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaButton>(DrawnUi.Draw.SkiaButton, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaButton)(SkiaButton, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaButton)(DrawnUi.Draw.SkiaButton, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaButton)(SkiaButton, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaButton,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaButton,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaButton>(SkiaButton, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaButton>(SkiaButton, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaButton>(DrawnUi.Draw.SkiaButton, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaButton)(SkiaButton, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaButton)(DrawnUi.Draw.SkiaButton, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaButton)(SkiaButton, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaButton,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaButton,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaButton
+    name: SkiaButton
+    href: DrawnUi.Draw.SkiaButton.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   parent: DrawnUi.Draw.FluentExtensions
@@ -33362,6 +33978,375 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_
+  name: WithAccessibilityButton<T>(T)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T)
+  name.vb: WithAccessibilityButton(Of T)(T)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<T>(T, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityPressed(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  name.vb: WithAccessibilityText(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   isExternal: true
@@ -36772,3 +37757,4 @@ references:
   name: Brush
   nameWithType: Brush
   fullName: Microsoft.Maui.Controls.Brush
+

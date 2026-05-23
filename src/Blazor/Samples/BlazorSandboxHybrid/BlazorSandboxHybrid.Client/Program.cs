@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-DrawnExtensions.RegisterFont("FontText", FontWeight.Regular, "/fonts/OpenSans-Regular.ttf");
-DrawnExtensions.RegisterFont("FontTextTitle", "/fonts/OpenSans-Semibold.ttf");
-
-var host = await builder.UseDrawnUiAsync(new DrawnUiStartupSettings
-{
-    UseDesktopKeyboard = true
-});
-
-await host.RunAsync();
+await Super.UseDrawnUi(builder)
+    .WithOptions(o => o.UseDesktopKeyboard = true)
+    .ConfigureFonts(fonts =>
+    {
+        fonts.AddFont("/fonts/OpenSans-Regular.ttf",  "FontText",      FontWeight.Regular);
+        fonts.AddFont("/fonts/OpenSans-Semibold.ttf", "FontTextTitle");
+    })
+    .BuildAndRunAsync();

@@ -332,7 +332,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScrollCells.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaScroll
     path: ../src/Shared/Draw/Scroll/SkiaScrollCells.cs
@@ -344,11 +344,11 @@ items:
     content: >-
       [ContentProperty("Content")]
 
-      public class SkiaScroll : SkiaControl, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
+      public class SkiaScroll : SkiaControl, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
     content.vb: >-
       <ContentProperty("Content")>
 
-      Public Class SkiaScroll Inherits SkiaControl Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
+      Public Class SkiaScroll Inherits SkiaControl Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -377,6 +377,7 @@ items:
   - System.Collections.Generic.ICollection{Microsoft.Maui.IView}
   - System.Collections.Generic.IEnumerable{Microsoft.Maui.IView}
   - System.Collections.IEnumerable
+  - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.IHasAfterEffects
   - DrawnUi.Draw.ISkiaControl
   - DrawnUi.Draw.IDrawnBase
@@ -770,6 +771,18 @@ items:
   - DrawnUi.Draw.SkiaControl.ArrangedDestination
   - DrawnUi.Draw.SkiaControl.LayoutIsReady
   - DrawnUi.Draw.SkiaControl.Disposing
+  - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.AccessibilityHint
+  - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
   - DrawnUi.Draw.SkiaControl.LayoutReady
   - DrawnUi.Draw.SkiaControl.CheckIsGhost
@@ -1211,6 +1224,12 @@ items:
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.StartY``1
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Draw.SkiaScroll,System.Object},System.String[])
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Draw.SkiaScroll,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithCache``1(DrawnUi.Draw.SkiaCacheType)
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithColumnSpan``1(System.Int32)
@@ -1261,7 +1280,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThesholdSwipeOnUp
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1270,7 +1289,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Min velocity in points/sec to flee/swipe when finger is up
-  example: []
+  example: ""
   syntax:
     content: public static float ThesholdSwipeOnUp
     return:
@@ -1290,7 +1309,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollVelocityThreshold
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1299,7 +1318,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To filter micro-gestures while manually panning
-  example: []
+  example: ""
   syntax:
     content: public static float ScrollVelocityThreshold
     return:
@@ -1319,7 +1338,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SystemAnimationTimeSecs
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1328,7 +1347,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time for the snapping animations as well as the scroll to top etc animations..
-  example: []
+  example: ""
   syntax:
     content: public static float SystemAnimationTimeSecs
     return:
@@ -1348,7 +1367,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1360,7 +1379,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: []
+  example: ""
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1380,7 +1399,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InteractionState
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1409,7 +1428,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateVisibleIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1417,7 +1436,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public virtual void UpdateVisibleIndex()
     content.vb: Public Overridable Sub UpdateVisibleIndex()
@@ -1438,7 +1457,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HasContentToScroll
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1467,7 +1486,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderStickyProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1494,7 +1513,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderSticky
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1503,7 +1522,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should the header stay in place when content is scrolling
-  example: []
+  example: ""
   syntax:
     content: public bool HeaderSticky { get; set; }
     parameters: []
@@ -1525,7 +1544,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ParallaxOverscrollEnabledProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1552,7 +1571,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ParallaxOverscrollEnabled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1581,7 +1600,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderBehindProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1608,7 +1627,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderBehind
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1637,7 +1656,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentOffsetProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1664,7 +1683,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1693,7 +1712,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1720,7 +1739,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Header
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1749,7 +1768,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderParallaxRatioProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1776,7 +1795,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderParallaxRatio
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1805,7 +1824,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FooterProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1832,7 +1851,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Footer
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1861,7 +1880,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshIndicatorProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1888,7 +1907,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshIndicator
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1917,7 +1936,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InternalRefreshIndicator
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1946,7 +1965,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderedScrollProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -1973,7 +1992,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderedScroll
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2002,7 +2021,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderedScrollIsAnimatedProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2029,7 +2048,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderedScrollIsAnimated
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2058,7 +2077,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshEnabledProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2085,7 +2104,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshEnabled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2114,7 +2133,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRefreshingProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2141,7 +2160,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRefreshing
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2170,7 +2189,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshCommandProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2197,7 +2216,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshCommand
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2226,7 +2245,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshDistanceLimitProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2253,7 +2272,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshDistanceLimit
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2262,7 +2281,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applyed to RefreshView
-  example: []
+  example: ""
   syntax:
     content: public float RefreshDistanceLimit { get; set; }
     parameters: []
@@ -2284,7 +2303,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshShowDistanceProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2311,7 +2330,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RefreshShowDistance
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2320,7 +2339,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applyed to RefreshView, distance in points where the refresh view will stop moving and stay here animating
-  example: []
+  example: ""
   syntax:
     content: public float RefreshShowDistance { get; set; }
     parameters: []
@@ -2342,7 +2361,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollingEasing
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2369,7 +2388,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _velocitySwipe
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2396,7 +2415,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _velocitySwipeRatio
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2423,7 +2442,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _panningLastDelta
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2450,7 +2469,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _panningCurrentOffsetPts
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2477,7 +2496,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlayEdgeGlowAnimation
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2515,7 +2534,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OverscrollDistance
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2524,7 +2543,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Units
-  example: []
+  example: ""
   syntax:
     content: public Vector2 OverscrollDistance { get; set; }
     parameters: []
@@ -2546,7 +2565,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollLocked
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2575,7 +2594,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityTrackerPan
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2602,7 +2621,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityTrackerScale
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2629,7 +2648,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentOffsetBounds
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2638,7 +2657,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: There are the bounds the scroll offset can go to.. This is NOT the bounds for the whole content.
-  example: []
+  example: ""
   syntax:
     content: protected SKRect ContentOffsetBounds { get; set; }
     parameters: []
@@ -2660,7 +2679,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClampOffsetWithRubberBand
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2669,7 +2688,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used to clamp while panning while finger is down
-  example: []
+  example: ""
   syntax:
     content: protected virtual Vector2 ClampOffsetWithRubberBand(float x, float y, SKRect contentOffsetBounds)
     parameters:
@@ -2703,7 +2722,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Elastic
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2730,7 +2749,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClampOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2770,7 +2789,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RespondsToGesturesProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2797,7 +2816,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RespondsToGestures
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2806,7 +2825,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If disabled will not scroll using gestures. Scrolling will still be possible by code.
-  example: []
+  example: ""
   syntax:
     content: public bool RespondsToGestures { get; set; }
     parameters: []
@@ -2828,7 +2847,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanScrollUsingHeaderProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2855,7 +2874,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanScrollUsingHeader
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2864,7 +2883,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If disabled will not scroll using gestures. Scrolling will still be possible by code.
-  example: []
+  example: ""
   syntax:
     content: public bool CanScrollUsingHeader { get; set; }
     parameters: []
@@ -2886,7 +2905,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentGesturesHit
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2913,7 +2932,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGestureForChild
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2921,7 +2940,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool IsGestureForChild(ISkiaGestureListener listener, float x, float y)
     parameters:
@@ -2953,7 +2972,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChildWasPanning
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -2982,7 +3001,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChildWasTapped
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3011,7 +3030,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsContentActive
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3040,7 +3059,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SwipeVelocityAccumulator
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3069,7 +3088,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UsesRenderingTree
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3077,7 +3096,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool UsesRenderingTree { get; }
     parameters: []
@@ -3100,7 +3119,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _vectorAnimatorBounceX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3127,7 +3146,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _vectorAnimatorBounceY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3154,7 +3173,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _animatorFlingX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3163,7 +3182,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fling with deceleration
-  example: []
+  example: ""
   syntax:
     content: protected ScrollFlingAnimator _animatorFlingX
     return:
@@ -3183,7 +3202,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _animatorFlingY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3192,7 +3211,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fling with deceleration
-  example: []
+  example: ""
   syntax:
     content: protected ScrollFlingAnimator _animatorFlingY
     return:
@@ -3212,7 +3231,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scrollerX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3221,7 +3240,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Direct scroller for ordered scroll, snap etc
-  example: []
+  example: ""
   syntax:
     content: protected RangeAnimator _scrollerX
     return:
@@ -3241,7 +3260,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scrollerY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3250,7 +3269,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Direct scroller for ordered scroll, snap etc
-  example: []
+  example: ""
   syntax:
     content: protected RangeAnimator _scrollerY
     return:
@@ -3270,7 +3289,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scrollMinX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3279,7 +3298,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Units
-  example: []
+  example: ""
   syntax:
     content: protected float _scrollMinX
     return:
@@ -3299,7 +3318,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scrollMinY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3308,7 +3327,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Units
-  example: []
+  example: ""
   syntax:
     content: protected float _scrollMinY
     return:
@@ -3328,7 +3347,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scrollMaxX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3355,7 +3374,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scrollMaxY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3382,7 +3401,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StopScrolling
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3408,7 +3427,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _minVelocitySnap
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3435,7 +3454,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: snapMinimumVelocity
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3444,7 +3463,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: POINTS per sec
-  example: []
+  example: ""
   syntax:
     content: protected float snapMinimumVelocity
     return:
@@ -3464,7 +3483,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BouncesProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3473,7 +3492,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ToDo adapt this to same logic as ScrollLooped has !
-  example: []
+  example: ""
   syntax:
     content: public static readonly BindableProperty BouncesProperty
     return:
@@ -3493,7 +3512,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Bounces
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3502,7 +3521,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should the scroll bounce at edges. Set to false if you want this scroll to let the parent SkiaDrawer respond to scroll when the child scroll reached bounds.
-  example: []
+  example: ""
   syntax:
     content: public bool Bounces { get; set; }
     parameters: []
@@ -3524,7 +3543,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RubberDampingProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3551,7 +3570,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RubberDamping
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3560,7 +3579,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If Bounce is enabled this basically controls how less the scroll will bounce when displaced from limit by finger or inertia. Default is 0.55.
-  example: []
+  example: ""
   syntax:
     content: public double RubberDamping { get; set; }
     parameters: []
@@ -3582,7 +3601,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RubberEffectProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3609,7 +3628,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RubberEffect
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3618,7 +3637,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If Bounce is enabled this basically controls how far from the limit can the scroll be elastically offset by finger or inertia. Default is 0.55.
-  example: []
+  example: ""
   syntax:
     content: public double RubberEffect { get; set; }
     parameters: []
@@ -3640,7 +3659,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SnapBouncingIfVelocityLessThan
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3669,7 +3688,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SnapBouncingIfVelocityLessThanProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3696,7 +3715,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AutoScrollingSpeedMsProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3723,7 +3742,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AutoScrollingSpeedMs
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3732,7 +3751,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For snap and ordered scrolling
-  example: []
+  example: ""
   syntax:
     content: public int AutoScrollingSpeedMs { get; set; }
     parameters: []
@@ -3754,7 +3773,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrictionScrolled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3770,7 +3789,7 @@ items:
     Usually you would set higher friction for ScrollView-like scrolls and much lower for CollectionView-like scrolls (0.1 or 0.2).
 
     For a picker: 05 - 0.9.
-  example: []
+  example: ""
   syntax:
     content: public float FrictionScrolled { get; set; }
     parameters: []
@@ -3792,7 +3811,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrictionScrolledProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3819,7 +3838,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IgnoreWrongDirectionProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3846,7 +3865,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IgnoreWrongDirection
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3855,7 +3874,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will ignore gestures of the wrong direction, like if this Orientation is Horizontal will ignore gestures with vertical direction velocity. Default is False.
-  example: []
+  example: ""
   syntax:
     content: public bool IgnoreWrongDirection { get; set; }
     parameters: []
@@ -3877,7 +3896,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetScrollPositionOnContentSizeChangedProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3904,7 +3923,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetScrollPositionOnContentSizeChanged
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3933,7 +3952,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChangeVelocityScrolled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3942,7 +3961,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For when the finger is up and swipe is detected
-  example: []
+  example: ""
   syntax:
     content: public float ChangeVelocityScrolled { get; set; }
     parameters: []
@@ -3964,7 +3983,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChangeVelocityScrolledProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -3991,7 +4010,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxVelocityProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4018,7 +4037,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxVelocity
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4027,7 +4046,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Limit user input velocity
-  example: []
+  example: ""
   syntax:
     content: public float MaxVelocity { get; set; }
     parameters: []
@@ -4049,7 +4068,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxBounceVelocityProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4076,7 +4095,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxBounceVelocity
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4085,7 +4104,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Limit bounce velocity
-  example: []
+  example: ""
   syntax:
     content: public float MaxBounceVelocity { get; set; }
     parameters: []
@@ -4107,7 +4126,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChangeDistancePanned
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4116,7 +4135,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For when the finger is down and panning
-  example: []
+  example: ""
   syntax:
     content: public float ChangeDistancePanned { get; set; }
     parameters: []
@@ -4138,7 +4157,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChangeDistancePannedProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4165,7 +4184,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4194,7 +4213,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FirstVisibleIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4223,7 +4242,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastVisibleIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4252,7 +4271,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IndexChanged
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4279,7 +4298,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentIndexHit
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4308,7 +4327,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DetectIndexChildStartAt
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4335,7 +4354,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DetectIndexChildAt
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4362,7 +4381,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DetectIndexChildEndAt
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4389,7 +4408,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetDetectIndexChildPoint
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4418,7 +4437,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateVisibleIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4427,7 +4446,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculates CurrentIndex
-  example: []
+  example: ""
   syntax:
     content: public virtual ContainsPointResult CalculateVisibleIndex(RelativePositionType option)
     parameters:
@@ -4451,7 +4470,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateVisibleIndexes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4460,7 +4479,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will calculate first/last visible and current index, if tracked with TrackIndexPosition.
-  example: []
+  example: ""
   syntax:
     content: public virtual void CalculateVisibleIndexes()
     content.vb: Public Overridable Sub CalculateVisibleIndexes()
@@ -4479,7 +4498,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetVisibleIndexes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4517,7 +4536,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetItemIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4557,7 +4576,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClampedOrderedScrollOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4588,7 +4607,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateScrollOffsetForIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4597,7 +4616,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ToDo this actually work only for Stack and Row
-  example: []
+  example: ""
   syntax:
     content: public virtual SKPoint CalculateScrollOffsetForIndex(int index, RelativePositionType option)
     parameters:
@@ -4629,7 +4648,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckNeedToSnap
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4657,7 +4676,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Snap
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4689,7 +4708,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SnapToChildrenProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4716,7 +4735,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SnapToChildren
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4725,7 +4744,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether should snap to children after scrolling stopped
-  example: []
+  example: ""
   syntax:
     content: public SnapToChildrenType SnapToChildren { get; set; }
     parameters: []
@@ -4747,7 +4766,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TrackIndexPositionProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4774,7 +4793,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TrackIndexPosition
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4783,7 +4802,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The position in viewport you want to track for content layout child index
-  example: []
+  example: ""
   syntax:
     content: public RelativePositionType TrackIndexPosition { get; set; }
     parameters: []
@@ -4807,7 +4826,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TrackIndexPositionOffsetProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4834,7 +4853,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TrackIndexPositionOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4863,7 +4882,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadMoreCommandProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4890,7 +4909,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadMoreCommand
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4919,7 +4938,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadMoreOffsetProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4946,7 +4965,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadMoreOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -4975,7 +4994,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastContentSizePixels
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5002,7 +5021,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastMeasuredSizePixels
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5029,7 +5048,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyContentSize
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5055,7 +5074,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasured
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5063,7 +5082,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnMeasured()
     content.vb: Protected Overrides Sub OnMeasured()
@@ -5083,7 +5102,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PassGestureToChildren
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5116,7 +5135,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5145,7 +5164,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5174,7 +5193,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetZoom
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5208,7 +5227,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomScaleInternal
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5217,7 +5236,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: We might have difference between pinch scale and manually set zoom.
-  example: []
+  example: ""
   syntax:
     content: protected double ZoomScaleInternal { get; set; }
     parameters: []
@@ -5239,7 +5258,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeaderSize
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5266,7 +5285,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FooterSize
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5293,7 +5312,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureContent
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5302,7 +5321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculate the value that will be set to ContentSize after that
-  example: []
+  example: ""
   syntax:
     content: protected virtual ScaledSize MeasureContent(float width, float height, float scale)
     parameters:
@@ -5337,7 +5356,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureInternal
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5345,7 +5364,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override ScaledSize MeasureInternal(MeasureRequest request)
     parameters:
@@ -5370,7 +5389,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Viewport
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5378,7 +5397,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public ScaledRect Viewport { get; protected set; }
     parameters: []
@@ -5402,7 +5421,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetMeasured
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5411,7 +5430,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Parameters in PIXELS. sets IsLayoutDirty = true;
-  example: []
+  example: ""
   syntax:
     content: protected override ScaledSize SetMeasured(float width, float height, bool widthCut, bool heightCut, float scale)
     parameters:
@@ -5451,7 +5470,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetContentAvailableRect
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5460,7 +5479,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In PIXELS
-  example: []
+  example: ""
   syntax:
     content: protected virtual SKRect GetContentAvailableRect(SKRect destination)
     parameters:
@@ -5486,7 +5505,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InternalViewportOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5495,7 +5514,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is where the view port is actually is after being scrolled. We used this value to offset viewport on drawing the last frame
-  example: []
+  example: ""
   syntax:
     content: public ScaledPoint InternalViewportOffset { get; protected set; }
     parameters: []
@@ -5517,7 +5536,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentViewport
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5526,7 +5545,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: []
+  example: ""
   syntax:
     content: public ScaledRect ContentViewport { get; protected set; }
     parameters: []
@@ -5548,7 +5567,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdjustHeaderParallax
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5574,7 +5593,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PositionViewport
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5590,7 +5609,7 @@ items:
     Here we can construct anything according current offset before painting.
 
     Creates a valid ViewportRect inside.
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool PositionViewport(SKRect destination, SKPoint offsetPixels, float viewportScale, float scale, bool forceSyncOffsets)
     parameters:
@@ -5630,7 +5649,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendScrolled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5656,7 +5675,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendScrollingEnded
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5682,7 +5701,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrollCompleted
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5691,7 +5710,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This triggers smapping checks and actions
-  example: []
+  example: ""
   syntax:
     content: protected virtual void OnScrollCompleted()
     content.vb: Protected Overridable Sub OnScrollCompleted()
@@ -5710,7 +5729,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrollingStateChanged
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5742,7 +5761,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdjustCache
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5768,7 +5787,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsScrolling
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5797,7 +5816,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HideRefreshIndicator
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5823,7 +5842,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrolled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5832,7 +5851,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Notify current scroll offset to some dependent views.
-  example: []
+  example: ""
   syntax:
     content: public virtual void OnScrolled()
     content.vb: Public Overridable Sub OnScrolled()
@@ -5851,7 +5870,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollingEnded
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5878,7 +5897,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Scrolled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5905,7 +5924,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UsingRefreshDistanceLimit
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5934,7 +5953,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShowRefreshIndicatorForced
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5960,7 +5979,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyScrollPositionToRefreshViewUnsafe
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -5986,7 +6005,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckNeedRefresh
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6012,7 +6031,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetIsRefreshing
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6046,7 +6065,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintViews
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6055,7 +6074,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: []
+  example: ""
   syntax:
     content: protected virtual void PaintViews(DrawingContext ctx)
     parameters:
@@ -6078,7 +6097,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6092,7 +6111,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: []
+  example: ""
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -6116,7 +6135,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6124,7 +6143,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -6147,7 +6166,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetScrollOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6156,7 +6175,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pass position in PIXELS
-  example: []
+  example: ""
   syntax:
     content: protected virtual void SetScrollOffset(SKRect destination, float posX, float posY, float zoomedScale, float scale, bool forceSyncOffsets)
     parameters:
@@ -6197,7 +6216,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ParallaxComputedValue
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6226,7 +6245,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawViews
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6238,7 +6257,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: []
+  example: ""
   syntax:
     content: protected override int DrawViews(DrawingContext context)
     parameters:
@@ -6265,7 +6284,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentAvailableSpace
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6294,7 +6313,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentRectWithOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6303,7 +6322,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The viewport for content
-  example: []
+  example: ""
   syntax:
     content: public ScaledRect ContentRectWithOffset { get; protected set; }
     parameters: []
@@ -6325,7 +6344,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6354,7 +6373,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Init
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6380,7 +6399,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetChildren
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6388,7 +6407,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -6414,7 +6433,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyBindingContext
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6423,7 +6442,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: []
+  example: ""
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -6443,7 +6462,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetContent
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6452,7 +6471,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Content property for direct access
-  example: []
+  example: ""
   syntax:
     content: protected virtual void SetContent(SkiaControl view)
     parameters:
@@ -6475,7 +6494,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutReady
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6484,7 +6503,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: []
+  example: ""
   syntax:
     content: protected override void OnLayoutReady()
     content.vb: Protected Overrides Sub OnLayoutReady()
@@ -6504,7 +6523,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetHeader
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6533,7 +6552,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFooter
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6562,7 +6581,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollingSpeedMsProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6589,7 +6608,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollingSpeedMs
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6598,7 +6617,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by range scroller (ScrollToX, ScrollToY)
-  example: []
+  example: ""
   syntax:
     content: public int ScrollingSpeedMs { get; set; }
     parameters: []
@@ -6620,7 +6639,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomLockedProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6647,7 +6666,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomLocked
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6676,7 +6695,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomMinProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6703,7 +6722,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomMin
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6732,7 +6751,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomMaxProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6759,7 +6778,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ZoomMax
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6788,7 +6807,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewportZoomProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6815,7 +6834,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewportZoom
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6844,7 +6863,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityImageLoaderLockProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6871,7 +6890,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VelocityImageLoaderLock
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6880,7 +6899,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Range at which the image loader will stop or resume loading images while scrolling
-  example: []
+  example: ""
   syntax:
     content: public double VelocityImageLoaderLock { get; set; }
     parameters: []
@@ -6902,7 +6921,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContentProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6929,7 +6948,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Content
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6937,7 +6956,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl Content { get; set; }
     parameters: []
@@ -6961,7 +6980,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrientationProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6988,7 +7007,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Orientation
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -6997,7 +7016,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: <summary>Gets or sets the scrolling direction of the ScrollView. This is a bindable property.</summary>
-  example: []
+  example: ""
   syntax:
     content: public ScrollOrientation Orientation { get; set; }
     parameters: []
@@ -7019,7 +7038,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollTypeProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7046,7 +7065,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollType
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7055,7 +7074,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: <summary>Gets or sets the scrolling direction of the ScrollView. This is a bindable property.</summary>
-  example: []
+  example: ""
   syntax:
     content: public ViewportScrollType ScrollType { get; set; }
     parameters: []
@@ -7077,7 +7096,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptToKeyboardForProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7104,7 +7123,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptToKeyboardFor
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7133,7 +7152,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptToKeyboardSizeProperty
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7160,7 +7179,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptToKeyboardSize
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7189,7 +7208,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateNeededScrollForKeyboard
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7215,7 +7234,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AdaptToKeyboard
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7241,7 +7260,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPropertyChanged
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7250,7 +7269,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: []
+  example: ""
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = "")
     parameters:
@@ -7277,7 +7296,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateViewport
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7286,7 +7305,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicated that wants to be re-measured without invalidating cache
-  example: []
+  example: ""
   syntax:
     content: public override void InvalidateViewport()
     content.vb: Public Overrides Sub InvalidateViewport()
@@ -7306,7 +7325,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillClipBounds
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7315,7 +7334,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used to check whether to apply IsClippedToBounds property
-  example: []
+  example: ""
   syntax:
     content: public override bool WillClipBounds { get; }
     parameters: []
@@ -7338,7 +7357,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDrawn
     path: ../src/Shared/Draw/Scroll/SkiaScroll.cs
@@ -7367,7 +7386,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReverseGestures
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7396,7 +7415,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGestureForChild
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7404,7 +7423,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool IsGestureForChild(SkiaControl child, SkiaGesturesParameters args)
     parameters:
@@ -7431,7 +7450,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGestureForChild
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7439,7 +7458,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool IsGestureForChild(SkiaControlWithRect child, SKPoint point)
     parameters:
@@ -7466,7 +7485,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGestureForChild
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7474,7 +7493,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool IsGestureForChild(ISkiaGestureListener listener, SKPoint point)
     parameters:
@@ -7501,7 +7520,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InContact
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7528,7 +7547,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LockGesturesUntilDown
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7555,7 +7574,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _pannedOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7582,7 +7601,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _pannedVelocity
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7609,7 +7628,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _pannedVelocityRemaining
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7636,7 +7655,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WasSwiping
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7645,7 +7664,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Had no panning just down+up with velocity more than threshold
-  example: []
+  example: ""
   syntax:
     content: protected bool WasSwiping { get; set; }
     parameters: []
@@ -7667,7 +7686,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsUserFocused
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7696,7 +7715,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsUserPanning
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7725,7 +7744,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HadDown
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7754,7 +7773,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetOverscroll
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7780,7 +7799,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetPan
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7806,7 +7825,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StopVelocityPanning
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7832,7 +7851,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WheelLineSize
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7841,7 +7860,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: How many points (not pixels) we want to scroll for 1 wheel line
-  example: []
+  example: ""
   syntax:
     content: public static float WheelLineSize
     return:
@@ -7861,7 +7880,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClampOffsetHard
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7870,7 +7889,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: "\"Just clamp\". Currently used for wheel scroll."
-  example: []
+  example: ""
   syntax:
     content: protected virtual Vector2 ClampOffsetHard(float x, float y)
     parameters:
@@ -7902,7 +7921,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7910,7 +7929,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -7937,7 +7956,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGesturesForPlanes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7946,7 +7965,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Process gestures across all visible planes in correct Z-order
-  example: []
+  example: ""
   syntax:
     content: protected virtual ISkiaGestureListener ProcessGesturesForPlanes(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -7972,7 +7991,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyPannedOffsetWithVelocity
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Gestures.cs
@@ -7981,7 +8000,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies panning on draw every frame, to be able to smoothly animate frames between panning changes.
-  example: []
+  example: ""
   syntax:
     content: protected virtual void ApplyPannedOffsetWithVelocity(SkiaDrawingContext ctx)
     parameters:
@@ -8004,7 +8023,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaneRed
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8031,7 +8050,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaneGreen
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8058,7 +8077,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaneBlue
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8085,7 +8104,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedMeasure
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8093,7 +8112,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override bool NeedMeasure { get; set; }
     parameters: []
@@ -8116,7 +8135,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateInternal
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8125,7 +8144,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
-  example: []
+  example: ""
   syntax:
     content: public override void InvalidateInternal()
     content.vb: Public Overrides Sub InvalidateInternal()
@@ -8145,7 +8164,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidatePlanes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8171,7 +8190,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeVirtualPlanes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8197,7 +8216,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateByChild
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8206,7 +8225,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To track dirty area when Updating parent
-  example: []
+  example: ""
   syntax:
     content: public override void UpdateByChild(SkiaControl control)
     parameters:
@@ -8229,7 +8248,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckAndInvalidateDirtyPlanes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8238,7 +8257,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Check dirty children and invalidate specific planes that contain them
-  example: []
+  example: ""
   syntax:
     content: protected virtual void CheckAndInvalidateDirtyPlanes()
     content.vb: Protected Overridable Sub CheckAndInvalidateDirtyPlanes()
@@ -8257,7 +8276,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HasDirtyChildren
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8285,7 +8304,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FindPlaneContainingChild
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8294,7 +8313,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines which plane contains the given child control by checking render trees
-  example: []
+  example: ""
   syntax:
     content: protected virtual Plane FindPlaneContainingChild(SkiaControl control)
     parameters:
@@ -8318,7 +8337,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseVirtual
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8347,7 +8366,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaneCurrent
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8376,7 +8395,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaneForward
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8405,7 +8424,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaneBackward
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8434,7 +8453,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _planeWidth
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8461,7 +8480,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _planeHeight
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8488,7 +8507,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _planePrepareThreshold
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8515,7 +8534,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOnScreenVisibleArea
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8529,7 +8548,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: []
+  example: ""
   syntax:
     content: public override ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -8558,7 +8577,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializePlanes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8584,7 +8603,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TriggerPreparePlane
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8618,7 +8637,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPlaneById
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8652,7 +8671,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrolledForPlanes
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8661,7 +8680,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Viewport scrolled
-  example: []
+  example: ""
   syntax:
     content: protected virtual void OnScrolledForPlanes()
     content.vb: Protected Overridable Sub OnScrolledForPlanes()
@@ -8680,7 +8699,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderToPreparePlaneForwardInBackground
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8709,7 +8728,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderToPreparePlaneBackwardInBackground
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8738,7 +8757,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldSwapDown
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8747,7 +8766,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines if we should swap down based on visual position and content boundaries
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool ShouldSwapDown(SKRect rectForward)
     parameters:
@@ -8771,7 +8790,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldSwapUp
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8780,7 +8799,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines if we should swap up based on visual position and content boundaries
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool ShouldSwapUp(SKRect rectBackward)
     parameters:
@@ -8804,7 +8823,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawVirtual
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8813,7 +8832,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is called when scrolling changes when in UseVirtual mode, override this to draw custom content
-  example: []
+  example: ""
   syntax:
     content: public virtual void DrawVirtual(DrawingContext context)
     parameters:
@@ -8836,7 +8855,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateViewportForPlane
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8845,7 +8864,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculate the specific viewport area this plane should render
-  example: []
+  example: ""
   syntax:
     content: protected virtual SKRect CalculateViewportForPlane(Plane plane, SKPoint offsetToUse)
     parameters:
@@ -8871,7 +8890,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreparePlane
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8902,7 +8921,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintOnPlane
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8933,7 +8952,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGestureInPlane
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8942,7 +8961,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Check if gesture point intersects with plane's visible area
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool IsGestureInPlane(Plane plane, PointF location)
     parameters:
@@ -8968,7 +8987,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGesturesForPlane
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Planes.cs
@@ -8977,7 +8996,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Process gestures for a specific plane using its rendering tree
-  example: []
+  example: ""
   syntax:
     content: protected virtual ISkiaGestureListener ProcessGesturesForPlane(Plane plane, SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -9005,7 +9024,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewportOffsetY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9034,7 +9053,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _viewportOffsetY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9061,7 +9080,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewportOffsetX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9090,7 +9109,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _viewportOffsetX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9117,7 +9136,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollProgressY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9126,7 +9145,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 0.0 - 1.0
-  example: []
+  example: ""
   syntax:
     content: public double ScrollProgressY { get; }
     parameters: []
@@ -9148,7 +9167,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollProgressX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9157,7 +9176,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 0.0 - 1.0
-  example: []
+  example: ""
   syntax:
     content: public double ScrollProgressX { get; }
     parameters: []
@@ -9179,7 +9198,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeViewport
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9211,7 +9230,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsViewportReady
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9240,7 +9259,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollingDirection
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9269,7 +9288,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckAndSetIsStillAnimating
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9295,7 +9314,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeScroller
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9327,7 +9346,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollToX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9336,7 +9355,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Range scroller, offset in Units
-  example: []
+  example: ""
   syntax:
     content: public void ScrollToX(float offset, bool animate)
     parameters:
@@ -9365,7 +9384,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollToY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9374,7 +9393,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Range scroller, offset in Units
-  example: []
+  example: ""
   syntax:
     content: protected void ScrollToY(float offset, bool animate)
     parameters:
@@ -9403,7 +9422,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrollerStarted
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9429,7 +9448,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrollerUpdated
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9455,7 +9474,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BounceIfNeeded
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9484,7 +9503,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnScrollerStopped
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9510,7 +9529,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteDelayedScrollOrders
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9536,7 +9555,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetClosestSidePoint
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9545,7 +9564,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This uses whole viewport size, do not use this for snapping
-  example: []
+  example: ""
   syntax:
     content: public static SKPoint GetClosestSidePoint(SKPoint overscrollPoint, SKRect contentRect, SKSize viewportSize)
     parameters:
@@ -9577,7 +9596,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClosestPoint
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9610,7 +9629,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OffsetOk
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9619,7 +9638,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether the scrolling offset in inside scrollable bounds or not
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool OffsetOk(Vector2 offset)
     parameters:
@@ -9645,7 +9664,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OverScrolled
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9674,7 +9693,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ptsContentWidth
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9701,7 +9720,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ptsContentHeight
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9728,7 +9747,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetContentOffsetBounds
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9742,7 +9761,7 @@ items:
     This is NOT the bounds for the whole content.
 
     In POINTS not pixels!!!
-  example: []
+  example: ""
   syntax:
     content: public virtual SKRect GetContentOffsetBounds()
     return:
@@ -9763,7 +9782,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateOverscrollDistance
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9772,7 +9791,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In POINTS not pixels!!!
-  example: []
+  example: ""
   syntax:
     content: public Vector2 CalculateOverscrollDistance(float x, float y)
     parameters:
@@ -9804,7 +9823,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _minVelocity
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9831,7 +9850,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DecelerationRatio
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9860,7 +9879,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateFriction
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9886,7 +9905,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartToFlingFrom
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9924,7 +9943,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FlingFrom
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -9962,7 +9981,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FlingToAuto
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10002,7 +10021,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FlingTo
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10042,7 +10061,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrepareToFlingAfterInitialized
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10073,7 +10092,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FlingAfterInitialized
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10104,7 +10123,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderedScrollTo
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10116,7 +10135,7 @@ items:
     We might order a scroll before the control was drawn, so it's a kind of startup position
 
     saved every time one calls ScrollTo
-  example: []
+  example: ""
   syntax:
     content: protected ScrollToPointOrder OrderedScrollTo
     return:
@@ -10136,7 +10155,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrderedScrollToIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10148,7 +10167,7 @@ items:
     We might order a scroll before the control was drawn, so it's a kind of startup position
 
     saved every time one calls ScrollToIndex
-  example: []
+  example: ""
   syntax:
     content: protected ScrollToIndexOrder OrderedScrollToIndex
     return:
@@ -10168,7 +10187,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollToOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10177,7 +10196,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In Units
-  example: []
+  example: ""
   syntax:
     content: protected void ScrollToOffset(Vector2 targetOffset, float maxTimeSecs)
     parameters:
@@ -10204,7 +10223,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveToY
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10236,7 +10255,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveToX
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10268,7 +10287,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollToIndex
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10306,7 +10325,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteScrollToOrder
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10334,7 +10353,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteScrollToIndexOrder
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10362,7 +10381,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetPosition
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10371,7 +10390,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Instant scroll to top
-  example: []
+  example: ""
   syntax:
     content: public virtual void ResetPosition()
     content.vb: Public Overridable Sub ResetPosition()
@@ -10390,7 +10409,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetContentOffset
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10399,7 +10418,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Easy-to-use helper around using a lower level ScrollTo function
-  example: []
+  example: ""
   syntax:
     content: public void SetContentOffset(Vector2 offset, bool animated, bool clamp)
     parameters:
@@ -10430,7 +10449,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollTo
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10438,7 +10457,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public virtual void ScrollTo(float x, float y, float maxSpeedSecs, bool clamp)
     parameters:
@@ -10471,7 +10490,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollToTop
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10503,7 +10522,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollToBottom
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10535,7 +10554,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Snapped
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10564,7 +10583,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsSnapping
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10593,7 +10612,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAnimating
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10622,7 +10641,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsBouncing
     path: ../src/Shared/Draw/Scroll/SkiaScroll.Scrolling.cs
@@ -10651,7 +10670,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScrollCells.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IncrementalMeasureAheadCount
     path: ../src/Shared/Draw/Scroll/SkiaScrollCells.cs
@@ -10680,7 +10699,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScrollCells.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IncrementalMeasureBatchSize
     path: ../src/Shared/Draw/Scroll/SkiaScrollCells.cs
@@ -10709,7 +10728,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScrollCells.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasurementTriggerDistance
     path: ../src/Shared/Draw/Scroll/SkiaScrollCells.cs
@@ -10738,7 +10757,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScrollCells.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckForIncrementalMeasurementTrigger
     path: ../src/Shared/Draw/Scroll/SkiaScrollCells.cs
@@ -10766,7 +10785,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Scroll/SkiaScrollCells.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TriggerIncrementalMeasurement
     path: ../src/Shared/Draw/Scroll/SkiaScrollCells.cs
@@ -11071,6 +11090,13 @@ references:
   name: IEnumerable
   nameWithType: IEnumerable
   fullName: System.Collections.IEnumerable
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
 - uid: DrawnUi.Draw.IHasAfterEffects
   commentId: T:DrawnUi.Draw.IHasAfterEffects
   parent: DrawnUi.Draw
@@ -18782,6 +18808,162 @@ references:
   name: Disposing
   nameWithType: SkiaControl.Disposing
   fullName: DrawnUi.Draw.SkiaControl.Disposing
+- uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  name: UnregisterAccessibility()
+  nameWithType: SkiaControl.UnregisterAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.UnregisterAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  commentId: M:DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  name: AccessibilityChanged()
+  nameWithType: SkiaControl.AccessibilityChanged()
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: SkiaControl.AccessibilityRole
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: SkiaControl.AccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityHint
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityHint
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: SkiaControl.AccessibilityHint
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityHint
+- uid: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: SkiaControl.IsAccessibilityElement
+  fullName: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  name: GetAccessibilityPixelRect()
+  nameWithType: SkiaControl.GetAccessibilityPixelRect()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: SkiaControl.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: SkiaControl.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  name: OnAccessibilityUnregistered()
+  nameWithType: SkiaControl.OnAccessibilityUnregistered()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  name: NotifyAccessibility()
+  nameWithType: SkiaControl.NotifyAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.NotifyAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsLayoutReady
   commentId: P:DrawnUi.Draw.SkiaControl.IsLayoutReady
   parent: DrawnUi.Draw.SkiaControl
@@ -31322,6 +31504,398 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<SkiaScroll>(SkiaScroll, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaScroll>(SkiaScroll, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaScroll>(DrawnUi.Draw.SkiaScroll, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaScroll)(SkiaScroll, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaScroll)(DrawnUi.Draw.SkiaScroll, String)
+  name.vb: WithAccessibilityButton(Of SkiaScroll)(SkiaScroll, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaScroll,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaScroll,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<SkiaScroll>(SkiaScroll, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaScroll>(SkiaScroll, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaScroll>(DrawnUi.Draw.SkiaScroll, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaScroll)(SkiaScroll, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaScroll)(DrawnUi.Draw.SkiaScroll, String, String)
+  name.vb: WithAccessibilityButton(Of SkiaScroll)(SkiaScroll, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaScroll,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaScroll,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<SkiaScroll>(SkiaScroll, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<SkiaScroll>(SkiaScroll, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<DrawnUi.Draw.SkiaScroll>(DrawnUi.Draw.SkiaScroll, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of SkiaScroll)(SkiaScroll, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of DrawnUi.Draw.SkiaScroll)(DrawnUi.Draw.SkiaScroll, Boolean?)
+  name.vb: WithAccessibilityPressed(Of SkiaScroll)(SkiaScroll, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaScroll,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaScroll,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<SkiaScroll>(SkiaScroll, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<SkiaScroll>(SkiaScroll, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<DrawnUi.Draw.SkiaScroll>(DrawnUi.Draw.SkiaScroll, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of SkiaScroll)(SkiaScroll, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of DrawnUi.Draw.SkiaScroll)(DrawnUi.Draw.SkiaScroll, String)
+  name.vb: WithAccessibilityText(Of SkiaScroll)(SkiaScroll, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaScroll,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaScroll,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaScroll>(SkiaScroll, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaScroll>(SkiaScroll, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaScroll>(DrawnUi.Draw.SkiaScroll, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaScroll)(SkiaScroll, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaScroll)(DrawnUi.Draw.SkiaScroll, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaScroll)(SkiaScroll, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaScroll,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaScroll,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaScroll>(SkiaScroll, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaScroll>(SkiaScroll, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaScroll>(DrawnUi.Draw.SkiaScroll, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaScroll)(SkiaScroll, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaScroll)(DrawnUi.Draw.SkiaScroll, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaScroll)(SkiaScroll, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaScroll,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaScroll,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   parent: DrawnUi.Draw.FluentExtensions
@@ -36389,6 +36963,344 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<T>(T, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityPressed(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  name.vb: WithAccessibilityText(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   isExternal: true
@@ -40666,3 +41578,4 @@ references:
   name: TriggerIncrementalMeasurement
   nameWithType: SkiaScroll.TriggerIncrementalMeasurement
   fullName: DrawnUi.Draw.SkiaScroll.TriggerIncrementalMeasurement
+

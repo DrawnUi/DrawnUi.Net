@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BuildWrapLayout
     path: ../src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
@@ -29,7 +29,7 @@ items:
     Implementation for LayoutType.Wrap
 
     TODO is seems that remaining space is sometimes not super correct, maybe it doesnt account for padding?..
-  example: []
+  example: ""
   syntax:
     content: 'public class SkiaLayout.BuildWrapLayout : StackLayoutStructure'
     content.vb: Public Class SkiaLayout.BuildWrapLayout Inherits StackLayoutStructure
@@ -66,7 +66,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Build
     path: ../src/Shared/Draw/Layout/SkiaLayout.BuildWrapLayout.cs
@@ -107,7 +107,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will measure children and build appropriate stack structure for the layout
-  example: []
+  example: ""
   syntax:
     content: public override ScaledSize Build(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -758,3 +758,4 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
+

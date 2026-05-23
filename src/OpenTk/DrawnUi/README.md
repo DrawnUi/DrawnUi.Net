@@ -55,16 +55,16 @@ window.Run();
 
 ---
 
-## Way 2 — Overlay Canvas in Existing App (`CanvasStandaloneHost`)
+## Way 2 — Overlay Canvas in Existing App (`CanvasHost`)
 
 Use this when you already have a `GameWindow` subclass (e.g., a 3D engine scene).  
-`CanvasStandaloneHost` owns the Skia surface lifecycle and exposes `Gestures` and `Input` sub-objects for routing.
+`CanvasHost` owns the Skia surface lifecycle and exposes `Gestures` and `Input` sub-objects for routing.
 
 ```csharp
 class MyGameWindow : GameWindow
 {
     private readonly Canvas _canvas;
-    private CanvasStandaloneHost? _host;
+    private CanvasHost? _host;
 
     public MyGameWindow(GameWindowSettings gs, NativeWindowSettings ns)
         : base(gs, ns)
@@ -72,7 +72,7 @@ class MyGameWindow : GameWindow
         _canvas = new Canvas
         {
             BackgroundColor = Colors.Transparent,  // overlay over your 3D scene
-            RenderingMode = RenderingModeType.Accelerated,
+            RenderingMode = RenderingModeType.AcceleratedRetained,  // skips canvas.Clear() so GL content underneath shows through
             UpdateMode = UpdateModeType.Dynamic,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
@@ -85,7 +85,7 @@ class MyGameWindow : GameWindow
         base.OnLoad();
         VSync = VSyncMode.On;
 
-        _host = new CanvasStandaloneHost(_canvas);
+        _host = new CanvasHost(_canvas);
 
         // For dynamic/event-driven apps: pass GLFW.PostEmptyEvent to wake the loop
         // For game loop (constant render with VSync): pass nothing
@@ -157,7 +157,7 @@ class MyGameWindow : GameWindow
 }
 ```
 
-`CanvasStandaloneHost`:
+`CanvasHost`:
 - Queries the primary monitor refresh rate and sets `Super.MaxFps` automatically  
 - Uses a relative timer so `DrawnGame`/animation delta starts near zero on first frame  
 - `Gestures` — routes mouse down/move/up to DrawnUI hit testing  
@@ -191,3 +191,7 @@ that scales the game viewport uniformly as the window resizes.
 
 `OpenTkGpuHost` in `src/OpenTk/Samples/OpenTkGpuHost/` demonstrates Way 1 with `UpdateMode = Dynamic`:  
 an event-driven UI app that sleeps between frames and wakes only on canvas invalidation.
+
+`OpenTkOverlay` in `src/OpenTk/Samples/OpenTkOverlay/` demonstrates Way 2 with `CanvasHost`:  
+a rotating colored 3D cube rendered with raw OpenGL, with a DrawnUI dialog panel overlaid on top.
+Gestures, text input, and live angle display are all routed through the standalone host.

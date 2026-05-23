@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/LayoutType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LayoutType
     path: ../src/Shared/Internals/Enums/LayoutType.cs
@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/LayoutType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Absolute
     path: ../src/Shared/Internals/Enums/LayoutType.cs
@@ -56,7 +56,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fastest rendering
-  example: []
+  example: ""
   syntax:
     content: Absolute = 0
     return:
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/LayoutType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Column
     path: ../src/Shared/Internals/Enums/LayoutType.cs
@@ -84,7 +84,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Vertical stack
-  example: []
+  example: ""
   syntax:
     content: Column = 1
     return:
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/LayoutType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Row
     path: ../src/Shared/Internals/Enums/LayoutType.cs
@@ -112,7 +112,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Horizontal stack
-  example: []
+  example: ""
   syntax:
     content: Row = 2
     return:
@@ -131,7 +131,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/LayoutType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Wrap
     path: ../src/Shared/Internals/Enums/LayoutType.cs
@@ -140,7 +140,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Think of wrap panel
-  example: []
+  example: ""
   syntax:
     content: Wrap = 3
     return:
@@ -159,7 +159,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/LayoutType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Grid
     path: ../src/Shared/Internals/Enums/LayoutType.cs
@@ -168,7 +168,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use usual grid properties like Grid.Stack, ColumnSpacing etc
-  example: []
+  example: ""
   syntax:
     content: Grid = 4
     return:
@@ -293,3 +293,4 @@ references:
   name: LayoutType
   nameWithType: LayoutType
   fullName: DrawnUi.Draw.LayoutType
+

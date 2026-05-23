@@ -27,7 +27,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PendulumAnimator
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -116,7 +116,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreatePendulum
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -144,7 +144,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -152,7 +152,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void Start(double delayMs = 0)
     parameters:
@@ -178,7 +178,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsOneDirectional
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -187,7 +187,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns absolute value, instead of going -/+ along the axis. Basically if true simulates bouncing.
-  example: []
+  example: ""
   syntax:
     content: public bool IsOneDirectional { get; set; }
     parameters: []
@@ -209,7 +209,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AirResistance
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -238,7 +238,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialVelocity
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -247,7 +247,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: the higher the faster will stop
-  example: []
+  example: ""
   syntax:
     content: public double InitialVelocity { get; set; }
     parameters: []
@@ -269,7 +269,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialAngle
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -298,7 +298,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetAmplitude
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -332,7 +332,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Amplitude
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -361,7 +361,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Gravity
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -390,7 +390,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TickFrame
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -399,7 +399,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time in NANOS
-  example: []
+  example: ""
   syntax:
     content: public override bool TickFrame(long frameTimeNanos)
     parameters:
@@ -429,7 +429,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -437,7 +437,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -457,7 +457,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/PendulumAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/PendulumAnimator.cs
@@ -1787,3 +1787,4 @@ references:
   - name: " "
   - name: T
   - name: )
+

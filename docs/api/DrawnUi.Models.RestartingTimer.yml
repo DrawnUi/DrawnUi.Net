@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RestartingTimer
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -63,7 +63,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRunning
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -72,7 +72,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Is actually running
-  example: []
+  example: ""
   syntax:
     content: public bool IsRunning { get; protected set; }
     parameters: []
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Kick
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -106,7 +106,7 @@ items:
     Starts the timer if not running or restarts it if already running,
 
     but only if the timer is active
-  example: []
+  example: ""
   syntax:
     content: public void Kick()
     content.vb: Public Sub Kick()
@@ -125,7 +125,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -134,7 +134,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Creates a new timer with the specified millisecond delay and callback
-  example: []
+  example: ""
   syntax:
     content: public RestartingTimer(uint ms, Action callback)
     parameters:
@@ -163,7 +163,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -172,7 +172,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Creates a new timer with the specified timespan delay and callback
-  example: []
+  example: ""
   syntax:
     content: public RestartingTimer(TimeSpan timespan, Action callback)
     parameters:
@@ -201,7 +201,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Restart
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -210,7 +210,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Restarts the timer by stopping it and starting it again
-  example: []
+  example: ""
   syntax:
     content: public void Restart()
     content.vb: Public Sub Restart()
@@ -229,7 +229,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -238,7 +238,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Starts the timer
-  example: []
+  example: ""
   syntax:
     content: protected void Start()
     content.vb: Protected Sub Start()
@@ -257,7 +257,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -266,7 +266,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Stops the timer
-  example: []
+  example: ""
   syntax:
     content: public void Stop()
     content.vb: Public Sub [Stop]()
@@ -285,7 +285,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: disposed
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -312,7 +312,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Helpers/RestartingTimer.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Internals/Helpers/RestartingTimer.cs
@@ -321,7 +321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Disposes the timer and releases resources
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -791,3 +791,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
+

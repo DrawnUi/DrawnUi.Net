@@ -4,17 +4,22 @@
     <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <Title>DrawnUI for OpenTK</Title>
     <PackageId>DrawnUi.OpenTk</PackageId>
-    <Description>OpenTK GPU host for DrawnUi.Net — native window with OpenGL context and SkiaSharp GPU surface. Supports Windows and Linux.</Description>
+    <Description>OpenTK GPU host for DrawnUI — native window with OpenGL context and SkiaSharp GPU surface. Supports Windows and Linux.</Description>
     <PackageTags>drawnui opentk opengl skia skiasharp desktop linux windows</PackageTags>
     <PackageIcon>icon128.png</PackageIcon>
     <CreatePackage>false</CreatePackage>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);OPENTK;NET;DRAWNUI_NET</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,11 +30,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Net\DrawnUi\DrawnUi.Net.csproj" />
+    <PackageReference Include="AppoMobi.Gestures" Version="3.10.4" />
+    <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
+    <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+    <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
+    <PackageReference Include="OpenTK" Version="4.9.4" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-preview.2.1" />
+    <PackageReference Include="SkiaSharp.Skottie" Version="4.147.0-preview.2.1" />
+    <PackageReference Include="Svg.Skia" Version="4.9.0" />
   </ItemGroup>
 
+  <!-- Net platform source files (same files DrawnUi.Net.csproj compiles) -->
   <ItemGroup>
-    <PackageReference Include="OpenTK" Version="4.9.4" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\Net\DrawnUi\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\..\Net\DrawnUi\obj\**\*.cs" />
+  </ItemGroup>
+
+  <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
+  <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
+
+  <ItemGroup>
+    <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
+    <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
+    <Compile Remove="C:\Dev\Cases\GitHub\DrawnUi\src\OpenTk\DrawnUi\..\..\Net\DrawnUi\Super.Net.cs" />
   </ItemGroup>
 
 </Project>

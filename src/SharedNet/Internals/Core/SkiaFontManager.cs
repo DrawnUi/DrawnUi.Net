@@ -39,6 +39,27 @@ namespace DrawnUi.Draw
 
         public void Initialize()
         {
+            foreach (var source in _fontSources)
+            {
+                if (_fonts.ContainsKey(source.Key))
+                    continue;
+
+                var path = source.Value;
+                if (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                    path.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                if (!Path.IsPathRooted(path))
+                    path = Path.Combine(AppContext.BaseDirectory, path);
+
+                if (File.Exists(path))
+                {
+                    var typeface = SKTypeface.FromFile(path);
+                    if (typeface != null)
+                        _fonts[source.Key] = typeface;
+                }
+            }
+
             Initialized = true;
         }
 

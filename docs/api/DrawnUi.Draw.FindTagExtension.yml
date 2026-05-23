@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Xaml/FindTagExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FindTagExtension
     path: ../src/Maui/DrawnUi/Internals/Xaml/FindTagExtension.cs
@@ -68,7 +68,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Xaml/FindTagExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Tag
     path: ../src/Maui/DrawnUi/Internals/Xaml/FindTagExtension.cs
@@ -97,7 +97,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Xaml/FindTagExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProvideValue
     path: ../src/Maui/DrawnUi/Internals/Xaml/FindTagExtension.cs
@@ -105,7 +105,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public object ProvideValue(IServiceProvider serviceProvider)
     parameters:
@@ -583,3 +583,4 @@ references:
   name: IServiceProvider
   nameWithType: IServiceProvider
   fullName: System.IServiceProvider
+

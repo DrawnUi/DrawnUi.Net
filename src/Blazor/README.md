@@ -30,14 +30,14 @@ The current project target is `net10.0`.
 
 The docs site now mirrors the main runtime split and adoption guidance:
 
-- `docs/articles/blazor.md` as the entry point
-- `docs/articles/blazor-packages.md` for package roles and install targets
-- `docs/articles/blazor-wasm.md` for browser / WebAssembly setup
-- `docs/articles/blazor-server.md` for the server-backed `Canvas` and server rendering
-- `docs/articles/blazor-hybrid.md` for mixed `InteractiveServer` + `InteractiveWebAssembly`
-- `docs/articles/blazor-capabilities.md` for current fit and limitations
-- `docs/articles/blazor-migration.md` for adoption guidance in existing apps
-- `docs/articles/blazor-faq.md` for common consumer questions
+- `docs/articles/blazor/index.md` as the entry point
+- `docs/articles/blazor/packages.md` for package roles and install targets
+- `docs/articles/blazor/wasm.md` for browser / WebAssembly setup
+- `docs/articles/blazor/server.md` for the server-backed `Canvas` and server rendering
+- `docs/articles/blazor/hybrid.md` for mixed `InteractiveServer` + `InteractiveWebAssembly`
+- `docs/articles/blazor/capabilities.md` for current fit and limitations
+- `docs/articles/blazor/migration.md` for adoption guidance in existing apps
+- `docs/articles/blazor/faq.md` for common consumer questions
 
 ## Quick Start
 
@@ -471,5 +471,5 @@ Blazor support is in progress, not yet full MAUI parity.
 
 For current progress and validated slices, see:
 
-- `docs/articles/blazor.md`
+- `docs/articles/blazor/index.md`
 - `docs/shared-maui-blazor-port-status.md`

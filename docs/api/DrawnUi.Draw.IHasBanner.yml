@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IHasBanner.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IHasBanner
     path: ../src/Shared/Internals/Interfaces/IHasBanner.cs
@@ -44,7 +44,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IHasBanner.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Banner
     path: ../src/Shared/Internals/Interfaces/IHasBanner.cs
@@ -53,7 +53,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Main image
-  example: []
+  example: ""
   syntax:
     content: string Banner { get; set; }
     parameters: []
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IHasBanner.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BannerPreloadOrdered
     path: ../src/Shared/Internals/Interfaces/IHasBanner.cs
@@ -84,7 +84,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicates that it's already preloading
-  example: []
+  example: ""
   syntax:
     content: bool BannerPreloadOrdered { get; set; }
     parameters: []
@@ -246,3 +246,4 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+

@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawnUiStartupSettings.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawnUiStartupSettings
     path: ../src/Shared/Internals/Models/DrawnUiStartupSettings.cs
@@ -57,7 +57,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawnUiStartupSettings.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Logger
     path: ../src/Shared/Internals/Models/DrawnUiStartupSettings.cs
@@ -66,7 +66,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be used by Super.Log calls
-  example: []
+  example: ""
   syntax:
     content: public ILogger? Logger { get; set; }
     parameters: []
@@ -88,7 +88,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawnUiStartupSettings.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DesktopWindow
     path: ../src/Shared/Internals/Models/DrawnUiStartupSettings.cs
@@ -97,7 +97,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'For desktop: if set will affect the app window at startup.'
-  example: []
+  example: ""
   syntax:
     content: public WindowParameters? DesktopWindow { get; set; }
     parameters: []
@@ -119,7 +119,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawnUiStartupSettings.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MobileIsFullscreen
     path: ../src/Shared/Internals/Models/DrawnUiStartupSettings.cs
@@ -128,7 +128,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Avoid safe insets and remove system ui like status bar etc if supported by platform
-  example: []
+  example: ""
   syntax:
     content: public bool? MobileIsFullscreen { get; set; }
     parameters: []
@@ -150,7 +150,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawnUiStartupSettings.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseDesktopKeyboard
     path: ../src/Shared/Internals/Models/DrawnUiStartupSettings.cs
@@ -159,7 +159,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Listen to keyboard keys with KeyboardManager. Available on supported MAUI platforms and Blazor.
-  example: []
+  example: ""
   syntax:
     content: public bool UseDesktopKeyboard { get; set; }
     parameters: []
@@ -181,7 +181,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/DrawnUiStartupSettings.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Startup
     path: ../src/Shared/Internals/Models/DrawnUiStartupSettings.cs
@@ -190,7 +190,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be executed after DrawnUI is initialized and MAUI App is created.
-  example: []
+  example: ""
   syntax:
     content: public Action<IServiceProvider> Startup { get; set; }
     parameters: []
@@ -766,3 +766,4 @@ references:
   - name: " "
   - name: T
   - name: )
+

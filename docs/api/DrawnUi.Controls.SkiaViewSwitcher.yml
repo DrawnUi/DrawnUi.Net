@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaViewSwitcher
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -101,10 +101,10 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Display and hide views, eventually animating them
-  example: []
+  example: ""
   syntax:
-    content: 'public class SkiaViewSwitcher : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IDefinesViewport, IVisibilityAware'
-    content.vb: Public Class SkiaViewSwitcher Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IDefinesViewport, IVisibilityAware
+    content: 'public class SkiaViewSwitcher : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IDefinesViewport, IVisibilityAware'
+    content.vb: Public Class SkiaViewSwitcher Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IDefinesViewport, IVisibilityAware
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -132,6 +132,7 @@ items:
   - System.Collections.Generic.IEnumerable{Microsoft.Maui.IView}
   - System.Collections.IEnumerable
   - DrawnUi.Draw.ISkiaGestureListener
+  - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.IHasAfterEffects
   - DrawnUi.Draw.ISkiaDisposable
   - DrawnUi.Draw.ISkiaGridLayout
@@ -706,6 +707,18 @@ items:
   - DrawnUi.Draw.SkiaControl.ArrangedDestination
   - DrawnUi.Draw.SkiaControl.LayoutIsReady
   - DrawnUi.Draw.SkiaControl.Disposing
+  - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.AccessibilityHint
+  - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
   - DrawnUi.Draw.SkiaControl.LayoutReady
   - DrawnUi.Draw.SkiaControl.CheckIsGhost
@@ -1132,6 +1145,12 @@ items:
   - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Controls.SkiaViewSwitcher,System.Object},System.String[])
   - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WhenItemsSourceChangesApplied``1(System.Action{DrawnUi.Controls.SkiaViewSwitcher},System.String[])
   - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Controls.SkiaViewSwitcher,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
   - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithCache``1(DrawnUi.Draw.SkiaCacheType)
   - DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithChildren``1(DrawnUi.Draw.SkiaControl[])
@@ -1193,7 +1212,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyBindingContext
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1202,7 +1221,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: []
+  example: ""
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -1222,7 +1241,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActiveView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1251,7 +1270,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1280,7 +1299,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendOnAppearing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1309,7 +1328,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendOnAppeared
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1338,7 +1357,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendOnDisappeared
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1367,7 +1386,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendOnLoaded
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1396,7 +1415,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1405,7 +1424,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: []
+  example: ""
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1425,7 +1444,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1433,7 +1452,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -1456,7 +1475,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRendered
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1483,7 +1502,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAnimatingProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1510,7 +1529,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAnimating
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1539,7 +1558,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChildAdded
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1547,7 +1566,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public override void OnChildAdded(SkiaControl view)
     parameters:
@@ -1570,7 +1589,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetChildren
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1578,7 +1597,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -1604,7 +1623,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetNavigationStack
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1638,7 +1657,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetTopView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1647,7 +1666,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Get tab view or tab top subview if has navigation stack
-  example: []
+  example: ""
   syntax:
     content: public SkiaViewSwitcher.NavigationStackEntry GetTopView(int selectedIndex)
     parameters:
@@ -1676,7 +1695,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetRootView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1710,7 +1729,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PushView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1748,7 +1767,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCurrentPage
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1782,7 +1801,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FindPageInStack
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1818,7 +1837,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemovePageFromStack
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1852,7 +1871,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BringPageToFront
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1888,7 +1907,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PopModal
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1920,7 +1939,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PopPage
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1954,7 +1973,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCurrentTabNavigationIndex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1982,7 +2001,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RevealNavigationView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -1991,7 +2010,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Set IsVisible, reset transforms and opacity and send OnAppeared event
-  example: []
+  example: ""
   syntax:
     content: protected virtual void RevealNavigationView(SkiaViewSwitcher.NavigationStackEntry newVisibleView)
     parameters:
@@ -2014,7 +2033,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PopTabToRoot
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2023,7 +2042,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Must be launched on main thread only !!!
-  example: []
+  example: ""
   syntax:
     content: public Task PopTabToRoot()
     return:
@@ -2044,7 +2063,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PopAllTabsToRoot
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2070,7 +2089,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NavigationStacks
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2079,7 +2098,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: for navigation inside pseudo tabs
-  example: []
+  example: ""
   syntax:
     content: public Dictionary<int, List<SkiaViewSwitcher.NavigationStackEntry>> NavigationStacks
     return:
@@ -2099,7 +2118,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectedIndexProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2126,7 +2145,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectedIndex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2155,7 +2174,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisplayingIndexProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2182,7 +2201,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisplayingIndex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2211,7 +2230,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimatePages
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2240,7 +2259,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimateTabs
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2269,7 +2288,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reset
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2295,7 +2314,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAppearing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2304,7 +2323,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This can sometimes be omitted,
-  example: []
+  example: ""
   syntax:
     content: public override void OnAppearing()
     content.vb: Public Overrides Sub OnAppearing()
@@ -2326,7 +2345,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisappearing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2334,7 +2353,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public override void OnDisappearing()
     content.vb: Public Overrides Sub OnDisappearing()
@@ -2356,7 +2375,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAppeared
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2365,7 +2384,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This event can sometimes be called without prior OnAppearing
-  example: []
+  example: ""
   syntax:
     content: public override void OnAppeared()
     content.vb: Public Overrides Sub OnAppeared()
@@ -2387,7 +2406,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPushing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2416,7 +2435,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPopping
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2445,7 +2464,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NavigationBusyProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2472,7 +2491,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NavigationBusy
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2501,7 +2520,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TabsAnimationSpeedProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2528,7 +2547,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TabsAnimationSpeed
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2557,7 +2576,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PagesAnimationSpeedProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2584,7 +2603,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PagesAnimationSpeed
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2613,7 +2632,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TabsAnimationEasingProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2640,7 +2659,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TabsAnimationEasing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2669,7 +2688,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PagesAnimationEasingProperty
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2696,7 +2715,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PagesAnimationEasing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2725,7 +2744,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Custom
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2752,7 +2771,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreviousVisibleViewIndex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2779,7 +2798,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreviousVisibleView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2808,7 +2827,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LauchTimerOnLock
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2842,7 +2861,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TimerUpdateLocked
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2869,7 +2888,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TopView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2898,7 +2917,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChangeViewVisibility
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2932,7 +2951,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PushIndex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2961,7 +2980,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SemaphoreNavigationStack
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -2988,7 +3007,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DebugAction
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3014,7 +3033,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessIndexBufferAsync
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3042,7 +3061,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetupTransitionAnimation
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3077,7 +3096,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteTransitionAnimation
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3115,7 +3134,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FirstViewAppeared
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3142,7 +3161,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsApplyingIdex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3169,7 +3188,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplySelectedIndex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3200,7 +3219,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSelectedIndexApplied
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3226,7 +3245,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3235,7 +3254,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: []
+  example: ""
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -3255,7 +3274,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BusyChanged
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3282,7 +3301,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedLazyView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3309,7 +3328,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendOnDisappearing
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3338,7 +3357,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnloadView
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3367,7 +3386,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Viewport
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3375,7 +3394,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public ScaledRect Viewport { get; }
     parameters: []
@@ -3399,7 +3418,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateVisibleIndex
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3407,7 +3426,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public void UpdateVisibleIndex()
     content.vb: Public Sub UpdateVisibleIndex()
@@ -3428,7 +3447,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TrackIndexPosition
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3436,7 +3455,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public RelativePositionType TrackIndexPosition { get; }
     parameters: []
@@ -3460,7 +3479,7 @@ items:
   source:
     remote:
       path: src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollTo
     path: ../src/Shared/Controls/Layouts/SkiaViewSwitcher.cs
@@ -3468,7 +3487,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public void ScrollTo(float x, float y, float maxTimeSecs, bool clamp)
     parameters:
@@ -3791,6 +3810,13 @@ references:
   name: ISkiaGestureListener
   nameWithType: ISkiaGestureListener
   fullName: DrawnUi.Draw.ISkiaGestureListener
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
 - uid: DrawnUi.Draw.IHasAfterEffects
   commentId: T:DrawnUi.Draw.IHasAfterEffects
   parent: DrawnUi.Draw
@@ -15589,6 +15615,162 @@ references:
   name: Disposing
   nameWithType: SkiaControl.Disposing
   fullName: DrawnUi.Draw.SkiaControl.Disposing
+- uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  name: UnregisterAccessibility()
+  nameWithType: SkiaControl.UnregisterAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.UnregisterAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  commentId: M:DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  name: AccessibilityChanged()
+  nameWithType: SkiaControl.AccessibilityChanged()
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: SkiaControl.AccessibilityRole
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: SkiaControl.AccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityHint
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityHint
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: SkiaControl.AccessibilityHint
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityHint
+- uid: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: SkiaControl.IsAccessibilityElement
+  fullName: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  name: GetAccessibilityPixelRect()
+  nameWithType: SkiaControl.GetAccessibilityPixelRect()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: SkiaControl.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: SkiaControl.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  name: OnAccessibilityUnregistered()
+  nameWithType: SkiaControl.OnAccessibilityUnregistered()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  name: NotifyAccessibility()
+  nameWithType: SkiaControl.NotifyAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.NotifyAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsLayoutReady
   commentId: P:DrawnUi.Draw.SkiaControl.IsLayoutReady
   parent: DrawnUi.Draw.SkiaControl
@@ -27377,6 +27559,398 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<SkiaViewSwitcher>(SkiaViewSwitcher, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaViewSwitcher>(SkiaViewSwitcher, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Controls.SkiaViewSwitcher>(DrawnUi.Controls.SkiaViewSwitcher, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaViewSwitcher)(SkiaViewSwitcher, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Controls.SkiaViewSwitcher)(DrawnUi.Controls.SkiaViewSwitcher, String)
+  name.vb: WithAccessibilityButton(Of SkiaViewSwitcher)(SkiaViewSwitcher, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Controls.SkiaViewSwitcher,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Controls.SkiaViewSwitcher,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<SkiaViewSwitcher>(SkiaViewSwitcher, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaViewSwitcher>(SkiaViewSwitcher, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Controls.SkiaViewSwitcher>(DrawnUi.Controls.SkiaViewSwitcher, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaViewSwitcher)(SkiaViewSwitcher, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Controls.SkiaViewSwitcher)(DrawnUi.Controls.SkiaViewSwitcher, String, String)
+  name.vb: WithAccessibilityButton(Of SkiaViewSwitcher)(SkiaViewSwitcher, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Controls.SkiaViewSwitcher,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Controls.SkiaViewSwitcher,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<SkiaViewSwitcher>(SkiaViewSwitcher, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<SkiaViewSwitcher>(SkiaViewSwitcher, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<DrawnUi.Controls.SkiaViewSwitcher>(DrawnUi.Controls.SkiaViewSwitcher, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of SkiaViewSwitcher)(SkiaViewSwitcher, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of DrawnUi.Controls.SkiaViewSwitcher)(DrawnUi.Controls.SkiaViewSwitcher, Boolean?)
+  name.vb: WithAccessibilityPressed(Of SkiaViewSwitcher)(SkiaViewSwitcher, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Controls.SkiaViewSwitcher,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Controls.SkiaViewSwitcher,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<SkiaViewSwitcher>(SkiaViewSwitcher, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<SkiaViewSwitcher>(SkiaViewSwitcher, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<DrawnUi.Controls.SkiaViewSwitcher>(DrawnUi.Controls.SkiaViewSwitcher, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of SkiaViewSwitcher)(SkiaViewSwitcher, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of DrawnUi.Controls.SkiaViewSwitcher)(DrawnUi.Controls.SkiaViewSwitcher, String)
+  name.vb: WithAccessibilityText(Of SkiaViewSwitcher)(SkiaViewSwitcher, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Controls.SkiaViewSwitcher,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Controls.SkiaViewSwitcher,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaViewSwitcher>(SkiaViewSwitcher, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaViewSwitcher>(SkiaViewSwitcher, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Controls.SkiaViewSwitcher>(DrawnUi.Controls.SkiaViewSwitcher, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaViewSwitcher)(SkiaViewSwitcher, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Controls.SkiaViewSwitcher)(DrawnUi.Controls.SkiaViewSwitcher, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaViewSwitcher)(SkiaViewSwitcher, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Controls.SkiaViewSwitcher,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Controls.SkiaViewSwitcher,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaViewSwitcher>(SkiaViewSwitcher, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaViewSwitcher>(SkiaViewSwitcher, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Controls.SkiaViewSwitcher>(DrawnUi.Controls.SkiaViewSwitcher, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaViewSwitcher)(SkiaViewSwitcher, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Controls.SkiaViewSwitcher)(DrawnUi.Controls.SkiaViewSwitcher, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaViewSwitcher)(SkiaViewSwitcher, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Controls.SkiaViewSwitcher,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Controls.SkiaViewSwitcher,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaViewSwitcher
+    name: SkiaViewSwitcher
+    href: DrawnUi.Controls.SkiaViewSwitcher.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Controls.SkiaViewSwitcher.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   parent: DrawnUi.Draw.FluentExtensions
@@ -33072,6 +33646,344 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<T>(T, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityPressed(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  name.vb: WithAccessibilityText(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   isExternal: true
@@ -36934,3 +37846,4 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
+

@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TypeRouteFactory
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -57,7 +57,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -91,7 +91,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrCreate
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -99,7 +99,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public override Element GetOrCreate()
     return:
@@ -121,7 +121,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrCreateObject
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -152,7 +152,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrCreate
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -160,7 +160,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: []
+  example: ""
   syntax:
     content: public override Element GetOrCreate(IServiceProvider services)
     parameters:
@@ -185,7 +185,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -194,7 +194,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Determines whether the specified object is equal to the current object.
-  example: []
+  example: ""
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -224,7 +224,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
@@ -233,7 +233,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Serves as the default hash function.
-  example: []
+  example: ""
   syntax:
     content: public override int GetHashCode()
     return:
@@ -783,3 +783,4 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+

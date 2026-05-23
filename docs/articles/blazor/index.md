@@ -19,11 +19,11 @@ DrawnUI for Blazor currently supports two runtime models:
 
 ## Start here
 
-- [Blazor Packages](../blazor-packages.md)
-- [Blazor WebAssembly](../blazor-wasm.md)
-- [Blazor Server](../blazor-server.md)
-- [Blazor Hybrid Web App](../blazor-hybrid.md)
-- [Blazor Capabilities](../blazor-capabilities.md)
-- [Blazor Migration](../blazor-migration.md)
-- [Blazor FAQ](../blazor-faq.md)
+- [Blazor Packages](packages.md)
+- [Blazor WebAssembly](wasm.md)
+- [Blazor Server](server.md)
+- [Blazor Hybrid Web App](hybrid.md)
+- [Blazor Capabilities](capabilities.md)
+- [Blazor Migration](migration.md)
+- [Blazor FAQ](faq.md)
 - [Handling Gestures](../gestures.md)

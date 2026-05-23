@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PrebuiltControlStyle.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrebuiltControlStyle
     path: ../src/Shared/Internals/Enums/PrebuiltControlStyle.cs
@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PrebuiltControlStyle.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Unset
     path: ../src/Shared/Internals/Enums/PrebuiltControlStyle.cs
@@ -73,7 +73,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PrebuiltControlStyle.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Platform
     path: ../src/Shared/Internals/Enums/PrebuiltControlStyle.cs
@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will select the style upon the current platform
-  example: []
+  example: ""
   syntax:
     content: Platform = 1
     return:
@@ -101,7 +101,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PrebuiltControlStyle.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cupertino
     path: ../src/Shared/Internals/Enums/PrebuiltControlStyle.cs
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Apple iOS style
-  example: []
+  example: ""
   syntax:
     content: Cupertino = 2
     return:
@@ -129,7 +129,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PrebuiltControlStyle.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Material
     path: ../src/Shared/Internals/Enums/PrebuiltControlStyle.cs
@@ -138,7 +138,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Google Android tyle
-  example: []
+  example: ""
   syntax:
     content: Material = 3
     return:
@@ -157,7 +157,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PrebuiltControlStyle.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Windows
     path: ../src/Shared/Internals/Enums/PrebuiltControlStyle.cs
@@ -166,7 +166,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Windows style
-  example: []
+  example: ""
   syntax:
     content: Windows = 4
     return:
@@ -291,3 +291,4 @@ references:
   name: PrebuiltControlStyle
   nameWithType: PrebuiltControlStyle
   fullName: DrawnUi.Draw.PrebuiltControlStyle
+

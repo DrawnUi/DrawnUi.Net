@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaCacheType
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -50,7 +50,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: None
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -59,7 +59,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: True and old school
-  example: []
+  example: ""
   syntax:
     content: None = 0
     return:
@@ -78,7 +78,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Operations
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -90,7 +90,7 @@ items:
     Create and reuse SKPicture. Try this first for labels, svg etc. 
 
     Do not use this when dropping shadows or with other effects, better use Bitmap.
-  example: []
+  example: ""
   syntax:
     content: Operations = 1
     return:
@@ -109,7 +109,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OperationsFull
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -125,7 +125,7 @@ items:
     Try this first for labels, svg etc. 
 
     Do not use this when dropping shadows or with other effects, better use Bitmap.
-  example: []
+  example: ""
   syntax:
     content: OperationsFull = 2
     return:
@@ -144,7 +144,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Image
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -156,7 +156,7 @@ items:
     Will use simple SKBitmap cache type, will not use hardware acceleration.
 
     Slower but will work for sizes bigger than graphics memory if needed.
-  example: []
+  example: ""
   syntax:
     content: Image = 3
     return:
@@ -175,7 +175,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageDoubleBuffered
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -184,7 +184,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Using `Image` cache type with double buffering. Will display a previous cache while rendering the new one in background, thus not slowing scrolling etc.
-  example: []
+  example: ""
   syntax:
     content: ImageDoubleBuffered = 4
     return:
@@ -203,7 +203,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageComposite
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -221,7 +221,7 @@ items:
     like scroll content etc, but useless for non-containers.
 
     But will suffer from children that love to invalidate parent much!
-  example: []
+  example: ""
   syntax:
     content: ImageComposite = 5
     return:
@@ -240,7 +240,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageCompositeGPU
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -260,7 +260,7 @@ items:
     like scroll content etc, but useless for non-containers.
 
     But will suffer from children that love to invalidate parent much!
-  example: []
+  example: ""
   syntax:
     content: ImageCompositeGPU = 6
     return:
@@ -279,7 +279,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/SkiaCacheType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GPU
     path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
@@ -293,7 +293,7 @@ items:
     This kind of cache will not apply Opacity as not all platforms support transparency for hardware accelerated layer.
 
     Will fallback to simple Image cache type if hardware acceleration is not available.
-  example: []
+  example: ""
   syntax:
     content: GPU = 7
     return:
@@ -418,3 +418,4 @@ references:
   name: SkiaCacheType
   nameWithType: SkiaCacheType
   fullName: DrawnUi.Draw.SkiaCacheType
+

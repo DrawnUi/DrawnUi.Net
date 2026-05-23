@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThemeBinding
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -31,7 +31,7 @@ items:
     Represents a theme binding for a specific target object and property
 
     Implements proper disposal pattern and weak references to prevent memory leaks
-  example: []
+  example: ""
   syntax:
     content: 'public class ThemeBinding : IDisposable'
     content.vb: Public Class ThemeBinding Implements IDisposable
@@ -61,7 +61,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateTargetValue
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -73,7 +73,7 @@ items:
     Updates the target property with the current theme value
 
     Returns true if update was successful, false if target is no longer available
-  example: []
+  example: ""
   syntax:
     content: public bool UpdateTargetValue()
     return:
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -103,7 +103,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -124,7 +124,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -133,7 +133,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Serves as the default hash function.
-  example: []
+  example: ""
   syntax:
     content: public override int GetHashCode()
     return:
@@ -156,7 +156,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
     path: ../src/Maui/DrawnUi/Internals/Interfaces/ThemeBindingExtension.cs
@@ -165,7 +165,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the specified object is equal to the current object.
-  example: []
+  example: ""
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -607,3 +607,4 @@ references:
   name: Equals
   nameWithType: ThemeBinding.Equals
   fullName: DrawnUi.Draw.ThemeBinding.Equals
+

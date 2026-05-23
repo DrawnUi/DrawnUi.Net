@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PanningModeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PanningModeType
     path: ../src/Shared/Internals/Enums/PanningModeType.cs
@@ -46,7 +46,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PanningModeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Disabled
     path: ../src/Shared/Internals/Enums/PanningModeType.cs
@@ -72,7 +72,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PanningModeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Enabled
     path: ../src/Shared/Internals/Enums/PanningModeType.cs
@@ -81,7 +81,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 1 and 2 fingers
-  example: []
+  example: ""
   syntax:
     content: Enabled = 1
     return:
@@ -100,7 +100,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PanningModeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OneFinger
     path: ../src/Shared/Internals/Enums/PanningModeType.cs
@@ -126,7 +126,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/PanningModeType.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TwoFingers
     path: ../src/Shared/Internals/Enums/PanningModeType.cs
@@ -258,3 +258,4 @@ references:
   name: PanningModeType
   nameWithType: PanningModeType
   fullName: DrawnUi.Draw.PanningModeType
+

@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderingAnimator
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -31,7 +31,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This animator renders on canvas instead of just updating a value
-  example: []
+  example: ""
   syntax:
     content: 'public class RenderingAnimator : SkiaValueAnimator, IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable'
     content.vb: Public Class RenderingAnimator Inherits SkiaValueAnimator Implements IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable
@@ -119,7 +119,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -127,7 +127,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -149,7 +149,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Render
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -158,7 +158,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Renders effect overlay to canvas, return true if has drawn something and rendering needs to be applied.
-  example: []
+  example: ""
   syntax:
     content: public bool Render(DrawingContext context, IDrawnBase control)
     parameters:
@@ -189,7 +189,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnRendering
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -198,7 +198,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: return true if has drawn something and rendering needs to be applied
-  example: []
+  example: ""
   syntax:
     content: protected virtual bool OnRendering(DrawingContext context, IDrawnBase control)
     parameters:
@@ -227,7 +227,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -259,7 +259,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelfDrawingLocation
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -290,7 +290,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawWithClipping
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -325,7 +325,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animators/RenderingAnimator.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyControlClipping
     path: ../src/Shared/Features/Animators/RenderingAnimator.cs
@@ -1609,3 +1609,4 @@ references:
   name: SKPath
   nameWithType: SKPath
   fullName: SkiaSharp.SKPath
+

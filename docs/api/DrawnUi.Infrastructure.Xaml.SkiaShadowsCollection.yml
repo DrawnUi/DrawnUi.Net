@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadowsCollection.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShadowsCollection
     path: ../src/Shared/Internals/Models/SkiaShadowsCollection.cs
@@ -90,7 +90,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShadowsCollection.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Add
     path: ../src/Shared/Internals/Models/SkiaShadowsCollection.cs
@@ -99,7 +99,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
   summary: Adds an item to the <xref href="System.Collections.IList" data-throw-if-not-resolved="false"></xref>.
-  example: []
+  example: ""
   syntax:
     content: public int Add(object value)
     parameters:
@@ -2528,3 +2528,4 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+

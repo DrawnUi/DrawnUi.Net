@@ -139,7 +139,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaEditor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -148,8 +148,8 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: 'public class SkiaEditor : SkiaShape, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener'
-    content.vb: Public Class SkiaEditor Inherits SkiaShape Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener
+    content: 'public class SkiaEditor : SkiaShape, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener'
+    content.vb: Public Class SkiaEditor Inherits SkiaShape Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -177,6 +177,7 @@ items:
   - System.Collections.Generic.ICollection{Microsoft.Maui.IView}
   - System.Collections.Generic.IEnumerable{Microsoft.Maui.IView}
   - System.Collections.IEnumerable
+  - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.IHasAfterEffects
   - DrawnUi.Draw.ISkiaDisposable
   - DrawnUi.Draw.ISkiaGridLayout
@@ -821,6 +822,18 @@ items:
   - DrawnUi.Draw.SkiaControl.ArrangedDestination
   - DrawnUi.Draw.SkiaControl.LayoutIsReady
   - DrawnUi.Draw.SkiaControl.Disposing
+  - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.AccessibilityHint
+  - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
   - DrawnUi.Draw.SkiaControl.LayoutReady
   - DrawnUi.Draw.SkiaControl.CheckIsGhost
@@ -1248,6 +1261,12 @@ items:
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Draw.SkiaEditor,System.Object},System.String[])
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WhenItemsSourceChangesApplied``1(System.Action{DrawnUi.Draw.SkiaEditor},System.String[])
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Draw.SkiaEditor,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithCache``1(DrawnUi.Draw.SkiaCacheType)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithChildren``1(DrawnUi.Draw.SkiaControl[])
@@ -1303,7 +1322,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1332,7 +1351,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillClipBounds
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1341,7 +1360,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used to check whether to apply IsClippedToBounds property
-  example: []
+  example: ""
   syntax:
     content: public override bool WillClipBounds { get; }
     parameters: []
@@ -1364,7 +1383,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1376,7 +1395,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: []
+  example: ""
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1396,7 +1415,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1423,7 +1442,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1450,7 +1469,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextSubmitted
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1477,7 +1496,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scroll
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1504,7 +1523,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _contentLayer
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1531,7 +1550,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _selectionControl
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1558,7 +1577,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _placeholderLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1585,7 +1604,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ParagraphBreakChar
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1612,7 +1631,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SoftLineBreakChar
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1639,7 +1658,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1665,7 +1684,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdatePlaceholder
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1691,7 +1710,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCreatingLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1722,7 +1741,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreatePlaceholderLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1750,7 +1769,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1778,7 +1797,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1806,7 +1825,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateControl
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1832,7 +1851,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Label
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1861,7 +1880,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cursor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1890,7 +1909,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1904,7 +1923,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: []
+  example: ""
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -1928,7 +1947,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NormalizeEditorLineBreaks
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1962,7 +1981,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEditorBreakText
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -1996,7 +2015,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEditorBreak
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2030,7 +2049,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsTrailingEditorBreak
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2064,7 +2083,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReplaceEditorBreaksWithSpaces
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2098,7 +2117,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasuring
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2107,7 +2126,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you call this while measurement is in process (IsMeasuring==True) will return last measured value.
-  example: []
+  example: ""
   syntax:
     content: public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -2143,7 +2162,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetContentSizeForAutosizeInPixels
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2152,7 +2171,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override this if you need to adjust the measured ContentSize for the parent to adapt to it. For example SkiaShape overrides this to expand by adding the needed size for stroke.
-  example: []
+  example: ""
   syntax:
     content: protected override SKSize GetContentSizeForAutosizeInPixels()
     return:
@@ -2175,7 +2194,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Submit
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2184,7 +2203,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is Done or Enter key, so maybe just split lines in specific case
-  example: []
+  example: ""
   syntax:
     content: public void Submit()
     content.vb: Public Sub Submit()
@@ -2203,7 +2222,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteSubmit
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2235,7 +2254,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsMultiline
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2264,7 +2283,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnFocusChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2276,7 +2295,7 @@ items:
     This will be called only for views registered at Superview.FocusedChild.
 
     The view must return true of false to indicate if it accepts focus.
-  example: []
+  example: ""
   syntax:
     content: public override bool OnFocusChanged(bool focus)
     parameters:
@@ -2308,7 +2327,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetLineGlyphs
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2320,7 +2339,7 @@ items:
     Returns all glyphs for a rendered line, flattened across spans.
 
     Override in subclasses to support multi-span lines.
-  example: []
+  example: ""
   syntax:
     content: protected virtual LineGlyph[] GetLineGlyphs(TextLine line)
     parameters:
@@ -2344,7 +2363,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCursorPosition
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2353,7 +2372,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Input in pixels
-  example: []
+  example: ""
   syntax:
     content: protected int GetCursorPosition(float x, float y)
     parameters:
@@ -2385,7 +2404,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2393,7 +2412,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -2420,7 +2439,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocusInternal
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2452,7 +2471,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _suppressImmediateCursorMove
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2461,7 +2480,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Sets native control cursor position to CursorPosition (and selection end if active) and calls UpdateCursorVisibility.
-  example: []
+  example: ""
   syntax:
     content: protected bool _suppressImmediateCursorMove
     return:
@@ -2481,7 +2500,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveInternalCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2507,7 +2526,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectAll
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2533,7 +2552,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateCursorVisibility
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2542,7 +2561,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Positions cursor control where it should be using translation, and sets its visibility.
-  example: []
+  example: ""
   syntax:
     content: public virtual void UpdateCursorVisibility()
     content.vb: Public Overridable Sub UpdateCursorVisibility()
@@ -2561,7 +2580,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorVisible
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2593,7 +2612,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveCursorTo
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2602,7 +2621,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Translate cursor from the left top corner, params in pts.
-  example: []
+  example: ""
   syntax:
     content: protected virtual void MoveCursorTo(double x, double y)
     parameters:
@@ -2631,7 +2650,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCursorLine
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2640,7 +2659,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns the zero-based line index the cursor is currently on.
-  example: []
+  example: ""
   syntax:
     content: public int GetCursorLine()
     return:
@@ -2661,7 +2680,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocus
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2693,7 +2712,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleVerticalArrow
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2725,7 +2744,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnControlCreated
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2751,7 +2770,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorPositionProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2778,7 +2797,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorPosition
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2807,7 +2826,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TimerUpdateParentCursorPosition
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2834,7 +2853,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorPositionWithDelay
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2846,7 +2865,7 @@ items:
     We have to sync with a delay after text was changed otherwise the cursor position is not updated yet.
 
     Using restarting timer, every time this is called the timer is reset if callback wasn't executed yet.
-  example: []
+  example: ""
   syntax:
     content: protected void SetCursorPositionWithDelay(int ms, int position)
     parameters:
@@ -2875,7 +2894,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSelection
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2909,7 +2928,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetWordBoundaries
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2943,7 +2962,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectWord
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -2975,7 +2994,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelectedText
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3003,7 +3022,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeleteSelection
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3029,7 +3048,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InsertAtCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3061,7 +3080,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CutSelection
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3087,7 +3106,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CopySelection
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3113,7 +3132,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PasteFromClipboard
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3139,7 +3158,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3148,7 +3167,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: []
+  example: ""
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -3168,7 +3187,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3177,7 +3196,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: []
+  example: ""
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -3197,7 +3216,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnTypeProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3224,7 +3243,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnType
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3253,7 +3272,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardTypeProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3280,7 +3299,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardType
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3309,7 +3328,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPasswordProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3336,7 +3355,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPassword
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3365,7 +3384,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmitProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3392,7 +3411,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmit
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3421,7 +3440,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChangedProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3448,7 +3467,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3477,7 +3496,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChangedProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3504,7 +3523,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3533,7 +3552,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseMarkdownProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3560,7 +3579,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseMarkdown
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3589,7 +3608,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanShowCursorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3616,7 +3635,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanShowCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3645,7 +3664,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocusedProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3672,7 +3691,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocused
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3701,7 +3720,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3728,7 +3747,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Text
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3757,7 +3776,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSizeProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3784,7 +3803,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSize
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3813,7 +3832,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalTextAlignmentProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3840,7 +3859,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalTextAlignment
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3869,7 +3888,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalTextAlignmentProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3896,7 +3915,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalTextAlignment
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3925,7 +3944,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LineHeightProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3952,7 +3971,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LineHeight
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -3981,7 +4000,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamilyProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4008,7 +4027,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamily
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4037,7 +4056,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4064,7 +4083,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4093,7 +4112,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeightProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4120,7 +4139,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeight
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4149,7 +4168,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextGradientProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4176,7 +4195,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextGradient
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4205,7 +4224,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4232,7 +4251,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorColor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4261,7 +4280,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorGradientProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4288,7 +4307,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorGradient
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4317,7 +4336,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLengthProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4344,7 +4363,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLength
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4373,7 +4392,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4400,7 +4419,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4429,7 +4448,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderTextProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4456,7 +4475,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderText
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4485,7 +4504,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4512,7 +4531,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderColor
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4541,7 +4560,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignmentProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4568,7 +4587,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignment
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4597,7 +4616,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLinesProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4624,7 +4643,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLines
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4653,7 +4672,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionGo
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4680,7 +4699,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionNext
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4707,7 +4726,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSend
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4734,7 +4753,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSearch
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4761,7 +4780,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionDone
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4788,7 +4807,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorPositionNative
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4822,7 +4841,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposePlatform
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4848,7 +4867,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocusNative
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4880,7 +4899,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateNativePosition
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -4906,7 +4925,7 @@ items:
   source:
     remote:
       path: src/Shared/EditText/SkiaEditor.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyKeyboardType
     path: ../src/Shared/EditText/SkiaEditor.cs
@@ -5222,6 +5241,13 @@ references:
   name: IEnumerable
   nameWithType: IEnumerable
   fullName: System.Collections.IEnumerable
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
 - uid: DrawnUi.Draw.IHasAfterEffects
   commentId: T:DrawnUi.Draw.IHasAfterEffects
   parent: DrawnUi.Draw
@@ -18525,6 +18551,162 @@ references:
   name: Disposing
   nameWithType: SkiaControl.Disposing
   fullName: DrawnUi.Draw.SkiaControl.Disposing
+- uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  name: UnregisterAccessibility()
+  nameWithType: SkiaControl.UnregisterAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.UnregisterAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.UnregisterAccessibility
+    name: UnregisterAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UnregisterAccessibility
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  commentId: M:DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  name: AccessibilityChanged()
+  nameWithType: SkiaControl.AccessibilityChanged()
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AccessibilityChanged
+    name: AccessibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: SkiaControl.AccessibilityRole
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: SkiaControl.AccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityHint
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityHint
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: SkiaControl.AccessibilityHint
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityHint
+- uid: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: SkiaControl.IsAccessibilityElement
+  fullName: DrawnUi.Draw.SkiaControl.IsAccessibilityElement
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  name: GetAccessibilityPixelRect()
+  nameWithType: SkiaControl.GetAccessibilityPixelRect()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+    name: GetAccessibilityPixelRect
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: SkiaControl.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: SkiaControl.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  name: OnAccessibilityUnregistered()
+  nameWithType: SkiaControl.OnAccessibilityUnregistered()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
+    name: OnAccessibilityUnregistered
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  name: NotifyAccessibility()
+  nameWithType: SkiaControl.NotifyAccessibility()
+  fullName: DrawnUi.Draw.SkiaControl.NotifyAccessibility()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
+    name: NotifyAccessibility
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NotifyAccessibility
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsLayoutReady
   commentId: P:DrawnUi.Draw.SkiaControl.IsLayoutReady
   parent: DrawnUi.Draw.SkiaControl
@@ -30628,6 +30810,398 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<SkiaEditor>(SkiaEditor, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaEditor>(SkiaEditor, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaEditor)(SkiaEditor, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, String)
+  name.vb: WithAccessibilityButton(Of SkiaEditor)(SkiaEditor, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaEditor,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaEditor,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<SkiaEditor>(SkiaEditor, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<SkiaEditor>(SkiaEditor, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of SkiaEditor)(SkiaEditor, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, String, String)
+  name.vb: WithAccessibilityButton(Of SkiaEditor)(SkiaEditor, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaEditor,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(DrawnUi.Draw.SkiaEditor,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<SkiaEditor>(SkiaEditor, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<SkiaEditor>(SkiaEditor, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of SkiaEditor)(SkiaEditor, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, Boolean?)
+  name.vb: WithAccessibilityPressed(Of SkiaEditor)(SkiaEditor, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaEditor,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(DrawnUi.Draw.SkiaEditor,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<SkiaEditor>(SkiaEditor, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<SkiaEditor>(SkiaEditor, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of SkiaEditor)(SkiaEditor, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, String)
+  name.vb: WithAccessibilityText(Of SkiaEditor)(SkiaEditor, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaEditor,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(DrawnUi.Draw.SkiaEditor,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaEditor>(SkiaEditor, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaEditor>(SkiaEditor, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaEditor)(SkiaEditor, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaEditor)(SkiaEditor, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaEditor,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaEditor,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<SkiaEditor>(SkiaEditor, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<SkiaEditor>(SkiaEditor, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of SkiaEditor)(SkiaEditor, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of SkiaEditor)(SkiaEditor, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaEditor,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(DrawnUi.Draw.SkiaEditor,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   parent: DrawnUi.Draw.FluentExtensions
@@ -36445,6 +37019,344 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  name: WithAccessibilityButton<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  name: WithAccessibilityButton<T>(T, string, string)
+  nameWithType: FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton<T>(T, string, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton(Of T)(T, String, String)
+  name.vb: WithAccessibilityButton(Of T)(T, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String,System.String)
+    name: WithAccessibilityButton
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityButton__1___0_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityPressed<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityPressed(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityPressed
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityPressed__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  name: WithAccessibilityText<T>(T, string)
+  nameWithType: FluentExtensions.WithAccessibilityText<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityText<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityText(Of T)(T, String)
+  name.vb: WithAccessibilityText(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(``0,System.String)
+    name: WithAccessibilityText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityText__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  name: WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType: FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibility<T>(T, string, string, string, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibility(Of T)(T, String, String, String, Boolean)
+  name.vb: WithAccessibility(Of T)(T, String, String, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibility``1(``0,System.String,System.String,System.String,System.Boolean)
+    name: WithAccessibility
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibility__1___0_System_String_System_String_System_String_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithBackgroundColor``1(``0,Microsoft.Maui.Graphics.Color)
   isExternal: true
@@ -39693,3 +40605,4 @@ references:
   name: ApplyKeyboardType
   nameWithType: SkiaEditor.ApplyKeyboardType
   fullName: DrawnUi.Draw.SkiaEditor.ApplyKeyboardType
+

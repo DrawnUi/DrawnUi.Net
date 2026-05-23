@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/IStateEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IStateEffect
     path: ../src/Shared/Features/Effects/IStateEffect.cs
@@ -49,7 +49,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/IStateEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateState
     path: ../src/Shared/Features/Effects/IStateEffect.cs
@@ -58,7 +58,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be invoked before actually painting but after gestures processing and other internal calculations. By SkiaControl.OnBeforeDrawing method. Beware if you call Update() inside will never stop updating.
-  example: []
+  example: ""
   syntax:
     content: void UpdateState()
     content.vb: Sub UpdateState()
@@ -280,3 +280,4 @@ references:
   name: UpdateState
   nameWithType: IStateEffect.UpdateState
   fullName: DrawnUi.Draw.IStateEffect.UpdateState
+

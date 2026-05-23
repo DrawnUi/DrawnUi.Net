@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShader
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -61,7 +61,7 @@ items:
     Used standalone for direct rendering, or as the engine inside SkiaShaderEffect.
 
     Subclass and override CreateUniforms/CreateChildren for custom uniforms.
-  example: []
+  example: ""
   syntax:
     content: 'public class SkiaShader : IDisposable'
     content.vb: Public Class SkiaShader Implements IDisposable
@@ -93,7 +93,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _compiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -120,7 +120,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufResolution
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufImageResolution
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -174,7 +174,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufMouse
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -201,7 +201,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufOffset
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -228,7 +228,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Time
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -237,7 +237,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Elapsed time in seconds, typically fed from a frame timer.
-  example: []
+  example: ""
   syntax:
     content: public float Time { get; set; }
     parameters: []
@@ -259,7 +259,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Mouse
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -268,7 +268,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Current mouse/touch position (Shadertoy convention).
-  example: []
+  example: ""
   syntax:
     content: public SKPoint Mouse { get; set; }
     parameters: []
@@ -290,7 +290,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MouseInitial
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -299,7 +299,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Where click/drag started. If zero, means not dragging.
-  example: []
+  example: ""
   syntax:
     content: public SKPoint MouseInitial { get; set; }
     parameters: []
@@ -321,7 +321,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Offset
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -330,7 +330,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Top-left offset of the drawing rect. Default (0,0).
-  example: []
+  example: ""
   syntax:
     content: public SKPoint Offset { get; set; }
     parameters: []
@@ -352,7 +352,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FilterMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -361,7 +361,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Filter mode for the primary input texture. Default is Linear.
-  example: []
+  example: ""
   syntax:
     content: public SKFilterMode FilterMode { get; set; }
     parameters: []
@@ -383,7 +383,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MipmapMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -392,7 +392,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Mipmap mode for the primary input texture. Default is None.
-  example: []
+  example: ""
   syntax:
     content: public SKMipmapMode MipmapMode { get; set; }
     parameters: []
@@ -414,7 +414,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TileMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -423,7 +423,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Tile mode for input textures. Default is Clamp.
-  example: []
+  example: ""
   syntax:
     content: public SKShaderTileMode TileMode { get; set; }
     parameters: []
@@ -445,7 +445,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlendMode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -454,7 +454,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Blend mode used when drawing. Default is SrcOver.
-  example: []
+  example: ""
   syntax:
     content: public SKBlendMode BlendMode { get; set; }
     parameters: []
@@ -476,7 +476,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsCompiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -485,7 +485,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Whether the shader is compiled and ready to use.
-  example: []
+  example: ""
   syntax:
     content: public bool IsCompiled { get; }
     parameters: []
@@ -507,7 +507,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Compiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -516,7 +516,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: The compiled SKRuntimeEffect, if available.
-  example: []
+  example: ""
   syntax:
     content: public SKRuntimeEffect Compiled { get; }
     parameters: []
@@ -538,7 +538,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromResource
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -547,7 +547,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Create and compile from a resource file path (e.g. "Shaders/myeffect.sksl").
-  example: []
+  example: ""
   syntax:
     content: public static SkiaShader FromResource(string resourcePath, bool useCache = true, Action<string> onError = null)
     parameters:
@@ -582,7 +582,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromCode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -591,7 +591,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Create and compile from inline SKSL code.
-  example: []
+  example: ""
   syntax:
     content: public static SkiaShader FromCode(string skslCode, Action<string> onError = null)
     parameters:
@@ -623,7 +623,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Code
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -632,7 +632,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Gets the shader code used for last compilation
-  example: []
+  example: ""
   syntax:
     content: public string Code { get; }
     parameters: []
@@ -654,7 +654,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileFromResource
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -663,7 +663,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Compile shader from an embedded resource file.
-  example: []
+  example: ""
   syntax:
     content: public void CompileFromResource(string resourcePath, bool useCache = true, Action<string> onError = null)
     parameters:
@@ -692,7 +692,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileFromCode
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -701,7 +701,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Compile shader from an SKSL code string.
-  example: []
+  example: ""
   syntax:
     content: public void CompileFromCode(string skslCode, string cacheKey = null, bool useCache = false, Action<string> onError = null)
     parameters:
@@ -732,7 +732,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeCompiled
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -758,7 +758,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyTo
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -774,7 +774,7 @@ items:
     The uniforms, children, and texture shader objects are cached on the instance
 
     and reused across frames — callers must NOT dispose them.
-  example: []
+  example: ""
   syntax:
     content: public SKShader ApplyTo(SKPaint paint, SKImage source, float width, float height)
     parameters:
@@ -807,7 +807,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyTo
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -816,7 +816,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Apply the shader without an input texture (generative/output-only shaders).
-  example: []
+  example: ""
   syntax:
     content: public SKShader ApplyTo(SKPaint paint, float width, float height)
     parameters:
@@ -847,7 +847,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawRect
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -856,7 +856,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: 'Full render: apply the shader and draw a rect on the canvas.'
-  example: []
+  example: ""
   syntax:
     content: public void DrawRect(SKCanvas canvas, SKImage source, SKRect destination)
     parameters:
@@ -882,7 +882,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawRect
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -891,7 +891,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Full render without input texture (generative shaders).
-  example: []
+  example: ""
   syntax:
     content: public void DrawRect(SKCanvas canvas, SKRect destination)
     parameters:
@@ -915,7 +915,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawImage
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -929,7 +929,7 @@ items:
     The source image is passed to the shader as iImage1 texture;
 
     actual drawing uses DrawRect because the shader generates all pixels itself.
-  example: []
+  example: ""
   syntax:
     content: public void DrawImage(SKCanvas canvas, SKImage source, float x, float y)
     parameters:
@@ -960,7 +960,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateUniforms
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -988,7 +988,7 @@ items:
     It is invalidated automatically when the compiled effect changes.
 
     </p>
-  example: []
+  example: ""
   syntax:
     content: public virtual SKRuntimeEffectUniforms CreateUniforms(float viewportWidth, float viewportHeight, float imageWidth, float imageHeight)
     parameters:
@@ -1021,7 +1021,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateChildren
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -1047,7 +1047,7 @@ items:
     when the compiled effect changes.
 
     </p>
-  example: []
+  example: ""
   syntax:
     content: public virtual SKRuntimeEffectChildren CreateChildren(SKShader primaryTexture)
     parameters:
@@ -1071,7 +1071,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTextureShader
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -1089,7 +1089,7 @@ items:
     NOT dispose it. It is disposed automatically when the source, sampling options, or
 
     compiled effect change, and in <xref href="DrawnUi.Infrastructure.SkiaShader.Dispose" data-throw-if-not-resolved="false"></xref>.
-  example: []
+  example: ""
   syntax:
     content: public SKShader CreateTextureShader(SKImage source)
     parameters:
@@ -1113,7 +1113,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaint
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -1141,7 +1141,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NormalizeLineEndings
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -1175,7 +1175,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Shaders/SkiaShader.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
     path: ../src/Shared/Features/Shaders/SkiaShader.cs
@@ -1184,7 +1184,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: []
+  example: ""
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -1976,3 +1976,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
+

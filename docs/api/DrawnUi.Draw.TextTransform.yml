@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/TextTransform.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextTransform
     path: ../src/Shared/Internals/Enums/TextTransform.cs
@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/TextTransform.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: None
     path: ../src/Shared/Internals/Enums/TextTransform.cs
@@ -73,7 +73,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/TextTransform.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Lowercase
     path: ../src/Shared/Internals/Enums/TextTransform.cs
@@ -99,7 +99,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/TextTransform.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Uppercase
     path: ../src/Shared/Internals/Enums/TextTransform.cs
@@ -125,7 +125,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/TextTransform.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Titlecase
     path: ../src/Shared/Internals/Enums/TextTransform.cs
@@ -134,7 +134,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Every word starts with a capital letter, others do not change
-  example: []
+  example: ""
   syntax:
     content: Titlecase = 3
     return:
@@ -153,7 +153,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Enums/TextTransform.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Phrasecase
     path: ../src/Shared/Internals/Enums/TextTransform.cs
@@ -162,7 +162,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: First word starts with a capital letter, others do not change
-  example: []
+  example: ""
   syntax:
     content: Phrasecase = 4
     return:
@@ -287,3 +287,4 @@ references:
   name: TextTransform
   nameWithType: TextTransform
   fullName: DrawnUi.Draw.TextTransform
+

@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShellNavigatingArgs
     path: ../src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
@@ -60,7 +60,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cancel
     path: ../src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
@@ -107,7 +107,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: If you set this to True the navigation will be canceled
-  example: []
+  example: ""
   syntax:
     content: public bool Cancel { get; set; }
     parameters: []
@@ -129,7 +129,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Route
     path: ../src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
@@ -138,7 +138,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Is never null
-  example: []
+  example: ""
   syntax:
     content: public string Route { get; }
     parameters: []
@@ -160,7 +160,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: View
     path: ../src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
@@ -169,7 +169,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: The SkiaControl that will navigate
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl View { get; }
     parameters: []
@@ -191,7 +191,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Previous
     path: ../src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
@@ -200,7 +200,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: The SkiaControl that is upfront now
-  example: []
+  example: ""
   syntax:
     content: public SkiaControl Previous { get; }
     parameters: []
@@ -222,7 +222,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Source
     path: ../src/Shared/Internals/Models/SkiaShellNavigatingArgs.cs
@@ -700,3 +700,4 @@ references:
   name: Source
   nameWithType: SkiaShellNavigatingArgs.Source
   fullName: DrawnUi.Controls.SkiaShellNavigatingArgs.Source
+

@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnderdampedSpringTimingVectorParameters
     path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
@@ -56,7 +56,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
     path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationSecs
     path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
@@ -102,7 +102,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public float DurationSecs { get; }
     parameters: []
@@ -126,7 +126,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueAt
     path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
@@ -134,7 +134,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public Vector2 ValueAt(float offsetSecs)
     parameters:
@@ -163,7 +163,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AmplitudeAt
     path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
@@ -171,7 +171,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public Vector2 AmplitudeAt(float offsetSecs)
     parameters:
@@ -701,3 +701,4 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
+

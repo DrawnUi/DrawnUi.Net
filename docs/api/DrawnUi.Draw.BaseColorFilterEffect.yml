@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseColorFilterEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BaseColorFilterEffect
     path: ../src/Shared/Features/Effects/BaseColorFilterEffect.cs
@@ -102,7 +102,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseColorFilterEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Filter
     path: ../src/Shared/Features/Effects/BaseColorFilterEffect.cs
@@ -110,7 +110,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public SKColorFilter Filter { get; set; }
     parameters: []
@@ -134,7 +134,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseColorFilterEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateFilter
     path: ../src/Shared/Features/Effects/BaseColorFilterEffect.cs
@@ -142,7 +142,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: public virtual SKColorFilter CreateFilter(SKRect destination)
     parameters:
@@ -168,7 +168,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseColorFilterEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
     path: ../src/Shared/Features/Effects/BaseColorFilterEffect.cs
@@ -177,7 +177,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You MUST clear any cached resources as soon as this is called. Not on next draw!
-  example: []
+  example: ""
   syntax:
     content: public override void Update()
     content.vb: Public Overrides Sub Update()
@@ -199,7 +199,7 @@ items:
   source:
     remote:
       path: src/Shared/Features/Effects/BaseColorFilterEffect.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/Features/Effects/BaseColorFilterEffect.cs
@@ -207,7 +207,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: []
+  example: ""
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -1754,3 +1754,4 @@ references:
   name: OnDisposing
   nameWithType: BaseColorFilterEffect.OnDisposing
   fullName: DrawnUi.Draw.BaseColorFilterEffect.OnDisposing
+
