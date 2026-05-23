@@ -1,7 +1,5 @@
 # DrawnUI for .NET
 ![License](https://img.shields.io/github/license/taublast/DrawnUi.svg)
-![NuGet DrawnUi.Maui](https://img.shields.io/nuget/v/DrawnUi.Maui.svg)
-![NuGet DrawnUi.Blazor.Wasm](https://img.shields.io/nuget/v/DrawnUi.Blazor.Wasm.svg)
 ![NuGet DrawnUi.Net](https://img.shields.io/nuget/v/DrawnUi.Net.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/taublast/drawnui/blob/master/CONTRIBUTING.md)
 
