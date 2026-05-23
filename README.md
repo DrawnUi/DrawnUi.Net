@@ -13,6 +13,7 @@ Currently supports host models:
 * `DrawnUi.Blazor.Wasm` for browser-side / WebAssembly rendering with `Canvas` in Razor pages.
 * `DrawnUi.Blazor.Server` for server-backed DrawnUI surfaces inside Blazor Server / `InteractiveServer` apps.
 
+[See in browser](https://drawnui.net/sandbox)
 
 ## Features
 
