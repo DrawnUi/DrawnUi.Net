@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-Super.Init();
+
 
 
 // UpdateFrequency = 0: no continuous game loop timer.
