@@ -1,6 +1,9 @@
 ﻿using System.Buffers;
 using System.Collections.Concurrent;
+using HarfBuzzSharp;
 using SkiaSharp.HarfBuzz;
+using static System.Net.Mime.MediaTypeNames;
+
 
 #if BROWSER || DRAWNUI_NET
     using Font = DrawnUi.Draw.Font;
@@ -352,7 +355,10 @@ namespace DrawnUi.Draw
         {
             if (PaintDefault == null)
             {
-                PaintDefault = new SKPaint { IsAntialias = true, IsDither = true };
+                PaintDefault = new SKPaint
+                {
+                    IsAntialias = true, IsDither = true
+                };
             }
 
             PaintDefault.GuardStrokeWidth(ref _paintDefaultStrokeWidth, 0);
@@ -372,11 +378,20 @@ namespace DrawnUi.Draw
                 _paintDefaultTextSkewX = textSkewX;
                 PaintDefault.TextSkewX = textSkewX;
             }
+
+            DisposeObject(FontDefault);
+
+            FontDefault = PaintDefault.ToFont();
+            FontDefault.Edging = Super.FontSubPixelRendering ? SKFontEdging.SubpixelAntialias : SKFontEdging.Antialias;
+            FontDefault.Subpixel = Super.FontSubPixelRendering;
+            //todo instead of setting in skpaint upper
+            //font.Embolden = (this.FontAttributes & FontAttributes.Bold) != 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void DrawTextInternal(SKCanvas canvas, string text, float x, float y, SKPaint paint, float scale)
         {
+            //canvas.DrawText(characters, x, y, paint);
             DrawTextInternal(canvas, text.AsSpan(), x, y, paint, scale);
         }
 
@@ -384,30 +399,26 @@ namespace DrawnUi.Draw
         void DrawTextInternal(SKCanvas canvas, ReadOnlySpan<char> characters, float x, float y, SKPaint paint,
             float scale)
         {
-            //canvas.DrawText(text, x, y, paint);
-            using var font = paint.ToFont();
-            font.Edging = Super.FontSubPixelRendering ? SKFontEdging.SubpixelAntialias : SKFontEdging.Antialias;
-            font.Subpixel = Super.FontSubPixelRendering;
+            var text = new string(characters);
 
-            //todo instead of setting in skpaint upper
-            //font.Embolden = (this.FontAttributes & FontAttributes.Bold) != 0;
-
-            using (var blob = SKTextBlob.Create(characters, font))
+            //using (var blob = SKTextBlob.Create(characters, FontDefault))
             {
-                if (blob != null)
+                //if (blob != null)
                 {
-                    //canvas.DrawText(blob, x, y, paint);
                     if (Super.FontSubPixelRendering)
                     {
-                        canvas.DrawText(blob, (x), (y), paint);
+                        canvas.DrawText(text, x,y, paint);
+                        //canvas.DrawText(blob, (x), (y), paint);
                     }
                     else
                     {
-                        canvas.DrawText(blob, (float)Math.Round(x), (float)Math.Round(y), paint);
+                        canvas.DrawText(text, (int)Math.Round(x), (int)Math.Round(y), paint);
+                        //canvas.DrawText(blob, (float)Math.Round(x), (float)Math.Round(y), paint);
                     }
                 }
             }
 
+            //was
             //canvas.DrawText(text, (int)Math.Round(x), (int)Math.Round(y), paint);
         }
 
@@ -2820,6 +2831,8 @@ namespace DrawnUi.Draw
                 PaintDefault = null;
             }
 
+            FontDefault?.Dispose();
+
             PaintStroke?.Dispose();
             PaintStroke = null;
             PaintShadow?.Dispose();
@@ -2829,7 +2842,7 @@ namespace DrawnUi.Draw
             Shaper?.Dispose();
             Shaper = null;
         }
-
+        public SKFont FontDefault = new SKFont();
         public SKPaint PaintDefault = new SKPaint { IsAntialias = true, IsDither = true };
         private float _paintDefaultStrokeWidth = -1f;
         private float _paintDefaultTextSize = -1f;
