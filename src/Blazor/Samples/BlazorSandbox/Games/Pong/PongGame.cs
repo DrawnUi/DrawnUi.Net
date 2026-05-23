@@ -111,6 +111,7 @@ public partial class PongGame : DrawnGame
         _scoreLabel = new SkiaLabel()
         {
             Text = "0 : 0",
+            FontFamily = "FontGame",
             FontSize = 28,
             TextColor = Colors.White,
             HorizontalOptions = LayoutOptions.Center,
@@ -123,6 +124,7 @@ public partial class PongGame : DrawnGame
         _messageLabel = new SkiaLabel()
         {
             Text = "TAP TO SERVE",
+            FontFamily = "FontGame",
             FontSize = 14,
             TextColor = Colors.White.WithAlpha(0.8f),
             HorizontalOptions = LayoutOptions.Center,
