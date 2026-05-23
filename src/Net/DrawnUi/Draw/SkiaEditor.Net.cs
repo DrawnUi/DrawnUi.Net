@@ -3,6 +3,26 @@ namespace DrawnUi.Draw;
 public partial class SkiaEditor
 {
     private int _stubSelectionStop = -1;
+    private CancellationTokenSource? _deferCts;
+
+    // Label.Lines is populated during the render pass, which happens after property-change
+    // events. Suppress the immediate MoveInternalCursor() and defer until after the next render.
+    private async void DeferVisualCursorUpdate()
+    {
+        _deferCts?.Cancel();
+        _deferCts = new CancellationTokenSource();
+        var token = _deferCts.Token;
+        try
+        {
+            await Task.Delay(50, token);
+            _suppressImmediateCursorMove = false;
+            MoveInternalCursor();
+        }
+        catch (OperationCanceledException)
+        {
+            _suppressImmediateCursorMove = false;
+        }
+    }
 
     public void SetCursorPositionNative(int position, int stop = -1)
     {
@@ -69,8 +89,10 @@ public partial class SkiaEditor
 
         var start = CursorPosition - remove;
         Text = text.Remove(start, remove);
+        _suppressImmediateCursorMove = true;
         CursorPosition = start;
         SelectionLength = 0;
+        DeferVisualCursorUpdate();
     }
 
     public void StubDelete(int count = 1)
@@ -90,7 +112,9 @@ public partial class SkiaEditor
 
         var remove = Math.Min(count, text.Length - CursorPosition);
         Text = text.Remove(CursorPosition, remove);
+        _suppressImmediateCursorMove = true;
         SelectionLength = 0;
+        DeferVisualCursorUpdate();
     }
 
     public void StubMoveCursor(int delta, bool extendSelection = false)
@@ -131,9 +155,11 @@ public partial class SkiaEditor
         StubSelectRange(0, Text?.Length ?? 0);
     }
 
- 
-
     private bool HasSelection => SelectionLength > 0;
+
+    partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+
+    partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
 
     private void ReplaceSelection(string insertedText)
     {
@@ -145,10 +171,10 @@ public partial class SkiaEditor
         var updated = text.Remove(selectionStart, selectionLength).Insert(selectionStart, normalizedInsertedText);
 
         Text = updated;
+        _suppressImmediateCursorMove = true;
         CursorPosition = selectionStart + normalizedInsertedText.Length;
         SelectionLength = 0;
         _stubSelectionStop = -1;
+        DeferVisualCursorUpdate();
     }
-
- 
 }

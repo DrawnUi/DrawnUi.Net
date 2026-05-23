@@ -95,7 +95,7 @@ public partial class Canvas
 
                         forChild = ((SkiaControl)listener).HitIsInside(hitPoint.X, hitPoint.Y) ||
                                    listener == FocusedChild;
-                    }
+                        }
 
                     if (!forChild)
                     {

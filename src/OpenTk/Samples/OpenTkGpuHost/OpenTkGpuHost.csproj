@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DrawnUi\DrawnUi.Net.csproj" />
+    <ProjectReference Include="..\..\..\OpenTk\DrawnUi\DrawnUi.OpenTk.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTK" Version="4.9.4" />
+    <!-- Required for Linux publish to include native Skia runtime -->
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.147.0-preview.2.1" />
   </ItemGroup>
 

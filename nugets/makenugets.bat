@@ -10,7 +10,6 @@ dotnet pack  ..\src\Blazor\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj -c Release
 dotnet pack  ..\src\Blazor\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj -c Release
 dotnet pack ..\src\Maui\Addons\DrawnUi.Maui.Game\DrawnUi.Maui.Game.csproj -c Release
 dotnet pack ..\src\Maui\Addons\DrawnUi.Maui.MapsUi\DrawnUi.Maui.MapsUi.csproj -c Release
-dotnet pack ..\src\Maui\Addons\DrawnUi.Maui.Camera\DrawnUi.Maui.Camera.csproj -c Release
 dotnet pack ..\src\Maui\Addons\DrawnUi.MauiGraphics\DrawnUi.MauiGraphics.csproj -c Release
 
 pause

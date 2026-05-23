@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>DrawnUI for OpenTK</Title>
+    <PackageId>DrawnUi.OpenTk</PackageId>
+    <Description>OpenTK GPU host for DrawnUi.Net — native window with OpenGL context and SkiaSharp GPU surface. Supports Windows and Linux.</Description>
+    <PackageTags>drawnui opentk opengl skia skiasharp desktop linux windows</PackageTags>
+    <PackageIcon>icon128.png</PackageIcon>
+    <CreatePackage>false</CreatePackage>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\icon128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net\DrawnUi\DrawnUi.Net.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTK" Version="4.9.4" />
+  </ItemGroup>
+
+</Project>
