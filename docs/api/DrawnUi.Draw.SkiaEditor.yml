@@ -30,6 +30,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.CursorColorProperty
   - DrawnUi.Draw.SkiaEditor.CursorGradient
   - DrawnUi.Draw.SkiaEditor.CursorGradientProperty
+  - DrawnUi.Draw.SkiaEditor.CursorMoved
   - DrawnUi.Draw.SkiaEditor.CursorPosition
   - DrawnUi.Draw.SkiaEditor.CursorPositionProperty
   - DrawnUi.Draw.SkiaEditor.CutSelection
@@ -49,6 +50,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.GetEditorBreakText(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.GetLineGlyphs(DrawnUi.Draw.TextLine)
   - DrawnUi.Draw.SkiaEditor.GetSelectedText
+  - DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts
   - DrawnUi.Draw.SkiaEditor.GetWordBoundaries(System.Int32)
   - DrawnUi.Draw.SkiaEditor.HandleVerticalArrow(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.HorizontalTextAlignment
@@ -73,6 +75,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.NormalizeEditorLineBreaks(System.String)
   - DrawnUi.Draw.SkiaEditor.OnControlCreated
   - DrawnUi.Draw.SkiaEditor.OnCreatingLabel(DrawnUi.Draw.SkiaLabel)
+  - DrawnUi.Draw.SkiaEditor.OnCursorMoved
   - DrawnUi.Draw.SkiaEditor.OnDisposing
   - DrawnUi.Draw.SkiaEditor.OnFocusChanged(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.OnLayoutChanged
@@ -1250,6 +1253,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.Observe``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaEditor},System.String[])
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.Observe``2({TSource},System.Action{DrawnUi.Draw.SkiaEditor,System.String},System.String[])
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.Observe``2({TSource},System.Action{DrawnUi.Draw.SkiaEditor},System.String[])
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(System.Action{DrawnUi.Draw.SkiaEditor,System.Boolean})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnLongPressing``1(System.Action{DrawnUi.Draw.SkiaEditor})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnTapped``1(System.Action{DrawnUi.Draw.SkiaEditor,DrawnUi.Draw.ControlTappedEventArgs})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnTapped``1(System.Action{DrawnUi.Draw.SkiaEditor})
@@ -1420,10 +1424,12 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TextChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 27
+    startLine: 31
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Raised when the caret moves to a new position.
+  example: []
   syntax:
     content: public event EventHandler<string> TextChanged
     return:
@@ -1447,15 +1453,46 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 29
+    startLine: 36
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Raised when editor focus changes.
+  example: []
   syntax:
     content: public event EventHandler<bool> FocusChanged
     return:
       type: System.EventHandler{System.Boolean}
     content.vb: Public Event FocusChanged As EventHandler(Of Boolean)
+- uid: DrawnUi.Draw.SkiaEditor.CursorMoved
+  commentId: E:DrawnUi.Draw.SkiaEditor.CursorMoved
+  id: CursorMoved
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: CursorMoved
+  nameWithType: SkiaEditor.CursorMoved
+  fullName: DrawnUi.Draw.SkiaEditor.CursorMoved
+  type: Event
+  source:
+    remote:
+      path: src/Shared/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: CursorMoved
+    path: ../src/Shared/EditText/SkiaEditor.cs
+    startLine: 41
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Raised when the caret moves to a new position.
+  example: []
+  syntax:
+    content: public event EventHandler CursorMoved
+    return:
+      type: System.EventHandler
+    content.vb: Public Event CursorMoved As EventHandler
 - uid: DrawnUi.Draw.SkiaEditor.TextSubmitted
   commentId: E:DrawnUi.Draw.SkiaEditor.TextSubmitted
   id: TextSubmitted
@@ -1474,10 +1511,12 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TextSubmitted
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 31
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Raised when text is submitted.
+  example: []
   syntax:
     content: public event EventHandler<string> TextSubmitted
     return:
@@ -1501,7 +1540,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: _scroll
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 37
+    startLine: 52
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1528,7 +1567,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: _contentLayer
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 38
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1555,7 +1594,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: _selectionControl
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 39
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1582,7 +1621,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: _placeholderLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 40
+    startLine: 55
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1609,7 +1648,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ParagraphBreakChar
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 41
+    startLine: 56
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1636,7 +1675,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SoftLineBreakChar
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 42
+    startLine: 57
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1663,7 +1702,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 69
+    startLine: 84
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1689,7 +1728,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdatePlaceholder
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 123
+    startLine: 138
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1715,7 +1754,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCreatingLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 150
+    startLine: 165
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1746,7 +1785,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreatePlaceholderLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 155
+    startLine: 170
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1774,7 +1813,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateLabel
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 167
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1802,7 +1841,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 181
+    startLine: 196
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1812,6 +1851,36 @@ items:
       type: DrawnUi.Draw.SkiaCursor
     content.vb: Protected Overridable Function CreateCursor() As SkiaCursor
   overload: DrawnUi.Draw.SkiaEditor.CreateCursor*
+- uid: DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts
+  commentId: M:DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts
+  id: GetSingleLineHeightPts
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: GetSingleLineHeightPts()
+  nameWithType: SkiaEditor.GetSingleLineHeightPts()
+  fullName: DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetSingleLineHeightPts
+    path: ../src/Shared/EditText/SkiaEditor.cs
+    startLine: 209
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Returns the visual height of one editor text line in points for the current font settings.
+  example: []
+  syntax:
+    content: public virtual double GetSingleLineHeightPts()
+    return:
+      type: System.Double
+    content.vb: Public Overridable Function GetSingleLineHeightPts() As Double
+  overload: DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts*
 - uid: DrawnUi.Draw.SkiaEditor.CreateControl
   commentId: M:DrawnUi.Draw.SkiaEditor.CreateControl
   id: CreateControl
@@ -1830,7 +1899,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateControl
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 191
+    startLine: 245
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1856,7 +1925,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Label
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 240
+    startLine: 294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1885,7 +1954,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Cursor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 242
+    startLine: 296
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1914,7 +1983,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 248
+    startLine: 302
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1952,7 +2021,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: NormalizeEditorLineBreaks
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 284
+    startLine: 338
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1986,7 +2055,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEditorBreakText
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 292
+    startLine: 346
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2020,7 +2089,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEditorBreak
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 295
+    startLine: 349
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2054,7 +2123,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsTrailingEditorBreak
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 298
+    startLine: 352
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2088,7 +2157,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ReplaceEditorBreaksWithSpaces
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 301
+    startLine: 355
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2122,7 +2191,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasuring
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 402
+    startLine: 456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2167,7 +2236,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetContentSizeForAutosizeInPixels
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 407
+    startLine: 461
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2199,7 +2268,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Submit
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 424
+    startLine: 478
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2227,7 +2296,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteSubmit
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 436
+    startLine: 490
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2259,7 +2328,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsMultiline
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 445
+    startLine: 499
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2288,7 +2357,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnFocusChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 453
+    startLine: 507
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2332,7 +2401,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetLineGlyphs
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 476
+    startLine: 530
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2368,7 +2437,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCursorPosition
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 487
+    startLine: 541
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2409,7 +2478,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 546
+    startLine: 600
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2444,7 +2513,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocusInternal
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 679
+    startLine: 733
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2476,7 +2545,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: _suppressImmediateCursorMove
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 709
+    startLine: 763
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2505,7 +2574,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveInternalCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 711
+    startLine: 765
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2531,7 +2600,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectAll
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 723
+    startLine: 777
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2557,7 +2626,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateCursorVisibility
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 734
+    startLine: 788
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2585,7 +2654,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorVisible
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 902
+    startLine: 958
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2617,7 +2686,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveCursorTo
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 921
+    startLine: 977
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2637,6 +2706,34 @@ items:
   nameWithType.vb: SkiaEditor.MoveCursorTo(Double, Double)
   fullName.vb: DrawnUi.Draw.SkiaEditor.MoveCursorTo(Double, Double)
   name.vb: MoveCursorTo(Double, Double)
+- uid: DrawnUi.Draw.SkiaEditor.OnCursorMoved
+  commentId: M:DrawnUi.Draw.SkiaEditor.OnCursorMoved
+  id: OnCursorMoved
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: OnCursorMoved()
+  nameWithType: SkiaEditor.OnCursorMoved()
+  fullName: DrawnUi.Draw.SkiaEditor.OnCursorMoved()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OnCursorMoved
+    path: ../src/Shared/EditText/SkiaEditor.cs
+    startLine: 1045
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Raises the <xref href="DrawnUi.Draw.SkiaEditor.CursorMoved" data-throw-if-not-resolved="false"></xref> event.
+  example: []
+  syntax:
+    content: protected virtual void OnCursorMoved()
+    content.vb: Protected Overridable Sub OnCursorMoved()
+  overload: DrawnUi.Draw.SkiaEditor.OnCursorMoved*
 - uid: DrawnUi.Draw.SkiaEditor.GetCursorLine
   commentId: M:DrawnUi.Draw.SkiaEditor.GetCursorLine
   id: GetCursorLine
@@ -2655,7 +2752,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCursorLine
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 994
+    startLine: 1068
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2685,7 +2782,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocus
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1018
+    startLine: 1092
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2717,7 +2814,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleVerticalArrow
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1042
+    startLine: 1116
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2749,7 +2846,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnControlCreated
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1084
+    startLine: 1158
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2775,7 +2872,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorPositionProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1091
+    startLine: 1165
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2802,7 +2899,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorPosition
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1105
+    startLine: 1179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2831,7 +2928,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TimerUpdateParentCursorPosition
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1114
+    startLine: 1188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2858,7 +2955,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorPositionWithDelay
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1122
+    startLine: 1196
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2899,7 +2996,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSelection
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1139
+    startLine: 1213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2933,7 +3030,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetWordBoundaries
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1147
+    startLine: 1221
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2967,7 +3064,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectWord
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1167
+    startLine: 1241
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2999,7 +3096,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelectedText
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1178
+    startLine: 1252
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3027,7 +3124,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DeleteSelection
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1187
+    startLine: 1261
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3053,7 +3150,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: InsertAtCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1199
+    startLine: 1273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3085,7 +3182,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CutSelection
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1213
+    startLine: 1287
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3111,7 +3208,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CopySelection
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1233
+    startLine: 1307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3137,7 +3234,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PasteFromClipboard
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1240
+    startLine: 1314
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3163,7 +3260,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1265
+    startLine: 1339
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3192,7 +3289,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1272
+    startLine: 1346
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3221,7 +3318,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnTypeProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1293
+    startLine: 1367
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3248,7 +3345,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnType
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1299
+    startLine: 1373
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3277,7 +3374,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardTypeProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1306
+    startLine: 1380
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3304,7 +3401,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardType
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1313
+    startLine: 1387
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3333,7 +3430,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPasswordProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1319
+    startLine: 1393
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3360,7 +3457,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPassword
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1333
+    startLine: 1407
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3389,7 +3486,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmitProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1339
+    startLine: 1413
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3416,7 +3513,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmit
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1345
+    startLine: 1419
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3445,7 +3542,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChangedProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1351
+    startLine: 1425
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3472,7 +3569,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1357
+    startLine: 1431
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3501,7 +3598,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChangedProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1363
+    startLine: 1437
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3528,7 +3625,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChanged
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1369
+    startLine: 1443
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3557,7 +3654,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UseMarkdownProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1375
+    startLine: 1449
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3584,7 +3681,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UseMarkdown
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1391
+    startLine: 1465
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3613,7 +3710,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CanShowCursorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1398
+    startLine: 1472
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3640,7 +3737,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CanShowCursor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1404
+    startLine: 1478
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3669,7 +3766,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocusedProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1410
+    startLine: 1484
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3696,7 +3793,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocused
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1426
+    startLine: 1500
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3725,7 +3822,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TextProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1440
+    startLine: 1514
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3752,7 +3849,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Text
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1449
+    startLine: 1523
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3781,7 +3878,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSizeProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1464
+    startLine: 1538
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3808,7 +3905,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSize
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1468
+    startLine: 1542
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3837,7 +3934,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalTextAlignmentProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1474
+    startLine: 1548
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3864,7 +3961,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalTextAlignment
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1481
+    startLine: 1555
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3893,7 +3990,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalTextAlignmentProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1487
+    startLine: 1561
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3920,7 +4017,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalTextAlignment
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1494
+    startLine: 1568
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3949,7 +4046,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LineHeightProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1501
+    startLine: 1575
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3976,7 +4073,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: LineHeight
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1508
+    startLine: 1582
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4005,7 +4102,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamilyProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1514
+    startLine: 1588
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4032,7 +4129,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamily
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1516
+    startLine: 1590
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4061,7 +4158,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1522
+    startLine: 1596
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4088,7 +4185,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1526
+    startLine: 1600
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4117,7 +4214,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeightProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1532
+    startLine: 1606
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4144,7 +4241,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeight
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1539
+    startLine: 1613
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4173,7 +4270,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TextGradientProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1546
+    startLine: 1620
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4200,7 +4297,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: TextGradient
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1553
+    startLine: 1627
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4229,7 +4326,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1559
+    startLine: 1633
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4256,7 +4353,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorColor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1566
+    startLine: 1640
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4285,7 +4382,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorGradientProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1573
+    startLine: 1647
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4312,7 +4409,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorGradient
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1581
+    startLine: 1655
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4341,7 +4438,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLengthProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1588
+    startLine: 1662
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4368,7 +4465,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLength
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1603
+    startLine: 1677
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4397,7 +4494,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1609
+    startLine: 1683
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4424,7 +4521,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1616
+    startLine: 1690
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4453,7 +4550,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderTextProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1622
+    startLine: 1696
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4480,7 +4577,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderText
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1629
+    startLine: 1703
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4509,7 +4606,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderColorProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1635
+    startLine: 1709
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4536,7 +4633,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderColor
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1642
+    startLine: 1716
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4565,7 +4662,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignmentProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1648
+    startLine: 1722
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4592,7 +4689,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignment
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1655
+    startLine: 1729
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4621,7 +4718,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLinesProperty
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1677
+    startLine: 1751
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4648,7 +4745,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLines
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1679
+    startLine: 1753
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4677,7 +4774,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionGo
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1691
+    startLine: 1765
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4704,7 +4801,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionNext
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1692
+    startLine: 1766
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4731,7 +4828,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSend
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1693
+    startLine: 1767
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4758,7 +4855,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSearch
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1694
+    startLine: 1768
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4785,7 +4882,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionDone
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1695
+    startLine: 1769
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4812,7 +4909,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorPositionNative
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1702
+    startLine: 1776
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4846,7 +4943,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposePlatform
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1707
+    startLine: 1781
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4872,7 +4969,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocusNative
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1712
+    startLine: 1786
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4904,7 +5001,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateNativePosition
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1717
+    startLine: 1791
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4930,7 +5027,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyKeyboardType
     path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1722
+    startLine: 1796
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -30070,6 +30167,83 @@ references:
   - name: (
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(System.Action{DrawnUi.Draw.SkiaEditor,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnFocusChanged__1___0_System_Action___0_System_Boolean__
+  name: OnFocusChanged<SkiaEditor>(SkiaEditor, Action<SkiaEditor, bool>)
+  nameWithType: FluentExtensions.OnFocusChanged<SkiaEditor>(SkiaEditor, Action<SkiaEditor, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnFocusChanged<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, System.Action<DrawnUi.Draw.SkiaEditor, bool>)
+  nameWithType.vb: FluentExtensions.OnFocusChanged(Of SkiaEditor)(SkiaEditor, Action(Of SkiaEditor, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnFocusChanged(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, System.Action(Of DrawnUi.Draw.SkiaEditor, Boolean))
+  name.vb: OnFocusChanged(Of SkiaEditor)(SkiaEditor, Action(Of SkiaEditor, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(DrawnUi.Draw.SkiaEditor,System.Action{DrawnUi.Draw.SkiaEditor,System.Boolean})
+    name: OnFocusChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnFocusChanged__1___0_System_Action___0_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(DrawnUi.Draw.SkiaEditor,System.Action{DrawnUi.Draw.SkiaEditor,System.Boolean})
+    name: OnFocusChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnFocusChanged__1___0_System_Action___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnLongPressing``1(System.Action{DrawnUi.Draw.SkiaEditor})
   commentId: M:DrawnUi.Draw.FluentExtensions.OnLongPressing``1(``0,System.Action{``0})
   parent: DrawnUi.Draw.FluentExtensions
@@ -36472,6 +36646,70 @@ references:
   - name: (
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnFocusChanged__1___0_System_Action___0_System_Boolean__
+  name: OnFocusChanged<T>(T, Action<T, bool>)
+  nameWithType: FluentExtensions.OnFocusChanged<T>(T, Action<T, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnFocusChanged<T>(T, System.Action<T, bool>)
+  nameWithType.vb: FluentExtensions.OnFocusChanged(Of T)(T, Action(Of T, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnFocusChanged(Of T)(T, System.Action(Of T, Boolean))
+  name.vb: OnFocusChanged(Of T)(T, Action(Of T, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+    name: OnFocusChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnFocusChanged__1___0_System_Action___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+    name: OnFocusChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnFocusChanged__1___0_System_Action___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.OnLongPressing``1(``0,System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.OnLongPressing``1(``0,System.Action{``0})
   isExternal: true
@@ -39568,6 +39806,14 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
 - uid: DrawnUi.Draw.SkiaScroll
   commentId: T:DrawnUi.Draw.SkiaScroll
   parent: DrawnUi.Draw
@@ -39643,6 +39889,23 @@ references:
   name: SkiaCursor
   nameWithType: SkiaCursor
   fullName: DrawnUi.Draw.SkiaCursor
+- uid: DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_GetSingleLineHeightPts
+  name: GetSingleLineHeightPts
+  nameWithType: SkiaEditor.GetSingleLineHeightPts
+  fullName: DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
 - uid: DrawnUi.Draw.SkiaEditor.CreateControl*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.CreateControl
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_CreateControl
@@ -40087,17 +40350,18 @@ references:
   name: MoveCursorTo
   nameWithType: SkiaEditor.MoveCursorTo
   fullName: DrawnUi.Draw.SkiaEditor.MoveCursorTo
-- uid: System.Double
-  commentId: T:System.Double
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.double
-  name: double
-  nameWithType: double
-  fullName: double
-  nameWithType.vb: Double
-  fullName.vb: Double
-  name.vb: Double
+- uid: DrawnUi.Draw.SkiaEditor.CursorMoved
+  commentId: E:DrawnUi.Draw.SkiaEditor.CursorMoved
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_CursorMoved
+  name: CursorMoved
+  nameWithType: SkiaEditor.CursorMoved
+  fullName: DrawnUi.Draw.SkiaEditor.CursorMoved
+- uid: DrawnUi.Draw.SkiaEditor.OnCursorMoved*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.OnCursorMoved
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_OnCursorMoved
+  name: OnCursorMoved
+  nameWithType: SkiaEditor.OnCursorMoved
+  fullName: DrawnUi.Draw.SkiaEditor.OnCursorMoved
 - uid: DrawnUi.Draw.SkiaEditor.GetCursorLine*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.GetCursorLine
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_GetCursorLine

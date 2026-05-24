@@ -36,6 +36,7 @@ items:
   - DrawnUi.Draw.FluentExtensions.Observe``2(``0,System.Func{``1},System.Action{``0},System.String[])
   - DrawnUi.Draw.FluentExtensions.Observe``2(``0,``1,System.Action{``0,System.String},System.String[])
   - DrawnUi.Draw.FluentExtensions.Observe``2(``0,``1,System.Action{``0},System.String[])
+  - DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
   - DrawnUi.Draw.FluentExtensions.OnLongPressing``1(``0,System.Action{``0})
   - DrawnUi.Draw.FluentExtensions.OnTapped``1(``0,System.Action{``0,DrawnUi.Draw.ControlTappedEventArgs})
   - DrawnUi.Draw.FluentExtensions.OnTapped``1(``0,System.Action{``0})
@@ -2801,6 +2802,51 @@ items:
   nameWithType.vb: FluentExtensions.OnTextChanged(Of T)(T, Action(Of String))
   fullName.vb: DrawnUi.Draw.FluentExtensions.OnTextChanged(Of T)(T, System.Action(Of String))
   name.vb: OnTextChanged(Of T)(T, Action(Of String))
+- uid: DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+  id: OnFocusChanged``1(``0,System.Action{``0,System.Boolean})
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: OnFocusChanged<T>(T, Action<T, bool>)
+  nameWithType: FluentExtensions.OnFocusChanged<T>(T, Action<T, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnFocusChanged<T>(T, System.Action<T, bool>)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OnFocusChanged
+    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    startLine: 1215
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Attaches a handler to the FocusChanged event with automatic cleanup on disposal.
+  example: []
+  syntax:
+    content: 'public static T OnFocusChanged<T>(this T view, Action<T, bool> action) where T : SkiaEditor'
+    parameters:
+    - id: view
+      type: '{T}'
+      description: The editor control to attach the event handler to.
+    - id: action
+      type: System.Action{{T},System.Boolean}
+      description: The callback to invoke when focus changes, receiving the editor and its new focus state.
+    typeParameters:
+    - id: T
+      description: The type of the view, constrained to SkiaEditor or its derived types.
+    return:
+      type: '{T}'
+      description: The same view instance for fluent chaining.
+    content.vb: Public Shared Function OnFocusChanged(Of T As SkiaEditor)(view As T, action As Action(Of T, Boolean)) As T
+  overload: DrawnUi.Draw.FluentExtensions.OnFocusChanged*
+  nameWithType.vb: FluentExtensions.OnFocusChanged(Of T)(T, Action(Of T, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnFocusChanged(Of T)(T, System.Action(Of T, Boolean))
+  name.vb: OnFocusChanged(Of T)(T, Action(Of T, Boolean))
 - uid: DrawnUi.Draw.FluentExtensions.OnTapped``1(``0,System.Action{``0,DrawnUi.Draw.ControlTappedEventArgs})
   commentId: M:DrawnUi.Draw.FluentExtensions.OnTapped``1(``0,System.Action{``0,DrawnUi.Draw.ControlTappedEventArgs})
   id: OnTapped``1(``0,System.Action{``0,DrawnUi.Draw.ControlTappedEventArgs})
@@ -2820,7 +2866,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTapped
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1208
+    startLine: 1238
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2859,7 +2905,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithChildren
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1243
+    startLine: 1273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2904,7 +2950,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithContent
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1260
+    startLine: 1290
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2949,7 +2995,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithParent
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1273
+    startLine: 1303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2994,7 +3040,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CenterX
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1287
+    startLine: 1317
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3036,7 +3082,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CenterY
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1299
+    startLine: 1329
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3078,7 +3124,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Fill
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1311
+    startLine: 1341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3120,7 +3166,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FillX
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1324
+    startLine: 1354
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3162,7 +3208,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: EndX
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1330
+    startLine: 1360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3199,7 +3245,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: EndY
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1336
+    startLine: 1366
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3236,7 +3282,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: StartX
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1342
+    startLine: 1372
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3273,7 +3319,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: StartY
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1348
+    startLine: 1378
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3310,7 +3356,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: FillY
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1361
+    startLine: 1391
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3352,7 +3398,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Center
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1373
+    startLine: 1403
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3394,7 +3440,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1389
+    startLine: 1419
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3439,7 +3485,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1403
+    startLine: 1433
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3487,7 +3533,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1419
+    startLine: 1449
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3541,7 +3587,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithPadding
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1433
+    startLine: 1463
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3586,7 +3632,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithPadding
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1447
+    startLine: 1477
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3634,7 +3680,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithPadding
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1463
+    startLine: 1493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3688,7 +3734,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithTag
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1477
+    startLine: 1507
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3733,7 +3779,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithCache
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1494
+    startLine: 1524
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3778,7 +3824,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithBackgroundColor
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1507
+    startLine: 1537
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3823,7 +3869,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithHorizontalOptions
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1520
+    startLine: 1550
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3868,7 +3914,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithVerticalOptions
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1533
+    startLine: 1563
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3913,7 +3959,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithHeight
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1546
+    startLine: 1576
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3958,7 +4004,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithWidth
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1559
+    startLine: 1589
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4003,7 +4049,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1572
+    startLine: 1602
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4048,7 +4094,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithVisibility
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1578
+    startLine: 1608
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4087,7 +4133,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithShapeType
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1595
+    startLine: 1625
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4132,7 +4178,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Shape
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1608
+    startLine: 1638
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4177,7 +4223,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAspect
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1625
+    startLine: 1655
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4222,7 +4268,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithFontSize
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1642
+    startLine: 1672
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4267,7 +4313,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithTextColor
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1655
+    startLine: 1685
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4312,7 +4358,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithHorizontalTextAlignment
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1668
+    startLine: 1698
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4357,7 +4403,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTextChanged
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1683
+    startLine: 1713
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4399,7 +4445,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithText
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1700
+    startLine: 1730
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4440,7 +4486,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithItemsSource
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1709
+    startLine: 1739
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4481,7 +4527,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithEnabled
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1721
+    startLine: 1751
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4522,7 +4568,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithOpacity
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1730
+    startLine: 1760
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4563,7 +4609,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithRotation
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1739
+    startLine: 1769
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4604,7 +4650,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithScale
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1748
+    startLine: 1778
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4645,7 +4691,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithScale
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1757
+    startLine: 1787
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4688,7 +4734,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithType
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1767
+    startLine: 1797
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4729,7 +4775,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithSpacing
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1776
+    startLine: 1806
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4770,7 +4816,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithColumnSpacing
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1785
+    startLine: 1815
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4811,7 +4857,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: WithRowSpacing
     path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1794
+    startLine: 1824
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6583,6 +6629,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.OnFocusChanged*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.OnFocusChanged
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnFocusChanged__1___0_System_Action___0_System_Boolean__
+  name: OnFocusChanged
+  nameWithType: FluentExtensions.OnFocusChanged
+  fullName: DrawnUi.Draw.FluentExtensions.OnFocusChanged
 - uid: System.Action{{T},DrawnUi.Draw.ControlTappedEventArgs}
   commentId: T:System.Action{``0,DrawnUi.Draw.ControlTappedEventArgs}
   parent: System
