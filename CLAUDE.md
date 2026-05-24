@@ -69,6 +69,22 @@ docs/               # Documentation (articles, api)
 
 ---
 
+**SkiaSharp version:**
+- All targets use SkiaSharp v4
+- Lib supports .NET 10 and .NET 9 targets
+
+---
+
+**AI assistance**
+- when creating new apps prefer .NET 10
+- when adding new public props/method always add XML comments
+- when creating new controls create a ,NET harness and iterate there untill getting maximum possible result
+- when working on shared specifics always test your outcome with .NET harness, never ask user to test anything in case you can test in harness
+- when meeting a "Inline children" fluent code-behind flow (see below) always propose to fix
+- when you miss a fluent extension ask for approval to create one to use, instead of breaking fluent flow
+
+---
+
 ## Build Commands
 
 **Main solution (all targets):**
@@ -186,13 +202,6 @@ SwapBuffers();
 ---
 
 ## Important Development Notes
-
-**AI assistance
-- when working on shared specific test yourself using .NET harness
-
-**SkiaSharp version:**
-- All targets use SkiaSharp v4
-- .NET 8 and 1.x are no longer supported
 
 **Caching strategy:**
 - `Operations` — shapes, SVG, text (SKPicture-based). **Never** use inside GPU-cached parent or for controls with GPU-surface shaders. 

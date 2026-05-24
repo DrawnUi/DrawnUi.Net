@@ -9,9 +9,11 @@ Each platform exposes drawn controls differently:
 | Platform | Mechanism |
 |---|---|
 | Blazor | Invisible ARIA `<div>` overlay positioned over the canvas |
-| iOS / macCatalyst | `IUIAccessibilityContainer` virtual elements on the native view |
-| Android | `ExploreByTouchHelper` on `SKCanvasView` |
-| Windows | UIA `IRawElementProviderFragment` virtual elements |
+| OpenTK Windows | UIA `IRawElementProviderFragment` virtual elements attached to the native OpenTK / GLFW host window |
+| OpenTK Linux | AT-SPI virtual accessibles attached to the native OpenTK / GLFW host window |
+| MAUI iOS / macCatalyst | `IUIAccessibilityContainer` virtual elements on the native view |
+| MAUI Android | `ExploreByTouchHelper` on `SKCanvasView` |
+| MAUI Windows | UIA `IRawElementProviderFragment` virtual elements |
 
 All platforms share the same C# infrastructure in the shared project. Platform layers consume the `SkiaAccessibilityManager` snapshot and translate it into the native a11y API.
 
@@ -181,6 +183,18 @@ Structural / landmark: `RoleText`, `RoleHeading`, `RoleImg`, `RoleList`, `RoleLi
 - [ ] Implement `IRawElementProviderFragment` + `IRawElementProviderSimple` for virtual UIA elements.
 - [ ] Expose `Rect`, `Name` (label), `LocalizedControlType` (role), `IsKeyboardFocusable` (canInteract).
 - [ ] Raise `UIA_AutomationFocusChangedEventId` when focus changes.
+
+### OpenTK — Windows (not started)
+
+- [ ] Hook accessibility to the native OpenTK / GLFW host window handle on Windows.
+- [ ] Expose `SkiaAccessibilityManager.Snapshot` as UIA fragment providers, similar to the planned MAUI Windows bridge.
+- [ ] Route accessibility activation back to `OnAccessibilityActivated()` and raise focus-changed events when keyboard focus moves.
+
+### OpenTK — Linux (not started)
+
+- [ ] Hook accessibility to the native OpenTK / GLFW host window on Linux.
+- [ ] Mirror `SkiaAccessibilityManager.Snapshot` into an AT-SPI accessible tree for desktop assistive technology.
+- [ ] Route accessibility activation and focus changes back into the shared DrawnUI accessibility pipeline.
 
 ### General
 
