@@ -132,7 +132,7 @@ public partial class Canvas
 
             if (args.Type != TouchActionResult.Pointer && (args.Type == TouchActionResult.Up || FocusedChild != null))
             {
-                if (manageChildFocus || (FocusedChild != null && consumed != FocusedChild && !FocusedChild.LockFocus))
+                if (manageChildFocus || (args.Type != TouchActionResult.Up && FocusedChild != null && consumed != FocusedChild && !FocusedChild.LockFocus))
                 {
                     FocusedChild = consumed;
                 }
