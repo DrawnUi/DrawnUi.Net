@@ -2246,10 +2246,12 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintBackground
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 433
+    startLine: 435
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Paints the filled background for the current shape into the target canvas.
+  example: []
   syntax:
     content: protected virtual void PaintBackground(SkiaDrawingContext ctx, SKRect outRect, SKPoint[] radii, float minSize, SKPaint paint)
     parameters:
@@ -2286,7 +2288,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MapStrokeCapToStrokeJoin
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 477
+    startLine: 479
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2317,7 +2319,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintWithShadows
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 491
+    startLine: 493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2350,7 +2352,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: AddPaintArguments
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 496
+    startLine: 498
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2383,7 +2385,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 507
+    startLine: 509
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2421,7 +2423,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowsProperty
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 871
+    startLine: 873
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2448,7 +2450,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Shadows
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 887
+    startLine: 889
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2477,7 +2479,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: PolygonStar
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 920
+    startLine: 922
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2506,7 +2508,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SmoothPointsProperty
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 985
+    startLine: 987
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2533,7 +2535,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SmoothPoints
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 1015
+    startLine: 1017
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2585,7 +2587,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateStarPoints
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 1162
+    startLine: 1164
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2621,7 +2623,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateStarPointsCrossed
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 1210
+    startLine: 1212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2655,7 +2657,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCompensatedStrokeWidth
     path: ../src/Shared/Draw/SkiaShape.cs
-    startLine: 1268
+    startLine: 1270
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
