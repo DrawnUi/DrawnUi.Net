@@ -5,10 +5,10 @@ Two integration paths are available depending on whether you own the window or n
 
 ---
 
-## Way 1 — Fully Drawn App (`DrawnUiGameWindow`)
+## Way 1 — Fully Drawn App (`DrawnUiWindow`)
 
 Use this when the entire window content is DrawnUI.  
-Subclass `DrawnUiGameWindow`, pass a configured `Canvas`, done.
+Subclass `DrawnUiWindow`, pass a configured `Canvas`, done.
 
 Render behavior is controlled by `Canvas.UpdateMode`:
 
@@ -41,11 +41,11 @@ var canvas = new Canvas
     }
 };
 
-using var window = new DrawnUiGameWindow(gameSettings, nativeSettings, canvas);
+using var window = new DrawnUiWindow(gameSettings, nativeSettings, canvas);
 window.Run();
 ```
 
-`DrawnUiGameWindow` handles:
+`DrawnUiWindow` handles:
 - Skia GPU surface lifecycle  
 - Mouse and keyboard routing to the canvas  
 - VSync and event-driven sleep — configured automatically from `Canvas.UpdateMode`  
@@ -179,14 +179,14 @@ and the first delta is a few milliseconds, not hours of system uptime.
 
 Both hosts query `GLFW.GetVideoMode` on the primary monitor and set `Super.MaxFps`  
 to the real display refresh rate (fallback: 60).  
-`DrawnUiGameWindow` sets VSync automatically based on `UpdateMode` — no manual configuration needed.
+`DrawnUiWindow` sets VSync automatically based on `UpdateMode` — no manual configuration needed.
 
 ---
 
 ## Sample
 
 `OpenTkPong` in `src/OpenTk/Samples/OpenTkPong/` demonstrates Way 1 with `UpdateMode = Constant`:  
-a fully drawn Pong game inside `DrawnUiGameWindow`, with an `AspectLayer`  
+a fully drawn Pong game inside `DrawnUiWindow`, with an `AspectLayer`  
 that scales the game viewport uniformly as the window resizes.
 
 `OpenTkGpuHost` in `src/OpenTk/Samples/OpenTkGpuHost/` demonstrates Way 1 with `UpdateMode = Dynamic`:  

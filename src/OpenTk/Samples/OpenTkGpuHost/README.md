@@ -4,7 +4,7 @@
 
 Sample app that demonstrates `DrawnUi.OpenTk` — the OpenTK host library for DrawnUI.
 
-The sample creates a `Canvas` with a demo scene and passes it to `DrawnUiGameWindow`, which manages the native window, OpenGL context, GPU surface, and input routing.
+The sample creates a `Canvas` with a demo scene and passes it to `DrawnUiWindow`, which manages the native window, OpenGL context, GPU surface, and input routing.
 
 ## How it works
 

@@ -125,7 +125,7 @@ window.Run();
 
 
 class PongGameWindow(GameWindowSettings gs, NativeWindowSettings ns, Canvas canvas)
-    : DrawnUiGameWindow(gs, ns, canvas)
+    : DrawnUiWindow(gs, ns, canvas)
 {
     [SupportedOSPlatform("windows")]
     protected override void ConfigureWindowChrome(IntPtr hwnd)

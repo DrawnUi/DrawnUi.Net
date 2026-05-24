@@ -9,7 +9,7 @@ using SkiaSharp;
 namespace DrawnUi.OpenTk;
 
 /// <summary>
-/// Hosts a DrawnUI Canvas inside an existing GameWindow without requiring DrawnUiGameWindow as base class.
+/// Hosts a DrawnUI Canvas inside an existing GameWindow without requiring DrawnUiWindow as base class.
 /// Call Initialize() from OnLoad, Resize() from OnResize, Render() from OnRenderFrame.
 /// Route input through the Gestures and Input sub-objects.
 /// </summary>

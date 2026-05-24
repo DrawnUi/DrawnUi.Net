@@ -14,7 +14,7 @@ using OpenTkMouseButton = OpenTK.Windowing.GraphicsLibraryFramework.MouseButton;
 
 namespace DrawnUi.OpenTk;
 
-public class DrawnUiGameWindow : GameWindow
+public class DrawnUiWindow : GameWindow
 {
     private int _windowThreadId;
     private readonly ConcurrentQueue<Action> _mainThreadActions = new();
@@ -24,6 +24,8 @@ public class DrawnUiGameWindow : GameWindow
     private SKSurface? _surface;
     private GpuDrawable? _drawable;
     private long _lastRenderTicks;
+
+    private bool _firstFrameDone;
 
     // WndProc subclass hook — kept alive to prevent GC collection
     private delegate nint WndProcDelegate(nint hwnd, uint msg, nint wParam, nint lParam);
@@ -35,7 +37,7 @@ public class DrawnUiGameWindow : GameWindow
     // Dynamic:  render only when dirty, sleep via GLFW between frames (apps).
     private UpdateModeType UpdateMode => _canvas.UpdateMode;
 
-    public DrawnUiGameWindow(GameWindowSettings gameSettings, NativeWindowSettings nativeSettings, Canvas canvas)
+    public DrawnUiWindow(GameWindowSettings gameSettings, NativeWindowSettings nativeSettings, Canvas canvas)
         : base(gameSettings, HideUntilCentered(nativeSettings))
     {
         _canvas = canvas;
@@ -82,8 +84,7 @@ public class DrawnUiGameWindow : GameWindow
         }
 
         RecreateSurface(ClientSize.X, ClientSize.Y);
-        CenterOnScreen();
-        IsVisible = true;
+        PositionWindow();
 
         if (OperatingSystem.IsWindows())
         {
@@ -100,6 +101,14 @@ public class DrawnUiGameWindow : GameWindow
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Called at startup, by default will call CenterOnScreen()
+    /// </summary>
+    public virtual void PositionWindow()
+    {
+        CenterOnScreen();
     }
 
     /// <summary>
@@ -173,7 +182,16 @@ public class DrawnUiGameWindow : GameWindow
         _drawable!.CanvasSize = new SKSize(ClientSize.X, ClientSize.Y);
         _drawable.SignalFrame(frameTime);
 
+        // Restore GL state Skia left dirty from the previous frame's overlay rendering.
+        GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+        GL.Disable(EnableCap.StencilTest);
+        GL.DepthMask(true);
+        GL.ColorMask(true, true, true, true);
+
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+        RenderScene();
+        _grContext?.ResetContext();
 
         _canvas.WidthRequest = ClientSize.X;
         _canvas.HeightRequest = ClientSize.Y;
@@ -183,7 +201,20 @@ public class DrawnUiGameWindow : GameWindow
         _grContext!.Flush();
 
         SwapBuffers();
+
+        if (!_firstFrameDone)
+        {
+            _firstFrameDone = true;
+            IsVisible = true;
+        }
     }
+
+    /// <summary>
+    /// Override to render a 3D/GL scene before the DrawnUI overlay.
+    /// Called after GL.Clear and before DrawnUI renders. GRContext is reset automatically after this returns.
+    /// Call GL.Finish() at the end of your implementation.
+    /// </summary>
+    protected virtual void RenderScene() { }
 
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {

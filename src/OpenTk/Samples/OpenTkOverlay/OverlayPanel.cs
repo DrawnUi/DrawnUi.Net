@@ -61,7 +61,7 @@ internal sealed class OverlayPanel : SkiaShape
                     new SkiaRichLabel
                     {
                         UseCache = SkiaCacheType.Operations,
-                        Text = "DrawnUI UI drawn over existing OpenTK 3D content 😆\n`CanvasHost` on top of an existing OpenGL 3D scene. 👍",
+                        Text = "DrawnUI UI `Canvas` drawn over existing OpenTK 3D content 😆\nUses `CanvasHost` on top of an existing OpenGL 3D scene.\nThe text input below is totally drawn including cursor! 👍",
                         FontSize = 15,
                         TextColor = Colors.Black,
                         CodeTextColor = Colors.Red,
@@ -83,9 +83,9 @@ internal sealed class OverlayPanel : SkiaShape
 
                     new SkiaEditor
                     {
-                        UseCache = SkiaCacheType.Operations,
+                        UseCache = SkiaCacheType.None,
                         HorizontalOptions = LayoutOptions.Fill,
-                        HeightRequest = 54,
+                        HeightRequest = 50,
                         BackgroundColor = Color.FromArgb("#111E33"),
                         TextColor = Colors.White,
                         CursorColor = Color.FromArgb("#2563EB"),

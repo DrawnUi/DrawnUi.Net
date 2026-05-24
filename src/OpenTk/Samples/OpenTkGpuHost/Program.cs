@@ -10,7 +10,7 @@ using OpenTK.Windowing.Desktop;
 Super.UseDrawnUi().Build();
 
 // UpdateFrequency = 0: no continuous game loop timer.
-// DrawnUiGameWindow renders only when canvas is dirty and wakes via GLFW.PostEmptyEvent.
+// DrawnUiWindow renders only when canvas is dirty and wakes via GLFW.PostEmptyEvent.
 var gameSettings = new GameWindowSettings { UpdateFrequency = 0 };
 
 var nativeSettings = new NativeWindowSettings
@@ -22,7 +22,7 @@ var nativeSettings = new NativeWindowSettings
     Profile = ContextProfile.Core
 };
 
-using var window = new DrawnUiGameWindow(gameSettings, nativeSettings,
+using var window = new DrawnUiWindow(gameSettings, nativeSettings,
     new Canvas
     {
         BackgroundColor = Color.FromArgb("#000066"),

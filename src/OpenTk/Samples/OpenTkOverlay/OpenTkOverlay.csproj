@@ -8,8 +8,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RootNamespace>OpenTkOverlay</RootNamespace>
     <Title>3D Cube + DrawnUI Overlay – OpenTK Sample</Title>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
     <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64</RuntimeIdentifiers>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\OpenTk\DrawnUi\DrawnUi.OpenTk.csproj" />

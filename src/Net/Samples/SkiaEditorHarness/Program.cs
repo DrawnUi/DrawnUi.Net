@@ -12,6 +12,18 @@ Super.Init();
 var outputDirectory = Path.Combine(AppContext.BaseDirectory, "artifacts");
 Directory.CreateDirectory(outputDirectory);
 
+if (args.Contains("--emoji-probe", StringComparer.OrdinalIgnoreCase))
+{
+    RunEmojiProbe(args, outputDirectory);
+    return;
+}
+
+if (args.Contains("--editor-clip-probe", StringComparer.OrdinalIgnoreCase))
+{
+    RunEditorClipProbe(outputDirectory);
+    return;
+}
+
 using var host = new HeadlessCanvasHost(900, 780);
 
 var status = new SkiaLabel
@@ -124,6 +136,338 @@ Console.WriteLine($"FinalImage: {finalImagePath}");
 Console.WriteLine($"Summary: {summaryPath}");
 Console.WriteLine($"Steps: {steps.Count}");
 Console.WriteLine(Describe(context));
+
+static void RunEmojiProbe(string[] args, string outputDirectory)
+{
+    var registerNoto = args.Contains("--register-noto", StringComparer.OrdinalIgnoreCase);
+    var emojiText = "DrawnUI rich label 😆👍";
+    var notoPath = ResolveEmojiProbeFontPath();
+
+    if (registerNoto)
+    {
+        if (!File.Exists(notoPath))
+            throw new FileNotFoundException($"Noto emoji font was not found at '{notoPath}'.", notoPath);
+
+        DrawnExtensions.RegisterFont("FontEmoji", notoPath);
+    }
+
+    SkiaFontManager.Instance.Initialize();
+
+    using var probeHost = new HeadlessCanvasHost(900, 700);
+
+    var header = new SkiaLabel
+    {
+        Text = registerNoto ? "Emoji probe with registered NotoColorEmoji" : "Emoji probe with desktop system fallback only",
+        FontSize = 20,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 20)
+    };
+
+    var autoPlain = new SkiaLabel
+    {
+        Tag = "auto-plain",
+        Text = emojiText,
+        FontSize = 34,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 18)
+    };
+
+    var explicitPlainSegoe = new SkiaLabel
+    {
+        Tag = "plain-segoe",
+        Text = "😆👍",
+        FontFamily = "Segoe UI Emoji",
+        FontSize = 34,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 18)
+    };
+
+    var explicitPlainFontEmoji = new SkiaLabel
+    {
+        Tag = "plain-fontemoji",
+        Text = "😆👍",
+        FontFamily = registerNoto ? "FontEmoji" : "Segoe UI Emoji",
+        FontSize = 34,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 18)
+    };
+
+    var explicitPlainFontEmojiCached = new SkiaLabel
+    {
+        Tag = "plain-fontemoji-cached",
+        Text = "😆👍",
+        FontFamily = registerNoto ? "FontEmoji" : "Segoe UI Emoji",
+        FontSize = 34,
+        UseCache = SkiaCacheType.Operations,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 18)
+    };
+
+    var autoRich = new SkiaRichLabel
+    {
+        Tag = "auto-rich",
+        Text = emojiText,
+        FontSize = 34,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 18)
+    };
+
+    var segoueRich = new SkiaRichLabel
+    {
+        Tag = "segoe-rich",
+        Text = emojiText,
+        FontFamily = "Segoe UI Emoji",
+        FontSize = 34,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 18)
+    };
+
+    var fontEmojiRich = new SkiaRichLabel
+    {
+        Tag = "fontemoji-rich",
+        Text = emojiText,
+        FontFamily = registerNoto ? "FontEmoji" : "Segoe UI Emoji",
+        FontSize = 34,
+        TextColor = Colors.Black,
+        Margin = new Thickness(0, 0, 0, 18)
+    };
+
+    var root = new SkiaLayout
+    {
+        Type = LayoutType.Column,
+        HorizontalOptions = LayoutOptions.Fill,
+        VerticalOptions = LayoutOptions.Fill,
+        Padding = new Thickness(40),
+        Spacing = 0,
+        Children =
+        {
+            header,
+            new SkiaLabel { Text = "SkiaLabel auto font selection", FontSize = 18, TextColor = Colors.DimGray },
+            autoPlain,
+            new SkiaLabel { Text = "SkiaLabel forced Segoe UI Emoji", FontSize = 18, TextColor = Colors.DimGray },
+            explicitPlainSegoe,
+            new SkiaLabel { Text = registerNoto ? "SkiaLabel forced FontEmoji" : "SkiaLabel forced Segoe UI Emoji", FontSize = 18, TextColor = Colors.DimGray },
+            explicitPlainFontEmoji,
+            new SkiaLabel { Text = registerNoto ? "SkiaLabel forced FontEmoji with Operations cache" : "SkiaLabel forced Segoe UI Emoji with Operations cache", FontSize = 18, TextColor = Colors.DimGray },
+            explicitPlainFontEmojiCached,
+            new SkiaLabel { Text = "SkiaRichLabel auto fallback", FontSize = 18, TextColor = Colors.DimGray },
+            autoRich,
+            new SkiaLabel { Text = "SkiaRichLabel forced Segoe UI Emoji", FontSize = 18, TextColor = Colors.DimGray },
+            segoueRich,
+            new SkiaLabel { Text = registerNoto ? "SkiaRichLabel forced FontEmoji (registered Noto)" : "SkiaRichLabel forced Segoe UI Emoji", FontSize = 18, TextColor = Colors.DimGray },
+            fontEmojiRich,
+        }
+    };
+
+    probeHost.Canvas.Children = new List<SkiaControl> { root };
+    probeHost.Render();
+
+    var defaultTypeface = autoRich.TypeFace;
+    var spanData = SkiaRichLabel.BuildSpanData(emojiText, defaultTypeface);
+    var summary = DescribeEmojiProbe(emojiText, registerNoto, notoPath, defaultTypeface, spanData, autoPlain, explicitPlainSegoe, explicitPlainFontEmoji, explicitPlainFontEmojiCached, autoRich, segoueRich, fontEmojiRich);
+
+    var summaryPath = Path.Combine(outputDirectory, registerNoto ? "emoji-probe-noto.txt" : "emoji-probe-default.txt");
+    var imagePath = Path.Combine(outputDirectory, registerNoto ? "emoji-probe-noto.png" : "emoji-probe-default.png");
+
+    File.WriteAllText(summaryPath, summary);
+    probeHost.SavePng(imagePath);
+
+    Console.WriteLine(summary);
+    Console.WriteLine($"EmojiProbeImage: {imagePath}");
+    Console.WriteLine($"EmojiProbeSummary: {summaryPath}");
+}
+
+static void RunEditorClipProbe(string outputDirectory)
+{
+    SkiaFontManager.Instance.Initialize();
+
+    using var probeHost = new HeadlessCanvasHost(900, 360);
+
+    var editor = new SkiaEditor
+    {
+        Tag = "clip-editor",
+        UseCache = SkiaCacheType.Operations,
+        HorizontalOptions = LayoutOptions.Fill,
+        HeightRequest = 54,
+        BackgroundColor = DrawnUi.Color.FromArgb("#111E33"),
+        TextColor = Colors.White,
+        CursorColor = DrawnUi.Color.FromArgb("#2563EB"),
+        SelectionColor = DrawnUi.Color.FromArgb("#552563EB"),
+        PlaceholderText = "Enter your name…",
+        PlaceholderColor = DrawnUi.Color.FromArgb("#3D5470"),
+        FontSize = 17,
+        Padding = new Thickness(12, 10),
+        Margin = new Thickness(0, 0, 0, 14),
+    };
+
+    var root = new SkiaLayout
+    {
+        Type = LayoutType.Column,
+        HorizontalOptions = LayoutOptions.Fill,
+        VerticalOptions = LayoutOptions.Fill,
+        Padding = new Thickness(40),
+        Children =
+        {
+            new SkiaLabel
+            {
+                Text = "Editor clipping probe",
+                FontSize = 20,
+                TextColor = Colors.Black,
+                Margin = new Thickness(0, 0, 0, 12)
+            },
+            editor,
+        }
+    };
+
+    probeHost.Canvas.Children = new List<SkiaControl> { root };
+
+    var summary = new StringBuilder();
+
+    probeHost.Render();
+    AppendEditorClipState(summary, "unfocused-empty", editor);
+    probeHost.SavePng(Path.Combine(outputDirectory, "editor-clip-00-unfocused-empty.png"));
+
+    TrySetFocus(editor, true);
+    probeHost.Render();
+    AppendEditorClipState(summary, "focused-empty", editor);
+    probeHost.SavePng(Path.Combine(outputDirectory, "editor-clip-01-focused-empty.png"));
+
+    editor.StubTypeText("y");
+    probeHost.Render();
+    AppendEditorClipState(summary, "focused-typed-y", editor);
+    probeHost.SavePng(Path.Combine(outputDirectory, "editor-clip-02-focused-typed-y.png"));
+
+    var summaryPath = Path.Combine(outputDirectory, "editor-clip-summary.txt");
+    File.WriteAllText(summaryPath, summary.ToString());
+
+    Console.WriteLine(summary.ToString());
+    Console.WriteLine($"EditorClipSummary: {summaryPath}");
+}
+
+static void AppendEditorClipState(StringBuilder builder, string title, SkiaEditor editor)
+{
+    var placeholder = GetEditorPrivateField<SkiaLabel>(editor, "_placeholderLabel");
+    var scroll = GetEditorPrivateField<SkiaScroll>(editor, "_scroll");
+
+    builder.AppendLine($"[{title}]");
+    builder.AppendLine($"Editor HeightRequest={editor.HeightRequest} DrawingRect={editor.DrawingRect} Padding={editor.Padding}");
+    builder.AppendLine($"Label HeightRequest={editor.Label?.HeightRequest} MeasuredLineHeight={editor.Label?.MeasuredLineHeight} LineHeightPixels={editor.Label?.LineHeightPixels} DrawingRect={editor.Label?.DrawingRect}");
+    builder.AppendLine($"Placeholder Visible={placeholder?.IsVisible} HeightRequest={placeholder?.HeightRequest} MeasuredLineHeight={placeholder?.MeasuredLineHeight} LineHeightPixels={placeholder?.LineHeightPixels} DrawingRect={placeholder?.DrawingRect}");
+    builder.AppendLine($"Cursor Visible={editor.Cursor?.IsVisible} HeightRequest={editor.Cursor?.HeightRequest} Top={editor.Cursor?.Top} DrawingRect={editor.Cursor?.DrawingRect}");
+    builder.AppendLine($"Scroll HeightRequest={scroll?.HeightRequest} Viewport={scroll?.ViewportOffsetX},{scroll?.ViewportOffsetY}");
+    builder.AppendLine($"Text='{editor.Text}' Placeholder='{editor.PlaceholderText}' Focused={editor.IsFocused}");
+    builder.AppendLine();
+}
+
+static T? GetEditorPrivateField<T>(SkiaEditor editor, string fieldName) where T : class
+{
+    var field = editor.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+    return field?.GetValue(editor) as T;
+}
+
+static string ResolveEmojiProbeFontPath()
+{
+    var candidates = new[]
+    {
+        Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "OpenTk", "Samples", "OpenTkPong", "fonts", "NotoColorEmoji-Regular.ttf")),
+        Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "OpenTk", "Samples", "OpenTkOverlay", "fonts", "NotoColorEmoji-Regular.ttf"))
+    };
+
+    return candidates.FirstOrDefault(File.Exists) ?? candidates[0];
+}
+
+static string DescribeEmojiProbe(
+    string emojiText,
+    bool registerNoto,
+    string notoPath,
+    SKTypeface defaultTypeface,
+    List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> spanData,
+    SkiaLabel autoPlain,
+    SkiaLabel explicitPlainSegoe,
+    SkiaLabel explicitPlainFontEmoji,
+    SkiaLabel explicitPlainFontEmojiCached,
+    SkiaRichLabel autoRich,
+    SkiaRichLabel segoueRich,
+    SkiaRichLabel fontEmojiRich)
+{
+    var builder = new StringBuilder();
+    builder.AppendLine(registerNoto ? "Mode: registered NotoColorEmoji" : "Mode: system fallback only");
+    builder.AppendLine($"Text: {emojiText}");
+    builder.AppendLine($"DefaultTypeface: {defaultTypeface?.FamilyName ?? "<null>"}");
+    builder.AppendLine($"RegisteredNotoPath: {(registerNoto ? notoPath : "<not-registered>")}");
+
+    foreach (var cp in emojiText.EnumerateRunes())
+    {
+        var text = cp.ToString();
+        var detected = SkiaFontManager.MatchCharacter(cp.Value);
+        var glyphInDefault = defaultTypeface is null ? false : SkiaLabel.GetGlyphs(text, defaultTypeface).Any(g => g.IsAvailable);
+        builder.AppendLine($"Rune U+{cp.Value:X}: '{text}' DefaultHasGlyph={glyphInDefault} MatchCharacter={detected?.FamilyName ?? "<null>"}");
+    }
+
+    if (registerNoto)
+    {
+        using var notoTypeface = SKTypeface.FromFile(notoPath);
+        AppendTypefaceInfo(builder, "DirectNotoFile", notoTypeface, "😆👍");
+        AppendTypefaceInfo(builder, "GetFont(FontEmoji)", SkiaFontManager.Instance.GetFont("FontEmoji"), "😆👍");
+        AppendTypefaceInfo(builder, "GetFont(FontEmoji,Regular)", SkiaFontManager.Instance.GetFont("FontEmoji", (int)FontWeight.Regular), "😆👍");
+    }
+
+    builder.AppendLine("BuildSpanData:");
+    for (var index = 0; index < spanData.Count; index++)
+    {
+        var span = spanData[index];
+        builder.AppendLine($"  [{index}] Text='{span.Text.Replace("\n", "\\n")}' Typeface={span.Typeface?.FamilyName ?? "<null>"} Symbol=U+{span.Symbol:X} NeedShape={span.Shape}");
+    }
+
+    AppendPlainLabelInfo(builder, "AutoPlain", autoPlain);
+    AppendPlainLabelInfo(builder, "PlainSegoe", explicitPlainSegoe);
+    AppendPlainLabelInfo(builder, "PlainFontEmoji", explicitPlainFontEmoji);
+    AppendPlainLabelInfo(builder, "PlainFontEmojiCached", explicitPlainFontEmojiCached);
+    AppendRenderedSpans(builder, "AutoRichSpans", autoRich.Spans);
+    AppendRenderedSpans(builder, "SegoeRichSpans", segoueRich.Spans);
+    AppendRenderedSpans(builder, "FontEmojiRichSpans", fontEmojiRich.Spans);
+
+    return builder.ToString();
+}
+
+static void AppendPlainLabelInfo(StringBuilder builder, string title, SkiaLabel label)
+{
+    builder.AppendLine(title + ":");
+    builder.AppendLine($"  FontFamily={label.FontFamily ?? "<null>"} TypeFace={label.TypeFace?.FamilyName ?? "<null>"} UseCache={label.UseCache}");
+
+    foreach (var rune in label.Text.EnumerateRunes())
+    {
+        var glyphAvailable = label.TypeFace is not null && SkiaLabel.GetGlyphs(rune.ToString(), label.TypeFace).Any(g => g.IsAvailable);
+        builder.AppendLine($"  Rune U+{rune.Value:X}: GlyphAvailable={glyphAvailable}");
+    }
+}
+
+static void AppendTypefaceInfo(StringBuilder builder, string title, SKTypeface typeface, string text)
+{
+    builder.AppendLine(title + ":");
+    builder.AppendLine($"  FamilyName={typeface?.FamilyName ?? "<null>"}");
+
+    foreach (var rune in text.EnumerateRunes())
+    {
+        var glyphAvailable = typeface is not null && SkiaLabel.GetGlyphs(rune.ToString(), typeface).Any(g => g.IsAvailable);
+        builder.AppendLine($"  Rune U+{rune.Value:X}: GlyphAvailable={glyphAvailable}");
+    }
+}
+
+static void AppendRenderedSpans(StringBuilder builder, string title, IEnumerable<TextSpan> spans)
+{
+    builder.AppendLine(title + ":");
+
+    var index = 0;
+    foreach (var span in spans)
+    {
+        builder.AppendLine($"  [{index}] Text='{span.Text?.Replace("\n", "\\n")}' Typeface={span.TypeFace?.FamilyName ?? "<null>"} FontDetectedWith={(span.FontDetectedWith == 0 ? "<none>" : $"U+{span.FontDetectedWith:X}")} NeedShape={span.NeedShape}");
+        index++;
+    }
+
+    if (index == 0)
+        builder.AppendLine("  <none>");
+}
 
 static void ExecuteStep(HarnessContext context, HarnessStep step)
 {
@@ -613,6 +957,49 @@ internal static class HarnessUtilities
         return value?
             .Replace("\r", "\\r")
             .Replace("\n", "\\n") ?? string.Empty;
+    }
+
+    public static int GetTextIndexFromLineColumn(string? value, int line, int column)
+    {
+        var text = NormalizeLineBreaks(value);
+        if (text.Length == 0)
+            return 0;
+
+        var targetLine = Math.Max(0, line);
+        var targetColumn = Math.Max(0, column);
+        var currentLine = 0;
+        var index = 0;
+
+        while (currentLine < targetLine && index < text.Length)
+        {
+            if (text[index] == '\n')
+                currentLine++;
+
+            index++;
+        }
+
+        var lineStart = index;
+        while (index < text.Length && text[index] != '\n')
+            index++;
+
+        var lineLength = index - lineStart;
+        return lineStart + Math.Min(targetColumn, lineLength);
+    }
+}
+
+internal static class HarnessEditorExtensions
+{
+    public static void StubMoveCursorToLineColumn(this SkiaEditor editor, int line, int column, bool extendSelection = false)
+    {
+        var position = HarnessUtilities.GetTextIndexFromLineColumn(editor.Text, line, column);
+        editor.StubMoveCursor(position - editor.CursorPosition, extendSelection);
+    }
+
+    public static void StubSelectLineColumnRange(this SkiaEditor editor, int line, int column, int endLine, int endColumn)
+    {
+        var start = HarnessUtilities.GetTextIndexFromLineColumn(editor.Text, line, column);
+        var end = HarnessUtilities.GetTextIndexFromLineColumn(editor.Text, endLine, endColumn);
+        editor.StubSelectRange(start, Math.Max(0, end - start));
     }
 }
 
