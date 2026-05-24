@@ -21,6 +21,8 @@ set "source_dir7=%batch_dir%\..\src\Maui\Addons\DrawnUi.Maui.MapsUi\bin\Release"
 set "source_dir8=%batch_dir%\..\src\Maui\Addons\DrawnUi.MauiGraphics\bin\Release"
 
 set "source_dir9=%batch_dir%\..\src\Blazor\Addons\DrawnUi.Blazor.Game\bin\Release"
+set "source_dir10=%batch_dir%\..\src\OpenTk\DrawnUi\bin\Release"
+set "source_dir11=%batch_dir%\..\src\OpenTk\Addons\DrawnUi.OpenTk.Game\bin\Release"
 
 set "destination_dir=C:\Nugets"
 
@@ -29,7 +31,7 @@ set "file_mask1=*.nupkg"
 set "file_mask2=*.snupkg"
 
 REM Define array of source directories
-set source_dirs=source_dir1 source_dir2 source_dir3 source_dir4 source_dir5 source_dir6 source_dir7 source_dir8 source_dir9
+set source_dirs=source_dir1 source_dir2 source_dir3 source_dir4 source_dir5 source_dir6 source_dir7 source_dir8 source_dir9 source_dir10 source_dir11
 
 REM Define array of file masks
 set file_masks=file_mask1 file_mask2
