@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OpenTk\DrawnUi\DrawnUi.OpenTk.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Required for Linux publish to include native Skia runtime -->
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.147.0-preview.2.1" />
+  </ItemGroup>
+
+</Project>

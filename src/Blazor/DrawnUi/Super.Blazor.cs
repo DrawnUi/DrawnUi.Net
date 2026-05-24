@@ -32,6 +32,7 @@ namespace DrawnUi.Draw
 {
     public partial class Super
     {
+
         private static readonly object FrameLoopLock = new();
         private static readonly object NativeAppLifecycleLock = new();
         private static CancellationTokenSource _frameLoopCancellation;

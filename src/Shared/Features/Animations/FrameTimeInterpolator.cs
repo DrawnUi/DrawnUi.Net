@@ -205,7 +205,7 @@ public class FrameTimeInterpolator
 #if ONPLATFORM
         _framerate = Super.GetDisplayRefreshRate(DEFAULT_TARGET_FPS);
 #else
-        _framerate = DEFAULT_TARGET_FPS;
+        _framerate = Super.MaxFps > 0 ? Super.MaxFps : DEFAULT_TARGET_FPS;
 #endif
 
         _targetFps = _framerate;

@@ -146,12 +146,47 @@ function Get-ChangedDocsPaths {
     return $changedPaths
 }
 
+function Kill-PortOwner {
+    param ([int]$TargetPort)
+
+    try {
+        $serverProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+            Where-Object {
+                $_.Name -match '^powershell(\.exe)?$|^pwsh(\.exe)?$' -and
+                $_.CommandLine -match 'static-site-server\.ps1' -and
+                $_.CommandLine -match "-Port\s+$TargetPort(\s|$)"
+            }
+
+        foreach ($process in $serverProcesses) {
+            if ($process.ProcessId -ne $PID) {
+                Stop-Process -Id $process.ProcessId -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+    catch { }
+
+    try {
+        $connections = netstat -ano | Select-String ":$TargetPort\s"
+        foreach ($line in $connections) {
+            $parts = ($line.Line.Trim() -split '\s+')
+            $pid = $parts[-1]
+            if ($pid -match '^\d+$' -and [int]$pid -ne $PID) {
+                Stop-Process -Id ([int]$pid) -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+    catch { }
+}
+
 function Start-DocsServer {
     param ()
 
     if (-not (Test-Path $siteRoot)) {
         New-Item -ItemType Directory -Path $siteRoot | Out-Null
     }
+
+    Kill-PortOwner -TargetPort $Port
+    Start-Sleep -Milliseconds 300
 
     $powershellExe = (Get-Process -Id $PID).Path
     $arguments = @(

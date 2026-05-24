@@ -4,7 +4,10 @@ namespace DrawnUi.Draw;
 
 public class SkiaCursor : SkiaShape
 {
+    private const long SolidOnMoveDurationNanos = 200_000_000L;
+
     private SkiaLabel _label;
+    private long _solidUntilNanos;
 
     /// <summary>
     /// Called by SkiaEditor after creating the cursor. Parent chain is not yet complete at AddSubView time.
@@ -21,10 +24,23 @@ public class SkiaCursor : SkiaShape
                 Ratio = 0.5,
                 OnUpdated = (value) =>
                 {
-                    Opacity = _blinkAnimator.State ? 0.01 : 1.0;
+                    var opacity = Super.GetCurrentTimeNanos() < _solidUntilNanos
+                        ? 1.0
+                        : (_blinkAnimator.State ? 0.01 : 1.0);
+
+                    if (Opacity != opacity)
+                        Opacity = opacity;
                 }
             };
         }
+    }
+
+    internal void OnMoved()
+    {
+        _solidUntilNanos = Super.GetCurrentTimeNanos() + SolidOnMoveDurationNanos;
+        if (Opacity != 1.0)
+            Opacity = 1.0;
+        Repaint();
     }
 
     public override void Invalidate()

@@ -1,32 +1,41 @@
 # Tutorials
 
-DrawnUI tutorials currently span two different host models:
-
-- **.NET MAUI tutorials** use `DrawnUi.Maui` and usually show `Canvas` inside MAUI XAML pages or MAUI code-behind pages.
-- **Blazor tutorials and samples** use `DrawnUi.Blazor.*`, initialize DrawnUI with `UseDrawnUiAsync(...)`, and host drawn content inside a Razor `<Canvas ... />` component.
-
 If you are choosing a host first, start with [Platforms and Packages](platforms.md).
 
-## MAUI tutorial lane
+## Available today
 
-For the full MAUI-first tutorial index, see [MAUI Tutorials](maui/tutorials.md).
+Use [MAUI Tutorials](maui/tutorials.md) are available today and include the step-by-step walkthroughs for the current full tutorial path. 
 
-## Blazor-compatible tutorial references
+## Other hosts
 
-These topics also have matching or near-matching Blazor sandbox pages in `src/Blazor/Samples/BlazorSandbox`:
+Blazor, OpenTK, and `DrawnUi.Net` use the same core DrawnUI concepts and control tree patterns, but the host setup is different.
 
-- [Your First DrawnUI App: C# Fluent Syntax](first-app-code.md) - Blazor sample route: `tutorial-first-app`
-- [A Custom Drawn Control](interactive-button.md) - Blazor sample route: `tutorial-custom-button`
-- [Interactive Cards](interactive-cards.md) - Blazor sample route: `cards`
-- [News Feed Scroller](news-feed-tutorial.md) - Blazor sample route: `tutorial-news-feed`
+For now, use the MAUI tutorials for the control and layout concepts, then switch to samples for your target host:
 
-## Read host notes first
+- [Blazor Samples](blazor/samples.md)
+- [OpenTK Samples](opentk/samples.md)
+- [DrawnUi.Net Overview](net/index.md)
 
-Some tutorial articles are intentionally MAUI/XAML-only. Others describe shared DrawnUI concepts but need small host-specific adjustments for Blazor.
+## How to read the current tutorials
 
-Before following a tutorial literally:
+If a tutorial shows `ContentPage`, `MauiProgram.cs`, or MAUI XAML namespaces, that part is MAUI-specific host setup.
 
-- If the article shows `ContentPage`, `MauiProgram.cs`, or `xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"`, read it as a MAUI tutorial.
-- If you are building the same concept in Blazor, keep the drawn control tree but switch startup to `UseDrawnUiAsync(...)` and host it inside a Razor `<Canvas ... />` component.
-- For current browser-side examples, use the Blazor sandbox pages as the executable reference implementation.
+The drawn UI composition itself is still useful across hosts. In most cases, the same layouts, controls, and interaction patterns carry over with only the host bootstrap and container setup changed.
+
+For example:
+
+- MAUI uses `DrawnUi.Maui` with MAUI app startup and pages
+- Blazor uses `DrawnUi.Blazor.*` with `UseDrawnUiAsync(...)` and Razor `<Canvas ... />`
+- OpenTK uses `DrawnUi.OpenTk` inside an OpenTK `GameWindow`
+- `DrawnUi.Net` uses the shared rendering/runtime layer without a MAUI or browser host
+
+## Related
+
+- [MAUI Tutorials](maui/tutorials.md)
+- [Installation and Setup](maui/getting-started.md)
+- [Blazor Overview](blazor/index.md)
+- [Blazor Samples](blazor/samples.md)
+- [DrawnUI for OpenTK](opentk/index.md)
+- [OpenTK Samples](opentk/samples.md)
+- [DrawnUi.Net Overview](net/index.md)
 

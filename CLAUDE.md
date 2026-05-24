@@ -1,77 +1,125 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with code in this repository.
 
 ## Working with Claude
 
-**Communication Protocol:**
-- ALWAYS explain fixes and solutions BEFORE implementing them - wait for approval
-- NEVER provide summaries or explanations AFTER approved changes are made
-- Once approved: make the changes and stay silent - no summary, no verbose output
+- Explain fixes and solutions BEFORE implementing — wait for approval.
+- No summaries or explanations AFTER approved changes are made. Make the changes and stay silent.
+
+---
 
 ## Project Overview
 
-DrawnUI for .NET MAUI is a cross-platform rendering engine that draws UI using SkiaSharp instead of native controls. It supports iOS, MacCatalyst, Android, and Windows platforms.
+DrawnUI is a cross-platform rich UI rendering engine that draws controls with SkiaSharp instead of native widgets. It targets:
 
-**Key Technology Stack:**
-- .NET 9 (minimum requirement)
-- MAUI Controls 9.0.70+
-- SkiaSharp v3 
-- Hardware-accelerated rendering via Skia canvas
+| Target | Implementation | Platforms |
+|---|---|---|
+| .NET MAUI | `src/Maui/` | iOS, Android, Windows, MacCatalyst |
+| Blazor | `src/Blazor/` | Browser (WASM), Server, Hybrid |
+| OpenTK | `src/OpenTk/` | Windows, Linux |
+| Native Windows | `src/Native/` | WinUI |
+
+**Technology stack:**
+- .NET 9 and .NET 10 (both supported; MAUI targets multi-TFM)
+- SkiaSharp v3
+- Hardware-accelerated rendering via Skia GPU canvas
+
+---
 
 ## Project Structure
 
-**Core Projects:**
-- `src/Maui/DrawnUi/` - Main DrawnUI library (AppoMobi.Maui.DrawnUi package)
-- `src/Shared/` - Shared project containing cross-platform code
-- `src/Maui/Addons/` - Additional functionality packages (Camera, Game, MapsUi, etc.)
-- `src/Maui/Samples/Sandbox/` - Main demo/testing application
-- `src/Tests/` - Unit tests and benchmarks
+```
+src/
+  Shared/           # Cross-platform Skia rendering core (shared by all targets)
+  SharedNet/        # Shared .NET (non-MAUI) code — used by OpenTK and Net
+  SharedGame/       # Shared game loop and input
+  Maui/
+    DrawnUi/        # Main MAUI library
+    Addons/         # Camera, Game, MapsUi, Rive, MauiGraphics addons
+    Samples/        # Sandbox, Tutorials, GameTemplate, Player, FastRepro
+  Net/
+    DrawnUi/        # .NET desktop base (used by OpenTK)
+    Samples/        # SkiaEditorHarness
+  OpenTk/
+    DrawnUi/        # OpenTK integration: DrawnUiWindow, CanvasHost, GpuDrawable
+    Addons/         # DrawnUi.OpenTk.Game
+    Samples/        # OpenTkPong, OpenTkGpuHost, OpenTkOverlay
+  Blazor/
+    DrawnUi/        # Blazor component implementation
+    DrawnUi.Server/ # Server-side host
+    DrawnUi.Wasm/   # WASM-specific
+    Addons/         # DrawnUi.Blazor.Game
+    Samples/        # BlazorSandbox, BlazorSandboxHybrid, BlazorSandboxServer
+  Native/
+    DrawnUi.Native.Windows/  # WinUI native
+  Tests/            # UnitTests, SomeBenchmarks
+dev/                # Build/pack scripts and dev solution files
+nugets/             # NuGet pack scripts
+docs/               # Documentation (articles, api)
+```
 
-**Key Architectural Components:**
-- `SkiaControl` - Base class for all drawn controls
-- `Canvas` - MAUI view wrapper that hosts drawn controls
-- `SkiaShell` - Navigation system for drawn apps
-- Caching system with multiple strategies (Operations, Image, GPU, etc.)
-- Gesture handling system for touch interactions
-- Layout system supporting Grid, Stack, Absolute positioning
-- Effects and animation system
+**Key architectural components:**
+- `SkiaControl` — base class for all drawn controls
+- `Canvas` — hosts drawn controls; wraps the Skia surface
+- `SkiaShell` — navigation system for drawn apps
+- Caching system: Operations, Image, ImageDoubleBuffered, GPU, ImageComposite
+- Gesture handling system for touch and pointer input
+- Layout system: Column, Row, Grid, Wrap, Absolute
+
+---
+
+**SkiaSharp version:**
+- All targets use SkiaSharp v4
+- Lib supports .NET 10 and .NET 9 targets
+
+---
+
+**AI assistance**
+- when creating new apps prefer .NET 10
+- when adding new public props/method always add XML comments
+- when creating new controls create a ,NET harness and iterate there untill getting maximum possible result
+- when working on shared specifics always test your outcome with .NET harness, never ask user to test anything in case you can test in harness
+- when meeting a "Inline children" fluent code-behind flow (see below) always propose to fix
+- when you miss a fluent extension ask for approval to create one to use, instead of breaking fluent flow
+
+---
 
 ## Build Commands
 
-**CRITICAL: Always Compile After Code Changes**
-After making ANY code changes, ALWAYS compile with Debug configuration to check for compilation errors:
+**Main solution (all targets):**
+```bash
+dotnet build src/DrawnUi.sln
+```
+
+**MAUI library only:**
 ```bash
 dotnet build src/Maui/DrawnUi/DrawnUi.Maui.csproj --configuration Debug
 ```
-or for the specific addon:
+
+**MAUI Camera addon:**
 ```bash
 dotnet build src/Maui/Addons/DrawnUi.Maui.Camera/DrawnUi.Maui.Camera.csproj --configuration Debug
 ```
 
-**Build the main library:**
+**OpenTK library:**
 ```bash
-dotnet build src/Maui/DrawnUi/DrawnUi.Maui.csproj
+dotnet build src/OpenTk/DrawnUi/DrawnUi.OpenTk.csproj --configuration Debug
 ```
 
-**Build solution:**
+**OpenTK sample (OpenTkOverlay):**
 ```bash
-dotnet build src/DrawnUi.Maui.sln
+dotnet build src/OpenTk/Samples/OpenTkOverlay/OpenTkOverlay.csproj --configuration Debug
+dotnet run --project src/OpenTk/Samples/OpenTkOverlay/OpenTkOverlay.csproj
 ```
 
-**Run Sandbox demo:**
-```bash
-dotnet build src/Maui/Samples/Sandbox/Sandbox.csproj --configuration Debug
-# Then run from Visual Studio or with platform-specific commands
-```
-
-**Create NuGet packages:**
+**NuGet packages:**
 ```bash
 cd nugets
-./makenugets.bat  # Windows
+./makenugets.bat   # Windows
 ```
 
-**Run tests:**
+**Tests:**
 ```bash
 dotnet test src/Tests/UnitTests/UnitTests.csproj
 ```
@@ -82,9 +130,10 @@ dotnet test src/Tests/UnitTests/UnitTests.csproj
 ./DeleteBinObj.ps1
 ```
 
-## Development Setup
+---
 
-**Initialize DrawnUI in MauiProgram.cs:**
+## MAUI Initialization
+
 ```csharp
 builder.UseDrawnUi(new()
 {
@@ -97,236 +146,223 @@ builder.UseDrawnUi(new()
 });
 ```
 
-**Platform Requirements:**
-- Minimum OS versions defined in project files
-- Resources must be in `Resources/Raw` folder with subfolders allowed, Note that MAUI supports only lowercase filenames of resources and while uppercase might works for you on some plaforms they will not be read on iOS.
+**Platform requirements:**
+- Resources in `Resources/Raw` — MAUI requires lowercase filenames (uppercase may fail on iOS)
+- Minimum OS versions defined in `src/Maui/Directory.Build.props`
+
+---
+
+## OpenTK Initialization
+
+```csharp
+Super.UseDrawnUi()
+    .ConfigureFonts(fonts =>
+    {
+        fonts.AddFont("fonts/MyFont.ttf", "MyFont");
+    })
+    .Build();
+```
+
+Call `Super.Init()` inside `OnLoad()` when subclassing `GameWindow` directly (not required when using `DrawnUiWindow`).
+
+### Two patterns
+
+**`DrawnUiWindow`** — base class for fully drawn apps/games. Handles surface, vsync, input.  
+Override `RenderScene()` to draw a 3D scene before the DrawnUI canvas:
+
+```csharp
+protected override void RenderScene()
+{
+    GL.Enable(EnableCap.DepthTest);
+    DrawMyScene();
+    GL.Finish();
+}
+```
+
+**`CanvasHost`** — standalone host when your own `GameWindow` owns the render loop and DrawnUI is an overlay. Correct render order per frame:
+
+```csharp
+// 1. Restore GL state Skia left dirty
+GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+GL.Disable(EnableCap.StencilTest);
+GL.DepthMask(true);
+GL.ColorMask(true, true, true, true);
+// 2. Your GL scene
+GL.Clear(...); DrawScene(); GL.Finish();
+// 3. DrawnUI overlay
+_host!.ResetGrContext();
+_host!.Render();
+SwapBuffers();
+```
+
+**Canvas must use `AcceleratedRetained` + transparent background** for overlays — this skips Skia's canvas clear so GL content underneath is preserved.
+
+**GL state note:** Skia leaves viewport, stencil test, depth mask, and color mask dirty after rendering. The 4-line restore block above is required before every raw GL draw or geometry will be invisible.
+
+---
 
 ## Important Development Notes
 
-**SkiaSharp Version Control:**
-- Default branch targets NET 9 with SkiaSharp v3
-- NET 8 legacy support is disabled no longer supported, use versions 1.2.x (no longer updated)
+**Caching strategy:**
+- `Operations` — shapes, SVG, text (SKPicture-based). **Never** use inside GPU-cached parent or for controls with GPU-surface shaders. 
+- `Image` — simple bitmap cache, works at any size
+- `ImageDoubleBuffered` — best for animations; doubles memory
+- `GPU` — hardware-accelerated; for graphics memory caching. **Never** nest inside `Operations` parent.
+- `ImageComposite` / `ImageCompositeGPU` — composite modes for containers with children that change dynamically. When optimzing memory use prefer `Operations` for parent container in such case.
+- Never cache: `SkiaScroll`, `SkiaDrawer`, `SkiaCarousel`, `SkiaMauiElement` and derived
+- GPU memory is very limited, best for small overlays. 
+- Decide caching from redraw source and subtree cost. Over live surfaces that repaint every frame, even small stable overlays benefit from top-level cache.
 
-**Caching Strategy:**
-- `Operations` - For shapes, SVG, text (SKPicture-based)
-- `Image` - Simple bitmap cache, works for large sizes
-- `ImageDoubleBuffered` - Best for animations, double memory usage
-- `GPU` - Hardware-accelerated, for graphics memory caching
-- Never cache layers containing SkiaScroll, SkiaDrawer, SkiaCarousel and similar, SkiaMauiElement and derived controls (SkiaMauiEntry etc)
-- **PROHIBITED:** Never cache controls with GPU-surface shaders inside `Operations` or `GPU` cache types — `Operations` (SKPicture) cannot replay shader programs and `GPU` cache surface conflicts with the shader's surface requirements. Use `Image`, `ImageDoubleBuffered`, or `ImageComposite` instead.
-- **PROHIBITED:** Never nest children that use GPU-backed cache types (`GPU`, `ImageCompositeGPU`) inside a parent cached with `Operations` — `SKPicture` recording cannot capture GPU-surface output from children.
+**Layout optimizations:**
+- `IsParentIndependent` - when using dunamically changing controls (status labels etc) inside auto-sized layouts prefer specifying labels heights explicitely and set `IsParentIndependent=true` to avoid making them force parent remeasuring upon text value change. Not needed for parent layouts which has Fill or explicit size requests.
 
-**Layout Differences from Standard MAUI:**
-- Default `HorizontalOptions` and `VerticalOptions` are `Start`, not `Fill`
+
+**Layout differences from standard MAUI:**
+- Default `HorizontalOptions` / `VerticalOptions` are `Start`, not `Fill`
 - Grid default spacing is 1, not 8
-- Column/Row layouts require explicit Fill options for parent containers
 
-**Code-behind UI Creation, Porting to DRAWN and usage inside XAML - CRITICAL PATTERNS**
+---
 
-* Avoid using Grid (SkiaLayout Type Grid) where possible to replace with SkiaLayer (SkiaLayout Type Absolute) by controlling children position with their Margin property.
+## Code-Behind UI — Critical Patterns
 
-*  INLINE Children Creation: Create children inline in the Children collection of parent containers instead of creating a child and then adding it to container. Correct example:
+### Inline children (mandatory)
 
-   ```csharp
-   Children = new List<SkiaControl>()
-   {
-       new SkiaLayout()
-       {
-           HeightRequest = 40,
-           Children =
-           {
-               new SkiaSvg() { ... }.ObserveProperty(...),
-               new SkiaLabel() { ... }.Assign(out _label)
-           }
-       }
-       .WithGestures(...)
-       .Assign(out _headerGrid)
-   };
-   ```
+Never declare a local variable for a control and reference it in a children list. Always construct inline:
 
-* Adding Children Dynamically: **ALWAYS** use `AddSubView()` method instead of `Children.Add()` for SkiaLayout and other drawn containers:
-   - ❌ NEVER: `layout.Children.Add(control)`
-   - ✅ INSTEAD: `layout.AddSubView(control)`
+```csharp
+// WRONG
+var label = new SkiaLabel { Text = "hi" };
+Children = new List<SkiaControl> { label };
 
-   This ensures proper parent-child relationships and rendering pipeline setup. For clearing use `layout.ClearChildren()`.
+// RIGHT
+Children = new List<SkiaControl>
+{
+    new SkiaLabel { Text = "hi" },
+};
+```
 
-* **Recycled/Reusable Cells Pattern (CRITICAL)**: For recycled cells (like in SkiaCarousel, SkiaScroll with templates), follow these strict rules:
+Use `.Assign(out _field)` to capture a reference:
 
-   **❌ NEVER add/remove children dynamically at runtime** - This breaks recycling!
+```csharp
+Children = new List<SkiaControl>
+{
+    new SkiaLabel { Text = "0°" }.Assign(out _angleLabel),
+};
+```
 
-   **✅ ALWAYS pre-create ALL UI elements during cell construction:**
+### Event / gesture wiring (mandatory)
 
-   ```csharp
-   public class MyRecycledCell : SkiaDynamicDrawnCell
-   {
-       private SkiaLayout _pricesContainer;
-       private List<SkiaLayout> _priceSlots; // Pre-created slots
-       private const int MaxPriceSlots = 5;
+Always use fluent extensions — never `+=` or command binding:
 
-       public MyRecycledCell()
-       {
-           CreateContent();
-       }
+| Task | Use |
+|---|---|
+| Tap | `.OnTapped(me => { ... })` |
+| Text changed | `.OnTextChanged(text => { ... })` |
+| Arbitrary setup | `.Adapt(me => { ... })` |
+| Paint hook | `.WhenPaint((me, ctx) => { ... })` |
+| Observe property | `.ObserveProperty(source, nameof(Prop), me => { ... })` |
 
-       private void CreateContent()
-       {
-           _priceSlots = new List<SkiaLayout>();
-           _pricesContainer = new SkiaLayout { Type = LayoutType.Row };
+### Dynamic children
 
-           // Pre-create maximum number of slots needed
-           for (int i = 0; i < MaxPriceSlots; i++)
-           {
-               var slot = CreatePriceSlot();
-               _priceSlots.Add(slot);
-               _pricesContainer.AddSubView(slot); // Add during construction only!
-           }
-       }
+Use `AddSubView()` instead of `Children.Add()`. For clearing use `ClearChildren()`.
 
-       protected override void SetContent(object ctx)
-       {
-           if (ctx is MyData data)
-           {
-               // Only UPDATE properties, never add/remove children
-               for (int i = 0; i < MaxPriceSlots; i++)
-               {
-                   var slot = _priceSlots[i];
-                   if (i < data.Prices.Count)
-                   {
-                       slot.IsVisible = true;
-                       // Update labels, colors, etc.
-                       (slot.Children[0] as SkiaLabel).Text = data.Prices[i].Title;
-                   }
-                   else
-                   {
-                       slot.IsVisible = false; // Hide unused slots
-                   }
-               }
-           }
-       }
-   }
-   ```
+### Recycled / reusable cells
 
-   **Key principles for recycled cells:**
-   - Create complete UI structure with maximum capacity in constructor
-   - At runtime: only change properties (IsVisible, Text, Color, etc.)
-   - Never call `AddSubView()`, `Children.Add()`, `ClearChildren()`, or `RemoveSubView()` after construction
-   - Hide unused elements with `IsVisible = false` instead of removing them
-   - Store references to pre-created elements for efficient updates
+Pre-create ALL UI elements in the constructor. At runtime only update properties — never add, remove, or clear children:
 
-* SkiaControl Base for Content:
-   - Content property MUST be `SkiaControl`, NOT `View`.
-   
-* Do not use MainThread when not explicitely asked too, DrawnUI doesn't need it.
-   
-* NO MAUI Bindings - Use DrawnUI Fluent Extensions ONLY:
-   - ❌ NEVER: `SetBinding(Property, new Binding(...))`
-   - ✅ INSTEAD: `.ObserveProperty(source, nameof(Prop), me => { me.Value = Prop; })`
-   - ✅ INSTEAD: `.ObserveProperties(source, [nameof(P1), nameof(P2)], me => { ... })`
-   - And other approrpiate available in Fluent extensions.
+```csharp
+public class MyCell : SkiaDynamicDrawnCell
+{
+    private List<SkiaLayout> _slots;
 
-* Fluent Chaining: Chain all methods directly on control creation:
+    public MyCell()
+    {
+        _slots = Enumerable.Range(0, MaxSlots)
+            .Select(_ => CreateSlot())
+            .ToList();
+        foreach (var s in _slots) AddSubView(s);
+    }
 
-   ```csharp
-   new SkiaLabel() { ... }
-       .ObserveProperty(...)
-       .Assign(out _field)
-       .WithGestures(...)
-   ```
+    protected override void SetContent(object ctx)
+    {
+        // Only set IsVisible, Text, Color — never AddSubView/RemoveSubView
+    }
+}
+```
 
-* Assign Pattern**: Use `.Assign(out _field)` to capture references for later use
+### Other rules
 
-* Layout Types remainder: Use `SkiaLayout` with:
-   - `Type = LayoutType.Column` - Vertical stack
-   - `Type = LayoutType.Row` - Horizontal stack
-   - `Type = LayoutType.Grid` - Grid layout
-   - `Type = LayoutType.Wrap` - Flex/wrap layout
-   - `Type = LayoutType.Absolute` - Absolute positioning
+- No MAUI bindings — use `.ObserveProperty()` / `.ObserveProperties()`
+- No `MainThread.BeginInvokeOnMainThread` — DrawnUI doesn't need it
+- `Content` property type is `SkiaControl`, not `View`
 
-7. **XAML Usage**: DrawnUI controls MUST be wrapped in `<draw:Canvas>`, and have `Gestures` property set to `Enabled` for simple scenarions and for `SoftLock` for controls that use panning. Canvas property `RenderingMode` must be `Default` for simple controls or `Accelarated` for highly animated ones. Simple animations can be rendered still with `Default`.
-Try set explicit size OR Fill sides if possible instead of relying on auto-sizing, we don't want the canvas to recalculate when controls inside change something.
+---
 
-   ```xml
-   <draw:Canvas HorizontalOptions="Fill" VerticalOptions="Start">
-       <draw:SkiaLayout Type="Column">
-           <draw:SkiaLabel Text="Hello" />
-       </draw:SkiaLayout>
-   </draw:Canvas>
-   ```
+## Layout Types
 
-* Rich Text with Spans** (use `&#10;` for newlines):
-   ```xml
-   <draw:SkiaLabel FontSize="15" TextColor="Black">
-       <draw:TextSpan Text="Normal " />
-       <draw:TextSpan Text="Bold" IsBold="True" TextColor="Red" />
-       <draw:TextSpan Text="&#10;" />
-       <draw:TextSpan Text="Link" Tapped="OnTapped" Underline="True" />
-   </draw:SkiaLabel>
-   ```
+`SkiaLayout` with `Type`:
+- `LayoutType.Column` — vertical stack
+- `LayoutType.Row` — horizontal stack
+- `LayoutType.Grid` — grid; use `ColumnDefinitions="35,*,100"` string format
+- `LayoutType.Wrap` — flex/wrap
+- `LayoutType.Absolute` — absolute positioning (prefer over Grid where possible)
 
-* Grid Layout in XAML (use string definitions, not collections):
-   ```xml
-   <draw:SkiaLayout
-       Type="Grid"
-       ColumnDefinitions="35,*,100"
-       RowDefinitions="Auto,*,50"
-       ColumnSpacing="10"
-       RowSpacing="5">
-       <draw:SkiaSvg Grid.Column="0" Grid.Row="0" Source="icon.svg" />
-       <draw:SkiaLabel Grid.Column="1" Grid.Row="0" Text="Content" />
-   </draw:SkiaLayout>
-   ```
-   **Note**: Use `Grid.Column` and `Grid.Row` attached properties, NOT `Column` or `Row`
+`SkiaLayer` = `SkiaLayout` with `Type=Absolute`, shorthand for layered content.
 
-* Control Mappings:
-   - `StackLayout` → `SkiaLayout Type="Column"`
-   - `Grid` → `SkiaLayout Type="Grid"` with `ColumnDefinitions="..."` and `RowDefinitions="..."`
-   - `FlexLayout` / `SmartFlex` → `SkiaLayout Type="Wrap"`
-   - `Label` → `SkiaLabel`
-   - `Span` → `TextSpan`
-   - `FormattedString` → Direct `TextSpan` children in `SkiaLabel`
-   - `{x:Static system:Environment.NewLine}` → `&#10;` (newline character)
+---
 
-For more details read `docs\articles\fluent-extensions.md` file and `docs\articles\porting-maui.md` !!!
+## XAML Usage
 
-* Construct large non-recycled scroll: wrap main layout with ImageComposite cache and sub layouts with Operations cache. Avoid having layouts that change size in direction of the scroll, try set their size value to non-auto-size or make them change size non-often as this will make the whole scroll content to recalculate and redraw.
+Controls must be wrapped in `<draw:Canvas>`. Set `Gestures="Enabled"` (or `SoftLock` for panning). Set explicit size or Fill to avoid auto-size recalculations.
 
-**Resource Loading:**
-- Web URLs: loaded from web
-- `file://` prefix: loaded from native file system  
-- Otherwise: loaded from `Resources\Raw` bundle folder
+```xml
+<draw:Canvas HorizontalOptions="Fill" VerticalOptions="Start"
+             RenderingMode="Default" Gestures="Enabled">
+    <draw:SkiaLayout Type="Column">
+        <draw:SkiaLabel Text="Hello" />
+    </draw:SkiaLayout>
+</draw:Canvas>
+```
 
-## Testing and Quality
+Grid in XAML (string definitions):
+```xml
+<draw:SkiaLayout Type="Grid"
+    ColumnDefinitions="35,*,100"
+    RowDefinitions="Auto,*,50">
+    <draw:SkiaSvg Grid.Column="0" Grid.Row="0" Source="icon.svg" />
+</draw:SkiaLayout>
+```
 
-**Test Projects:**
-- `src/Tests/UnitTests/` - Unit tests for core functionality
-- `src/Tests/SomeBenchmarks/` - Performance benchmarks
+Rich text:
+```xml
+<draw:SkiaLabel>
+    <draw:TextSpan Text="Normal " />
+    <draw:TextSpan Text="Bold" IsBold="True" TextColor="Red" />
+    <draw:TextSpan Text="&#10;" />
+</draw:SkiaLabel>
+```
 
-**Key Test Areas:**
-- Canvas rendering (`CanvasTests.cs`)
-- Layout system (`SkiaLayoutTests.cs`) 
-- Image management (`SkiaImageManagerTests.cs`)
-- Rendering pipeline (`RenderingTests.cs`)
+Control mappings: `StackLayout`→`Column`, `Grid`→`Grid`, `FlexLayout`→`Wrap`, `Label`→`SkiaLabel`, `Span`→`TextSpan`.
 
-## Addon Projects
+See `docs/articles/fluent-extensions.md` and `docs/articles/porting-maui.md` for more.
 
-**Available Addons:**
-- `DrawnUi.Maui.Camera` - Camera integration with SkiaSharp
-- `DrawnUi.Maui.Game` - Game development utilities  
-- `DrawnUi.Maui.MapsUi` - Map controls
-- `DrawnUi.Maui.Rive` - Rive animation support (Windows only)
-- `DrawnUi.MauiGraphics` - Microsoft.Maui.Graphics integration
+---
 
-Each addon is a separate NuGet package that can be referenced independently.
+## Resource Loading
 
-## Core strategy
-When creating code always consider that we we are inside a rendering engine trying to avoid new allocations during frame processing to avoid GC and looking for max fps.
-Apply this concept to new code and if you find existing code that can be adjusted to this line correct it at all times.
-Act a a principal engineer: you cannot disable or remove a feature to fix an issue, the fix must never make the system worse somewhere else or potentially break something else. You are looking to build a robust and stable system, and always think how we can modify the code flow in deep to make it better, and if needed add new functionnality to solve issues or challenges.
+- Web URLs — loaded from web
+- `file://` prefix — loaded from native file system
+- Otherwise — loaded from `Resources/Raw` bundle folder
 
-**CRITICAL - Method Modification Safety:**
-When modifying any method to fix a specific problem, you MUST:
-- Search and analyze ALL execution paths where this method is called throughout the codebase
-- Verify that your changes don't break existing logic in other contexts
-- Consider adding parameters or creating specialized versions if the fix applies only to specific use cases
-- Never fix a local problem at the expense of breaking functionality elsewhere
-- Use tools like Grep to find all call sites and analyze their contexts before making changes
+---
+
+## Core Engineering Strategy
+
+This is a rendering engine. Avoid allocations during frame processing to minimize GC pressure and maintain max FPS.
+
+When modifying any method:
+- Find ALL call sites with Grep before changing shared code
+- Verify changes don't break other execution paths
+- Add parameters or create specialized versions when a fix is context-specific
+- Never disable or remove a feature to fix an issue
+- Never make one area worse to fix another

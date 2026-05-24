@@ -4,6 +4,7 @@ items:
   commentId: N:DrawnUi.Views
   id: DrawnUi.Views
   children:
+  - DrawnUi.Views.AccessibilityNode
   - DrawnUi.Views.BasePageReloadable
   - DrawnUi.Views.Canvas
   - DrawnUi.Views.CanvasRestoreScope
@@ -16,6 +17,7 @@ items:
   - DrawnUi.Views.DrawnView.TimedDisposable
   - DrawnUi.Views.IDisposeManager
   - DrawnUi.Views.SKAutoCanvasRestoreFixed
+  - DrawnUi.Views.SkiaAccessibilityManager
   - DrawnUi.Views.SkiaView
   - DrawnUi.Views.SkiaViewAccelerated
   - DrawnUi.Views.SurfaceCacheManager
@@ -213,6 +215,19 @@ references:
   name: SurfacePool
   nameWithType: SurfacePool
   fullName: DrawnUi.Views.SurfacePool
+- uid: DrawnUi.Views.AccessibilityNode
+  commentId: T:DrawnUi.Views.AccessibilityNode
+  href: DrawnUi.Views.AccessibilityNode.html
+  name: AccessibilityNode
+  nameWithType: AccessibilityNode
+  fullName: DrawnUi.Views.AccessibilityNode
+- uid: DrawnUi.Views.SkiaAccessibilityManager
+  commentId: T:DrawnUi.Views.SkiaAccessibilityManager
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.SkiaAccessibilityManager.html
+  name: SkiaAccessibilityManager
+  nameWithType: SkiaAccessibilityManager
+  fullName: DrawnUi.Views.SkiaAccessibilityManager
 - uid: DrawnUi.Views
   commentId: N:DrawnUi.Views
   href: DrawnUi.html

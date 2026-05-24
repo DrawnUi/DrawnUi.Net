@@ -39,9 +39,23 @@ function Get-ContentType {
 
 try {
     $listener.Start()
+}
+catch {
+    Write-Error "Failed to start HTTP listener on port $Port`: $_"
+    exit 1
+}
 
+try {
     while ($listener.IsListening) {
-        $context = $listener.GetContext()
+        $context = $null
+        try {
+            $context = $listener.GetContext()
+        }
+        catch {
+            # listener was stopped externally — exit cleanly
+            break
+        }
+
         try {
             $requestPath = [System.Uri]::UnescapeDataString($context.Request.Url.AbsolutePath.TrimStart('/'))
             if ([string]::IsNullOrWhiteSpace($requestPath)) {
@@ -60,31 +74,31 @@ try {
                 $context.Response.Headers['Expires'] = '0'
                 $bytes = [System.Text.Encoding]::UTF8.GetBytes('Not Found')
                 $context.Response.OutputStream.Write($bytes, 0, $bytes.Length)
-                continue
             }
-
-            $context.Response.ContentType = Get-ContentType -Path $localPath
-            $context.Response.Headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-            $context.Response.Headers['Pragma'] = 'no-cache'
-            $context.Response.Headers['Expires'] = '0'
-            $fileStream = [System.IO.File]::Open($localPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
-            try {
-                $context.Response.ContentLength64 = $fileStream.Length
-                $fileStream.CopyTo($context.Response.OutputStream)
-            }
-            finally {
-                $fileStream.Dispose()
+            else {
+                $context.Response.ContentType = Get-ContentType -Path $localPath
+                $context.Response.Headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+                $context.Response.Headers['Pragma'] = 'no-cache'
+                $context.Response.Headers['Expires'] = '0'
+                $fileStream = [System.IO.File]::Open($localPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+                try {
+                    $context.Response.ContentLength64 = $fileStream.Length
+                    $fileStream.CopyTo($context.Response.OutputStream)
+                }
+                finally {
+                    $fileStream.Dispose()
+                }
             }
         }
+        catch {
+            try { $context.Response.StatusCode = 500 } catch { }
+        }
         finally {
-            $context.Response.OutputStream.Close()
+            try { $context.Response.OutputStream.Close() } catch { }
         }
     }
 }
 finally {
-    if ($listener.IsListening) {
-        $listener.Stop()
-    }
-
+    try { $listener.Stop() } catch { }
     $listener.Close()
 }

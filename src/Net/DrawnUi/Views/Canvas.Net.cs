@@ -7,6 +7,21 @@ namespace DrawnUi.Views
     {
         protected DrawingContext Context;
 
+        public new object Content
+        {
+            get => base.Content;
+            set
+            {
+                base.Content = value;
+                if (value is IEnumerable<SkiaControl> list)
+                    SetChildren(list);
+                else if (value is SkiaControl single)
+                    SetChildren(new[] { single });
+                else
+                    ClearChildren();
+            }
+        }
+
         protected override void Draw(DrawingContext context)
         {
             Context = context;
@@ -16,11 +31,7 @@ namespace DrawnUi.Views
 
             Arrange(context.Destination, widthRequest, heightRequest, context.Scale);
 
-            var skia = Content as SkiaControl;
-            if (skia == null && Views.Count > 0)
-            {
-                skia = Views[0];
-            }
+            var skia = Views.Count > 0 ? Views[0] : null;
 
             if (!IsGhost)
             {
@@ -28,13 +39,12 @@ namespace DrawnUi.Views
                 {
                     if (skia == null || skia.NeedUpdate)
                     {
-                        Debug.WriteLine("PAINT");
-
+                        //Debug.WriteLine("PAINT");
                         PaintTintBackground(context.Context.Canvas);
                     }
                     else
                     {
-                        Debug.WriteLine("RETAINED");
+                        //Debug.WriteLine("RETAINED");
                     }
 
                     base.Draw(context.WithDestination(Destination));                    

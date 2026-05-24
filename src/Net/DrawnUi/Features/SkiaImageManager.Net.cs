@@ -107,6 +107,16 @@ public class SkiaImageManager : IDisposable
     public event EventHandler CanReload;
     public bool Initialized { get; private set; } = true;
 
+    public async Task InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        if (_registeredSources.Count == 0)
+            return;
+
+        var sources = _registeredSources.Values.Distinct().ToList();
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        await PreloadImages(sources, cts);
+    }
+
     public static void TraceLog(string message)
     {
         if (LogEnabled)

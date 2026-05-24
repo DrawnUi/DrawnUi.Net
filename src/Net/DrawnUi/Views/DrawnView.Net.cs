@@ -30,8 +30,12 @@ namespace DrawnUi.Views
 
         protected void FixDensity()
         {
-            Width = CanvasView.CanvasSize.Width;
-            Height = CanvasView.CanvasSize.Height;
+            var measured = OnMeasure(WidthRequest, HeightRequest);
+            Width = measured.Width;
+            Height = measured.Height;
+
+            //Width = CanvasView.CanvasSize.Width;
+            //Height = CanvasView.CanvasSize.Height;
 
             if (_renderingScale <= 0.0)
             {
@@ -43,6 +47,8 @@ namespace DrawnUi.Views
 
                 RenderingScale = scale;
             }
+
+            NeedMeasure = false;
         }
 
         protected Dictionary<Guid, SkiaControl> DirtyChildren = new();

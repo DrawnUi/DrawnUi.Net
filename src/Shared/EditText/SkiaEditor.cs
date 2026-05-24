@@ -20,15 +20,30 @@ namespace DrawnUi.Draw
 
             TextChanged = null;
             FocusChanged = null;
+            CursorMoved = null;
             TextSubmitted = null;
         }
 
         #region EVENTS
 
+        /// <summary>
+        /// Raised when the caret moves to a new position.
+        /// </summary>
         public event EventHandler<string> TextChanged;
 
+        /// <summary>
+        /// Raised when editor focus changes.
+        /// </summary>
         public event EventHandler<bool> FocusChanged;
 
+        /// <summary>
+        /// Raised when the caret moves to a new position.
+        /// </summary>
+        public event EventHandler CursorMoved;
+
+        /// <summary>
+        /// Raised when text is submitted.
+        /// </summary>
         public event EventHandler<string> TextSubmitted;
 
         #endregion
@@ -106,7 +121,7 @@ namespace DrawnUi.Draw
             }
             else
             {
-                Label.HeightRequest = FontSize > 0 ? Math.Ceiling(FontSize * 1.2) : 20;
+                Label.HeightRequest = GetSingleLineHeightPts();
                 Label.MaxLines = 1;
                 if (_scroll != null)
                     _scroll.Orientation = ScrollOrientation.Horizontal;
@@ -141,7 +156,7 @@ namespace DrawnUi.Draw
             }
             else
             {
-                _placeholderLabel.HeightRequest = FontSize > 0 ? Math.Ceiling(FontSize * 1.2) : 20;
+                _placeholderLabel.HeightRequest = GetSingleLineHeightPts();
                 _placeholderLabel.MaxLines = 1;
             }
 
@@ -185,8 +200,47 @@ namespace DrawnUi.Draw
             {
                 UseCache = SkiaCacheType.Operations,
                 WidthRequest = 2,
-                HeightRequest = FontSize > 0 ? FontSize * 1.2 : 20
+                HeightRequest = GetSingleLineHeightPts()
             };
+        }
+
+        /// <summary>
+        /// Returns the visual height of one editor text line in points for the current font settings.
+        /// </summary>
+        public virtual double GetSingleLineHeightPts()
+        {
+            var scale = RenderingScale > 0 ? RenderingScale : 1f;
+
+            double[] candidates =
+            {
+                Label?.MeasuredLineHeight > 0 ? Math.Ceiling(Label.MeasuredLineHeight / scale) : 0,
+                Label?.LineHeightPixels > 0 ? Math.Ceiling(Label.LineHeightPixels / scale) : 0,
+                _placeholderLabel?.MeasuredLineHeight > 0 ? Math.Ceiling(_placeholderLabel.MeasuredLineHeight / scale) : 0,
+                _placeholderLabel?.LineHeightPixels > 0 ? Math.Ceiling(_placeholderLabel.LineHeightPixels / scale) : 0,
+            };
+
+            foreach (var candidate in candidates)
+            {
+                if (candidate > 0)
+                    return candidate;
+            }
+
+            var fontSize = FontSize > 0 ? FontSize : 20;
+            using (var paint = new SKPaint())
+            {
+                var typeface = SkiaFontManager.Instance.GetFont(FontFamily, FontWeight);
+                if (typeface != null)
+                    paint.Typeface = typeface;
+
+                paint.TextSize = (float)(fontSize * scale);
+
+                var metrics = paint.FontMetrics;
+                var measuredPixels = Math.Round((-metrics.Ascent + metrics.Descent) * Math.Max(LineHeight, 1.0));
+                if (measuredPixels > 0)
+                    return Math.Ceiling(measuredPixels / scale);
+            }
+
+            return Math.Ceiling(fontSize * 1.2);
         }
 
         public virtual void CreateControl()
@@ -748,6 +802,8 @@ namespace DrawnUi.Draw
 
                 //make cursor fit the line height
                 var lineH = Label.MeasuredLineHeight / RenderingScale;
+                if (lineH <= 0)
+                    lineH = (float)GetSingleLineHeightPts();
                 if (lineH > 0)
                     Cursor.HeightRequest = lineH;
                 if (cursorIndex < 0)
@@ -921,12 +977,22 @@ namespace DrawnUi.Draw
         /// <param name="y"></param>
         protected virtual void MoveCursorTo(double x, double y)
         {
+            var moved = Cursor.Left != x || Cursor.Top != y;
+
             Cursor.Left = x;
             Cursor.Top = y;
             // BindableProperty skips propertyChanged when value equals the default (0.0).
             // At cursor position 0 both Left and Top are 0, so NeedRepaint never fires.
             // Force a repaint so the cursor always redraws at the new position.
-            Cursor.Repaint();
+            if (moved)
+            {
+                Cursor.OnMoved();
+                OnCursorMoved();
+            }
+            else
+            {
+                Cursor.Repaint();
+            }
 
             // scroll to keep cursor visible
             if (_scroll != null)
@@ -972,6 +1038,14 @@ namespace DrawnUi.Draw
             }
 
             Invalidate();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="CursorMoved"/> event.
+        /// </summary>
+        protected virtual void OnCursorMoved()
+        {
+            CursorMoved?.Invoke(this, EventArgs.Empty);
         }
 
         private int AdvanceLineTextIndex(int currentIndex, int glyphCount)

@@ -1,0 +1,670 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  id: ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract
+  - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
+  - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
+  - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+  - DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect
+  - DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+  - DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
+  - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
+  - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
+  langs:
+  - csharp
+  - vb
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
+  type: Interface
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ISkiaAccessibilityNode
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 8
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Marks a drawn control as an accessibility node visible to screen readers and assistive technology.
+
+    Analogous to <xref href="DrawnUi.Draw.ISkiaGestureListener" data-throw-if-not-resolved="false"></xref> for the gesture system — implement this interface
+
+    (or set <code>AccessibilityRole</code> on a <xref href="DrawnUi.Draw.SkiaControl" data-throw-if-not-resolved="false"></xref>) and the control registers itself
+
+    automatically with the <code>SkiaAccessibilityManager</code> on first layout and unregisters on detachment.
+  example: []
+  syntax:
+    content: public interface ISkiaAccessibilityNode
+    content.vb: Public Interface ISkiaAccessibilityNode
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+  id: AccessibilityRole
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityRole
+  nameWithType: ISkiaAccessibilityNode.AccessibilityRole
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityRole
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: ARIA/platform role string. Setting this makes <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement" data-throw-if-not-resolved="false"></xref> true. Use <xref href="DrawnUi.Models.Aria" data-throw-if-not-resolved="false"></xref> constants.
+  example: []
+  syntax:
+    content: string? AccessibilityRole { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property AccessibilityRole As String
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  id: AccessibilityLabel
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityLabel
+  nameWithType: ISkiaAccessibilityNode.AccessibilityLabel
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityLabel
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 14
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Human-readable label announced by screen readers (e.g. button text, image description).
+  example: []
+  syntax:
+    content: string? AccessibilityLabel { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property AccessibilityLabel As String
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
+  id: AccessibilityHint
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityHint
+  nameWithType: ISkiaAccessibilityNode.AccessibilityHint
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityHint
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 17
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Additional hint announced after the label (e.g. "Double-tap to activate").
+  example: []
+  syntax:
+    content: string? AccessibilityHint { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property AccessibilityHint As String
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract
+  id: AccessibilityCanInteract
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityCanInteract
+  nameWithType: ISkiaAccessibilityNode.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityCanInteract
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 23
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    When true the overlay element gets a tab-stop, pointer cursor, and click/keyboard handlers.
+
+    Set via <code>.WithAccessibility(..., canInteract: true)</code> or directly.
+  example: []
+  syntax:
+    content: bool AccessibilityCanInteract { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property AccessibilityCanInteract As Boolean
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
+  id: AccessibilityIsPressed
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityIsPressed
+  nameWithType: ISkiaAccessibilityNode.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityIsPressed
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 28
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: 'Maps to <code>aria-pressed</code>. Use for toggle buttons: <code>true</code> = pressed, <code>false</code> = not pressed, <code>null</code> = not a toggle (attribute omitted).'
+  example: []
+  syntax:
+    content: bool? AccessibilityIsPressed { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Boolean}
+    content.vb: Property AccessibilityIsPressed As Boolean?
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+  id: IsAccessibilityElement
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: IsAccessibilityElement
+  nameWithType: ISkiaAccessibilityNode.IsAccessibilityElement
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IsAccessibilityElement
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 31
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: True when <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole" data-throw-if-not-resolved="false"></xref> is non-null. Computed, not stored.
+  example: []
+  syntax:
+    content: bool IsAccessibilityElement { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsAccessibilityElement As Boolean
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect
+  commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect
+  id: GetAccessibilityPixelRect
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: GetAccessibilityPixelRect()
+  nameWithType: ISkiaAccessibilityNode.GetAccessibilityPixelRect()
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetAccessibilityPixelRect
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 37
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Returns the control's hit rect in raw pixels, used to position the overlay element.
+
+    Typically <code>VisualLayer.HitBoxWithTransforms.Pixels</code> with <code>DrawingRect</code> as fallback.
+  example: []
+  syntax:
+    content: SKRect GetAccessibilityPixelRect()
+    return:
+      type: SkiaSharp.SKRect
+    content.vb: Function GetAccessibilityPixelRect() As SKRect
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
+  id: OnAccessibilityActivated
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityActivated()
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OnAccessibilityActivated
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 43
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Called by the platform a11y layer (e.g. Blazor overlay click/Enter) to activate the control.
+
+    Default implementation synthesises a Tapped gesture directly on this control.
+  example: []
+  syntax:
+    content: void OnAccessibilityActivated()
+    content.vb: Sub OnAccessibilityActivated()
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
+  commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
+  id: NotifyAccessibility
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: NotifyAccessibility()
+  nameWithType: ISkiaAccessibilityNode.NotifyAccessibility()
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: NotifyAccessibility
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 49
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Registers or updates this node in the superview's <code>SkiaAccessibilityManager</code>.
+
+    Called automatically on first layout; call manually when label/hint/state changes at runtime.
+  example: []
+  syntax:
+    content: void NotifyAccessibility()
+    content.vb: Sub NotifyAccessibility()
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
+  commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
+  id: OnAccessibilityUnregistered
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityUnregistered()
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityUnregistered()
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OnAccessibilityUnregistered
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 52
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Called by <code>SkiaAccessibilityManager</code> when this node is removed from the registry.
+  example: []
+  syntax:
+    content: void OnAccessibilityUnregistered()
+    content.vb: Sub OnAccessibilityUnregistered()
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered*
+references:
+- uid: DrawnUi.Draw.ISkiaGestureListener
+  commentId: T:DrawnUi.Draw.ISkiaGestureListener
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaGestureListener.html
+  name: ISkiaGestureListener
+  nameWithType: ISkiaGestureListener
+  fullName: DrawnUi.Draw.ISkiaGestureListener
+- uid: DrawnUi.Draw.SkiaControl
+  commentId: T:DrawnUi.Draw.SkiaControl
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaControl.html
+  name: SkiaControl
+  nameWithType: SkiaControl
+  fullName: DrawnUi.Draw.SkiaControl
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: ISkiaAccessibilityNode.IsAccessibilityElement
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+- uid: DrawnUi.Models.Aria
+  commentId: T:DrawnUi.Models.Aria
+  href: DrawnUi.Models.Aria.html
+  name: Aria
+  nameWithType: Aria
+  fullName: DrawnUi.Models.Aria
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: ISkiaAccessibilityNode.AccessibilityRole
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: ISkiaAccessibilityNode.AccessibilityLabel
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: ISkiaAccessibilityNode.AccessibilityHint
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: ISkiaAccessibilityNode.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: ISkiaAccessibilityNode.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
+- uid: System.Nullable{System.Boolean}
+  commentId: T:System.Nullable{System.Boolean}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool?
+  nameWithType: bool?
+  fullName: bool?
+  nameWithType.vb: Boolean?
+  fullName.vb: Boolean?
+  name.vb: Boolean?
+  spec.csharp:
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  spec.vb:
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: ISkiaAccessibilityNode.AccessibilityRole
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_IsAccessibilityElement
+  name: IsAccessibilityElement
+  nameWithType: ISkiaAccessibilityNode.IsAccessibilityElement
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_GetAccessibilityPixelRect
+  name: GetAccessibilityPixelRect
+  nameWithType: ISkiaAccessibilityNode.GetAccessibilityPixelRect
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect
+- uid: SkiaSharp.SKRect
+  commentId: T:SkiaSharp.SKRect
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  name: SKRect
+  nameWithType: SKRect
+  fullName: SkiaSharp.SKRect
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_OnAccessibilityActivated
+  name: OnAccessibilityActivated
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityActivated
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_NotifyAccessibility
+  name: NotifyAccessibility
+  nameWithType: ISkiaAccessibilityNode.NotifyAccessibility
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_OnAccessibilityUnregistered
+  name: OnAccessibilityUnregistered
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityUnregistered
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered

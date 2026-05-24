@@ -1,10 +1,13 @@
 # .NET MAUI
 
-Use this section when DrawnUI is running inside a .NET MAUI app.
+Run DrawnUI canvases inside a .NET MAUI app on Windows, Android, iOS and MacCatalyst.
 
-This is the native-host lane for DrawnUI: iOS, Android, MacCatalyst, and Windows, with MAUI providing the app shell and DrawnUI owning part or all of the rendered UI.
+## When to use
 
-If you are building with **Blazor**, do not start with the MAUI tutorial list just because the tutorial titles look generic. Start with [Blazor](../blazor/index.md) for the correct host setup, or use the shared [Tutorial Host Guide](../tutorials.md) to see which tutorial concepts already have Blazor sandbox equivalents.
+* Use drawn controls/UIs across the app
+* Draw the entire app on one DrawnUI canvas
+
+---
 
 ## Start here
 

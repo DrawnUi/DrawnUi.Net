@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--using Directory.Build.props-->
+
+    <PropertyGroup>
+        <Title>Game creation addon to DrawnUI for OpenTK</Title>
+        <PackageId>DrawnUi.OpenTk.Game</PackageId>
+        <Description>Base class for implementing a game with SkiaSharp using OpenTK on Windows and Linux</Description>
+        <PackageTags>opentk drawnui skia skiasharp draw game desktop linux windows</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi\DrawnUi.OpenTk.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedGame\SharedGame.projitems" Label="Shared" />
+
+</Project>

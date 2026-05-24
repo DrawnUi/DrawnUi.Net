@@ -29,6 +29,11 @@ namespace DrawnUi.Draw
             }
 
             _fontSources[alias] = sourceUrl;
+
+            if (Initialized)
+            {
+                TryLoadFont(alias, sourceUrl);
+            }
         }
 
         public void RegisterFont(string family, FontWeight weight, string sourceUrl)
@@ -39,6 +44,11 @@ namespace DrawnUi.Draw
 
         public void Initialize()
         {
+            foreach (var source in _fontSources)
+            {
+                TryLoadFont(source.Key, source.Value);
+            }
+
             Initialized = true;
         }
 
@@ -55,7 +65,7 @@ namespace DrawnUi.Draw
             }
 
             var systemFont = SKTypeface.FromFamilyName(alias);
-            if (systemFont != null)
+            if (systemFont != null && string.Equals(systemFont.FamilyName, alias, StringComparison.OrdinalIgnoreCase))
             {
                 return systemFont;
             }
@@ -92,6 +102,12 @@ namespace DrawnUi.Draw
 
         public static SKTypeface MatchCharacter(int symbol)
         {
+            var managerMatch = Manager.MatchCharacter(symbol);
+            if (managerMatch != null && managerMatch != DefaultTypeface)
+            {
+                return managerMatch;
+            }
+
             var text = char.ConvertFromUtf32(symbol);
             foreach (var typeface in Instance._fonts.Values)
             {
@@ -102,7 +118,7 @@ namespace DrawnUi.Draw
                 }
             }
 
-            return Manager.MatchCharacter(symbol) ?? DefaultTypeface;
+            return managerMatch ?? DefaultTypeface;
         }
 
         public static void RegisterWeight(string alias, FontWeight weight)
@@ -154,6 +170,27 @@ namespace DrawnUi.Draw
         public static string GetAlias(string alias, FontWeight weight)
         {
             return string.IsNullOrEmpty(alias) ? alias : $"{alias}{weight}";
+        }
+
+        private void TryLoadFont(string alias, string sourceUrl)
+        {
+            if (_fonts.ContainsKey(alias))
+                return;
+
+            var path = sourceUrl;
+            if (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                path.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            if (!Path.IsPathRooted(path))
+                path = Path.Combine(AppContext.BaseDirectory, path);
+
+            if (!File.Exists(path))
+                return;
+
+            var typeface = SKTypeface.FromFile(path);
+            if (typeface != null)
+                _fonts[alias] = typeface;
         }
     }
 }

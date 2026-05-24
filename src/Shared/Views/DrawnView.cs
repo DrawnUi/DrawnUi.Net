@@ -67,6 +67,9 @@ namespace DrawnUi.Views
 
 #if ONPLATFORM
             UpdatePlatform();
+#elif DRAWNUI_NET
+            if (!IsRendering)
+                UpdatePlatform();
 #endif
         }
 

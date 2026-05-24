@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IThermalStateService.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IThermalStateService
     path: ../src/Shared/Internals/Interfaces/IThermalStateService.cs
@@ -44,7 +44,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IThermalStateService.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentState
     path: ../src/Shared/Internals/Interfaces/IThermalStateService.cs
@@ -73,7 +73,7 @@ items:
   source:
     remote:
       path: src/Shared/Internals/Interfaces/IThermalStateService.cs
-      branch: net10
+      branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StateChanged
     path: ../src/Shared/Internals/Interfaces/IThermalStateService.cs

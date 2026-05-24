@@ -46,8 +46,14 @@ jobs:
         shell: pwsh
         run: |
           $projects = @(
+            'src/Net/DrawnUi/DrawnUi.Net.csproj'
+            'src/OpenTk/DrawnUi/DrawnUi.OpenTk.csproj'
             'src/Maui/DrawnUi/DrawnUi.Maui.csproj'
-            'src/Maui/MetaPackage/AppoMobi.Maui.DrawnUi/AppoMobi.Maui.DrawnUi.csproj'
+            'src/Blazor/DrawnUi/DrawnUi.Blazor.csproj'
+            'src/Blazor/DrawnUi.Server/DrawnUi.Blazor.Server.csproj'
+            'src/Blazor/DrawnUi.Wasm/DrawnUi.Blazor.Wasm.csproj'
+            'src/Blazor/Addons/DrawnUi.Blazor.Game/DrawnUi.Blazor.Game.csproj'
+            'src/OpenTk/Addons/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj'
             'src/Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj'
             'src/Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj'
             'src/Maui/Addons/DrawnUi.MauiGraphics/DrawnUi.MauiGraphics.csproj'
@@ -67,7 +73,7 @@ jobs:
           $artifactDir = Join-Path $env:GITHUB_WORKSPACE 'artifacts/nuget-packages'
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
-          $packageFiles = Get-ChildItem -Path 'src/Maui' -Recurse -File |
+          $packageFiles = Get-ChildItem -Path 'src' -Recurse -File |
             Where-Object {
               $_.FullName -match '[\\/]bin[\\/]Release[\\/]' -and
               ($_.Extension -eq '.nupkg' -or $_.Extension -eq '.snupkg')
@@ -158,14 +164,14 @@ jobs:
       - name: Configure GitHub Packages source
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $sourceName = 'github-actions'
           $sourceUrl = 'https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json'
 
           dotnet nuget remove source $sourceName 2>$null
 
-          dotnet nuget add source $sourceUrl --name $sourceName --username '${{ github.actor }}' --password $env:GITHUB_TOKEN --store-password-in-clear-text
+          dotnet nuget add source $sourceUrl --name $sourceName --username '${{ github.actor }}' --password $env:GH_TOKEN --store-password-in-clear-text
           if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
           }
@@ -173,7 +179,7 @@ jobs:
       - name: Push packages to GitHub Packages
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $packages = Get-ChildItem -Path 'artifacts/nuget-packages' -File |
             Where-Object { $_.Extension -eq '.nupkg' }
@@ -184,7 +190,7 @@ jobs:
 
           foreach ($package in $packages) {
             Write-Host "Publishing $($package.Name) to GitHub Packages"
-            dotnet nuget push $package.FullName --source github-actions --api-key $env:GITHUB_TOKEN --skip-duplicate --force-english-output
+            dotnet nuget push $package.FullName --source github-actions --api-key $env:GH_TOKEN --skip-duplicate --force-english-output
             if ($LASTEXITCODE -ne 0) {
               exit $LASTEXITCODE
             }

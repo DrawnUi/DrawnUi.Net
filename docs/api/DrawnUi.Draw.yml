@@ -99,6 +99,7 @@ items:
   - DrawnUi.Draw.IRefreshIndicator
   - DrawnUi.Draw.IRenderEffect
   - DrawnUi.Draw.IRenderObject
+  - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.ISkiaAnimator
   - DrawnUi.Draw.ISkiaCell
   - DrawnUi.Draw.ISkiaControl
@@ -2074,6 +2075,13 @@ references:
   name: ISkiaDrawable
   nameWithType: ISkiaDrawable
   fullName: DrawnUi.Draw.ISkiaDrawable
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
 - uid: DrawnUi.Draw.ISkiaGestureListener
   commentId: T:DrawnUi.Draw.ISkiaGestureListener
   parent: DrawnUi.Draw

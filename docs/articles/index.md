@@ -32,6 +32,11 @@ dotnet add package DrawnUi.Blazor.Wasm
 dotnet add package DrawnUi.Blazor.Server
 ```
 
+**For OpenTK (Windows/Linux desktop games and tools):**
+```bash
+dotnet add package DrawnUi.OpenTk
+```
+
 **For platform-agnostic .NET workflows:**
 ```bash
 dotnet add package DrawnUi.Net
@@ -55,13 +60,14 @@ builder.UseDrawnUi();
 - **[MAUI Tutorials](maui/tutorials.md)** - MAUI-only tutorials and example projects
 - **[Porting Native to Drawn](porting-maui.md)** - MAUI-focused migration guidance from native controls to DrawnUI
 - **[Blazor](blazor/index.md)** - Entry point for DrawnUI in Blazor
-- **[Blazor Packages](blazor-packages.md)** - Package roles, install targets, and project reference layout
-- **[Blazor WebAssembly](blazor-wasm.md)** - Browser-side `Canvas` setup and local rendering guidance
-- **[Blazor Server](blazor-server.md)** - server-backed `Canvas` setup, server-rendering model, and current limits
-- **[Blazor Hybrid Web App](blazor-hybrid.md)** - Mixed `InteractiveServer` and `InteractiveWebAssembly` app structure
-- **[Blazor Capabilities](blazor-capabilities.md)** - Runtime fit, validated strengths, and current boundaries
-- **[Blazor Migration](blazor-migration.md)** - Adoption strategy for existing Blazor apps
-- **[Blazor FAQ](blazor-faq.md)** - Package choice, migration path, and support boundaries
+- **[Blazor Packages](blazor/packages.md)** - Package roles, install targets, and project reference layout
+- **[Blazor WebAssembly](blazor/wasm.md)** - Browser-side `Canvas` setup and local rendering guidance
+- **[Blazor Server](blazor/server.md)** - server-backed `Canvas` setup, server-rendering model, and current limits
+- **[Blazor Hybrid Web App](blazor/hybrid.md)** - Mixed `InteractiveServer` and `InteractiveWebAssembly` app structure
+- **[Blazor Capabilities](blazor/capabilities.md)** - Runtime fit, validated strengths, and current boundaries
+- **[Blazor Migration](blazor/migration.md)** - Adoption strategy for existing Blazor apps
+- **[Blazor FAQ](blazor/faq.md)** - Package choice, migration path, and support boundaries
+- **[DrawnUI for OpenTK](opentk/index.md)** - OpenTK `GameWindow` host: games, GPU tools, and desktop apps on Windows/Linux
 - **[DrawnUi.Net](net/index.md)** - Platform-agnostic rendering, harnesses, and headless workflows
 - **[Fluent Extensions](fluent-extensions.md)** - Code-behind UI creation patterns
 - **[FAQ](faq.md)** - Frequently asked questions and answers

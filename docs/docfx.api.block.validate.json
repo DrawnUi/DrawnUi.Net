@@ -1,0 +1,16 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/*.yml",
+          "api/toc.temp.yml"
+        ]
+      }
+    ],
+    "dest": "_site-api-block-validate",
+    "template": ["default","modern","my-template"],
+    "styles": { "website": ["styles/main.css"] },
+    "force": true
+  }
+}

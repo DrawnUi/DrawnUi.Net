@@ -18,10 +18,16 @@ Both publish jobs depend only on the pack job, so they run independently based o
 
 ## Package List
 
-The workflow packs the same projects that are currently packed by `makenugets.bat`, except it removes the duplicate Camera pack invocation from the batch script and packs each project once:
+The workflow packs the same projects that are currently packed by `makenugets.bat`:
 
+- `src/Net/DrawnUi/DrawnUi.Net.csproj`
+- `src/OpenTk/DrawnUi/DrawnUi.OpenTk.csproj`
 - `src/Maui/DrawnUi/DrawnUi.Maui.csproj`
-- `src/Maui/MetaPackage/AppoMobi.Maui.DrawnUi/AppoMobi.Maui.DrawnUi.csproj`
+- `src/Blazor/DrawnUi/DrawnUi.Blazor.csproj`
+- `src/Blazor/DrawnUi.Server/DrawnUi.Blazor.Server.csproj`
+- `src/Blazor/DrawnUi.Wasm/DrawnUi.Blazor.Wasm.csproj`
+- `src/Blazor/Addons/DrawnUi.Blazor.Game/DrawnUi.Blazor.Game.csproj`
+- `src/OpenTk/Addons/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj`
 - `src/Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj`
 - `src/Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj`
 - `src/Maui/Addons/DrawnUi.MauiGraphics/DrawnUi.MauiGraphics.csproj`
@@ -30,7 +36,7 @@ Package versions come from the repository build metadata, currently centralized 
 
 ## Produced Artifacts
 
-The pack job collects these files from the `bin/Release` folders under `src/Maui`:
+The pack job collects these files from the `bin/Release` folders under `src`:
 
 - `*.nupkg`
 - `*.snupkg`
@@ -46,7 +52,7 @@ Create this repository secret before running the full publish flow:
 - `NUGET_API_KEY`: required for publishing to NuGet.org
 
 GitHub Packages publishing does not require a custom repository secret in the current workflow. 
-It uses the built-in `GITHUB_TOKEN` issued by GitHub Actions for the repository that runs the workflow.
+It uses the built-in `secrets.GITHUB_TOKEN` issued by GitHub Actions for the repository that runs the workflow.
 
 ## GitHub Settings To Verify
 
@@ -100,7 +106,7 @@ This job:
 - installs the SDK from `global.json`
 - installs the `maui` workload
 - runs `dotnet pack` for each package project in `Release`
-- collects all `.nupkg` and `.snupkg` files into one artifact
+- collects all `.nupkg` and `.snupkg` files from `src/**/bin/Release` into one artifact
 
 ### Job 2: Publish to NuGet.org
 
@@ -141,7 +147,7 @@ Check:
 - SDK version from `global.json`
 - MAUI workload installation logs
 - whether any project path in the workflow no longer exists
-- whether a new package project was added and needs to be included in the project list
+- whether a new package project was added to `makenugets.bat` and also needs to be added to the workflow project list
 
 ### NuGet.org Publish Fails
 
@@ -167,12 +173,12 @@ Check:
 Check:
 
 - whether the project was actually packed
-- whether its output still goes under a `bin/Release` path below `src/Maui`
+- whether its output still goes under a `bin/Release` path below `src`
 - whether the workflow project list includes it
 
 ## Maintenance Notes
 
-If you add or remove a package project later, update the project array in `.github/workflows/nuget-release.yml`.
+If you add or remove a package project later, update `nugets/makenugets.bat`, `nugets/movenugets.bat`, and the project array in `.github/workflows/nuget-release.yml` together.
 
 If package versioning changes later, the workflow should not need filename updates because it discovers produced packages dynamically.
 

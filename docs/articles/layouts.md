@@ -224,5 +224,5 @@ builder.UseDrawnUi(new() { MobileIsFullscreen = true });
 
 - [First App Tutorial](first-app.md) - Basic layout examples
 - [Fluent Extensions](fluent-extensions.md) - Code-based layout creation
-- [API Reference](xref:DrawnUi.Draw.SkiaLayout) - Complete SkiaLayout API
-- [API Reference](xref:DrawnUi.Draw.LayoutType) - LayoutType enum values
+- `DrawnUi.Draw.SkiaLayout` - Complete SkiaLayout API
+- `DrawnUi.Draw.LayoutType` - LayoutType enum values

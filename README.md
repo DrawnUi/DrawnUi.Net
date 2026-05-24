@@ -6,20 +6,21 @@
 
 DrawnUI is a rendering and UI composition engine for .NET, powered by [SkiaSharp](https://github.com/mono/SkiaSharp) with optional hardware acceleration.
 
-Currently supports host models:
+Currently supported hosts:
 
-* `DrawnUi.Net` for platform-agnostic console/server rendering scenarios.
-* `DrawnUi.Maui` for native app UI on iOS, Android, MacCatalyst, and Windows.
-* `DrawnUi.Blazor.Wasm` for browser-side / WebAssembly rendering with `Canvas` in Razor pages.
-* `DrawnUi.Blazor.Server` for server-backed DrawnUI surfaces inside Blazor Server / `InteractiveServer` apps.
+* `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
+* `DrawnUi.Maui` - native apps on iOS, Android, MacCatalyst, and Windows.
+* `DrawnUi.Blazor.Wasm` - browser WebAssembly rendering .
+* `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
+* `DrawnUi.OpenTk` - Windows and Linux desktops.
 
-[See in browser](https://drawnui.net/sandbox)
+[See example running in browser](https://drawnui.net/sandbox)
 
 ## Features
 
-* __Your toolbox to create drawn controls__, no more compromises with pre-built controls
-* __Draw your own UI__ with virtual pixel-perfect elements
-* __Port existing native controls to drawn__
+* __Imagine your  UI__ - a toolbox for creating drawn controls
+* __Harness the Canvas__ - engine handles everything
+* __Port existing native to drawn__ - easy port, bindings support
 * __Design in XAML, Razor + Canvas, or code-behind__
 * __2D and 3D Transforms__
 * __Visual effects__ for every control, filters and shaders
@@ -31,6 +32,13 @@ Currently supports host models:
 * __Navigate__ on the canvas with shell-like techniques 
 
 ---
+
+## Addons
+
+* Create games: `DrawnUi.DrawnUi.Game`, `DrawnUi.Blazor.Game`,`DrawnUi.OpenTk.game`.
+* .NET MAUI only: `DrawnUi.MauiGraphics`
+* .NET MAUI only: `DrawnUi.DrawnUi.MapsUi`
+* .NET MAUI only: `DrawnUi.DrawnUi.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
 
 [Docs and Samples](https://drawnui.net) 👈
 ---

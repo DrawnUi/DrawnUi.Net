@@ -5,20 +5,24 @@
   items:
     - name: Platforms and Packages
       href: articles/platforms.md
-    - name: Tutorial Host Guide
+    - name: Tutorials
       href: articles/tutorials.md
     - name: Startup Settings
       href: articles/startup-settings.md
-    - name: Drawn Layouts
-      href: articles/layouts.md
-    - name: Handling Gestures
-      href: articles/gestures.md
 
 - name: .NET
   href: articles/net/index.md
   items:
     - name: DrawnUi.Net Overview
       href: articles/net/index.md
+
+- name: OpenTK
+  href: articles/opentk/index.md
+  items:
+    - name: DrawnUI for OpenTK
+      href: articles/opentk/index.md
+    - name: OpenTK Samples
+      href: articles/opentk/samples.md
       
 - name: .NET MAUI
   href: articles/maui/index.md
@@ -45,22 +49,24 @@
   items:
     - name: Blazor Overview
       href: articles/blazor/index.md
-    - name: Blazor Tutorial References
+    - name: Tutorials
       href: articles/tutorials.md
+    - name: Blazor Samples
+      href: articles/blazor/samples.md
     - name: Blazor Packages
-      href: articles/blazor-packages.md
+      href: articles/blazor/packages.md
     - name: Blazor WebAssembly
-      href: articles/blazor-wasm.md
+      href: articles/blazor/wasm.md
     - name: Blazor Server
-      href: articles/blazor-server.md
+      href: articles/blazor/server.md
     - name: Blazor Hybrid Web App
-      href: articles/blazor-hybrid.md
+      href: articles/blazor/hybrid.md
     - name: Blazor Capabilities
-      href: articles/blazor-capabilities.md
+      href: articles/blazor/capabilities.md
     - name: Blazor Migration
-      href: articles/blazor-migration.md
+      href: articles/blazor/migration.md
     - name: Blazor FAQ
-      href: articles/blazor-faq.md
+      href: articles/blazor/faq.md
 
 
 
@@ -69,6 +75,10 @@
   items:
     - name: Controls Overview
       href: articles/controls/index.md
+    - name: Drawn Layouts
+      href: articles/layouts.md
+    - name: Handling Gestures
+      href: articles/gestures.md
     - name: Buttons
       href: articles/controls/buttons.md
     - name: Switches and Toggles
@@ -101,6 +111,8 @@
 - name: Advanced
   href: articles/advanced/index.md
   items:
+    - name: Accessibility
+      href: articles/advanced/accessibility.md
     - name: Layout System Architecture
       href: articles/advanced/layout-system.md
     - name: Platform-Specific Styling

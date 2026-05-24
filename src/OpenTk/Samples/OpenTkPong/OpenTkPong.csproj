@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>OpenTkPong</RootNamespace>
+    <Title>Pong – DrawnUI OpenTK Sample</Title>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>full</TrimMode>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <!-- OpenTK uses reflection to load GL bindings — must not be trimmed -->
+  <!-- SkiaSharp font/image APIs are called via non-obvious paths and get cut by TrimMode=full -->
+  <ItemGroup Condition="'$(PublishTrimmed)' == 'true'">
+    <TrimmerRootAssembly Include="OpenTK.Graphics" />
+    <TrimmerRootAssembly Include="OpenTK.Windowing.Desktop" />
+    <TrimmerRootAssembly Include="SkiaSharp" />
+    <TrimmerRootAssembly Include="HarfBuzzSharp" />
+  </ItemGroup>
+
+  <!-- Strip PDB files from publish output -->
+  <Target Name="ExcludePdbsFromPublish" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+                             Condition="'%(Extension)' == '.pdb'" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="fonts\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
