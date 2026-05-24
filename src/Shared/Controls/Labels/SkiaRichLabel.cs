@@ -228,16 +228,20 @@ public partial class SkiaRichLabel : SkiaLabel
                 var glyphInOriginal = SkiaLabel.GetGlyphs(glyphText, originalTypeFace).First();
                 if (glyphInOriginal.IsAvailable)
                 {
-                    if (currentIndex - spanStart > 1)
+                    var preferredTypeFace = SkiaFontManager.MatchCharacter(codePoint);
+                    if (preferredTypeFace == null || preferredTypeFace == originalTypeFace)
                     {
-                        BreakSpanAndSwitchTypeface(originalTypeFace);
-                    }
-                    else
-                    {
-                        currentIndex--;
-                        currentTypeFace = originalTypeFace;
-                        spanStart = currentIndex;
-                        needShape = false;
+                        if (currentIndex - spanStart > 1)
+                        {
+                            BreakSpanAndSwitchTypeface(originalTypeFace);
+                        }
+                        else
+                        {
+                            currentIndex--;
+                            currentTypeFace = originalTypeFace;
+                            spanStart = currentIndex;
+                            needShape = false;
+                        }
                     }
                 }
             }

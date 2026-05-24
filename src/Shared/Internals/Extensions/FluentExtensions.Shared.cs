@@ -1206,6 +1206,36 @@ namespace DrawnUi.Draw
             return view;
         }
 
+        /// <summary>
+        /// Attaches a handler to the FocusChanged event with automatic cleanup on disposal.
+        /// </summary>
+        /// <typeparam name="T">The type of the view, constrained to SkiaEditor or its derived types.</typeparam>
+        /// <param name="view">The editor control to attach the event handler to.</param>
+        /// <param name="action">The callback to invoke when focus changes, receiving the editor and its new focus state.</param>
+        /// <returns>The same view instance for fluent chaining.</returns>
+        public static T OnFocusChanged<T>(this T view, Action<T, bool> action) where T : SkiaEditor
+        {
+            try
+            {
+                void onFocus(object? s, bool focused)
+                {
+                    action?.Invoke(view, focused);
+                }
+                view.FocusChanged += onFocus;
+                string subscriptionKey = $"focus_changed_{Guid.NewGuid()}";
+                view.ExecuteUponDisposal[subscriptionKey] = () =>
+                {
+                    view.FocusChanged -= onFocus;
+                };
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+
+            return view;
+        }
+
         public static T OnTapped<T>(this T view, Action<T, ControlTappedEventArgs> action) where T : SkiaControl
         {
             try
