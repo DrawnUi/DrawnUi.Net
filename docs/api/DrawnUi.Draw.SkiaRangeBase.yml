@@ -55,7 +55,7 @@ items:
     Base class for range-based controls like sliders and progress bars.
 
     Provides common functionality for value ranges, track management, and platform styling.
-  example: ""
+  example: []
   syntax:
     content: 'public abstract class SkiaRangeBase : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public MustInherit Class SkiaRangeBase Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1208,7 +1208,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The current value of the range control
-  example: ""
+  example: []
   syntax:
     content: public double Value { get; set; }
     parameters: []
@@ -1434,7 +1434,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The color of the background track
-  example: ""
+  example: []
   syntax:
     content: public Color TrackColor { get; set; }
     parameters: []
@@ -1492,7 +1492,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The color of the progress/selected portion
-  example: ""
+  example: []
   syntax:
     content: public Color ProgressColor { get; set; }
     parameters: []
@@ -1550,7 +1550,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The height of the track
-  example: ""
+  example: []
   syntax:
     content: public double TrackHeight { get; set; }
     parameters: []
@@ -1825,7 +1825,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1854,7 +1854,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -1890,7 +1890,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override to find and assign Track and ProgressTrail references
-  example: ""
+  example: []
   syntax:
     content: protected abstract void FindViews()
     content.vb: Protected MustOverride Sub FindViews()
@@ -1918,7 +1918,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override to update the visual appearance based on current properties
-  example: ""
+  example: []
   syntax:
     content: protected abstract void UpdateVisualState()
     content.vb: Protected MustOverride Sub UpdateVisualState()
@@ -1946,7 +1946,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildrenChanged()
     content.vb: Public Overrides Sub OnChildrenChanged()
@@ -1975,7 +1975,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -35293,4 +35293,3 @@ references:
   name: OnLayoutChanged
   nameWithType: SkiaRangeBase.OnLayoutChanged
   fullName: DrawnUi.Draw.SkiaRangeBase.OnLayoutChanged
-

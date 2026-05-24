@@ -66,7 +66,7 @@ items:
     Pass these to <code>.WithAccessibility(Aria.RoleButton, ...)</code> to expose drawn controls
 
     to screen readers and assistive technology.
-  example: ""
+  example: []
   syntax:
     content: public static class Aria
     content.vb: Public Module Aria
@@ -103,7 +103,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A clickable element that triggers an action.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleButton
     return:
@@ -132,7 +132,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A navigational hyperlink.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleLink
     return:
@@ -161,7 +161,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A two-state on/off control.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleCheckbox
     return:
@@ -190,7 +190,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A single-select option within a group of radio buttons.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleRadio
     return:
@@ -219,7 +219,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A toggle switch with on/off semantics (use <code>aria-checked</code> for state).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleSwitch
     return:
@@ -248,7 +248,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A draggable range control (e.g. volume, brightness).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleSlider
     return:
@@ -277,7 +277,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A spin-button for incrementing/decrementing a numeric value.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleSpinButton
     return:
@@ -306,7 +306,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A single-line text input.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleTextBox
     return:
@@ -335,7 +335,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A text input specialised for search queries.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleSearchBox
     return:
@@ -364,7 +364,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: 'A combo-box: a text input paired with a pop-up list of options.'
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleComboBox
     return:
@@ -393,7 +393,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A scrollable list of selectable options.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleListBox
     return:
@@ -422,7 +422,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A single option inside a <xref href="DrawnUi.Models.Aria.RoleListBox" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleOption
     return:
@@ -451,7 +451,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A tab in a tab-strip (paired with a <xref href="DrawnUi.Models.Aria.RoleTabPanel" data-throw-if-not-resolved="false"></xref>).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleTab
     return:
@@ -480,7 +480,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: The content panel associated with a <xref href="DrawnUi.Models.Aria.RoleTab" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleTabPanel
     return:
@@ -509,7 +509,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Container that holds a set of <xref href="DrawnUi.Models.Aria.RoleTab" data-throw-if-not-resolved="false"></xref> elements.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleTabList
     return:
@@ -538,7 +538,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A menu — a list of choices or commands.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleMenu
     return:
@@ -567,7 +567,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A single item inside a <xref href="DrawnUi.Models.Aria.RoleMenu" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleMenuItem
     return:
@@ -596,7 +596,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A menu item that acts as a checkbox.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleMenuItemCheckbox
     return:
@@ -625,7 +625,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A menu item that acts as a radio button.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleMenuItemRadio
     return:
@@ -654,7 +654,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A scrollbar widget.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleScrollBar
     return:
@@ -683,7 +683,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Static text — use when the element is purely informational.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleText
     return:
@@ -712,7 +712,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A heading (announce level via <code>aria-level</code> 1–6).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleHeading
     return:
@@ -741,7 +741,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: An image. Provide a meaningful <code>AccessibilityLabel</code>; use empty string for decorative images.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleImg
     return:
@@ -770,7 +770,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A list container (pairs with <xref href="DrawnUi.Models.Aria.RoleListItem" data-throw-if-not-resolved="false"></xref>).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleList
     return:
@@ -799,7 +799,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A single item inside a <xref href="DrawnUi.Models.Aria.RoleList" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleListItem
     return:
@@ -828,7 +828,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A horizontal or vertical visual divider.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleSeparator
     return:
@@ -857,7 +857,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A progress indicator (determinate or indeterminate).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleProgressBar
     return:
@@ -886,7 +886,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A small contextual tooltip.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleTooltip
     return:
@@ -915,7 +915,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A dialog window (modal). Use <xref href="DrawnUi.Models.Aria.RoleAlertDialog" data-throw-if-not-resolved="false"></xref> for urgent messages.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleDialog
     return:
@@ -944,7 +944,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A modal dialog that requires an immediate response (e.g. confirmation, error).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleAlertDialog
     return:
@@ -973,7 +973,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A live region for important but non-urgent status messages.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleStatus
     return:
@@ -1002,7 +1002,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A live region for urgent messages that interrupt the user.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleAlert
     return:
@@ -1031,7 +1031,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A logical grouping of related controls.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleGroup
     return:
@@ -1060,7 +1060,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: A landmark region with a user-visible label (provide <code>aria-label</code>).
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleRegion
     return:
@@ -1089,7 +1089,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Primary navigation landmark.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleNavigation
     return:
@@ -1118,7 +1118,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
   summary: Main content landmark — use once per page.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RoleMain
     return:
@@ -1150,7 +1150,7 @@ items:
     Removes all ARIA semantics from an element so assistive technology ignores it.
 
     Equivalent to <code>aria-hidden="true"</code> at the role level.
-  example: ""
+  example: []
   syntax:
     content: public static readonly string RolePresentation
     return:
@@ -1505,4 +1505,3 @@ references:
   name: RoleAlertDialog
   nameWithType: Aria.RoleAlertDialog
   fullName: DrawnUi.Models.Aria.RoleAlertDialog
-

@@ -1031,7 +1031,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -1118,7 +1118,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1212,7 +1212,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You might want to pause to show effect before executing command. Default is 0.
-  example: ""
+  example: []
   syntax:
     content: public static int DelayCallbackMs
     return:
@@ -1298,7 +1298,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1330,7 +1330,7 @@ items:
     This will be called only for views registered at Superview.FocusedChild.
 
     The view must return true of false to indicate if it accepts focus.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool OnFocusChanged(bool focus)
     parameters:
@@ -30581,4 +30581,3 @@ references:
   name: LockPanning
   nameWithType: SkiaHotspot.LockPanning
   fullName: DrawnUi.Draw.SkiaHotspot.LockPanning
-

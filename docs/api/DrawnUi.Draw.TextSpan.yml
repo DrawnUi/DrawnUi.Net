@@ -468,7 +468,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Update the paint with current format properties
-  example: ""
+  example: []
   syntax:
     content: public SKPaint SetupPaint(double scale, SKPaint defaultPaint)
     parameters:
@@ -506,7 +506,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -658,7 +658,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Ig can be drawn char by char with char spacing etc we use this
-  example: ""
+  example: []
   syntax:
     content: public List<UsedGlyph> Glyphs { get; protected set; }
     parameters: []
@@ -689,7 +689,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If text can be drawn only shaped we use this
-  example: ""
+  example: []
   syntax:
     content: public string Shape { get; protected set; }
     parameters: []
@@ -749,7 +749,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Parse glyphs, setup typeface, replace unrenderable glyphs with fallback character
-  example: ""
+  example: []
   syntax:
     content: public void CheckGlyphsCanBeRendered()
     content.vb: Public Sub CheckGlyphsCanBeRendered()
@@ -980,7 +980,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In points, if set to negative will be in pixels instead.
-  example: ""
+  example: []
   syntax:
     content: public double UnderlineWidth { get; set; }
     parameters: []
@@ -1040,7 +1040,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In points
-  example: ""
+  example: []
   syntax:
     content: public double StrikeoutWidth { get; set; }
     parameters: []
@@ -1071,7 +1071,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will listen to gestures
-  example: ""
+  example: []
   syntax:
     content: public bool HasTapHandler { get; }
     parameters: []
@@ -1102,7 +1102,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: When no tap handler or command are set this forces to listen to taps anyway
-  example: ""
+  example: []
   syntax:
     content: public bool ForceCaptureInput { get; set; }
     parameters: []
@@ -1195,7 +1195,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public virtual void Dispose()
     content.vb: Public Overridable Sub Dispose()
@@ -1225,7 +1225,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Rendering offset, set when combining spans. Ofset of the first line.
-  example: ""
+  example: []
   syntax:
     content: public SKPoint DrawingOffset { get; set; }
     parameters: []
@@ -1285,7 +1285,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Relative to DrawingRect
-  example: ""
+  example: []
   syntax:
     content: public readonly List<SKRect> Rects
     return:
@@ -1653,7 +1653,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If any glyph cannot be rendered with selected font try find system font that supports it and switch to it for the whole span
-  example: ""
+  example: []
   syntax:
     content: public bool AutoFindFont { get; set; }
     parameters: []
@@ -4575,4 +4575,3 @@ references:
   name: FontDetectedWith
   nameWithType: TextSpan.FontDetectedWith
   fullName: DrawnUi.Draw.TextSpan.FontDetectedWith
-

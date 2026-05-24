@@ -27,7 +27,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: MAUI-specific theme provider implementation
-  example: ""
+  example: []
   syntax:
     content: 'public class MauiThemeProvider : IThemeProvider'
     content.vb: Public Class MauiThemeProvider Implements IThemeProvider
@@ -67,7 +67,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public AppTheme CurrentTheme { get; }
     parameters: []
@@ -99,7 +99,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<ThemeChangedEventArgs> ThemeChanged
     return:
@@ -628,4 +628,3 @@ references:
   nameWithType.vb: MauiThemeProvider.New
   fullName.vb: DrawnUi.Draw.MauiThemeProvider.New
   name.vb: New
-

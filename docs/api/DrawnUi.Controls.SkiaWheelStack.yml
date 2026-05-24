@@ -1185,7 +1185,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: ""
+  example: []
   syntax:
     content: public override ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -34347,4 +34347,3 @@ references:
     name: Numerics
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.numerics
-

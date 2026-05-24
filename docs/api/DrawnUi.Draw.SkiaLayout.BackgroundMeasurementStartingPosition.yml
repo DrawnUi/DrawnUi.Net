@@ -32,7 +32,7 @@ items:
     Stores the starting position data when background measurement begins
 
     Used to detect and compensate for position changes due to visibility changes
-  example: ""
+  example: []
   syntax:
     content: public class SkiaLayout.BackgroundMeasurementStartingPosition
     content.vb: Public Class SkiaLayout.BackgroundMeasurementStartingPosition
@@ -602,4 +602,3 @@ references:
   name: LayoutType
   nameWithType: LayoutType
   fullName: DrawnUi.Draw.LayoutType
-

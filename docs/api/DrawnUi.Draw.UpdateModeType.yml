@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will update when needed.
-  example: ""
+  example: []
   syntax:
     content: Dynamic = 0
     return:
@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Constantly invalidating the canvas after every frame
-  example: ""
+  example: []
   syntax:
     content: Constant = 1
     return:
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will not update until manually invalidated.
-  example: ""
+  example: []
   syntax:
     content: Manual = 2
     return:
@@ -235,4 +235,3 @@ references:
   name: UpdateModeType
   nameWithType: UpdateModeType
   fullName: DrawnUi.Draw.UpdateModeType
-

@@ -211,7 +211,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
   summary: Converts the given object to the type of this converter, using the specified context and culture information.
-  example: ""
+  example: []
   syntax:
     content: public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
     parameters:
@@ -260,7 +260,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
   summary: Converts the given value object to the specified type, using the specified context and culture information.
-  example: ""
+  example: []
   syntax:
     content: public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
     parameters:
@@ -2391,4 +2391,3 @@ references:
   name: ConvertToString
   nameWithType: FrameworkImageSourceConverter.ConvertToString
   fullName: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.ConvertToString
-

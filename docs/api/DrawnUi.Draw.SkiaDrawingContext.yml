@@ -250,7 +250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Recording cache
-  example: ""
+  example: []
   syntax:
     content: public bool IsVirtual { get; set; }
     parameters: []
@@ -281,7 +281,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Reusing surface from previous cache
-  example: ""
+  example: []
   syntax:
     content: public bool IsRecycled { get; set; }
     parameters: []
@@ -993,4 +993,3 @@ references:
   name: IServiceProvider
   nameWithType: IServiceProvider
   fullName: System.IServiceProvider
-

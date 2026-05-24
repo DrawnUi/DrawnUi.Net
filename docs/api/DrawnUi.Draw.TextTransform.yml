@@ -134,7 +134,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Every word starts with a capital letter, others do not change
-  example: ""
+  example: []
   syntax:
     content: Titlecase = 3
     return:
@@ -162,7 +162,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: First word starts with a capital letter, others do not change
-  example: ""
+  example: []
   syntax:
     content: Phrasecase = 4
     return:
@@ -287,4 +287,3 @@ references:
   name: TextTransform
   nameWithType: TextTransform
   fullName: DrawnUi.Draw.TextTransform
-

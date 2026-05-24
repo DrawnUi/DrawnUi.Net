@@ -1242,7 +1242,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1271,7 +1271,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Will be called when viewport containing this view has changed
-  example: ""
+  example: []
   syntax:
     content: public override void OnViewportWasChanged(ScaledRect viewport)
     parameters:
@@ -1413,7 +1413,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override int GetTemplatesPoolLimit()
     return:
@@ -1443,7 +1443,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override bool DrawChild(DrawingContext ctx, ISkiaControl child)
     parameters:
@@ -34669,4 +34669,3 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-

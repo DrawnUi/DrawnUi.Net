@@ -27,7 +27,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Defines the button style variants available for different visual appearances.
-  example: ""
+  example: []
   syntax:
     content: public enum SkiaButton.ButtonStyleType
     content.vb: Public Enum SkiaButton.ButtonStyleType
@@ -56,7 +56,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Standard filled button with background color and text
-  example: ""
+  example: []
   syntax:
     content: Contained = 0
     return:
@@ -84,7 +84,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Button with outline border and transparent background
-  example: ""
+  example: []
   syntax:
     content: Outlined = 1
     return:
@@ -112,7 +112,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Button with no background or border, only text
-  example: ""
+  example: []
   syntax:
     content: Text = 2
     return:
@@ -253,4 +253,3 @@ references:
   - uid: DrawnUi.Draw.SkiaButton.ButtonStyleType
     name: ButtonStyleType
     href: DrawnUi.Draw.SkiaButton.ButtonStyleType.html
-

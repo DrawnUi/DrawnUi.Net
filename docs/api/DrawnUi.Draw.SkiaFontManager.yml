@@ -230,7 +230,7 @@ items:
     Detects the Unicode block category for a given code point.
 
     This is cross-platform logic used to optimize font matching.
-  example: ""
+  example: []
   syntax:
     content: public static UnicodeBlock DetectUnicodeBlock(int codePoint)
     parameters:
@@ -271,7 +271,7 @@ items:
     Matches a Unicode character to an appropriate typeface with caching.
 
     This method is thread-safe and optimized for high-frequency calls.
-  example: ""
+  example: []
   syntax:
     content: public static SKTypeface MatchCharacter(int character)
     parameters:
@@ -312,7 +312,7 @@ items:
     Clears the character-to-typeface cache.
 
     Call this if fonts are dynamically loaded/unloaded at runtime.
-  example: ""
+  example: []
   syntax:
     content: public static void ClearCharacterCache()
     content.vb: Public Shared Sub ClearCharacterCache()
@@ -340,7 +340,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the current size of the character cache for diagnostics.
-  example: ""
+  example: []
   syntax:
     content: public static int GetCharacterCacheSize()
     return:
@@ -614,7 +614,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the closest enum value to the given weight. Like 590 would return Semibold.
-  example: ""
+  example: []
   syntax:
     content: public static FontWeight GetWeightEnum(int weight)
     parameters:
@@ -724,7 +724,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Takes the full name of a resource and loads it in to a stream.
-  example: ""
+  example: []
   syntax:
     content: public static Stream GetEmbeddedResourceStream(string resourceName)
     parameters:
@@ -803,7 +803,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Get the list of all emdedded resources in the assembly.
-  example: ""
+  example: []
   syntax:
     content: public static string[] GetEmbeddedResourceNames()
     return:
@@ -1860,4 +1860,3 @@ references:
   name: GetEmbeededFont
   nameWithType: SkiaFontManager.GetEmbeededFont
   fullName: DrawnUi.Draw.SkiaFontManager.GetEmbeededFont
-

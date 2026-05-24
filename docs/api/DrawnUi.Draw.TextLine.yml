@@ -69,7 +69,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Set during rendering
-  example: ""
+  example: []
   syntax:
     content: public SKRect Bounds { get; set; }
     parameters: []
@@ -827,4 +827,3 @@ references:
   nameWithType.vb: TextLine.New
   fullName.vb: DrawnUi.Draw.TextLine.New
   name.vb: New
-

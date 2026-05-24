@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Top level class for working with ItemTemplates. Holds visible views.
-  example: ""
+  example: []
   syntax:
     content: 'public class ViewsAdapter : IDisposable'
     content.vb: Public Class ViewsAdapter Implements IDisposable
@@ -132,7 +132,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Safely fills the pool in background with cancellation support. Cancels any previous background filling operation.
-  example: ""
+  example: []
   syntax:
     content: public Task FillPoolInBackgroundAsync(int size)
     parameters:
@@ -170,7 +170,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cancels any ongoing background pool filling operation
-  example: ""
+  example: []
   syntax:
     content: public void CancelBackgroundPoolFilling()
     content.vb: Public Sub CancelBackgroundPoolFilling()
@@ -201,7 +201,7 @@ items:
     Use to manually pre-create views from item templates so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This will respect pool MaxSize in order not to overpass it.
-  example: ""
+  example: []
   syntax:
     content: public void FillPool(int size, CancellationToken cancellationToken = default)
     parameters:
@@ -239,7 +239,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Main method to initialize templates, can use InitializeTemplatesInBackground as an option.
-  example: ""
+  example: []
   syntax:
     content: public void InitializeTemplates(NotifyCollectionChangedEventArgs args, Func<object> template, IList dataContexts, int poolSize, int reserve = 0)
     parameters:
@@ -321,7 +321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced collection change handling with validation and better error handling
-  example: ""
+  example: []
   syntax:
     content: public bool _HandleSmartCollectionChange(NotifyCollectionChangedEventArgs args, IList newDataContexts, int poolSize, int reserve = 0)
     parameters:
@@ -402,7 +402,7 @@ items:
     This uses cached views and tends to return same views matching index they already used.
 
     When cell recycling is off this will be a perfect match at all times.
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl GetViewForIndex(int index, SkiaControl template = null, float height = 0, bool isMeasuring = false)
     parameters:
@@ -487,7 +487,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Retuns view to the POOL and set parent to null. Doesn't set BindingContext to null !
-  example: ""
+  example: []
   syntax:
     content: public void ReleaseViewToPool(SkiaControl view, bool reset = false)
     parameters:
@@ -584,7 +584,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -876,7 +876,7 @@ items:
     Keep pool size with `n` templated more oversized, so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This method is likely to reserve templated views once on layout size changed.
-  example: ""
+  example: []
   syntax:
     content: public void AddMoreToPool(int oversize)
     parameters:
@@ -914,7 +914,7 @@ items:
     Use to manually pre-create views from item templates so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This will respect pool MaxSize in order not to overpass it.
-  example: ""
+  example: []
   syntax:
     content: public void FillPool(int size, IList context)
     parameters:
@@ -954,7 +954,7 @@ items:
     Use to manually pre-create views from item templates so when we suddenly need more templates they would already be ready, avoiding lag spike,
 
     This will respect pool MaxSize in order not to overpass it.
-  example: ""
+  example: []
   syntax:
     content: public void FillPool(int size)
     parameters:
@@ -992,7 +992,7 @@ items:
     Invalidates all existing cells currently stored in the recycling pools (generic, sized, and standalone).
 
     Use this when container constraints change so pooled cells are forced to re-measure next time they are reused.
-  example: ""
+  example: []
   syntax:
     content: public void InvalidateAllPooledCells()
     content.vb: Public Sub InvalidateAllPooledCells()
@@ -1218,7 +1218,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: An important check to consider before consuming templates especially if you initialize templates in background
-  example: ""
+  example: []
   syntax:
     content: public bool TemplatesAvailable { get; }
     parameters: []
@@ -1357,7 +1357,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns standalone view, used for measuring to its own separate pool.
-  example: ""
+  example: []
   syntax:
     content: public void ReleaseTemplateInstance(SkiaControl viewModel, bool reset = false)
     parameters:
@@ -2339,4 +2339,3 @@ references:
   name: ReleaseTemplateInstance
   nameWithType: ViewsAdapter.ReleaseTemplateInstance
   fullName: DrawnUi.Draw.ViewsAdapter.ReleaseTemplateInstance
-

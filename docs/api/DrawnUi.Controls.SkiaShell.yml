@@ -165,7 +165,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: A Canvas with Navigation capabilities
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaShell : BasePageReloadable, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration<Page>, ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable'
     content.vb: Public Class SkiaShell Inherits BasePageReloadable Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration(Of Page), ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable
@@ -465,7 +465,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void Dispose(bool isDisposing)
     parameters:
@@ -527,7 +527,7 @@ items:
   namespace: DrawnUi.Controls
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanged()
     content.vb: Protected Overrides Sub OnHandlerChanged()
@@ -1302,7 +1302,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Default background tint for freezing popups/modals etc
-  example: ""
+  example: []
   syntax:
     content: public static Color PopupBackgroundColor
     return:
@@ -1331,7 +1331,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Default background blur amount for freezing popups/modals etc
-  example: ""
+  example: []
   syntax:
     content: public static float PopupsBackgroundBlur
     return:
@@ -1580,7 +1580,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: The main control that pushes pages, switches tabs etc
-  example: ""
+  example: []
   syntax:
     content: public SkiaViewSwitcher NavigationLayout { get; set; }
     parameters: []
@@ -1611,7 +1611,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Use this for covering everything in a modal way, precisely tabs
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl RootLayout { get; set; }
     parameters: []
@@ -1707,7 +1707,7 @@ items:
     depending which ZIndexModals or ZIndexPopups is higher.
 
     If pushed view is inside a shell wrapper will return the wrapper.
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl GetTopmostViewInternal()
     return:
@@ -1747,7 +1747,7 @@ items:
     depending which ZIndexModals or ZIndexPopups is higher.
 
     If view is inside a shell wrapper will return just the view.
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl GetTopmostView()
     return:
@@ -1930,7 +1930,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Uses ViewSwitcher to push a view on the canvas, into the current tab if any.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task PushAsync(BindableObject page, bool animated = true, bool notify = true)
     parameters:
@@ -1973,7 +1973,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Uses ViewSwitcher to push a view on the canvas, into the current tab if any. We can use a route with arguments to instantiate the view instead of passing an instance.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task PushAsync(string registered, bool animated = true, IDictionary<string, object> arguments = null)
     parameters:
@@ -2112,7 +2112,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This will not affect popups
-  example: ""
+  example: []
   syntax:
     content: protected Task<SkiaControl> GoBackInRoute(bool animate)
     parameters:
@@ -2150,7 +2150,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Returns the page so you could dispose it if needed. Uses ViewSwitcher.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task<BindableObject> PopAsync(bool animated = true)
     parameters:
@@ -2188,7 +2188,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Override this to create your own image with your own effect of the screenshot to be placed under modal controls. Default is image with Darken Effect.
-  example: ""
+  example: []
   syntax:
     content: public virtual SkiaImage WrapScreenshot(SkiaControl control, SKImage screenshot, Color tint, float blur, bool animated)
     parameters:
@@ -2277,7 +2277,7 @@ items:
     Creates a SkiaDrawer opening over the RootLayout with the passed content. Override this method to create your own implementation.
 
     Default freezing background is True, control with frozenLayerBackgroundParameters parameter.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task<SkiaControl> PushModalAsync(BindableObject page, bool useGestures, bool animated = true, bool freezeBackground = true, IDictionary<string, object> arguments = null)
     parameters:
@@ -2626,7 +2626,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Override this if you have custom navigation layers and custom logic to decide if we can unfreeze background.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool CanFreezeLayout()
     return:
@@ -2657,7 +2657,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Override this if you have custom navigation layers and custom logic to decide if we can unfreeze background.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool CanUnfreezeLayout()
     return:
@@ -2800,7 +2800,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Display or hide the background scrrenshot assotiated with an overlay control
-  example: ""
+  example: []
   syntax:
     content: protected Task SetFrozenLayerVisibility(SkiaControl control, bool isVisible)
     parameters:
@@ -2840,7 +2840,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: pass who frozen the layout
-  example: ""
+  example: []
   syntax:
     content: public virtual Task UnfreezeRootLayout(SkiaControl control, bool animated)
     parameters:
@@ -2881,7 +2881,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: 'Freezes layout below the overlay: takes screenshot of RootLayout, places it over, then hides RootLayout to avoid rendering it. Can override'
-  example: ""
+  example: []
   syntax:
     content: public virtual Task FreezeRootLayout(SkiaControl control, bool animated, Color tintScreenshot, float blurScreenshot)
     parameters:
@@ -3093,7 +3093,7 @@ items:
     Occurs when layers configuration changes,
 
     some layer go visible, some not, some are added, some are removed.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnLayersChanged(SkiaControl dissapeared = null)
     parameters:
@@ -3210,7 +3210,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Close topmost popup
-  example: ""
+  example: []
   syntax:
     content: public Task ClosePopupAsync(bool animated)
     parameters:
@@ -3284,7 +3284,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Pass pixelsScaleInFrom you you want popup to animate appearing from a specific point instead of screen center.
-  example: ""
+  example: []
   syntax:
     content: public Task<SkiaControl> OpenPopupAsync(SkiaControl content, bool animated = true, bool closeWhenBackgroundTapped = true, bool showOverlay = true, Color backgroundColor = null, SKPoint? pixelsScaleInFrom = null)
     parameters:
@@ -4420,7 +4420,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Main control inside RootLayout
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetupRoot(ISkiaControl shellLayout)
     parameters:
@@ -4452,7 +4452,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Returns true if was replaced
-  example: ""
+  example: []
   syntax:
     content: public virtual SkiaControl SetRoot(string host, bool replace, IDictionary<string, object> arguments = null)
     parameters:
@@ -4669,7 +4669,7 @@ items:
     Navigate to a registered route. Arguments will be taken from query string of can be passed as parameter. You can receive them by implementing IQueryAttributable or using attribute [QueryProperty] in the page itsself or in the ViewModel that must be the screen's BindingContext upon registered screen instatiation.
 
     Animate can be specified otherwise will use it from Shell.PresentationMode attached property. This property will be also used for pushing as page, modal etc.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task GoToAsync(ShellNavigationState state, bool? animate = null, IDictionary<string, object> arguments = null)
     parameters:
@@ -4935,7 +4935,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Can use to pass items as models between viewmodels
-  example: ""
+  example: []
   syntax:
     content: public static Dictionary<string, object> Buffer { get; }
     parameters: []
@@ -12582,4 +12582,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
-

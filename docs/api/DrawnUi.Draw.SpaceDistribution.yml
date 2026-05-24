@@ -80,7 +80,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Distribute space evenly between all items but do not affect empty space remaining at the end of the last line
-  example: ""
+  example: []
   syntax:
     content: Auto = 1
     return:
@@ -108,7 +108,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Distribute space evenly between all items but do not affect empty space
-  example: ""
+  example: []
   syntax:
     content: Full = 2
     return:
@@ -233,4 +233,3 @@ references:
   name: SpaceDistribution
   nameWithType: SpaceDistribution
   fullName: DrawnUi.Draw.SpaceDistribution
-

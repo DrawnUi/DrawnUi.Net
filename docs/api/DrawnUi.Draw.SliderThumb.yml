@@ -1208,7 +1208,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -34324,4 +34324,3 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-

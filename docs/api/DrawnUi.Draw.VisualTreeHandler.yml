@@ -219,7 +219,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is used for rendering
-  example: ""
+  example: []
   syntax:
     content: protected VisualLayer ActiveTree
     return:
@@ -248,7 +248,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is prepared and can be used to replace ActiveTree
-  example: ""
+  example: []
   syntax:
     content: protected VisualLayer PreparedTree
     return:
@@ -277,7 +277,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: STEP 1 (or Background thread) prepare rendering tree that will be used for rendering later.
-  example: ""
+  example: []
   syntax:
     content: public void PrepareRenderingTree(DrawingContext context, float widthRequest, float heightRequest, SkiaControl root)
     parameters:
@@ -318,7 +318,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: STEP 2 (or Main thread) use prepared rendering tree to draw its nodes
-  example: ""
+  example: []
   syntax:
     content: public void Render(DrawingContext context)
     parameters:
@@ -350,7 +350,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by STEP 2 RenderTree method
-  example: ""
+  example: []
   syntax:
     content: protected void RenderTreeInternal(DrawingContext context, VisualLayer node)
     parameters:
@@ -825,4 +825,3 @@ references:
   name: RenderTreeInternal
   nameWithType: VisualTreeHandler.RenderTreeInternal
   fullName: DrawnUi.Draw.VisualTreeHandler.RenderTreeInternal
-

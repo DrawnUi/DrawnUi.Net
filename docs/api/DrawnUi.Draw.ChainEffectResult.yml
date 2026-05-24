@@ -61,7 +61,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Set this to true if you drawn the control of false if you just rendered something else
-  example: ""
+  example: []
   syntax:
     content: public bool DrawnControl { readonly get; set; }
     parameters: []
@@ -498,4 +498,3 @@ references:
   name: Default
   nameWithType: ChainEffectResult.Default
   fullName: DrawnUi.Draw.ChainEffectResult.Default
-

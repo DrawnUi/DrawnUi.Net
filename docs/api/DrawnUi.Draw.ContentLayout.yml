@@ -1178,7 +1178,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: ""
+  example: []
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -1265,7 +1265,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In PIXELS
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKRect GetContentAvailableRect(SKRect destination)
     parameters:
@@ -1384,7 +1384,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl Content { get; set; }
     parameters: []
@@ -34644,4 +34644,3 @@ references:
   name: Content
   nameWithType: IWithContent.Content
   fullName: DrawnUi.Draw.IWithContent.Content
-

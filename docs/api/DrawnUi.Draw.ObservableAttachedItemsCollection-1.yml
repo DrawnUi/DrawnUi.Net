@@ -25,7 +25,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: We have to subclass ObservableCollection to avoid it sending empty oldItems upon Reset.
-  example: ""
+  example: []
   syntax:
     content: 'public class ObservableAttachedItemsCollection<T> : ObservableCollection<T>, IList<T>, ICollection<T>, IReadOnlyList<T>, IReadOnlyCollection<T>, IEnumerable<T>, IList, ICollection, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged'
     typeParameters:
@@ -106,7 +106,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Removes all items from the collection.
-  example: ""
+  example: []
   syntax:
     content: protected override void ClearItems()
     content.vb: Protected Overrides Sub ClearItems()
@@ -2400,4 +2400,3 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
   - name: (
   - name: )
-

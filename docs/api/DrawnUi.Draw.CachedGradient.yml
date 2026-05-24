@@ -97,7 +97,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -539,4 +539,3 @@ references:
   name: OnDisposing
   nameWithType: CachedGradient.OnDisposing
   fullName: DrawnUi.Draw.CachedGradient.OnDisposing
-

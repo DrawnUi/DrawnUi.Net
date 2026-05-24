@@ -1245,7 +1245,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -1382,7 +1382,7 @@ items:
     Creates a Cupertino (iOS) style slider following Apple's design guidelines.
 
     When <xref href="DrawnUi.Draw.SkiaSlider.EnableRange" data-throw-if-not-resolved="false"></xref> is true, a second (start) thumb is added automatically.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void CreateCupertinoStyleContent()
     content.vb: Protected Overridable Sub CreateCupertinoStyleContent()
@@ -1493,7 +1493,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The height of the iOS slider track in points (default is 2pt per iOS guidelines)
-  example: ""
+  example: []
   syntax:
     content: public double CupertinoTrackHeight { get; set; }
     parameters: []
@@ -1551,7 +1551,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The diameter of the iOS slider thumb in points (default is 28pt per iOS guidelines)
-  example: ""
+  example: []
   syntax:
     content: public double CupertinoThumbDiameter { get; set; }
     parameters: []
@@ -1609,7 +1609,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The color of the unselected track in iOS style (default light gray)
-  example: ""
+  example: []
   syntax:
     content: public Color TrackColor { get; set; }
     parameters: []
@@ -1667,7 +1667,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'The color of the selected track in iOS style (default iOS blue #007AFF)'
-  example: ""
+  example: []
   syntax:
     content: public Color TrackSelectedColor { get; set; }
     parameters: []
@@ -1725,7 +1725,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The width of the border around the iOS slider thumb (default 0.5pt)
-  example: ""
+  example: []
   syntax:
     content: public double CupertinoThumbBorderWidth { get; set; }
     parameters: []
@@ -1785,7 +1785,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: enlarge hotspot by pts
-  example: ""
+  example: []
   syntax:
     content: public double moreHotspotSize
     return:
@@ -1841,7 +1841,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: track touched area type
-  example: ""
+  example: []
   syntax:
     content: protected RangeZone touchArea
     return:
@@ -1897,7 +1897,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1925,7 +1925,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -2100,7 +2100,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be open/closed by gestures along with code-behind, default is true
-  example: ""
+  example: []
   syntax:
     content: public bool RespondsToGestures { get; set; }
     parameters: []
@@ -2326,7 +2326,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enabled for ranged
-  example: ""
+  example: []
   syntax:
     content: public double Start { get; set; }
     parameters: []
@@ -2384,7 +2384,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For non-ranged this is your main value
-  example: ""
+  example: []
   syntax:
     content: public double End { get; set; }
     parameters: []
@@ -2778,7 +2778,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Padding for the Thumb to go, to be able to leave some space around for shadows etc.
-  example: ""
+  example: []
   syntax:
     content: public double AvailableWidthAdjustment { get; set; }
     parameters: []
@@ -2836,7 +2836,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: <summary>Gets or sets the orientation. This is a bindable property.</summary>
-  example: ""
+  example: []
   syntax:
     content: public OrientationType Orientation { get; set; }
     parameters: []
@@ -2894,7 +2894,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will ignore gestures of the wrong direction, like if this Orientation is Horizontal will ignore gestures with vertical direction velocity
-  example: ""
+  example: []
   syntax:
     content: public bool IgnoreWrongDirection { get; set; }
     parameters: []
@@ -2925,7 +2925,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -3013,7 +3013,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -36790,4 +36790,3 @@ references:
   name: ConvertOffsetsToValues
   nameWithType: SkiaSlider.ConvertOffsetsToValues
   fullName: DrawnUi.Draw.SkiaSlider.ConvertOffsetsToValues
-

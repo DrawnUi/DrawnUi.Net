@@ -26,7 +26,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Holds layout information for a rendered month cell.
-  example: ""
+  example: []
   syntax:
     content: public struct PlanesScroll.ViewLayoutInfo
     content.vb: Public Structure PlanesScroll.ViewLayoutInfo
@@ -62,7 +62,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Relative month index (0 for current, negative for past, positive for future).
-  example: ""
+  example: []
   syntax:
     content: public int Index
     return:
@@ -451,4 +451,3 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
-

@@ -1221,7 +1221,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void SetContent(SkiaControl view)
     parameters:
@@ -1256,7 +1256,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: ""
+  example: []
   syntax:
     content: protected override int DrawViews(DrawingContext context)
     parameters:
@@ -34606,4 +34606,3 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
-

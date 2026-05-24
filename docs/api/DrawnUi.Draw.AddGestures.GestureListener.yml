@@ -976,7 +976,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public string Tag { get; set; }
     parameters: []
@@ -1008,7 +1008,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool CanDraw { get; }
     parameters: []
@@ -1042,7 +1042,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Superview from public area
-  example: ""
+  example: []
   syntax:
     content: public override DrawnView GetTopParentView()
     return:
@@ -1106,7 +1106,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ISkiaGestureListener impl
-  example: ""
+  example: []
   syntax:
     content: public override bool HitIsInside(float x, float y)
     parameters:
@@ -1158,7 +1158,7 @@ items:
     todo detect if parent is cached somewhere and offset hotbox by cached parent movement offset...
 
     todo think about it baby =) meanwhile just do not set gestures below cached level
-  example: ""
+  example: []
   syntax:
     content: public override SKRect HitBoxAuto { get; }
     parameters: []
@@ -1193,7 +1193,7 @@ items:
     Use this to consume gestures in your control only,
 
     do not use result for passing gestures below
-  example: ""
+  example: []
   syntax:
     content: public override SKPoint TranslateInputCoords(SKPoint childOffset, bool accountForCache = true)
     parameters:
@@ -1233,7 +1233,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1272,7 +1272,7 @@ items:
     This will be called only for views registered at Superview.FocusedChild.
 
     The view must return true of false to indicate if it accepts focus.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool OnFocusChanged(bool focus)
     parameters:
@@ -29942,4 +29942,3 @@ references:
   name: SkiaTouchAnimation
   nameWithType: SkiaTouchAnimation
   fullName: DrawnUi.Draw.SkiaTouchAnimation
-

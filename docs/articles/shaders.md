@@ -5,6 +5,8 @@ DrawnUI ships with a thin, reusable SKSL shader layer on top of SkiaSharp's
 fragment shaders every frame at 60+ FPS without generating garbage or churning
 GPU handles.
 
+See a [live example](https://drawnui.net/sandbox/effects-shader) running on Blazor WebAssembly.
+
 There are two entry points:
 
 | Type | Namespace | Purpose |

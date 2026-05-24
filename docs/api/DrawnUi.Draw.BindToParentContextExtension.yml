@@ -28,7 +28,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compiled-bindings-friendly implementation for "Source.Parent.BindingContext.Path"
-  example: ""
+  example: []
   syntax:
     content: >-
       [ContentProperty("Path")]
@@ -168,7 +168,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public BindingBase ProvideValue(IServiceProvider serviceProvider)
     parameters:
@@ -815,4 +815,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
   - name: )
-

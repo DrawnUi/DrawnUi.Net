@@ -27,7 +27,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Ultra-fast key generator for queues using long keys
-  example: ""
+  example: []
   syntax:
     content: public static class LongKeyGenerator
     content.vb: Public Module LongKeyGenerator
@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Generates next unique key (thread-safe, fastest option)
-  example: ""
+  example: []
   syntax:
     content: public static long Next()
     return:
@@ -94,7 +94,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Generates key with thread distribution for better performance under high contention
-  example: ""
+  example: []
   syntax:
     content: public static long NextThreadDistributed()
     return:
@@ -124,7 +124,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Encodes semantic string directly to long (up to 8 chars, case-sensitive)
-  example: ""
+  example: []
   syntax:
     content: public static long EncodeSemantic(string semantic)
     parameters:
@@ -437,4 +437,3 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-

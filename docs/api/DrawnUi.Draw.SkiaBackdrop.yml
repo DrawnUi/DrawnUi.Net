@@ -50,7 +50,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'Warning with CPU-rendering edges will not be blurred: https://issues.skia.org/issues/40036320'
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaBackdrop : ContentLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IVisibilityAware, IWithContent, ISkiaGestureListener'
     content.vb: Public Class SkiaBackdrop Inherits ContentLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IVisibilityAware, IWithContent, ISkiaGestureListener
@@ -1183,7 +1183,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you call this while measurement is in process (IsMeasuring==True) will return last measured value.
-  example: ""
+  example: []
   syntax:
     content: public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -1227,7 +1227,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1651,7 +1651,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1680,7 +1680,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indended to prohibit background rendering, useful for streaming controls like camera, gif etc. SkiaBackdrop has it set to True as well.
-  example: ""
+  example: []
   syntax:
     content: public override bool CanUseCacheDoubleBuffering { get; }
     parameters: []
@@ -1717,7 +1717,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -1888,7 +1888,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void OnScaleChanged()
     content.vb: Public Overrides Sub OnScaleChanged()
@@ -35403,4 +35403,3 @@ references:
   name: BuildPaint
   nameWithType: SkiaBackdrop.BuildPaint
   fullName: DrawnUi.Draw.SkiaBackdrop.BuildPaint
-

@@ -1164,7 +1164,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = "")
     parameters:
@@ -1227,7 +1227,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: <summary>Gets or sets the scrolling direction of the ScrollView. This is a bindable property.</summary>
-  example: ""
+  example: []
   syntax:
     content: public ScrollOrientation Orientation { get; set; }
     parameters: []
@@ -1285,7 +1285,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: <summary>Gets or sets the scrolling direction of the ScrollView. This is a bindable property.</summary>
-  example: ""
+  example: []
   syntax:
     content: public ViewportScrollType ScrollType { get; set; }
     parameters: []
@@ -1316,7 +1316,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In PIXELS
-  example: ""
+  example: []
   syntax:
     content: protected override SKRect GetContentAvailableRect(SKRect destination)
     parameters:
@@ -34657,4 +34657,3 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
-

@@ -1120,7 +1120,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used to check whether to apply IsClippedToBounds property
-  example: ""
+  example: []
   syntax:
     content: public override bool WillClipBounds { get; }
     parameters: []
@@ -1179,7 +1179,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Apspect to render image with, default is AspectFitFill.
-  example: ""
+  example: []
   syntax:
     content: public TransformAspect TileAspect { get; set; }
     parameters: []
@@ -1489,7 +1489,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnMeasured()
     content.vb: Protected Overrides Sub OnMeasured()
@@ -1518,7 +1518,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cached image that will be used as tile
-  example: ""
+  example: []
   syntax:
     content: protected SkiaImage Tile { get; set; }
     parameters: []
@@ -1549,7 +1549,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether tiles are setup for rendering
-  example: ""
+  example: []
   syntax:
     content: protected bool DrawTiles { get; set; }
     parameters: []
@@ -1580,7 +1580,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Source was loaded, we can create tile
-  example: ""
+  example: []
   syntax:
     content: public override void OnSuccess(string source)
     parameters:
@@ -1679,7 +1679,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -1867,7 +1867,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Marks the current measure of an element as invalidated.
-  example: ""
+  example: []
   syntax:
     content: protected override void InvalidateMeasure()
     content.vb: Protected Overrides Sub InvalidateMeasure()
@@ -1896,7 +1896,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Updated DrawSource with professional-quality resizing
-  example: ""
+  example: []
   syntax:
     content: protected override void DrawSource(DrawingContext ctx, LoadedImageSource source, TransformAspect stretch, DrawImageAlignment horizontal = DrawImageAlignment.Center, DrawImageAlignment vertical = DrawImageAlignment.Center, SKPaint paint = null)
     parameters:
@@ -1938,7 +1938,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -32369,4 +32369,3 @@ references:
   name: OnDisposing
   nameWithType: SkiaImageTiles.OnDisposing
   fullName: DrawnUi.Draw.SkiaImageTiles.OnDisposing
-

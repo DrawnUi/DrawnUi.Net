@@ -57,7 +57,7 @@ items:
     One cell per item will be created, while a SkiaControl has little memory consumption for some controls
 
     like SkiaLayer it might take more, so you might consider recycling for large number o items
-  example: ""
+  example: []
   syntax:
     content: None = 0
     return:
@@ -85,7 +85,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Create cells instances until viewport is filled, then recycle while scrolling
-  example: ""
+  example: []
   syntax:
     content: FillViewport = 1
     return:
@@ -116,7 +116,7 @@ items:
     Try using one cell per template at all times, binding context will change just before drawing.
 
     ToDo investigate case of async data changes like images loading from web.
-  example: ""
+  example: []
   syntax:
     content: Single = 2
     return:
@@ -241,4 +241,3 @@ references:
   name: RecycleTemplateType
   nameWithType: RecycleTemplateType
   fullName: DrawnUi.Draw.RecycleTemplateType
-

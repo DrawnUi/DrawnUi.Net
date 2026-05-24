@@ -128,7 +128,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: The final node the tree leads to
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl Child { get; set; }
     parameters: []
@@ -159,7 +159,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Parents leading to the final node
-  example: ""
+  example: []
   syntax:
     content: public List<SkiaControl> Nodes { get; set; }
     parameters: []
@@ -190,7 +190,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Perf cache for node indices
-  example: ""
+  example: []
   syntax:
     content: public Dictionary<SkiaControl, int> NodeIndices { get; set; }
     parameters: []
@@ -221,7 +221,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Final transform of the chain
-  example: ""
+  example: []
   syntax:
     content: public VisualTransform Transform { get; set; }
     parameters: []
@@ -831,4 +831,3 @@ references:
   name: VisualTransform
   nameWithType: VisualTransform
   fullName: DrawnUi.Infrastructure.VisualTransform
-

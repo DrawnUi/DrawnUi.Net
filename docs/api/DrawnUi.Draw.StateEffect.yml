@@ -102,7 +102,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be invoked before actually painting but after gestures processing and other internal calculations. By SkiaControl.OnBeforeDrawing method. Beware if you call Update() inside will never stop updating.
-  example: ""
+  example: []
   syntax:
     content: public virtual void UpdateState()
     content.vb: Public Overridable Sub UpdateState()
@@ -1574,4 +1574,3 @@ references:
     href: DrawnUi.Draw.IStateEffect.html#DrawnUi_Draw_IStateEffect_UpdateState
   - name: (
   - name: )
-

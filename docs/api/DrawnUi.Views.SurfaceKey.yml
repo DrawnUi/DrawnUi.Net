@@ -152,7 +152,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Indicates whether the current object is equal to another object of the same type.
-  example: ""
+  example: []
   syntax:
     content: public bool Equals(SurfaceKey other)
     parameters:
@@ -189,7 +189,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Indicates whether this instance and a specified object are equal.
-  example: ""
+  example: []
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -228,7 +228,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Returns the hash code for this instance.
-  example: ""
+  example: []
   syntax:
     content: public override int GetHashCode()
     return:
@@ -733,4 +733,3 @@ references:
   name: GetHashCode
   nameWithType: SurfaceKey.GetHashCode
   fullName: DrawnUi.Views.SurfaceKey.GetHashCode
-

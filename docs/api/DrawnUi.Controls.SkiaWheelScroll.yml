@@ -78,7 +78,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: A specialized scroll view that displays items in a 3D wheel-like arrangement
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaWheelScroll : VirtualScroll, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent'
     content.vb: Public Class SkiaWheelScroll Inherits VirtualScroll Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
@@ -1318,7 +1318,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override bool AvoidRemeasuring(MeasureRequest request)
     parameters:
@@ -1351,7 +1351,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1526,7 +1526,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Event raised when the selected index changes
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<int> SelectedIndexChanged
     return:
@@ -1555,7 +1555,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Raises the SelectedIndexChanged event
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnSelectedIndexChanged(int newIndex)
     parameters:
@@ -1898,7 +1898,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: How much the alpha fading is pronounced. 0-1. Default id 0.2f.
-  example: ""
+  example: []
   syntax:
     content: public float FadeStrength { get; set; }
     parameters: []
@@ -1956,7 +1956,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: How much the alpha at edges if fading is enabled. Default id 0.05f.
-  example: ""
+  example: []
   syntax:
     content: public float FadeMin { get; set; }
     parameters: []
@@ -2072,7 +2072,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets or sets the index of the currently selected item
-  example: ""
+  example: []
   syntax:
     content: public int SelectedIndex { get; set; }
     parameters: []
@@ -2158,7 +2158,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -2187,7 +2187,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Calculate the value that will be set to ContentSize after that
-  example: ""
+  example: []
   syntax:
     content: protected override ScaledSize MeasureContent(float width, float height, float scale)
     parameters:
@@ -2231,7 +2231,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void SetContentSize()
     content.vb: Protected Overrides Sub SetContentSize()
@@ -2260,7 +2260,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect location changed. This will not be called if OnLayoutChanged was invoked for this frame!
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutPositionChanged()
     content.vb: Protected Overrides Sub OnLayoutPositionChanged()
@@ -2289,7 +2289,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -2318,7 +2318,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This is called when scrolling changes when in UseVirtual mode, override this to draw custom content
-  example: ""
+  example: []
   syntax:
     content: public override void DrawVirtual(DrawingContext context)
     parameters:
@@ -2377,7 +2377,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Draw selection indicator lines if needed
-  example: ""
+  example: []
   syntax:
     content: protected virtual void PaintSelectionIndicator(DrawingContext context)
     parameters:
@@ -2409,7 +2409,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Initiates a fling animation that precisely mirrors the Xamarin Android implementation
-  example: ""
+  example: []
   syntax:
     content: public override bool StartToFlingFrom(ScrollFlingAnimator animator, float from, float velocity)
     parameters:
@@ -2457,7 +2457,7 @@ items:
     Here we can construct anything according current offset before painting.
 
     Creates a valid ViewportRect inside.
-  example: ""
+  example: []
   syntax:
     content: protected override bool PositionViewport(SKRect destination, SKPoint offsetPixels, float viewportScale, float scale, bool forceSyncOffsets)
     parameters:
@@ -2506,7 +2506,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override bool CheckNeedToSnap()
     return:
@@ -2536,7 +2536,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void Snap(float maxTimeSecs)
     parameters:
@@ -2571,7 +2571,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This triggers smapping checks and actions
-  example: ""
+  example: []
   syntax:
     content: protected override void OnScrollCompleted()
     content.vb: Protected Overrides Sub OnScrollCompleted()
@@ -2600,7 +2600,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Updates the SelectedIndex property based on current scroll position
-  example: ""
+  example: []
   syntax:
     content: protected void ActualizeSelectedIndex()
     content.vb: Protected Sub ActualizeSelectedIndex()
@@ -2627,7 +2627,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override Vector2 ClampOffset(float x, float y, SKRect contentOffsetBounds, bool strict = false)
     parameters:
@@ -36769,4 +36769,3 @@ references:
   name: GetIndexAtCellPosition
   nameWithType: SkiaWheelScroll.GetIndexAtCellPosition
   fullName: DrawnUi.Controls.SkiaWheelScroll.GetIndexAtCellPosition
-

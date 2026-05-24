@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Renders animated sprite sheets by subclassing AnimatedFramesRenderer
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaSprite : AnimatedFramesRenderer, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable'
     content.vb: Public Class SkiaSprite Inherits AnimatedFramesRenderer Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable
@@ -1060,7 +1060,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Cache for loaded spritesheets to avoid reloading the same image multiple times
-  example: ""
+  example: []
   syntax:
     content: public static ConcurrentDictionary<string, SKBitmap> CachedSpriteSheets
     return:
@@ -1089,7 +1089,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Internal SkiaImage control used to display the current frame
-  example: ""
+  example: []
   syntax:
     content: public SkiaImage Display { get; protected set; }
     parameters: []
@@ -1120,7 +1120,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: For standalone use
-  example: ""
+  example: []
   syntax:
     content: public SkiaSprite()
     content.vb: Public Sub New()
@@ -1156,7 +1156,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -1189,7 +1189,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Creates a named animation from a frame sequence
-  example: ""
+  example: []
   syntax:
     content: public static int[] CreateAnimationSequence(string name, int[] frameSequence)
     parameters:
@@ -1230,7 +1230,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Dictionary of named animation sequences that can be reused
-  example: ""
+  example: []
   syntax:
     content: public static ConcurrentDictionary<string, int[]> RegisteredAnimations
     return:
@@ -1259,7 +1259,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: For building custom controls
-  example: ""
+  example: []
   syntax:
     content: public SkiaSprite(SkiaImage display)
     parameters:
@@ -1526,7 +1526,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Updates the layout options for the Display based on auto-sizing settings
-  example: ""
+  example: []
   syntax:
     content: protected virtual void LayoutDisplay()
     content.vb: Protected Overridable Sub LayoutDisplay()
@@ -1554,7 +1554,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Updates the layout of the Display when measurement needs to be invalidated
-  example: ""
+  example: []
   syntax:
     content: protected override void InvalidateMeasure()
     content.vb: Protected Overrides Sub InvalidateMeasure()
@@ -1583,7 +1583,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the parent control for animator operations
-  example: ""
+  example: []
   syntax:
     content: protected override SkiaControl GetAnimatorParent()
     return:
@@ -1615,7 +1615,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Renders the current frame of the animation
-  example: ""
+  example: []
   syntax:
     content: protected override void RenderFrame(DrawingContext ctx)
     parameters:
@@ -1648,7 +1648,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Invoked by internal animator
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorUpdated(double value)
     parameters:
@@ -1684,7 +1684,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Called by Seek
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorSeeking(double time)
     parameters:
@@ -1720,7 +1720,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets frame number from time based on current frame rate
-  example: ""
+  example: []
   syntax:
     content: protected int GetFrameNumberFromTime(double msTime)
     parameters:
@@ -1758,7 +1758,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Initializes the animator with the correct timing values
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorInitializing()
     content.vb: Protected Overrides Sub OnAnimatorInitializing()
@@ -1787,7 +1787,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Applies the current speed ratio to the animator
-  example: ""
+  example: []
   syntax:
     content: protected override void ApplySpeed()
     content.vb: Protected Overrides Sub ApplySpeed()
@@ -1816,7 +1816,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Checks if the animator can start
-  example: ""
+  example: []
   syntax:
     content: protected override bool CheckCanStartAnimator()
     return:
@@ -1848,7 +1848,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Starts the animation with optional delay
-  example: ""
+  example: []
   syntax:
     content: public override void Start(int delayMs = 0)
     parameters:
@@ -1884,7 +1884,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Reloads the sprite sheet from the Source property
-  example: ""
+  example: []
   syntax:
     content: public virtual void ReloadSource()
     content.vb: Public Overridable Sub ReloadSource()
@@ -1912,7 +1912,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Loads a spritesheet image from a source URL, using cache when available
-  example: ""
+  example: []
   syntax:
     content: public Task<SKBitmap> LoadSourceAsync(string source)
     parameters:
@@ -1950,7 +1950,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Loads a spritesheet image from a local or embedded resource
-  example: ""
+  example: []
   syntax:
     content: public Task<SKBitmap> LoadLocalImageAsync(string source)
     parameters:
@@ -1988,7 +1988,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Sets the sprite sheet bitmap and initializes the animation
-  example: ""
+  example: []
   syntax:
     content: public void SetSpriteSheet(SKBitmap bitmap, bool disposePrevious)
     parameters:
@@ -2026,7 +2026,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Recalculates frame information based on current properties
-  example: ""
+  example: []
   syntax:
     content: protected void RecalculateFrames()
     content.vb: Protected Sub RecalculateFrames()
@@ -2054,7 +2054,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Sets the current frame and updates the display
-  example: ""
+  example: []
   syntax:
     content: protected void SetCurrentFrame(int frameNumber)
     parameters:
@@ -2089,7 +2089,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Main method to invalidate cache and invoke rendering
-  example: ""
+  example: []
   syntax:
     content: public override void Update()
     content.vb: Public Overrides Sub Update()
@@ -2118,7 +2118,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: The full sprite sheet bitmap
-  example: ""
+  example: []
   syntax:
     content: public SKBitmap SpriteSheet { get; protected set; }
     parameters: []
@@ -2149,7 +2149,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Clears the spritesheet cache completely
-  example: ""
+  example: []
   syntax:
     content: public static void ClearCache()
     content.vb: Public Shared Sub ClearCache()
@@ -2177,7 +2177,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Removes a specific item from the spritesheet cache
-  example: ""
+  example: []
   syntax:
     content: public static void RemoveFromCache(string key)
     parameters:
@@ -2212,7 +2212,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Handles cleanup when the control is being disposed
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -2241,7 +2241,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for FrameSequence
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty FrameSequenceProperty
     return:
@@ -2270,7 +2270,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for AnimationName
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty AnimationNameProperty
     return:
@@ -2302,7 +2302,7 @@ items:
     Optional custom sequence of frames to play from the spritesheet.
 
     If set, this overrides the default sequential frame playback.
-  example: ""
+  example: []
   syntax:
     content: public int[] FrameSequence { get; set; }
     parameters: []
@@ -2333,7 +2333,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Name of a predefined animation sequence to use
-  example: ""
+  example: []
   syntax:
     content: public string AnimationName { get; set; }
     parameters: []
@@ -2364,7 +2364,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for Source
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty SourceProperty
     return:
@@ -2393,7 +2393,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Source of the spritesheet image
-  example: ""
+  example: []
   syntax:
     content: public string Source { get; set; }
     parameters: []
@@ -2424,7 +2424,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for Columns
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty ColumnsProperty
     return:
@@ -2453,7 +2453,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Number of columns in the spritesheet
-  example: ""
+  example: []
   syntax:
     content: public int Columns { get; set; }
     parameters: []
@@ -2484,7 +2484,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for Rows
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty RowsProperty
     return:
@@ -2513,7 +2513,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Number of rows in the spritesheet
-  example: ""
+  example: []
   syntax:
     content: public int Rows { get; set; }
     parameters: []
@@ -2544,7 +2544,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for MaxFrames
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty MaxFramesProperty
     return:
@@ -2573,7 +2573,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Maximum number of frames to use from the spritesheet (0 means use all)
-  example: ""
+  example: []
   syntax:
     content: public int MaxFrames { get; set; }
     parameters: []
@@ -2604,7 +2604,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for FramesPerSecond
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty FramesPerSecondProperty
     return:
@@ -2633,7 +2633,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Frames per second for the animation
-  example: ""
+  example: []
   syntax:
     content: public double FramesPerSecond { get; set; }
     parameters: []
@@ -2664,7 +2664,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bindable property for CurrentFrame
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty CurrentFrameProperty
     return:
@@ -2693,7 +2693,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Current frame being displayed
-  example: ""
+  example: []
   syntax:
     content: public int CurrentFrame { get; set; }
     parameters: []
@@ -2724,7 +2724,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Width of each frame in pixels
-  example: ""
+  example: []
   syntax:
     content: public int FrameWidth { get; protected set; }
     parameters: []
@@ -2755,7 +2755,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Height of each frame in pixels
-  example: ""
+  example: []
   syntax:
     content: public int FrameHeight { get; protected set; }
     parameters: []
@@ -2786,7 +2786,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Total number of frames in the spritesheet
-  example: ""
+  example: []
   syntax:
     content: public int TotalFrames { get; protected set; }
     parameters: []
@@ -2817,7 +2817,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Duration of the animation in milliseconds
-  example: ""
+  example: []
   syntax:
     content: public double DurationMs { get; protected set; }
     parameters: []
@@ -2848,7 +2848,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Duration of each frame in milliseconds
-  example: ""
+  example: []
   syntax:
     content: public double FrameDurationMs { get; protected set; }
     parameters: []
@@ -32520,4 +32520,3 @@ references:
   name: FrameDurationMs
   nameWithType: SkiaSprite.FrameDurationMs
   fullName: DrawnUi.Controls.SkiaSprite.FrameDurationMs
-

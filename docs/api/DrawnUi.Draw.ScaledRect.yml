@@ -67,7 +67,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns the fully qualified type name of this instance.
-  example: ""
+  example: []
   syntax:
     content: public override string ToString()
     return:
@@ -806,4 +806,3 @@ references:
   name: Clone
   nameWithType: ScaledRect.Clone
   fullName: DrawnUi.Draw.ScaledRect.Clone
-

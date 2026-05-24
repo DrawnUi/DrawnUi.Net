@@ -276,7 +276,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: ""
+  example: []
   syntax:
     content: public int CompareTo(object obj)
     parameters:
@@ -323,7 +323,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: ""
+  example: []
   syntax:
     content: public int CompareTo(SkiaPoint other)
     parameters:
@@ -363,7 +363,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicates whether the current object is equal to another object of the same type.
-  example: ""
+  example: []
   syntax:
     content: public bool Equals(SkiaPoint other)
     parameters:
@@ -400,7 +400,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the specified object is equal to the current object.
-  example: ""
+  example: []
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -439,7 +439,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Serves as the default hash function.
-  example: ""
+  example: []
   syntax:
     content: public override int GetHashCode()
     return:
@@ -2144,4 +2144,3 @@ references:
   - uid: DrawnUi.Draw.SkiaPoint.op_Inequality*
     name: '!='
     href: DrawnUi.Draw.SkiaPoint.html#DrawnUi_Draw_SkiaPoint_op_Inequality_DrawnUi_Draw_SkiaPoint_DrawnUi_Draw_SkiaPoint_
-

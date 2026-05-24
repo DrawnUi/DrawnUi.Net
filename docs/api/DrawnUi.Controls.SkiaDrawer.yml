@@ -1242,7 +1242,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -1271,7 +1271,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Command to close the drawer programmatically. Sets IsOpen to false.
-  example: ""
+  example: []
   syntax:
     content: public ICommand CommandClose { get; }
     parameters: []
@@ -1302,7 +1302,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Command to open the drawer programmatically. Sets IsOpen to true.
-  example: ""
+  example: []
   syntax:
     content: public ICommand CommandOpen { get; }
     parameters: []
@@ -1333,7 +1333,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Command to toggle the drawer state programmatically. Inverts the current IsOpen value.
-  example: ""
+  example: []
   syntax:
     content: public ICommand CommandToggle { get; }
     parameters: []
@@ -1364,7 +1364,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This event can sometimes be called without prior OnAppearing
-  example: ""
+  example: []
   syntax:
     content: public override void OnAppeared()
     content.vb: Public Overrides Sub OnAppeared()
@@ -1394,7 +1394,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisappearing()
     content.vb: Public Overrides Sub OnDisappearing()
@@ -1424,7 +1424,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisappeared()
     content.vb: Public Overrides Sub OnDisappeared()
@@ -1455,7 +1455,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This can sometimes be omitted,
-  example: ""
+  example: []
   syntax:
     content: public override void OnAppearing()
     content.vb: Public Overrides Sub OnAppearing()
@@ -1544,7 +1544,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Invokes TransitionChanged event
-  example: ""
+  example: []
   syntax:
     content: public override void OnTransitionChanged()
     content.vb: Public Overrides Sub OnTransitionChanged()
@@ -1576,7 +1576,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1739,7 +1739,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: If set to other than -1 will be used instead of HeaderSize for amplitude calculation, amplitude = drawer size - header.
-  example: ""
+  example: []
   syntax:
     content: public double AmplitudeSize { get; set; }
     parameters: []
@@ -1797,7 +1797,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Size of the area that will remain on screen when drawer is closed
-  example: ""
+  example: []
   syntax:
     content: public double HeaderSize { get; set; }
     parameters: []
@@ -2077,7 +2077,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -2106,7 +2106,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: In points
-  example: ""
+  example: []
   syntax:
     content: protected virtual Vector2 GetOffsetToHide()
     return:
@@ -2137,7 +2137,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: todo calc upon measured size + prop for speed
-  example: ""
+  example: []
   syntax:
     content: protected override Vector2 GetAutoVelocity(Vector2 displacement)
     parameters:
@@ -2173,7 +2173,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: There are the bounds the scroll offset can go to.. This are NOT the bounds of the whole content.
-  example: ""
+  example: []
   syntax:
     content: public override SKRect GetContentOffsetBounds()
     return:
@@ -2203,7 +2203,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyPosition(Vector2 position)
     parameters:
@@ -2234,7 +2234,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyOptions(bool initialize)
     parameters:
@@ -2274,7 +2274,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -2360,7 +2360,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void UpdateReportedPosition()
     content.vb: Public Overrides Sub UpdateReportedPosition()
@@ -2389,7 +2389,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This uses whole viewport size, do not use this for snapping
-  example: ""
+  example: []
   syntax:
     content: public static SKPoint GetClosestSidePoint(SKPoint overscrollPoint, SKRect contentRect, SKSize viewportSize)
     parameters:
@@ -2570,7 +2570,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -2635,7 +2635,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Called for manual finger panning
-  example: ""
+  example: []
   syntax:
     content: protected override Vector2 ClampOffsetWithRubberBand(float x, float y)
     parameters:
@@ -37088,4 +37088,3 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-

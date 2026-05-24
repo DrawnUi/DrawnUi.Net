@@ -202,7 +202,7 @@ items:
     Performance is optimized through text layout caching, glyph measurement caching,
 
     and intelligent rendering that only processes visible portions of text.
-  example: ""
+  example: []
   syntax:
     content: >-
       [ContentProperty("Spans")]
@@ -1249,7 +1249,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use main thread to handle spans collection changes properly
-  example: ""
+  example: []
   syntax:
     content: protected virtual void ReplaceSpans(IEnumerable<TextSpan> spans)
     parameters:
@@ -1284,7 +1284,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1313,7 +1313,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: TODO IText?
-  example: ""
+  example: []
   syntax:
     content: public Font Font { get; }
     parameters: []
@@ -1461,7 +1461,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: ""
+  example: []
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -1490,7 +1490,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Summing up Margins and AddMargin.. properties
-  example: ""
+  example: []
   syntax:
     content: public override void CalculateMargins()
     content.vb: Public Overrides Sub CalculateMargins()
@@ -1519,7 +1519,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutReady()
     content.vb: Protected Overrides Sub OnLayoutReady()
@@ -1547,7 +1547,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void OnScaleChanged()
     content.vb: Public Overrides Sub OnScaleChanged()
@@ -1575,7 +1575,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool CanDraw { get; }
     parameters: []
@@ -1609,7 +1609,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -1638,7 +1638,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -1674,7 +1674,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns a string that represents the current object.
-  example: ""
+  example: []
   syntax:
     content: public override string ToString()
     return:
@@ -1742,7 +1742,7 @@ items:
     When spans are used, the Text property is ignored. To reset to using
 
     the Text property, clear the Spans collection.
-  example: ""
+  example: []
   syntax:
     content: public IList<TextSpan> Spans { get; }
     parameters: []
@@ -1830,7 +1830,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1864,7 +1864,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -1932,7 +1932,7 @@ items:
     This is called when CharByChar is enabled
 
     You can override it to apply custom effects to every letter
-  example: ""
+  example: []
   syntax:
     content: protected virtual void DrawCharacter(SKCanvas canvas, int lineIndex, int letterIndex, ReadOnlySpan<char> characters, float x, float y, SKPaint paint, SKPaint paintStroke, SKPaint paintDropShadow, SKRect destination, float scale)
     parameters:
@@ -2035,7 +2035,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If strokePaint==null will not stroke
-  example: ""
+  example: []
   syntax:
     content: public void DrawText(SKCanvas canvas, float x, float y, string text, SKPaint textPaint, SKPaint strokePaint, SKPaint paintDropShadow, float scale)
     parameters:
@@ -2214,7 +2214,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Overriding this to be able to control either control background is drawn (when background color is set) or gradient can be drawn over text
-  example: ""
+  example: []
   syntax:
     content: protected override bool SetupBackgroundPaint(SKPaint paint, SKRect destination)
     parameters:
@@ -2253,7 +2253,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Input in POINTS
-  example: ""
+  example: []
   syntax:
     content: public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -2298,7 +2298,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Optimized version of LastNonSpaceIndex that works with spans
-  example: ""
+  example: []
   syntax:
     content: public static int LastNonSpaceIndexOptimized(ReadOnlySpan<char> textSpan)
     parameters:
@@ -2657,7 +2657,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns text taken size in pixels. Accounts paint transforms like skew etc.
-  example: ""
+  example: []
   syntax:
     content: public void MeasureText(SKPaint paint, string text, ref SKRect bounds)
     parameters:
@@ -2982,7 +2982,7 @@ items:
     todo move this to some font info data block
 
     otherwise we wont be able to have multiple fonts
-  example: ""
+  example: []
   syntax:
     content: public double SpaceBetweenParagraphs { get; }
     parameters: []
@@ -3073,7 +3073,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: A new TypeFace was set
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnFontUpdated()
     content.vb: Protected Overridable Sub OnFontUpdated()
@@ -3696,7 +3696,7 @@ items:
     Forces per-character glyph position measurement. Required for cursor/caret hit-testing in drawn editors.
 
     Slightly more expensive than the default simple-path measurement.
-  example: ""
+  example: []
   syntax:
     content: public bool NeedsGlyphPositions { get; set; }
     parameters: []
@@ -3757,7 +3757,7 @@ items:
     Normally space is remove at the end of a line break for display (this property is false by default).
 
     In case you need to keep it to create custom controls set this to true.
-  example: ""
+  example: []
   syntax:
     content: public bool KeepSpacesOnLineBreaks { get; set; }
     parameters: []
@@ -3857,7 +3857,7 @@ items:
 
 
     A value of 0 means the default weight will be used.
-  example: ""
+  example: []
   syntax:
     content: public int FontWeight { get; set; }
     parameters: []
@@ -3915,7 +3915,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Find and set system font where the first glyph in text is present
-  example: ""
+  example: []
   syntax:
     content: public bool AutoFont { get; set; }
     parameters: []
@@ -4050,7 +4050,7 @@ items:
     The Fill options are useful for justified text alignment, creating evenly
 
     distributed text that spans the entire width of the label.
-  example: ""
+  example: []
   syntax:
     content: public DrawTextAlignment HorizontalTextAlignment { get; set; }
     parameters: []
@@ -4088,7 +4088,7 @@ items:
     offsets are computed against the real visible area rather than the scroll content width.
 
     When 0 (default) the label's own rectDraw width is used (normal case).
-  example: ""
+  example: []
   syntax:
     content: public float ViewportConstraintWidth { get; set; }
     parameters: []
@@ -4161,7 +4161,7 @@ items:
     the text content height, allowing control over where the text is positioned
 
     vertically within the available space.
-  example: ""
+  example: []
   syntax:
     content: public TextAlignment VerticalTextAlignment { get; set; }
     parameters: []
@@ -4222,7 +4222,7 @@ items:
     Gets or sets the line height as a multiple of the font size, multiplier of how much space will be allocated for a line.
 
     Note that this is different from LineSpacing.
-  example: ""
+  example: []
   syntax:
     content: public double LineHeight { get; set; }
     parameters: []
@@ -4360,7 +4360,7 @@ items:
 
 
     If empty (default), a fallback system font will be used.
-  example: ""
+  example: []
   syntax:
     content: public string FontFamily { get; set; }
     parameters: []
@@ -4441,7 +4441,7 @@ items:
     This property is useful for creating fixed-height text areas or previews
 
     where you want to show only a limited number of lines.
-  example: ""
+  example: []
   syntax:
     content: public int MaxLines { get; set; }
     parameters: []
@@ -4531,7 +4531,7 @@ items:
     Note that auto-sizing can impact performance, especially with frequently 
 
     changing text or container sizes.
-  example: ""
+  example: []
   syntax:
     content: public AutoSizeType AutoSize { get; set; }
     parameters: []
@@ -4589,7 +4589,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can use this text for auto-sizing the font instead if the real Text
-  example: ""
+  example: []
   syntax:
     content: public string AutoSizeText { get; set; }
     parameters: []
@@ -4647,7 +4647,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Default is 1.0
-  example: ""
+  example: []
   syntax:
     content: public double LineSpacing { get; set; }
     parameters: []
@@ -4705,7 +4705,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Default is 0.25
-  example: ""
+  example: []
   syntax:
     content: public double ParagraphSpacing { get; set; }
     parameters: []
@@ -4763,7 +4763,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This applies ONLY when CharByChar is enabled
-  example: ""
+  example: []
   syntax:
     content: public double CharacterSpacing { get; set; }
     parameters: []
@@ -4847,7 +4847,7 @@ items:
     For single-line text fields, TailTruncation is commonly used.
 
     For multi-line text, WordWrap is typically preferred.
-  example: ""
+  example: []
   syntax:
     content: public LineBreakMode LineBreakMode { get; set; }
     parameters: []
@@ -4988,7 +4988,7 @@ items:
 
 
     When Text is set, any existing FormattedText or Spans will be replaced.
-  example: ""
+  example: []
   syntax:
     content: public string Text { get; set; }
     parameters: []
@@ -5185,7 +5185,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Aplies transforms etc
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetTextInternal()
     content.vb: Protected Overridable Sub SetTextInternal()
@@ -5295,7 +5295,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Character to show when glyph is not found in font
-  example: ""
+  example: []
   syntax:
     content: public char FallbackCharacter { get; set; }
     parameters: []
@@ -5353,7 +5353,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The character to be taken for its width when want digits to simulate Mono, for example "8", default is null.
-  example: ""
+  example: []
   syntax:
     content: public string MonoForDigits { get; set; }
     parameters: []
@@ -5411,7 +5411,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should we draw with the maximum line height when lines have different height.
-  example: ""
+  example: []
   syntax:
     content: public bool LineHeightUniform { get; set; }
     parameters: []
@@ -5483,7 +5483,7 @@ items:
 
 
     For gradient text, use the TextGradient property instead of or in conjunction with this property.
-  example: ""
+  example: []
   syntax:
     content: public Color TextColor { get; set; }
     parameters: []
@@ -5559,7 +5559,7 @@ items:
     The default is Transparent, which means no outline is drawn.
 
     For the outline to be visible, both StrokeColor and StrokeWidth must be set.
-  example: ""
+  example: []
   syntax:
     content: public Color StrokeColor { get; set; }
     parameters: []
@@ -5841,7 +5841,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To make DropShadow act like shadow
-  example: ""
+  example: []
   syntax:
     content: public double DropShadowOffsetX { get; set; }
     parameters: []
@@ -5919,7 +5919,7 @@ items:
 
 
     For best rendering quality, especially with small text, consider using integer values.
-  example: ""
+  example: []
   syntax:
     content: >-
       [TypeConverter(typeof(FontSizeConverter))]
@@ -6074,7 +6074,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Return null if you wish not to consume
-  example: ""
+  example: []
   syntax:
     content: public virtual ISkiaGestureListener OnSpanTapped(TextSpan span)
     parameters:
@@ -6112,7 +6112,7 @@ items:
     This will be called only for views registered at Superview.FocusedChild.
 
     The view must return true of false to indicate if it accepts focus.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool OnFocusChanged(bool focus)
     parameters:
@@ -6151,7 +6151,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -36847,4 +36847,3 @@ references:
   name: SKFontMetrics
   nameWithType: SKFontMetrics
   fullName: SkiaSharp.SKFontMetrics
-

@@ -987,7 +987,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns an enumerator that iterates through the collection.
-  example: ""
+  example: []
   syntax:
     content: public IEnumerator<IView> GetEnumerator()
     return:
@@ -1020,7 +1020,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Adds an item to the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public void Add(IView item)
     parameters:
@@ -1058,7 +1058,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Removes all items from the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public void Clear()
     content.vb: Public Sub Clear()
@@ -1092,7 +1092,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref> contains a specific value.
-  example: ""
+  example: []
   syntax:
     content: public bool Contains(IView item)
     parameters:
@@ -1129,7 +1129,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Copies the elements of the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref> to an <xref href="System.Array" data-throw-if-not-resolved="false"></xref>, starting at a particular <xref href="System.Array" data-throw-if-not-resolved="false"></xref> index.
-  example: ""
+  example: []
   syntax:
     content: public void CopyTo(IView[] array, int arrayIndex)
     parameters:
@@ -1179,7 +1179,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Removes the first occurrence of a specific object from the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public bool Remove(IView item)
     parameters:
@@ -1220,7 +1220,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the number of elements contained in the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public int Count { get; }
     parameters: []
@@ -1254,7 +1254,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets a value indicating whether the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref> is read-only.
-  example: ""
+  example: []
   syntax:
     content: public bool IsReadOnly { get; }
     parameters: []
@@ -1288,7 +1288,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines the index of a specific item in the <xref href="System.Collections.Generic.IList%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public int IndexOf(IView item)
     parameters:
@@ -1325,7 +1325,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Inserts an item to the <xref href="System.Collections.Generic.IList%601" data-throw-if-not-resolved="false"></xref> at the specified index.
-  example: ""
+  example: []
   syntax:
     content: public void Insert(int index, IView item)
     parameters:
@@ -1372,7 +1372,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Removes the <xref href="System.Collections.Generic.IList%601" data-throw-if-not-resolved="false"></xref> item at the specified index.
-  example: ""
+  example: []
   syntax:
     content: public void RemoveAt(int index)
     parameters:
@@ -1416,7 +1416,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the element at the specified index.
-  example: ""
+  example: []
   syntax:
     content: public IView this[int index] { get; set; }
     parameters:
@@ -1464,7 +1464,7 @@ items:
   namespace: DrawnUi.Draw
   summary: Gets a readonly list of the element's visual children.
   remarks: Unless explicitly defined, an element's visual children will also be its logical children.
-  example: ""
+  example: []
   syntax:
     content: public virtual IReadOnlyList<IVisualTreeElement> GetVisualChildren()
     return:
@@ -1497,7 +1497,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the element's visual parent.
-  example: ""
+  example: []
   syntax:
     content: public virtual IVisualTreeElement GetVisualParent()
     return:
@@ -1696,7 +1696,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -1735,7 +1735,7 @@ items:
     Find intersections between changed children and DrawingRect,
 
     add intersecting ones to DirtyChildrenInternal and set IsRenderingWithComposition = true if any.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetupRenderingWithComposition(DrawingContext ctx)
     parameters:
@@ -1794,7 +1794,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Control will be responsible for controlling cache instead of using UseCache property.
-  example: ""
+  example: []
   syntax:
     content: public bool AutoCache { get; set; }
     parameters: []
@@ -1852,7 +1852,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Never reuse the rendering result. Actually true for ScrollLooped SkiaLayout viewport container to redraw its content several times for creating a looped aspect.
-  example: ""
+  example: []
   syntax:
     content: public SkiaCacheType UseCache { get; set; }
     parameters: []
@@ -1910,7 +1910,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Might want to set this to False for certain cases.
-  example: ""
+  example: []
   syntax:
     content: public bool AllowCaching { get; set; }
     parameters: []
@@ -2015,7 +2015,7 @@ items:
     This WILL NOT raise PropertyChanged !!! (avoiding MAUI concurrent access conflict)
 
     Use OnCacheCreated (CacheCreated event) and OnCacheDestroyed (CacheDestroyed event).
-  example: ""
+  example: []
   syntax:
     content: public CachedObject RenderObject { get; set; }
     parameters: []
@@ -2151,7 +2151,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Technical optional method for some custom logic. Actually used by SkiaMap only.
-  example: ""
+  example: []
   syntax:
     content: public void DrawRenderObject(DrawingContext ctx, float x, float y, CachedObject cache = null)
     parameters:
@@ -2231,7 +2231,7 @@ items:
     Technical optional method for some custom logic. Will create as SKImage or SKPicture (asOperations=true).
 
     WIll not affect current RenderObject property.
-  example: ""
+  example: []
   syntax:
     content: public CachedObject CreateRenderedObject(DrawingContext ctx, SKRect area, bool asOperations)
     parameters:
@@ -2622,7 +2622,7 @@ items:
     Called by ImageDoubleBuffered cache rendering when no cache is ready yet.
 
     Other controls might use this too to draw placeholders when result is not ready yet.
-  example: ""
+  example: []
   syntax:
     content: public virtual void DrawPlaceholder(DrawingContext context)
     parameters:
@@ -2797,7 +2797,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ImageDoubleBuffering cache
-  example: ""
+  example: []
   syntax:
     content: protected bool NeedUpdateFrontCache { get; set; }
     parameters: []
@@ -2880,7 +2880,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used for the Operations cache type to record inside the changed area, if your control is not inside the DrawingRect due to transforms/translations. This is NOT changing the rendering object
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKRect GetCacheRecordingArea(SKRect drawingRect)
     parameters:
@@ -2913,7 +2913,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Normally cache is recorded inside DrawingRect, but you might want to expand this to include shadows around, for example.
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKRect GetCacheArea(SKRect value)
     parameters:
@@ -2946,7 +2946,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns true if had drawn.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool DrawUsingRenderObject(DrawingContext context, float widthRequest, float heightRequest)
     parameters:
@@ -3028,7 +3028,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Not using cache
-  example: ""
+  example: []
   syntax:
     content: public virtual void DrawDirectInternal(DrawingContext context, SKRect drawingRect)
     parameters:
@@ -3066,7 +3066,7 @@ items:
     This is NOT calling FinalizeDraw()!
 
     parameter 'area' Usually is equal to DrawingRect
-  example: ""
+  example: []
   syntax:
     content: protected void CreateRenderingObjectAndPaint(DrawingContext context, SKRect recordingArea, Action<DrawingContext> action)
     parameters:
@@ -3432,7 +3432,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
-  example: ""
+  example: []
   syntax:
     content: public virtual void InvalidateInternal()
     content.vb: Public Overridable Sub InvalidateInternal()
@@ -3460,7 +3460,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: ""
+  example: []
   syntax:
     content: public virtual void Invalidate()
     content.vb: Public Overridable Sub Invalidate()
@@ -3489,7 +3489,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual bool ShouldInvalidateByChildren { get; }
     parameters: []
@@ -3522,7 +3522,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If need the re-measure all parents because child-auto-size has changed
-  example: ""
+  example: []
   syntax:
     content: public void InvalidateParents()
     content.vb: Public Sub InvalidateParents()
@@ -3605,7 +3605,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To be able to fast track dirty children
-  example: ""
+  example: []
   syntax:
     content: public virtual void InvalidateByChild(SkiaControl child)
     parameters:
@@ -3666,7 +3666,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicated that wants to be re-measured without invalidating cache
-  example: ""
+  example: []
   syntax:
     content: public virtual void InvalidateViewport()
     content.vb: Public Overridable Sub InvalidateViewport()
@@ -3752,7 +3752,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To track dirty area when Updating parent
-  example: ""
+  example: []
   syntax:
     content: public virtual void UpdateByChild(SkiaControl child)
     parameters:
@@ -3790,7 +3790,7 @@ items:
     for alignment offset calculations. No real display exceeds ~32K pixels even at extreme
 
     device scale, so 1 million is a safe sentinel threshold.
-  example: ""
+  example: []
   syntax:
     content: public const float MaxRealPixelSize = 1000000
     return:
@@ -3848,7 +3848,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Lifecycle event
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler Initialized
     return:
@@ -3877,7 +3877,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Lifecycle event
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler Destroyed
     return:
@@ -4019,7 +4019,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can override this for custom controls to apply padding differently from the default way
-  example: ""
+  example: []
   syntax:
     content: public virtual Thickness OnPaddingSet(Thickness padding)
     parameters:
@@ -4054,7 +4054,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Directly adds a view to the control, without any layouting. Use this instead of Views.Add() to avoid memory leaks etc
-  example: ""
+  example: []
   syntax:
     content: public virtual void AddSubView(SkiaControl control)
     parameters:
@@ -4090,7 +4090,7 @@ items:
     Directly removes a view from the control, without any layouting.
 
     Use this instead of Views.Remove() to avoid memory leaks etc
-  example: ""
+  example: []
   syntax:
     content: public virtual void RemoveSubView(SkiaControl control)
     parameters:
@@ -4123,7 +4123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnLayoutChanged()
     content.vb: Protected Overridable Sub OnLayoutChanged()
@@ -4151,7 +4151,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect location changed. This will not be called if OnLayoutChanged was invoked for this frame!
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnLayoutPositionChanged()
     content.vb: Protected Overridable Sub OnLayoutPositionChanged()
@@ -4179,7 +4179,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates Shader for gradient and sets it to passed SKPaint along with BlendMode
-  example: ""
+  example: []
   syntax:
     content: public bool SetupGradient(SKPaint paint, SkiaGradient gradient, SKRect destination)
     parameters:
@@ -4226,7 +4226,7 @@ items:
     shader and must dispose it in their OnDisposing(). Passing gradient=null disposes
 
     and clears the cache.
-  example: ""
+  example: []
   syntax:
     content: public bool SetupGradient(SKPaint paint, SkiaGradient gradient, SKRect destination, ref SKShader cachedShader, ref int cachedVersion, ref SKRect cachedRect, ref SkiaGradient cachedGradient)
     parameters:
@@ -4421,7 +4421,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internat custom logic, use IsHovered for usual use.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetHover(bool state)
     parameters:
@@ -4456,7 +4456,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be called by the Canvas.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool OnHover(bool state)
     parameters:
@@ -4497,7 +4497,7 @@ items:
     This will be called only for views registered at Superview.FocusedChild.
 
     The view must return true of false to indicate if it accepts focus.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool OnFocusChanged(bool focus)
     parameters:
@@ -4592,7 +4592,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public VisualLayer? VisualLayer { get; set; }
     parameters: []
@@ -4625,7 +4625,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Provides a cached  image if any
-  example: ""
+  example: []
   syntax:
     content: public virtual SKImage CachedImage { get; }
     parameters: []
@@ -4690,7 +4690,7 @@ items:
     For code-behind fast reposition of cached controls, background thread friendly, no bindings involved.
 
     Cached controls only, not a bindable property, doesn't trigger repaint, would need to do this manually if needed.
-  example: ""
+  example: []
   syntax:
     content: public double Left { get; set; }
     parameters: []
@@ -4755,7 +4755,7 @@ items:
     For code-behind fast reposition of cached controls, background thread friendly, no bindings involved.
 
     Cached controls only, not a bindable property, doesn't trigger repaint, would need to do this manually if needed.
-  example: ""
+  example: []
   syntax:
     content: public double Top { get; set; }
     parameters: []
@@ -4813,7 +4813,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be used by control CreateDefaultContent to create appropriate look. Then controls use a virtual `UsingControlStyle` property to define their look.
-  example: ""
+  example: []
   syntax:
     content: public PrebuiltControlStyle ControlStyle { get; set; }
     parameters: []
@@ -4871,7 +4871,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can specify another control that would provide the clipping region to be used by post animattors etc.
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl ClippedEffectsWith { get; set; }
     parameters: []
@@ -4929,7 +4929,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can specify another control that would provide the clipping region for this one.
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl ClipWith { get; set; }
     parameters: []
@@ -4987,7 +4987,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is used by MAUI to set content from XAML.
-  example: ""
+  example: []
   syntax:
     content: public IList<SkiaControl> Children { get; set; }
     parameters: []
@@ -5045,7 +5045,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Default is Enabled, children get the visible viewport area for rendering and can virtualize.
-  example: ""
+  example: []
   syntax:
     content: public VirtualisationType Virtualisation { get; set; }
     parameters: []
@@ -5110,7 +5110,7 @@ items:
     Basically how much should be expand in every direction of the visible area prior to checking if content falls
 
     into its bounds for rendering controlled with Virtualisation.
-  example: ""
+  example: []
   syntax:
     content: public double VirtualisationInflated { get; set; }
     parameters: []
@@ -5167,7 +5167,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual bool IsVisibleInViewTree()
     return:
@@ -5199,7 +5199,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Absolute position in points
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint GetPositionOnCanvasInPoints()
     return:
@@ -5230,7 +5230,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Absolute position in points
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint GetFuturePositionOnCanvasInPoints(bool useTranslation = true)
     parameters:
@@ -5267,7 +5267,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Absolute position in pixels after drawn.
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint GetPositionOnCanvas()
     return:
@@ -5298,7 +5298,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Absolute position in pixels before drawn.
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint GetFuturePositionOnCanvas()
     return:
@@ -5329,7 +5329,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Find drawing position for control accounting for all caches up the rendering tree.
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint GetSelfDrawingPosition()
     return:
@@ -5506,7 +5506,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual bool CanDraw { get; }
     parameters: []
@@ -5540,7 +5540,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be set but custom controls while optimizing rendering etc. Will affect CanDraw.
-  example: ""
+  example: []
   syntax:
     content: public bool SkipRendering { get; set; }
     parameters: []
@@ -5694,7 +5694,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This actually used by SkiaMauiElement but could be used by other controls. Also might be useful for debugging purposes.
-  example: ""
+  example: []
   syntax:
     content: public VisualTreeChain GenerateParentChain()
     return:
@@ -5725,7 +5725,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Comes after all drawn, actually used by SkiaMauiElement only
-  example: ""
+  example: []
   syntax:
     content: public virtual void SetVisualTransform(VisualTransform transform)
     parameters:
@@ -5757,7 +5757,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used for optimization process, for example, to avoid changing ItemSource several times before the first draw.
-  example: ""
+  example: []
   syntax:
     content: public void PostponeInvalidation(string key, Action action)
     parameters:
@@ -5795,7 +5795,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns rendering scale adapted for another output size, useful for offline rendering
-  example: ""
+  example: []
   syntax:
     content: public float GetRenderingScaleFor(float width, float height)
     parameters:
@@ -5870,7 +5870,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates a new animator, animates from 0 to 1 over a given time, and calls your callback with the current eased value
-  example: ""
+  example: []
   syntax:
     content: public Task AnimateAsync(Action<double> callback, Action callbaclOnCancel = null, float ms = 250, Easing easing = null, CancellationTokenSource cancel = null)
     parameters:
@@ -5918,7 +5918,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fades the drawn view from the current Opacity to end, animator is reused if already running
-  example: ""
+  example: []
   syntax:
     content: public Task FadeToAsync(double end, float ms = 250, Easing easing = null, CancellationTokenSource cancel = null)
     parameters:
@@ -5964,7 +5964,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Scales the drawn view from the current Scale to x,y, animator is reused if already running
-  example: ""
+  example: []
   syntax:
     content: public Task ScaleToAsync(double x, double y, float length = 250, Easing easing = null, CancellationTokenSource cancel = null)
     parameters:
@@ -6014,7 +6014,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Translates the drawn view from the current position to x,y, animator is reused if already running
-  example: ""
+  example: []
   syntax:
     content: public Task TranslateToAsync(double x, double y, float length = 250, Easing easing = null, CancellationTokenSource cancel = null)
     parameters:
@@ -6064,7 +6064,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Rotates the drawn view from the current rotation to end, animator is reused if already running
-  example: ""
+  example: []
   syntax:
     content: public Task RotateToAsync(double end, uint length = 250, Easing easing = null, CancellationTokenSource cancel = null)
     parameters:
@@ -6225,7 +6225,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: When the animator is cancelled if applyEndValueOnStop is true then the end value will be sent to your callback
-  example: ""
+  example: []
   syntax:
     content: public Task AnimateRangeAsync(Action<double> callback, double start, double end, double length = 250, Easing easing = null, int delayMs = 0, CancellationToken cancel = default)
     parameters:
@@ -6339,7 +6339,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Is set by UpdateSizeRequest();
-  example: ""
+  example: []
   syntax:
     content: public SKSize SizeRequest { get; protected set; }
     parameters: []
@@ -6370,7 +6370,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Points
-  example: ""
+  example: []
   syntax:
     content: public double WidthRequestWithMargins { get; }
     parameters: []
@@ -6401,7 +6401,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Apply margins to SizeRequest
-  example: ""
+  example: []
   syntax:
     content: public float AdaptWidthConstraintToRequest(float sizeConstraint, Thickness constraints, double scale)
     parameters:
@@ -6444,7 +6444,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Apply margins to SizeRequest
-  example: ""
+  example: []
   syntax:
     content: public float AdaptHeightContraintToRequest(float sizeConstraint, Thickness constraints, double scale)
     parameters:
@@ -6818,7 +6818,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In UNITS
-  example: ""
+  example: []
   syntax:
     content: protected Size AdaptSizeRequestToContent(double widthRequestPts, double heightRequestPts)
     parameters:
@@ -6859,7 +6859,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Superview from public area
-  example: ""
+  example: []
   syntax:
     content: public virtual DrawnView GetTopParentView()
     return:
@@ -6921,7 +6921,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To detect if current location is inside Destination
-  example: ""
+  example: []
   syntax:
     content: public bool GestureIsInside(TouchActionEventArgs args, float offsetX = 0, float offsetY = 0)
     parameters:
@@ -6963,7 +6963,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To detect if a gesture Start point was inside Destination
-  example: ""
+  example: []
   syntax:
     content: public bool GestureStartedInside(TouchActionEventArgs args, float offsetX = 0, float offsetY = 0)
     parameters:
@@ -7005,7 +7005,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether the point is inside Destination
-  example: ""
+  example: []
   syntax:
     content: public bool IsPointInside(float x, float y, float scale)
     parameters:
@@ -7127,7 +7127,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether the pixel is inside Destination
-  example: ""
+  example: []
   syntax:
     content: public bool IsPixelInside(float x, float y)
     parameters:
@@ -7305,7 +7305,7 @@ items:
     What gestures are allowed to be passed to children below.
 
     If set to Enabled wit, otherwise can be more specific.
-  example: ""
+  example: []
   syntax:
     content: public LockTouch LockChildrenGestures { get; set; }
     parameters: []
@@ -7367,7 +7367,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be called by Canvas. Please override ProcessGestures for handling gestures, this method is for internal use.
-  example: ""
+  example: []
   syntax:
     content: public ISkiaGestureListener OnSkiaGestureEvent(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -7507,7 +7507,7 @@ items:
     This works only if your control implements ISkiaGestureListener.
 
     If this is set then the Tapped gesture will be consumed by this control after passing it to child.
-  example: ""
+  example: []
   syntax:
     content: public ICommand CommandChildTapped { get; set; }
     parameters: []
@@ -7733,7 +7733,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: " If set to true will not draw after VisualLayer is set and detected to be out of rendering bound.\r\nUseful for drawer contained elements and similar."
-  example: ""
+  example: []
   syntax:
     content: public bool SkipRenderingOutOfBounds { get; set; }
     parameters: []
@@ -7764,7 +7764,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If Tapped handler was defined, activates it and return true of false it was defined.
-  example: ""
+  example: []
   syntax:
     content: protected bool SendTapped(object listener, SkiaGesturesParameters args, GestureEventProcessingInfo apply, bool useMainThread)
     parameters:
@@ -7811,7 +7811,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: WIll be called if a child implements ISkiaGestureListener and was Tapped. If this is set then the Tapped gesture will be consumed by this control after passing it to child.
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<ControlTappedEventArgs> ChildTapped
     return:
@@ -7902,7 +7902,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Delegate for use instead of calling base.OnSkiaGestureEvent
-  example: ""
+  example: []
   syntax:
     content: public Func<SkiaGesturesParameters, GestureEventProcessingInfo, ISkiaGestureListener> OnGestures
     return:
@@ -7936,7 +7936,7 @@ items:
     For more control over gestures use AddGestures or code-behind ProcessGestures override.
 
     If this is set then the Tapped gesture will be consumed by this control without alternatives.
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<ControlTappedEventArgs> Tapped
     return:
@@ -7968,7 +7968,7 @@ items:
     Gestures event handler for fast access. To mark a gesture as consumed set `e.Consumed` to `true` inside a synchronous (!) event handler.
 
     Can also use code-behind ProcessGestures override for more control.
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<SkiaGesturesInfo> ConsumeGestures
     return:
@@ -7997,7 +7997,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout detected that child was tapped, base used to call callback ChildTapped
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnChildTapped(SkiaControl child, SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -8040,7 +8040,7 @@ items:
     Takes into account the current state of gesture processing (scroll offsets, etc), renders transforms and layout.
 
     Returns points (DIPs).
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint GetGesturePositionInsideChild(SkiaControl child, SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -8077,7 +8077,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Ckecks if direct child is hit by gesture
-  example: ""
+  example: []
   syntax:
     content: public virtual bool CheckChildGestureHit(SkiaControl child, SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -8118,7 +8118,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will check if hovered by pointer and set IsHovered accordingly
-  example: ""
+  example: []
   syntax:
     content: public virtual void CheckHovered(SkiaGesturesParameters args)
     parameters:
@@ -8209,7 +8209,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If set to true will not allow gestures to go below
-  example: ""
+  example: []
   syntax:
     content: public bool BlockGesturesBelow { get; set; }
     parameters: []
@@ -8241,7 +8241,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public int UpdateLocks { get; }
     parameters: []
@@ -8388,7 +8388,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Do not set this directly if you don't know what you are doing, use SetParent()
-  example: ""
+  example: []
   syntax:
     content: public IDrawnBase Parent { get; set; }
     parameters: []
@@ -8559,7 +8559,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public LayoutOptions VerticalOptions { get; set; }
     parameters: []
@@ -8618,7 +8618,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public LayoutOptions HorizontalOptions { get; set; }
     parameters: []
@@ -8651,7 +8651,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnParentVisibilityChanged(bool newvalue)
     parameters:
@@ -8798,7 +8798,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnVisibilityChanged(bool newvalue)
     parameters:
@@ -8833,7 +8833,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnDisposing()
     content.vb: Public Overridable Sub OnDisposing()
@@ -8967,7 +8967,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Takes place in layout, acts like is visible, but just not rendering
-  example: ""
+  example: []
   syntax:
     content: public bool IsGhost { get; set; }
     parameters: []
@@ -9278,7 +9278,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be used inside GetDrawingRectWithMargins to limit the height of the DrawingRect
-  example: ""
+  example: []
   syntax:
     content: public double ViewportHeightLimit { get; set; }
     parameters: []
@@ -9336,7 +9336,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be used inside GetDrawingRectWithMargins to limit the width of the DrawingRect
-  example: ""
+  example: []
   syntax:
     content: public double ViewportWidthLimit { get; set; }
     parameters: []
@@ -9366,7 +9366,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public double Height { get; set; }
     parameters: []
@@ -9398,7 +9398,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public double Width { get; set; }
     parameters: []
@@ -9431,7 +9431,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Please use ScaleX, ScaleY instead of this maui property
-  example: ""
+  example: []
   syntax:
     content: public double Scale { get; set; }
     parameters: []
@@ -9488,7 +9488,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public string Tag { get; set; }
     parameters: []
@@ -9549,7 +9549,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Locks the final size to the min (-1.0 -&gt; 0.0) or max (0.0 -&gt; 1.0) of the provided size.
-  example: ""
+  example: []
   syntax:
     content: public double LockRatio { get; set; }
     parameters: []
@@ -9607,7 +9607,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: HeightRequest Multiplier, default is 1.0
-  example: ""
+  example: []
   syntax:
     content: public double HeightRequestRatio { get; set; }
     parameters: []
@@ -9665,7 +9665,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: WidthRequest Multiplier, default is 1.0
-  example: ""
+  example: []
   syntax:
     content: public double WidthRequestRatio { get; set; }
     parameters: []
@@ -9723,7 +9723,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This would be applied to the reported available dimension for the control to fill. The parent layout is responsible for aliignement.
-  example: ""
+  example: []
   syntax:
     content: public double HorizontalFillRatio { get; set; }
     parameters: []
@@ -9781,7 +9781,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This would be applied to the reported available dimension for the control to fill. The parent layout is responsible for aliignement.
-  example: ""
+  example: []
   syntax:
     content: public double VerticalFillRatio { get; set; }
     parameters: []
@@ -10120,7 +10120,7 @@ items:
   namespace: DrawnUi.Draw
   summary: Gets or sets Z-perspective translation. This is a bindable property.
   remarks: Rotation is applied relative to <xref href="Microsoft.Maui.Controls.VisualElement.AnchorX" data-throw-if-not-resolved="false"></xref> and <xref href="Microsoft.Maui.Controls.VisualElement.AnchorY" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public double TranslationZ { get; set; }
     parameters: []
@@ -10179,7 +10179,7 @@ items:
   namespace: DrawnUi.Draw
   summary: Gets or sets the rotation (in degrees) about the Z-axis (perspective rotation) when the element is rendered. This is a bindable property.
   remarks: Rotation is applied relative to <xref href="Microsoft.Maui.Controls.VisualElement.AnchorX" data-throw-if-not-resolved="false"></xref> and <xref href="Microsoft.Maui.Controls.VisualElement.AnchorY" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public double RotationZ { get; set; }
     parameters: []
@@ -10376,7 +10376,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: When true, uses single-pass fast measurement. When false, uses 3-pass measurement with Fill handling.
-  example: ""
+  example: []
   syntax:
     content: public bool FastMeasurement { get; set; }
     parameters: []
@@ -10489,7 +10489,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public Thickness Padding { get; set; }
     parameters: []
@@ -10577,7 +10577,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public Thickness Margin { get; set; }
     parameters: []
@@ -10834,7 +10834,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Total calculated margins in points
-  example: ""
+  example: []
   syntax:
     content: public Thickness Margins { get; protected set; }
     parameters: []
@@ -11073,7 +11073,7 @@ items:
     Also you might maybe want to include a bigger area if your control is not inside the DrawingRect due to transforms/translations.
 
     Override GetCacheRecordingArea method for a similar action.
-  example: ""
+  example: []
   syntax:
     content: public Thickness ExpandDirtyRegion { get; set; }
     parameters: []
@@ -11130,7 +11130,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public bool LockFocus { get; set; }
     parameters: []
@@ -11190,7 +11190,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This cuts shadows etc. You might want to enable it for some cases as it speeds up the rendering, it is False by default
-  example: ""
+  example: []
   syntax:
     content: public bool IsClippedToBounds { get; set; }
     parameters: []
@@ -11250,7 +11250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This cuts shadows etc
-  example: ""
+  example: []
   syntax:
     content: public bool ClipEffects { get; set; }
     parameters: []
@@ -11392,7 +11392,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'For Arc: start angle'
-  example: ""
+  example: []
   syntax:
     content: public double Value1 { get; set; }
     parameters: []
@@ -11450,7 +11450,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'For Arc: sweep angle'
-  example: ""
+  example: []
   syntax:
     content: public double Value2 { get; set; }
     parameters: []
@@ -11619,7 +11619,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public float RenderingScale { get; set; }
     parameters: []
@@ -11651,7 +11651,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public SKRect RenderedAtDestination { get; set; }
     parameters: []
@@ -11743,7 +11743,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public Guid Uid { get; set; }
     parameters: []
@@ -11972,7 +11972,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public ObjectAliveType IsAlive { get; set; }
     parameters: []
@@ -12031,7 +12031,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Dispose after some number of frames/with needed delay to avoid crashing if still used by GPU thread
-  example: ""
+  example: []
   syntax:
     content: public virtual void DisposeObject(IDisposable disposable, string caller = null)
     parameters:
@@ -12095,7 +12095,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public Action<SKPath, SKRect> Clipping { get; set; }
     parameters: []
@@ -12128,7 +12128,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Optional scene hero control identifier
-  example: ""
+  example: []
   syntax:
     content: public string Hero { get; set; }
     parameters: []
@@ -12159,7 +12159,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use, will be set for recycled/templated views by the ViewFactory to the corresponding index in the data source.
-  example: ""
+  example: []
   syntax:
     content: public int ContextIndex { get; set; }
     parameters: []
@@ -12218,7 +12218,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Destination in PIXELS, requests in UNITS. This is affected by HorizontalFillRatio and VerticalFillRatio.
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize DefineAvailableSize(SKRect destination, float widthRequest, float heightRequest, float scale, bool useModifiers = true)
     parameters:
@@ -12267,7 +12267,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Set this by parent if needed, normally child can detect this itsself. If true will call Arrange when drawing.
-  example: ""
+  example: []
   syntax:
     content: public bool IsLayoutDirty { get; set; }
     parameters: []
@@ -12505,7 +12505,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: " destination in PIXELS, requests in UNITS. resulting Destination prop will be filed in PIXELS.\r\nNot using Margins nor UsePadding\r\nChildren are responsible to apply UsePadding to their content and to apply Margin to destination when measuring and drawing"
-  example: ""
+  example: []
   syntax:
     content: public virtual SKRect CalculateLayout(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -12727,7 +12727,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is the destination in PIXELS with margins applied, using this to paint background. Since we enabled subpixel drawing (for smooth scroll etc) expect this to have non-rounded values, use CompareRects and similar for comparison.
-  example: ""
+  example: []
   syntax:
     content: public SKRect DrawingRect { get; set; }
     parameters: []
@@ -12789,7 +12789,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ISkiaGestureListener impl
-  example: ""
+  example: []
   syntax:
     content: public virtual bool HitIsInside(float x, float y)
     parameters:
@@ -12840,7 +12840,7 @@ items:
     todo detect if parent is cached somewhere and offset hotbox by cached parent movement offset...
 
     todo think about it baby =) meanwhile just do not set gestures below cached level
-  example: ""
+  example: []
   syntax:
     content: public virtual SKRect HitBoxAuto { get; }
     parameters: []
@@ -12942,7 +12942,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'Will apply additional offsets: Left and Top. This is for GESTURES ONLY! work in progress'
-  example: ""
+  example: []
   syntax:
     content: public SKRect ApplyTransforms(SKRect rect)
     parameters:
@@ -12984,7 +12984,7 @@ items:
     unlike ApplyTransforms which only accounts for translation.
 
     Used by the ImageComposite cache path for dirty region calculations.
-  example: ""
+  example: []
   syntax:
     content: public SKRect GetTransformedDirtyBounds()
     return:
@@ -13014,7 +13014,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Stores the transformation matrix used during rendering for hit testing
-  example: ""
+  example: []
   syntax:
     content: public SKMatrix RenderTransformMatrix { get; protected set; }
     parameters: []
@@ -13045,7 +13045,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the inverse of the rendering transformation matrix for hit testing
-  example: ""
+  example: []
   syntax:
     content: public SKMatrix InverseRenderTransformMatrix { get; }
     parameters: []
@@ -13264,7 +13264,7 @@ items:
     Use this to consume gestures in your control only,
 
     do not use result for passing gestures below
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint TranslateInputCoords(SKPoint childOffset, bool accountForCache = true)
     parameters:
@@ -13463,7 +13463,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnLayoutReady()
     content.vb: Protected Overridable Sub OnLayoutReady()
@@ -13543,7 +13543,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ARIA/platform role string. Setting this makes <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement" data-throw-if-not-resolved="false"></xref> true. Use <xref href="DrawnUi.Models.Aria" data-throw-if-not-resolved="false"></xref> constants.
-  example: ""
+  example: []
   syntax:
     content: public string? AccessibilityRole { get; set; }
     parameters: []
@@ -13576,7 +13576,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Human-readable label announced by screen readers (e.g. button text, image description).
-  example: ""
+  example: []
   syntax:
     content: public string? AccessibilityLabel { get; set; }
     parameters: []
@@ -13609,7 +13609,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Additional hint announced after the label (e.g. "Double-tap to activate").
-  example: ""
+  example: []
   syntax:
     content: public string? AccessibilityHint { get; set; }
     parameters: []
@@ -13642,7 +13642,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: True when <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole" data-throw-if-not-resolved="false"></xref> is non-null. Computed, not stored.
-  example: ""
+  example: []
   syntax:
     content: public bool IsAccessibilityElement { get; }
     parameters: []
@@ -13678,7 +13678,7 @@ items:
     Returns the control's hit rect in raw pixels, used to position the overlay element.
 
     Typically <code>VisualLayer.HitBoxWithTransforms.Pixels</code> with <code>DrawingRect</code> as fallback.
-  example: ""
+  example: []
   syntax:
     content: public SKRect GetAccessibilityPixelRect()
     return:
@@ -13713,7 +13713,7 @@ items:
     When true the overlay element gets a tab-stop, pointer cursor, and click/keyboard handlers.
 
     Set via <code>.WithAccessibility(..., canInteract: true)</code> or directly.
-  example: ""
+  example: []
   syntax:
     content: public bool AccessibilityCanInteract { get; set; }
     parameters: []
@@ -13746,7 +13746,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'Maps to <code>aria-pressed</code>. Use for toggle buttons: <code>true</code> = pressed, <code>false</code> = not pressed, <code>null</code> = not a toggle (attribute omitted).'
-  example: ""
+  example: []
   syntax:
     content: public bool? AccessibilityIsPressed { get; set; }
     parameters: []
@@ -13779,7 +13779,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called by <code>SkiaAccessibilityManager</code> when this node is removed from the registry.
-  example: ""
+  example: []
   syntax:
     content: public void OnAccessibilityUnregistered()
     content.vb: Public Sub OnAccessibilityUnregistered()
@@ -13812,7 +13812,7 @@ items:
     Called by platform accessibility layer when this element is activated (clicked, Enter pressed).
 
     Injects a synthetic tap at the center of HitBoxWithTransforms into the normal gesture pipeline.
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnAccessibilityActivated()
     content.vb: Public Overridable Sub OnAccessibilityActivated()
@@ -13842,7 +13842,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called automatically on first layout. Call manually when label, hint, or state changes.
-  example: ""
+  example: []
   syntax:
     content: public virtual void NotifyAccessibility()
     content.vb: Public Overridable Sub NotifyAccessibility()
@@ -13872,7 +13872,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be set by OnLayoutReady
-  example: ""
+  example: []
   syntax:
     content: public bool IsLayoutReady { get; protected set; }
     parameters: []
@@ -13963,7 +13963,7 @@ items:
     Helper on top of `Measure` +`Arrange` for an easy-use
 
     Input in PIXELS.
-  example: ""
+  example: []
   syntax:
     content: public void Layout(DrawingContext context, SKRect destinationPixels)
     parameters:
@@ -14001,7 +14001,7 @@ items:
     Helper on top of `Measure` +`Arrange` for an easy-use
 
     Input in PIXELS.
-  example: ""
+  example: []
   syntax:
     content: public void Layout(DrawingContext context, float left, float top, float right, float bottom)
     parameters:
@@ -14047,7 +14047,7 @@ items:
     Helper on top of `Measure` +`Arrange` for an easy-use
 
     Input in PIXELS.
-  example: ""
+  example: []
   syntax:
     content: public void Layout(DrawingContext context, int left, int top, int right, int bottom)
     parameters:
@@ -14090,7 +14090,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: " destination in PIXELS, requests in UNITS. resulting Destination prop will be filed in PIXELS.\r\nDrawUsingRenderObject wil call this among others.."
-  example: ""
+  example: []
   syntax:
     content: public virtual void Arrange(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -14141,7 +14141,7 @@ items:
     Used by ImageComposite composition mode when skipping drawing of non-dirty children
 
     but still needing to update their position for gesture coordinate translation.
-  example: ""
+  example: []
   syntax:
     content: public virtual void ArrangeCache(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -14219,7 +14219,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: PIXELS
-  example: ""
+  example: []
   syntax:
     content: public ScaledSize MeasureChild(SkiaControl child, double availableWidth, double availableHeight, float scale)
     parameters:
@@ -14266,7 +14266,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring as absolute layout for passed children
-  example: ""
+  example: []
   syntax:
     content: protected virtual ScaledSize MeasureContent(IEnumerable<SkiaControl> children, SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -14310,7 +14310,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Core 3-pass measurement logic for absolute layouts with full FILL support
-  example: ""
+  example: []
   syntax:
     content: protected virtual ScaledSize MeasureContentCore(IEnumerable<SkiaControl> children, SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -14355,7 +14355,7 @@ items:
     By overriding this method any child could deny a new context or use any other custom logic.
 
     To force new context for child parent would set child's BindingContext directly skipping the use of this method.
-  example: ""
+  example: []
   syntax:
     content: public virtual void SetInheritedBindingContext(object context)
     parameters:
@@ -14390,7 +14390,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public virtual void ApplyBindingContext()
     content.vb: Public Overridable Sub ApplyBindingContext()
@@ -14503,7 +14503,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: First Maui will apply bindings to your controls, then it would call OnBindingContextChanged, so beware on not to break bindings.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -14563,7 +14563,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Main method for measuring, override OnMeasuring to plug-in.
-  example: ""
+  example: []
   syntax:
     content: public ScaledSize Measure(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -14609,7 +14609,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculates SizeRequest, Margins etc
-  example: ""
+  example: []
   syntax:
     content: public virtual void UpdateSizeRequest()
     content.vb: Public Overridable Sub UpdateSizeRequest()
@@ -14637,7 +14637,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Input in POINTS
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -14712,7 +14712,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Always run this before applying any changes while measuring.
-  example: ""
+  example: []
   syntax:
     content: public virtual void InitializeDefaultContent(bool force = false)
     parameters:
@@ -14781,7 +14781,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override this if you need to adjust the measured ContentSize for the parent to adapt to it. For example SkiaShape overrides this to expand by adding the needed size for stroke.
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKSize GetContentSizeForAutosizeInPixels()
     return:
@@ -14887,7 +14887,7 @@ items:
     todo use this for layout, actually this is used for measurement only .
 
     RenderingScale is set insde.
-  example: ""
+  example: []
   syntax:
     content: protected virtual MeasureRequest CreateMeasureRequest(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -14969,7 +14969,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measure children inside absolute layout
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize MeasureAbsolute(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -15013,7 +15013,7 @@ items:
     Measure children inside absolute layout
 
     Base method, not aware of any views provider, not virtual, silly measuring Children.
-  example: ""
+  example: []
   syntax:
     content: protected virtual ScaledSize MeasureAbsoluteBase(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -15265,7 +15265,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Flag for internal use, maynly used to avoid conflicts between measuring on ui-thread and in background. If true, measure will return last measured value.
-  example: ""
+  example: []
   syntax:
     content: public bool IsMeasuring { get; protected set; }
     parameters: []
@@ -15323,7 +15323,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Parameters in PIXELS. sets IsLayoutDirty = true;
-  example: ""
+  example: []
   syntax:
     content: protected virtual ScaledSize SetMeasured(float width, float height, bool widthCut, bool heightCut, float scale)
     parameters:
@@ -15423,7 +15423,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: UNITS
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<ScaledSize> Measured
     return:
@@ -15451,7 +15451,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public ScaledSize MeasuredSize { get; set; }
     parameters: []
@@ -15628,7 +15628,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public bool IsDisposed { get; protected set; }
     parameters: []
@@ -15660,7 +15660,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public bool IsDisposing { get; protected set; }
     parameters: []
@@ -15693,7 +15693,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Developer can use this to mark control as to be disposed by parent custom controls
-  example: ""
+  example: []
   syntax:
     content: public bool NeedDispose { get; set; }
     parameters: []
@@ -15830,7 +15830,7 @@ items:
     This will be executed when the control is being disposed, use to avoid memory leaks.
 
     Example of usage, an extension that would subscribe to something and add unsubscribtion here.
-  example: ""
+  example: []
   syntax:
     content: public Dictionary<string, Action> ExecuteUponDisposal { get; }
     parameters: []
@@ -15861,7 +15861,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This will be executed ones along and just before the CreateDefaultContent. This lets you execute initialization code after the control is already in the view tree and all variables you might want to use are already filled.
-  example: ""
+  example: []
   syntax:
     content: public Dictionary<string, Action<SkiaControl>> ExecuteAfterCreated { get; }
     parameters: []
@@ -15921,7 +15921,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Throws an <xref href="System.ObjectDisposedException" data-throw-if-not-resolved="false"></xref> if this object has been disposed.
-  example: ""
+  example: []
   syntax:
     content: protected void ThrowIfDisposed()
     content.vb: Protected Sub ThrowIfDisposed()
@@ -15952,7 +15952,7 @@ items:
     Releases the unmanaged resources used by the <xref href="System.Resources.ResourceManager" data-throw-if-not-resolved="false"></xref> and
 
     optionally releases the managed resources.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void Dispose(bool disposing)
     parameters:
@@ -16045,7 +16045,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Releases unmanaged resources before the object is reclaimed by garbage collection.
-  example: ""
+  example: []
   syntax:
     content: protected ~SkiaControl()
     content.vb: 'Protected '
@@ -16076,7 +16076,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Avoid setting parent to null before calling this, or set SuperView prop manually for proper cleanup of animations and gestures if any used
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -16160,7 +16160,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnBeforeMeasure()
     content.vb: Public Overridable Sub OnBeforeMeasure()
@@ -16189,7 +16189,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void OptionalOnBeforeDrawing()
     content.vb: Public Overridable Sub OptionalOnBeforeDrawing()
@@ -16219,7 +16219,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: do not ever erase background
-  example: ""
+  example: []
   syntax:
     content: public bool IsOverlay { get; set; }
     parameters: []
@@ -16250,7 +16250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Executed after the rendering
-  example: ""
+  example: []
   syntax:
     content: public List<IOverlayEffect> PostAnimators { get; }
     parameters: []
@@ -16374,7 +16374,7 @@ items:
     Normally get a a Measure by parent then parent calls Draw and we can apply the measure result.
 
     But in a case we have measured us ourselves inside PreArrange etc we must call ApplyMeasureResult because this would happen after the Draw and not before.
-  example: ""
+  example: []
   syntax:
     content: public virtual void ApplyMeasureResult()
     content.vb: Public Overridable Sub ApplyMeasureResult()
@@ -16430,7 +16430,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns false if should not render
-  example: ""
+  example: []
   syntax:
     content: public virtual bool PreArrange(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -16473,7 +16473,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Self measuring, for top controls and those invalidated-redrawn when parents didn't re-measure them
-  example: ""
+  example: []
   syntax:
     content: protected virtual void MeasureSelf(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -16641,7 +16641,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void Render(DrawingContext context)
     parameters:
@@ -16728,7 +16728,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Lock between replacing and using RenderObject
-  example: ""
+  example: []
   syntax:
     content: protected object LockDraw
     return:
@@ -16757,7 +16757,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creating new cache lock
-  example: ""
+  example: []
   syntax:
     content: protected object LockRenderObject
     return:
@@ -16904,7 +16904,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Absolute position obtained after this control was drawn on the Canvas, this is not relative to parent control.
-  example: ""
+  example: []
   syntax:
     content: public double X { get; protected set; }
     parameters: []
@@ -16937,7 +16937,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Absolute position obtained after this control was drawn on the Canvas, this is not relative to parent control.
-  example: ""
+  example: []
   syntax:
     content: public double Y { get; protected set; }
     parameters: []
@@ -16970,7 +16970,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Execute post drawing operations, like post-animators etc
-  example: ""
+  example: []
   syntax:
     content: protected void FinalizeDrawingWithRenderObject(DrawingContext context)
     parameters:
@@ -17105,7 +17105,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public SKPoint GetOffsetInsideControlInPoints(PointF location, SKPoint childOffset)
     parameters:
@@ -17175,7 +17175,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Location on the canvas after last drawing completed
-  example: ""
+  example: []
   syntax:
     content: public SKRect LastDrawnAt { get; protected set; }
     parameters: []
@@ -17238,7 +17238,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: ""
+  example: []
   syntax:
     content: protected virtual int DrawViews(DrawingContext context)
     parameters:
@@ -17273,7 +17273,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just make us repaint to apply new transforms etc
-  example: ""
+  example: []
   syntax:
     content: public virtual void Repaint()
     content.vb: Public Overridable Sub Repaint()
@@ -17357,7 +17357,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can customize the SKPaint used for painting the object
-  example: ""
+  example: []
   syntax:
     content: public Action<SKPaint, SKRect> CustomizeLayerPaint { get; set; }
     parameters: []
@@ -17486,7 +17486,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use antialiasing from ShouldClipAntialiased
-  example: ""
+  example: []
   syntax:
     content: public virtual void ClipSmart(SKCanvas canvas, SKPath path, SKClipOperation operation = SKClipOperation.Intersect)
     parameters:
@@ -17529,7 +17529,7 @@ items:
     This is not a static bindable property.
 
     Can be set manually or by control, for example SkiaShape sets this to true for non-rectangular shapes, or rounded corners..
-  example: ""
+  example: []
   syntax:
     content: public bool ShouldClipAntialiased { get; set; }
     parameters: []
@@ -17592,7 +17592,7 @@ items:
     If attached to a SuperView and rendering is in progress will run before drawing it. Run now otherwise.
 
     if key is not null will replace existing if any to void running different action with same key in same frame.
-  example: ""
+  example: []
   syntax:
     content: public void SafeAction(Action action, long key = -1)
     parameters:
@@ -17629,7 +17629,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be executed after canvas has finished drawing current frame. Useful when you need to account for all calculations and drawings to be finished.
-  example: ""
+  example: []
   syntax:
     content: public void PostDrawAction(Action action)
     parameters:
@@ -17779,7 +17779,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected virtual void Paint(DrawingContext ctx)
     parameters:
@@ -17867,7 +17867,7 @@ items:
     Create this control clip for painting content.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPath CreateClip(object arguments, bool usePosition, SKPath path = null)
     parameters:
@@ -18025,7 +18025,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Drawing cache, applying clip and transforms as well
-  example: ""
+  example: []
   syntax:
     content: public virtual void DrawRenderObject(DrawingContext context, CachedObject cache)
     parameters:
@@ -18063,7 +18063,7 @@ items:
     Use to render Absolute layout. Base method is not supporting templates, override it to implement your logic.
 
     Returns number of drawn children.
-  example: ""
+  example: []
   syntax:
     content: protected virtual int RenderViewsList(DrawingContext context, IEnumerable<SkiaControl> skiaControls)
     parameters:
@@ -18103,7 +18103,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This will be used for gesture detection, return s DrawingRect in bas, you could choose to override to expand etc..
-  example: ""
+  example: []
   syntax:
     content: public virtual SKRect CreateHitRect()
     return:
@@ -18188,7 +18188,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Last rendered controls tree. Used by gestures etc..Please use SetRenderingTree method for setting it correctly.
-  example: ""
+  example: []
   syntax:
     content: public List<SkiaControlWithRect> RenderTree { get; protected set; }
     parameters: []
@@ -18280,7 +18280,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use, set by Update method
-  example: ""
+  example: []
   syntax:
     content: public virtual bool NeedUpdate { get; set; }
     parameters: []
@@ -18311,7 +18311,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Our canvas
-  example: ""
+  example: []
   syntax:
     content: public DrawnView Superview { get; protected set; }
     parameters: []
@@ -18342,7 +18342,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Manually sets Superview to this control and its children
-  example: ""
+  example: []
   syntax:
     content: public void SetSuperview(DrawnView view)
     parameters:
@@ -18405,7 +18405,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -18444,7 +18444,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will not invalidate the measurement of parent if True
-  example: ""
+  example: []
   syntax:
     content: public bool IsParentIndependent { get; set; }
     parameters: []
@@ -18475,7 +18475,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will not call Update on Parent if True
-  example: ""
+  example: []
   syntax:
     content: public bool WillNotUpdateParent { get; set; }
     parameters: []
@@ -18586,7 +18586,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Main method to invalidate cache and invoke rendering
-  example: ""
+  example: []
   syntax:
     content: public virtual void Update()
     content.vb: Public Overridable Sub Update()
@@ -18616,7 +18616,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Triggered by Update method
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler Updated
     return:
@@ -18776,7 +18776,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies Background and BackgroundColor properties to paint inside destination. Returns false if there is nothing to paint painted.
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool SetupBackgroundPaint(SKPaint paint, SKRect destination)
     parameters:
@@ -18814,7 +18814,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: destination in pixels, if you see no Scale parameter
-  example: ""
+  example: []
   syntax:
     content: public virtual void PaintTintBackground(SKCanvas canvas, SKRect destination)
     parameters:
@@ -18915,7 +18915,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Summing up Margins and AddMargin.. properties
-  example: ""
+  example: []
   syntax:
     content: public virtual void CalculateMargins()
     content.vb: Public Overridable Sub CalculateMargins()
@@ -19063,7 +19063,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will invoke InvalidateInternal on controls and subviews
-  example: ""
+  example: []
   syntax:
     content: public virtual void InvalidateChildrenTree(SkiaControl control)
     parameters:
@@ -19121,7 +19121,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enable this to get console logs specifically from this instance
-  example: ""
+  example: []
   syntax:
     content: public bool OutputDebug { get; set; }
     parameters: []
@@ -19178,7 +19178,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will invoke InvalidateInternal on controls and subviews
-  example: ""
+  example: []
   syntax:
     content: protected virtual void InvalidateChildren(SkiaControl control)
     parameters:
@@ -19239,7 +19239,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Need to re-measure and then redraw from scratch
-  example: ""
+  example: []
   syntax:
     content: protected static void NeedInvalidateMeasure(BindableObject bindable, object oldvalue, object newvalue)
     parameters:
@@ -19280,7 +19280,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Need to erase cache and draw from scratch
-  example: ""
+  example: []
   syntax:
     content: protected static void NeedDraw(BindableObject bindable, object oldvalue, object newvalue)
     parameters:
@@ -19321,7 +19321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just make us repaint to apply new transforms etc keeping existing cache if any
-  example: ""
+  example: []
   syntax:
     content: protected static void NeedRepaint(BindableObject bindable, object oldvalue, object newvalue)
     parameters:
@@ -19359,7 +19359,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Marks the current measure of an element as invalidated.
-  example: ""
+  example: []
   syntax:
     content: protected override void InvalidateMeasure()
     content.vb: Protected Overrides Sub InvalidateMeasure()
@@ -19523,7 +19523,7 @@ items:
     if you cannot wait until the first Draw().
 
     In this version this affects ItemsSource only.
-  example: ""
+  example: []
   syntax:
     content: public void CommitInvalidations()
     content.vb: Public Sub CommitInvalidations()
@@ -19631,7 +19631,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public bool RegisterAnimator(ISkiaAnimator animator)
     parameters:
@@ -19696,7 +19696,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public void UnregisterAnimator(Guid uid)
     parameters:
@@ -19728,7 +19728,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public IEnumerable<ISkiaAnimator> UnregisterAllAnimatorsByType(Type type)
     parameters:
@@ -19763,7 +19763,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Expecting input coordinates in POINTs and relative to control coordinates. Use GetOffsetInsideControlInPoints to help.
-  example: ""
+  example: []
   syntax:
     content: public void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true)
     parameters:
@@ -19808,7 +19808,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public void PlayShimmerAnimation(Color color, float shimmerWidth = 50, float shimmerAngle = 45, int speedMs = 1000, bool removePrevious = true)
     parameters:
@@ -19939,7 +19939,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates and sets an ImageFilter for SKPaint
-  example: ""
+  example: []
   syntax:
     content: public bool SetupShadow(SKPaint paint, SkiaShadow shadow, float scale)
     parameters:
@@ -20049,7 +20049,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use
-  example: ""
+  example: []
   syntax:
     content: public List<SkiaControl> Views { get; }
     parameters: []
@@ -20111,7 +20111,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnWillDisposeWithChildren()
     content.vb: Public Overridable Sub OnWillDisposeWithChildren()
@@ -20164,7 +20164,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void InvalidateViewsList()
     content.vb: Public Overridable Sub InvalidateViewsList()
@@ -20194,7 +20194,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Avoid slowing us down with MAUI internals
-  example: ""
+  example: []
   syntax:
     content: protected override void OnChildRemoved(Element child, int oldLogicalIndex)
     parameters:
@@ -20233,7 +20233,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Avoid slowing us down with MAUI internals
-  example: ""
+  example: []
   syntax:
     content: protected override void OnChildAdded(Element child)
     parameters:
@@ -20379,7 +20379,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnChildrenChanged()
     content.vb: Public Overridable Sub OnChildrenChanged()
@@ -20458,7 +20458,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public DateTime? GestureListenerRegistrationTime { get; set; }
     parameters: []
@@ -20490,7 +20490,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public void RegisterGestureListener(ISkiaGestureListener gestureListener)
     parameters:
@@ -20522,7 +20522,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public void UnregisterGestureListener(ISkiaGestureListener gestureListener)
     parameters:
@@ -20555,7 +20555,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Children we should check for touch hits
-  example: ""
+  example: []
   syntax:
     content: public SortedGestureListeners GestureListeners { get; }
     parameters: []
@@ -20620,7 +20620,7 @@ items:
     This is called by SetParent  when parent should be assigned to null.
 
     Internally this sets BindingContext to null after that. You might want to override this to keep BindngContext even if unattached from Parent, for example in case of recycled cells.
-  example: ""
+  example: []
   syntax:
     content: public virtual void ClearParent()
     content.vb: Public Overridable Sub ClearParent()
@@ -20673,7 +20673,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void SetParent(IDrawnBase parent)
     parameters:
@@ -20791,7 +20791,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Kind of BindableLayout.DrawnTemplate
-  example: ""
+  example: []
   syntax:
     content: public DataTemplate ItemTemplate { get; set; }
     parameters: []
@@ -20849,7 +20849,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ItemTemplate alternative for faster creation
-  example: ""
+  example: []
   syntax:
     content: public Type ItemTemplateType { get; set; }
     parameters: []
@@ -20914,7 +20914,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just a helper to pass children one by one comma separated instead of using a list
-  example: ""
+  example: []
   syntax:
     content: public void SetChildrenAsParameters(params SkiaControl[] children)
     parameters:
@@ -20948,7 +20948,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -21285,7 +21285,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Rounds SKRect coordinates to nearest pixel values
-  example: ""
+  example: []
   syntax:
     content: public static SKRect RoundToPixels(SKRect rect)
     parameters:
@@ -21318,7 +21318,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Rounds SKRect coordinates to nearest pixel values
-  example: ""
+  example: []
   syntax:
     content: public static SKRect RoundToPixels(float left, float top, float right, float bottom)
     parameters:
@@ -21781,7 +21781,7 @@ items:
     Ported from Avalonia: AreClose - Returns whether or not two floats are "close".  That is, whether or 
 
     not they are within epsilon of each other.
-  example: ""
+  example: []
   syntax:
     content: public static bool AreClose(float value1, float value2)
     parameters:
@@ -21824,7 +21824,7 @@ items:
     Ported from Avalonia: AreClose - Returns whether or not two doubles are "close".  That is, whether or 
 
     not they are within epsilon of each other.
-  example: ""
+  example: []
   syntax:
     content: public static bool AreClose(double value1, double value2)
     parameters:
@@ -21867,7 +21867,7 @@ items:
     Avalonia: IsOne - Returns whether or not the double is "close" to 1.  Same as AreClose(double, 1),
 
     but this is faster.
-  example: ""
+  example: []
   syntax:
     content: public static bool IsOne(double value)
     parameters:
@@ -43787,4 +43787,3 @@ references:
   name: IsOne
   nameWithType: SkiaControl.IsOne
   fullName: DrawnUi.Draw.SkiaControl.IsOne
-

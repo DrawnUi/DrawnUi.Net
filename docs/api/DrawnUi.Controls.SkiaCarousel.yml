@@ -115,7 +115,7 @@ items:
     Supports data binding through ItemsSource and ItemTemplate, peek effects with SidesOffset, and smooth transitions.
 
     Ideal for image galleries, tab interfaces, and any swipeable content display.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaCarousel : SnappingLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public Class SkiaCarousel Inherits SnappingLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1300,7 +1300,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Used to check whether to apply IsClippedToBounds property
-  example: ""
+  example: []
   syntax:
     content: public override bool WillClipBounds { get; }
     parameters: []
@@ -1395,7 +1395,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void ScrollToNearestAnchor(Vector2 location, Vector2 velocity)
     parameters:
@@ -1429,7 +1429,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Return an anchor depending on direction and strength of of the velocity
-  example: ""
+  example: []
   syntax:
     content: public override Vector2 SelectNextAnchor(Vector2 origin, Vector2 velocity)
     parameters:
@@ -1468,7 +1468,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1634,7 +1634,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Will translate child and raise appearing/disappearing events
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyPosition(Vector2 currentPosition)
     parameters:
@@ -1724,7 +1724,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void UpdateReportedPosition()
     content.vb: Public Overrides Sub UpdateReportedPosition()
@@ -1753,7 +1753,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This might be called from background thread if we set InitializeTemplatesInBackgroundDelay true
-  example: ""
+  example: []
   syntax:
     content: public override void OnTemplatesAvailable()
     content.vb: Public Overrides Sub OnTemplatesAvailable()
@@ -1869,7 +1869,7 @@ items:
     Use to render Absolute layout. Base method is not supporting templates, override it to implement your logic.
 
     Returns number of drawn children.
-  example: ""
+  example: []
   syntax:
     content: protected override int RenderViewsList(DrawingContext context, IEnumerable<SkiaControl> skiaControls)
     parameters:
@@ -1910,7 +1910,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Scroll amount from 0 to 1 of the current (SelectedIndex) slide. Another similar but different property would be ScrollProgress. This is not linear as SelectedIndex changes earlier than 0 or 1 are attained.
-  example: ""
+  example: []
   syntax:
     content: public double ScrollAmount { get; set; }
     parameters: []
@@ -1946,7 +1946,7 @@ items:
     This is not dependent of the SelectedIndex, just reflects visible progress. Useful to create custom controls attached to carousel.
 
     Calculated as (for horizontal): CurrentPosition.X / SnapPoints.Last().X
-  example: ""
+  example: []
   syntax:
     content: public double ScrollProgress { get; set; }
     parameters: []
@@ -2063,7 +2063,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override object CreateContentFromTemplate()
     return:
@@ -2093,7 +2093,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnItemSourceChanged()
     content.vb: Public Overrides Sub OnItemSourceChanged()
@@ -2160,7 +2160,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Set true position if inside virtual for IsLooped
-  example: ""
+  example: []
   syntax:
     content: protected virtual void FixPosition()
     content.vb: Protected Overridable Sub FixPosition()
@@ -2188,7 +2188,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Invokes TransitionChanged event
-  example: ""
+  example: []
   syntax:
     content: public override void OnTransitionChanged()
     content.vb: Public Overrides Sub OnTransitionChanged()
@@ -2217,7 +2217,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: protected override bool ScrollToOffset(Vector2 targetOffset, Vector2 velocity, bool animate)
     parameters:
@@ -2258,7 +2258,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyOptions(bool initialize)
     parameters:
@@ -2292,7 +2292,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override bool CheckTransitionEnded()
     return:
@@ -2323,7 +2323,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: There are the bounds the scroll offset can go to.. This are NOT the bounds of the whole content.
-  example: ""
+  example: []
   syntax:
     content: public override SKRect GetContentOffsetBounds()
     return:
@@ -2379,7 +2379,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildAdded(SkiaControl child)
     parameters:
@@ -2411,7 +2411,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -2522,7 +2522,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: We expect this to be called after this alyout is invalidated
-  example: ""
+  example: []
   syntax:
     content: public virtual void InitializeChildren()
     content.vb: Public Overridable Sub InitializeChildren()
@@ -2605,7 +2605,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Set children layout options according to our settings. Not used for template case.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void AdaptChildren()
     content.vb: Protected Overridable Sub AdaptChildren()
@@ -2661,7 +2661,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override int GetTemplatesPoolLimit()
     return:
@@ -2691,7 +2691,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override int GetTemplatesPoolPrefill()
     return:
@@ -2782,7 +2782,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override Vector2 FindNearestAnchorInternal(Vector2 current, Vector2 velocity)
     parameters:
@@ -2874,7 +2874,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Used inside ScrollToOffset to control the speed
-  example: ""
+  example: []
   syntax:
     content: public double SwipeSpeed { get; set; }
     parameters: []
@@ -2932,7 +2932,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Whether should preload neighboors sides cells even when they are hidden, to preload images etc.. Default is true. Beware set this to False if you have complex layouts otherwise rendering might be slow.
-  example: ""
+  example: []
   syntax:
     content: public bool PreloadNeighboors { get; set; }
     parameters: []
@@ -2995,7 +2995,7 @@ items:
     otherwise will change size when children with different dimension size are selected. Default is false.
 
     If true, requires MeasureAllItems to be set to all items.
-  example: ""
+  example: []
   syntax:
     content: public bool DynamicSize { get; set; }
     parameters: []
@@ -3053,7 +3053,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: UNIMPLEMENTED YET
-  example: ""
+  example: []
   syntax:
     content: public bool IsLooped { get; set; }
     parameters: []
@@ -3111,7 +3111,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Orientation of the carousel
-  example: ""
+  example: []
   syntax:
     content: public bool IsVertical { get; set; }
     parameters: []
@@ -3177,7 +3177,7 @@ items:
     Will be updated on MainThread to safely work with bindings,
 
     this a read-only property returning SelectingIndex in a thread-safe way;
-  example: ""
+  example: []
   syntax:
     content: public int SafeIndex { get; }
     parameters: []
@@ -3382,7 +3382,7 @@ items:
     If set (&gt;0) will be used for automatic scrolls instead of using manual velocity.
 
     For bouncing carousel
-  example: ""
+  example: []
   syntax:
     content: public double LinearSpeedMs { get; set; }
     parameters: []
@@ -3469,7 +3469,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Zero-based index of the currently selected slide
-  example: ""
+  example: []
   syntax:
     content: public int SelectedIndex { get; set; }
     parameters: []
@@ -3500,7 +3500,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Can be used for indicators
-  example: ""
+  example: []
   syntax:
     content: public int ChildrenTotal { get; set; }
     parameters: []
@@ -3585,7 +3585,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: TODO
-  example: ""
+  example: []
   syntax:
     content: public bool IsRightToLeft { get; set; }
     parameters: []
@@ -3643,7 +3643,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Basically size margins of every slide, offset from the side of the carousel. Another similar but different property to use would be Spacing between slides.
-  example: ""
+  example: []
   syntax:
     content: public double SidesOffset { get; set; }
     parameters: []
@@ -3814,7 +3814,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -38666,4 +38666,3 @@ references:
   name: GestureEventProcessingInfo
   nameWithType: GestureEventProcessingInfo
   fullName: DrawnUi.Draw.GestureEventProcessingInfo
-

@@ -80,7 +80,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Loaded
-  example: ""
+  example: []
   syntax:
     content: Initialized = 1
     return:
@@ -108,7 +108,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Unloaded
-  example: ""
+  example: []
   syntax:
     content: Destroyed = 2
     return:
@@ -233,4 +233,3 @@ references:
   name: ControlLifecycleState
   nameWithType: ControlLifecycleState
   fullName: DrawnUi.Draw.ControlLifecycleState
-

@@ -289,7 +289,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Start(double delayMs = 0)
     parameters:
@@ -327,7 +327,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: ""
+  example: []
   syntax:
     content: protected override bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -1718,4 +1718,3 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
-

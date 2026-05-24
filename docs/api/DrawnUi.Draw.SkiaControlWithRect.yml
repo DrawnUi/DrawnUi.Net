@@ -31,7 +31,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used inside RenderingTree. Rect is real drawing position
-  example: ""
+  example: []
   syntax:
     content: 'public record SkiaControlWithRect : IEquatable<SkiaControlWithRect>'
     content.vb: Public Class SkiaControlWithRect Implements IEquatable(Of SkiaControlWithRect)
@@ -72,7 +72,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used inside RenderingTree. Rect is real drawing position
-  example: ""
+  example: []
   syntax:
     content: public SkiaControlWithRect(SkiaControl Control, SKRect Rect, SKRect HitRect, int Index, int FreezeIndex, object FreezeBindingContext)
     parameters:
@@ -122,7 +122,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl Control { get; init; }
     parameters: []
@@ -153,7 +153,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public SKRect Rect { get; init; }
     parameters: []
@@ -184,7 +184,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public SKRect HitRect { get; init; }
     parameters: []
@@ -215,7 +215,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public int Index { get; init; }
     parameters: []
@@ -246,7 +246,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public int FreezeIndex { get; init; }
     parameters: []
@@ -277,7 +277,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public object FreezeBindingContext { get; init; }
     parameters: []
@@ -774,4 +774,3 @@ references:
   name: FreezeBindingContext
   nameWithType: SkiaControlWithRect.FreezeBindingContext
   fullName: DrawnUi.Draw.SkiaControlWithRect.FreezeBindingContext
-

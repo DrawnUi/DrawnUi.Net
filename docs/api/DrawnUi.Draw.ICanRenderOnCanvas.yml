@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Renders effect overlay to canvas, return true if has drawn something and rendering needs to be applied.
-  example: ""
+  example: []
   syntax:
     content: bool Render(DrawingContext context, IDrawnBase control)
     parameters:
@@ -218,4 +218,3 @@ references:
   name: System
   nameWithType: System
   fullName: System
-

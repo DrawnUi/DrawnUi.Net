@@ -43,7 +43,7 @@ items:
     Unlike SkiaDecoratedGrid, this is row-aware - vertical separators are only drawn
 
     where a specific row has multiple columns (supports DynamicColumns behavior).
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaDecoratedColumn : SkiaStack, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public Class SkiaDecoratedColumn Inherits SkiaStack Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1333,7 +1333,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: ""
+  example: []
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -1417,7 +1417,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1472,7 +1472,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1500,7 +1500,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void PostArrange(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -1540,7 +1540,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -34747,4 +34747,3 @@ references:
   name: DrawingContext
   nameWithType: DrawingContext
   fullName: DrawnUi.Draw.DrawingContext
-

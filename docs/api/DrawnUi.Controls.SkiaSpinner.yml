@@ -68,7 +68,7 @@ items:
     A wheel-of-names spinner control that displays items in a circular arrangement
 
     and allows spinning to select an item through gesture interaction.
-  example: ""
+  example: []
   syntax:
     content: >-
       [ContentProperty("ItemTemplate")]
@@ -1234,7 +1234,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1318,7 +1318,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Invalidate and re-apply ItemsSource
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyItemsSource()
     content.vb: Public Overrides Sub ApplyItemsSource()
@@ -1346,7 +1346,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnItemSourceChanged()
     content.vb: Public Overrides Sub OnItemSourceChanged()
@@ -1375,7 +1375,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Enhanced collection change handler with smart handling and fallback
-  example: ""
+  example: []
   syntax:
     content: protected override void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     parameters:
@@ -1580,7 +1580,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Determines where on the wheel the selected item is calculated (Top, Right, Bottom, Left)
-  example: ""
+  example: []
   syntax:
     content: public SidePosition SidePosition { get; set; }
     parameters: []
@@ -1638,7 +1638,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Whether it should snap after scrolling stopped, default is True.
-  example: ""
+  example: []
   syntax:
     content: public bool Snap { get; set; }
     parameters: []
@@ -1696,7 +1696,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: How much the velocity in increased when rotating wheel using gestures. Default is 2.0.
-  example: ""
+  example: []
   syntax:
     content: public double Velocity { get; set; }
     parameters: []
@@ -1757,7 +1757,7 @@ items:
     How much friction will be applied when rotating. Default is 0.0003. 
 
     ///
-  example: ""
+  example: []
   syntax:
     content: public double Deceleration { get; set; }
     parameters: []
@@ -1815,7 +1815,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Controls the visual orientation direction. False = normal (readable at right), True = inverted (readable at left)
-  example: ""
+  example: []
   syntax:
     content: public bool InverseVisualRotation { get; set; }
     parameters: []
@@ -1873,7 +1873,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: If disabled will not scroll using gestures. Scrolling will still be possible by code.
-  example: ""
+  example: []
   syntax:
     content: public bool RespondsToGestures { get; set; }
     parameters: []
@@ -1960,7 +1960,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the angle offset for the current selection position
-  example: ""
+  example: []
   syntax:
     content: public double GetSelectionPositionOffset()
     return:
@@ -1990,7 +1990,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Spins the wheel to a specific index with animation
-  example: ""
+  example: []
   syntax:
     content: public void SpinToIndex(int index, int spins = 0, uint speed = 350)
     parameters:
@@ -2031,7 +2031,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Spins the wheel to a specific index with shortest path with animation
-  example: ""
+  example: []
   syntax:
     content: public void SpinToIndexShortest(int index, uint speed = 350)
     parameters:
@@ -2069,7 +2069,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the shortest rotation distance from current rotation to target rotation
-  example: ""
+  example: []
   syntax:
     content: public double GetShortestRotationDistance(double currentRotation, double targetRotation)
     parameters:
@@ -2110,7 +2110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets the rotation value needed to position a specific index at the selection position
-  example: ""
+  example: []
   syntax:
     content: public double GetRotationForIndex(int index)
     parameters:
@@ -2148,7 +2148,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Spins the wheel to a random position with animation
-  example: ""
+  example: []
   syntax:
     content: public void SpinToRandom()
     content.vb: Public Sub SpinToRandom()
@@ -2176,7 +2176,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Animates the wheel to a specific rotation
-  example: ""
+  example: []
   syntax:
     content: public void Rotate(double targetRotation, uint durationMs = 500)
     parameters:
@@ -2400,7 +2400,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -35864,4 +35864,3 @@ references:
   name: GestureEventProcessingInfo
   nameWithType: GestureEventProcessingInfo
   fullName: DrawnUi.Draw.GestureEventProcessingInfo
-

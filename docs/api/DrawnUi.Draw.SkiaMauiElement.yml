@@ -1019,7 +1019,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: First Maui will apply bindings to your controls, then it would call OnBindingContextChanged, so beware on not to break bindings.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -1048,7 +1048,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measure children inside absolute layout
-  example: ""
+  example: []
   syntax:
     content: public override ScaledSize MeasureAbsolute(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -1090,7 +1090,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measure and arrange VisualElement using Maui methods
-  example: ""
+  example: []
   syntax:
     content: public virtual Size MeasureAndArrangeMauiElement(double ptsWidth, double ptsHeight)
     parameters:
@@ -1219,7 +1219,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1248,7 +1248,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1336,7 +1336,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For HotReload
-  example: ""
+  example: []
   syntax:
     content: public override IReadOnlyList<IVisualTreeElement> GetVisualChildren()
     return:
@@ -1368,7 +1368,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Prevent usage of subviews as we are using Content property for this control
-  example: ""
+  example: []
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -1404,7 +1404,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Prevent usage of subviews as we are using Content property for this control
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildAdded(SkiaControl child)
     parameters:
@@ -1461,7 +1461,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void SuperViewChanged()
     content.vb: Public Overrides Sub SuperViewChanged()
@@ -1490,7 +1490,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Content property for direct access
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetContent(VisualElement view)
     parameters:
@@ -1520,7 +1520,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnFirstDrawn()
     content.vb: Protected Overrides Sub OnFirstDrawn()
@@ -1662,7 +1662,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1722,7 +1722,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Render(DrawingContext context)
     parameters:
@@ -1844,7 +1844,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Comes after all drawn, actually used by SkiaMauiElement only
-  example: ""
+  example: []
   syntax:
     content: public override void SetVisualTransform(VisualTransform transform)
     parameters:
@@ -1877,7 +1877,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Maui Element to be rendered
-  example: ""
+  example: []
   syntax:
     content: public VisualElement Element { get; protected set; }
     parameters: []
@@ -1908,7 +1908,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: PIXELS, for faster checks
-  example: ""
+  example: []
   syntax:
     content: public SKPoint ElementSize { get; set; }
     parameters: []
@@ -2025,7 +2025,7 @@ items:
     Set to true if you are hosting the control inside a scroll or similar case
 
     where the control position/transforms are animated fast.
-  example: ""
+  example: []
   syntax:
     content: public bool AnimateSnapshot { get; set; }
     parameters: []
@@ -2088,7 +2088,7 @@ items:
     This can be any MAUI control like WebView, MediaElement, Entry, Picker, etc.
 
     The control will be rendered using platform-specific optimizations.
-  example: ""
+  example: []
   syntax:
     content: public VisualElement Content { get; set; }
     parameters: []
@@ -31220,4 +31220,3 @@ references:
   name: ShowSnapshot
   nameWithType: SkiaMauiElement.ShowSnapshot
   fullName: DrawnUi.Draw.SkiaMauiElement.ShowSnapshot
-

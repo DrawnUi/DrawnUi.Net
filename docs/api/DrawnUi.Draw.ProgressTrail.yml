@@ -34,7 +34,7 @@ items:
     Progress trail component for linear progress bars.
 
     Similar to SliderTrail but optimized for progress display.
-  example: ""
+  example: []
   syntax:
     content: 'public class ProgressTrail : SkiaShape, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public Class ProgressTrail Inherits SkiaShape Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1255,7 +1255,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Starting X position of the progress trail
-  example: ""
+  example: []
   syntax:
     content: public double XPos { get; set; }
     parameters: []
@@ -1313,7 +1313,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Ending X position of the progress trail
-  example: ""
+  example: []
   syntax:
     content: public double XPosEnd { get; set; }
     parameters: []
@@ -1371,7 +1371,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Additional offset applied to both sides
-  example: ""
+  example: []
   syntax:
     content: public double SideOffset { get; set; }
     parameters: []
@@ -1402,7 +1402,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -36057,4 +36057,3 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-

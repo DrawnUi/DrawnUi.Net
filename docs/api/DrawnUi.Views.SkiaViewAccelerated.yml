@@ -297,7 +297,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public Guid Uid { get; }
     parameters: []
@@ -330,7 +330,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Return true if need force invalidation on next frame
-  example: ""
+  example: []
   syntax:
     content: public Func<SKSurface, SKRect, bool> OnDraw { get; set; }
     parameters: []
@@ -393,7 +393,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanging(HandlerChangingEventArgs args)
     parameters:
@@ -427,7 +427,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanged()
     content.vb: Protected Overrides Sub OnHandlerChanged()
@@ -485,7 +485,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -514,7 +514,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public SKSurface Surface { get; }
     parameters: []
@@ -546,7 +546,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public bool IsHardwareAccelerated { get; }
     parameters: []
@@ -578,7 +578,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public double FPS { get; }
     parameters: []
@@ -610,7 +610,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public bool IsDrawing { get; set; }
     parameters: []
@@ -642,7 +642,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public bool HasDrawn { get; protected set; }
     parameters: []
@@ -674,7 +674,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public long FrameTime { get; protected set; }
     parameters: []
@@ -706,7 +706,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public void SignalFrame(long nanoseconds)
     parameters:
@@ -742,7 +742,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Safe InvalidateSurface() call. If nanos not specified will generate ittself
-  example: ""
+  example: []
   syntax:
     content: public bool Update(long nanos)
     parameters:
@@ -5555,4 +5555,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.int64
   - name: )
-

@@ -41,7 +41,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cycles content, so the scroll never ands but cycles from the start
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaScrollLooped : SkiaScroll, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent'
     content.vb: Public Class SkiaScrollLooped Inherits SkiaScroll Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
@@ -1338,7 +1338,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool ShouldInvalidateByChildren { get; }
     parameters: []
@@ -1369,7 +1369,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void InitializeScroller(float scale)
     parameters:
@@ -1403,7 +1403,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ContainsPointResult GetItemIndex(SkiaLayout layout, float pixelsOffsetX, float pixelsOffsetY, RelativePositionType option)
     parameters:
@@ -1445,7 +1445,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void UpdateVisibleIndex()
     content.vb: Public Overrides Sub UpdateVisibleIndex()
@@ -1474,7 +1474,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculates CurrentIndex
-  example: ""
+  example: []
   syntax:
     content: public override ContainsPointResult CalculateVisibleIndex(RelativePositionType option = RelativePositionType.Start)
     parameters:
@@ -1508,7 +1508,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether the scrolling offset in inside scrollable bounds or not
-  example: ""
+  example: []
   syntax:
     content: protected override bool OffsetOk(Vector2 offset)
     parameters:
@@ -1543,7 +1543,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Snap(float maxTimeSecs)
     parameters:
@@ -1577,7 +1577,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnDrawn(DrawingContext context)
     parameters:
@@ -1608,7 +1608,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override Vector2 ClampOffset(float x, float y, SKRect contentOffsetBounds, bool strict = false)
     parameters:
@@ -1658,7 +1658,7 @@ items:
     Here we can construct anything according current offset before painting.
 
     Creates a valid ViewportRect inside.
-  example: ""
+  example: []
   syntax:
     content: protected override bool PositionViewport(SKRect destination, SKPoint offsetPixels, float viewportScale, float scale, bool forceSyncOffsets)
     parameters:
@@ -1773,7 +1773,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Space between cycles, pixels
-  example: ""
+  example: []
   syntax:
     content: public double CycleSpace { get; set; }
     parameters: []
@@ -1834,7 +1834,7 @@ items:
     Whether this should look like an infinite scrolling text banner.
 
     So then the END doesn't glue with START directly, new START appears only when when previous END gows out of the screen.
-  example: ""
+  example: []
   syntax:
     content: public bool IsBanner { get; set; }
     parameters: []
@@ -35146,4 +35146,3 @@ references:
   name: IsBanner
   nameWithType: SkiaScrollLooped.IsBanner
   fullName: DrawnUi.Draw.SkiaScrollLooped.IsBanner
-

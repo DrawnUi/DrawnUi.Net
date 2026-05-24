@@ -74,7 +74,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: if isModel is true than will try to freeze background before showing. otherwise will be just an overlay like toast etc.
-  example: ""
+  example: []
   syntax:
     content: public NavigationLayer(SkiaShell shell, bool freezeLayout)
     parameters:
@@ -871,4 +871,3 @@ references:
   fullName: DrawnUi.Controls.SkiaShell.NavigationLayer<T>.CloseAll
   nameWithType.vb: SkiaShell.NavigationLayer(Of T).CloseAll
   fullName.vb: DrawnUi.Controls.SkiaShell.NavigationLayer(Of T).CloseAll
-

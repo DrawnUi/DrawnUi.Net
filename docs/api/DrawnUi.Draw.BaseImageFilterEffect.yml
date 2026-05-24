@@ -106,7 +106,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public SKImageFilter Filter { get; set; }
     parameters: []
@@ -138,7 +138,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual SKImageFilter CreateFilter(SKRect destination)
     parameters:
@@ -173,7 +173,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You MUST clear any cached resources as soon as this is called. Not on next draw!
-  example: ""
+  example: []
   syntax:
     content: public override void Update()
     content.vb: Public Overrides Sub Update()
@@ -203,7 +203,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -1750,4 +1750,3 @@ references:
   name: OnDisposing
   nameWithType: BaseImageFilterEffect.OnDisposing
   fullName: DrawnUi.Draw.BaseImageFilterEffect.OnDisposing
-

@@ -1253,6 +1253,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnLongPressing``1(System.Action{DrawnUi.Draw.SkiaEditor})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnTapped``1(System.Action{DrawnUi.Draw.SkiaEditor,DrawnUi.Draw.ControlTappedEventArgs})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnTapped``1(System.Action{DrawnUi.Draw.SkiaEditor})
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnTextChanged``1(System.Action{System.String})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.SetGrid``1(System.Int32,System.Int32)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.SetGrid``1(System.Int32,System.Int32,System.Int32,System.Int32)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.Shape``1(DrawnUi.Draw.ShapeType)
@@ -1360,7 +1361,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used to check whether to apply IsClippedToBounds property
-  example: ""
+  example: []
   syntax:
     content: public override bool WillClipBounds { get; }
     parameters: []
@@ -1395,7 +1396,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1923,7 +1924,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -2126,7 +2127,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you call this while measurement is in process (IsMeasuring==True) will return last measured value.
-  example: ""
+  example: []
   syntax:
     content: public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -2171,7 +2172,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override this if you need to adjust the measured ContentSize for the parent to adapt to it. For example SkiaShape overrides this to expand by adding the needed size for stroke.
-  example: ""
+  example: []
   syntax:
     content: protected override SKSize GetContentSizeForAutosizeInPixels()
     return:
@@ -2203,7 +2204,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is Done or Enter key, so maybe just split lines in specific case
-  example: ""
+  example: []
   syntax:
     content: public void Submit()
     content.vb: Public Sub Submit()
@@ -2295,7 +2296,7 @@ items:
     This will be called only for views registered at Superview.FocusedChild.
 
     The view must return true of false to indicate if it accepts focus.
-  example: ""
+  example: []
   syntax:
     content: public override bool OnFocusChanged(bool focus)
     parameters:
@@ -2339,7 +2340,7 @@ items:
     Returns all glyphs for a rendered line, flattened across spans.
 
     Override in subclasses to support multi-span lines.
-  example: ""
+  example: []
   syntax:
     content: protected virtual LineGlyph[] GetLineGlyphs(TextLine line)
     parameters:
@@ -2372,7 +2373,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Input in pixels
-  example: ""
+  example: []
   syntax:
     content: protected int GetCursorPosition(float x, float y)
     parameters:
@@ -2412,7 +2413,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -2480,7 +2481,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Sets native control cursor position to CursorPosition (and selection end if active) and calls UpdateCursorVisibility.
-  example: ""
+  example: []
   syntax:
     content: protected bool _suppressImmediateCursorMove
     return:
@@ -2561,7 +2562,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Positions cursor control where it should be using translation, and sets its visibility.
-  example: ""
+  example: []
   syntax:
     content: public virtual void UpdateCursorVisibility()
     content.vb: Public Overridable Sub UpdateCursorVisibility()
@@ -2621,7 +2622,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Translate cursor from the left top corner, params in pts.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void MoveCursorTo(double x, double y)
     parameters:
@@ -2659,7 +2660,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns the zero-based line index the cursor is currently on.
-  example: ""
+  example: []
   syntax:
     content: public int GetCursorLine()
     return:
@@ -2865,7 +2866,7 @@ items:
     We have to sync with a delay after text was changed otherwise the cursor position is not updated yet.
 
     Using restarting timer, every time this is called the timer is reset if callback wasn't executed yet.
-  example: ""
+  example: []
   syntax:
     content: protected void SetCursorPositionWithDelay(int ms, int position)
     parameters:
@@ -3167,7 +3168,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -3196,7 +3197,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -30274,6 +30275,73 @@ references:
     href: DrawnUi.Draw.SkiaEditor.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.OnTextChanged``1(System.Action{System.String})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnTextChanged``1(``0,System.Action{System.String})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.OnTextChanged``1(``0,System.Action{System.String})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnTextChanged__1___0_System_Action_System_String__
+  name: OnTextChanged<SkiaEditor>(SkiaEditor, Action<string>)
+  nameWithType: FluentExtensions.OnTextChanged<SkiaEditor>(SkiaEditor, Action<string>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnTextChanged<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, System.Action<string>)
+  nameWithType.vb: FluentExtensions.OnTextChanged(Of SkiaEditor)(SkiaEditor, Action(Of String))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnTextChanged(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, System.Action(Of String))
+  name.vb: OnTextChanged(Of SkiaEditor)(SkiaEditor, Action(Of String))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnTextChanged``1(DrawnUi.Draw.SkiaEditor,System.Action{System.String})
+    name: OnTextChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnTextChanged__1___0_System_Action_System_String__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnTextChanged``1(DrawnUi.Draw.SkiaEditor,System.Action{System.String})
+    name: OnTextChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnTextChanged__1___0_System_Action_System_String__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.SetGrid``1(System.Int32,System.Int32)
   commentId: M:DrawnUi.Draw.FluentExtensions.SetGrid``1(``0,System.Int32,System.Int32)
   parent: DrawnUi.Draw.FluentExtensions
@@ -36570,6 +36638,64 @@ references:
   - name: T
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.OnTextChanged``1(``0,System.Action{System.String})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnTextChanged``1(``0,System.Action{System.String})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnTextChanged__1___0_System_Action_System_String__
+  name: OnTextChanged<T>(T, Action<string>)
+  nameWithType: FluentExtensions.OnTextChanged<T>(T, Action<string>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnTextChanged<T>(T, System.Action<string>)
+  nameWithType.vb: FluentExtensions.OnTextChanged(Of T)(T, Action(Of String))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnTextChanged(Of T)(T, System.Action(Of String))
+  name.vb: OnTextChanged(Of T)(T, Action(Of String))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnTextChanged``1(``0,System.Action{System.String})
+    name: OnTextChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnTextChanged__1___0_System_Action_System_String__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnTextChanged``1(``0,System.Action{System.String})
+    name: OnTextChanged
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnTextChanged__1___0_System_Action_System_String__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.SetGrid``1(``0,System.Int32,System.Int32)
   commentId: M:DrawnUi.Draw.FluentExtensions.SetGrid``1(``0,System.Int32,System.Int32)
   isExternal: true
@@ -40605,4 +40731,3 @@ references:
   name: ApplyKeyboardType
   nameWithType: SkiaEditor.ApplyKeyboardType
   fullName: DrawnUi.Draw.SkiaEditor.ApplyKeyboardType
-

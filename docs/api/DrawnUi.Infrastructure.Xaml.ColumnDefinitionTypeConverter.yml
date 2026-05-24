@@ -100,7 +100,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
   summary: Returns whether this converter can convert an object of the given type to the type of this converter, using the specified context.
-  example: ""
+  example: []
   syntax:
     content: public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
     parameters:
@@ -139,7 +139,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
   summary: Converts the given object to the type of this converter, using the specified context and culture information.
-  example: ""
+  example: []
   syntax:
     content: public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object obj)
     parameters:
@@ -2088,4 +2088,3 @@ references:
     name: Globalization
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.globalization
-

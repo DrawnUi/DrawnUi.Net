@@ -44,7 +44,7 @@ items:
     Switch-like control, can include any content inside. It's aither you use default content (todo templates?..)
 
     or can include any content inside, and properties will by applied by convention to a SkiaShape with Tag `Frame`, SkiaShape with Tag `Thumb`. At the same time you can override ApplyProperties() and apply them to your content yourself.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaSwitch : SkiaToggle, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public Class SkiaSwitch Inherits SkiaToggle Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1199,7 +1199,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -1464,7 +1464,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildrenChanged()
     content.vb: Public Overrides Sub OnChildrenChanged()
@@ -1493,7 +1493,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base call Update()
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyProperties()
     content.vb: Public Overrides Sub ApplyProperties()
@@ -1633,7 +1633,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls ApplyProperties()
-  example: ""
+  example: []
   syntax:
     content: protected override void OnToggledChanged()
     content.vb: Protected Overrides Sub OnToggledChanged()
@@ -35392,4 +35392,3 @@ references:
   name: OnToggledChanged
   nameWithType: SkiaSwitch.OnToggledChanged
   fullName: DrawnUi.Draw.SkiaSwitch.OnToggledChanged
-

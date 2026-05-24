@@ -44,7 +44,7 @@ items:
       fx.Completed += (s, e) =&gt; { _backgroundImage.FX.Remove(fx); fx.Dispose(); };
       _backgroundImage.FX.Add(fx);
       fx.Play(_backgroundImage);
-  example: ""
+  example: []
   syntax:
     content: 'public class AnimatedShaderEffect : SkiaShaderEffect, INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable<SkiaShaderEffect>, IEquatable<SkiaShaderEffect>'
     content.vb: Public Class AnimatedShaderEffect Inherits SkiaShaderEffect Implements INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable(Of SkiaShaderEffect), IEquatable(Of SkiaShaderEffect)
@@ -173,7 +173,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Normalized center position of the effect (0.0–1.0 in each axis).
-  example: ""
+  example: []
   syntax:
     content: public SKPoint Center { get; set; }
     parameters: []
@@ -257,7 +257,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Total animation duration in milliseconds. Default 2500.
-  example: ""
+  example: []
   syntax:
     content: public uint DurationMs { get; set; }
     parameters: []
@@ -291,7 +291,7 @@ items:
     Current animation progress 0.0 → 1.0.
 
     Set automatically by Play(); can also be set manually for debugging.
-  example: ""
+  example: []
   syntax:
     content: public double Progress { get; set; }
     parameters: []
@@ -352,7 +352,7 @@ items:
     Starts the celebration animation on the given parent control.
 
     Safe to call multiple times — restarts from zero each time.
-  example: ""
+  example: []
   syntax:
     content: public virtual void Play()
     content.vb: Public Overridable Sub Play()
@@ -380,7 +380,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Stops the animation without firing Completed.
-  example: ""
+  example: []
   syntax:
     content: public virtual void Stop()
     content.vb: Public Overridable Sub [Stop]()
@@ -408,7 +408,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates standard uniforms via engine. Override to add custom uniforms.
-  example: ""
+  example: []
   syntax:
     content: protected override SKRuntimeEffectUniforms CreateUniforms(SKRect destination)
     parameters:
@@ -441,7 +441,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -2958,4 +2958,3 @@ references:
   name: OnDisposing
   nameWithType: AnimatedShaderEffect.OnDisposing
   fullName: DrawnUi.Draw.AnimatedShaderEffect.OnDisposing
-

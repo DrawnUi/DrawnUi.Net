@@ -97,7 +97,7 @@ items:
     Used to draw maui element over a skia canvas.
 
     Positions elelement using drawnUi layout and sometimes just renders element bitmap snapshot instead of displaying the real element, for example, when scrolling/animating.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaMauiEntry : SkiaMauiElement, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener'
     content.vb: Public Class SkiaMauiEntry Inherits SkiaMauiElement Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener
@@ -1106,7 +1106,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -1138,7 +1138,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1390,7 +1390,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Used to check whether to apply IsClippedToBounds property
-  example: ""
+  example: []
   syntax:
     content: public override bool WillClipBounds { get; }
     parameters: []
@@ -1780,7 +1780,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1841,7 +1841,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Called by DrawnUi when the focus changes
-  example: ""
+  example: []
   syntax:
     content: public bool OnFocusChanged(bool focus)
     parameters:
@@ -1880,7 +1880,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1908,7 +1908,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void CheckChildAdded()
     content.vb: Protected Overrides Sub CheckChildAdded()
@@ -1937,7 +1937,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutReady()
     content.vb: Protected Overrides Sub OnLayoutReady()
@@ -2057,7 +2057,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: WIth 1 will behave like an ordinary Entry, with -1 (auto) or explicitly set you get an Editor
-  example: ""
+  example: []
   syntax:
     content: public int MaxLines { get; set; }
     parameters: []
@@ -32634,4 +32634,3 @@ references:
   name: IsFocused
   nameWithType: SkiaMauiEntry.IsFocused
   fullName: DrawnUi.Controls.SkiaMauiEntry.IsFocused
-

@@ -115,7 +115,7 @@ items:
     Returns a new instance of LayoutStructure with the same items.
 
     This performs a shallow copy of the existing structure.
-  example: ""
+  example: []
   syntax:
     content: public LayoutStructure Clone()
     return:
@@ -1535,4 +1535,3 @@ references:
   name: Append
   nameWithType: LayoutStructure.Append
   fullName: DrawnUi.Draw.LayoutStructure.Append
-

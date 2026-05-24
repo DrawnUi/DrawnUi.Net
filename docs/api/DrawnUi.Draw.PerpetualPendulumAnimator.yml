@@ -157,7 +157,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override Pendulum CreatePendulum()
     return:
@@ -1474,4 +1474,3 @@ references:
   - uid: DrawnUi.Infrastructure
     name: Infrastructure
     href: DrawnUi.Infrastructure.html
-

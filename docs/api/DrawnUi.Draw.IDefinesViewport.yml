@@ -178,7 +178,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: So child can call parent to invalidate scrolling offset etc if child size changes
-  example: ""
+  example: []
   syntax:
     content: void InvalidateByChild(SkiaControl child)
     parameters:
@@ -379,4 +379,3 @@ references:
   name: SkiaControl
   nameWithType: SkiaControl
   fullName: DrawnUi.Draw.SkiaControl
-

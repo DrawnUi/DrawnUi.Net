@@ -34,7 +34,7 @@ items:
     Linear progress bar control with platform-specific styling.
 
     Shows progress from Min to Value within the Min-Max range.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaProgress : SkiaRangeBase, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public Class SkiaProgress Inherits SkiaRangeBase Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1183,7 +1183,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -1316,7 +1316,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override to find and assign Track and ProgressTrail references
-  example: ""
+  example: []
   syntax:
     content: protected override void FindViews()
     content.vb: Protected Overrides Sub FindViews()
@@ -1345,7 +1345,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override to update the visual appearance based on current properties
-  example: ""
+  example: []
   syntax:
     content: protected override void UpdateVisualState()
     content.vb: Protected Overrides Sub UpdateVisualState()
@@ -34785,4 +34785,3 @@ references:
   name: UpdateVisualState
   nameWithType: SkiaProgress.UpdateVisualState
   fullName: DrawnUi.Draw.SkiaProgress.UpdateVisualState
-

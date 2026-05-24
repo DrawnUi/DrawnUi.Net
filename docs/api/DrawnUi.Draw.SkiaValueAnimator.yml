@@ -123,7 +123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public override void Dispose()
     content.vb: Public Overrides Sub Dispose()
@@ -151,7 +151,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -212,7 +212,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnRunningStateChanged(bool isRunning)
     parameters:
@@ -279,7 +279,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Animator self finished a cycle, might still repeat
-  example: ""
+  example: []
   syntax:
     content: public Action CycleFInished { get; set; }
     parameters: []
@@ -310,7 +310,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Animator self finished running without being stopped manually
-  example: ""
+  example: []
   syntax:
     content: public Action Finished { get; set; }
     parameters: []
@@ -425,7 +425,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time in NANOS
-  example: ""
+  example: []
   syntax:
     content: public override bool TickFrame(long frameTimeNanos)
     parameters:
@@ -464,7 +464,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: -1 means forever..
-  example: ""
+  example: []
   syntax:
     content: public int Repeat { get; set; }
     parameters: []
@@ -669,7 +669,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: ""
+  example: []
   syntax:
     content: protected virtual double TransformReportedValue(long deltaT)
     parameters:
@@ -765,7 +765,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -834,7 +834,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: We are using this internally to apply easing. Can be above 1 when finishing. If you need progress 0-1 use ProgressAnimator.
-  example: ""
+  example: []
   syntax:
     content: protected double Progress { get; set; }
     parameters: []
@@ -919,7 +919,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Start(double delayMs = 0)
     parameters:
@@ -2184,4 +2184,3 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
-

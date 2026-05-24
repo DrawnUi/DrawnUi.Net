@@ -28,7 +28,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Forked from Microsoft.Maui.Controls as using original class was breaking XAML HotReload for some unknown reason
-  example: ""
+  example: []
   syntax:
     content: 'public class DrawnFontAttributesConverter : TypeConverter'
     content.vb: Public Class DrawnFontAttributesConverter Inherits TypeConverter
@@ -102,7 +102,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns whether this converter can convert an object of the given type to the type of this converter, using the specified context.
-  example: ""
+  example: []
   syntax:
     content: public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
     parameters:
@@ -141,7 +141,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns whether this converter can convert the object to the specified type, using the specified context.
-  example: ""
+  example: []
   syntax:
     content: public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
     parameters:
@@ -180,7 +180,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Converts the given object to the type of this converter, using the specified context and culture information.
-  example: ""
+  example: []
   syntax:
     content: public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
     parameters:
@@ -229,7 +229,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Converts the given value object to the specified type, using the specified context and culture information.
-  example: ""
+  example: []
   syntax:
     content: public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
     parameters:
@@ -2196,4 +2196,3 @@ references:
   name: ConvertTo
   nameWithType: DrawnFontAttributesConverter.ConvertTo
   fullName: DrawnUi.Draw.DrawnFontAttributesConverter.ConvertTo
-

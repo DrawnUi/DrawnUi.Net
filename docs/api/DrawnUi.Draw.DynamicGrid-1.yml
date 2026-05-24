@@ -438,7 +438,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets child at the specified index with O(1) performance
-  example: ""
+  example: []
   syntax:
     content: public T this[int index] { get; }
     parameters:
@@ -534,7 +534,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the number of children in the grid (same as GetCount but more intuitive)
-  example: ""
+  example: []
   syntax:
     content: public int Length { get; }
     parameters: []
@@ -570,7 +570,7 @@ items:
     Returns the column count for the specified row.
 
     This value is cached and updated each time an item is added.
-  example: ""
+  example: []
   syntax:
     content: public int GetColumnCountForRow(int row)
     parameters:
@@ -1319,4 +1319,3 @@ references:
   fullName: DrawnUi.Draw.DynamicGrid<T>.GetColumnCountForRow
   nameWithType.vb: DynamicGrid(Of T).GetColumnCountForRow
   fullName.vb: DrawnUi.Draw.DynamicGrid(Of T).GetColumnCountForRow
-

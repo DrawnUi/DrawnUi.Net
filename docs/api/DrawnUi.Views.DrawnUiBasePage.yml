@@ -31,7 +31,7 @@ items:
     Actually used to: respond to keyboard resizing on mobile and keyboard key presses on Mac. Other than for that this
 
     is not needed at all.
-  example: ""
+  example: []
   syntax:
     content: 'public class DrawnUiBasePage : ContentPage, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration<Page>, ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView'
     content.vb: Public Class DrawnUiBasePage Inherits ContentPage Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration(Of Page), ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView
@@ -419,7 +419,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Will be set to the current keyboard size
-  example: ""
+  example: []
   syntax:
     content: public double KeyboardSize { get; set; }
     parameters: []
@@ -5734,4 +5734,3 @@ references:
   name: KeyboardSize
   nameWithType: DrawnUiBasePage.KeyboardSize
   fullName: DrawnUi.Views.DrawnUiBasePage.KeyboardSize
-

@@ -68,7 +68,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Internals
-  example: ""
+  example: []
   syntax:
     content: public string Id { get; set; }
     parameters: []
@@ -100,7 +100,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Internals
-  example: ""
+  example: []
   syntax:
     content: public string Title { get; set; }
     parameters: []
@@ -540,4 +540,3 @@ references:
   name: Title
   nameWithType: IHasStringTitle.Title
   fullName: AppoMobi.Specials.IHasStringTitle.Title
-

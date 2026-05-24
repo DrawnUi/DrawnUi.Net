@@ -103,7 +103,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Is never null.
-  example: ""
+  example: []
   syntax:
     content: public string Route { get; }
     parameters: []
@@ -134,7 +134,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: The SkiaControl that went upfront
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl View { get; }
     parameters: []
@@ -611,4 +611,3 @@ references:
   name: Source
   nameWithType: SkiaShellNavigatedArgs.Source
   fullName: DrawnUi.Controls.SkiaShellNavigatedArgs.Source
-

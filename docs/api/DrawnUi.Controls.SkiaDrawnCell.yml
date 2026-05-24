@@ -33,7 +33,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base ISkiaCell implementation
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaDrawnCell : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaCell'
     content.vb: Public Class SkiaDrawnCell Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaCell
@@ -1193,7 +1193,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnScrolled()
     content.vb: Public Overridable Sub OnScrolled()
@@ -1307,7 +1307,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1394,7 +1394,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -34592,4 +34592,3 @@ references:
   name: ApplyBindingContext
   nameWithType: SkiaDrawnCell.ApplyBindingContext
   fullName: DrawnUi.Controls.SkiaDrawnCell.ApplyBindingContext
-

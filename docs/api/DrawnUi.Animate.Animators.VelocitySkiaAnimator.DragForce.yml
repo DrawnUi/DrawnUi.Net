@@ -128,7 +128,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
   summary: inverse of updateValueAndVelocity
-  example: ""
+  example: []
   syntax:
     content: public float GetInitialVelocity(float initialPosition, float finalPosition, float durationTime)
     parameters:
@@ -760,4 +760,3 @@ references:
   name: setValueThreshold
   nameWithType: VelocitySkiaAnimator.DragForce.setValueThreshold
   fullName: DrawnUi.Animate.Animators.VelocitySkiaAnimator.DragForce.setValueThreshold
-

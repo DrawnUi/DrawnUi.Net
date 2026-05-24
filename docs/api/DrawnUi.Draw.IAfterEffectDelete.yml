@@ -62,7 +62,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For faster scanning of anims of same type
-  example: ""
+  example: []
   syntax:
     content: string TypeId { get; }
     parameters: []
@@ -93,7 +93,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called when drawing parent control frame
-  example: ""
+  example: []
   syntax:
     content: void Render(IDrawnBase control, SkiaDrawingContext context, double scale)
     parameters:
@@ -662,4 +662,3 @@ references:
   name: EventHandler
   nameWithType: EventHandler
   fullName: System.EventHandler
-

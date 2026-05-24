@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: No hardware acceleration, lightweight and fast native renderers creation, best for static content, use cache for top layers.
-  example: ""
+  example: []
   syntax:
     content: Default = 0
     return:
@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'Will use hardware accelerated renderers. Currently Metal for Apple, GL on Android and Angle on Windows. Windows note: canvas background will be opaque.'
-  example: ""
+  example: []
   syntax:
     content: Accelerated = 1
     return:
@@ -113,7 +113,7 @@ items:
     Experimental: will retain rendering result across frames, you can draw only changed areas over previous result.
 
     Will use hardware accelerated renderers. Currently Metal for Apple, GL on Android and Angle on Windows. Windows note: canvas background will be opaque.
-  example: ""
+  example: []
   syntax:
     content: AcceleratedRetained = 2
     return:
@@ -238,4 +238,3 @@ references:
   name: RenderingModeType
   nameWithType: RenderingModeType
   fullName: DrawnUi.Draw.RenderingModeType
-

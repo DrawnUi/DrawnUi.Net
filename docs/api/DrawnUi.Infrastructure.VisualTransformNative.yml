@@ -95,7 +95,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Pixels only
-  example: ""
+  example: []
   syntax:
     content: public SKRect Rect { readonly get; set; }
     parameters: []
@@ -314,7 +314,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Indicates whether this instance and a specified object are equal.
-  example: ""
+  example: []
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -353,7 +353,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Returns the hash code for this instance.
-  example: ""
+  example: []
   syntax:
     content: public override int GetHashCode()
     return:
@@ -833,4 +833,3 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
-

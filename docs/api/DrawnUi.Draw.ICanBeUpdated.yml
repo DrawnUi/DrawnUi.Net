@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Force redrawing, without invalidating the measured size
-  example: ""
+  example: []
   syntax:
     content: void Update()
     content.vb: Sub Update()
@@ -176,4 +176,3 @@ references:
   name: Update
   nameWithType: ICanBeUpdated.Update
   fullName: DrawnUi.Draw.ICanBeUpdated.Update
-

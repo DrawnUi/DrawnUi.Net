@@ -74,7 +74,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Initializes a new instance of the FastKeyedActionQueue with specified initial capacity
-  example: ""
+  example: []
   syntax:
     content: public KeyedActionQueue(int capacity = 1024)
     parameters:
@@ -108,7 +108,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enqueues an action with a key, removing any existing action with the same key
-  example: ""
+  example: []
   syntax:
     content: public void Enqueue(TKey key, Action action)
     parameters:
@@ -143,7 +143,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Dequeues the next action in FIFO order
-  example: ""
+  example: []
   syntax:
     content: public Action? Dequeue()
     return:
@@ -175,7 +175,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the current count of queued actions
-  example: ""
+  example: []
   syntax:
     content: public int Count { get; }
     parameters: []
@@ -208,7 +208,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Removes all queued actions
-  example: ""
+  example: []
   syntax:
     content: public void Clear()
     content.vb: Public Sub Clear()
@@ -238,7 +238,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Checks if a key exists in the queue
-  example: ""
+  example: []
   syntax:
     content: public bool ContainsKey(TKey key)
     parameters:
@@ -273,7 +273,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Tries to remove an action by key
-  example: ""
+  example: []
   syntax:
     content: public bool TryRemove(TKey key)
     parameters:
@@ -308,7 +308,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Dequeues and executes all actions in FIFO order
-  example: ""
+  example: []
   syntax:
     content: public void ExecuteAll()
     content.vb: Public Sub ExecuteAll()
@@ -770,4 +770,3 @@ references:
   fullName: DrawnUi.Draw.KeyedActionQueue<TKey>.ExecuteAll
   nameWithType.vb: KeyedActionQueue(Of TKey).ExecuteAll
   fullName.vb: DrawnUi.Draw.KeyedActionQueue(Of TKey).ExecuteAll
-

@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base shader effect class that has 2 input textures.
-  example: ""
+  example: []
   syntax:
     content: 'public class ShaderDoubleTexturesEffect : SkiaShaderEffect, INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable<SkiaShaderEffect>, IEquatable<SkiaShaderEffect>'
     content.vb: Public Class ShaderDoubleTexturesEffect Inherits SkiaShaderEffect Implements INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable(Of SkiaShaderEffect), IEquatable(Of SkiaShaderEffect)
@@ -210,7 +210,7 @@ items:
     Checks if image is a new snapshot that needs disposal this frame.
 
     Frozen snapshots are managed by ReleaseFrozenSnapshot; parent cache is never owned.
-  example: ""
+  example: []
   syntax:
     content: protected override bool ShouldDisposePreviousTexture(SKImage image)
     parameters:
@@ -243,7 +243,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -299,7 +299,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates texture children via engine. Override to add additional textures.
-  example: ""
+  example: []
   syntax:
     content: protected override SKRuntimeEffectChildren CreateTexturesUniforms(SkiaDrawingContext ctx, SKRect destination, SKShader primaryTexture)
     parameters:
@@ -344,7 +344,7 @@ items:
     Once    — snapshot taken on first call, frozen thereafter; reset AquiredBackground to re-capture.
 
     Never   — returns null; shader must not require iImage1.
-  example: ""
+  example: []
   syntax:
     content: protected override SKImage GetPrimaryTextureImage(SkiaDrawingContext ctx, SKRect destination)
     parameters:
@@ -518,7 +518,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Loaded from file
-  example: ""
+  example: []
   syntax:
     content: protected SKImage ResizedPrimaryImage { get; set; }
     parameters: []
@@ -578,7 +578,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Loading from local files only
-  example: ""
+  example: []
   syntax:
     content: public Task LoadPrimarySource(string fileName)
     parameters:
@@ -644,7 +644,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be normally set by CompileSecondaryTexture
-  example: ""
+  example: []
   syntax:
     content: protected SKShader SecondaryTexture
     return:
@@ -811,7 +811,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Loading from local files only
-  example: ""
+  example: []
   syntax:
     content: public Task LoadSecondarySource(string fileName)
     parameters:
@@ -3720,4 +3720,3 @@ references:
   name: ControlTo
   nameWithType: ShaderDoubleTexturesEffect.ControlTo
   fullName: DrawnUi.Draw.ShaderDoubleTexturesEffect.ControlTo
-

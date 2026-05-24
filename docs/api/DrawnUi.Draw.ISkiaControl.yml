@@ -261,7 +261,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Takes place in layout, acts like is visible, but just not rendering
-  example: ""
+  example: []
   syntax:
     content: bool IsGhost { get; }
     parameters: []
@@ -533,7 +533,7 @@ items:
     Expecting PIXELS as input
 
     sets NeedMeasure to false
-  example: ""
+  example: []
   syntax:
     content: ScaledSize Measure(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -2044,4 +2044,3 @@ references:
   name: CanDraw
   nameWithType: ISkiaControl.CanDraw
   fullName: DrawnUi.Draw.ISkiaControl.CanDraw
-

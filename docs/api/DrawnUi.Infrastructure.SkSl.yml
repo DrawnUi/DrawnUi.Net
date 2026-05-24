@@ -171,7 +171,7 @@ items:
     This static field enables efficient reuse of compiled SKRuntimeEffect instances by storing
         them for quick retrieval. Access to the cache is thread-safe, allowing concurrent read and write operations from
         multiple threads without additional synchronization.
-  example: ""
+  example: []
   syntax:
     content: public static ConcurrentDictionary<string, SKRuntimeEffect> CompiledCache
     return:
@@ -200,7 +200,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Will compile your SKSL shader code into SKRuntimeEffect.
-  example: ""
+  example: []
   syntax:
     content: public static SKRuntimeEffect Compile(string shaderCode)
     parameters:
@@ -241,7 +241,7 @@ items:
     Will compile your SKSL shader code into SKRuntimeEffect.
 
     The filename parameter is used for debugging and caching. Do not forget to disable caching if you edit/change shader code at runtime.
-  example: ""
+  example: []
   syntax:
     content: public static SKRuntimeEffect Compile(string shaderCode, string filename, bool useCache = true, Action<string> onError = null)
     parameters:
@@ -1108,4 +1108,3 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-

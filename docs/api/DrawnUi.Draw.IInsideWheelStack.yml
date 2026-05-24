@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called by parent stack inside picker wheel when position changes
-  example: ""
+  example: []
   syntax:
     content: void OnPositionChanged(float offsetRatio, bool isSelected)
     parameters:
@@ -215,4 +215,3 @@ references:
   name: System
   nameWithType: System
   fullName: System
-

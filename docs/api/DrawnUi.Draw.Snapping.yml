@@ -61,7 +61,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by the layout system to round a position translation value applying scale and initial anchor. Pass POINTS only, it wont do its job when receiving pixels!
-  example: ""
+  example: []
   syntax:
     content: public static float SnapPointsToPixel(float initialPosition, float translation, double scale)
     parameters:
@@ -412,4 +412,3 @@ references:
   name: SnapPixelsToPixel
   nameWithType: Snapping.SnapPixelsToPixel
   fullName: DrawnUi.Draw.Snapping.SnapPixelsToPixel
-

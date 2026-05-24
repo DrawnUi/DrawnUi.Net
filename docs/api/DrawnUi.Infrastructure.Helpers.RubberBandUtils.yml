@@ -63,7 +63,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Helpers
   summary: track is the bounds of the possible scrolling offset, for example can be like {0, -1000, 0, 0}
-  example: ""
+  example: []
   syntax:
     content: public static Vector2 ClampOnTrack(Vector2 point, SKRect track, float coeff = 0.55, Vector2? customDims = null)
     parameters:
@@ -189,7 +189,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Helpers
   summary: onEmpty - how much to simulate scrollable area when its zero
-  example: ""
+  example: []
   syntax:
     content: public static float RubberBandClamp(float coord, float dim, RangeF limits, float coeff = 0.275, float onEmpty = 40)
     parameters:
@@ -640,4 +640,3 @@ references:
   - uid: DrawnUi.Draw
     name: Draw
     href: DrawnUi.Draw.html
-

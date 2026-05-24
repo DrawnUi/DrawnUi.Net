@@ -131,7 +131,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
   summary: Adds the coordinates of one Point to another.
-  example: ""
+  example: []
   syntax:
     content: public static Point Add(this Point first, Point second)
     parameters:
@@ -170,7 +170,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
   summary: Gets the center of some touch points.
-  example: ""
+  example: []
   syntax:
     content: public static Point Center(this Point[] touches)
     parameters:
@@ -209,7 +209,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
   summary: Subtracts the coordinates of one Point from another.
-  example: ""
+  example: []
   syntax:
     content: public static Point Subtract(this Point first, Point second)
     parameters:
@@ -601,4 +601,3 @@ references:
   name: Subtract
   nameWithType: PointExtensions.Subtract
   fullName: DrawnUi.Extensions.PointExtensions.Subtract
-

@@ -61,7 +61,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Page index
-  example: ""
+  example: []
   syntax:
     content: public int Index { readonly get; set; }
     parameters: []
@@ -92,7 +92,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Position of the page start
-  example: ""
+  example: []
   syntax:
     content: public SKPoint Position { readonly get; set; }
     parameters: []
@@ -123,7 +123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: This can sometimes be less then the paper size if the content is smaller
-  example: ""
+  example: []
   syntax:
     content: public float Height { readonly get; set; }
     parameters: []
@@ -516,4 +516,3 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-

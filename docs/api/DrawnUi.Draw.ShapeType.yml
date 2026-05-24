@@ -60,7 +60,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Default type for SkiaShape
-  example: ""
+  example: []
   syntax:
     content: Rectangle = 0
     return:
@@ -166,7 +166,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: TODO unimplemented yet
-  example: ""
+  example: []
   syntax:
     content: Squricle = 4
     return:
@@ -194,7 +194,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: Path = 5
     return:
@@ -222,7 +222,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Uses multiple Points
-  example: ""
+  example: []
   syntax:
     content: Polygon = 6
     return:
@@ -250,7 +250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Uses multiple Points
-  example: ""
+  example: []
   syntax:
     content: Line = 7
     return:
@@ -278,7 +278,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: unimplemented
-  example: ""
+  example: []
   syntax:
     content: Custom = 8
     return:
@@ -403,4 +403,3 @@ references:
   name: ShapeType
   nameWithType: ShapeType
   fullName: DrawnUi.Draw.ShapeType
-

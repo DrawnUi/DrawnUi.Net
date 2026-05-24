@@ -34,7 +34,7 @@ items:
     Custom SkiaShape that positions children in a circular arrangement around the wheel circumference.
 
     Handles rotation and positioning calculations for the spinner wheel.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaWheelShape : SkiaShape, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public Class SkiaWheelShape Inherits SkiaShape Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1284,7 +1284,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Gets or sets the current rotation of the wheel in degrees
-  example: ""
+  example: []
   syntax:
     content: public double WheelRotation { get; set; }
     parameters: []
@@ -1342,7 +1342,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Controls the visual orientation direction. False = normal, True = inverted
-  example: ""
+  example: []
   syntax:
     content: public bool InverseVisualRotation { get; set; }
     parameters: []
@@ -1373,7 +1373,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Renders children positioned around the wheel circumference with proper rotation
-  example: ""
+  example: []
   syntax:
     content: protected int RenderViewsListBak(DrawingContext context, IEnumerable<SkiaControl> skiaControls)
     parameters:
@@ -1414,7 +1414,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Renders children positioned around the wheel circumference with proper rotation
-  example: ""
+  example: []
   syntax:
     content: protected override int RenderViewsList(DrawingContext context, IEnumerable<SkiaControl> skiaControls)
     parameters:
@@ -36157,4 +36157,3 @@ references:
   name: RenderViewsList
   nameWithType: SkiaWheelShape.RenderViewsList
   fullName: DrawnUi.Controls.SkiaWheelShape.RenderViewsList
-

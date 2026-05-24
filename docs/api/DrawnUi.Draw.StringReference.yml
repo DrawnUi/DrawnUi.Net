@@ -120,7 +120,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Position inside existing string
-  example: ""
+  example: []
   syntax:
     content: public int StartIndex { readonly get; set; }
     parameters: []
@@ -151,7 +151,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Length inside existing string
-  example: ""
+  example: []
   syntax:
     content: public int Length { readonly get; set; }
     parameters: []
@@ -598,4 +598,3 @@ references:
   name: Length
   nameWithType: StringReference.Length
   fullName: DrawnUi.Draw.StringReference.Length
-

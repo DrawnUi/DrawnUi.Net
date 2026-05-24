@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: No bevel or emboss effect
-  example: ""
+  example: []
   syntax:
     content: None = 0
     return:
@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Raised effect (light on top/left, shadow on bottom/right)
-  example: ""
+  example: []
   syntax:
     content: Bevel = 1
     return:
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pressed in effect (shadow on top/left, light on bottom/right)
-  example: ""
+  example: []
   syntax:
     content: Emboss = 2
     return:
@@ -235,4 +235,3 @@ references:
   name: BevelType
   nameWithType: BevelType
   fullName: DrawnUi.Draw.BevelType
-

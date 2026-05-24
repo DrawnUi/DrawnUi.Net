@@ -38,7 +38,7 @@ items:
     Base OnChangeState swaps the active child to the precreated sprite atomically.
 
     Subclasses can override OnChangeState, call base, then adjust CurrentSprite (e.g., ScaleX).
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaSpriteSet : ContentLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IVisibilityAware, ISkiaGestureListener, IWithContent'
     content.vb: Public Class SkiaSpriteSet Inherits ContentLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IVisibilityAware, ISkiaGestureListener, IWithContent
@@ -1202,7 +1202,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Self measuring, for top controls and those invalidated-redrawn when parents didn't re-measure them
-  example: ""
+  example: []
   syntax:
     content: protected override void MeasureSelf(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -1274,7 +1274,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Current integer state. Setting this triggers OnChangeState.
-  example: ""
+  example: []
   syntax:
     content: public int State { get; set; }
     parameters: []
@@ -1305,7 +1305,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
-  example: ""
+  example: []
   syntax:
     content: public override void InvalidateInternal()
     content.vb: Public Overrides Sub InvalidateInternal()
@@ -1337,7 +1337,7 @@ items:
     Create and register a sprite for a state, preconfiguring Source, Columns, Rows, FPS and Repeat.
 
     If this state equals the current State and no active sprite exists yet, it becomes active immediately.
-  example: ""
+  example: []
   syntax:
     content: public SkiaSpriteSet Define(int state, string source, int columns, int rows, double fps = 15, int repeat = -1, bool autoPlay = true, SpritePlacementConfig placement = null)
     parameters:
@@ -1387,7 +1387,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: The currently active SkiaSprite instance.
-  example: ""
+  example: []
   syntax:
     content: public SkiaSprite CurrentSprite { get; }
     parameters: []
@@ -1429,7 +1429,7 @@ items:
     todo detect if parent is cached somewhere and offset hotbox by cached parent movement offset...
 
     todo think about it baby =) meanwhile just do not set gestures below cached level
-  example: ""
+  example: []
   syntax:
     content: public override SKRect HitBoxAuto { get; }
     parameters: []
@@ -1464,7 +1464,7 @@ items:
     Base: swap active child to the precreated sprite for newState.
 
     Subclasses should call base first, then adjust CurrentSprite (e.g., ScaleX).
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnChangeState(int oldState, int newState)
     parameters:
@@ -34904,4 +34904,3 @@ references:
   name: OnChangeState
   nameWithType: SkiaSpriteSet.OnChangeState
   fullName: DrawnUi.Controls.SkiaSpriteSet.OnChangeState
-

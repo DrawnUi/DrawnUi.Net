@@ -37,7 +37,7 @@ items:
     Unicode block categories for optimized font matching.
 
     Used to prioritize appropriate fonts based on character type.
-  example: ""
+  example: []
   syntax:
     content: public enum UnicodeBlock
     content.vb: Public Enum UnicodeBlock
@@ -66,7 +66,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Basic Latin, extended Latin, common punctuation (U+0000-U+024F)
-  example: ""
+  example: []
   syntax:
     content: Latin = 0
     return:
@@ -94,7 +94,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cyrillic script (U+0400-U+04FF)
-  example: ""
+  example: []
   syntax:
     content: Cyrillic = 1
     return:
@@ -122,7 +122,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Arabic script (U+0600-U+06FF)
-  example: ""
+  example: []
   syntax:
     content: Arabic = 2
     return:
@@ -150,7 +150,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: CJK Unified Ideographs - Chinese, Japanese, Korean (U+4E00-U+9FFF)
-  example: ""
+  example: []
   syntax:
     content: CJK = 3
     return:
@@ -178,7 +178,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Hangul - Korean alphabet (U+AC00-U+D7AF)
-  example: ""
+  example: []
   syntax:
     content: Hangul = 4
     return:
@@ -206,7 +206,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Hiragana and Katakana - Japanese (U+3040-U+30FF)
-  example: ""
+  example: []
   syntax:
     content: Japanese = 5
     return:
@@ -234,7 +234,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Currency symbols (U+20A0-U+20CF, U+00A2-U+00A5)
-  example: ""
+  example: []
   syntax:
     content: Currency = 6
     return:
@@ -262,7 +262,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Emoji and emoticons (U+1F300-U+1F9FF, U+2600-U+26FF)
-  example: ""
+  example: []
   syntax:
     content: Emoji = 7
     return:
@@ -290,7 +290,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Mathematical symbols (U+2200-U+22FF)
-  example: ""
+  example: []
   syntax:
     content: Math = 8
     return:
@@ -318,7 +318,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Unknown or unclassified Unicode block
-  example: ""
+  example: []
   syntax:
     content: Unknown = 9
     return:
@@ -443,4 +443,3 @@ references:
   name: UnicodeBlock
   nameWithType: UnicodeBlock
   fullName: DrawnUi.Draw.UnicodeBlock
-

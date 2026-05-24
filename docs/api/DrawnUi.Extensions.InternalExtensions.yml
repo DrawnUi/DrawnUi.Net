@@ -364,7 +364,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
   summary: Radians to degrees
-  example: ""
+  example: []
   syntax:
     content: public static float ToDegrees(this float radians)
     parameters:
@@ -439,7 +439,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
   summary: The default Skia method is returning false if point is on the bounds, We correct this by custom function.
-  example: ""
+  example: []
   syntax:
     content: public static bool ContainsInclusive(this SKRect rect, SKPoint point)
     parameters:
@@ -478,7 +478,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
   summary: The default Skia method is returning false if point is on the bounds, We correct this by custom function.
-  example: ""
+  example: []
   syntax:
     content: public static bool ContainsInclusive(this SKRect rect, float x, float y)
     parameters:
@@ -1802,4 +1802,3 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
-

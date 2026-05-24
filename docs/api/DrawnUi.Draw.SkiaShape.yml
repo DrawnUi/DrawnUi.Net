@@ -115,7 +115,7 @@ items:
     Use properties like Type, CornerRadius, StrokeWidth, and BackgroundColor to customize appearance.
 
     For complex shapes, use PathData or Points properties to define custom geometries.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaShape : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable'
     content.vb: Public Class SkiaShape Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable
@@ -1287,7 +1287,7 @@ items:
     In XAML, this property can be set with a comma-separated list of values:
 
     StrokePath="3,1" or StrokePath="5,2,1,2"
-  example: ""
+  example: []
   syntax:
     content: >-
       [TypeConverter(typeof(StringToDoubleArrayTypeConverter))]
@@ -1434,7 +1434,7 @@ items:
 
 
     This property must be used with the Bevel property for the effect to be visible.
-  example: ""
+  example: []
   syntax:
     content: public BevelType BevelType { get; set; }
     parameters: []
@@ -1508,7 +1508,7 @@ items:
 
 
     Must be used with the BevelType property set to Bevel or Emboss.
-  example: ""
+  example: []
   syntax:
     content: public SkiaBevel Bevel { get; set; }
     parameters: []
@@ -1539,7 +1539,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Paints the bevel or emboss effect for the shape
-  example: ""
+  example: []
   syntax:
     content: protected virtual void PaintBevelEffect(SkiaDrawingContext ctx, SKRect outRect, SKPoint[] radii, float depth)
     parameters:
@@ -1579,7 +1579,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -1653,7 +1653,7 @@ items:
 
 
     The StrokeWidth property must be set to a non-zero value for the gradient to be visible.
-  example: ""
+  example: []
   syntax:
     content: public SkiaGradient StrokeGradient { get; set; }
     parameters: []
@@ -1727,7 +1727,7 @@ items:
 
 
     Example use case: A floating card shadow effect where the card itself is transparent.
-  example: ""
+  example: []
   syntax:
     content: public bool ClipBackgroundColor { get; set; }
     parameters: []
@@ -1776,7 +1776,7 @@ items:
 
 
     The stroke is always drawn on top of the shape's fill and any child elements.
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty StrokeCapProperty
     return:
@@ -1825,7 +1825,7 @@ items:
 
 
     For Line and Path shapes with sharp angles, Round provides the smoothest appearance.
-  example: ""
+  example: []
   syntax:
     content: public SKStrokeCap StrokeCap { get; set; }
     parameters: []
@@ -1909,7 +1909,7 @@ items:
 
 
     Creative uses include glow effects, neon strokes, or color inversion at edges.
-  example: ""
+  example: []
   syntax:
     content: public SKBlendMode StrokeBlendMode { get; set; }
     parameters: []
@@ -2012,7 +2012,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override this if you need to adjust the measured ContentSize for the parent to adapt to it. For example SkiaShape overrides this to expand by adding the needed size for stroke.
-  example: ""
+  example: []
   syntax:
     content: protected override SKSize GetContentSizeForAutosizeInPixels()
     return:
@@ -2044,7 +2044,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring as absolute layout for passed children
-  example: ""
+  example: []
   syntax:
     content: protected override ScaledSize MeasureContent(IEnumerable<SkiaControl> children, SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -2176,7 +2176,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -2208,7 +2208,7 @@ items:
     Create this control clip for painting content.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: public override SKPath CreateClip(object arguments, bool usePosition, SKPath path = null)
     parameters:
@@ -2321,7 +2321,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void PaintWithShadows(DrawingContext ctx, Action render)
     parameters:
@@ -2354,7 +2354,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override DrawingContext AddPaintArguments(DrawingContext ctx)
     parameters:
@@ -2393,7 +2393,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -2559,7 +2559,7 @@ items:
     The smoothing effect works best with points that form a sequential path and may
 
     not produce expected results with arbitrary point configurations.
-  example: ""
+  example: []
   syntax:
     content: public float SmoothPoints { get; set; }
     parameters: []
@@ -2660,7 +2660,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculates compensated stroke width for curved shapes to fix antialiasing at rounded corners
-  example: ""
+  example: []
   syntax:
     content: protected float GetCompensatedStrokeWidth(float originalStrokeWidth, float scale)
     parameters:
@@ -3517,7 +3517,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: " destination in PIXELS, requests in UNITS. resulting Destination prop will be filed in PIXELS.\r\nDrawUsingRenderObject wil call this among others.."
-  example: ""
+  example: []
   syntax:
     content: public override void Arrange(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -37893,4 +37893,3 @@ references:
   name: SKCanvas
   nameWithType: SKCanvas
   fullName: SkiaSharp.SKCanvas
-

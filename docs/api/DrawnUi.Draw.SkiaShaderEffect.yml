@@ -78,7 +78,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: IPostRendererEffect — XAML-bindable shader effect that uses SkiaShader as its engine.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaShaderEffect : SkiaEffect, INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable<SkiaShaderEffect>, IEquatable<SkiaShaderEffect>'
     content.vb: Public Class SkiaShaderEffect Inherits SkiaEffect Implements INotifyPropertyChanged, IDisposable, IPostRendererEffect, ISkiaEffect, ICanBeUpdatedWithContext, ICanBeUpdated, IComparable, IComparable(Of SkiaShaderEffect), IEquatable(Of SkiaShaderEffect)
@@ -163,7 +163,7 @@ items:
     The shader engine. Override CreateEngine() to provide a subclassed SkiaShader
 
     with custom uniforms or children.
-  example: ""
+  example: []
   syntax:
     content: protected SkiaShader Engine { get; set; }
     parameters: []
@@ -194,7 +194,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Backward-compatible access to the compiled shader.
-  example: ""
+  example: []
   syntax:
     content: protected SKRuntimeEffect CompiledShader { get; }
     parameters: []
@@ -225,7 +225,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Override to return a subclassed SkiaShader with custom uniforms/children.
-  example: ""
+  example: []
   syntax:
     content: protected virtual SkiaShader CreateEngine()
     return:
@@ -283,7 +283,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: ""
+  example: []
   syntax:
     content: public int CompareTo(object obj)
     parameters:
@@ -330,7 +330,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-  example: ""
+  example: []
   syntax:
     content: public int CompareTo(SkiaShaderEffect other)
     parameters:
@@ -370,7 +370,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicates whether the current object is equal to another object of the same type.
-  example: ""
+  example: []
   syntax:
     content: public bool Equals(SkiaShaderEffect other)
     parameters:
@@ -407,7 +407,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the specified object is equal to the current object.
-  example: ""
+  example: []
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -446,7 +446,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Serves as the default hash function.
-  example: ""
+  example: []
   syntax:
     content: public override int GetHashCode()
     return:
@@ -550,7 +550,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Controls how/when the background texture is captured. Default is Always.
-  example: ""
+  example: []
   syntax:
     content: public PostRendererEffectUseBackgroud UseBackground { get; set; }
     parameters: []
@@ -583,7 +583,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: True once the Once-mode snapshot has been captured. Reset to false to re-capture.
-  example: ""
+  example: []
   syntax:
     content: public bool AquiredBackground { get; set; }
     parameters: []
@@ -669,7 +669,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use either context or global Superview background, default is True.
-  example: ""
+  example: []
   syntax:
     content: public bool UseContext { get; set; }
     parameters: []
@@ -730,7 +730,7 @@ items:
     Should create a texture from the current drawing to pass to shader as uniform shader iImage1, default is True.
 
     You need this set to False only if your shader is output-only.
-  example: ""
+  example: []
   syntax:
     content: public bool AutoCreateInputTexture { get; set; }
     parameters: []
@@ -764,7 +764,7 @@ items:
     Blend mode used when drawing the shader effect on the canvas. Default is SrcOver.
 
     For generative overlay effects (UseBackground = Never), use Plus for additive blending.
-  example: ""
+  example: []
   syntax:
     content: public SKBlendMode BlendMode { get; set; }
     parameters: []
@@ -824,7 +824,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Create snapshot from the current parent control drawing state to use as input texture for the shader
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKImage CreateSnapshot(SkiaDrawingContext ctx, SKRect destination)
     parameters:
@@ -866,7 +866,7 @@ items:
     Once    — snapshot taken on first call, frozen thereafter; reset AquiredBackground to re-capture.
 
     Never   — returns null; shader must not require iImage1.
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKImage GetPrimaryTextureImage(SkiaDrawingContext ctx, SKRect destination)
     parameters:
@@ -901,7 +901,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Syncs Effect properties to the engine before uniform creation.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SyncEngineState(SKRect destination)
     parameters:
@@ -932,7 +932,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: EffectPostRenderer
-  example: ""
+  example: []
   syntax:
     content: public virtual void Render(DrawingContext ctx)
     parameters:
@@ -968,7 +968,7 @@ items:
     Checks if image is a new snapshot that needs disposal this frame.
 
     Frozen snapshots are managed by ReleaseFrozenSnapshot; parent cache is never owned.
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool ShouldDisposePreviousTexture(SKImage image)
     parameters:
@@ -1001,7 +1001,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates shader fresh each time - no caching of GPU resources
-  example: ""
+  example: []
   syntax:
     content: public virtual SKShader CreateShader(DrawingContext ctx, SKImage source)
     parameters:
@@ -1035,7 +1035,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool NeedApply { get; }
     parameters: []
@@ -1069,7 +1069,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Normally will be automatically set in Render method from context FrameTimeNanos
-  example: ""
+  example: []
   syntax:
     content: public float TimeSeconds { get; set; }
     parameters: []
@@ -1100,7 +1100,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Shadertoy conventions current mouse position (or drag position)
-  example: ""
+  example: []
   syntax:
     content: public PointF MouseCurrent { get; set; }
     parameters: []
@@ -1131,7 +1131,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Shadertoy conventions where click/drag started. If zero could mean not dragging.
-  example: ""
+  example: []
   syntax:
     content: public PointF MouseInitial { get; set; }
     parameters: []
@@ -1162,7 +1162,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates standard uniforms via engine. Override to add custom uniforms.
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKRuntimeEffectUniforms CreateUniforms(SKRect destination)
     parameters:
@@ -1195,7 +1195,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates texture children via engine. Override to add additional textures.
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKRuntimeEffectChildren CreateTexturesUniforms(SkiaDrawingContext ctx, SKRect destination, SKShader primaryTexture)
     parameters:
@@ -1315,7 +1315,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Compiles the shader code from resource
-  example: ""
+  example: []
   syntax:
     content: protected virtual void CompileShader()
     content.vb: Protected Overridable Sub CompileShader()
@@ -1527,7 +1527,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Changing this directly will force  the shader to recompile
-  example: ""
+  example: []
   syntax:
     content: public string ShaderCode { get; set; }
     parameters: []
@@ -1585,7 +1585,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'FIlename from resources, ex: @"Shaders\blit.sksl"'
-  example: ""
+  example: []
   syntax:
     content: public string ShaderSource { get; set; }
     parameters: []
@@ -1811,7 +1811,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Tile mode for input textures
-  example: ""
+  example: []
   syntax:
     content: public SKShaderTileMode TileMode { get; set; }
     parameters: []
@@ -1841,7 +1841,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnDisposing()
     content.vb: Protected Overrides Sub OnDisposing()
@@ -4228,4 +4228,3 @@ references:
   name: OnDisposing
   nameWithType: SkiaShaderEffect.OnDisposing
   fullName: DrawnUi.Draw.SkiaShaderEffect.OnDisposing
-

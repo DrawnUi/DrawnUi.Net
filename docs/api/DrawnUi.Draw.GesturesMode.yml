@@ -28,7 +28,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by the canvas, do not need this for drawn controls
-  example: ""
+  example: []
   syntax:
     content: public enum GesturesMode
     content.vb: Public Enum GesturesMode
@@ -57,7 +57,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Default
-  example: ""
+  example: []
   syntax:
     content: Disabled = 0
     return:
@@ -85,7 +85,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gestures attached
-  example: ""
+  example: []
   syntax:
     content: Enabled = 1
     return:
@@ -113,7 +113,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Smart lock for working inside native controls like scroll view to share gestures with it if panning not consumed by your controls.
-  example: ""
+  example: []
   syntax:
     content: SoftLock = 2
     return:
@@ -141,7 +141,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Full lock input for self, useful inside scroll view, panning controls like slider etc
-  example: ""
+  example: []
   syntax:
     content: Lock = 3
     return:
@@ -266,4 +266,3 @@ references:
   name: GesturesMode
   nameWithType: GesturesMode
   fullName: DrawnUi.Draw.GesturesMode
-

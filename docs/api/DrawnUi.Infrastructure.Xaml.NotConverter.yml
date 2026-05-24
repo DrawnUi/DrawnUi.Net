@@ -64,7 +64,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
-  example: ""
+  example: []
   syntax:
     content: public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     parameters:
@@ -107,7 +107,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
-  example: ""
+  example: []
   syntax:
     content: public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     parameters:
@@ -724,4 +724,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo
   - name: )
-

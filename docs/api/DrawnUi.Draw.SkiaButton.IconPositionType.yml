@@ -26,7 +26,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Defines the position of an icon relative to the button text
-  example: ""
+  example: []
   syntax:
     content: public enum SkiaButton.IconPositionType
     content.vb: Public Enum SkiaButton.IconPositionType
@@ -55,7 +55,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Icon appears before the text
-  example: ""
+  example: []
   syntax:
     content: Left = 0
     return:
@@ -83,7 +83,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Icon appears after the text
-  example: ""
+  example: []
   syntax:
     content: Right = 1
     return:
@@ -224,4 +224,3 @@ references:
   - uid: DrawnUi.Draw.SkiaButton.IconPositionType
     name: IconPositionType
     href: DrawnUi.Draw.SkiaButton.IconPositionType.html
-

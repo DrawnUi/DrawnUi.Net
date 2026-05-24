@@ -71,7 +71,7 @@ items:
     - Watch for [ClampOffsetImage] CLAMPED! messages to see when pan limits are hit
 
     - The DebugSummary provides comprehensive state when hitting pan limits
-  example: ""
+  example: []
   syntax:
     content: 'public class ZoomContent : ContentLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IVisibilityAware, IWithContent, ISkiaGestureListener'
     content.vb: Public Class ZoomContent Inherits ContentLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IVisibilityAware, IWithContent, ISkiaGestureListener
@@ -1235,7 +1235,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: First Maui will apply bindings to your controls, then it would call OnBindingContextChanged, so beware on not to break bindings.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -1515,7 +1515,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: How much of finger movement will affect zoom change
-  example: ""
+  example: []
   syntax:
     content: public double ZoomSpeed { get; set; }
     parameters: []
@@ -1688,7 +1688,7 @@ items:
     When false (default), panning centers the zoom on the finger position (finger "sticks" to content).
 
     When true, panning moves the content like a scroll view (content moves in same direction as finger).
-  example: ""
+  example: []
   syntax:
     content: public bool InvertPan { get; set; }
     parameters: []
@@ -1817,7 +1817,7 @@ items:
     Computes the scaled destination rectangle and scale for content rendering.
 
     OffsetImage is expected to be in screen/pixel coordinates relative to the viewport.
-  example: ""
+  example: []
   syntax:
     content: public (SKRect ScaledDestination, float Scale) ComputeContentScale(SKRect destination, float scale, SKPoint offsetPixels)
     parameters:
@@ -1860,7 +1860,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: ""
+  example: []
   syntax:
     content: protected override int DrawViews(DrawingContext context)
     parameters:
@@ -1923,7 +1923,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pan offset in screen/pixel coordinates
-  example: ""
+  example: []
   syntax:
     content: protected SKPoint OffsetImage
     return:
@@ -1978,7 +1978,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -2101,7 +2101,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Last ViewportZoom value we are animating from
-  example: ""
+  example: []
   syntax:
     content: protected double LastValue
     return:
@@ -35747,4 +35747,3 @@ references:
   name: InitializeAnimator
   nameWithType: ZoomContent.InitializeAnimator
   fullName: DrawnUi.Draw.ZoomContent.InitializeAnimator
-

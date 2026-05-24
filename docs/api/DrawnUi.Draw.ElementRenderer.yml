@@ -124,7 +124,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Must not be used while rendering, only for createing render object
-  example: ""
+  example: []
   syntax:
     content: protected readonly SkiaControl Element
     return:
@@ -153,7 +153,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be reused for drawing, single threaded only
-  example: ""
+  example: []
   syntax:
     content: public SKPaint PaintWithOpacity { get; protected set; }
     parameters: []
@@ -605,4 +605,3 @@ references:
   name: RenderObject
   nameWithType: RenderObject
   fullName: DrawnUi.Draw.RenderObject
-

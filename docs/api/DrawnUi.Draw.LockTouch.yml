@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pass nothing below and mark all gestures as consumed by this control
-  example: ""
+  example: []
   syntax:
     content: Enabled = 1
     return:
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pass nothing below
-  example: ""
+  example: []
   syntax:
     content: PassNone = 2
     return:
@@ -138,7 +138,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pass only Tapped below
-  example: ""
+  example: []
   syntax:
     content: PassTap = 3
     return:
@@ -166,7 +166,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pass only Tapped and LongPressing below
-  example: ""
+  example: []
   syntax:
     content: PassTapAndLongPress = 4
     return:
@@ -291,4 +291,3 @@ references:
   name: LockTouch
   nameWithType: LockTouch
   fullName: DrawnUi.Draw.LockTouch
-

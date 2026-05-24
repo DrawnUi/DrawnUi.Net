@@ -26,7 +26,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just register this animator to run custom code on every frame creating a kind of game loop if needed.
-  example: ""
+  example: []
   syntax:
     content: 'public class ActionOnTickAnimator : AnimatorBase, ISkiaAnimator, IDisposable'
     content.vb: Public Class ActionOnTickAnimator Inherits AnimatorBase Implements ISkiaAnimator, IDisposable
@@ -92,7 +92,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time in NANOS
-  example: ""
+  example: []
   syntax:
     content: public override bool TickFrame(long frameTimeNanos)
     parameters:
@@ -969,4 +969,3 @@ references:
   - name: " "
   - name: T
   - name: )
-

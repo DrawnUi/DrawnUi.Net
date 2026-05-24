@@ -43,7 +43,7 @@ items:
     value has not changed between frames.
 
     Methods are prefixed with "Guard" to avoid conflicts with SkiaSharp's own instance methods.
-  example: ""
+  example: []
   syntax:
     content: public static class SKPaintExtensions
     content.vb: Public Module SKPaintExtensions
@@ -934,4 +934,3 @@ references:
   name: SKColorFilter
   nameWithType: SKColorFilter
   fullName: SkiaSharp.SKColorFilter
-

@@ -1267,7 +1267,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1324,7 +1324,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void SetContent(SkiaControl view)
     parameters:
@@ -1359,7 +1359,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: ""
+  example: []
   syntax:
     content: protected override int DrawViews(DrawingContext context)
     parameters:
@@ -1452,7 +1452,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -34896,4 +34896,3 @@ references:
   name: Draw
   nameWithType: SkiaShell.ModalWrapper.Draw
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.Draw
-

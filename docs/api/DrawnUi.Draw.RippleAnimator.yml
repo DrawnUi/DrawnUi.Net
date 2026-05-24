@@ -274,7 +274,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In pts relative to control X,Y. These are coords inside the control and not inside the canvas.
-  example: ""
+  example: []
   syntax:
     content: public double X { get; set; }
     parameters: []
@@ -305,7 +305,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In pts relative to control X,Y. These are coords inside the control and not inside the canvas.
-  example: ""
+  example: []
   syntax:
     content: public double Y { get; set; }
     parameters: []
@@ -394,7 +394,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public override void Dispose()
     content.vb: Public Overrides Sub Dispose()
@@ -450,7 +450,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: return true if has drawn something and rendering needs to be applied
-  example: ""
+  example: []
   syntax:
     content: protected override bool OnRendering(DrawingContext context, IDrawnBase control)
     parameters:
@@ -489,7 +489,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: ""
+  example: []
   syntax:
     content: protected override double TransformReportedValue(long deltaT)
     parameters:
@@ -1954,4 +1954,3 @@ references:
   name: TransformReportedValue
   nameWithType: RippleAnimator.TransformReportedValue
   fullName: DrawnUi.Draw.RippleAnimator.TransformReportedValue
-

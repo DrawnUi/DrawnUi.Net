@@ -121,7 +121,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use by the engine
-  example: ""
+  example: []
   syntax:
     content: public bool IsHiddenInViewTree { get; set; }
     parameters: []
@@ -326,7 +326,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void Start(double delayMs = 0)
     parameters:
@@ -362,7 +362,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time in NANOS
-  example: ""
+  example: []
   syntax:
     content: public virtual bool TickFrame(long frameTimeNanos)
     parameters:
@@ -402,7 +402,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: ""
+  example: []
   syntax:
     content: public virtual void Pause()
     content.vb: Public Overridable Sub Pause()
@@ -432,7 +432,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: ""
+  example: []
   syntax:
     content: public virtual void Resume()
     content.vb: Public Overridable Sub [Resume]()
@@ -462,7 +462,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just should not execute on tick
-  example: ""
+  example: []
   syntax:
     content: public bool IsPaused { get; set; }
     parameters: []
@@ -494,7 +494,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void Stop()
     content.vb: Public Overridable Sub [Stop]()
@@ -581,7 +581,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public IDrawnBase Parent { get; protected set; }
     parameters: []
@@ -614,7 +614,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can and will be removed
-  example: ""
+  example: []
   syntax:
     content: public bool IsDeactivated { get; set; }
     parameters: []
@@ -704,7 +704,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public Guid Uid { get; set; }
     parameters: []
@@ -737,7 +737,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public virtual void Dispose()
     content.vb: Public Overridable Sub Dispose()
@@ -798,7 +798,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public bool IsRunning { get; set; }
     parameters: []
@@ -831,7 +831,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Main flag to detect if animator stopped after being started (WasStarted) or stop was just called on an already stopped animator.
-  example: ""
+  example: []
   syntax:
     content: public bool WasStarted { get; protected set; }
     parameters: []
@@ -1599,4 +1599,3 @@ references:
   name: WasStarted
   nameWithType: ISkiaAnimator.WasStarted
   fullName: DrawnUi.Draw.ISkiaAnimator.WasStarted
-

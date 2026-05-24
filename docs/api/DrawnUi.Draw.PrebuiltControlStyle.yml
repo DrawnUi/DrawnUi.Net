@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will select the style upon the current platform
-  example: ""
+  example: []
   syntax:
     content: Platform = 1
     return:
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Apple iOS style
-  example: ""
+  example: []
   syntax:
     content: Cupertino = 2
     return:
@@ -138,7 +138,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Google Android tyle
-  example: ""
+  example: []
   syntax:
     content: Material = 3
     return:
@@ -166,7 +166,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Windows style
-  example: ""
+  example: []
   syntax:
     content: Windows = 4
     return:
@@ -291,4 +291,3 @@ references:
   name: PrebuiltControlStyle
   nameWithType: PrebuiltControlStyle
   fullName: DrawnUi.Draw.PrebuiltControlStyle
-

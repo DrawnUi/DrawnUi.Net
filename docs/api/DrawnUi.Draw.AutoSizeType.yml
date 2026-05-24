@@ -84,7 +84,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This might be faster than FitHorizontal or FillHorizontal for dynamically changing text
-  example: ""
+  example: []
   syntax:
     content: FitFillHorizontal = 1
     return:
@@ -112,7 +112,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This might be faster than FitVertical or FillVertical for dynamically changing text
-  example: ""
+  example: []
   syntax:
     content: FitFillVertical = 2
     return:
@@ -140,7 +140,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: todo FIX NOT WORKING!!! If you have dynamically changing text think about using FitFillHorizontal instead
-  example: ""
+  example: []
   syntax:
     content: FitHorizontal = 3
     return:
@@ -168,7 +168,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you have dynamically changing text think about using FitFillHorizontal instead
-  example: ""
+  example: []
   syntax:
     content: FillHorizontal = 4
     return:
@@ -196,7 +196,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you have dynamically changing text think about using FitFillVertical instead
-  example: ""
+  example: []
   syntax:
     content: FitVertical = 5
     return:
@@ -224,7 +224,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you have dynamically changing text think about using FitFillVertical instead
-  example: ""
+  example: []
   syntax:
     content: FillVertical = 6
     return:
@@ -349,4 +349,3 @@ references:
   name: AutoSizeType
   nameWithType: AutoSizeType
   fullName: DrawnUi.Draw.AutoSizeType
-

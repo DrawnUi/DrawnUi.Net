@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Return true if need force invalidation on next frame
-  example: ""
+  example: []
   syntax:
     content: Func<SKSurface, SKRect, bool> OnDraw { get; set; }
     parameters: []
@@ -704,4 +704,3 @@ references:
   name: Guid
   nameWithType: Guid
   fullName: System.Guid
-

@@ -27,7 +27,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Helper methods for using theme bindings in code-behind
-  example: ""
+  example: []
   syntax:
     content: public static class ThemeBindings
     content.vb: Public Module ThemeBindings
@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Sets up a theme binding in code-behind
-  example: ""
+  example: []
   syntax:
     content: public static ThemeBinding SetThemeBinding(BindableObject target, BindableProperty property, object lightValue, object darkValue, object defaultValue = null)
     parameters:
@@ -108,7 +108,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the current theme value without creating a binding
-  example: ""
+  example: []
   syntax:
     content: public static T GetThemeValue<T>(T lightValue, T darkValue, T defaultValue = default)
     parameters:
@@ -151,7 +151,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fluent extension method for setting theme bindings
-  example: ""
+  example: []
   syntax:
     content: 'public static TControl WithThemeBinding<TControl>(this TControl control, BindableProperty property, object lightValue, object darkValue, object defaultValue = null) where TControl : BindableObject'
     parameters:
@@ -532,4 +532,3 @@ references:
   name: TControl
   nameWithType: TControl
   fullName: TControl
-

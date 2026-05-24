@@ -52,7 +52,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Return true if comsumed, false will use default system behaivour.
-  example: ""
+  example: []
   syntax:
     content: bool OnShellGoBack(bool animate)
     parameters:
@@ -203,4 +203,3 @@ references:
   name: System
   nameWithType: System
   fullName: System
-

@@ -1185,7 +1185,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: First Maui will apply bindings to your controls, then it would call OnBindingContextChanged, so beware on not to break bindings.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -1213,7 +1213,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public void UpdateContext(WheelCellInfo ctx)
     parameters:
@@ -34411,4 +34411,3 @@ references:
   name: WheelCellInfo
   nameWithType: WheelCellInfo
   fullName: DrawnUi.Controls.WheelCellInfo
-

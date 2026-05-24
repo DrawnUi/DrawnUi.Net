@@ -133,7 +133,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -166,7 +166,7 @@ items:
     Perform the restore now, instead of waiting for the Dispose.
 
     Will only do this once.
-  example: ""
+  example: []
   syntax:
     content: public void Restore()
     content.vb: Public Sub Restore()
@@ -598,4 +598,3 @@ references:
   name: Restore
   nameWithType: SKAutoCanvasRestoreFixed.Restore
   fullName: DrawnUi.Views.SKAutoCanvasRestoreFixed.Restore
-

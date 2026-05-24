@@ -1079,7 +1079,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: To avoid reloading same files multiple times..
-  example: ""
+  example: []
   syntax:
     content: public static ConcurrentDictionary<string, string> CachedAnimations
     return:
@@ -1138,7 +1138,7 @@ items:
     When true, Stop() and OnFinished() will leave the animation at the current frame instead of seeking to DefaultFrame.
 
     Start() will then resume from that same frame rather than restarting from the beginning.
-  example: ""
+  example: []
   syntax:
     content: public bool StopAtCurrentFrame { get; set; }
     parameters: []
@@ -1168,7 +1168,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -1196,7 +1196,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void OnFinished()
     content.vb: Protected Overrides Sub OnFinished()
@@ -1251,7 +1251,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1279,7 +1279,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorSeeking(double frame)
     parameters:
@@ -1313,7 +1313,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void ApplyDefaultFrame()
     content.vb: Protected Overrides Sub ApplyDefaultFrame()
@@ -1403,7 +1403,7 @@ items:
     When true (default), changing IsOn will immediately seek to the appropriate frame.
 
     When false, IsOn state is only applied during animation playback.
-  example: ""
+  example: []
   syntax:
     content: public bool ApplyIsOnWhenNotPlaying { get; set; }
     parameters: []
@@ -1468,7 +1468,7 @@ items:
     When false, displays DefaultFrame when stopped.
 
     Perfect for animated toggles, checkboxes, or switch controls.
-  example: ""
+  example: []
   syntax:
     content: public bool IsOn { get; set; }
     parameters: []
@@ -1526,7 +1526,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: For the case IsOn = True. What frame should we display at start or when stopped. 0 (START) is default, can specify other number. if value is less than 0 then will seek to the last available frame (END). You can also set `StopAtCurrentFrame` to true to never rewind to this value.
-  example: ""
+  example: []
   syntax:
     content: public int DefaultFrameWhenOn { get; set; }
     parameters: []
@@ -1589,7 +1589,7 @@ items:
     This provides a quick way to theme animations without modifying the source file.
 
     For multiple color replacements, use the Colors collection instead.
-  example: ""
+  example: []
   syntax:
     content: public Color ColorTint { get; set; }
     parameters: []
@@ -1708,7 +1708,7 @@ items:
     Supports web URLs, native file system paths (file://), and bundled resources from Resources/Raw folder.
 
     Example: "Lottie/animation.json" loads from Resources/Raw/Lottie/animation.json
-  example: ""
+  example: []
   syntax:
     content: public string Source { get; set; }
     parameters: []
@@ -1738,7 +1738,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void RenderFrame(DrawingContext ctx)
     parameters:
@@ -1804,7 +1804,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This is not replacing current animation, only pre-loading! Use SetAnimation after that if needed.
-  example: ""
+  example: []
   syntax:
     content: public Task<Animation> LoadSource(string fileName)
     parameters:
@@ -1917,7 +1917,7 @@ items:
     Return json to be used.
 
     This is not called by LoadAnimationFromJson.
-  example: ""
+  example: []
   syntax:
     content: protected virtual string OnJsonLoaded(string json)
     parameters:
@@ -1953,7 +1953,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This is not replacing current animation, use SetAnimation for that.
-  example: ""
+  example: []
   syntax:
     content: public Animation LoadAnimationFromJson(string json)
     parameters:
@@ -2025,7 +2025,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -2054,7 +2054,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Override this to react on animator running.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorUpdated(double value)
     parameters:
@@ -2089,7 +2089,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void ApplySpeed()
     content.vb: Protected Overrides Sub ApplySpeed()
@@ -2117,7 +2117,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorInitializing()
     content.vb: Protected Overrides Sub OnAnimatorInitializing()
@@ -2145,7 +2145,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override bool CheckCanStartAnimator()
     return:
@@ -2175,7 +2175,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorStarting()
     content.vb: Protected Overrides Sub OnAnimatorStarting()
@@ -32504,4 +32504,3 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-

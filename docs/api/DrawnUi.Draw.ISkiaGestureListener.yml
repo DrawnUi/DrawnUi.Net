@@ -62,7 +62,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called when a gesture is detected.
-  example: ""
+  example: []
   syntax:
     content: ISkiaGestureListener OnSkiaGestureEvent(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -336,7 +336,7 @@ items:
     This will be called only for views registered at Superview.FocusedChild.
 
     The view must return true of false to indicate if it accepts focus.
-  example: ""
+  example: []
   syntax:
     content: bool OnFocusChanged(bool focus)
     parameters:
@@ -697,4 +697,3 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-

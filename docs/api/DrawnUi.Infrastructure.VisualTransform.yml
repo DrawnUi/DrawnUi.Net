@@ -34,7 +34,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Will enhance this in the future to include more properties
-  example: ""
+  example: []
   syntax:
     content: public class VisualTransform
     content.vb: Public Class VisualTransform
@@ -218,7 +218,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Units as from TranslationX and TranslationY
-  example: ""
+  example: []
   syntax:
     content: public SKPoint Translation { get; set; }
     parameters: []
@@ -249,7 +249,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: Units as from ScaleX and ScaleY
-  example: ""
+  example: []
   syntax:
     content: public SKPoint Scale { get; set; }
     parameters: []
@@ -338,7 +338,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: All input rects are in pixels
-  example: ""
+  example: []
   syntax:
     content: public VisualTransformNative ToNative(SKRect rect, float scale)
     parameters:
@@ -872,4 +872,3 @@ references:
   name: VisualTransformNative
   nameWithType: VisualTransformNative
   fullName: DrawnUi.Infrastructure.VisualTransformNative
-

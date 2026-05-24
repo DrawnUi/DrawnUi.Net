@@ -1180,7 +1180,7 @@ items:
     this way you would visually apply only the latest most actual value instead of
 
     maybe freezing the UI for too many heavy to be rendered changes.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task ApplySelectedIndex(int index)
     parameters:
@@ -1269,7 +1269,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Specify the type of the tab to be included, other types will just render and not be treated as tabs. Using this so we can included any elements inside this control to create any design.
-  example: ""
+  example: []
   syntax:
     content: public Type TabType { get; set; }
     parameters: []
@@ -1494,7 +1494,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1522,7 +1522,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildAdded(SkiaControl child)
     parameters:
@@ -1553,7 +1553,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildRemoved(SkiaControl child)
     parameters:
@@ -35109,4 +35109,3 @@ references:
   name: OnTabReselected
   nameWithType: SkiaTabsSelector.OnTabReselected
   fullName: DrawnUi.Controls.SkiaTabsSelector.OnTabReselected
-

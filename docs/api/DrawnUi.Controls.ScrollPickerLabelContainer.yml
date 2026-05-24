@@ -1189,7 +1189,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: First Maui will apply bindings to your controls, then it would call OnBindingContextChanged, so beware on not to break bindings.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -1414,7 +1414,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Called by parent stack inside picker wheel when position changes
-  example: ""
+  example: []
   syntax:
     content: public void OnPositionChanged(float offsetRatio, bool isSelected)
     parameters:
@@ -34690,4 +34690,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
-

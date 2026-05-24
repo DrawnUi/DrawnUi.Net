@@ -58,7 +58,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns true if has drawn control itsself, otherwise it will be drawn over it
-  example: ""
+  example: []
   syntax:
     content: ChainEffectResult Draw(DrawingContext ctx, Action<DrawingContext> drawControl)
     parameters:
@@ -375,4 +375,3 @@ references:
   name: System
   nameWithType: System
   fullName: System
-

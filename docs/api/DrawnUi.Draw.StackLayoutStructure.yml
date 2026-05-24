@@ -185,7 +185,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will measure children and build appropriate stack structure for the layout
-  example: ""
+  example: []
   syntax:
     content: public abstract ScaledSize Build(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -875,4 +875,3 @@ references:
   name: CreateWrapper
   nameWithType: StackLayoutStructure.CreateWrapper
   fullName: DrawnUi.Draw.StackLayoutStructure.CreateWrapper
-

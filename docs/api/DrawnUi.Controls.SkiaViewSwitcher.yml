@@ -101,7 +101,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Display and hide views, eventually animating them
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaViewSwitcher : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IDefinesViewport, IVisibilityAware'
     content.vb: Public Class SkiaViewSwitcher Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IDisposable, IDefinesViewport, IVisibilityAware
@@ -1221,7 +1221,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -1424,7 +1424,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1452,7 +1452,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -1566,7 +1566,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildAdded(SkiaControl view)
     parameters:
@@ -1597,7 +1597,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -1666,7 +1666,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Get tab view or tab top subview if has navigation stack
-  example: ""
+  example: []
   syntax:
     content: public SkiaViewSwitcher.NavigationStackEntry GetTopView(int selectedIndex)
     parameters:
@@ -2010,7 +2010,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Set IsVisible, reset transforms and opacity and send OnAppeared event
-  example: ""
+  example: []
   syntax:
     content: protected virtual void RevealNavigationView(SkiaViewSwitcher.NavigationStackEntry newVisibleView)
     parameters:
@@ -2042,7 +2042,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Must be launched on main thread only !!!
-  example: ""
+  example: []
   syntax:
     content: public Task PopTabToRoot()
     return:
@@ -2098,7 +2098,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: for navigation inside pseudo tabs
-  example: ""
+  example: []
   syntax:
     content: public Dictionary<int, List<SkiaViewSwitcher.NavigationStackEntry>> NavigationStacks
     return:
@@ -2323,7 +2323,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This can sometimes be omitted,
-  example: ""
+  example: []
   syntax:
     content: public override void OnAppearing()
     content.vb: Public Overrides Sub OnAppearing()
@@ -2353,7 +2353,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisappearing()
     content.vb: Public Overrides Sub OnDisappearing()
@@ -2384,7 +2384,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This event can sometimes be called without prior OnAppearing
-  example: ""
+  example: []
   syntax:
     content: public override void OnAppeared()
     content.vb: Public Overrides Sub OnAppeared()
@@ -3254,7 +3254,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -3394,7 +3394,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public ScaledRect Viewport { get; }
     parameters: []
@@ -3426,7 +3426,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public void UpdateVisibleIndex()
     content.vb: Public Sub UpdateVisibleIndex()
@@ -3455,7 +3455,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public RelativePositionType TrackIndexPosition { get; }
     parameters: []
@@ -3487,7 +3487,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public void ScrollTo(float x, float y, float maxTimeSecs, bool clamp)
     parameters:
@@ -37846,4 +37846,3 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-

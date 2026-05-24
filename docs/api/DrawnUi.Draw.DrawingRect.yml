@@ -835,7 +835,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines whether the specified object is equal to the current object.
-  example: ""
+  example: []
   syntax:
     content: public override bool Equals(object obj)
     parameters:
@@ -874,7 +874,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Serves as the default hash function.
-  example: ""
+  example: []
   syntax:
     content: public override int GetHashCode()
     return:
@@ -1456,4 +1456,3 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
-

@@ -104,7 +104,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For public set use Attach/Detach
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl Parent { get; protected set; }
     parameters: []
@@ -216,7 +216,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -246,7 +246,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You MUST clear any cached resources as soon as this is called. Not on next draw!
-  example: ""
+  example: []
   syntax:
     content: public virtual void Update()
     content.vb: Public Overridable Sub Update()
@@ -1674,4 +1674,3 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-

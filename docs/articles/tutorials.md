@@ -10,13 +10,10 @@ Use [MAUI Tutorials](maui/tutorials.md) are available today and include the step
 
 Blazor, OpenTK, and `DrawnUi.Net` use the same core DrawnUI concepts and control tree patterns, but the host setup is different.
 
-For now, use the MAUI tutorials for the control and layout concepts, then switch to the setup guide for your target host:
+For now, use the MAUI tutorials for the control and layout concepts, then switch to samples for your target host:
 
-- [OpenTK Samples](opentk/samples.md)
-- [Blazor Overview With Samples](blazor/index.md)
 - [Blazor Samples](blazor/samples.md)
-- [Blazor Capabilities](blazor/capabilities.md)
-- [DrawnUI for OpenTK](opentk/index.md)
+- [OpenTK Samples](opentk/samples.md)
 - [DrawnUi.Net Overview](net/index.md)
 
 ## How to read the current tutorials

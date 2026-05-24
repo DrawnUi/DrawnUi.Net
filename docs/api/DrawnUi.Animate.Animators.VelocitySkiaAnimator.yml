@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
   summary: Basically a modified port of Android FlingAnimation
-  example: ""
+  example: []
   syntax:
     content: 'public class VelocitySkiaAnimator : SkiaValueAnimator, ISkiaAnimator, IDisposable'
     content.vb: Public Class VelocitySkiaAnimator Inherits SkiaValueAnimator Implements ISkiaAnimator, IDisposable
@@ -143,7 +143,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
   summary: Must be over 0
-  example: ""
+  example: []
   syntax:
     content: public float mMinOverscrollValue { get; set; }
     parameters: []
@@ -174,7 +174,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
   summary: Must be over 0
-  example: ""
+  example: []
   syntax:
     content: public float mMaxOverscrollValue { get; set; }
     parameters: []
@@ -436,7 +436,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
-  example: ""
+  example: []
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -464,7 +464,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
-  example: ""
+  example: []
   syntax:
     content: protected override void ClampOnStart()
     content.vb: Protected Overrides Sub ClampOnStart()
@@ -525,7 +525,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: ""
+  example: []
   syntax:
     content: protected override bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -663,7 +663,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
   summary: The bigger the sooner animation will slow down, default is 1.0
-  example: ""
+  example: []
   syntax:
     content: public float Friction { get; set; }
     parameters: []
@@ -694,7 +694,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Animate.Animators
   summary: This is set after we are done so we will know at OnStop if we have some energy left
-  example: ""
+  example: []
   syntax:
     content: public float RemainingVelocity { get; set; }
     parameters: []
@@ -2385,4 +2385,3 @@ references:
   name: SkiaControl
   nameWithType: SkiaControl
   fullName: DrawnUi.Draw.SkiaControl
-

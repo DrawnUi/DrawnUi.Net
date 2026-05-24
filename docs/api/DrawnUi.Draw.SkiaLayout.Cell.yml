@@ -220,7 +220,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: A combination of all the measurement types in the columns this cell spans
-  example: ""
+  example: []
   syntax:
     content: public GridLengthType ColumnGridLengthType { get; }
     parameters: []
@@ -251,7 +251,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: A combination of all the measurement types in the rows this cell spans
-  example: ""
+  example: []
   syntax:
     content: public GridLengthType RowGridLengthType { get; }
     parameters: []
@@ -965,4 +965,3 @@ references:
   name: NeedsKnownMeasurePass
   nameWithType: SkiaLayout.Cell.NeedsKnownMeasurePass
   fullName: DrawnUi.Draw.SkiaLayout.Cell.NeedsKnownMeasurePass
-

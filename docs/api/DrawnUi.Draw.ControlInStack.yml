@@ -107,7 +107,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Index inside enumerator that was passed for measurement OR index inside ItemsSource
-  example: ""
+  example: []
   syntax:
     content: public int ControlIndex { get; set; }
     parameters: []
@@ -138,7 +138,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measure result
-  example: ""
+  example: []
   syntax:
     content: public ScaledSize Measured { get; set; }
     parameters: []
@@ -198,7 +198,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Available area for Arrange
-  example: ""
+  example: []
   syntax:
     content: public SKRect Area { get; set; }
     parameters: []
@@ -229,7 +229,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: PIXELS, this is to hold our arranged layout
-  example: ""
+  example: []
   syntax:
     content: public SKRect Destination { get; set; }
     parameters: []
@@ -289,7 +289,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Was drawn during the last frame
-  example: ""
+  example: []
   syntax:
     content: public bool WasLastDrawn { get; set; }
     parameters: []
@@ -320,7 +320,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This will be null for recycled views
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl View { get; set; }
     parameters: []
@@ -351,7 +351,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Was used for actual drawing
-  example: ""
+  example: []
   syntax:
     content: public DrawingRect Drawn { get; set; }
     parameters: []
@@ -382,7 +382,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use by your custom controls
-  example: ""
+  example: []
   syntax:
     content: public Vector2 Offset { get; set; }
     parameters: []
@@ -558,7 +558,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cell's own visibility state (independent of viewport visibility)
-  example: ""
+  example: []
   syntax:
     content: public bool IsCollapsed { get; set; }
     parameters: []
@@ -1114,4 +1114,3 @@ references:
   name: IsCollapsed
   nameWithType: ControlInStack.IsCollapsed
   fullName: DrawnUi.Draw.ControlInStack.IsCollapsed
-

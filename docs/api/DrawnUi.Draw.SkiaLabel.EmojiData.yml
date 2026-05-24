@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns the length of EmojiModifierSequence if found at index ins
-  example: ""
+  example: []
   syntax:
     content: public static int IsEmojiModifierSequence(string text, int index)
     parameters:
@@ -632,4 +632,3 @@ references:
   name: IsEmoji
   nameWithType: SkiaLabel.EmojiData.IsEmoji
   fullName: DrawnUi.Draw.SkiaLabel.EmojiData.IsEmoji
-

@@ -25,7 +25,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Ported from google android
-  example: ""
+  example: []
   syntax:
     content: 'public class ViscousFluidInterpolator : IInterpolator'
     content.vb: Public Class ViscousFluidInterpolator Implements IInterpolator
@@ -65,7 +65,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public float GetInterpolation(float input)
     parameters:
@@ -485,4 +485,3 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-

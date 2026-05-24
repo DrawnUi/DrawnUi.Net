@@ -1205,7 +1205,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void SetContent(SkiaControl view)
     parameters:
@@ -1294,7 +1294,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutReady()
     content.vb: Protected Overrides Sub OnLayoutReady()
@@ -1322,7 +1322,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -1353,7 +1353,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -34838,4 +34838,3 @@ references:
   name: GestureEventProcessingInfo
   nameWithType: GestureEventProcessingInfo
   fullName: DrawnUi.Draw.GestureEventProcessingInfo
-

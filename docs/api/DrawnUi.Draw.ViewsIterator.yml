@@ -33,7 +33,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To iterate over virtual views
-  example: ""
+  example: []
   syntax:
     content: 'public class ViewsIterator : IEnumerable<SkiaControl>, IEnumerable, IDisposable'
     content.vb: Public Class ViewsIterator Implements IEnumerable(Of SkiaControl), IEnumerable, IDisposable
@@ -292,7 +292,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns an enumerator that iterates through the collection.
-  example: ""
+  example: []
   syntax:
     content: public IEnumerator<SkiaControl> GetEnumerator()
     return:
@@ -325,7 +325,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -1076,4 +1076,3 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
-

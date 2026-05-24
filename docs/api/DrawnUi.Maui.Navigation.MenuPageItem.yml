@@ -842,7 +842,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Maui.Navigation
   summary: if module is disable the use this key to disable this item
-  example: ""
+  example: []
   syntax:
     content: public string Module { get; set; }
     parameters: []
@@ -2606,4 +2606,3 @@ references:
   nameWithType.vb: MenuPageItem.New
   fullName.vb: DrawnUi.Maui.Navigation.MenuPageItem.New
   name.vb: New
-

@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Safe InvalidateSurface() call. If nanos not specified will generate ittself
-  example: ""
+  example: []
   syntax:
     content: bool Update(long nanos = 0)
     parameters:
@@ -303,4 +303,3 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
-

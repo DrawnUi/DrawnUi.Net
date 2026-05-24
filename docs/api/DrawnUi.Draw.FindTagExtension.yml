@@ -105,7 +105,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public object ProvideValue(IServiceProvider serviceProvider)
     parameters:
@@ -583,4 +583,3 @@ references:
   name: IServiceProvider
   nameWithType: IServiceProvider
   fullName: System.IServiceProvider
-

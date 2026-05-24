@@ -68,7 +68,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Minimum milliseconds between snapshot rebuilds. Default 1000ms.
-  example: ""
+  example: []
   syntax:
     content: public long MinUpdateIntervalMs { get; set; }
     parameters: []
@@ -703,4 +703,3 @@ references:
   name: UnregisterSubtree
   nameWithType: SkiaAccessibilityManager.UnregisterSubtree
   fullName: DrawnUi.Views.SkiaAccessibilityManager.UnregisterSubtree
-

@@ -1130,7 +1130,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1159,7 +1159,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public override void OnVisibilityChanged(bool newvalue)
     parameters:
@@ -1194,7 +1194,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void SetImageSource(ImageSource source)
     parameters:
@@ -1258,7 +1258,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -31578,4 +31578,3 @@ references:
   name: SkiaGif
   nameWithType: SkiaGif
   fullName: DrawnUi.Controls.SkiaGif
-

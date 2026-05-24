@@ -1328,7 +1328,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: ""
+  example: []
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -1412,7 +1412,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1467,7 +1467,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1495,7 +1495,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void PostArrange(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -1535,7 +1535,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -34936,4 +34936,3 @@ references:
   name: DrawingContext
   nameWithType: DrawingContext
   fullName: DrawnUi.Draw.DrawingContext
-

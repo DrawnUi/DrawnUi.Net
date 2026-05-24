@@ -96,7 +96,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Preloads an image from the given source.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task PreloadImage(ImageSource source, CancellationTokenSource cancel = null)
     parameters:
@@ -242,7 +242,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Normally we load local images in a synchronous manner, and remote in async one. Set this to true if you want to load load images async too.
-  example: ""
+  example: []
   syntax:
     content: public static bool LoadLocalAsync
     return:
@@ -271,7 +271,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If set to true will not return clones for same sources, but will just return the existing cached SKBitmap reference. Useful if you have a lot on images reusing same sources, but you have to be carefull not to dispose the shared image. SkiaImage is aware of this setting and will keep a cached SKBitmap from being disposed.
-  example: ""
+  example: []
   syntax:
     content: public static bool ReuseBitmaps
     return:
@@ -300,7 +300,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Caching provider setting
-  example: ""
+  example: []
   syntax:
     content: public static int CacheLongevitySecs
     return:
@@ -329,7 +329,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Convention for local files saved in native platform. Shared resources from Resources/Raw/ do not need this prefix.
-  example: ""
+  example: []
   syntax:
     content: public static string NativeFilePrefix
     return:
@@ -586,7 +586,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Direct load, without any queue or manager cache, for internal use. Please use LoadImageManagedAsync instead.
-  example: ""
+  example: []
   syntax:
     content: public virtual Task<SKBitmap> LoadImageAsync(ImageSource source, CancellationToken token)
     parameters:
@@ -624,7 +624,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Uses queue and manager cache
-  example: ""
+  example: []
   syntax:
     content: public virtual Task<SKBitmap> LoadImageManagedAsync(ImageSource source, CancellationTokenSource token, LoadPriority priority = LoadPriority.Normal)
     parameters:
@@ -762,7 +762,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns false if key already exists
-  example: ""
+  example: []
   syntax:
     content: public bool AddToCache(string uri, SKBitmap bitmap, int cacheLongevitySecs)
     parameters:
@@ -805,7 +805,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Return bitmap from cache if existing, respects the `ReuseBitmaps` flag.
-  example: ""
+  example: []
   syntax:
     content: public SKBitmap GetFromCache(string url)
     parameters:
@@ -843,7 +843,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used my manager for cache organization. You should use `GetFromCache` for custom controls instead.
-  example: ""
+  example: []
   syntax:
     content: public SKBitmap GetFromCacheInternal(string url)
     parameters:
@@ -945,7 +945,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -1045,7 +1045,7 @@ items:
     On MAUI the stream is returned directly without buffering.
 
     Mirrors <code>SkiaImageManager.OpenStreamAsync</code> on Blazor.
-  example: ""
+  example: []
   syntax:
     content: public static Task<Stream> OpenStreamAsync(string source, CancellationToken cancel = default)
     parameters:
@@ -1088,7 +1088,7 @@ items:
     Default is true for iOS/Windows (where it's the fallback when Nuke/Glide is disabled),
 
     false for Android (uses Glide retry).
-  example: ""
+  example: []
   syntax:
     content: public static bool EnableHttpRetry
     return:
@@ -1120,7 +1120,7 @@ items:
     Maximum number of retry attempts for HTTP image loading.
 
     Only applies when EnableHttpRetry is true.
-  example: ""
+  example: []
   syntax:
     content: public static int HttpRetryMaxAttempts
     return:
@@ -2124,4 +2124,3 @@ references:
   name: UriImageSource
   nameWithType: UriImageSource
   fullName: Microsoft.Maui.Controls.UriImageSource
-

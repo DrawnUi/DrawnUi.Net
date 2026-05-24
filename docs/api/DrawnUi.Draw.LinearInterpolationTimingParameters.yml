@@ -100,7 +100,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public float DurationSecs { get; }
     parameters: []
@@ -132,7 +132,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public Vector2 ValueAt(float offsetSecs)
     parameters:
@@ -624,4 +624,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-

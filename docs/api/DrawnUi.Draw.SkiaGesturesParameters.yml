@@ -123,7 +123,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public static SkiaGesturesParameters Create(TouchActionResult action, TouchActionEventArgs args, float renderingScale)
     parameters:
@@ -600,4 +600,3 @@ references:
   name: Empty
   nameWithType: SkiaGesturesParameters.Empty
   fullName: DrawnUi.Draw.SkiaGesturesParameters.Empty
-

@@ -65,7 +65,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: bool TickFrame(long frameTimeNanos)
     parameters:
@@ -216,7 +216,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: ""
+  example: []
   syntax:
     content: void Pause()
     content.vb: Sub Pause()
@@ -244,7 +244,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: ""
+  example: []
   syntax:
     content: void Resume()
     content.vb: Sub [Resume]()
@@ -333,7 +333,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can and will be removed
-  example: ""
+  example: []
   syntax:
     content: bool IsDeactivated { get; set; }
     parameters: []
@@ -364,7 +364,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just should not execute on tick
-  example: ""
+  example: []
   syntax:
     content: bool IsPaused { get; set; }
     parameters: []
@@ -395,7 +395,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use by the engine
-  example: ""
+  example: []
   syntax:
     content: bool IsHiddenInViewTree { get; set; }
     parameters: []
@@ -673,4 +673,3 @@ references:
   name: IsHiddenInViewTree
   nameWithType: ISkiaAnimator.IsHiddenInViewTree
   fullName: DrawnUi.Draw.ISkiaAnimator.IsHiddenInViewTree
-

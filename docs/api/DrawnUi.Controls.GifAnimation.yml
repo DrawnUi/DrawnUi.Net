@@ -132,7 +132,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Current frame bitmap, can change with SeekFrame method
-  example: ""
+  example: []
   syntax:
     content: public SKBitmap Frame { get; protected set; }
     parameters: []
@@ -163,7 +163,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Select frame. If you pass a negative value the last frame will be set.
-  example: ""
+  example: []
   syntax:
     content: public void SeekFrame(int frame)
     parameters:
@@ -406,7 +406,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public virtual void Dispose()
     content.vb: Public Overridable Sub Dispose()
@@ -1023,4 +1023,3 @@ references:
     name: IO
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.io
-

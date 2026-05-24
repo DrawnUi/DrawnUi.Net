@@ -190,7 +190,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Animate several tasks at the same time with WhenAll
-  example: ""
+  example: []
   syntax:
     content: public static Task AnimateWith(this SkiaControl control, params Func<SkiaControl, Task>[] animations)
     parameters:
@@ -755,4 +755,3 @@ references:
   name: Action
   nameWithType: Action
   fullName: System.Action
-

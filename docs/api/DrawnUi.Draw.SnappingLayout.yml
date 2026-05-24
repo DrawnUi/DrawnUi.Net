@@ -1257,7 +1257,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1286,7 +1286,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: There are the bounds the scroll offset can go to.. This are NOT the bounds of the whole content.
-  example: ""
+  example: []
   syntax:
     content: protected SKRect ContentOffsetBounds { get; set; }
     parameters: []
@@ -1355,7 +1355,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called for manual finger panning
-  example: ""
+  example: []
   syntax:
     content: protected virtual Vector2 ClampOffsetWithRubberBand(float x, float y)
     parameters:
@@ -1396,7 +1396,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Using this instead of RenderingViewport
-  example: ""
+  example: []
   syntax:
     content: protected SKRect Viewport { get; set; }
     parameters: []
@@ -1427,7 +1427,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: There are the bounds the scroll offset can go to.. This are NOT the bounds of the whole content.
-  example: ""
+  example: []
   syntax:
     content: public virtual SKRect GetContentOffsetBounds()
     return:
@@ -1550,7 +1550,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Return an anchor depending on direction and strength of of the velocity
-  example: ""
+  example: []
   syntax:
     content: public virtual Vector2 SelectNextAnchor(Vector2 origin, Vector2 velocity)
     parameters:
@@ -1588,7 +1588,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 0.2 - Part of the distance between snap points the velocity need to cover to trigger going to the next snap point. NOT a bindable property (yet).
-  example: ""
+  example: []
   syntax:
     content: public double SnapDistanceRatio { get; set; }
     parameters: []
@@ -1791,7 +1791,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: todo calc upon measured size + prop for speed
-  example: ""
+  example: []
   syntax:
     content: protected virtual Vector2 GetAutoVelocity(Vector2 displacement)
     parameters:
@@ -1826,7 +1826,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool ScrollToOffset(Vector2 targetOffset, Vector2 velocity, bool animate)
     parameters:
@@ -1895,7 +1895,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Render(DrawingContext context)
     parameters:
@@ -2214,7 +2214,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be open/closed by gestures along with code-behind, default is true
-  example: ""
+  example: []
   syntax:
     content: public bool RespondsToGestures { get; set; }
     parameters: []
@@ -2272,7 +2272,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will ignore gestures of the wrong direction, like if this Orientation is Horizontal will ignore gestures with vertical direction velocity
-  example: ""
+  example: []
   syntax:
     content: public bool IgnoreWrongDirection { get; set; }
     parameters: []
@@ -2471,7 +2471,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Invokes TransitionChanged event
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnTransitionChanged()
     content.vb: Public Overridable Sub OnTransitionChanged()
@@ -2526,7 +2526,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If Bounce is enabled this basically controls how less the scroll will bounce when displaced from limit by finger or inertia. Default is 0.8.
-  example: ""
+  example: []
   syntax:
     content: public double RubberDamping { get; set; }
     parameters: []
@@ -2587,7 +2587,7 @@ items:
     If velocity is near 0 define how much we multiply the auto-velocity used to animate snappoing point.
 
     For example when in carousel you cancel the swipe and release finger..
-  example: ""
+  example: []
   syntax:
     content: public double AutoVelocityMultiplyPts { get; set; }
     parameters: []
@@ -2645,7 +2645,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If Bounce is enabled this basically controls how far from the limit can the scroll be elastically offset by finger or inertia. Default is 0.15.
-  example: ""
+  example: []
   syntax:
     content: public double RubberEffect { get; set; }
     parameters: []
@@ -36184,4 +36184,3 @@ references:
   name: RubberEffect
   nameWithType: SnappingLayout.RubberEffect
   fullName: DrawnUi.Draw.SnappingLayout.RubberEffect
-

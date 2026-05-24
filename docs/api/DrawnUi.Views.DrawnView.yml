@@ -527,7 +527,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Returns an enumerator that iterates through the collection.
-  example: ""
+  example: []
   syntax:
     content: public IEnumerator<IView> GetEnumerator()
     return:
@@ -560,7 +560,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Adds an item to the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public void Add(IView item)
     parameters:
@@ -598,7 +598,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Removes all items from the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public virtual void Clear()
     content.vb: Public Overridable Sub Clear()
@@ -632,7 +632,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Determines whether the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref> contains a specific value.
-  example: ""
+  example: []
   syntax:
     content: public bool Contains(IView item)
     parameters:
@@ -669,7 +669,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Copies the elements of the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref> to an <xref href="System.Array" data-throw-if-not-resolved="false"></xref>, starting at a particular <xref href="System.Array" data-throw-if-not-resolved="false"></xref> index.
-  example: ""
+  example: []
   syntax:
     content: public void CopyTo(IView[] array, int arrayIndex)
     parameters:
@@ -719,7 +719,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Removes the first occurrence of a specific object from the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public bool Remove(IView item)
     parameters:
@@ -760,7 +760,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Gets the number of elements contained in the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public int Count { get; }
     parameters: []
@@ -794,7 +794,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Gets a value indicating whether the <xref href="System.Collections.Generic.ICollection%601" data-throw-if-not-resolved="false"></xref> is read-only.
-  example: ""
+  example: []
   syntax:
     content: public bool IsReadOnly { get; }
     parameters: []
@@ -828,7 +828,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Determines the index of a specific item in the <xref href="System.Collections.Generic.IList%601" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: public int IndexOf(IView item)
     parameters:
@@ -865,7 +865,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Inserts an item to the <xref href="System.Collections.Generic.IList%601" data-throw-if-not-resolved="false"></xref> at the specified index.
-  example: ""
+  example: []
   syntax:
     content: public void Insert(int index, IView item)
     parameters:
@@ -912,7 +912,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Removes the <xref href="System.Collections.Generic.IList%601" data-throw-if-not-resolved="false"></xref> item at the specified index.
-  example: ""
+  example: []
   syntax:
     content: public void RemoveAt(int index)
     parameters:
@@ -956,7 +956,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Gets or sets the element at the specified index.
-  example: ""
+  example: []
   syntax:
     content: public IView this[int index] { get; set; }
     parameters:
@@ -1059,7 +1059,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanging(HandlerChangingEventArgs args)
     parameters:
@@ -1093,7 +1093,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanged()
     content.vb: Protected Overrides Sub OnHandlerChanged()
@@ -1271,7 +1271,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Force redrawing, without invalidating the measured size
-  example: ""
+  example: []
   syntax:
     content: public virtual void Update()
     content.vb: Public Overridable Sub Update()
@@ -1387,7 +1387,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public virtual bool IsVisibleInViewTree()
     return:
@@ -1451,7 +1451,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: This is needed by layout to track which child changed to sometimes avoid recalculating other children
-  example: ""
+  example: []
   syntax:
     content: public virtual void InvalidateByChild(SkiaControl child)
     parameters:
@@ -1484,7 +1484,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: To track dirty area when Updating parent
-  example: ""
+  example: []
   syntax:
     content: public virtual void UpdateByChild(SkiaControl child)
     parameters:
@@ -1522,7 +1522,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -1617,7 +1617,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Postpone the action to be executed before the next frame being drawn. Exception-safe.
-  example: ""
+  example: []
   syntax:
     content: public void PostponeExecutionBeforeDraw(Action action, long key)
     parameters:
@@ -1654,7 +1654,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Postpone the action to be executed after the current frame is drawn. Exception-safe.
-  example: ""
+  example: []
   syntax:
     content: public void PostponeExecutionAfterDraw(Action action)
     parameters:
@@ -1771,7 +1771,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: For native controls over Canvas to be notified after every of their position
-  example: ""
+  example: []
   syntax:
     content: public Dictionary<SkiaControl, bool> RenderingSubscribers
     return:
@@ -1800,7 +1800,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: SetVisualTransform will be called after every frame
-  example: ""
+  example: []
   syntax:
     content: public void SubscribeToRenderingFinished(SkiaControl control)
     parameters:
@@ -1860,7 +1860,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public void RegisterGestureListener(ISkiaGestureListener gestureListener)
     parameters:
@@ -1892,7 +1892,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public void UnregisterGestureListener(ISkiaGestureListener gestureListener)
     parameters:
@@ -1952,7 +1952,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Children we should check for touch hits
-  example: ""
+  example: []
   syntax:
     content: public SortedGestureListeners GestureListeners { get; }
     parameters: []
@@ -1982,7 +1982,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public SKRect DrawingRect { get; }
     parameters: []
@@ -2014,7 +2014,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public void AddAnimator(ISkiaAnimator animator)
     parameters:
@@ -2046,7 +2046,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public void RemoveAnimator(Guid uid)
     parameters:
@@ -2082,7 +2082,7 @@ items:
     Called by a control that whats to be constantly animated or doesn't anymore,
 
     so we know whether we should refresh canvas non-stop
-  example: ""
+  example: []
   syntax:
     content: public bool RegisterAnimator(ISkiaAnimator animator)
     parameters:
@@ -2116,7 +2116,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public void UnregisterAnimator(Guid uid)
     parameters:
@@ -2148,7 +2148,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public virtual IEnumerable<ISkiaAnimator> UnregisterAllAnimatorsByType(Type type)
     parameters:
@@ -2214,7 +2214,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: TODO maybe use renderedNode tree
-  example: ""
+  example: []
   syntax:
     content: public virtual IEnumerable<ISkiaAnimator> SetViewTreeVisibilityByParent(SkiaControl parent, bool state)
     parameters:
@@ -2322,7 +2322,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Executed after the rendering
-  example: ""
+  example: []
   syntax:
     content: public List<IOverlayEffect> PostAnimators { get; }
     parameters: []
@@ -2358,7 +2358,7 @@ items:
     Tracking controls that what to be animated right now so we constantly refresh
 
     canvas until there is none left
-  example: ""
+  example: []
   syntax:
     content: public ConcurrentDictionary<Guid, ISkiaAnimator> AnimatingControls { get; }
     parameters: []
@@ -2841,7 +2841,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Underlying drawn views need measurement
-  example: ""
+  example: []
   syntax:
     content: protected bool NeedMeasureDrawn { get; set; }
     parameters: []
@@ -2872,7 +2872,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Invoked when IsHiddenInViewTree changes
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnCanRenderChanged(bool state)
     parameters:
@@ -2933,7 +2933,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Set this to true if you do not want the canvas to be redrawn as transparent and showing content below the canvas (splash?..) when UpdateLocks is True
-  example: ""
+  example: []
   syntax:
     content: public bool StopDrawingWhenUpdateIsLocked { get; set; }
     parameters: []
@@ -3021,7 +3021,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public virtual void InvalidateViewport()
     content.vb: Public Overridable Sub InvalidateViewport()
@@ -3050,7 +3050,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public virtual void Repaint()
     content.vb: Public Overridable Sub Repaint()
@@ -3106,7 +3106,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: A very important tracking prop to avoid saturating main thread with too many updates
-  example: ""
+  example: []
   syntax:
     content: protected long InvalidatedCanvas { get; set; }
     parameters: []
@@ -3194,7 +3194,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Will safely destroy existing if any
-  example: ""
+  example: []
   syntax:
     content: protected void CreateSkiaView()
     content.vb: Protected Sub CreateSkiaView()
@@ -3273,7 +3273,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public bool IsDisposing { get; set; }
     parameters: []
@@ -3335,7 +3335,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -3444,7 +3444,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Makes the control dirty, in need to be remeasured and rendered but this doesn't call Update, it's up yo you
-  example: ""
+  example: []
   syntax:
     content: public virtual void Invalidate()
     content.vb: Public Overridable Sub Invalidate()
@@ -3474,7 +3474,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: If need the re-measure all parents because child-auto-size has changed
-  example: ""
+  example: []
   syntax:
     content: public void InvalidateParents()
     content.vb: Public Sub InvalidateParents()
@@ -3536,7 +3536,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: We need to invalidate children maui changed our storyboard size
-  example: ""
+  example: []
   syntax:
     content: public void InvalidateChildren()
     content.vb: Public Sub InvalidateChildren()
@@ -3682,7 +3682,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public virtual bool ShouldInvalidateByChildren { get; }
     parameters: []
@@ -3714,7 +3714,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public int UpdateLocks { get; set; }
     parameters: []
@@ -3747,7 +3747,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -3940,7 +3940,7 @@ items:
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
 
     If applyPosition is false will create clip without using drawing posiition, like if was drawing at 0,0.
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPath CreateClip(object arguments, bool usePosition, SKPath path = null)
     parameters:
@@ -3982,7 +3982,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public string Tag { get; set; }
     parameters: []
@@ -4015,7 +4015,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: destination in PIXELS, requests in UNITS. resulting Destination prop will be filed in PIXELS.
-  example: ""
+  example: []
   syntax:
     content: public SKRect CalculateLayout(SKRect destination, double widthRequest, double heightRequest, double scale = 1)
     parameters:
@@ -4061,7 +4061,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: destination in PIXELS, requests in UNITS. resulting Destination prop will be filed in PIXELS.
-  example: ""
+  example: []
   syntax:
     content: public virtual void Arrange(SKRect destination, double widthRequest, double heightRequest, double scale = 1)
     parameters:
@@ -4104,7 +4104,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public ScaledSize MeasuredSize { get; set; }
     parameters: []
@@ -4173,7 +4173,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: The virtual view needs native measurement
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool NeedMeasure { get; set; }
     parameters: []
@@ -4294,7 +4294,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public bool IsDisposed { get; protected set; }
     parameters: []
@@ -4358,7 +4358,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Can use this to manage double buffering to detect if we are in the drawing thread or in background.
-  example: ""
+  example: []
   syntax:
     content: public int DrawingThreadId { get; protected set; }
     parameters: []
@@ -4418,7 +4418,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: OnDrawSurface will call that
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<SkiaDrawingContext?> WasDrawn
     return:
@@ -4447,7 +4447,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: OnDrawSurface will call that
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<SkiaDrawingContext?> WillDraw
     return:
@@ -4476,7 +4476,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: OnDrawSurface will call that if never been drawn yet
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler<SkiaDrawingContext?> WillFirstTimeDraw
     return:
@@ -4565,7 +4565,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Underlying surface and engine are ready to render
-  example: ""
+  example: []
   syntax:
     content: public bool CanRender { get; }
     parameters: []
@@ -4770,7 +4770,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: For non templated simple subviews
-  example: ""
+  example: []
   syntax:
     content: public IReadOnlyList<SkiaControl> GetOrderedSubviews()
     return:
@@ -4801,7 +4801,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: To make GetOrderedSubviews() regenerate next result instead of using cached
-  example: ""
+  example: []
   syntax:
     content: public void InvalidateViewsList()
     content.vb: Public Sub InvalidateViewsList()
@@ -4858,7 +4858,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Frame started rendering nanoseconds
-  example: ""
+  example: []
   syntax:
     content: public long FrameTime { get; protected set; }
     parameters: []
@@ -4889,7 +4889,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Actual FPS
-  example: ""
+  example: []
   syntax:
     content: public double CanvasFps { get; }
     parameters: []
@@ -4920,7 +4920,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Average FPS
-  example: ""
+  example: []
   syntax:
     content: public double FPS { get; protected set; }
     parameters: []
@@ -5064,7 +5064,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Create surface, if impossible to create a GPU one when required then will return CPU surface. Use ReturnSurface to recycle properly.
-  example: ""
+  example: []
   syntax:
     content: public SKSurface CreateSurface(int width, int height, bool isGpu)
     parameters:
@@ -5108,7 +5108,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Will Dispose if GPU of recycle CPU-one to be reused later.
-  example: ""
+  example: []
   syntax:
     content: public void ReturnSurface(SKSurface surface)
     parameters:
@@ -5139,7 +5139,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public void DisposeObject(IDisposable resource, string caller = null)
     parameters:
@@ -5374,7 +5374,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: For debugging purposes check if dont have concurrent threads
-  example: ""
+  example: []
   syntax:
     content: public int DrawingThreads { get; protected set; }
     parameters: []
@@ -5541,7 +5541,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Ensures offscreen rendering queue is running
-  example: ""
+  example: []
   syntax:
     content: public void KickOffscreenCacheRendering()
     content.vb: Public Sub KickOffscreenCacheRendering()
@@ -5569,7 +5569,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Push an offscreen rendering command without blocking the UI thread.
-  example: ""
+  example: []
   syntax:
     content: public void PushToOffscreenRendering(SkiaControl control, CancellationToken cancel = default)
     parameters:
@@ -5748,7 +5748,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public float RenderingScale { get; set; }
     parameters: []
@@ -5808,7 +5808,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Whether is using hardware acceleration or software rendering
-  example: ""
+  example: []
   syntax:
     content: public RenderingModeType RenderingMode { get; set; }
     parameters: []
@@ -5866,7 +5866,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: If this is check you view will be refreshed even off-screen or hidden
-  example: ""
+  example: []
   syntax:
     content: public bool CanRenderOffScreen { get; set; }
     parameters: []
@@ -5897,7 +5897,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Indicates that it is allowed to be rendered by engine, internal use. Will check IsHiddenInViewTree.
-  example: ""
+  example: []
   syntax:
     content: public bool CanDraw { get; }
     parameters: []
@@ -5932,7 +5932,7 @@ items:
     Indicates that view is either hidden or offscreen.
 
     This disables rendering. If you don't set CanRenderOffScreen to true
-  example: ""
+  example: []
   syntax:
     content: public bool IsHiddenInViewTree { get; set; }
     parameters: []
@@ -5972,7 +5972,7 @@ items:
     even if it is hidden in view tree, for example for debugging purposes
 
     or if you want to render something only on screen shot or something like that.
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool OnChangingtIsHiddenInViewTree(bool value)
     parameters:
@@ -6101,7 +6101,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public SKRect Destination { get; protected set; }
     parameters: []
@@ -6200,7 +6200,7 @@ items:
   namespace: DrawnUi.Views
   summary: Invoked whenever the binding context of the <xref href="Microsoft.Maui.Controls.View" data-throw-if-not-resolved="false"></xref> changes.
   remarks: This method can be overridden to add class handling for this event. Overrides must call the base method.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -6229,7 +6229,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: For code-behind access of children, XAML is using Children property
-  example: ""
+  example: []
   syntax:
     content: public List<SkiaControl> Views { get; }
     parameters: []
@@ -6320,7 +6320,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Directly adds a view to the control, without any layouting. Use this instead of Views.Add() to avoid memory leaks etc
-  example: ""
+  example: []
   syntax:
     content: public void AddSubView(SkiaControl control)
     parameters:
@@ -6506,7 +6506,7 @@ items:
     Directly removes a view from the control, without any layouting.
 
     Use this instead of Views.Remove() to avoid memory leaks etc
-  example: ""
+  example: []
   syntax:
     content: public void RemoveSubView(SkiaControl control)
     parameters:
@@ -6621,7 +6621,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public bool ClipEffects { get; set; }
     parameters: []
@@ -6934,7 +6934,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Internal call by control, after reporting will affect FocusedChild but will not get FocusedItemChanged as it was its own call
-  example: ""
+  example: []
   syntax:
     content: public void ReportFocus(ISkiaGestureListener value, ISkiaGestureListener setter = null)
     parameters:
@@ -6999,7 +6999,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Is set upon the consumer of the DOWN gesture. Calls ReportFocus methos when set.
-  example: ""
+  example: []
   syntax:
     content: public ISkiaGestureListener FocusedChild { get; set; }
     parameters: []
@@ -7030,7 +7030,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: >-
       [Obsolete("Used by Update() when Super.UseLegacyLoop is True")]
@@ -7071,7 +7071,7 @@ items:
   namespace: DrawnUi.Views
   summary: Raises the (internal) <code>ParentSet</code> event.
   remarks: Will set the <xref href="Microsoft.Maui.Controls.NavigableElement.NavigationProxy?text=NavigationProxy%27s" data-throw-if-not-resolved="false"></xref> inner navigation object to closest topmost element capable of handling navigation calls.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnParentSet()
     content.vb: Protected Overrides Sub OnParentSet()
@@ -7189,7 +7189,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Clip using internal custom settings of the control
-  example: ""
+  example: []
   syntax:
     content: public virtual void ClipSmart(SKCanvas canvas, SKPath path, SKClipOperation operation = SKClipOperation.Intersect)
     parameters:
@@ -16767,4 +16767,3 @@ references:
   name: SKClipOperation
   nameWithType: SKClipOperation
   fullName: SkiaSharp.SKClipOperation
-

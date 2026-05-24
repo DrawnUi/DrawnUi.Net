@@ -103,7 +103,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Inserts an item into the collection at the specified index.
-  example: ""
+  example: []
   syntax:
     content: protected override void InsertItem(int index, TextSpan item)
     parameters:
@@ -142,7 +142,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Replaces the element at the specified index.
-  example: ""
+  example: []
   syntax:
     content: protected override void SetItem(int index, TextSpan item)
     parameters:
@@ -181,7 +181,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Removes all items from the collection.
-  example: ""
+  example: []
   syntax:
     content: protected override void ClearItems()
     content.vb: Protected Overrides Sub ClearItems()
@@ -2980,4 +2980,3 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.observablecollection-1.clearitems
   - name: (
   - name: )
-

@@ -181,7 +181,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This will draw with destination corrected by offset that it had when was recorded
-  example: ""
+  example: []
   syntax:
     content: public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint)
     parameters:
@@ -219,7 +219,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Stores the canvas-relative draw position(x, y), not the actual destination rect, these are relative offsets for the drawing operation, not absolute screen position.
-  example: ""
+  example: []
   syntax:
     content: public SKRect LastDrawnAt
     return:
@@ -248,7 +248,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Actual destination rect where cache was drawn (for gesture coordinate translation)
-  example: ""
+  example: []
   syntax:
     content: public SKRect LastDestination
     return:
@@ -277,7 +277,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will draw at exact x,y coordinated without any adjustments
-  example: ""
+  example: []
   syntax:
     content: public void Draw(SKCanvas canvas, float x, float y, SKPaint paint)
     parameters:
@@ -424,7 +424,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: An existing surface was reused for creating this object
-  example: ""
+  example: []
   syntax:
     content: public bool SurfaceIsRecycled { get; set; }
     parameters: []
@@ -600,7 +600,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -802,7 +802,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public ObjectAliveType IsAlive { get; set; }
     parameters: []
@@ -1547,4 +1547,3 @@ references:
   name: ObjectAliveType
   nameWithType: ObjectAliveType
   fullName: DrawnUi.Draw.ObjectAliveType
-

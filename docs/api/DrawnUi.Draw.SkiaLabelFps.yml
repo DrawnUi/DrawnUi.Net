@@ -1163,7 +1163,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can and will be removed
-  example: ""
+  example: []
   syntax:
     content: public bool IsDeactivated { get; set; }
     parameters: []
@@ -1196,7 +1196,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Just should not execute on tick
-  example: ""
+  example: []
   syntax:
     content: public bool IsPaused { get; set; }
     parameters: []
@@ -1229,7 +1229,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For internal use by the engine
-  example: ""
+  example: []
   syntax:
     content: public bool IsHiddenInViewTree { get; set; }
     parameters: []
@@ -1262,7 +1262,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: ""
+  example: []
   syntax:
     content: public virtual void Pause()
     content.vb: Public Overridable Sub Pause()
@@ -1292,7 +1292,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by ui, please use play stop for manual control
-  example: ""
+  example: []
   syntax:
     content: public virtual void Resume()
     content.vb: Public Overridable Sub [Resume]()
@@ -1321,7 +1321,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void OnParentChanged(IDrawnBase newvalue, IDrawnBase oldvalue)
     parameters:
@@ -1355,7 +1355,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: First Maui will apply bindings to your controls, then it would call OnBindingContextChanged, so beware on not to break bindings.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnBindingContextChanged()
     content.vb: Protected Overrides Sub OnBindingContextChanged()
@@ -1384,7 +1384,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = "")
     parameters:
@@ -1475,7 +1475,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -1507,7 +1507,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public bool TickFrame(long frameTimeNanos)
     parameters:
@@ -1546,7 +1546,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public bool IsRunning { get; set; }
     parameters: []
@@ -1578,7 +1578,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public bool WasStarted { get; }
     parameters: []
@@ -1614,7 +1614,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1642,7 +1642,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public void Stop()
     content.vb: Public Sub [Stop]()
@@ -1671,7 +1671,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public void Start(double delayMs = 0)
     parameters:
@@ -33888,4 +33888,3 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
-

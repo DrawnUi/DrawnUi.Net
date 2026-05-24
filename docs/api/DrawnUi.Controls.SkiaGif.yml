@@ -1057,7 +1057,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: For standalone use
-  example: ""
+  example: []
   syntax:
     content: public SkiaGif()
     content.vb: Public Sub New()
@@ -1140,7 +1140,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Marks the current measure of an element as invalidated.
-  example: ""
+  example: []
   syntax:
     content: protected override void InvalidateMeasure()
     content.vb: Protected Overrides Sub InvalidateMeasure()
@@ -1169,7 +1169,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: For building custom controls
-  example: ""
+  example: []
   syntax:
     content: public SkiaGif(SkiaImage display)
     parameters:
@@ -1202,7 +1202,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override SkiaControl GetAnimatorParent()
     return:
@@ -1232,7 +1232,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void RenderFrame(DrawingContext ctx)
     parameters:
@@ -1264,7 +1264,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Override this to react on animator running.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorUpdated(double value)
     parameters:
@@ -1299,7 +1299,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorSeeking(double time)
     parameters:
@@ -1333,7 +1333,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void OnAnimatorInitializing()
     content.vb: Protected Overrides Sub OnAnimatorInitializing()
@@ -1361,7 +1361,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void ApplySpeed()
     content.vb: Protected Overrides Sub ApplySpeed()
@@ -1479,7 +1479,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void Start(int delayMs = 0)
     parameters:
@@ -1594,7 +1594,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This is not replacing current animation, only pre-loading! Use SetAnimation after that if needed.
-  example: ""
+  example: []
   syntax:
     content: public Task<GifAnimation> LoadSource(string fileName)
     parameters:
@@ -31094,4 +31094,3 @@ references:
   name: TransformAspect
   nameWithType: TransformAspect
   fullName: DrawnUi.Draw.TransformAspect
-

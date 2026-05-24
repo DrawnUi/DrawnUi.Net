@@ -288,7 +288,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public float DurationSecs { get; }
     parameters: []
@@ -321,7 +321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: time is in seconds
-  example: ""
+  example: []
   syntax:
     content: public Vector2 ValueAt(float offsetSecs)
     parameters:
@@ -1055,4 +1055,3 @@ references:
   name: DistanceToSegment
   nameWithType: DecelerationTimingVectorParameters.DistanceToSegment
   fullName: DrawnUi.Draw.DecelerationTimingVectorParameters.DistanceToSegment
-

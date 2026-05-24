@@ -182,7 +182,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Position inside existing span
-  example: ""
+  example: []
   syntax:
     content: public int StartIndex { readonly get; set; }
     parameters: []
@@ -213,7 +213,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Length inside existing span
-  example: ""
+  example: []
   syntax:
     content: public int Length { readonly get; set; }
     parameters: []
@@ -762,4 +762,3 @@ references:
   - name: " "
   - name: T
   - name: )
-

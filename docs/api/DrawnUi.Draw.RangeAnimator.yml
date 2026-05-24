@@ -253,7 +253,7 @@ items:
     Update mValue using time distance between rendered frames.
 
     Return true if anims is finished.
-  example: ""
+  example: []
   syntax:
     content: protected override bool UpdateValue(long deltaT, long deltaFromStart)
     parameters:
@@ -294,7 +294,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: ""
+  example: []
   syntax:
     content: protected override double TransformReportedValue(long deltaT)
     parameters:
@@ -1599,4 +1599,3 @@ references:
   name: TransformReportedValue
   nameWithType: RangeAnimator.TransformReportedValue
   fullName: DrawnUi.Draw.RangeAnimator.TransformReportedValue
-

@@ -331,7 +331,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public double NeededHeight { get; set; }
     parameters: []
@@ -365,7 +365,7 @@ items:
   namespace: DrawnUi.Controls
   summary: Returns the minimum size that an element needs in order to be displayed on the device.
   remarks: If the minimum size that the element needs in order to be displayed on the device is larger than can be accommodated by <code class="paramref">widthConstraint</code> and <code class="paramref">heightConstraint</code>, the return value may represent a rectangle that is larger in either one or both of those parameters.
-  example: ""
+  example: []
   syntax:
     content: >-
       [Obsolete("Use Microsoft.Maui.Size instead.")]
@@ -423,7 +423,7 @@ items:
   namespace: DrawnUi.Controls
   summary: Allows subclasses to implement custom Arrange logic during a controls layout pass.
   remarks: Subclasses will still want to call <xref href="Microsoft.Maui.Controls.VisualElement.ArrangeOverride(Microsoft.Maui.Graphics.Rect)" data-throw-if-not-resolved="false"></xref> on the base class or call <xref href="Microsoft.Maui.IViewHandler.PlatformArrange(Microsoft.Maui.Graphics.Rect)" data-throw-if-not-resolved="false"></xref> on the <xref href="Microsoft.Maui.Controls.VisualElement.Handler" data-throw-if-not-resolved="false"></xref> .
-  example: ""
+  example: []
   syntax:
     content: protected override Size ArrangeOverride(Rect bounds)
     parameters:
@@ -486,7 +486,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: WIth 1 will behave like an ordinary Entry, with -1 (auto) or explicitly set you get an Editor
-  example: ""
+  example: []
   syntax:
     content: public int MaxLines { get; set; }
     parameters: []
@@ -5633,4 +5633,3 @@ references:
   name: ReturnType
   nameWithType: ReturnType
   fullName: Microsoft.Maui.ReturnType
-

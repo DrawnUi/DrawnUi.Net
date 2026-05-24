@@ -55,7 +55,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This can sometimes be omitted,
-  example: ""
+  example: []
   syntax:
     content: void OnAppearing()
     content.vb: Sub OnAppearing()
@@ -83,7 +83,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This event can sometimes be called without prior OnAppearing
-  example: ""
+  example: []
   syntax:
     content: void OnAppeared()
     content.vb: Sub OnAppeared()
@@ -277,4 +277,3 @@ references:
   name: OnDisappearing
   nameWithType: IVisibilityAware.OnDisappearing
   fullName: DrawnUi.Draw.IVisibilityAware.OnDisappearing
-

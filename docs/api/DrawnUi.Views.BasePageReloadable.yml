@@ -35,7 +35,7 @@ items:
     Base class for a page with canvas, supports C# HotReload for building UI with code (not XAML).
 
     Override `Build()`, see examples.
-  example: ""
+  example: []
   syntax:
     content: 'public class BasePageReloadable : DrawnUiBasePage, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration<Page>, ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable'
     content.vb: Public Class BasePageReloadable Inherits DrawnUiBasePage Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration(Of Page), ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable
@@ -362,7 +362,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanged()
     content.vb: Protected Overrides Sub OnHandlerChanged()
@@ -420,7 +420,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Reload code-behind constructed page
-  example: ""
+  example: []
   syntax:
     content: protected virtual void ReloadUi(Type[] obj)
     parameters:
@@ -455,7 +455,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Build code-behind constructed page
-  example: ""
+  example: []
   syntax:
     content: public virtual void Build()
     content.vb: Public Overridable Sub Build()
@@ -483,7 +483,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -6016,4 +6016,3 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-

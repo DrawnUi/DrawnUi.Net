@@ -1289,7 +1289,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Min velocity in points/sec to flee/swipe when finger is up
-  example: ""
+  example: []
   syntax:
     content: public static float ThesholdSwipeOnUp
     return:
@@ -1318,7 +1318,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To filter micro-gestures while manually panning
-  example: ""
+  example: []
   syntax:
     content: public static float ScrollVelocityThreshold
     return:
@@ -1347,7 +1347,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time for the snapping animations as well as the scroll to top etc animations..
-  example: ""
+  example: []
   syntax:
     content: public static float SystemAnimationTimeSecs
     return:
@@ -1379,7 +1379,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1436,7 +1436,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void UpdateVisibleIndex()
     content.vb: Public Overridable Sub UpdateVisibleIndex()
@@ -1522,7 +1522,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should the header stay in place when content is scrolling
-  example: ""
+  example: []
   syntax:
     content: public bool HeaderSticky { get; set; }
     parameters: []
@@ -2281,7 +2281,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applyed to RefreshView
-  example: ""
+  example: []
   syntax:
     content: public float RefreshDistanceLimit { get; set; }
     parameters: []
@@ -2339,7 +2339,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applyed to RefreshView, distance in points where the refresh view will stop moving and stay here animating
-  example: ""
+  example: []
   syntax:
     content: public float RefreshShowDistance { get; set; }
     parameters: []
@@ -2543,7 +2543,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Units
-  example: ""
+  example: []
   syntax:
     content: public Vector2 OverscrollDistance { get; set; }
     parameters: []
@@ -2657,7 +2657,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: There are the bounds the scroll offset can go to.. This is NOT the bounds for the whole content.
-  example: ""
+  example: []
   syntax:
     content: protected SKRect ContentOffsetBounds { get; set; }
     parameters: []
@@ -2688,7 +2688,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used to clamp while panning while finger is down
-  example: ""
+  example: []
   syntax:
     content: protected virtual Vector2 ClampOffsetWithRubberBand(float x, float y, SKRect contentOffsetBounds)
     parameters:
@@ -2825,7 +2825,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If disabled will not scroll using gestures. Scrolling will still be possible by code.
-  example: ""
+  example: []
   syntax:
     content: public bool RespondsToGestures { get; set; }
     parameters: []
@@ -2883,7 +2883,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If disabled will not scroll using gestures. Scrolling will still be possible by code.
-  example: ""
+  example: []
   syntax:
     content: public bool CanScrollUsingHeader { get; set; }
     parameters: []
@@ -2940,7 +2940,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool IsGestureForChild(ISkiaGestureListener listener, float x, float y)
     parameters:
@@ -3096,7 +3096,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool UsesRenderingTree { get; }
     parameters: []
@@ -3182,7 +3182,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fling with deceleration
-  example: ""
+  example: []
   syntax:
     content: protected ScrollFlingAnimator _animatorFlingX
     return:
@@ -3211,7 +3211,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fling with deceleration
-  example: ""
+  example: []
   syntax:
     content: protected ScrollFlingAnimator _animatorFlingY
     return:
@@ -3240,7 +3240,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Direct scroller for ordered scroll, snap etc
-  example: ""
+  example: []
   syntax:
     content: protected RangeAnimator _scrollerX
     return:
@@ -3269,7 +3269,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Direct scroller for ordered scroll, snap etc
-  example: ""
+  example: []
   syntax:
     content: protected RangeAnimator _scrollerY
     return:
@@ -3298,7 +3298,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Units
-  example: ""
+  example: []
   syntax:
     content: protected float _scrollMinX
     return:
@@ -3327,7 +3327,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Units
-  example: ""
+  example: []
   syntax:
     content: protected float _scrollMinY
     return:
@@ -3463,7 +3463,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: POINTS per sec
-  example: ""
+  example: []
   syntax:
     content: protected float snapMinimumVelocity
     return:
@@ -3492,7 +3492,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ToDo adapt this to same logic as ScrollLooped has !
-  example: ""
+  example: []
   syntax:
     content: public static readonly BindableProperty BouncesProperty
     return:
@@ -3521,7 +3521,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should the scroll bounce at edges. Set to false if you want this scroll to let the parent SkiaDrawer respond to scroll when the child scroll reached bounds.
-  example: ""
+  example: []
   syntax:
     content: public bool Bounces { get; set; }
     parameters: []
@@ -3579,7 +3579,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If Bounce is enabled this basically controls how less the scroll will bounce when displaced from limit by finger or inertia. Default is 0.55.
-  example: ""
+  example: []
   syntax:
     content: public double RubberDamping { get; set; }
     parameters: []
@@ -3637,7 +3637,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If Bounce is enabled this basically controls how far from the limit can the scroll be elastically offset by finger or inertia. Default is 0.55.
-  example: ""
+  example: []
   syntax:
     content: public double RubberEffect { get; set; }
     parameters: []
@@ -3751,7 +3751,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For snap and ordered scrolling
-  example: ""
+  example: []
   syntax:
     content: public int AutoScrollingSpeedMs { get; set; }
     parameters: []
@@ -3789,7 +3789,7 @@ items:
     Usually you would set higher friction for ScrollView-like scrolls and much lower for CollectionView-like scrolls (0.1 or 0.2).
 
     For a picker: 05 - 0.9.
-  example: ""
+  example: []
   syntax:
     content: public float FrictionScrolled { get; set; }
     parameters: []
@@ -3874,7 +3874,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will ignore gestures of the wrong direction, like if this Orientation is Horizontal will ignore gestures with vertical direction velocity. Default is False.
-  example: ""
+  example: []
   syntax:
     content: public bool IgnoreWrongDirection { get; set; }
     parameters: []
@@ -3961,7 +3961,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For when the finger is up and swipe is detected
-  example: ""
+  example: []
   syntax:
     content: public float ChangeVelocityScrolled { get; set; }
     parameters: []
@@ -4046,7 +4046,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Limit user input velocity
-  example: ""
+  example: []
   syntax:
     content: public float MaxVelocity { get; set; }
     parameters: []
@@ -4104,7 +4104,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Limit bounce velocity
-  example: ""
+  example: []
   syntax:
     content: public float MaxBounceVelocity { get; set; }
     parameters: []
@@ -4135,7 +4135,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For when the finger is down and panning
-  example: ""
+  example: []
   syntax:
     content: public float ChangeDistancePanned { get; set; }
     parameters: []
@@ -4446,7 +4446,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculates CurrentIndex
-  example: ""
+  example: []
   syntax:
     content: public virtual ContainsPointResult CalculateVisibleIndex(RelativePositionType option)
     parameters:
@@ -4479,7 +4479,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will calculate first/last visible and current index, if tracked with TrackIndexPosition.
-  example: ""
+  example: []
   syntax:
     content: public virtual void CalculateVisibleIndexes()
     content.vb: Public Overridable Sub CalculateVisibleIndexes()
@@ -4616,7 +4616,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ToDo this actually work only for Stack and Row
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint CalculateScrollOffsetForIndex(int index, RelativePositionType option)
     parameters:
@@ -4744,7 +4744,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether should snap to children after scrolling stopped
-  example: ""
+  example: []
   syntax:
     content: public SnapToChildrenType SnapToChildren { get; set; }
     parameters: []
@@ -4802,7 +4802,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The position in viewport you want to track for content layout child index
-  example: ""
+  example: []
   syntax:
     content: public RelativePositionType TrackIndexPosition { get; set; }
     parameters: []
@@ -5082,7 +5082,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnMeasured()
     content.vb: Protected Overrides Sub OnMeasured()
@@ -5236,7 +5236,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: We might have difference between pinch scale and manually set zoom.
-  example: ""
+  example: []
   syntax:
     content: protected double ZoomScaleInternal { get; set; }
     parameters: []
@@ -5321,7 +5321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculate the value that will be set to ContentSize after that
-  example: ""
+  example: []
   syntax:
     content: protected virtual ScaledSize MeasureContent(float width, float height, float scale)
     parameters:
@@ -5364,7 +5364,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override ScaledSize MeasureInternal(MeasureRequest request)
     parameters:
@@ -5397,7 +5397,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public ScaledRect Viewport { get; protected set; }
     parameters: []
@@ -5430,7 +5430,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Parameters in PIXELS. sets IsLayoutDirty = true;
-  example: ""
+  example: []
   syntax:
     content: protected override ScaledSize SetMeasured(float width, float height, bool widthCut, bool heightCut, float scale)
     parameters:
@@ -5479,7 +5479,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In PIXELS
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKRect GetContentAvailableRect(SKRect destination)
     parameters:
@@ -5514,7 +5514,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is where the view port is actually is after being scrolled. We used this value to offset viewport on drawing the last frame
-  example: ""
+  example: []
   syntax:
     content: public ScaledPoint InternalViewportOffset { get; protected set; }
     parameters: []
@@ -5545,7 +5545,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: public ScaledRect ContentViewport { get; protected set; }
     parameters: []
@@ -5609,7 +5609,7 @@ items:
     Here we can construct anything according current offset before painting.
 
     Creates a valid ViewportRect inside.
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool PositionViewport(SKRect destination, SKPoint offsetPixels, float viewportScale, float scale, bool forceSyncOffsets)
     parameters:
@@ -5710,7 +5710,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This triggers smapping checks and actions
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnScrollCompleted()
     content.vb: Protected Overridable Sub OnScrollCompleted()
@@ -5851,7 +5851,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Notify current scroll offset to some dependent views.
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnScrolled()
     content.vb: Public Overridable Sub OnScrolled()
@@ -6074,7 +6074,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: protected virtual void PaintViews(DrawingContext ctx)
     parameters:
@@ -6111,7 +6111,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -6143,7 +6143,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -6175,7 +6175,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Pass position in PIXELS
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetScrollOffset(SKRect destination, float posX, float posY, float zoomedScale, float scale, bool forceSyncOffsets)
     parameters:
@@ -6257,7 +6257,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: ""
+  example: []
   syntax:
     content: protected override int DrawViews(DrawingContext context)
     parameters:
@@ -6322,7 +6322,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The viewport for content
-  example: ""
+  example: []
   syntax:
     content: public ScaledRect ContentRectWithOffset { get; protected set; }
     parameters: []
@@ -6407,7 +6407,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -6442,7 +6442,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -6471,7 +6471,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Content property for direct access
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetContent(SkiaControl view)
     parameters:
@@ -6503,7 +6503,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutReady()
     content.vb: Protected Overrides Sub OnLayoutReady()
@@ -6617,7 +6617,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used by range scroller (ScrollToX, ScrollToY)
-  example: ""
+  example: []
   syntax:
     content: public int ScrollingSpeedMs { get; set; }
     parameters: []
@@ -6899,7 +6899,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Range at which the image loader will stop or resume loading images while scrolling
-  example: ""
+  example: []
   syntax:
     content: public double VelocityImageLoaderLock { get; set; }
     parameters: []
@@ -6956,7 +6956,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl Content { get; set; }
     parameters: []
@@ -7016,7 +7016,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: <summary>Gets or sets the scrolling direction of the ScrollView. This is a bindable property.</summary>
-  example: ""
+  example: []
   syntax:
     content: public ScrollOrientation Orientation { get; set; }
     parameters: []
@@ -7074,7 +7074,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: <summary>Gets or sets the scrolling direction of the ScrollView. This is a bindable property.</summary>
-  example: ""
+  example: []
   syntax:
     content: public ViewportScrollType ScrollType { get; set; }
     parameters: []
@@ -7269,7 +7269,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = "")
     parameters:
@@ -7305,7 +7305,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Indicated that wants to be re-measured without invalidating cache
-  example: ""
+  example: []
   syntax:
     content: public override void InvalidateViewport()
     content.vb: Public Overrides Sub InvalidateViewport()
@@ -7334,7 +7334,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used to check whether to apply IsClippedToBounds property
-  example: ""
+  example: []
   syntax:
     content: public override bool WillClipBounds { get; }
     parameters: []
@@ -7423,7 +7423,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool IsGestureForChild(SkiaControl child, SkiaGesturesParameters args)
     parameters:
@@ -7458,7 +7458,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool IsGestureForChild(SkiaControlWithRect child, SKPoint point)
     parameters:
@@ -7493,7 +7493,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool IsGestureForChild(ISkiaGestureListener listener, SKPoint point)
     parameters:
@@ -7664,7 +7664,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Had no panning just down+up with velocity more than threshold
-  example: ""
+  example: []
   syntax:
     content: protected bool WasSwiping { get; set; }
     parameters: []
@@ -7860,7 +7860,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: How many points (not pixels) we want to scroll for 1 wheel line
-  example: ""
+  example: []
   syntax:
     content: public static float WheelLineSize
     return:
@@ -7889,7 +7889,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: "\"Just clamp\". Currently used for wheel scroll."
-  example: ""
+  example: []
   syntax:
     content: protected virtual Vector2 ClampOffsetHard(float x, float y)
     parameters:
@@ -7929,7 +7929,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -7965,7 +7965,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Process gestures across all visible planes in correct Z-order
-  example: ""
+  example: []
   syntax:
     content: protected virtual ISkiaGestureListener ProcessGesturesForPlanes(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -8000,7 +8000,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies panning on draw every frame, to be able to smoothly animate frames between panning changes.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void ApplyPannedOffsetWithVelocity(SkiaDrawingContext ctx)
     parameters:
@@ -8112,7 +8112,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool NeedMeasure { get; set; }
     parameters: []
@@ -8144,7 +8144,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
-  example: ""
+  example: []
   syntax:
     content: public override void InvalidateInternal()
     content.vb: Public Overrides Sub InvalidateInternal()
@@ -8225,7 +8225,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To track dirty area when Updating parent
-  example: ""
+  example: []
   syntax:
     content: public override void UpdateByChild(SkiaControl control)
     parameters:
@@ -8257,7 +8257,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Check dirty children and invalidate specific planes that contain them
-  example: ""
+  example: []
   syntax:
     content: protected virtual void CheckAndInvalidateDirtyPlanes()
     content.vb: Protected Overridable Sub CheckAndInvalidateDirtyPlanes()
@@ -8313,7 +8313,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines which plane contains the given child control by checking render trees
-  example: ""
+  example: []
   syntax:
     content: protected virtual Plane FindPlaneContainingChild(SkiaControl control)
     parameters:
@@ -8548,7 +8548,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: ""
+  example: []
   syntax:
     content: public override ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -8680,7 +8680,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Viewport scrolled
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnScrolledForPlanes()
     content.vb: Protected Overridable Sub OnScrolledForPlanes()
@@ -8766,7 +8766,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines if we should swap down based on visual position and content boundaries
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool ShouldSwapDown(SKRect rectForward)
     parameters:
@@ -8799,7 +8799,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines if we should swap up based on visual position and content boundaries
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool ShouldSwapUp(SKRect rectBackward)
     parameters:
@@ -8832,7 +8832,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This is called when scrolling changes when in UseVirtual mode, override this to draw custom content
-  example: ""
+  example: []
   syntax:
     content: public virtual void DrawVirtual(DrawingContext context)
     parameters:
@@ -8864,7 +8864,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Calculate the specific viewport area this plane should render
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKRect CalculateViewportForPlane(Plane plane, SKPoint offsetToUse)
     parameters:
@@ -8961,7 +8961,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Check if gesture point intersects with plane's visible area
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool IsGestureInPlane(Plane plane, PointF location)
     parameters:
@@ -8996,7 +8996,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Process gestures for a specific plane using its rendering tree
-  example: ""
+  example: []
   syntax:
     content: protected virtual ISkiaGestureListener ProcessGesturesForPlane(Plane plane, SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -9145,7 +9145,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 0.0 - 1.0
-  example: ""
+  example: []
   syntax:
     content: public double ScrollProgressY { get; }
     parameters: []
@@ -9176,7 +9176,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 0.0 - 1.0
-  example: ""
+  example: []
   syntax:
     content: public double ScrollProgressX { get; }
     parameters: []
@@ -9355,7 +9355,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Range scroller, offset in Units
-  example: ""
+  example: []
   syntax:
     content: public void ScrollToX(float offset, bool animate)
     parameters:
@@ -9393,7 +9393,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Use Range scroller, offset in Units
-  example: ""
+  example: []
   syntax:
     content: protected void ScrollToY(float offset, bool animate)
     parameters:
@@ -9564,7 +9564,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This uses whole viewport size, do not use this for snapping
-  example: ""
+  example: []
   syntax:
     content: public static SKPoint GetClosestSidePoint(SKPoint overscrollPoint, SKRect contentRect, SKSize viewportSize)
     parameters:
@@ -9638,7 +9638,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether the scrolling offset in inside scrollable bounds or not
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool OffsetOk(Vector2 offset)
     parameters:
@@ -9761,7 +9761,7 @@ items:
     This is NOT the bounds for the whole content.
 
     In POINTS not pixels!!!
-  example: ""
+  example: []
   syntax:
     content: public virtual SKRect GetContentOffsetBounds()
     return:
@@ -9791,7 +9791,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In POINTS not pixels!!!
-  example: ""
+  example: []
   syntax:
     content: public Vector2 CalculateOverscrollDistance(float x, float y)
     parameters:
@@ -10135,7 +10135,7 @@ items:
     We might order a scroll before the control was drawn, so it's a kind of startup position
 
     saved every time one calls ScrollTo
-  example: ""
+  example: []
   syntax:
     content: protected ScrollToPointOrder OrderedScrollTo
     return:
@@ -10167,7 +10167,7 @@ items:
     We might order a scroll before the control was drawn, so it's a kind of startup position
 
     saved every time one calls ScrollToIndex
-  example: ""
+  example: []
   syntax:
     content: protected ScrollToIndexOrder OrderedScrollToIndex
     return:
@@ -10196,7 +10196,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: In Units
-  example: ""
+  example: []
   syntax:
     content: protected void ScrollToOffset(Vector2 targetOffset, float maxTimeSecs)
     parameters:
@@ -10390,7 +10390,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Instant scroll to top
-  example: ""
+  example: []
   syntax:
     content: public virtual void ResetPosition()
     content.vb: Public Overridable Sub ResetPosition()
@@ -10418,7 +10418,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Easy-to-use helper around using a lower level ScrollTo function
-  example: ""
+  example: []
   syntax:
     content: public void SetContentOffset(Vector2 offset, bool animated, bool clamp)
     parameters:
@@ -10457,7 +10457,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void ScrollTo(float x, float y, float maxSpeedSecs, bool clamp)
     parameters:
@@ -41578,4 +41578,3 @@ references:
   name: TriggerIncrementalMeasurement
   nameWithType: SkiaScroll.TriggerIncrementalMeasurement
   fullName: DrawnUi.Draw.SkiaScroll.TriggerIncrementalMeasurement
-

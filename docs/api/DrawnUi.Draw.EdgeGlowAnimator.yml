@@ -333,7 +333,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: return true if has drawn something and rendering needs to be applied
-  example: ""
+  example: []
   syntax:
     content: protected override bool OnRendering(DrawingContext context, IDrawnBase control)
     parameters:
@@ -372,7 +372,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: ""
+  example: []
   syntax:
     content: protected override double TransformReportedValue(long deltaT)
     parameters:
@@ -1830,4 +1830,3 @@ references:
   name: TransformReportedValue
   nameWithType: EdgeGlowAnimator.TransformReportedValue
   fullName: DrawnUi.Draw.EdgeGlowAnimator.TransformReportedValue
-

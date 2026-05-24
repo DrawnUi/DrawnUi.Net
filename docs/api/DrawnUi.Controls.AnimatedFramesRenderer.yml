@@ -66,7 +66,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base class for playing frames. Subclass to play spritesheets, gifs, custom animations etc.
-  example: ""
+  example: []
   syntax:
     content: 'public class AnimatedFramesRenderer : SkiaControl, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable'
     content.vb: Public Class AnimatedFramesRenderer Inherits SkiaControl Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable
@@ -1272,7 +1272,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public override void OnVisibilityChanged(bool newvalue)
     parameters:
@@ -1347,7 +1347,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -1409,7 +1409,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1544,7 +1544,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Override this to react on animator running.
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnAnimatorUpdated(double value)
     parameters:
@@ -1755,7 +1755,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: ratio 0-1
-  example: ""
+  example: []
   syntax:
     content: public double GetFrameAt(float ratio)
     parameters:
@@ -1844,7 +1844,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1928,7 +1928,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -1957,7 +1957,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: All repeats completed
-  example: ""
+  example: []
   syntax:
     content: public event EventHandler Finished
     return:
@@ -2040,7 +2040,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Default is 0. If you set to -1 that would mean "last frame".
-  example: ""
+  example: []
   syntax:
     content: public int DefaultFrame { get; set; }
     parameters: []
@@ -2154,7 +2154,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: '>0 how many times should repeat, if less than 0 will loop forever'
-  example: ""
+  example: []
   syntax:
     content: public int Repeat { get; set; }
     parameters: []
@@ -30940,4 +30940,3 @@ references:
   name: AutoPlay
   nameWithType: AnimatedFramesRenderer.AutoPlay
   fullName: DrawnUi.Controls.AnimatedFramesRenderer.AutoPlay
-

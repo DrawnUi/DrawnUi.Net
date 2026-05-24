@@ -89,7 +89,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Controls how/when the background texture is captured. Default is Always.
-  example: ""
+  example: []
   syntax:
     content: PostRendererEffectUseBackgroud UseBackground { get; set; }
     parameters: []
@@ -120,7 +120,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: True once the Once-mode snapshot has been captured. Reset to false to re-capture.
-  example: ""
+  example: []
   syntax:
     content: bool AquiredBackground { get; set; }
     parameters: []
@@ -389,4 +389,3 @@ references:
   name: System
   nameWithType: System
   fullName: System
-

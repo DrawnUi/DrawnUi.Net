@@ -219,7 +219,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public DrawImageAlignment VerticalAlignement { get; set; }
     parameters: []
@@ -424,7 +424,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public override void Dispose()
     content.vb: Public Overrides Sub Dispose()
@@ -3249,4 +3249,3 @@ references:
   name: Dispose
   nameWithType: SvgSpan.Dispose
   fullName: DrawnUi.Draw.SvgSpan.Dispose
-

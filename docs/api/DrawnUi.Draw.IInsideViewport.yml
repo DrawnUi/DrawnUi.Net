@@ -60,7 +60,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be called when viewport containing this view has changed
-  example: ""
+  example: []
   syntax:
     content: void OnViewportWasChanged(ScaledRect viewport)
     parameters:
@@ -92,7 +92,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'IInsideViewport interface: loaded is called when the view is created, but not yet visible'
-  example: ""
+  example: []
   syntax:
     content: void OnLoaded()
     content.vb: Sub OnLoaded()
@@ -123,7 +123,7 @@ items:
     Determines whether LoadMore should be triggered based on viewport position and internal measurement state.
 
     This allows the layout to make intelligent decisions about when to load more data.
-  example: ""
+  example: []
   syntax:
     content: bool ShouldTriggerLoadMore(ScaledRect viewport)
     parameters:
@@ -404,4 +404,3 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-

@@ -62,7 +62,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The point here is the rendering location, always on screen
-  example: ""
+  example: []
   syntax:
     content: ContainsPointResult GetVisibleChildIndexAt(SKPoint point)
     parameters:
@@ -97,7 +97,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The point here is the position inside parent, can be offscreen
-  example: ""
+  example: []
   syntax:
     content: ContainsPointResult GetChildIndexAt(SKPoint point)
     parameters:
@@ -452,4 +452,3 @@ references:
   name: GetChildIndexAt
   nameWithType: ILayoutInsideViewport.GetChildIndexAt
   fullName: DrawnUi.Draw.ILayoutInsideViewport.GetChildIndexAt
-

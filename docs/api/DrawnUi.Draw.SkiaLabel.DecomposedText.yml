@@ -154,7 +154,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: pixels
-  example: ""
+  example: []
   syntax:
     content: public float HasMoreVerticalSpace { get; set; }
     parameters: []
@@ -185,7 +185,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: pixels
-  example: ""
+  example: []
   syntax:
     content: public float HasMoreHorizontalSpace { get; set; }
     parameters: []
@@ -669,4 +669,3 @@ references:
   name: AutoSizeType
   nameWithType: AutoSizeType
   fullName: DrawnUi.Draw.AutoSizeType
-

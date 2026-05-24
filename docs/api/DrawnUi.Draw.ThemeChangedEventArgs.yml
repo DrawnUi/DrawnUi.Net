@@ -27,7 +27,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Theme changed event arguments
-  example: ""
+  example: []
   syntax:
     content: 'public class ThemeChangedEventArgs : EventArgs'
     content.vb: Public Class ThemeChangedEventArgs Inherits EventArgs
@@ -569,4 +569,3 @@ references:
   nameWithType.vb: ThemeChangedEventArgs.New
   fullName.vb: DrawnUi.Draw.ThemeChangedEventArgs.New
   name.vb: New
-

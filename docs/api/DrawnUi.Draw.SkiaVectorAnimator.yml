@@ -179,7 +179,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: /// Passed over mValue, you can change the reported passed value here
-  example: ""
+  example: []
   syntax:
     content: protected override double TransformReportedValue(long deltaT)
     parameters:
@@ -1477,4 +1477,3 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
-

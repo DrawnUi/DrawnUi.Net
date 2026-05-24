@@ -1222,7 +1222,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called by SkiaEditor after creating the cursor. Parent chain is not yet complete at AddSubView time.
-  example: ""
+  example: []
   syntax:
     content: public void Initialize(SkiaLabel label)
     parameters:
@@ -1253,7 +1253,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: ""
+  example: []
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -1282,7 +1282,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public override void OnVisibilityChanged(bool newvalue)
     parameters:
@@ -1371,7 +1371,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -36139,4 +36139,3 @@ references:
     name: Graphics
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics
-

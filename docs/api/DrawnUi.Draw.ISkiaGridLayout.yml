@@ -226,7 +226,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: An IGridRowDefinition collection for the GridLayout instance.
-  example: ""
+  example: []
   syntax:
     content: IReadOnlyList<IGridRowDefinition> RowDefinitions { get; }
     parameters: []
@@ -257,7 +257,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: An IGridColumnDefinition collection for the GridLayout instance.
-  example: ""
+  example: []
   syntax:
     content: IReadOnlyList<IGridColumnDefinition> ColumnDefinitions { get; }
     parameters: []
@@ -288,7 +288,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the amount of space left between rows in the GridLayout.
-  example: ""
+  example: []
   syntax:
     content: double RowSpacing { get; }
     parameters: []
@@ -319,7 +319,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the amount of space left between columns in the GridLayout.
-  example: ""
+  example: []
   syntax:
     content: double ColumnSpacing { get; }
     parameters: []
@@ -350,7 +350,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row of the child element.
-  example: ""
+  example: []
   syntax:
     content: int GetRow(BindableObject view)
     parameters:
@@ -385,7 +385,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row span of the child element.
-  example: ""
+  example: []
   syntax:
     content: int GetRowSpan(BindableObject view)
     parameters:
@@ -420,7 +420,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the column of the child element.
-  example: ""
+  example: []
   syntax:
     content: int GetColumn(BindableObject view)
     parameters:
@@ -455,7 +455,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row span of the child element.
-  example: ""
+  example: []
   syntax:
     content: int GetColumnSpan(BindableObject view)
     parameters:
@@ -2306,4 +2306,3 @@ references:
   name: GetColumnSpan
   nameWithType: ISkiaGridLayout.GetColumnSpan
   fullName: DrawnUi.Draw.ISkiaGridLayout.GetColumnSpan
-

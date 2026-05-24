@@ -1178,7 +1178,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the column of the child element.
-  example: ""
+  example: []
   syntax:
     content: public int GetColumn(BindableObject bindable)
     parameters:
@@ -1214,7 +1214,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row span of the child element.
-  example: ""
+  example: []
   syntax:
     content: public int GetColumnSpan(BindableObject bindable)
     parameters:
@@ -1250,7 +1250,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row of the child element.
-  example: ""
+  example: []
   syntax:
     content: public int GetRow(BindableObject bindable)
     parameters:
@@ -1286,7 +1286,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the row span of the child element.
-  example: ""
+  example: []
   syntax:
     content: public int GetRowSpan(BindableObject bindable)
     parameters:
@@ -1483,7 +1483,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void ReportHotreloadChildRemoved(SkiaControl control)
     parameters:
@@ -1514,7 +1514,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void ReportHotreloadChildAdded(SkiaControl child)
     parameters:
@@ -1546,7 +1546,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For Xaml HotReload. This is semetimes not called when we add and remove views.
-  example: ""
+  example: []
   syntax:
     content: public override IReadOnlyList<IVisualTreeElement> GetVisualChildren()
     return:
@@ -1645,7 +1645,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring column/row
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize MeasureStackLegacy(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -1686,7 +1686,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring column/row with 3-pass approach to handle Fill options correctly
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize MeasureStackNonTemplated(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -1724,7 +1724,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measuring column/row for templated for fastest way possible
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize MeasureStackTemplated(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -1762,7 +1762,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Core measurement logic shared between templated and non-templated scenarios
-  example: ""
+  example: []
   syntax:
     content: protected virtual ScaledSize MeasureStack(SKRect rectForChildrenPixels, float scale, LayoutStructure layoutStructure, bool isTemplated, SkiaControl template, SkiaControl[] nonTemplated)
     parameters:
@@ -1808,7 +1808,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be called by some layouts after they calculated the list of visible children to be drawn, but have not drawn them yet
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnBeforeDrawingVisibleChildren(DrawingContext ctx, LayoutStructure structure, List<ControlInStack> visibleElements)
     parameters:
@@ -1846,7 +1846,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can be called by some layouts after they draw visible children
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnAfterDrawingVisibleChildren(DrawingContext ctx, LayoutStructure structure, List<ControlInStack> visibleElements)
     parameters:
@@ -1927,7 +1927,7 @@ items:
     Renders stack/wrap layout.
 
     Returns number of drawn children.
-  example: ""
+  example: []
   syntax:
     content: protected virtual int DrawStack(DrawingContext ctx, LayoutStructure structure)
     parameters:
@@ -1961,7 +1961,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void OnScaleChanged()
     content.vb: Public Overrides Sub OnScaleChanged()
@@ -1990,7 +1990,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns false if should not render
-  example: ""
+  example: []
   syntax:
     content: public override bool PreArrange(SKRect destination, float widthRequest, float heightRequest, float scale)
     parameters:
@@ -2033,7 +2033,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool IsGestureForChild(SkiaControlWithRect child, SKPoint point)
     parameters:
@@ -2069,7 +2069,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyBindingContext()
     content.vb: Public Overrides Sub ApplyBindingContext()
@@ -2097,7 +2097,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool ShouldInvalidateByChildren { get; }
     parameters: []
@@ -2157,7 +2157,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Parameters in PIXELS. sets IsLayoutDirty = true;
-  example: ""
+  example: []
   syntax:
     content: protected override ScaledSize SetMeasured(float width, float height, bool widthCut, bool heightCut, float scale)
     parameters:
@@ -2236,7 +2236,7 @@ items:
     In case of ItemsSource+ItemTemplate set will define should we reuse already created views: hidden items views will be reused for currently visible items on screen.
 
     If set to true inside a SkiaScrollLooped will cause it to redraw constantly even when idle because of the looped scroll mechanics.
-  example: ""
+  example: []
   syntax:
     content: public RecyclingTemplate RecyclingTemplate { get; set; }
     parameters: []
@@ -2267,7 +2267,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layouts can use this property for custom logic appropriate to layout type.
-  example: ""
+  example: []
   syntax:
     content: public bool Invert { get; set; }
     parameters: []
@@ -2352,7 +2352,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Kind of BindableLayout.DrawnTemplate
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl TemplatedHeader { get; set; }
     parameters: []
@@ -2410,7 +2410,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Kind of BindableLayout.DrawnTemplate
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl TemplatedFooter { get; set; }
     parameters: []
@@ -2440,7 +2440,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool IsTemplated { get; }
     parameters: []
@@ -2632,7 +2632,7 @@ items:
     Extra buffer zone for avoiding recycling  
 
     Default is 500pts - increase for less jaggy scroll, decrease for more memory efficiency
-  example: ""
+  example: []
   syntax:
     content: public double RecyclingBuffer { get; set; }
     parameters: []
@@ -2750,7 +2750,7 @@ items:
     parameter so that the Parent could return different visible areas upon context.
 
     Normally pass your current destination you are drawing into as this parameter.
-  example: ""
+  example: []
   syntax:
     content: public override ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
     parameters:
@@ -2790,7 +2790,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Todo where is this used i forgot completely
-  example: ""
+  example: []
   syntax:
     content: public override void DrawRenderObject(DrawingContext context, CachedObject cache)
     parameters:
@@ -2994,7 +2994,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override string DebugString { get; }
     parameters: []
@@ -3082,7 +3082,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For Wrap number of columns/rows to split into, If 0 will use auto, if 1+ will have 1+ columns.
-  example: ""
+  example: []
   syntax:
     content: public int Split { get; set; }
     parameters: []
@@ -3142,7 +3142,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Whether should keep same column width among rows
-  example: ""
+  example: []
   syntax:
     content: public bool SplitAlign { get; set; }
     parameters: []
@@ -3200,7 +3200,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: How to distribute free space between children TODO
-  example: ""
+  example: []
   syntax:
     content: public SpaceDistribution SplitSpace { get; set; }
     parameters: []
@@ -3258,7 +3258,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If true, will not create additional columns to match SplitMax if there are less real columns, and take additional space for drawing
-  example: ""
+  example: []
   syntax:
     content: public bool DynamicColumns { get; set; }
     parameters: []
@@ -3350,7 +3350,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -3386,7 +3386,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnMeasured()
     content.vb: Protected Overrides Sub OnMeasured()
@@ -3415,7 +3415,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Soft invalidation, without requiring update. So next time we try to draw this one it will recalc everything.
-  example: ""
+  example: []
   syntax:
     content: public override void InvalidateInternal()
     content.vb: Public Overrides Sub InvalidateInternal()
@@ -3470,7 +3470,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void InvalidateViewsList()
     content.vb: Public Overrides Sub InvalidateViewsList()
@@ -3583,7 +3583,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildrenChanged()
     content.vb: Public Overrides Sub OnChildrenChanged()
@@ -3612,7 +3612,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base calls InvalidateInternal and InvalidateParent
-  example: ""
+  example: []
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -3671,7 +3671,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measure children inside absolute layout
-  example: ""
+  example: []
   syntax:
     content: public override ScaledSize MeasureAbsolute(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -3803,7 +3803,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: If you call this while measurement is in process (IsMeasuring==True) will return last measured value.
-  example: ""
+  example: []
   syntax:
     content: public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -3851,7 +3851,7 @@ items:
     Normally get a a Measure by parent then parent calls Draw and we can apply the measure result.
 
     But in a case we have measured us ourselves inside PreArrange etc we must call ApplyMeasureResult because this would happen after the Draw and not before.
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyMeasureResult()
     content.vb: Public Overrides Sub ApplyMeasureResult()
@@ -3880,7 +3880,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will use this when drawing
-  example: ""
+  example: []
   syntax:
     content: protected HashSet<SkiaControl> InvalidatedChildrenInternal { get; set; }
     parameters: []
@@ -3910,7 +3910,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -3942,7 +3942,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be modified by InvalidateByChild
-  example: ""
+  example: []
   syntax:
     content: protected HashSet<SkiaControl> InvalidatedChildren { get; set; }
     parameters: []
@@ -3973,7 +3973,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: To be able to fast track dirty children
-  example: ""
+  example: []
   syntax:
     content: public override void InvalidateByChild(SkiaControl child)
     parameters:
@@ -4067,7 +4067,7 @@ items:
     Base one paints background color inside DrawingRect that was defined by Arrange inside base.Draw.
 
     Pass arguments if you want to use some time-frozen data for painting at any time from any thread..
-  example: ""
+  example: []
   syntax:
     content: protected override void Paint(DrawingContext ctx)
     parameters:
@@ -4100,7 +4100,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -4132,7 +4132,7 @@ items:
     Base method will call RenderViewsList.
 
     Return number of drawn views.
-  example: ""
+  example: []
   syntax:
     content: protected override int DrawViews(DrawingContext context)
     parameters:
@@ -4168,7 +4168,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Column/Row/Stack
-  example: ""
+  example: []
   syntax:
     content: public bool IsStack { get; }
     parameters: []
@@ -4345,7 +4345,7 @@ items:
     Beware that if you set this to a number that will not be enough to fill the viewport
 
     binding contexts will contasntly be changing triggering screen update.
-  example: ""
+  example: []
   syntax:
     content: public int ItemTemplatePoolSize { get; set; }
     parameters: []
@@ -4403,7 +4403,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'For recycled cells: Default is 2, how many item templates above visible in viewport we must reserve in pool.'
-  example: ""
+  example: []
   syntax:
     content: public int ReserveTemplates { get; set; }
     parameters: []
@@ -4545,7 +4545,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void OnItemTemplateChanged()
     content.vb: Public Overrides Sub OnItemTemplateChanged()
@@ -4629,7 +4629,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Invalidate and re-apply ItemsSource
-  example: ""
+  example: []
   syntax:
     content: public virtual void ApplyItemsSource()
     content.vb: Public Overridable Sub ApplyItemsSource()
@@ -4683,7 +4683,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Determines if collection changes should preserve existing measurement structure
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool ShouldPreserveStructureOnCollectionChange(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4716,7 +4716,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced collection change handler with smart handling and fallback
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4752,7 +4752,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Triggers after a new ItemsSource was set or an observable collection of an existing one was changed
-  example: ""
+  example: []
   syntax:
     content: protected virtual void OnItemsSourceChangesApplied()
     content.vb: Protected Overridable Sub OnItemsSourceChangesApplied()
@@ -4807,7 +4807,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles collection changes while preserving existing measurement structure
-  example: ""
+  example: []
   syntax:
     content: protected virtual void HandleCollectionChangeWithStructurePreservation(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4838,7 +4838,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Stages a structure change for processing during rendering pipeline
-  example: ""
+  example: []
   syntax:
     content: protected virtual void StageStructureChange(SkiaLayout.StructureChange change)
     parameters:
@@ -4872,7 +4872,7 @@ items:
     Called by templated cells to report visibility changes.
 
     This stages the visibility change to be applied during the next rendering cycle.
-  example: ""
+  example: []
   syntax:
     content: public virtual void ReportChildVisibilityChanged(int cellIndex, bool isVisible)
     parameters:
@@ -4913,7 +4913,7 @@ items:
     Called by templated cells to report visibility changes for multiple cells.
 
     This stages the visibility change to be applied during the next rendering cycle.
-  example: ""
+  example: []
   syntax:
     content: public virtual void ReportChildVisibilityChanged(int startIndex, int count, bool isVisible)
     parameters:
@@ -4954,7 +4954,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Add collection changes while preserving existing structure
-  example: ""
+  example: []
   syntax:
     content: protected virtual void HandleStructurePreservingAdd(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -4985,7 +4985,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Remove collection changes while preserving existing structure
-  example: ""
+  example: []
   syntax:
     content: protected virtual void HandleStructurePreservingRemove(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -5016,7 +5016,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Replace collection changes while preserving existing structure
-  example: ""
+  example: []
   syntax:
     content: protected virtual void HandleStructurePreservingReplace(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -5047,7 +5047,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Move collection changes while preserving existing structure
-  example: ""
+  example: []
   syntax:
     content: protected virtual void HandleStructurePreservingMove(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -5078,7 +5078,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Handles Reset collection changes while preserving existing structure
-  example: ""
+  example: []
   syntax:
     content: protected virtual void HandleStructurePreservingReset(NotifyCollectionChangedEventArgs args)
     parameters:
@@ -5109,7 +5109,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Force a full refresh of all cached views (useful for debugging)
-  example: ""
+  example: []
   syntax:
     content: public void RefreshAllViews()
     content.vb: Public Sub RefreshAllViews()
@@ -5137,7 +5137,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Get debug information about cached views
-  example: ""
+  example: []
   syntax:
     content: public string GetCacheDebugInfo()
     return:
@@ -5167,7 +5167,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced debug printing
-  example: ""
+  example: []
   syntax:
     content: public override void OnPrintDebug()
     content.vb: Public Overrides Sub OnPrintDebug()
@@ -5196,7 +5196,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Layout was changed with dimensions above zero. Rather a helper method, can you more generic OnLayoutChanged().
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutReady()
     content.vb: Protected Overrides Sub OnLayoutReady()
@@ -5225,7 +5225,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -5254,7 +5254,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This can sometimes be omitted,
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnAppearing()
     content.vb: Public Overridable Sub OnAppearing()
@@ -5283,7 +5283,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnDisappearing()
     content.vb: Public Overridable Sub OnDisappearing()
@@ -5313,7 +5313,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This event can sometimes be called without prior OnAppearing
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnAppeared()
     content.vb: Public Overridable Sub OnAppeared()
@@ -5342,7 +5342,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnDisappeared()
     content.vb: Public Overridable Sub OnDisappeared()
@@ -5372,7 +5372,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'IInsideViewport interface: loaded is called when the view is created, but not yet visible'
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnLoaded()
     content.vb: Public Overridable Sub OnLoaded()
@@ -5402,7 +5402,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The point here is the rendering location, always on screen
-  example: ""
+  example: []
   syntax:
     content: public virtual ContainsPointResult GetVisibleChildIndexAt(SKPoint point)
     parameters:
@@ -5439,7 +5439,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: The point here is the position inside parent, can be offscreen
-  example: ""
+  example: []
   syntax:
     content: public ContainsPointResult GetChildIndexAt(SKPoint point)
     parameters:
@@ -5475,7 +5475,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override List<SkiaControl> GetOrderedSubviews(bool recalculate = false)
     parameters:
@@ -5512,7 +5512,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Measures the grid layout and ensures columns fill available width when NeedAutoWidth is false
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize MeasureGrid(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -5553,7 +5553,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns number of drawn children
-  example: ""
+  example: []
   syntax:
     content: protected virtual int DrawChildrenGrid(DrawingContext context)
     parameters:
@@ -5698,7 +5698,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will use this to create a missing but required ColumnDefinition
-  example: ""
+  example: []
   syntax:
     content: >-
       [TypeConverter(typeof(ColumnDefinitionTypeConverter))]
@@ -5770,7 +5770,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will use this to create a missing but required RowDefinition
-  example: ""
+  example: []
   syntax:
     content: >-
       [TypeConverter(typeof(RowDefinitionTypeConverter))]
@@ -5842,7 +5842,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the amount of space left between rows in the GridLayout.
-  example: ""
+  example: []
   syntax:
     content: public double RowSpacing { get; set; }
     parameters: []
@@ -5902,7 +5902,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the amount of space left between columns in the GridLayout.
-  example: ""
+  example: []
   syntax:
     content: public double ColumnSpacing { get; set; }
     parameters: []
@@ -6169,7 +6169,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be called when viewport containing this view has changed
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnViewportWasChanged(ScaledRect viewport)
     parameters:
@@ -6206,7 +6206,7 @@ items:
     Determines whether LoadMore should be triggered based on viewport position and measurement state.
 
     This prevents race conditions by considering background measurement progress.
-  example: ""
+  example: []
   syntax:
     content: public virtual bool ShouldTriggerLoadMore(ScaledRect viewport)
     parameters:
@@ -6241,7 +6241,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Checks if we allow scroll to load more
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool IsViewportAtEndOfMeasuredContent(ScaledRect viewport)
     parameters:
@@ -6477,7 +6477,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Percentage of items that have been measured (0.0 to 1.0)
-  example: ""
+  example: []
   syntax:
     content: protected float MeasuredItemsPercentage { get; }
     parameters: []
@@ -6508,7 +6508,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cancels any ongoing background measurement
-  example: ""
+  example: []
   syntax:
     content: public void CancelBackgroundMeasurement()
     content.vb: Public Sub CancelBackgroundMeasurement()
@@ -6536,7 +6536,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Remeasures a single item in the background and updates it in the existing structure
-  example: ""
+  example: []
   syntax:
     content: public void RemeasureSingleItemInBackground(int itemIndex)
     parameters:
@@ -6597,7 +6597,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enhanced MeasureList with background measurement support
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize MeasureList(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -6634,7 +6634,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool NeedMeasure { get; set; }
     parameters: []
@@ -6666,7 +6666,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies all pending structure changes to StackStructure - called from rendering pipeline
-  example: ""
+  example: []
   syntax:
     content: public void ApplyStructureChanges()
     content.vb: Public Sub ApplyStructureChanges()
@@ -6694,7 +6694,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Applies Reset changes to StackStructure
-  example: ""
+  example: []
   syntax:
     content: protected void ApplyResetChange()
     content.vb: Protected Sub ApplyResetChange()
@@ -6725,7 +6725,7 @@ items:
     Measures a single item in the background and stages it for structure update.
 
     For MeasureVisible Only.
-  example: ""
+  example: []
   syntax:
     content: public void MeasureSingleItem(int itemIndex, SKRect constraints, float scale, CancellationToken cancellationToken, bool inBackground)
     parameters:
@@ -6767,7 +6767,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Renders Templated Column/Row todo in some cases..
-  example: ""
+  example: []
   syntax:
     content: protected virtual int DrawList(DrawingContext ctx, LayoutStructure structure)
     parameters:
@@ -6861,7 +6861,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets estimated total content size for virtualized lists with unmeasured items
-  example: ""
+  example: []
   syntax:
     content: public ScaledSize GetEstimatedContentSize(float scale)
     parameters:
@@ -6935,7 +6935,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: TODO for templated measure only visible?! and just reserve predicted scroll amount for scrolling
-  example: ""
+  example: []
   syntax:
     content: public virtual ScaledSize MeasureWrap(SKRect rectForChildrenPixels, float scale)
     parameters:
@@ -6975,7 +6975,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void PropagateVisibilityChanged(bool newvalue)
     parameters:
@@ -7010,7 +7010,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used for stack-like layouts such as Column, Row, and Wrap.
-  example: ""
+  example: []
   syntax:
     content: public LayoutStructure StackStructure { get; set; }
     parameters: []
@@ -7041,7 +7041,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Set during measure and swapped into StackStructure when measure result is applied.
-  example: ""
+  example: []
   syntax:
     content: public LayoutStructure StackStructureMeasured { get; set; }
     parameters: []
@@ -39358,4 +39358,3 @@ references:
     name: SkiaControlWithRect
     href: DrawnUi.Draw.SkiaControlWithRect.html
   - name: )
-

@@ -1187,7 +1187,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void SetAnimationState(bool running)
     parameters:
@@ -1222,7 +1222,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 0 - 1... not clamped can be over 1
-  example: ""
+  example: []
   syntax:
     content: public override void SetDragRatio(float ratio, float ptsScrollOffset, double ptsLimit, double ptsTrigger)
     parameters:
@@ -1263,7 +1263,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnIsRunningChanged(bool value)
     parameters:
@@ -1298,7 +1298,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public override void OnParentVisibilityChanged(bool newvalue)
     parameters:
@@ -1334,7 +1334,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public override void OnVisibilityChanged(bool newvalue)
     parameters:
@@ -34690,4 +34690,3 @@ references:
   name: OnVisibilityChanged
   nameWithType: LottieRefreshIndicator.OnVisibilityChanged
   fullName: DrawnUi.Draw.LottieRefreshIndicator.OnVisibilityChanged
-

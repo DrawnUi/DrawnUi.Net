@@ -88,7 +88,7 @@ items:
     Will internally create spans from markdown.
 
     Spans property must not be set directly.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaRichLabel : SkiaLabel, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IText, ITextStyle'
     content.vb: Public Class SkiaRichLabel Inherits SkiaLabel Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IText, ITextStyle
@@ -1185,7 +1185,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Aplies transforms etc
-  example: ""
+  example: []
   syntax:
     content: protected override void SetTextInternal()
     content.vb: Protected Overrides Sub SetTextInternal()
@@ -1214,7 +1214,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Renders a markdown block element into text spans
-  example: ""
+  example: []
   syntax:
     content: protected void RenderBlock(Block block, Inline prefix = null)
     parameters:
@@ -1457,7 +1457,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates a line break inline element
-  example: ""
+  example: []
   syntax:
     content: protected virtual Inline CreateLineBreak()
     return:
@@ -1487,7 +1487,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates a literal inline element with specified content
-  example: ""
+  example: []
   syntax:
     content: protected virtual Inline CreateLiteral(string content)
     parameters:
@@ -1583,7 +1583,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(SKPaint paint, string text, bool needsShaping, float scale)
     parameters:
@@ -1815,7 +1815,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates a text span with passed data.
-  example: ""
+  example: []
   syntax:
     content: protected virtual TextSpan SpanWithAttributes(TextSpan span, FontAttributes fontAttributes)
     parameters:
@@ -1894,7 +1894,7 @@ items:
     Produces a list of contiguous-typeface runs ready to become <xref href="DrawnUi.Draw.TextSpan" data-throw-if-not-resolved="false"></xref>s.
 
     Shared between SkiaRichLabel subclasses.
-  example: ""
+  example: []
   syntax:
     content: public static List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> BuildSpanData(string text, SKTypeface originalTypeFace)
     parameters:
@@ -1959,7 +1959,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Do not let spans with non-default typeface end with standart symbols like ' ', move them to span with original typecase
-  example: ""
+  example: []
   syntax:
     content: protected virtual void ProcessSpanData(ref List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> spanData, SKTypeface originalTypeFace)
     parameters:
@@ -1997,7 +1997,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Static counterpart to <xref href="DrawnUi.Draw.SkiaRichLabel.ProcessSpanData(System.Collections.Generic.List%7bSystem.ValueTuple%7bSystem.String%2cSkiaSharp.SKTypeface%2cSystem.Int32%2cSystem.Boolean%7d%7d%40%2cSkiaSharp.SKTypeface)" data-throw-if-not-resolved="false"></xref>.
-  example: ""
+  example: []
   syntax:
     content: protected static void ProcessSpanDataStatic(ref List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> spanData, SKTypeface originalTypeFace)
     parameters:
@@ -2249,7 +2249,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Url will be inside Tag
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener OnSpanTapped(TextSpan span)
     parameters:
@@ -2368,7 +2368,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -2962,7 +2962,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Used for underlining text, in points. If you set it negative it will be in PIXELS instead of points. Default is -1 (1 pixel).
-  example: ""
+  example: []
   syntax:
     content: public double UnderlineWidth { get; set; }
     parameters: []
@@ -35849,4 +35849,3 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
-

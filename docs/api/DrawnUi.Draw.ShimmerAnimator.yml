@@ -274,7 +274,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public override void Dispose()
     content.vb: Public Overrides Sub Dispose()
@@ -330,7 +330,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: return true if has drawn something and rendering needs to be applied
-  example: ""
+  example: []
   syntax:
     content: protected override bool OnRendering(DrawingContext context, IDrawnBase control)
     parameters:
@@ -1777,4 +1777,3 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-

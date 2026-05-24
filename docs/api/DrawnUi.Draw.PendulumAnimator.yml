@@ -152,7 +152,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Start(double delayMs = 0)
     parameters:
@@ -187,7 +187,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns absolute value, instead of going -/+ along the axis. Basically if true simulates bouncing.
-  example: ""
+  example: []
   syntax:
     content: public bool IsOneDirectional { get; set; }
     parameters: []
@@ -247,7 +247,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: the higher the faster will stop
-  example: ""
+  example: []
   syntax:
     content: public double InitialVelocity { get; set; }
     parameters: []
@@ -399,7 +399,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Time in NANOS
-  example: ""
+  example: []
   syntax:
     content: public override bool TickFrame(long frameTimeNanos)
     parameters:
@@ -437,7 +437,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -1787,4 +1787,3 @@ references:
   - name: " "
   - name: T
   - name: )
-

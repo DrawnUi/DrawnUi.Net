@@ -127,7 +127,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -587,4 +587,3 @@ references:
   name: OnDisposing
   nameWithType: CachedShader.OnDisposing
   fullName: DrawnUi.Draw.CachedShader.OnDisposing
-

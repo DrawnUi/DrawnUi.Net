@@ -64,7 +64,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Location of the gesture accounting for transforms. Might include all transforms from parents upper th rendering tree.
-  example: ""
+  example: []
   syntax:
     content: public SKPoint MappedLocation { readonly get; set; }
     parameters: []
@@ -98,7 +98,7 @@ items:
     Coordinate offset used to transform touch coordinates from parent's 
 
     coordinate space to this control's local space.
-  example: ""
+  example: []
   syntax:
     content: public SKPoint ChildOffset { readonly get; set; }
     parameters: []
@@ -132,7 +132,7 @@ items:
     Direct coordinate offset used for gesture processing without considering 
 
     cached transformations; useful for direct position calculations.
-  example: ""
+  example: []
   syntax:
     content: public SKPoint ChildOffsetDirect { readonly get; set; }
     parameters: []
@@ -166,7 +166,7 @@ items:
     Reference to a gesture listener that has already consumed this gesture.
 
     Used to track gesture ownership through the control hierarchy.
-  example: ""
+  example: []
   syntax:
     content: public ISkiaGestureListener AlreadyConsumed { readonly get; set; }
     parameters: []
@@ -639,4 +639,3 @@ references:
   name: GestureEventProcessingInfo
   nameWithType: GestureEventProcessingInfo
   fullName: DrawnUi.Draw.GestureEventProcessingInfo
-

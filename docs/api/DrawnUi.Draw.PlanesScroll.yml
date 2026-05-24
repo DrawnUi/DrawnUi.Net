@@ -39,7 +39,7 @@ items:
     You have to override `GetMeasuredView` to provide your views to be drawn upon passed index.
 
     TODO: for horizonal
-  example: ""
+  example: []
   syntax:
     content: 'public class PlanesScroll : VirtualScroll, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent'
     content.vb: Public Class PlanesScroll Inherits VirtualScroll Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
@@ -1345,7 +1345,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool UseVirtual { get; }
     parameters: []
@@ -1376,7 +1376,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnMeasured()
     content.vb: Protected Overrides Sub OnMeasured()
@@ -1404,7 +1404,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void PaintOnPlane(DrawingContext context, Plane plane)
     parameters:
@@ -1437,7 +1437,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void PreparePlane(DrawingContext context, Plane plane)
     parameters:
@@ -34776,4 +34776,3 @@ references:
   name: PreparePlane
   nameWithType: PlanesScroll.PreparePlane
   fullName: DrawnUi.Draw.PlanesScroll.PreparePlane
-

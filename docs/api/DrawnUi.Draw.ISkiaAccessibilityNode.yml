@@ -41,7 +41,7 @@ items:
     (or set <code>AccessibilityRole</code> on a <xref href="DrawnUi.Draw.SkiaControl" data-throw-if-not-resolved="false"></xref>) and the control registers itself
 
     automatically with the <code>SkiaAccessibilityManager</code> on first layout and unregisters on detachment.
-  example: ""
+  example: []
   syntax:
     content: public interface ISkiaAccessibilityNode
     content.vb: Public Interface ISkiaAccessibilityNode
@@ -70,7 +70,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: ARIA/platform role string. Setting this makes <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement" data-throw-if-not-resolved="false"></xref> true. Use <xref href="DrawnUi.Models.Aria" data-throw-if-not-resolved="false"></xref> constants.
-  example: ""
+  example: []
   syntax:
     content: string? AccessibilityRole { get; set; }
     parameters: []
@@ -101,7 +101,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Human-readable label announced by screen readers (e.g. button text, image description).
-  example: ""
+  example: []
   syntax:
     content: string? AccessibilityLabel { get; set; }
     parameters: []
@@ -132,7 +132,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Additional hint announced after the label (e.g. "Double-tap to activate").
-  example: ""
+  example: []
   syntax:
     content: string? AccessibilityHint { get; set; }
     parameters: []
@@ -166,7 +166,7 @@ items:
     When true the overlay element gets a tab-stop, pointer cursor, and click/keyboard handlers.
 
     Set via <code>.WithAccessibility(..., canInteract: true)</code> or directly.
-  example: ""
+  example: []
   syntax:
     content: bool AccessibilityCanInteract { get; set; }
     parameters: []
@@ -197,7 +197,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'Maps to <code>aria-pressed</code>. Use for toggle buttons: <code>true</code> = pressed, <code>false</code> = not pressed, <code>null</code> = not a toggle (attribute omitted).'
-  example: ""
+  example: []
   syntax:
     content: bool? AccessibilityIsPressed { get; set; }
     parameters: []
@@ -228,7 +228,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: True when <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole" data-throw-if-not-resolved="false"></xref> is non-null. Computed, not stored.
-  example: ""
+  example: []
   syntax:
     content: bool IsAccessibilityElement { get; }
     parameters: []
@@ -262,7 +262,7 @@ items:
     Returns the control's hit rect in raw pixels, used to position the overlay element.
 
     Typically <code>VisualLayer.HitBoxWithTransforms.Pixels</code> with <code>DrawingRect</code> as fallback.
-  example: ""
+  example: []
   syntax:
     content: SKRect GetAccessibilityPixelRect()
     return:
@@ -295,7 +295,7 @@ items:
     Called by the platform a11y layer (e.g. Blazor overlay click/Enter) to activate the control.
 
     Default implementation synthesises a Tapped gesture directly on this control.
-  example: ""
+  example: []
   syntax:
     content: void OnAccessibilityActivated()
     content.vb: Sub OnAccessibilityActivated()
@@ -326,7 +326,7 @@ items:
     Registers or updates this node in the superview's <code>SkiaAccessibilityManager</code>.
 
     Called automatically on first layout; call manually when label/hint/state changes at runtime.
-  example: ""
+  example: []
   syntax:
     content: void NotifyAccessibility()
     content.vb: Sub NotifyAccessibility()
@@ -354,7 +354,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Called by <code>SkiaAccessibilityManager</code> when this node is removed from the registry.
-  example: ""
+  example: []
   syntax:
     content: void OnAccessibilityUnregistered()
     content.vb: Sub OnAccessibilityUnregistered()
@@ -668,4 +668,3 @@ references:
   name: OnAccessibilityUnregistered
   nameWithType: ISkiaAccessibilityNode.OnAccessibilityUnregistered
   fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
-

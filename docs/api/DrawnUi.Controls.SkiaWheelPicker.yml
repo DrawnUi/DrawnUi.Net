@@ -1298,7 +1298,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -1353,7 +1353,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Invalidate and re-apply ItemsSource
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyItemsSource()
     content.vb: Public Overrides Sub ApplyItemsSource()
@@ -1381,7 +1381,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnItemSourceChanged()
     content.vb: Public Overrides Sub OnItemSourceChanged()
@@ -1410,7 +1410,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Enhanced collection change handler with smart handling and fallback
-  example: ""
+  example: []
   syntax:
     content: protected override void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     parameters:
@@ -35335,4 +35335,3 @@ references:
   name: DataTemplate
   nameWithType: DataTemplate
   fullName: Microsoft.Maui.Controls.DataTemplate
-

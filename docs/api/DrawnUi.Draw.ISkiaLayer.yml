@@ -119,7 +119,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Cached layer image
-  example: ""
+  example: []
   syntax:
     content: SkiaDrawingContext LayerPaintArgs { get; set; }
     parameters: []
@@ -150,7 +150,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Snapshot was taken
-  example: ""
+  example: []
   syntax:
     content: bool HasValidSnapshot { get; set; }
     parameters: []
@@ -1561,4 +1561,3 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
-

@@ -28,7 +28,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Helper struct for managing pooled StringBuilder with automatic return
-  example: ""
+  example: []
   syntax:
     content: 'public readonly struct SkiaLabel.PooledStringBuilder : IDisposable'
     content.vb: Public Structure SkiaLabel.PooledStringBuilder Implements IDisposable
@@ -155,7 +155,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -607,4 +607,3 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
-

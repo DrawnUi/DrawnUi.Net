@@ -90,7 +90,7 @@ items:
     For all drawn app put this directly inside the ContentPage as root view.
 
     If you put this inside some Maui control like Grid whatever expect more GC collections during animations making them somewhat less fluid.
-  example: ""
+  example: []
   syntax:
     content: >-
       [ContentProperty("Content")]
@@ -612,7 +612,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public override void SetChildren(IEnumerable<SkiaControl> views)
     parameters:
@@ -672,7 +672,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: protected override void OnChildAdded(SkiaControl child)
     parameters:
@@ -704,7 +704,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Use Content property for direct access
-  example: ""
+  example: []
   syntax:
     content: protected virtual void SetContent(SkiaControl view)
     parameters:
@@ -734,7 +734,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: protected override void OnSizeChanged()
     content.vb: Protected Overrides Sub OnSizeChanged()
@@ -763,7 +763,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Marks the current measure of an element as invalidated.
-  example: ""
+  example: []
   syntax:
     content: protected override void InvalidateMeasure()
     content.vb: Protected Overrides Sub InvalidateMeasure()
@@ -833,7 +833,7 @@ items:
     We need this mainly to autosize inside grid cells
 
     This is also called when parent visibilty changes
-  example: ""
+  example: []
   syntax:
     content: protected override Size ArrangeOverride(Rect bounds)
     parameters:
@@ -869,7 +869,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Allows subclasses to implement custom Measure logic during a controls measure pass.
-  example: ""
+  example: []
   syntax:
     content: protected override Size MeasureOverride(double widthConstraint, double heightConstraint)
     parameters:
@@ -911,7 +911,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Makes the control dirty, in need to be remeasured and rendered but this doesn't call Update, it's up yo you
-  example: ""
+  example: []
   syntax:
     content: public override void Invalidate()
     content.vb: Public Overrides Sub Invalidate()
@@ -1007,7 +1007,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public override ScaledSize Measure(float widthConstraintPts, float heightConstraintPts)
     parameters:
@@ -1046,7 +1046,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: All in in UNITS, OUT in PIXELS
-  example: ""
+  example: []
   syntax:
     content: public SKRect GetMeasuringRectForChildren(float widthConstraint, float heightConstraint, float scale)
     parameters:
@@ -1166,7 +1166,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: In UNITS
-  example: ""
+  example: []
   syntax:
     content: protected Size AdaptSizeRequestToContent(double widthRequest, double heightRequest)
     parameters:
@@ -1236,7 +1236,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: PIXELS
-  example: ""
+  example: []
   syntax:
     content: protected ScaledSize MeasureChild(SkiaControl child, double availableWidth, double availableHeight, double scale)
     parameters:
@@ -1284,7 +1284,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanged()
     content.vb: Protected Overrides Sub OnHandlerChanged()
@@ -1314,7 +1314,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.HandlerChanging" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnHandlerChanging(HandlerChangingEventArgs args)
     parameters:
@@ -1372,7 +1372,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: protected override void OnDestroyingVew()
     content.vb: Protected Overrides Sub OnDestroyingVew()
@@ -1512,7 +1512,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -1568,7 +1568,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Got input during current pass
-  example: ""
+  example: []
   syntax:
     content: public HashSet<ISkiaGestureListener> ReceivedInput { get; }
     parameters: []
@@ -1599,7 +1599,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Have consumed input in previous or current pass. To notify them about UP (release) even if they don't get it via touch.
-  example: ""
+  example: []
   syntax:
     content: public Dictionary<Guid, ISkiaGestureListener> HadInput { get; }
     parameters: []
@@ -1630,7 +1630,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Define if consuming this gesture will register child inside `HadInput`
-  example: ""
+  example: []
   syntax:
     content: protected bool IsSavedGesture(TouchActionResult type)
     parameters:
@@ -1694,7 +1694,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Exchange point to set itsself or read who has hover
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl HasHover { get; set; }
     parameters: []
@@ -1725,7 +1725,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Gets signal from a listener that in has processed gestures. Return false if should not process gestures.
-  example: ""
+  example: []
   syntax:
     content: public bool SignalInput(ISkiaGestureListener listener, TouchActionResult gestureType)
     parameters:
@@ -1787,7 +1787,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: IGestureListener implementation
-  example: ""
+  example: []
   syntax:
     content: public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
     parameters:
@@ -2077,7 +2077,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -2338,7 +2338,7 @@ items:
   namespace: DrawnUi.Views
   summary: When overridden in a derived class, should raise the <xref href="Microsoft.Maui.Controls.Element.ParentChanged" data-throw-if-not-resolved="false"></xref> event.
   remarks: It is the implementor's responsibility to raise the <xref href="Microsoft.Maui.Controls.Element.ParentChanged" data-throw-if-not-resolved="false"></xref> event.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnParentChanged()
     content.vb: Protected Overrides Sub OnParentChanged()
@@ -2367,7 +2367,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Enable canvas rendering itsself
-  example: ""
+  example: []
   syntax:
     content: public virtual void EnableUpdates()
     content.vb: Public Overridable Sub EnableUpdates()
@@ -2395,7 +2395,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: Disable invalidating and drawing on the canvas
-  example: ""
+  example: []
   syntax:
     content: public virtual void DisableUpdates()
     content.vb: Public Overridable Sub DisableUpdates()
@@ -2422,7 +2422,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  example: ""
+  example: []
   syntax:
     content: protected override void Draw(DrawingContext context)
     parameters:
@@ -2463,7 +2463,7 @@ items:
     taking into account all transforms and scroll offsets along the path.
 
     Returns points (DIPs).
-  example: ""
+  example: []
   syntax:
     content: public virtual SKPoint GetGesturePositionInsideControl(SkiaControl view, SKPoint screenPointPixels)
     parameters:
@@ -2501,7 +2501,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   summary: ''
-  example: ""
+  example: []
   syntax:
     content: protected virtual SKPoint? FindViewCoordinatesRecursive(SkiaControl current, SkiaControl target, SKPoint pointInCurrent)
     parameters:
@@ -12495,4 +12495,3 @@ references:
   - name: " "
   - name: T
   - name: )
-

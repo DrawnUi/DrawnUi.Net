@@ -87,7 +87,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enlarges to fill the viewport without maintaining aspect ratio if smaller, but does not scale down if larger
-  example: ""
+  example: []
   syntax:
     content: Fill = 1
     return:
@@ -115,7 +115,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fit without maintaining aspect ratio and without enlarging if smaller
-  example: ""
+  example: []
   syntax:
     content: Fit = 2
     return:
@@ -143,7 +143,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fit inside viewport respecting aspect without enlarging if smaller, could result in the image having some blank space around
-  example: ""
+  example: []
   syntax:
     content: AspectFit = 3
     return:
@@ -171,7 +171,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Covers viewport respecting aspect without scaling down if bigger, could result in the image being cropped
-  example: ""
+  example: []
   syntax:
     content: AspectFill = 4
     return:
@@ -199,7 +199,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: AspectFit + AspectFill. Enlarges to cover the viewport or reduces size to fit inside the viewport both respecting aspect ratio, ensuring the entire image is always visible, potentially leaving some parts of the viewport uncovered.
-  example: ""
+  example: []
   syntax:
     content: AspectFitFill = 5
     return:
@@ -227,7 +227,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Fit + Fill. Enlarges to cover the viewport or reduces size to fit inside the viewport without respecting aspect ratio, ensuring the entire image is always visible, potentially leaving some parts of the viewport uncovered.
-  example: ""
+  example: []
   syntax:
     content: FitFill = 6
     return:
@@ -255,7 +255,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Enlarges to cover the viewport if smaller and reduces size if larger, all without respecting aspect ratio. Same as AspectFitFill but will crop the image to fill entire viewport.
-  example: ""
+  example: []
   syntax:
     content: Cover = 7
     return:
@@ -286,7 +286,7 @@ items:
     Enlarges to cover the viewport or reduces size to fit inside the viewport both respecting aspect ratio. Always covers the entire viewport, potentially cropping the image if it's larger,
 
     never leaves empty space inside viewport.
-  example: ""
+  example: []
   syntax:
     content: AspectCover = 8
     return:
@@ -314,7 +314,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: TODO very soon!
-  example: ""
+  example: []
   syntax:
     content: Tile = 9
     return:
@@ -439,4 +439,3 @@ references:
   name: TransformAspect
   nameWithType: TransformAspect
   fullName: DrawnUi.Draw.TransformAspect
-

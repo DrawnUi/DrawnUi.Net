@@ -65,7 +65,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Determines whether the specified objects are equal.
-  example: ""
+  example: []
   syntax:
     content: public bool Equals(Color x, Color y)
     parameters:
@@ -105,7 +105,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Returns a hash code for the specified object.
-  example: ""
+  example: []
   syntax:
     content: public int GetHashCode(Color obj)
     parameters:
@@ -791,4 +791,3 @@ references:
   - name: (
   - name: T
   - name: )
-

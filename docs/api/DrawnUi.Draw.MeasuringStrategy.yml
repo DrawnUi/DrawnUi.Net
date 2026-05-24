@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: For different children sizes
-  example: ""
+  example: []
   syntax:
     content: MeasureAll = 0
     return:
@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Best for equal item sizes
-  example: ""
+  example: []
   syntax:
     content: MeasureFirst = 1
     return:
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: EXPERIMENTAL PREVIEW!!! Acts like MeasureAll but measures by chunks in background.
-  example: ""
+  example: []
   syntax:
     content: MeasureVisible = 2
     return:
@@ -235,4 +235,3 @@ references:
   name: MeasuringStrategy
   nameWithType: MeasuringStrategy
   fullName: DrawnUi.Draw.MeasuringStrategy
-

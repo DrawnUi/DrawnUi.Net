@@ -52,7 +52,7 @@ items:
     Switch-like control, can include any content inside. It's aither you use default content (todo templates?..)
 
     or can include any content inside, and properties will by applied by convention to a SkiaShape with Tag `Frame`, SkiaShape with Tag `Thumb`. At the same time you can override ApplyProperties() and apply them to your content yourself.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaRadioButton : SkiaToggle, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, ISkiaRadioButton, ISkiaControl, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated'
     content.vb: Public Class SkiaRadioButton Inherits SkiaToggle Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, ISkiaRadioButton, ISkiaControl, IDrawnBase, IDisposable, ICanBeUpdatedWithContext, ICanBeUpdated
@@ -1266,7 +1266,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -1321,7 +1321,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: DrawingRect size changed
-  example: ""
+  example: []
   syntax:
     content: protected override void OnLayoutChanged()
     content.vb: Protected Overrides Sub OnLayoutChanged()
@@ -1349,7 +1349,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl GroupParent { get; }
     parameters: []
@@ -1541,7 +1541,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildrenChanged()
     content.vb: Public Overrides Sub OnChildrenChanged()
@@ -1570,7 +1570,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Base call Update()
-  example: ""
+  example: []
   syntax:
     content: public override void ApplyProperties()
     content.vb: Public Overrides Sub ApplyProperties()
@@ -1598,7 +1598,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1633,7 +1633,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void NotifyWasToggled()
     content.vb: Protected Overrides Sub NotifyWasToggled()
@@ -1713,7 +1713,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public override void OnParentChanged(IDrawnBase newvalue, IDrawnBase oldvalue)
     parameters:
@@ -1746,7 +1746,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public void SetValueInternal(bool value)
     parameters:
@@ -1781,7 +1781,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public bool GetValueInternal()
     return:
@@ -1839,7 +1839,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: public string GroupName { get; set; }
     parameters: []
@@ -1899,7 +1899,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: Bind to your own content!
-  example: ""
+  example: []
   syntax:
     content: public string Text { get; set; }
     parameters: []
@@ -35797,4 +35797,3 @@ references:
   name: Text
   nameWithType: SkiaRadioButton.Text
   fullName: DrawnUi.Controls.SkiaRadioButton.Text
-

@@ -32,7 +32,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: this control gets a view and draws it on a virtual scrolling plane
-  example: ""
+  example: []
   syntax:
     content: 'public class VirtualScroll : SkiaScroll, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent'
     content.vb: Public Class VirtualScroll Inherits SkiaScroll Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ISkiaDisposable, IDisposable, ISkiaGestureListener, IDefinesViewport, IWithContent
@@ -1310,7 +1310,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override bool IsContentActive { get; }
     parameters: []
@@ -1341,7 +1341,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override bool UseVirtual { get; }
     parameters: []
@@ -1372,7 +1372,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void SetDetectIndexChildPoint(RelativePositionType option = RelativePositionType.Start)
     parameters:
@@ -1429,7 +1429,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void OnMeasured()
     content.vb: Protected Overrides Sub OnMeasured()
@@ -1458,7 +1458,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Returns a view for a specific index. Actually used for virtual scroll.
-  example: ""
+  example: []
   syntax:
     content: protected virtual SkiaLayout GetMeasuredView(int index, SKRect destination, float scale)
     parameters:
@@ -1509,7 +1509,7 @@ items:
     Here we can construct anything according current offset before painting.
 
     Creates a valid ViewportRect inside.
-  example: ""
+  example: []
   syntax:
     content: protected override bool PositionViewport(SKRect destination, SKPoint offsetPixels, float viewportScale, float scale, bool forceSyncOffsets)
     parameters:
@@ -34747,4 +34747,3 @@ references:
   name: SKPoint
   nameWithType: SKPoint
   fullName: SkiaSharp.SKPoint
-

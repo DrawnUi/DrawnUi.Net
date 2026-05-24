@@ -124,7 +124,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public BindableProperty ProvideValue(IServiceProvider serviceProvider)
     parameters:
@@ -757,4 +757,3 @@ references:
     name: Controls
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls
-

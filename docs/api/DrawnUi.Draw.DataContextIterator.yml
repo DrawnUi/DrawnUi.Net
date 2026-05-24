@@ -104,7 +104,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets the element in the collection at the current position of the enumerator.
-  example: ""
+  example: []
   syntax:
     content: public SkiaControl Current { get; }
     parameters: []
@@ -138,7 +138,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Advances the enumerator to the next element of the collection.
-  example: ""
+  example: []
   syntax:
     content: public bool MoveNext()
     return:
@@ -175,7 +175,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Sets the enumerator to its initial position, which is before the first element in the collection.
-  example: ""
+  example: []
   syntax:
     content: public void Reset()
     content.vb: Public Sub Reset()
@@ -212,7 +212,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -913,4 +913,3 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
-

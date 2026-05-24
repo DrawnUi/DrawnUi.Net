@@ -99,7 +99,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 0 - 1 ratio between overscroll and RefreshShowDistance.1 means control must be totally shown.
-  example: ""
+  example: []
   syntax:
     content: void SetDragRatio(float ratio, float ptsScrollOffset, double ptsLimit, double ptsTrigger)
     parameters:
@@ -1113,4 +1113,3 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
-

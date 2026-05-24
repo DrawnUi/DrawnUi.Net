@@ -82,7 +82,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: 'Optional: slightly reduce FPS/resolution'
-  example: ""
+  example: []
   syntax:
     content: Fair = 1
     return:
@@ -110,7 +110,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: iPhone is overheating — frame rate reduced to cool down the device. This is normal and not an app bug.
-  example: ""
+  example: []
   syntax:
     content: Serious = 2
     return:
@@ -138,7 +138,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: iPhone is overheating — frame rate reduced to cool down the device. This is normal and not an app bug.
-  example: ""
+  example: []
   syntax:
     content: Critical = 3
     return:
@@ -289,4 +289,3 @@ references:
   name: ThermalState
   nameWithType: ThermalState
   fullName: DrawnUi.Draw.ThermalState
-

@@ -260,7 +260,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Creates timing parameters specifically for scrolling to a target position in a specified time
-  example: ""
+  example: []
   syntax:
     content: public DecelerationTimingParameters(float currentValue, float targetValue, float durationSecs, float decelerationRate, float threshold = 0.1)
     parameters:
@@ -335,7 +335,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public float DurationSecs { get; }
     parameters: []
@@ -367,7 +367,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public float ValueAt(float offsetSecs)
     parameters:
@@ -1026,4 +1026,3 @@ references:
   name: VelocityToZero
   nameWithType: DecelerationTimingParameters.VelocityToZero
   fullName: DrawnUi.Draw.DecelerationTimingParameters.VelocityToZero
-

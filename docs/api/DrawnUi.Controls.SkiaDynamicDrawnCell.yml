@@ -30,7 +30,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: This cell can watch binding context property changing
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaDynamicDrawnCell : SkiaDrawnCell, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaCell'
     content.vb: Public Class SkiaDynamicDrawnCell Inherits SkiaDrawnCell Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaGestureListener, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaCell
@@ -1190,7 +1190,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: todo override for templated skialayout to use ViewsProvider
-  example: ""
+  example: []
   syntax:
     content: public override void OnVisibilityChanged(bool value)
     parameters:
@@ -1251,7 +1251,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void FreeContext()
     content.vb: Protected Overrides Sub FreeContext()
@@ -1279,7 +1279,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  example: ""
+  example: []
   syntax:
     content: protected override void AttachContext(object ctx)
     parameters:
@@ -34619,4 +34619,3 @@ references:
   name: PropertyChangedEventArgs
   nameWithType: PropertyChangedEventArgs
   fullName: System.ComponentModel.PropertyChangedEventArgs
-

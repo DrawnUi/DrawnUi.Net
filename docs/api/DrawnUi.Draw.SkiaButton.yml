@@ -119,7 +119,7 @@ items:
     or can include any content inside, and properties will by applied by convention to a SkiaLabel with Tag `MainLabel`, SkiaShape with Tag `MainFrame`. At the same time you can override ApplyProperties() and apply them to your content yourself.
 
     Convention elements tags: BtnText, BtnShape.
-  example: ""
+  example: []
   syntax:
     content: 'public class SkiaButton : SkiaLayout, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener'
     content.vb: Public Class SkiaButton Inherits SkiaLayout Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener
@@ -1330,7 +1330,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Can override this for custom controls to apply padding differently from the default way
-  example: ""
+  example: []
   syntax:
     content: public override Thickness OnPaddingSet(Thickness padding)
     parameters:
@@ -1365,7 +1365,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: protected override void CreateDefaultContent()
     content.vb: Protected Overrides Sub CreateDefaultContent()
@@ -1591,7 +1591,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Clip effects with rounded rect of the frame inside
-  example: ""
+  example: []
   syntax:
     content: public override SKPath CreateClip(object arguments, bool usePosition, SKPath path = null)
     parameters:
@@ -1714,7 +1714,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Happens when child was added or removed, will call Invalidate() in base
-  example: ""
+  example: []
   syntax:
     content: public override void OnChildrenChanged()
     content.vb: Public Overrides Sub OnChildrenChanged()
@@ -1918,7 +1918,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1954,7 +1954,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: You might want to pause to show effect before executing command. Default is 0.
-  example: ""
+  example: []
   syntax:
     content: public static int DelayCallbackMs
     return:
@@ -1983,7 +1983,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Base performs some cleanup actions with Superview
-  example: ""
+  example: []
   syntax:
     content: public override void OnDisposing()
     content.vb: Public Overrides Sub OnDisposing()
@@ -2066,7 +2066,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Occurs when the button is clicked/tapped (Tapped event).
-  example: ""
+  example: []
   syntax:
     content: public Action<SkiaButton, SkiaGesturesParameters> Clicked
     return:
@@ -2095,7 +2095,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Occurs when the button is released (Up event).
-  example: ""
+  example: []
   syntax:
     content: public Action<SkiaButton, SkiaGesturesParameters> Released
     return:
@@ -2124,7 +2124,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Occurs when the button is pressed (Down event).
-  example: ""
+  example: []
   syntax:
     content: public Action<SkiaButton, SkiaGesturesParameters> Pressed
     return:
@@ -2238,7 +2238,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the style variant of the button (Contained, Outlined, or Text).
-  example: ""
+  example: []
   syntax:
     content: public SkiaButton.ButtonStyleType ButtonStyle { get; set; }
     parameters: []
@@ -2296,7 +2296,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets how the button text case is transformed (None, Uppercase, Lowercase).
-  example: ""
+  example: []
   syntax:
     content: public TextTransform TextCase { get; set; }
     parameters: []
@@ -2354,7 +2354,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets whether the button has elevation (shadow effect).
-  example: ""
+  example: []
   syntax:
     content: public bool ElevationEnabled { get; set; }
     parameters: []
@@ -2412,7 +2412,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets or sets the position of the icon relative to the button text.
-  example: ""
+  example: []
   syntax:
     content: public SkiaButton.IconPositionType IconPosition { get; set; }
     parameters: []
@@ -2694,7 +2694,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Gets whether the button is pressed, readonly.
-  example: ""
+  example: []
   syntax:
     content: public bool IsPressed { get; set; }
     parameters: []
@@ -2752,7 +2752,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Bind to your own content!
-  example: ""
+  example: []
   syntax:
     content: public string Text { get; set; }
     parameters: []
@@ -3538,7 +3538,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Method that is called when a bound property is changed.
-  example: ""
+  example: []
   syntax:
     content: protected override void OnPropertyChanged(string propertyName = null)
     parameters:
@@ -3574,7 +3574,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will never paint background, it's up to the button shape to do it.
-  example: ""
+  example: []
   syntax:
     content: protected override bool SetupBackgroundPaint(SKPaint paint, SKRect destination)
     parameters:
@@ -37757,4 +37757,3 @@ references:
   name: Brush
   nameWithType: Brush
   fullName: Microsoft.Maui.Controls.Brush
-

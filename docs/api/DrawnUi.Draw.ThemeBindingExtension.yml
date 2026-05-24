@@ -32,7 +32,7 @@ items:
     Theme binding extension for DrawnUI controls
 
     Supports MAUI, Blazor, and other platforms through IThemeProvider abstraction
-  example: ""
+  example: []
   syntax:
     content: >-
       [ContentProperty("Default")]
@@ -172,7 +172,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public object ProvideValue(IServiceProvider serviceProvider)
     parameters:
@@ -781,4 +781,3 @@ references:
   name: GetCurrentThemeValue
   nameWithType: ThemeBindingExtension.GetCurrentThemeValue
   fullName: DrawnUi.Draw.ThemeBindingExtension.GetCurrentThemeValue
-

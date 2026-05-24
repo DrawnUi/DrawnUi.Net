@@ -31,7 +31,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This animator renders on canvas instead of just updating a value
-  example: ""
+  example: []
   syntax:
     content: 'public class RenderingAnimator : SkiaValueAnimator, IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable'
     content.vb: Public Class RenderingAnimator Inherits SkiaValueAnimator Implements IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable
@@ -127,7 +127,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override void Stop()
     content.vb: Public Overrides Sub [Stop]()
@@ -158,7 +158,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Renders effect overlay to canvas, return true if has drawn something and rendering needs to be applied.
-  example: ""
+  example: []
   syntax:
     content: public bool Render(DrawingContext context, IDrawnBase control)
     parameters:
@@ -198,7 +198,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: return true if has drawn something and rendering needs to be applied
-  example: ""
+  example: []
   syntax:
     content: protected virtual bool OnRendering(DrawingContext context, IDrawnBase control)
     parameters:
@@ -1609,4 +1609,3 @@ references:
   name: SKPath
   nameWithType: SKPath
   fullName: SkiaSharp.SKPath
-

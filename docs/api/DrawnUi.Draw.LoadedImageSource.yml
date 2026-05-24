@@ -112,7 +112,7 @@ items:
     by drawing it onto a new raster (CPU) SKSurface. 
 
     Returns the resulting SKSurface (caller is responsible for disposing it).
-  example: ""
+  example: []
   syntax:
     content: public static SKImage DrawImageOnCpuSurface(SKImage image)
     parameters:
@@ -174,7 +174,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: As this can be disposed automatically by the consuming control like SkiaImage etc we can manually prohibit this for cases this instance is used elsewhere.
-  example: ""
+  example: []
   syntax:
     content: public bool ProtectFromDispose { get; set; }
     parameters: []
@@ -205,7 +205,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Should be set to true for loaded with SkiaImageManager.ReuseBitmaps
-  example: ""
+  example: []
   syntax:
     content: public bool ProtectBitmapFromDispose { get; set; }
     parameters: []
@@ -236,7 +236,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-  example: ""
+  example: []
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose()
@@ -1085,4 +1085,3 @@ references:
   name: GetBitmap
   nameWithType: LoadedImageSource.GetBitmap
   fullName: DrawnUi.Draw.LoadedImageSource.GetBitmap
-

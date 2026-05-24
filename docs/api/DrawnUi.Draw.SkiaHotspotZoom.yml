@@ -1019,7 +1019,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Last ViewportZoom value we are animating from
-  example: ""
+  example: []
   syntax:
     content: protected double LastValue
     return:
@@ -1160,7 +1160,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  example: ""
+  example: []
   syntax:
     content: public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     parameters:
@@ -1223,7 +1223,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: How much of finger movement will afect zoom change
-  example: ""
+  example: []
   syntax:
     content: public double ZoomSpeed { get; set; }
     parameters: []
@@ -1564,7 +1564,7 @@ items:
     The OnDisposing might come with a delay to avoid disposing resources at use.
 
     This method will be called without delay when Dispose() is invoked. Disposed will set to True and for Views their OnWillDisposeWithChildren will be called.
-  example: ""
+  example: []
   syntax:
     content: public override void OnWillDisposeWithChildren()
     content.vb: Public Overrides Sub OnWillDisposeWithChildren()
@@ -30369,4 +30369,3 @@ references:
   name: OnWillDisposeWithChildren
   nameWithType: SkiaHotspotZoom.OnWillDisposeWithChildren
   fullName: DrawnUi.Draw.SkiaHotspotZoom.OnWillDisposeWithChildren
-
