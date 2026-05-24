@@ -148,6 +148,23 @@ function Get-ChangedDocsPaths {
 
 function Kill-PortOwner {
     param ([int]$TargetPort)
+
+    try {
+        $serverProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+            Where-Object {
+                $_.Name -match '^powershell(\.exe)?$|^pwsh(\.exe)?$' -and
+                $_.CommandLine -match 'static-site-server\.ps1' -and
+                $_.CommandLine -match "-Port\s+$TargetPort(\s|$)"
+            }
+
+        foreach ($process in $serverProcesses) {
+            if ($process.ProcessId -ne $PID) {
+                Stop-Process -Id $process.ProcessId -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+    catch { }
+
     try {
         $connections = netstat -ano | Select-String ":$TargetPort\s"
         foreach ($line in $connections) {
