@@ -1,6 +1,6 @@
 ---
 title: DrawnUI for .NET - SkiaSharp Rendering Engine
-description: Hardware-accelerated rendering engine for .NET, including MAUI, Blazor, OpenTK, and platform-agnostic hosts through DrawnUi.Net. Choose the right package and runtime for your app or rendering workflow.
+description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazor, OpenTK, and any .NET.
 ---
 
 <div style="position: relative; text-align: center; padding: 30px 0 70px 0; border-radius: 12px; overflow: hidden; background: #0b1220; color: white;">
@@ -18,11 +18,11 @@ description: Hardware-accelerated rendering engine for .NET, including MAUI, Bla
       Hardware-accelerated <strong>rendering engine</strong> for .NET, including MAUI, Blazor, and OpenTK, powered by SkiaSharp
     </p>
     <div class="hero-buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
-      <a href="articles/maui/getting-started.md" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
+      <!-- <a href="articles/maui/getting-started.md" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
         🔨 Setup Guide
-      </a>
+      </a> -->
       <a href="https://github.com/taublast/DrawnUi" class="hero-btn hero-btn-secondary" style="background: rgba(255,255,255,0.12); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; border: 2px solid rgba(255,255,255,0.22); backdrop-filter: blur(2px); display: inline-block; min-width: 160px; text-align: center;">
-        ⭐ Star on GitHub
+        ⭐ GitHub MIT
       </a>
     </div>
   </div>
@@ -376,7 +376,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 <div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
   <h4 style="margin-bottom: 15px;">🧙 Tutorials</h4>
   <p style="margin-bottom: 20px; ">Step-by-step practical examples</p>
-  <a href="articles/maui/tutorials.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">View Tutorials →</a><br>
+  <a href="articles/tutorials.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">View Tutorials →</a><br>
   <a href="articles/sample-apps.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Sample Apps →</a><br>
   <a href="articles/fluent-extensions.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Fluent Syntax →</a>
 </div>

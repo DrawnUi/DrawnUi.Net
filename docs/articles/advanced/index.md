@@ -5,6 +5,7 @@ This section covers advanced features and concepts for DrawnUi development.
 ## Architecture and Performance
 
 - [Layout System Architecture](layout-system.md) - Deep dive into how the layout system works
+- [Accessibility](accessibility.md) - Current accessibility support and the Blazor overlay limitation
 - [Platform-Specific Styling](platform-styling.md) - Creating platform-specific UI styles
 - [Recycled Cells](recycled-cells.md) - Advanced performance techniques for large lists
 

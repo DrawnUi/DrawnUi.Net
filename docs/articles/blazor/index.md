@@ -20,6 +20,7 @@ DrawnUI for Blazor currently supports two runtime models:
 ## Start here
 
 - [Blazor Packages](packages.md)
+- [Blazor Samples](samples.md)
 - [Blazor WebAssembly](wasm.md)
 - [Blazor Server](server.md)
 - [Blazor Hybrid Web App](hybrid.md)

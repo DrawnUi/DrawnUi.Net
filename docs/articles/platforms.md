@@ -58,25 +58,23 @@ Start here:
 
 ## OpenTK (Windows / Linux)
 
-> **Project reference** — `DrawnUi.OpenTk.Game` is currently consumed as a project reference, not a NuGet package. Add it as shown:
+Install the nuget package:
 
-```xml
-<ItemGroup>
-  <ProjectReference Include="path/to/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj" />
-</ItemGroup>
+```bash
+dotnet add package DrawnUi.OpenTk
 ```
 
-Choose OpenTK when you need a native OpenGL window on Windows or Linux without a MAUI or Blazor host.
+Choose OpenTK when you need a native OpenGL window on Windows or Linux without overheads.
 
 Use it for:
 
-- 2D and 3D games with a GPU-accelerated DrawnUI canvas overlay
-- standalone desktop tools that need raw OpenGL access
-- embedding DrawnUI UI into an existing OpenTK engine scene
+- embedding rich DrawnUI UIs into existing OpenTK engine scenes
+- standalone desktop app with rich UI which will would also run in browser and other platforms DrawnUI supports
+- 2D/2.5D games which will run with hardware acceleration and same codebase in browser and other platforms DrawnUI supports
 
 Two integration paths:
 
-- **`DrawnUiGameWindow`** — subclass this when the entire window is DrawnUI content
+- **`DrawnUiWindow`** — subclass this when the entire window is DrawnUI content
 - **`CanvasHost`** — use this when your own `GameWindow` subclass owns rendering and you want DrawnUI as an overlay
 
 Start here:
@@ -99,7 +97,7 @@ Use it for:
 - server-side image or PDF generation
 - offscreen validation of shared layout and drawing behavior
 - control harnesses and repro tools
-- debugging shared rendering logic before checking the same scenario on MAUI or Blazor
+- debugging shared rendering logic before checking the same scenario in platform-dependent frameworks
 
 Start here:
 

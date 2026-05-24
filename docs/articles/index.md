@@ -33,8 +33,8 @@ dotnet add package DrawnUi.Blazor.Server
 ```
 
 **For OpenTK (Windows/Linux desktop games and tools):**
-```xml
-<ProjectReference Include="path/to/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj" />
+```bash
+dotnet add package DrawnUi.OpenTk
 ```
 
 **For platform-agnostic .NET workflows:**
