@@ -431,6 +431,8 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Paints the filled background for the current shape into the target canvas.
+        /// </summary>
         protected virtual void PaintBackground(SkiaDrawingContext ctx,
             SKRect outRect,
             SKPoint[] radii,
