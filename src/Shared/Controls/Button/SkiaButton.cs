@@ -692,6 +692,7 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
     public virtual bool OnTapped(SkiaGesturesParameters args, SKPoint childOffset)
     {
+        System.Diagnostics.Debug.WriteLine($"[A11y-ACT] SkiaButton.OnTapped Text='{Text}' IsDisabled={IsDisabled}");
         var ret = false;
 
         if (!IsDisabled)
@@ -716,6 +717,8 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
                         await Task.Run(() => { CommandTapped?.Execute(CommandTappedParameter); }).ConfigureAwait(false);
                     });
             }
+
+            NotifyAccessibilityFocused(true);
         }
 
         return ret;

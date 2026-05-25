@@ -130,9 +130,6 @@ public partial class SpaceShooter : DrawnGame
 
         IgnoreChildrenInvalidations = true;
 
-        // in case we implement key press for desktop
-        //Focus();
-
         //prebuilt reusable sprites pools
         Parallel.Invoke(
             () =>
