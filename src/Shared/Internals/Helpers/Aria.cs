@@ -124,5 +124,19 @@ namespace DrawnUi.Models
         /// Equivalent to <c>aria-hidden="true"</c> at the role level.
         /// </summary>
         public static readonly string RolePresentation = "presentation";
+
+        // ── Live region settings ───────────────────────────────────────────────
+
+        /// <summary>
+        /// Announced when the user is idle. Use for status text, score displays, counters.
+        /// Pass to <c>.WithAccessibilityLive(Aria.LivePolite)</c>.
+        /// </summary>
+        public static readonly string LivePolite = "polite";
+
+        /// <summary>
+        /// Announced immediately, interrupting the user. Use for error messages, alerts.
+        /// Pass to <c>.WithAccessibilityLive(Aria.LiveAssertive)</c>.
+        /// </summary>
+        public static readonly string LiveAssertive = "assertive";
     }
 }
