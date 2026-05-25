@@ -2,6 +2,7 @@ using DrawnUi.Views;
 using DrawnUi.Draw;
 using DrawnUi.Controls;
 using DrawnUi.Infrastructure.Enums;
+using DrawnUi.Models;
 using Canvas = DrawnUi.Views.Canvas;
 
 namespace Sandbox
@@ -11,6 +12,8 @@ namespace Sandbox
     public class MainPageEditors : BasePageReloadable, IDisposable
     {
         Canvas Canvas;
+        SkiaLabel _liveDisplayLabel;
+        int _tapCount;
 
         protected override void Dispose(bool isDisposing)
         {
@@ -29,7 +32,7 @@ namespace Sandbox
 
             Canvas = new Canvas()
             {
-                RenderingMode = RenderingModeType.Default,
+                RenderingMode = RenderingModeType.Accelerated,
                 Gestures = GesturesMode.Enabled,
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
@@ -56,7 +59,7 @@ namespace Sandbox
                                 FontSize = 18,
                                 TextColor = Colors.Black,
                                 HorizontalOptions = LayoutOptions.Fill,
-                            },
+                            }.WithAccessibilityText(),
 
                             new SkiaEditor()
                             {
@@ -71,7 +74,9 @@ namespace Sandbox
                                 Text = "Single line text",
                                 PlaceholderText = "Write your message…",
                                 PlaceholderColor = Color.Parse("#60FFFFFF"),
-                            },
+                            }
+                            .WithAccessibility(Aria.RoleTextBox, "Single-line, editor",
+                                "Write your message…", canInteract: true),
 
                             new SkiaLabel()
                             {
@@ -80,7 +85,7 @@ namespace Sandbox
                                 FontSize = 18,
                                 TextColor = Colors.Black,
                                 HorizontalOptions = LayoutOptions.Fill,
-                            },
+                            }.WithAccessibilityText(),
 
                             new SkiaEditor()
                             {
@@ -103,7 +108,8 @@ namespace Sandbox
                                 FontSize = 18,
                                 TextColor = Colors.Black,
                                 HorizontalOptions = LayoutOptions.Fill,
-                            },
+                            }.WithAccessibilityText(),
+
 
                             new SkiaEditor()
                             {
@@ -128,7 +134,8 @@ namespace Sandbox
                                 FontSize = 18,
                                 TextColor = Colors.Black,
                                 HorizontalOptions = LayoutOptions.Fill,
-                            },
+                            }.WithAccessibilityText(),
+
 
                             new SkiaEditor()
                             {
@@ -157,6 +164,35 @@ namespace Sandbox
 
                             BuildRichEditorPanel(),
 #endif
+
+                            new SkiaButton("Test Accessibility")
+                            {
+                                HorizontalOptions = LayoutOptions.Start,
+                                HeightRequest = 46,
+                                BackgroundColor = Color.Parse("#2E86DE"),
+                                TextColor = Colors.White,
+                                Padding = new Thickness(18, 10),
+                                Margin = new Thickness(0, 8, 0, 0),
+                            }
+                            .WithAccessibilityButton("Test Accessibility", "Tap to verify UIA is working")
+                            .OnTapped(me =>
+                            {
+                                System.Diagnostics.Debug.WriteLine("[A11y] Button tapped via UIA");
+                                _tapCount++;
+                                if (_liveDisplayLabel != null)
+                                    _liveDisplayLabel.Text = $"Tapped {_tapCount} time{(_tapCount == 1 ? "" : "s")}";
+                            }),
+
+                            new SkiaLabel()
+                            {
+                                Text = "Tapped 0 times",
+                                FontSize = 15,
+                                TextColor = Colors.DarkGreen,
+                                HorizontalOptions = LayoutOptions.Fill,
+                            }
+                            .WithAccessibilityText()
+                            .WithAccessibilityLive()
+                            .Assign(out _liveDisplayLabel),
 
                             new SkiaControl()
                             {
@@ -187,7 +223,22 @@ namespace Sandbox
             {
                 Children =
                 {
-                    Canvas
+                    Canvas,
+                    //new Label()
+                    //{
+                    //    Text = "MAUI Label",
+                    //    TextColor = Colors.Red,
+                    //    HorizontalOptions = LayoutOptions.Center,
+                    //    VerticalOptions = LayoutOptions.Center,
+                    //},
+                    //new Entry()
+                    //{
+                    //    Margin = new(40),
+                    //    Text = "MAUI Entry",
+                    //    BackgroundColor = Colors.Brown,
+                    //    HorizontalOptions = LayoutOptions.Center,
+                    //    VerticalOptions = LayoutOptions.Center,
+                    //}
                 }
             };
         }

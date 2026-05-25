@@ -1,4 +1,6 @@
-﻿using Microsoft.Maui.Handlers;
+﻿using DrawnUi.Draw;
+using Microsoft.Maui.Handlers;
+using Microsoft.UI.Xaml.Automation.Peers;
 
 namespace DrawnUi.Views
 {
@@ -122,9 +124,24 @@ namespace DrawnUi.Views
             return new SKPoint((float)x, (float)y);
         }
 
-        private class MauiSkSwapChainPanelRetained : SKSwapChainPanelRetained
+        private class MauiSkSwapChainPanelRetained : SKSwapChainPanelRetained, IDrawnUiA11yHost
         {
+            public MauiSkSwapChainPanelRetained() { IsTabStop = true; }
+
             public bool IgnorePixelScaling { get; set; }
+
+            // IDrawnUiA11yHost
+            public SkiaAccessibilityManager? A11yManager  { get; set; }
+            public Func<(double x, double y)>? A11yGetOrigin { get; set; }
+            public Func<float>? A11yGetScale { get; set; }
+            public AutomationPeer? A11yPeer { get; set; }
+
+            protected override AutomationPeer OnCreateAutomationPeer()
+            {
+                var peer = new DrawnUiAutomationPeer(this, this);
+                A11yPeer = peer;
+                return peer;
+            }
 
             protected override void OnPaintSurface(SkiaSharp.Views.Windows.SKPaintGLSurfaceEventArgs e)
             {

@@ -113,6 +113,13 @@ namespace DrawnUi.Draw
                 Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(1, 0, 0, 0))
             };
 
+            // Exclude from AT navigation — our drawn virtual peer is the a11y representative.
+            // The TextBox still receives WinUI keyboard focus for text input; Narrator ignores it.
+            // This is the same pattern Flutter/Uno use for hidden native input sinks.
+            Microsoft.UI.Xaml.Automation.AutomationProperties.SetAccessibilityView(
+                _hiddenTextBox,
+                Microsoft.UI.Xaml.Automation.Peers.AccessibilityView.Raw);
+
             _hiddenTextBox.TextChanged += HiddenTextBox_TextChanged;
             _hiddenTextBox.SelectionChanged += HiddenTextBox_SelectionChanged;
             _hiddenTextBox.GotFocus += HiddenTextBox_GotFocus;
@@ -224,6 +231,17 @@ namespace DrawnUi.Draw
         // a spurious SelectionChanged that would override the drawn cursor position.
         private void HiddenTextBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
+            // Tab while editor has native focus: exit editing mode and advance virtual UIA focus.
+            if (e.Key == Windows.System.VirtualKey.Tab)
+            {
+                bool shift = Microsoft.UI.Input.InputKeyboardSource
+                    .GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift)
+                    .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
+                bool moved = Superview?.HandleEditorA11yTabOut(!shift) ?? false;
+                e.Handled = moved; // if past boundary, let WinUI Tab continue naturally
+                return;
+            }
+
             // Must block Enter for single-line here, before TextBox processes it.
             // KeyDown fires after TextBox inserts the character; AcceptsReturn=true
             // means a \n would already be in the text by the time KeyDown runs.
@@ -301,6 +319,31 @@ namespace DrawnUi.Draw
             long currentTime = DateTime.Now.Ticks;
             int uniqueId = unchecked((int)currentTime);
             return uniqueId;
+        }
+
+        public override void OnAccessibilityActivated()
+        {
+            // Do NOT call base — base injects a synthetic Tapped gesture which SkiaEditor
+            // ignores for focus (only Down opens the keyboard). Set native focus directly.
+            if (Superview != null)
+                Superview.FocusedChild = this;
+            SetFocusInternal(true);
+        }
+
+        public override void OnAccessibilityFocused(bool focused)
+        {
+            if (focused)
+            {
+                // Tab arrived — activate cursor + native input sink.
+                if (Superview != null)
+                    Superview.FocusedChild = this;
+                SetFocusInternal(true);
+            }
+            else
+            {
+                // Tab left — hide cursor, release native input.
+                SetFocus(false);
+            }
         }
     }
 }
