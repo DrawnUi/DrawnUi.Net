@@ -1,6 +1,7 @@
 using DrawnUi;
 using DrawnUi.Draw;
 using DrawnUi.Infrastructure.Enums;
+using DrawnUi.Models;
 using DrawnUi.Views;
 using Color = DrawnUi.Color;
 
@@ -23,7 +24,7 @@ internal sealed class DemoScene : SkiaLayout
                 FontSize = 34,
                 TextColor = Colors.White,
                 Margin = new Thickness(24, 24, 24, 12)
-            },
+            }.WithAccessibilityText(),
 
             new SkiaLabel
             {
@@ -31,7 +32,7 @@ internal sealed class DemoScene : SkiaLayout
                 FontSize = 18,
                 TextColor = Color.FromArgb("#9FB3C8"),
                 Margin = new Thickness(24, 0, 24, 18)
-            },
+            }.WithAccessibilityText(),
 
             new SkiaLabel
             {
@@ -39,7 +40,8 @@ internal sealed class DemoScene : SkiaLayout
                 FontSize = 18,
                 TextColor = Color.FromArgb("#D6E4F0"),
                 Margin = new Thickness(24, 0, 24, 12)
-            }.Assign(out _status),
+            }.Assign(out _status)
+             .WithAccessibilityText(),
 
             new SkiaLabel
             {
@@ -64,6 +66,7 @@ internal sealed class DemoScene : SkiaLayout
                 Margin = new Thickness(24, 0, 24, 18),
                 Padding = new Thickness(16, 12)
             }
+            .WithAccessibility(Aria.RoleTextBox, "Demo editor", "Type here to test input", canInteract: true)
             .OnFocusChanged((me, focused) =>
                 _status.Text = focused ? "Editor focused. Type into the window." : "Editor focus cleared.")
             .OnTextChanged(text =>
@@ -77,7 +80,9 @@ internal sealed class DemoScene : SkiaLayout
                 BackgroundColor = Color.FromArgb("#2E86DE"),
                 TextColor = Colors.White,
                 Padding = new Thickness(18, 10)
-            }.OnTapped(me =>
+            }
+            .WithAccessibilityButton("Tap Me", "Triggers a demo action")
+            .OnTapped(me =>
                 _status.Text = "Button tapped via DrawnUI gesture routing.")
         };
     }
