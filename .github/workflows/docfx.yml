@@ -38,6 +38,10 @@ jobs:
           if (Test-Path ./_site) {
               Remove-Item ./_site -Recurse -Force
           }
+          if (Test-Path ./api) {
+            Get-ChildItem ./api -Filter *.yml -File | Remove-Item -Force
+          }
+          docfx metadata ./docfx.json
           docfx build ./docfx.json
 
       - name: Publish WASM samples

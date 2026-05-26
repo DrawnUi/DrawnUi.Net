@@ -478,6 +478,9 @@ items:
   - uid: DrawnUi.Draw.IInterpolator
     name: IInterpolator
     type: Interface
+  - uid: DrawnUi.Draw.IInvokeProvider
+    name: IInvokeProvider
+    type: Interface
   - uid: DrawnUi.Draw.ILayoutInsideViewport
     name: ILayoutInsideViewport
     type: Interface
@@ -486,6 +489,15 @@ items:
     type: Interface
   - uid: DrawnUi.Draw.IPostRendererEffect
     name: IPostRendererEffect
+    type: Interface
+  - uid: DrawnUi.Draw.IRawElementProviderFragment
+    name: IRawElementProviderFragment
+    type: Interface
+  - uid: DrawnUi.Draw.IRawElementProviderFragmentRoot
+    name: IRawElementProviderFragmentRoot
+    type: Interface
+  - uid: DrawnUi.Draw.IRawElementProviderSimple
+    name: IRawElementProviderSimple
     type: Interface
   - uid: DrawnUi.Draw.IRefreshIndicator
     name: IRefreshIndicator
@@ -1120,6 +1132,15 @@ items:
   - uid: DrawnUi.Draw.TransformAspect
     name: TransformAspect
     type: Enum
+  - uid: DrawnUi.Draw.UiaNavigateDirection
+    name: UiaNavigateDirection
+    type: Enum
+  - uid: DrawnUi.Draw.UiaProviderOptions
+    name: UiaProviderOptions
+    type: Enum
+  - uid: DrawnUi.Draw.UiaRect
+    name: UiaRect
+    type: Struct
   - uid: DrawnUi.Draw.UnderdampedSpringTimingParameters
     name: UnderdampedSpringTimingParameters
     type: Class

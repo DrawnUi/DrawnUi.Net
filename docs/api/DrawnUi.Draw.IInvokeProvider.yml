@@ -1,93 +1,90 @@
 ### YamlMime:ManagedReference
 items:
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType
-  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
-  id: SkiaButton.IconPositionType
+- uid: DrawnUi.Draw.IInvokeProvider
+  commentId: T:DrawnUi.Draw.IInvokeProvider
+  id: IInvokeProvider
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  - DrawnUi.Draw.SkiaButton.IconPositionType.Right
+  - DrawnUi.Draw.IInvokeProvider.Invoke
   langs:
   - csharp
   - vb
-  name: SkiaButton.IconPositionType
-  nameWithType: SkiaButton.IconPositionType
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
-  type: Enum
+  name: IInvokeProvider
+  nameWithType: IInvokeProvider
+  fullName: DrawnUi.Draw.IInvokeProvider
+  type: Interface
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: IconPositionType
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 893
+    id: IInvokeProvider
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 62
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Defines the position of an icon relative to the button text
-  example: []
   syntax:
-    content: public enum SkiaButton.IconPositionType
-    content.vb: Public Enum SkiaButton.IconPositionType
+    content: >-
+      [ComVisible(true)]
+
+      [Guid("54FCB24B-E18E-47a2-B4AF-9BC1184F912F")]
+
+      [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+
+      public interface IInvokeProvider
+    content.vb: >-
+      <ComVisible(True)>
+
+      <Guid("54FCB24B-E18E-47a2-B4AF-9BC1184F912F")>
+
+      <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+
+      Public Interface IInvokeProvider
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  commentId: F:DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  id: Left
-  parent: DrawnUi.Draw.SkiaButton.IconPositionType
+  attributes:
+  - type: System.Runtime.InteropServices.ComVisibleAttribute
+    ctor: System.Runtime.InteropServices.ComVisibleAttribute.#ctor(System.Boolean)
+    arguments:
+    - type: System.Boolean
+      value: true
+  - type: System.Runtime.InteropServices.GuidAttribute
+    ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: 54FCB24B-E18E-47a2-B4AF-9BC1184F912F
+  - type: System.Runtime.InteropServices.InterfaceTypeAttribute
+    ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
+    arguments:
+    - type: System.Runtime.InteropServices.ComInterfaceType
+      value: 1
+- uid: DrawnUi.Draw.IInvokeProvider.Invoke
+  commentId: M:DrawnUi.Draw.IInvokeProvider.Invoke
+  id: Invoke
+  parent: DrawnUi.Draw.IInvokeProvider
   langs:
   - csharp
   - vb
-  name: Left
-  nameWithType: SkiaButton.IconPositionType.Left
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  type: Field
+  name: Invoke()
+  nameWithType: IInvokeProvider.Invoke()
+  fullName: DrawnUi.Draw.IInvokeProvider.Invoke()
+  type: Method
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: Left
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 898
+    id: Invoke
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Icon appears before the text
-  example: []
   syntax:
-    content: Left = 0
-    return:
-      type: DrawnUi.Draw.SkiaButton.IconPositionType
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType.Right
-  commentId: F:DrawnUi.Draw.SkiaButton.IconPositionType.Right
-  id: Right
-  parent: DrawnUi.Draw.SkiaButton.IconPositionType
-  langs:
-  - csharp
-  - vb
-  name: Right
-  nameWithType: SkiaButton.IconPositionType.Right
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType.Right
-  type: Field
-  source:
-    remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
-    id: Right
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 903
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  summary: Icon appears after the text
-  example: []
-  syntax:
-    content: Right = 1
-    return:
-      type: DrawnUi.Draw.SkiaButton.IconPositionType
+    content: void Invoke()
+    content.vb: Sub Invoke()
+  overload: DrawnUi.Draw.IInvokeProvider.Invoke*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -201,26 +198,9 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType
-  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton.IconPositionType
-  nameWithType: SkiaButton.IconPositionType
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
+- uid: DrawnUi.Draw.IInvokeProvider.Invoke*
+  commentId: Overload:DrawnUi.Draw.IInvokeProvider.Invoke
+  href: DrawnUi.Draw.IInvokeProvider.html#DrawnUi_Draw_IInvokeProvider_Invoke
+  name: Invoke
+  nameWithType: IInvokeProvider.Invoke
+  fullName: DrawnUi.Draw.IInvokeProvider.Invoke

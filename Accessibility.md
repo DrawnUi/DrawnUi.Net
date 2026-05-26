@@ -9,11 +9,11 @@ Each platform exposes drawn controls differently:
 | Platform | Mechanism |
 |---|---|
 | Blazor | Invisible ARIA `<div>` overlay positioned over the canvas |
-| OpenTK Windows | UIA `IRawElementProviderFragment` virtual elements attached to the native OpenTK / GLFW host window |
+| OpenTK Windows | UIA `IRawElementProviderFragment` virtual elements attached to the native OpenTK / GLFW host window (done) |
 | OpenTK Linux | AT-SPI virtual accessibles attached to the native OpenTK / GLFW host window |
 | MAUI iOS / macCatalyst | `IUIAccessibilityContainer` virtual elements on the native view |
 | MAUI Android | `ExploreByTouchHelper` on `SKCanvasView` |
-| MAUI Windows | UIA `IRawElementProviderFragment` virtual elements |
+| MAUI Windows | UIA `IRawElementProviderFragment` virtual elements attached to the WinUI 3 `DesktopChildSiteBridge` host window (done) |
 
 All platforms share the same C# infrastructure in the shared project. Platform layers consume the `SkiaAccessibilityManager` snapshot and translate it into the native a11y API.
 
@@ -178,17 +178,37 @@ Structural / landmark: `RoleText`, `RoleHeading`, `RoleImg`, `RoleList`, `RoleLi
 - [ ] Implement `GetVirtualViewAt`, `GetVisibleVirtualViews`, `OnPopulateNodeForVirtualView`, `OnPerformActionForVirtualView` using the snapshot.
 - [ ] Map `OnAccessibilityActivated` to `PerformActionForVirtualView` with `AccessibilityNodeInfoCompat.ActionClick`.
 
-### MAUI — Windows (not started)
+### MAUI — Windows (done)
 
-- [ ] Implement `IRawElementProviderFragment` + `IRawElementProviderSimple` for virtual UIA elements.
-- [ ] Expose `Rect`, `Name` (label), `LocalizedControlType` (role), `IsKeyboardFocusable` (canInteract).
-- [ ] Raise `UIA_AutomationFocusChangedEventId` when focus changes.
+UIA virtual provider implemented in `src/Maui/DrawnUi/Platforms/Windows/Accessibility/MauiWindowsUiaProvider.cs`. Hooks the WinUI 3 `DesktopChildSiteBridge` child window (the HWND that receives `WM_GETOBJECT` for content) via WndProc subclass. Responds to `WM_GETOBJECT(lParam=-25)` with `UiaReturnRawElementProvider`. Snapshot changes raise `UiaRaiseStructureChangedEvent`. Setup/teardown in `DrawnView.Windows.cs InitFrameworkPlatform`.
 
-### OpenTK — Windows (not started)
+**Key implementation note — HWND:** `GetPlatformWindow()` / `WindowNative.GetWindowHandle()` returns the top-level WinUI 3 window HWND. UIA queries go to the `DesktopChildSiteBridge` child window (class `Microsoft.UI.Content.DesktopChildSiteBridge`). Use `EnumChildWindows` to find it and hook that HWND instead.
 
-- [ ] Hook accessibility to the native OpenTK / GLFW host window handle on Windows.
-- [ ] Expose `SkiaAccessibilityManager.Snapshot` as UIA fragment providers, similar to the planned MAUI Windows bridge.
-- [ ] Route accessibility activation back to `OnAccessibilityActivated()` and raise focus-changed events when keyboard focus moves.
+**Key implementation note — bounding rectangles:** `ClientToScreen(DesktopChildSiteBridgeHwnd, {0,0})` gives the physical-pixel origin of the entire WinUI 3 content island, but the DrawnUI canvas is positioned WITHIN that island at some offset (MAUI shell chrome, navigation bar, etc.). Use `platformView.TransformToVisual(null)` to get the canvas offset in effective pixels, then multiply by `XamlRoot.RasterizationScale` to convert to physical pixels and add to the bridge origin. This is computed as a `Func<(double x, double y)>` lambda so it's evaluated fresh each time UIA queries `BoundingRectangle`.
+
+COM interface types are shared with OpenTK via `src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs` (compiled into both assemblies via `Shared.projitems`). COM QI matches by GUID — both assemblies can have separate copies with the same GUIDs.
+
+- [x] Hook WM_GETOBJECT on DesktopChildSiteBridge, return UIA fragment root
+- [x] Virtual element providers for all snapshot nodes
+- [x] Bounding rectangles in screen coordinates
+- [x] Navigate (parent/sibling/child traversal)
+- [x] StructureChanged event on snapshot rebuild
+- [x] SetFocus → OnAccessibilityActivated
+- [x] Raise `UIA_AutomationFocusChangedEventId` when keyboard focus moves
+
+### OpenTK — Windows (done)
+
+UIA virtual provider implemented in `src/OpenTk/DrawnUi/Accessibility/WindowsUiaProvider.cs`. Hooked via WndProc subclass in `DrawnUiWindow`. Responds to `WM_GETOBJECT(lParam=-25)` with `UiaReturnRawElementProvider`. Snapshot changes raise `UiaRaiseStructureChangedEvent`. Each `AccessibilityNode` is a `VirtualElementProvider` with correct bounding rect (logical px × scale + client origin), runtime id, control type, and `SetFocus` wired to `OnAccessibilityActivated`.
+
+**Key implementation note:** COM interfaces (`IRawElementProviderSimple`, `IRawElementProviderFragment`, `IRawElementProviderFragmentRoot`) must be `public` — .NET's CCW does not expose `internal` types via `QueryInterface` even with `[ComVisible(true)]`.
+
+- [x] Hook WM_GETOBJECT, return UIA fragment root
+- [x] Virtual element providers for all snapshot nodes
+- [x] Bounding rectangles in screen coordinates
+- [x] Navigate (parent/sibling/child traversal)
+- [x] StructureChanged event on snapshot rebuild
+- [x] SetFocus → OnAccessibilityActivated
+- [x] Raise `UIA_AutomationFocusChangedEventId` when keyboard focus moves
 
 ### OpenTK — Linux (not started)
 

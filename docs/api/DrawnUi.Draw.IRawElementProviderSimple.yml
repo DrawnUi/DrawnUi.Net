@@ -1,0 +1,370 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.IRawElementProviderSimple
+  commentId: T:DrawnUi.Draw.IRawElementProviderSimple
+  id: IRawElementProviderSimple
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider(System.Int32)
+  - DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue(System.Int32)
+  - DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider
+  - DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions
+  langs:
+  - csharp
+  - vb
+  name: IRawElementProviderSimple
+  nameWithType: IRawElementProviderSimple
+  fullName: DrawnUi.Draw.IRawElementProviderSimple
+  type: Interface
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IRawElementProviderSimple
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: >-
+      [ComVisible(true)]
+
+      [Guid("D6DD68D1-86FD-4332-8666-9ABEDEA2D24C")]
+
+      [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+
+      public interface IRawElementProviderSimple
+    content.vb: >-
+      <ComVisible(True)>
+
+      <Guid("D6DD68D1-86FD-4332-8666-9ABEDEA2D24C")>
+
+      <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+
+      Public Interface IRawElementProviderSimple
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  attributes:
+  - type: System.Runtime.InteropServices.ComVisibleAttribute
+    ctor: System.Runtime.InteropServices.ComVisibleAttribute.#ctor(System.Boolean)
+    arguments:
+    - type: System.Boolean
+      value: true
+  - type: System.Runtime.InteropServices.GuidAttribute
+    ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: D6DD68D1-86FD-4332-8666-9ABEDEA2D24C
+  - type: System.Runtime.InteropServices.InterfaceTypeAttribute
+    ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
+    arguments:
+    - type: System.Runtime.InteropServices.ComInterfaceType
+      value: 1
+- uid: DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions
+  commentId: P:DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions
+  id: ProviderOptions
+  parent: DrawnUi.Draw.IRawElementProviderSimple
+  langs:
+  - csharp
+  - vb
+  name: ProviderOptions
+  nameWithType: IRawElementProviderSimple.ProviderOptions
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ProviderOptions
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 14
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: UiaProviderOptions ProviderOptions { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.UiaProviderOptions
+    content.vb: ReadOnly Property ProviderOptions As UiaProviderOptions
+  overload: DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions*
+- uid: DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider(System.Int32)
+  commentId: M:DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider(System.Int32)
+  id: GetPatternProvider(System.Int32)
+  parent: DrawnUi.Draw.IRawElementProviderSimple
+  langs:
+  - csharp
+  - vb
+  name: GetPatternProvider(int)
+  nameWithType: IRawElementProviderSimple.GetPatternProvider(int)
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetPatternProvider
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 16
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: object? GetPatternProvider(int patternId)
+    parameters:
+    - id: patternId
+      type: System.Int32
+    return:
+      type: System.Object
+    content.vb: Function GetPatternProvider(patternId As Integer) As Object
+  overload: DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider*
+  nameWithType.vb: IRawElementProviderSimple.GetPatternProvider(Integer)
+  fullName.vb: DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider(Integer)
+  name.vb: GetPatternProvider(Integer)
+- uid: DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue(System.Int32)
+  commentId: M:DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue(System.Int32)
+  id: GetPropertyValue(System.Int32)
+  parent: DrawnUi.Draw.IRawElementProviderSimple
+  langs:
+  - csharp
+  - vb
+  name: GetPropertyValue(int)
+  nameWithType: IRawElementProviderSimple.GetPropertyValue(int)
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetPropertyValue
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: object? GetPropertyValue(int propertyId)
+    parameters:
+    - id: propertyId
+      type: System.Int32
+    return:
+      type: System.Object
+    content.vb: Function GetPropertyValue(propertyId As Integer) As Object
+  overload: DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue*
+  nameWithType.vb: IRawElementProviderSimple.GetPropertyValue(Integer)
+  fullName.vb: DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue(Integer)
+  name.vb: GetPropertyValue(Integer)
+- uid: DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider
+  commentId: P:DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider
+  id: HostRawElementProvider
+  parent: DrawnUi.Draw.IRawElementProviderSimple
+  langs:
+  - csharp
+  - vb
+  name: HostRawElementProvider
+  nameWithType: IRawElementProviderSimple.HostRawElementProvider
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: HostRawElementProvider
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 22
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: IRawElementProviderSimple? HostRawElementProvider { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.IRawElementProviderSimple
+    content.vb: ReadOnly Property HostRawElementProvider As IRawElementProviderSimple
+  overload: DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider*
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions
+  href: DrawnUi.Draw.IRawElementProviderSimple.html#DrawnUi_Draw_IRawElementProviderSimple_ProviderOptions
+  name: ProviderOptions
+  nameWithType: IRawElementProviderSimple.ProviderOptions
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.ProviderOptions
+- uid: DrawnUi.Draw.UiaProviderOptions
+  commentId: T:DrawnUi.Draw.UiaProviderOptions
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UiaProviderOptions.html
+  name: UiaProviderOptions
+  nameWithType: UiaProviderOptions
+  fullName: DrawnUi.Draw.UiaProviderOptions
+- uid: DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider
+  href: DrawnUi.Draw.IRawElementProviderSimple.html#DrawnUi_Draw_IRawElementProviderSimple_GetPatternProvider_System_Int32_
+  name: GetPatternProvider
+  nameWithType: IRawElementProviderSimple.GetPatternProvider
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.GetPatternProvider
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue
+  href: DrawnUi.Draw.IRawElementProviderSimple.html#DrawnUi_Draw_IRawElementProviderSimple_GetPropertyValue_System_Int32_
+  name: GetPropertyValue
+  nameWithType: IRawElementProviderSimple.GetPropertyValue
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.GetPropertyValue
+- uid: DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider
+  href: DrawnUi.Draw.IRawElementProviderSimple.html#DrawnUi_Draw_IRawElementProviderSimple_HostRawElementProvider
+  name: HostRawElementProvider
+  nameWithType: IRawElementProviderSimple.HostRawElementProvider
+  fullName: DrawnUi.Draw.IRawElementProviderSimple.HostRawElementProvider
+- uid: DrawnUi.Draw.IRawElementProviderSimple
+  commentId: T:DrawnUi.Draw.IRawElementProviderSimple
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IRawElementProviderSimple.html
+  name: IRawElementProviderSimple
+  nameWithType: IRawElementProviderSimple
+  fullName: DrawnUi.Draw.IRawElementProviderSimple

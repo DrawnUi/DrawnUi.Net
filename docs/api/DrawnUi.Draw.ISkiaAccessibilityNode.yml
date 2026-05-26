@@ -9,11 +9,14 @@ items:
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
   - DrawnUi.Draw.ISkiaAccessibilityNode.GetAccessibilityPixelRect
   - DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
   - DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
+  - DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
+  - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
   langs:
   - csharp
@@ -205,6 +208,42 @@ items:
       type: System.Nullable{System.Boolean}
     content.vb: Property AccessibilityIsPressed As Boolean?
   overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive
+  id: AccessibilityLive
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityLive
+  nameWithType: ISkiaAccessibilityNode.AccessibilityLive
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityLive
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 35
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Live region setting. When set, screen readers announce value changes automatically.
+
+    Use <xref href="DrawnUi.Models.Aria.LivePolite" data-throw-if-not-resolved="false"></xref> or <xref href="DrawnUi.Models.Aria.LiveAssertive" data-throw-if-not-resolved="false"></xref>.
+
+    null/empty = off (default).
+  example: []
+  syntax:
+    content: string? AccessibilityLive { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property AccessibilityLive As String
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive*
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
   commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
   id: IsAccessibilityElement
@@ -223,7 +262,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAccessibilityElement
     path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 31
+    startLine: 38
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -254,7 +293,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: GetAccessibilityPixelRect
     path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 37
+    startLine: 44
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -287,7 +326,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAccessibilityActivated
     path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 43
+    startLine: 50
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -318,7 +357,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: NotifyAccessibility
     path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 49
+    startLine: 56
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -349,7 +388,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAccessibilityUnregistered
     path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 52
+    startLine: 59
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -359,6 +398,84 @@ items:
     content: void OnAccessibilityUnregistered()
     content.vb: Sub OnAccessibilityUnregistered()
   overload: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused(System.Boolean)
+  commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused(System.Boolean)
+  id: NotifyAccessibilityFocused(System.Boolean)
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: NotifyAccessibilityFocused(bool)
+  nameWithType: ISkiaAccessibilityNode.NotifyAccessibilityFocused(bool)
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: NotifyAccessibilityFocused
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 65
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Called by the control when it gains or loses keyboard/tab focus.
+
+    Platforms raise the corresponding focus-changed event (UIA AutomationFocusChanged, ARIA focus, etc.).
+  example: []
+  syntax:
+    content: void NotifyAccessibilityFocused(bool focused)
+    parameters:
+    - id: focused
+      type: System.Boolean
+    content.vb: Sub NotifyAccessibilityFocused(focused As Boolean)
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused*
+  nameWithType.vb: ISkiaAccessibilityNode.NotifyAccessibilityFocused(Boolean)
+  fullName.vb: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused(Boolean)
+  name.vb: NotifyAccessibilityFocused(Boolean)
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused(System.Boolean)
+  commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused(System.Boolean)
+  id: OnAccessibilityFocused(System.Boolean)
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityFocused(bool)
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityFocused(bool)
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OnAccessibilityFocused
+    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 73
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Called by the platform a11y layer when UIA/Tab focus arrives on or leaves this node.
+
+    Allows input controls (e.g. SkiaEditor) to auto-activate their native input sink on Tab-in
+
+    and release it on Tab-out, matching standard text-field keyboard behavior.
+
+    Default implementation is a no-op.
+  example: []
+  syntax:
+    content: void OnAccessibilityFocused(bool focused)
+    parameters:
+    - id: focused
+      type: System.Boolean
+    content.vb: Sub OnAccessibilityFocused(focused As Boolean)
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused*
+  nameWithType.vb: ISkiaAccessibilityNode.OnAccessibilityFocused(Boolean)
+  fullName.vb: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused(Boolean)
+  name.vb: OnAccessibilityFocused(Boolean)
 references:
 - uid: DrawnUi.Draw.ISkiaGestureListener
   commentId: T:DrawnUi.Draw.ISkiaGestureListener
@@ -616,6 +733,24 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: DrawnUi.Models.Aria.LivePolite
+  commentId: F:DrawnUi.Models.Aria.LivePolite
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_LivePolite
+  name: LivePolite
+  nameWithType: Aria.LivePolite
+  fullName: DrawnUi.Models.Aria.LivePolite
+- uid: DrawnUi.Models.Aria.LiveAssertive
+  commentId: F:DrawnUi.Models.Aria.LiveAssertive
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_LiveAssertive
+  name: LiveAssertive
+  nameWithType: Aria.LiveAssertive
+  fullName: DrawnUi.Models.Aria.LiveAssertive
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityLive
+  name: AccessibilityLive
+  nameWithType: ISkiaAccessibilityNode.AccessibilityLive
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
   commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
   parent: DrawnUi.Draw.ISkiaAccessibilityNode
@@ -668,3 +803,15 @@ references:
   name: OnAccessibilityUnregistered
   nameWithType: ISkiaAccessibilityNode.OnAccessibilityUnregistered
   fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_NotifyAccessibilityFocused_System_Boolean_
+  name: NotifyAccessibilityFocused
+  nameWithType: ISkiaAccessibilityNode.NotifyAccessibilityFocused
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_OnAccessibilityFocused_System_Boolean_
+  name: OnAccessibilityFocused
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityFocused
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused

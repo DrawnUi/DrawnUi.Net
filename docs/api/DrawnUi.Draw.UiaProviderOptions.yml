@@ -1,93 +1,97 @@
 ### YamlMime:ManagedReference
 items:
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType
-  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
-  id: SkiaButton.IconPositionType
+- uid: DrawnUi.Draw.UiaProviderOptions
+  commentId: T:DrawnUi.Draw.UiaProviderOptions
+  id: UiaProviderOptions
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  - DrawnUi.Draw.SkiaButton.IconPositionType.Right
+  - DrawnUi.Draw.UiaProviderOptions.ServerSideProvider
+  - DrawnUi.Draw.UiaProviderOptions.UseComThreading
   langs:
   - csharp
   - vb
-  name: SkiaButton.IconPositionType
-  nameWithType: SkiaButton.IconPositionType
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
+  name: UiaProviderOptions
+  nameWithType: UiaProviderOptions
+  fullName: DrawnUi.Draw.UiaProviderOptions
   type: Enum
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: IconPositionType
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 893
+    id: UiaProviderOptions
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 72
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Defines the position of an icon relative to the button text
-  example: []
   syntax:
-    content: public enum SkiaButton.IconPositionType
-    content.vb: Public Enum SkiaButton.IconPositionType
+    content: >-
+      [Flags]
+
+      public enum UiaProviderOptions
+    content.vb: >-
+      <Flags>
+
+      Public Enum UiaProviderOptions
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  commentId: F:DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  id: Left
-  parent: DrawnUi.Draw.SkiaButton.IconPositionType
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+- uid: DrawnUi.Draw.UiaProviderOptions.ServerSideProvider
+  commentId: F:DrawnUi.Draw.UiaProviderOptions.ServerSideProvider
+  id: ServerSideProvider
+  parent: DrawnUi.Draw.UiaProviderOptions
   langs:
   - csharp
   - vb
-  name: Left
-  nameWithType: SkiaButton.IconPositionType.Left
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType.Left
+  name: ServerSideProvider
+  nameWithType: UiaProviderOptions.ServerSideProvider
+  fullName: DrawnUi.Draw.UiaProviderOptions.ServerSideProvider
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: Left
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 898
+    id: ServerSideProvider
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 75
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Icon appears before the text
-  example: []
   syntax:
-    content: Left = 0
+    content: ServerSideProvider = 1
     return:
-      type: DrawnUi.Draw.SkiaButton.IconPositionType
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType.Right
-  commentId: F:DrawnUi.Draw.SkiaButton.IconPositionType.Right
-  id: Right
-  parent: DrawnUi.Draw.SkiaButton.IconPositionType
+      type: DrawnUi.Draw.UiaProviderOptions
+- uid: DrawnUi.Draw.UiaProviderOptions.UseComThreading
+  commentId: F:DrawnUi.Draw.UiaProviderOptions.UseComThreading
+  id: UseComThreading
+  parent: DrawnUi.Draw.UiaProviderOptions
   langs:
   - csharp
   - vb
-  name: Right
-  nameWithType: SkiaButton.IconPositionType.Right
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType.Right
+  name: UseComThreading
+  nameWithType: UiaProviderOptions.UseComThreading
+  fullName: DrawnUi.Draw.UiaProviderOptions.UseComThreading
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: Right
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 903
+    id: UseComThreading
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 76
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Icon appears after the text
-  example: []
   syntax:
-    content: Right = 1
+    content: UseComThreading = 32
     return:
-      type: DrawnUi.Draw.SkiaButton.IconPositionType
+      type: DrawnUi.Draw.UiaProviderOptions
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -201,26 +205,10 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType
-  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
+- uid: DrawnUi.Draw.UiaProviderOptions
+  commentId: T:DrawnUi.Draw.UiaProviderOptions
   parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton.IconPositionType
-  nameWithType: SkiaButton.IconPositionType
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
+  href: DrawnUi.Draw.UiaProviderOptions.html
+  name: UiaProviderOptions
+  nameWithType: UiaProviderOptions
+  fullName: DrawnUi.Draw.UiaProviderOptions

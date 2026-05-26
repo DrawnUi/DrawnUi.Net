@@ -1,93 +1,168 @@
 ### YamlMime:ManagedReference
 items:
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType
-  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
-  id: SkiaButton.IconPositionType
+- uid: DrawnUi.Draw.UiaNavigateDirection
+  commentId: T:DrawnUi.Draw.UiaNavigateDirection
+  id: UiaNavigateDirection
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  - DrawnUi.Draw.SkiaButton.IconPositionType.Right
+  - DrawnUi.Draw.UiaNavigateDirection.FirstChild
+  - DrawnUi.Draw.UiaNavigateDirection.LastChild
+  - DrawnUi.Draw.UiaNavigateDirection.NextSibling
+  - DrawnUi.Draw.UiaNavigateDirection.Parent
+  - DrawnUi.Draw.UiaNavigateDirection.PreviousSibling
   langs:
   - csharp
   - vb
-  name: SkiaButton.IconPositionType
-  nameWithType: SkiaButton.IconPositionType
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
+  name: UiaNavigateDirection
+  nameWithType: UiaNavigateDirection
+  fullName: DrawnUi.Draw.UiaNavigateDirection
   type: Enum
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: IconPositionType
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 893
+    id: UiaNavigateDirection
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Defines the position of an icon relative to the button text
-  example: []
   syntax:
-    content: public enum SkiaButton.IconPositionType
-    content.vb: Public Enum SkiaButton.IconPositionType
+    content: public enum UiaNavigateDirection
+    content.vb: Public Enum UiaNavigateDirection
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  commentId: F:DrawnUi.Draw.SkiaButton.IconPositionType.Left
-  id: Left
-  parent: DrawnUi.Draw.SkiaButton.IconPositionType
+- uid: DrawnUi.Draw.UiaNavigateDirection.Parent
+  commentId: F:DrawnUi.Draw.UiaNavigateDirection.Parent
+  id: Parent
+  parent: DrawnUi.Draw.UiaNavigateDirection
   langs:
   - csharp
   - vb
-  name: Left
-  nameWithType: SkiaButton.IconPositionType.Left
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType.Left
+  name: Parent
+  nameWithType: UiaNavigateDirection.Parent
+  fullName: DrawnUi.Draw.UiaNavigateDirection.Parent
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: Left
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 898
+    id: Parent
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Icon appears before the text
-  example: []
   syntax:
-    content: Left = 0
+    content: Parent = 0
     return:
-      type: DrawnUi.Draw.SkiaButton.IconPositionType
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType.Right
-  commentId: F:DrawnUi.Draw.SkiaButton.IconPositionType.Right
-  id: Right
-  parent: DrawnUi.Draw.SkiaButton.IconPositionType
+      type: DrawnUi.Draw.UiaNavigateDirection
+- uid: DrawnUi.Draw.UiaNavigateDirection.NextSibling
+  commentId: F:DrawnUi.Draw.UiaNavigateDirection.NextSibling
+  id: NextSibling
+  parent: DrawnUi.Draw.UiaNavigateDirection
   langs:
   - csharp
   - vb
-  name: Right
-  nameWithType: SkiaButton.IconPositionType.Right
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType.Right
+  name: NextSibling
+  nameWithType: UiaNavigateDirection.NextSibling
+  fullName: DrawnUi.Draw.UiaNavigateDirection.NextSibling
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
-    id: Right
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
-    startLine: 903
+    id: NextSibling
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Icon appears after the text
-  example: []
   syntax:
-    content: Right = 1
+    content: NextSibling = 1
     return:
-      type: DrawnUi.Draw.SkiaButton.IconPositionType
+      type: DrawnUi.Draw.UiaNavigateDirection
+- uid: DrawnUi.Draw.UiaNavigateDirection.PreviousSibling
+  commentId: F:DrawnUi.Draw.UiaNavigateDirection.PreviousSibling
+  id: PreviousSibling
+  parent: DrawnUi.Draw.UiaNavigateDirection
+  langs:
+  - csharp
+  - vb
+  name: PreviousSibling
+  nameWithType: UiaNavigateDirection.PreviousSibling
+  fullName: DrawnUi.Draw.UiaNavigateDirection.PreviousSibling
+  type: Field
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: PreviousSibling
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 79
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: PreviousSibling = 2
+    return:
+      type: DrawnUi.Draw.UiaNavigateDirection
+- uid: DrawnUi.Draw.UiaNavigateDirection.FirstChild
+  commentId: F:DrawnUi.Draw.UiaNavigateDirection.FirstChild
+  id: FirstChild
+  parent: DrawnUi.Draw.UiaNavigateDirection
+  langs:
+  - csharp
+  - vb
+  name: FirstChild
+  nameWithType: UiaNavigateDirection.FirstChild
+  fullName: DrawnUi.Draw.UiaNavigateDirection.FirstChild
+  type: Field
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FirstChild
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 79
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: FirstChild = 3
+    return:
+      type: DrawnUi.Draw.UiaNavigateDirection
+- uid: DrawnUi.Draw.UiaNavigateDirection.LastChild
+  commentId: F:DrawnUi.Draw.UiaNavigateDirection.LastChild
+  id: LastChild
+  parent: DrawnUi.Draw.UiaNavigateDirection
+  langs:
+  - csharp
+  - vb
+  name: LastChild
+  nameWithType: UiaNavigateDirection.LastChild
+  fullName: DrawnUi.Draw.UiaNavigateDirection.LastChild
+  type: Field
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LastChild
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 79
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: LastChild = 4
+    return:
+      type: DrawnUi.Draw.UiaNavigateDirection
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -201,26 +276,10 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.SkiaButton.IconPositionType
-  commentId: T:DrawnUi.Draw.SkiaButton.IconPositionType
+- uid: DrawnUi.Draw.UiaNavigateDirection
+  commentId: T:DrawnUi.Draw.UiaNavigateDirection
   parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaButton.html
-  name: SkiaButton.IconPositionType
-  nameWithType: SkiaButton.IconPositionType
-  fullName: DrawnUi.Draw.SkiaButton.IconPositionType
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaButton
-    name: SkiaButton
-    href: DrawnUi.Draw.SkiaButton.html
-  - name: .
-  - uid: DrawnUi.Draw.SkiaButton.IconPositionType
-    name: IconPositionType
-    href: DrawnUi.Draw.SkiaButton.IconPositionType.html
+  href: DrawnUi.Draw.UiaNavigateDirection.html
+  name: UiaNavigateDirection
+  nameWithType: UiaNavigateDirection
+  fullName: DrawnUi.Draw.UiaNavigateDirection

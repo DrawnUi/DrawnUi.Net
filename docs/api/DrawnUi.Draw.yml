@@ -93,9 +93,13 @@ items:
   - DrawnUi.Draw.IInsideViewport
   - DrawnUi.Draw.IInsideWheelStack
   - DrawnUi.Draw.IInterpolator
+  - DrawnUi.Draw.IInvokeProvider
   - DrawnUi.Draw.ILayoutInsideViewport
   - DrawnUi.Draw.IOverlayEffect
   - DrawnUi.Draw.IPostRendererEffect
+  - DrawnUi.Draw.IRawElementProviderFragment
+  - DrawnUi.Draw.IRawElementProviderFragmentRoot
+  - DrawnUi.Draw.IRawElementProviderSimple
   - DrawnUi.Draw.IRefreshIndicator
   - DrawnUi.Draw.IRenderEffect
   - DrawnUi.Draw.IRenderObject
@@ -307,6 +311,9 @@ items:
   - DrawnUi.Draw.ToggleAnimator
   - DrawnUi.Draw.TrackedObject`1
   - DrawnUi.Draw.TransformAspect
+  - DrawnUi.Draw.UiaNavigateDirection
+  - DrawnUi.Draw.UiaProviderOptions
+  - DrawnUi.Draw.UiaRect
   - DrawnUi.Draw.UnderdampedSpringTimingParameters
   - DrawnUi.Draw.UnderdampedSpringTimingVectorParameters
   - DrawnUi.Draw.UnicodeBlock
@@ -1011,6 +1018,54 @@ references:
   name: Super
   nameWithType: Super
   fullName: DrawnUi.Draw.Super
+- uid: DrawnUi.Draw.IRawElementProviderSimple
+  commentId: T:DrawnUi.Draw.IRawElementProviderSimple
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IRawElementProviderSimple.html
+  name: IRawElementProviderSimple
+  nameWithType: IRawElementProviderSimple
+  fullName: DrawnUi.Draw.IRawElementProviderSimple
+- uid: DrawnUi.Draw.IRawElementProviderFragment
+  commentId: T:DrawnUi.Draw.IRawElementProviderFragment
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IRawElementProviderFragment.html
+  name: IRawElementProviderFragment
+  nameWithType: IRawElementProviderFragment
+  fullName: DrawnUi.Draw.IRawElementProviderFragment
+- uid: DrawnUi.Draw.IRawElementProviderFragmentRoot
+  commentId: T:DrawnUi.Draw.IRawElementProviderFragmentRoot
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IRawElementProviderFragmentRoot.html
+  name: IRawElementProviderFragmentRoot
+  nameWithType: IRawElementProviderFragmentRoot
+  fullName: DrawnUi.Draw.IRawElementProviderFragmentRoot
+- uid: DrawnUi.Draw.IInvokeProvider
+  commentId: T:DrawnUi.Draw.IInvokeProvider
+  href: DrawnUi.Draw.IInvokeProvider.html
+  name: IInvokeProvider
+  nameWithType: IInvokeProvider
+  fullName: DrawnUi.Draw.IInvokeProvider
+- uid: DrawnUi.Draw.UiaProviderOptions
+  commentId: T:DrawnUi.Draw.UiaProviderOptions
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UiaProviderOptions.html
+  name: UiaProviderOptions
+  nameWithType: UiaProviderOptions
+  fullName: DrawnUi.Draw.UiaProviderOptions
+- uid: DrawnUi.Draw.UiaNavigateDirection
+  commentId: T:DrawnUi.Draw.UiaNavigateDirection
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UiaNavigateDirection.html
+  name: UiaNavigateDirection
+  nameWithType: UiaNavigateDirection
+  fullName: DrawnUi.Draw.UiaNavigateDirection
+- uid: DrawnUi.Draw.UiaRect
+  commentId: T:DrawnUi.Draw.UiaRect
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UiaRect.html
+  name: UiaRect
+  nameWithType: UiaRect
+  fullName: DrawnUi.Draw.UiaRect
 - uid: DrawnUi.Draw.SkiaButton
   commentId: T:DrawnUi.Draw.SkiaButton
   parent: DrawnUi.Draw
