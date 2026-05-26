@@ -83,10 +83,10 @@ public partial class SkiaLayout
     protected float MeasuredItemsPercentage =>
         ItemsSource?.Count > 0 ? (float)(LastMeasuredIndex + 1) / ItemsSource.Count : 0f;
 
-    [DebuggerDisplay("{Type} {Count} at {StartIndex}, ")]
     /// <summary>
     /// Represents a pending structure change to be applied during rendering
     /// </summary>
+        [DebuggerDisplay("{Type} {Count} at {StartIndex}, ")]
     public class StructureChange
     {
         public StructureChange(StructureChangeType type, long stamp)

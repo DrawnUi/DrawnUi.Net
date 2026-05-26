@@ -8054,10 +8054,10 @@ namespace DrawnUi.Draw
             }
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
         /// <summary>
         /// Is using ItemTemplate or no
         /// </summary>
+            [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual bool IsTemplated
         {
             get { return (this.ItemTemplate != null || ItemTemplateType != null); }

@@ -40,9 +40,7 @@ public interface ISkiaGestureListener
 
     public bool HitIsInside(float x, float y);
 
-    /// <summary>
-    /// By default returns self, opposite example is the native view entry wrapper that would return the native control instead.
-    /// </summary>
+        // By default returns self; opposite example is the native view entry wrapper that would return the native control instead.
     //public ISkiaGestureListener FocusedDelegate { get; }
 }
 
