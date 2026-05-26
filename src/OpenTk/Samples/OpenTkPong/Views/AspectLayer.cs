@@ -4,11 +4,10 @@ using DrawnUi.Views;
 namespace OpenTkPong;
 
 /// <summary>
-/// SkiaLayer that scales its children so a fixed logical viewport (LogicalWidth x LogicalHeight)
-/// fills the available space while maintaining aspect ratio, centered.
-/// Based on the RescalingCanvas pattern from the MAUI GameTemplate sample.
+/// Canvas that scales its content so a fixed logical viewport (LogicalWidth x LogicalHeight)
+/// fits the available space while maintaining aspect ratio.
 /// </summary>
-public class AspectLayer : SkiaLayer
+public class RescalingCanvas : Canvas
 {
     public float LogicalWidth { get; set; }
     public float LogicalHeight { get; set; }

@@ -1,5 +1,6 @@
 using System.Runtime.Versioning;
 using DrawnUi;
+using DrawnUi.Controls;
 using DrawnUi.Draw;
 using DrawnUi.Gaming;
 using DrawnUi.Infrastructure.Enums;
@@ -74,8 +75,10 @@ OpenTK.Windowing.Common.Input.WindowIcon? LoadWindowIcon()
     catch { return null; }
 }
 
-var canvas = new Canvas
+var canvas = new RescalingCanvas
 {
+    LogicalWidth = PongGame.WIDTH,
+    LogicalHeight = PongGame.HEIGHT,
     BackgroundColor = Color.FromArgb("#0A0F1E"),
     RenderingMode = RenderingModeType.Accelerated,
     UpdateMode = UpdateModeType.Constant,
@@ -89,20 +92,18 @@ var canvas = new Canvas
             VerticalOptions = LayoutOptions.Fill,
             Children =
             {
-                new AspectLayer
+                new SkiaImage(@"Images/back.jpg")
                 {
-                    LogicalWidth = PongGame.WIDTH,
-                    LogicalHeight = PongGame.HEIGHT,
-                    HorizontalOptions = LayoutOptions.Fill,
-                    VerticalOptions = LayoutOptions.Fill,
-                    Children =
-                    {
-                        new PongGame
-                        {
-                            HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.Center,
-                        }
-                    }
+                    UseCache = SkiaCacheType.Image,
+                    AddEffect = SkiaImageEffect.Darken,
+                    Darken = 0.2,
+                }.Fill(),
+                new PongGame
+                {
+                    WidthRequest = PongGame.WIDTH,
+                    HeightRequest = PongGame.HEIGHT,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
                 },
                 new SkiaLabelFps
                 {

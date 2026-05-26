@@ -25,11 +25,6 @@ public class PongAI
     private float _decisionChangeInterval;
     private readonly float _movementSmoothingTime;
 
-    /// <summary>
-    /// TODO use game.DrawingRect for calculations, because this assumes the game is at 0,0 while it might be drawn not at canvas 0,0.
-    /// </summary>
-    /// <param name="game"></param>
-    /// <param name="difficulty"></param>
     public PongAI(PongGame game, AIDifficulty difficulty = AIDifficulty.Medium)
     {
         _game = game;
@@ -135,14 +130,18 @@ public class PongAI
             var ballVelX = MathF.Cos(ball.Angle) * ball.Speed;
             var ballVelY = MathF.Sin(ball.Angle) * ball.Speed;
 
+            // HitBox is canvas-absolute; derive game origin to convert to game-local coords
+            var gameOriginX = ball.HitBox.Left - (float)ball.Left;
+            var gameOriginY = ball.HitBox.Top - (float)ball.Top;
+
             var aiPaddleCenterY = _game.AiPaddle.Top + PongGame.PADDLE_HEIGHT / 2f;
-            var ballCenterY = ball.HitBox.MidY;
+            var ballCenterY = ball.HitBox.MidY - gameOriginY;
 
             var timeToIntersect = (aiPaddleCenterY - ballCenterY) / ballVelY;
 
             if (timeToIntersect > 0)
             {
-                var predicted = ball.HitBox.MidX + ballVelX * timeToIntersect;
+                var predicted = (ball.HitBox.MidX - gameOriginX) + ballVelX * timeToIntersect;
 
                 while (predicted < 0 || predicted > PongGame.WIDTH)
                 {

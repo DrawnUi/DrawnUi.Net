@@ -14,6 +14,10 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);OPENTK</DefineConstants>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
         <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
     </PropertyGroup>
