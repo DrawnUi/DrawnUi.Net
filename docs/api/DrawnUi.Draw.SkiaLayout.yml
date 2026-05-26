@@ -2444,6 +2444,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Is using ItemTemplate or no
   example: []
   syntax:
     content: public override bool IsTemplated { get; }

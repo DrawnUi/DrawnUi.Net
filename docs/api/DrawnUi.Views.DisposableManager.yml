@@ -26,10 +26,12 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposableManager
     path: ../src/Shared/Views/DisposableManager.cs
-    startLine: 11
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
+  summary: Manages delayed disposal of IDisposable objects based on frame count
+  example: []
   syntax:
     content: 'public class DisposableManager : IDisposable'
     content.vb: Public Class DisposableManager Implements IDisposable
