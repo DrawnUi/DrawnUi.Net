@@ -32,10 +32,12 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: StructureChange
     path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 85
+    startLine: 88
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Represents a pending structure change to be applied during rendering
+  example: []
   syntax:
     content: public class SkiaLayout.StructureChange
     content.vb: Public Class SkiaLayout.StructureChange

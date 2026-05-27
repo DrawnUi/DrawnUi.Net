@@ -3,7 +3,7 @@ using DrawnUi.Draw;
 
 namespace DrawnUi.Views
 {
-    public record AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect, bool CanInteract, bool? IsPressed)
+    public record AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect, bool CanInteract, bool? IsPressed, string? Live = null)
     {
         internal ISkiaAccessibilityNode? Source { get; init; }
 
@@ -16,7 +16,8 @@ namespace DrawnUi.Views
                 node.AccessibilityRole,
                 new SKRect(px.Left / scale, px.Top / scale, px.Right / scale, px.Bottom / scale),
                 node.AccessibilityCanInteract,
-                node.AccessibilityIsPressed)
+                node.AccessibilityIsPressed,
+                node.AccessibilityLive)
             {
                 Source = node
             };
@@ -38,6 +39,22 @@ namespace DrawnUi.Views
         public AccessibilityNode[] Snapshot { get; private set; } = [];
 
         public event Action? Changed;
+        public event Action<ISkiaAccessibilityNode?>? FocusChanged;
+
+        /// <summary>
+        /// Fired immediately (bypassing snapshot rate-limit) when a live-region node's value changes.
+        /// Platform layer uses this to raise the AT live-region announcement.
+        /// </summary>
+        public event Action<ISkiaAccessibilityNode>? LiveRegionUpdated;
+
+        public ISkiaAccessibilityNode? FocusedNode { get; private set; }
+
+        public void NotifyFocused(ISkiaAccessibilityNode? node)
+        {
+            if (ReferenceEquals(FocusedNode, node)) return;
+            FocusedNode = node;
+            FocusChanged?.Invoke(node);
+        }
 
         public void Register(ISkiaAccessibilityNode node)
         {
@@ -49,6 +66,15 @@ namespace DrawnUi.Views
         {
             if (!_nodes.ContainsKey(node)) return;
             if (!_dirty) _dirty = true;
+            // Live regions bypass the snapshot rate-limit — announce value immediately.
+            if (!string.IsNullOrEmpty(node.AccessibilityLive))
+                LiveRegionUpdated?.Invoke(node);
+        }
+
+        public void ForceRebuildOnNextFrame()
+        {
+            _lastRebuildTick = 0;
+            _dirty = true;
         }
 
         public void Unregister(ISkiaAccessibilityNode node)

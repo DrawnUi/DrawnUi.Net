@@ -26,6 +26,11 @@ if (Test-Path "_site") {
     Remove-Item -Recurse -Force "obj" -ErrorAction SilentlyContinue
 }
 
+if (Test-Path "api") {
+    Write-Host "Cleaning generated API YAML..."
+    Get-ChildItem "api" -Filter "*.yml" -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
+}
+
 # Build the documentation
 Write-Host "Building documentation with metadata extraction..."
 docfx

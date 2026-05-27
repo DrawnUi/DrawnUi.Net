@@ -27,8 +27,6 @@ public enum LayoutType
     /// </summary>
     Grid,
 
-    /// <summary>
-    /// TODO
-    /// </summary>
+        // TODO
     //Masonry,
 }

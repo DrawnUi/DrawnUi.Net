@@ -4740,6 +4740,20 @@ namespace DrawnUi.Draw
             }
         }
 
+        private string? _accessibilityLive;
+        public string? AccessibilityLive
+        {
+            get => _accessibilityLive;
+            set
+            {
+                if (_accessibilityLive != value)
+                {
+                    _accessibilityLive = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
+
         private bool _registeredWithAccessibility;
 
         public void OnAccessibilityUnregistered()
@@ -4753,6 +4767,7 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void OnAccessibilityActivated()
         {
+            System.Diagnostics.Debug.WriteLine($"[A11y-ACT] OnAccessibilityActivated on {GetType().Name} Tag={Tag} CanDraw={CanDraw} Superview={(Superview == null ? "NULL" : "ok")}");
             var scale = Superview?.RenderingScale ?? 1f;
             var hitbox = VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
             var center = new PointF(hitbox.MidX, hitbox.MidY);
@@ -4766,8 +4781,11 @@ namespace DrawnUi.Draw
             };
 
             var gestureParams = SkiaGesturesParameters.Create(TouchActionResult.Tapped, args, scale);
-            OnSkiaGestureEvent(gestureParams, GestureEventProcessingInfo.Empty);
+            var result = OnSkiaGestureEvent(gestureParams, GestureEventProcessingInfo.Empty);
+            System.Diagnostics.Debug.WriteLine($"[A11y-ACT] OnSkiaGestureEvent returned {(result == null ? "NULL (not consumed)" : result.GetType().Name)}");
         }
+
+        public virtual void OnAccessibilityFocused(bool focused) { }
 
         /// <summary>
         /// Called automatically on first layout. Call manually when label, hint, or state changes.
@@ -4792,6 +4810,14 @@ namespace DrawnUi.Draw
             {
                 mgr.NotifyUpdated(this);
             }
+        }
+
+        public virtual void NotifyAccessibilityFocused(bool focused)
+        {
+            if (!IsAccessibilityElement)
+                return;
+
+            Superview?.AccessibilityManager?.NotifyFocused(focused ? this : null);
         }
 
         #endregion
@@ -8028,10 +8054,10 @@ namespace DrawnUi.Draw
             }
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
         /// <summary>
         /// Is using ItemTemplate or no
         /// </summary>
+            [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual bool IsTemplated
         {
             get { return (this.ItemTemplate != null || ItemTemplateType != null); }

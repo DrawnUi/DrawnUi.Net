@@ -5,11 +5,12 @@ items:
   id: AccessibilityNode
   parent: DrawnUi.Views
   children:
-  - DrawnUi.Views.AccessibilityNode.#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean})
+  - DrawnUi.Views.AccessibilityNode.#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean},System.String)
   - DrawnUi.Views.AccessibilityNode.CanInteract
   - DrawnUi.Views.AccessibilityNode.Hint
   - DrawnUi.Views.AccessibilityNode.IsPressed
   - DrawnUi.Views.AccessibilityNode.Label
+  - DrawnUi.Views.AccessibilityNode.Live
   - DrawnUi.Views.AccessibilityNode.Rect
   - DrawnUi.Views.AccessibilityNode.Role
   langs:
@@ -47,16 +48,16 @@ items:
   - System.Object.ToString
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Views.AccessibilityNode.#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean})
-  commentId: M:DrawnUi.Views.AccessibilityNode.#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean})
-  id: '#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean})'
+- uid: DrawnUi.Views.AccessibilityNode.#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean},System.String)
+  commentId: M:DrawnUi.Views.AccessibilityNode.#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean},System.String)
+  id: '#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean},System.String)'
   parent: DrawnUi.Views.AccessibilityNode
   langs:
   - csharp
   - vb
-  name: AccessibilityNode(string?, string?, string?, SKRect, bool, bool?)
-  nameWithType: AccessibilityNode.AccessibilityNode(string?, string?, string?, SKRect, bool, bool?)
-  fullName: DrawnUi.Views.AccessibilityNode.AccessibilityNode(string?, string?, string?, SkiaSharp.SKRect, bool, bool?)
+  name: AccessibilityNode(string?, string?, string?, SKRect, bool, bool?, string?)
+  nameWithType: AccessibilityNode.AccessibilityNode(string?, string?, string?, SKRect, bool, bool?, string?)
+  fullName: DrawnUi.Views.AccessibilityNode.AccessibilityNode(string?, string?, string?, SkiaSharp.SKRect, bool, bool?, string?)
   type: Constructor
   source:
     remote:
@@ -70,7 +71,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
   syntax:
-    content: public AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect, bool CanInteract, bool? IsPressed)
+    content: public AccessibilityNode(string? Label, string? Hint, string? Role, SKRect Rect, bool CanInteract, bool? IsPressed, string? Live = null)
     parameters:
     - id: Label
       type: System.String
@@ -84,11 +85,13 @@ items:
       type: System.Boolean
     - id: IsPressed
       type: System.Nullable{System.Boolean}
-    content.vb: Public Sub New(Label As String, Hint As String, Role As String, Rect As SKRect, CanInteract As Boolean, IsPressed As Boolean?)
+    - id: Live
+      type: System.String
+    content.vb: Public Sub New(Label As String, Hint As String, Role As String, Rect As SKRect, CanInteract As Boolean, IsPressed As Boolean?, Live As String = Nothing)
   overload: DrawnUi.Views.AccessibilityNode.#ctor*
-  nameWithType.vb: AccessibilityNode.New(String, String, String, SKRect, Boolean, Boolean?)
-  fullName.vb: DrawnUi.Views.AccessibilityNode.New(String, String, String, SkiaSharp.SKRect, Boolean, Boolean?)
-  name.vb: New(String, String, String, SKRect, Boolean, Boolean?)
+  nameWithType.vb: AccessibilityNode.New(String, String, String, SKRect, Boolean, Boolean?, String)
+  fullName.vb: DrawnUi.Views.AccessibilityNode.New(String, String, String, SkiaSharp.SKRect, Boolean, Boolean?, String)
+  name.vb: New(String, String, String, SKRect, Boolean, Boolean?, String)
 - uid: DrawnUi.Views.AccessibilityNode.Label
   commentId: P:DrawnUi.Views.AccessibilityNode.Label
   id: Label
@@ -263,6 +266,35 @@ items:
       type: System.Nullable{System.Boolean}
     content.vb: Public Property IsPressed As Boolean?
   overload: DrawnUi.Views.AccessibilityNode.IsPressed*
+- uid: DrawnUi.Views.AccessibilityNode.Live
+  commentId: P:DrawnUi.Views.AccessibilityNode.Live
+  id: Live
+  parent: DrawnUi.Views.AccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: Live
+  nameWithType: AccessibilityNode.Live
+  fullName: DrawnUi.Views.AccessibilityNode.Live
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Live
+    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    startLine: 5
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public string? Live { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Live As String
+  overload: DrawnUi.Views.AccessibilityNode.Live*
 references:
 - uid: DrawnUi.Views
   commentId: N:DrawnUi.Views
@@ -676,7 +708,7 @@ references:
     href: DrawnUi.Extensions.html
 - uid: DrawnUi.Views.AccessibilityNode.#ctor*
   commentId: Overload:DrawnUi.Views.AccessibilityNode.#ctor
-  href: DrawnUi.Views.AccessibilityNode.html#DrawnUi_Views_AccessibilityNode__ctor_System_String_System_String_System_String_SkiaSharp_SKRect_System_Boolean_System_Nullable_System_Boolean__
+  href: DrawnUi.Views.AccessibilityNode.html#DrawnUi_Views_AccessibilityNode__ctor_System_String_System_String_System_String_SkiaSharp_SKRect_System_Boolean_System_Nullable_System_Boolean__System_String_
   name: AccessibilityNode
   nameWithType: AccessibilityNode.AccessibilityNode
   fullName: DrawnUi.Views.AccessibilityNode.AccessibilityNode
@@ -807,3 +839,9 @@ references:
   name: IsPressed
   nameWithType: AccessibilityNode.IsPressed
   fullName: DrawnUi.Views.AccessibilityNode.IsPressed
+- uid: DrawnUi.Views.AccessibilityNode.Live*
+  commentId: Overload:DrawnUi.Views.AccessibilityNode.Live
+  href: DrawnUi.Views.AccessibilityNode.html#DrawnUi_Views_AccessibilityNode_Live
+  name: Live
+  nameWithType: AccessibilityNode.Live
+  fullName: DrawnUi.Views.AccessibilityNode.Live

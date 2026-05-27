@@ -547,11 +547,7 @@ namespace DrawnUi.Draw
 
             var radii = CreateScaledRadii(scale);
 
-
-            /// <summary>
-            /// Paints the stroke with both pixel alignment and width compensation for optimal visual consistency
-            /// </summary>
-            /// <param name="paint">The paint object to use for stroke rendering</param>
+                // Paints the stroke with both pixel alignment and width compensation.
             void PaintStroke(SKPaint paint)
             {
                 paint.BlendMode = this.StrokeBlendMode;

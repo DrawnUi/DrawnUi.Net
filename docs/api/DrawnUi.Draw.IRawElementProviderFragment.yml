@@ -1,0 +1,460 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.IRawElementProviderFragment
+  commentId: T:DrawnUi.Draw.IRawElementProviderFragment
+  id: IRawElementProviderFragment
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle
+  - DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot
+  - DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots
+  - DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId
+  - DrawnUi.Draw.IRawElementProviderFragment.Navigate(DrawnUi.Draw.UiaNavigateDirection)
+  - DrawnUi.Draw.IRawElementProviderFragment.SetFocus
+  langs:
+  - csharp
+  - vb
+  name: IRawElementProviderFragment
+  nameWithType: IRawElementProviderFragment
+  fullName: DrawnUi.Draw.IRawElementProviderFragment
+  type: Interface
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IRawElementProviderFragment
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 26
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: >-
+      [ComVisible(true)]
+
+      [Guid("F7063DA8-8359-439C-9297-BBC5299A7D87")]
+
+      [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+
+      public interface IRawElementProviderFragment
+    content.vb: >-
+      <ComVisible(True)>
+
+      <Guid("F7063DA8-8359-439C-9297-BBC5299A7D87")>
+
+      <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+
+      Public Interface IRawElementProviderFragment
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  attributes:
+  - type: System.Runtime.InteropServices.ComVisibleAttribute
+    ctor: System.Runtime.InteropServices.ComVisibleAttribute.#ctor(System.Boolean)
+    arguments:
+    - type: System.Boolean
+      value: true
+  - type: System.Runtime.InteropServices.GuidAttribute
+    ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: F7063DA8-8359-439C-9297-BBC5299A7D87
+  - type: System.Runtime.InteropServices.InterfaceTypeAttribute
+    ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
+    arguments:
+    - type: System.Runtime.InteropServices.ComInterfaceType
+      value: 1
+- uid: DrawnUi.Draw.IRawElementProviderFragment.Navigate(DrawnUi.Draw.UiaNavigateDirection)
+  commentId: M:DrawnUi.Draw.IRawElementProviderFragment.Navigate(DrawnUi.Draw.UiaNavigateDirection)
+  id: Navigate(DrawnUi.Draw.UiaNavigateDirection)
+  parent: DrawnUi.Draw.IRawElementProviderFragment
+  langs:
+  - csharp
+  - vb
+  name: Navigate(UiaNavigateDirection)
+  nameWithType: IRawElementProviderFragment.Navigate(UiaNavigateDirection)
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.Navigate(DrawnUi.Draw.UiaNavigateDirection)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Navigate
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 31
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: IRawElementProviderFragment? Navigate(UiaNavigateDirection direction)
+    parameters:
+    - id: direction
+      type: DrawnUi.Draw.UiaNavigateDirection
+    return:
+      type: DrawnUi.Draw.IRawElementProviderFragment
+    content.vb: Function Navigate(direction As UiaNavigateDirection) As IRawElementProviderFragment
+  overload: DrawnUi.Draw.IRawElementProviderFragment.Navigate*
+- uid: DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId
+  commentId: M:DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId
+  id: GetRuntimeId
+  parent: DrawnUi.Draw.IRawElementProviderFragment
+  langs:
+  - csharp
+  - vb
+  name: GetRuntimeId()
+  nameWithType: IRawElementProviderFragment.GetRuntimeId()
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetRuntimeId
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 34
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: int[]? GetRuntimeId()
+    return:
+      type: System.Int32[]
+    content.vb: Function GetRuntimeId() As Integer()
+  overload: DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId*
+- uid: DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle
+  commentId: P:DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle
+  id: BoundingRectangle
+  parent: DrawnUi.Draw.IRawElementProviderFragment
+  langs:
+  - csharp
+  - vb
+  name: BoundingRectangle
+  nameWithType: IRawElementProviderFragment.BoundingRectangle
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: BoundingRectangle
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 37
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: UiaRect BoundingRectangle { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.UiaRect
+    content.vb: ReadOnly Property BoundingRectangle As UiaRect
+  overload: DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle*
+- uid: DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots
+  commentId: M:DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots
+  id: GetEmbeddedFragmentRoots
+  parent: DrawnUi.Draw.IRawElementProviderFragment
+  langs:
+  - csharp
+  - vb
+  name: GetEmbeddedFragmentRoots()
+  nameWithType: IRawElementProviderFragment.GetEmbeddedFragmentRoots()
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetEmbeddedFragmentRoots
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 39
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: object[]? GetEmbeddedFragmentRoots()
+    return:
+      type: System.Object[]
+    content.vb: Function GetEmbeddedFragmentRoots() As Object()
+  overload: DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots*
+- uid: DrawnUi.Draw.IRawElementProviderFragment.SetFocus
+  commentId: M:DrawnUi.Draw.IRawElementProviderFragment.SetFocus
+  id: SetFocus
+  parent: DrawnUi.Draw.IRawElementProviderFragment
+  langs:
+  - csharp
+  - vb
+  name: SetFocus()
+  nameWithType: IRawElementProviderFragment.SetFocus()
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.SetFocus()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SetFocus
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 42
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: void SetFocus()
+    content.vb: Sub SetFocus()
+  overload: DrawnUi.Draw.IRawElementProviderFragment.SetFocus*
+- uid: DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot
+  commentId: P:DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot
+  id: FragmentRoot
+  parent: DrawnUi.Draw.IRawElementProviderFragment
+  langs:
+  - csharp
+  - vb
+  name: FragmentRoot
+  nameWithType: IRawElementProviderFragment.FragmentRoot
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FragmentRoot
+    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 44
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: IRawElementProviderFragmentRoot? FragmentRoot { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.IRawElementProviderFragmentRoot
+    content.vb: ReadOnly Property FragmentRoot As IRawElementProviderFragmentRoot
+  overload: DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot*
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.IRawElementProviderFragment.Navigate*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderFragment.Navigate
+  href: DrawnUi.Draw.IRawElementProviderFragment.html#DrawnUi_Draw_IRawElementProviderFragment_Navigate_DrawnUi_Draw_UiaNavigateDirection_
+  name: Navigate
+  nameWithType: IRawElementProviderFragment.Navigate
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.Navigate
+- uid: DrawnUi.Draw.UiaNavigateDirection
+  commentId: T:DrawnUi.Draw.UiaNavigateDirection
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UiaNavigateDirection.html
+  name: UiaNavigateDirection
+  nameWithType: UiaNavigateDirection
+  fullName: DrawnUi.Draw.UiaNavigateDirection
+- uid: DrawnUi.Draw.IRawElementProviderFragment
+  commentId: T:DrawnUi.Draw.IRawElementProviderFragment
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IRawElementProviderFragment.html
+  name: IRawElementProviderFragment
+  nameWithType: IRawElementProviderFragment
+  fullName: DrawnUi.Draw.IRawElementProviderFragment
+- uid: DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId
+  href: DrawnUi.Draw.IRawElementProviderFragment.html#DrawnUi_Draw_IRawElementProviderFragment_GetRuntimeId
+  name: GetRuntimeId
+  nameWithType: IRawElementProviderFragment.GetRuntimeId
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.GetRuntimeId
+- uid: System.Int32[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int[]
+  nameWithType: int[]
+  fullName: int[]
+  nameWithType.vb: Integer()
+  fullName.vb: Integer()
+  name.vb: Integer()
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle
+  href: DrawnUi.Draw.IRawElementProviderFragment.html#DrawnUi_Draw_IRawElementProviderFragment_BoundingRectangle
+  name: BoundingRectangle
+  nameWithType: IRawElementProviderFragment.BoundingRectangle
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.BoundingRectangle
+- uid: DrawnUi.Draw.UiaRect
+  commentId: T:DrawnUi.Draw.UiaRect
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.UiaRect.html
+  name: UiaRect
+  nameWithType: UiaRect
+  fullName: DrawnUi.Draw.UiaRect
+- uid: DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots
+  href: DrawnUi.Draw.IRawElementProviderFragment.html#DrawnUi_Draw_IRawElementProviderFragment_GetEmbeddedFragmentRoots
+  name: GetEmbeddedFragmentRoots
+  nameWithType: IRawElementProviderFragment.GetEmbeddedFragmentRoots
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.GetEmbeddedFragmentRoots
+- uid: System.Object[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object[]
+  nameWithType: object[]
+  fullName: object[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.IRawElementProviderFragment.SetFocus*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderFragment.SetFocus
+  href: DrawnUi.Draw.IRawElementProviderFragment.html#DrawnUi_Draw_IRawElementProviderFragment_SetFocus
+  name: SetFocus
+  nameWithType: IRawElementProviderFragment.SetFocus
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.SetFocus
+- uid: DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot*
+  commentId: Overload:DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot
+  href: DrawnUi.Draw.IRawElementProviderFragment.html#DrawnUi_Draw_IRawElementProviderFragment_FragmentRoot
+  name: FragmentRoot
+  nameWithType: IRawElementProviderFragment.FragmentRoot
+  fullName: DrawnUi.Draw.IRawElementProviderFragment.FragmentRoot
+- uid: DrawnUi.Draw.IRawElementProviderFragmentRoot
+  commentId: T:DrawnUi.Draw.IRawElementProviderFragmentRoot
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IRawElementProviderFragmentRoot.html
+  name: IRawElementProviderFragmentRoot
+  nameWithType: IRawElementProviderFragmentRoot
+  fullName: DrawnUi.Draw.IRawElementProviderFragmentRoot

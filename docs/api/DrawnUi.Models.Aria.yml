@@ -5,6 +5,8 @@ items:
   id: Aria
   parent: DrawnUi.Models
   children:
+  - DrawnUi.Models.Aria.LiveAssertive
+  - DrawnUi.Models.Aria.LivePolite
   - DrawnUi.Models.Aria.RoleAlert
   - DrawnUi.Models.Aria.RoleAlertDialog
   - DrawnUi.Models.Aria.RoleButton
@@ -1156,6 +1158,70 @@ items:
     return:
       type: System.String
     content.vb: Public Shared ReadOnly RolePresentation As String
+- uid: DrawnUi.Models.Aria.LivePolite
+  commentId: F:DrawnUi.Models.Aria.LivePolite
+  id: LivePolite
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: LivePolite
+  nameWithType: Aria.LivePolite
+  fullName: DrawnUi.Models.Aria.LivePolite
+  type: Field
+  source:
+    remote:
+      path: src/Shared/Internals/Helpers/Aria.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LivePolite
+    path: ../src/Shared/Internals/Helpers/Aria.cs
+    startLine: 133
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: >-
+    Announced when the user is idle. Use for status text, score displays, counters.
+
+    Pass to <code>.WithAccessibilityLive(Aria.LivePolite)</code>.
+  example: []
+  syntax:
+    content: public static readonly string LivePolite
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly LivePolite As String
+- uid: DrawnUi.Models.Aria.LiveAssertive
+  commentId: F:DrawnUi.Models.Aria.LiveAssertive
+  id: LiveAssertive
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: LiveAssertive
+  nameWithType: Aria.LiveAssertive
+  fullName: DrawnUi.Models.Aria.LiveAssertive
+  type: Field
+  source:
+    remote:
+      path: src/Shared/Internals/Helpers/Aria.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LiveAssertive
+    path: ../src/Shared/Internals/Helpers/Aria.cs
+    startLine: 139
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: >-
+    Announced immediately, interrupting the user. Use for error messages, alerts.
+
+    Pass to <code>.WithAccessibilityLive(Aria.LiveAssertive)</code>.
+  example: []
+  syntax:
+    content: public static readonly string LiveAssertive
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly LiveAssertive As String
 references:
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole

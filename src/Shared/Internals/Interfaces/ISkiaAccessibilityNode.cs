@@ -28,6 +28,13 @@ public interface ISkiaAccessibilityNode
     /// </summary>
     bool? AccessibilityIsPressed { get; set; }
 
+    /// <summary>
+    /// Live region setting. When set, screen readers announce value changes automatically.
+    /// Use <see cref="DrawnUi.Models.Aria.LivePolite"/> or <see cref="DrawnUi.Models.Aria.LiveAssertive"/>.
+    /// null/empty = off (default).
+    /// </summary>
+    string? AccessibilityLive { get; set; }
+
     /// <summary>True when <see cref="AccessibilityRole"/> is non-null. Computed, not stored.</summary>
     bool IsAccessibilityElement { get; }
 
@@ -51,4 +58,18 @@ public interface ISkiaAccessibilityNode
 
     /// <summary>Called by <c>SkiaAccessibilityManager</c> when this node is removed from the registry.</summary>
     void OnAccessibilityUnregistered();
+
+    /// <summary>
+    /// Called by the control when it gains or loses keyboard/tab focus.
+    /// Platforms raise the corresponding focus-changed event (UIA AutomationFocusChanged, ARIA focus, etc.).
+    /// </summary>
+    void NotifyAccessibilityFocused(bool focused);
+
+    /// <summary>
+    /// Called by the platform a11y layer when UIA/Tab focus arrives on or leaves this node.
+    /// Allows input controls (e.g. SkiaEditor) to auto-activate their native input sink on Tab-in
+    /// and release it on Tab-out, matching standard text-field keyboard behavior.
+    /// Default implementation is a no-op.
+    /// </summary>
+    void OnAccessibilityFocused(bool focused);
 }

@@ -13,12 +13,16 @@ namespace DrawnUi.Gaming
     /// </summary>
     public partial class DrawnGame : SkiaLayout, IGame
     {
- 
+
         /// <summary>
         /// Can disable frame time interpolator
         /// </summary>
+#if ANDROID || OPENTK || BROWSER
+        public static bool FrameInterpolatorDisabled { get; set; } = true;
+#else
         public static bool FrameInterpolatorDisabled { get; set; }
- 
+#endif
+
 
         private ActionOnTickAnimator _appLoop;
         protected long LastFrameTimeNanos;

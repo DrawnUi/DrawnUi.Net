@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Buffers;
+using DrawnUi.Draw;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
@@ -18,8 +20,21 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace DrawnUi.Controls
 {
-    public partial class SoftwareWindowsCanvas : Canvas, IDisposable
+    public partial class SoftwareWindowsCanvas : Canvas, IDisposable, IDrawnUiA11yHost
     {
+        // IDrawnUiA11yHost
+        public SkiaAccessibilityManager? A11yManager   { get; set; }
+        public Func<(double x, double y)>? A11yGetOrigin { get; set; }
+        public Func<float>? A11yGetScale { get; set; }
+        public AutomationPeer? A11yPeer { get; set; }
+
+        protected override AutomationPeer OnCreateAutomationPeer()
+        {
+            var peer = new DrawnUiAutomationPeer(this, this);
+            A11yPeer = peer;
+            return peer;
+        }
+
         public void Dispose()
         {
             Loaded -= OnLoaded;
@@ -58,6 +73,7 @@ namespace DrawnUi.Controls
 			OnDpiChanged(display);
 #endif
 
+            IsTabStop = true;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             SizeChanged += OnSizeChanged;

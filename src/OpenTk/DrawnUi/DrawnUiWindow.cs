@@ -32,6 +32,7 @@ public class DrawnUiWindow : GameWindow
     private WndProcDelegate? _wndProcDelegate;
     private nint _oldWndProc;
     private nint _hwnd;
+    private WindowsUiaProvider? _uiaProvider;
 
     // Constant: render every VSync frame (games).
     // Dynamic:  render only when dirty, sleep via GLFW between frames (apps).
@@ -98,6 +99,9 @@ public class DrawnUiWindow : GameWindow
                     _oldWndProc = WindowChrome.SetWindowLongPtr(_hwnd, -4,
                         Marshal.GetFunctionPointerForDelegate(_wndProcDelegate));
                     ConfigureWindowChrome(_hwnd);
+                    _uiaProvider = new WindowsUiaProvider(
+                        _hwnd, _canvas.AccessibilityManager, () => (float)_canvas.RenderingScale);
+                    _canvas.AccessibilityManager.FocusChanged += node => _uiaProvider.NotifyFocusChanged(node);
                 }
             }
         }
@@ -126,6 +130,13 @@ public class DrawnUiWindow : GameWindow
             ToggleFullscreen();
             return 0;
         }
+
+        if (_uiaProvider != null)
+        {
+            var uiaResult = _uiaProvider.HandleMessage(msg, wParam, lParam);
+            if (uiaResult != 0) return uiaResult;
+        }
+
         return WindowChrome.CallWindowProc(_oldWndProc, hwnd, msg, wParam, lParam);
     }
 
@@ -283,7 +294,11 @@ public class DrawnUiWindow : GameWindow
             Super.OnFrame -= OnSuperFrame;
 
         if (OperatingSystem.IsWindows() && _oldWndProc != 0)
+        {
             WindowChrome.SetWindowLongPtr(_hwnd, -4, _oldWndProc);
+            _uiaProvider?.Dispose();
+            _uiaProvider = null;
+        }
 
         MainThread.Reset();
         _surface?.Dispose();

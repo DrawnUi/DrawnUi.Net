@@ -6,7 +6,12 @@ items:
   parent: DrawnUi.Views
   children:
   - DrawnUi.Views.SkiaAccessibilityManager.Changed
+  - DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
+  - DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
+  - DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame
+  - DrawnUi.Views.SkiaAccessibilityManager.LiveRegionUpdated
   - DrawnUi.Views.SkiaAccessibilityManager.MinUpdateIntervalMs
+  - DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.NotifyUpdated(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.Register(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.Snapshot
@@ -26,7 +31,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaAccessibilityManager
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 25
+    startLine: 26
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -63,7 +68,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: MinUpdateIntervalMs
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 35
+    startLine: 36
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -94,7 +99,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Snapshot
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 37
+    startLine: 38
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -123,7 +128,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Changed
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 39
+    startLine: 40
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -132,6 +137,126 @@ items:
     return:
       type: System.Action
     content.vb: Public Event Changed As Action
+- uid: DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
+  commentId: E:DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
+  id: FocusChanged
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: FocusChanged
+  nameWithType: SkiaAccessibilityManager.FocusChanged
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
+  type: Event
+  source:
+    remote:
+      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FocusChanged
+    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    startLine: 41
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public event Action<ISkiaAccessibilityNode?>? FocusChanged
+    return:
+      type: System.Action{DrawnUi.Draw.ISkiaAccessibilityNode}
+    content.vb: Public Event FocusChanged As Action(Of ISkiaAccessibilityNode)
+- uid: DrawnUi.Views.SkiaAccessibilityManager.LiveRegionUpdated
+  commentId: E:DrawnUi.Views.SkiaAccessibilityManager.LiveRegionUpdated
+  id: LiveRegionUpdated
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: LiveRegionUpdated
+  nameWithType: SkiaAccessibilityManager.LiveRegionUpdated
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.LiveRegionUpdated
+  type: Event
+  source:
+    remote:
+      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LiveRegionUpdated
+    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    startLine: 47
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Fired immediately (bypassing snapshot rate-limit) when a live-region node's value changes.
+
+    Platform layer uses this to raise the AT live-region announcement.
+  example: []
+  syntax:
+    content: public event Action<ISkiaAccessibilityNode>? LiveRegionUpdated
+    return:
+      type: System.Action{DrawnUi.Draw.ISkiaAccessibilityNode}
+    content.vb: Public Event LiveRegionUpdated As Action(Of ISkiaAccessibilityNode)
+- uid: DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
+  commentId: P:DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
+  id: FocusedNode
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: FocusedNode
+  nameWithType: SkiaAccessibilityManager.FocusedNode
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
+  type: Property
+  source:
+    remote:
+      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FocusedNode
+    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    startLine: 49
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public ISkiaAccessibilityNode? FocusedNode { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    content.vb: Public Property FocusedNode As ISkiaAccessibilityNode
+  overload: DrawnUi.Views.SkiaAccessibilityManager.FocusedNode*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
+  id: NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: NotifyFocused(ISkiaAccessibilityNode?)
+  nameWithType: SkiaAccessibilityManager.NotifyFocused(ISkiaAccessibilityNode?)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: NotifyFocused
+    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    startLine: 51
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public void NotifyFocused(ISkiaAccessibilityNode? node)
+    parameters:
+    - id: node
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    content.vb: Public Sub NotifyFocused(node As ISkiaAccessibilityNode)
+  overload: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused*
+  nameWithType.vb: SkiaAccessibilityManager.NotifyFocused(ISkiaAccessibilityNode)
+  fullName.vb: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
+  name.vb: NotifyFocused(ISkiaAccessibilityNode)
 - uid: DrawnUi.Views.SkiaAccessibilityManager.Register(DrawnUi.Draw.ISkiaAccessibilityNode)
   commentId: M:DrawnUi.Views.SkiaAccessibilityManager.Register(DrawnUi.Draw.ISkiaAccessibilityNode)
   id: Register(DrawnUi.Draw.ISkiaAccessibilityNode)
@@ -150,7 +275,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Register
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 41
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -179,7 +304,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: NotifyUpdated
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 47
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -190,6 +315,32 @@ items:
       type: DrawnUi.Draw.ISkiaAccessibilityNode
     content.vb: Public Sub NotifyUpdated(node As ISkiaAccessibilityNode)
   overload: DrawnUi.Views.SkiaAccessibilityManager.NotifyUpdated*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame
+  id: ForceRebuildOnNextFrame
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: ForceRebuildOnNextFrame()
+  nameWithType: SkiaAccessibilityManager.ForceRebuildOnNextFrame()
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ForceRebuildOnNextFrame
+    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    startLine: 73
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public void ForceRebuildOnNextFrame()
+    content.vb: Public Sub ForceRebuildOnNextFrame()
+  overload: DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame*
 - uid: DrawnUi.Views.SkiaAccessibilityManager.Unregister(DrawnUi.Draw.ISkiaAccessibilityNode)
   commentId: M:DrawnUi.Views.SkiaAccessibilityManager.Unregister(DrawnUi.Draw.ISkiaAccessibilityNode)
   id: Unregister(DrawnUi.Draw.ISkiaAccessibilityNode)
@@ -208,7 +359,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: Unregister
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 53
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -237,7 +388,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterSubtree
     path: ../src/Shared/Views/SkiaAccessibilityManager.cs
-    startLine: 62
+    startLine: 88
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -650,12 +801,73 @@ references:
   name: Action
   nameWithType: Action
   fullName: System.Action
-- uid: DrawnUi.Views.SkiaAccessibilityManager.Register*
-  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.Register
-  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_Register_DrawnUi_Draw_ISkiaAccessibilityNode_
-  name: Register
-  nameWithType: SkiaAccessibilityManager.Register
-  fullName: DrawnUi.Views.SkiaAccessibilityManager.Register
+- uid: System.Action{DrawnUi.Draw.ISkiaAccessibilityNode}
+  commentId: T:System.Action{DrawnUi.Draw.ISkiaAccessibilityNode}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<ISkiaAccessibilityNode>
+  nameWithType: Action<ISkiaAccessibilityNode>
+  fullName: System.Action<DrawnUi.Draw.ISkiaAccessibilityNode>
+  nameWithType.vb: Action(Of ISkiaAccessibilityNode)
+  fullName.vb: System.Action(Of DrawnUi.Draw.ISkiaAccessibilityNode)
+  name.vb: Action(Of ISkiaAccessibilityNode)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Draw.ISkiaAccessibilityNode
+    name: ISkiaAccessibilityNode
+    href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.ISkiaAccessibilityNode
+    name: ISkiaAccessibilityNode
+    href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Views.SkiaAccessibilityManager.FocusedNode*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_FocusedNode
+  name: FocusedNode
+  nameWithType: SkiaAccessibilityManager.FocusedNode
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode
   commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
   parent: DrawnUi.Draw
@@ -685,12 +897,30 @@ references:
   - uid: DrawnUi.Draw
     name: Draw
     href: DrawnUi.Draw.html
+- uid: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_NotifyFocused_DrawnUi_Draw_ISkiaAccessibilityNode_
+  name: NotifyFocused
+  nameWithType: SkiaAccessibilityManager.NotifyFocused
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused
+- uid: DrawnUi.Views.SkiaAccessibilityManager.Register*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.Register
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_Register_DrawnUi_Draw_ISkiaAccessibilityNode_
+  name: Register
+  nameWithType: SkiaAccessibilityManager.Register
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.Register
 - uid: DrawnUi.Views.SkiaAccessibilityManager.NotifyUpdated*
   commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.NotifyUpdated
   href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_NotifyUpdated_DrawnUi_Draw_ISkiaAccessibilityNode_
   name: NotifyUpdated
   nameWithType: SkiaAccessibilityManager.NotifyUpdated
   fullName: DrawnUi.Views.SkiaAccessibilityManager.NotifyUpdated
+- uid: DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_ForceRebuildOnNextFrame
+  name: ForceRebuildOnNextFrame
+  nameWithType: SkiaAccessibilityManager.ForceRebuildOnNextFrame
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame
 - uid: DrawnUi.Views.SkiaAccessibilityManager.Unregister*
   commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.Unregister
   href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_Unregister_DrawnUi_Draw_ISkiaAccessibilityNode_

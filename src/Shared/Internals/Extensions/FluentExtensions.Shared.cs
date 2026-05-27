@@ -109,6 +109,17 @@ namespace DrawnUi.Draw
             return control.WithAccessibility(Aria.RoleButton, label, label, true);
         }
 
+        /// <summary>
+        /// Marks a control as a live region so Narrator announces its label whenever it changes.
+        /// Call after <c>.WithAccessibility(role, ...)</c> or <c>.WithAccessibilityText()</c>.
+        /// <paramref name="live"/>: <see cref="Aria.LivePolite"/> (default) or <see cref="Aria.LiveAssertive"/>.
+        /// </summary>
+        public static T WithAccessibilityLive<T>(this T control, string live = "polite") where T : SkiaControl
+        {
+            control.AccessibilityLive = live;
+            return control;
+        }
+
         public static T WithAccessibilityText<T>(this T control, string text) where T : SkiaControl
         {
             control.AccessibilityRole = Aria.RoleText;

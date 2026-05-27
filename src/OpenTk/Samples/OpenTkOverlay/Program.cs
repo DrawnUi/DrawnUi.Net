@@ -52,8 +52,9 @@ var nativeSettings = new NativeWindowSettings
     ClientSize = new Vector2i(1280, 800),
     Title = "OpenTK 3D + DrawnUI Overlay",
     API = ContextAPI.OpenGL,
-    APIVersion = new Version(4, 6),
+    APIVersion = OperatingSystem.IsLinux() ? new Version(3, 3) : new Version(4, 6),
     Profile = ContextProfile.Core,
+    WindowState = WindowState.Normal,
     StartVisible = false,
     Icon = LoadWindowIcon(),
 };

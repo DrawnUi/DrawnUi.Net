@@ -292,7 +292,7 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
 
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">OpenTK</h3>
-  <p>Use <strong>DrawnUi.OpenTk.Game</strong> for native OpenGL window apps on Windows and Linux — fully drawn apps, games, GPU overlays.</p>
+  <p>Use <strong>DrawnUi.OpenTk</strong> for native OpenGL window apps on Windows and Linux — fully drawn apps, games, GPU overlays.</p>
   <p><strong>Reference:</strong></p>
   <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.OpenTk</code></pre>
   <p><a href="articles/opentk/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">OpenTK guide →</a></p>
