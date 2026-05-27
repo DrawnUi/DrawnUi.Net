@@ -19,7 +19,8 @@ var nativeSettings = new NativeWindowSettings
     Title = "DrawnUi.Net OpenTK GPU Host",
     API = ContextAPI.OpenGL,
     APIVersion = new Version(3, 3),
-    Profile = ContextProfile.Core
+    Profile = ContextProfile.Core,
+    WindowState = WindowState.Normal,
 };
 
 using var window = new DrawnUiWindow(gameSettings, nativeSettings,

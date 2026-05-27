@@ -39,8 +39,9 @@ var nativeSettings = new NativeWindowSettings
     ClientSize = new Vector2i((int)(PongGame.WIDTH*1.33), (int)(PongGame.HEIGHT*1.33)),
     Title = "Pong – DrawnUI OpenTK",
     API = ContextAPI.OpenGL,
-    APIVersion = new Version(4, 6),
+    APIVersion = OperatingSystem.IsLinux() ? new Version(3, 3) : new Version(4, 6),
     Profile = ContextProfile.Core,
+    WindowState = WindowState.Normal,
     Icon = LoadWindowIcon(),
 };
 

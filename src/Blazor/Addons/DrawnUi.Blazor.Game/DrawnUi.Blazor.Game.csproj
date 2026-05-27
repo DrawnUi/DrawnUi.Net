@@ -12,6 +12,10 @@
         <SupportedPlatform Condition="'$(TargetFramework)' == 'net9.0'">browser</SupportedPlatform>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);BROWSER;</DefineConstants>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
         <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
     </PropertyGroup>

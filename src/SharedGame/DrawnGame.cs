@@ -17,7 +17,7 @@ namespace DrawnUi.Gaming
         /// <summary>
         /// Can disable frame time interpolator
         /// </summary>
-#if ANDROID || OPENTK
+#if ANDROID || OPENTK || BROWSER
         public static bool FrameInterpolatorDisabled { get; set; } = true;
 #else
         public static bool FrameInterpolatorDisabled { get; set; }
