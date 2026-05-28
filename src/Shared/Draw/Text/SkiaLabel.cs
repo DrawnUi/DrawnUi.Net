@@ -118,6 +118,8 @@ namespace DrawnUi.Draw
             _spans.CollectionChanged += OnCollectionChanged;
 
             UpdateFont();
+
+            UseCache = SkiaCacheType.Operations;
         }
 
         public SkiaLabel() : base()

@@ -17,8 +17,6 @@ public class SkiaShadow : BindableObject, IComparable, IComparable<SkiaShadow>, 
         this.Parent = null;
     }
 
-    public string Tag { get; set; }
-
     public int CompareTo(object obj)
     {
         if (obj is null)

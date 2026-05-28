@@ -8,8 +8,9 @@ namespace DrawnUi.Draw;
 #else
 using PropertyChangingEventArgs = Microsoft.Maui.Controls.PropertyChangingEventArgs;
 #endif
-public partial class TextSpan : Element //we subclassed Element to be able to use internal IElementNode..
+public partial class TextSpan : Element //we subclassed Element only to be able to use internal IElementNode..
 {
+    public new string Tag { get; set; }
 
     #region BINDABLE PROPERTIES
 

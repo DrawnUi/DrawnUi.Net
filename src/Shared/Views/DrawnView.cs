@@ -1044,7 +1044,6 @@ namespace DrawnUi.Views
             return path;
         }
 
-        public string Tag { get; set; }
 
         /// <summary>
         ///  destination in PIXELS, requests in UNITS. resulting Destination prop will be filed in PIXELS.
@@ -2090,6 +2089,17 @@ namespace DrawnUi.Views
                 var canRenderOffScreen = !IsHiddenInViewTree || CanRenderOffScreen;
                 return CanvasView != null && !IsDisposed && IsVisible && Handler != null && canRenderOffScreen;
             }
+        }
+
+        public static readonly BindableProperty TagProperty = BindableProperty.Create(nameof(Tag),
+            typeof(string),
+            typeof(SkiaControl),
+            string.Empty);
+
+        public new string Tag
+        {
+            get { return (string)GetValue(TagProperty); }
+            set { SetValue(TagProperty, value); }
         }
 
         private void OnFrame(object sender, EventArgs e)

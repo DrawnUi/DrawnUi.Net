@@ -262,8 +262,6 @@ public partial class TextSpan : IDisposable
     /// </summary>
     public SKPoint DrawingOffset { get; set; }
 
-    public string Tag { get; set; }
-
     /// <summary>
     /// Relative to DrawingRect
     /// </summary>
