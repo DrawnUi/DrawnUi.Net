@@ -392,6 +392,10 @@ namespace DrawnUi.Draw
             CalculateSizeRequest();
 
             AttachEffects();
+
+#if BROWSER || DRAWNUI_NET || OPENTK
+            ApplyInitialStyles();
+#endif
         }
 
         /// <summary>
@@ -2962,7 +2966,7 @@ namespace DrawnUi.Draw
             string.Empty,
             propertyChanged: NeedDraw);
 
-        public string Tag
+        public new string Tag
         {
             get { return (string)GetValue(TagProperty); }
             set { SetValue(TagProperty, value); }

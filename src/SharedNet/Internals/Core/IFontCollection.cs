@@ -1,5 +1,21 @@
 namespace DrawnUi.Draw;
 
+public interface IStylesCollection
+{
+    IStylesCollection AddStyle(Style style);
+}
+
+public class StylesCollection : IStylesCollection
+{
+    public IStylesCollection AddStyle(Style style)
+    {
+        Styles.Add(style);
+        return this;
+    }
+
+    public static List<Style> Styles { get; } = new();
+}
+
 public interface IFontCollection
 {
     IFontCollection AddFont(string source, string alias);

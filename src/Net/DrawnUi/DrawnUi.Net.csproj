@@ -59,4 +59,10 @@
         <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Include="..\..\SharedNet\Internals\Core\FontCollection.cs" Link="FontCollection.cs" />
+      <Compile Include="..\..\SharedNet\Internals\Core\IStylesCollection.cs" Link="IStylesCollection.cs" />
+      <Compile Include="..\..\SharedNet\Internals\Core\StylesCollection.cs" Link="StylesCollection.cs" />
+    </ItemGroup>
+
 </Project>
