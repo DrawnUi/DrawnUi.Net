@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 
 namespace DrawnUi.Draw
@@ -15,11 +17,7 @@ namespace DrawnUi.Draw
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = "")
@@ -27,6 +25,11 @@ namespace DrawnUi.Draw
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
         #endregion
+
+        public virtual void SetPropertyValue(BindableProperty property, object value)
+        {
+            this.SetValue(property, value);
+        }
 
         public object BindingContext
         {
@@ -99,6 +102,11 @@ namespace DrawnUi.Draw
                 bindable.BindingContext = value;
             }
         }
+
+
+#if !BROWSER
+        public string Tag { get; set; }
+#endif
     }
 
     public sealed class BindableProperty
