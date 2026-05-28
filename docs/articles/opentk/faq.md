@@ -182,6 +182,82 @@ protected override void OnKeyDown(KeyboardKeyEventArgs e)
 
 ---
 
+## Running on Linux / WSL2
+
+### App crashes with `EGL: Failed to create context: Arguments are inconsistent`
+
+**Cause:** GLFW's bundled `libglfw.so.3` uses EGL; Mesa D3D12 (WSLg) cannot create a desktop OpenGL Core context via EGL.
+
+**Fix:** Replace the bundled GLFW with the system X11/GLX build:
+
+```bash
+sudo apt install libglfw3
+cd /path/to/publish
+mv libglfw.so.3 libglfw.so.3.bak
+ln -s /usr/lib/x86_64-linux-gnu/libglfw.so.3 libglfw.so.3
+```
+
+---
+
+### App crashes with `GLX: Failed to create context: GLXBadFBConfig`
+
+**Cause:** Mesa D3D12 (WSLg) does not expose an OpenGL 4.6 framebuffer config via GLX. Requesting `APIVersion = new Version(4, 6)` fails.
+
+**Fix:** Use OpenGL 3.3 on Linux — Mesa fully supports it:
+
+```csharp
+var nativeSettings = new NativeWindowSettings
+{
+    API = ContextAPI.OpenGL,
+    APIVersion = OperatingSystem.IsLinux() ? new Version(3, 3) : new Version(4, 6),
+    Profile = ContextProfile.Core,
+    WindowState = WindowState.Normal,   // required on WSLg — see below
+    ...
+};
+```
+
+---
+
+### App starts fullscreen on WSLg, then crashes with `D3D12: Removing Device`
+
+**Cause:** WSLg presents large windows fullscreen by default. The fullscreen→windowed transition triggers a D3D12 device reset in Mesa, which causes a segfault.
+
+**Fix:** Set `WindowState = WindowState.Normal` in `NativeWindowSettings`. This prevents the mode switch and keeps the D3D12 device stable.
+
+---
+
+### FPS is uncapped on Linux (400+ FPS in Constant mode)
+
+**Cause:** Mesa/WSLg ignores the OpenGL swap interval — `VSync = VSyncMode.On` has no effect. `SwapBuffers()` returns immediately, so the render loop runs at CPU speed.
+
+**Fix:** `DrawnUiWindow` automatically applies a software frame cap at the monitor refresh rate on Linux. No app-level change needed. This is handled inside the library.
+
+If you use a custom `GameWindow` (not `DrawnUiWindow`), add this after `VSync = VSyncMode.On`:
+
+```csharp
+if (OperatingSystem.IsLinux())
+    UpdateFrequency = targetFps; // e.g. 60
+```
+
+---
+
+### WSL2 one-time setup for DrawnUI OpenTK apps
+
+```bash
+# Install required native libs
+sudo apt install libglfw3 libopenal1 libgl1 libgles2-mesa unzip
+
+# Verify GPU/GL works
+glxinfo | grep "OpenGL renderer"
+
+# Launch with X11 display
+DISPLAY=:0 ./YourApp
+```
+
+WSLg is required (included in WSL 2.x). Audio works automatically via WSLg's built-in PulseAudio.
+
+---
+
 ## Related
 
 - [OpenTK Guide](index.md)
