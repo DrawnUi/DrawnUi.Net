@@ -325,7 +325,7 @@ namespace DrawnUi.Draw
 
         public static string ToArgbString(Color color)
         {
-            var a = (int)(color.A * 255);
+            var a = (int)(color.Alpha * 255);
             var r = (int)(color.Red * 255);
             var g = (int)(color.Green * 255);
             var b = (int)(color.Blue * 255);
@@ -364,7 +364,7 @@ namespace DrawnUi.Draw
                     var r = (byte)ToHexD(hex[idx]);
                     var g = (byte)ToHexD(hex[idx + 1]);
                     var b = (byte)ToHexD(hex[idx + 2]);
-                    return Color.FromSKColor(new SKColor(r, g, b));
+                    return Color.FromRgb(r, g, b);
                 }
 
                 case 4: // #argb
@@ -373,7 +373,7 @@ namespace DrawnUi.Draw
                     var r = (byte)ToHexD(hex[idx + 1]);
                     var g = (byte)ToHexD(hex[idx + 2]);
                     var b = (byte)ToHexD(hex[idx + 3]);
-                    return Color.FromSKColor(new SKColor(r, g, b, a));
+                    return Color.FromRgba(r,g,b,a);
                 }
 
                 case 6: // #rrggbb
@@ -381,7 +381,7 @@ namespace DrawnUi.Draw
                     var r = (byte)((ToHex(hex[idx]) << 4) | ToHex(hex[idx + 1]));
                     var g = (byte)((ToHex(hex[idx + 2]) << 4) | ToHex(hex[idx + 3]));
                     var b = (byte)((ToHex(hex[idx + 4]) << 4) | ToHex(hex[idx + 5]));
-                    return Color.FromSKColor(new SKColor(r, g, b));
+                    return Color.FromRgb(r, g, b);
                 }
 
                 case 8: // #aarrggbb
@@ -390,7 +390,7 @@ namespace DrawnUi.Draw
                     var r = (byte)((ToHex(hex[idx + 2]) << 4) | ToHex(hex[idx + 3]));
                     var g = (byte)((ToHex(hex[idx + 4]) << 4) | ToHex(hex[idx + 5]));
                     var b = (byte)((ToHex(hex[idx + 6]) << 4) | ToHex(hex[idx + 7]));
-                    return Color.FromSKColor(new SKColor(r, g, b, a));
+                    return Color.FromRgba(r, g, b, a);
                 }
 
                 default:

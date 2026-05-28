@@ -28,9 +28,29 @@ namespace DrawnUi
 
         public float Alpha { get; }
 
-        public float A => Alpha;
+        //public float A => Alpha;
 
         public object Rgb { get; }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string ToHex()
+        {
+            var a = (int)(Alpha * 255);
+            var r = (int)(Red * 255);
+            var g = (int)(Green * 255);
+            var b = (int)(Blue * 255);
+            return $"#{a:X2}{r:X2}{g:X2}{b:X2}";
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string ToHexRgba()
+        {
+            var a = (int)(Alpha * 255);
+            var r = (int)(Red * 255);
+            var g = (int)(Green * 255);
+            var b = (int)(Blue * 255);
+            return $"#{r:X2}{g:X2}{b:X2}{a:X2}";
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SKColor ToSKColor()
