@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Components;
-using DrawnUi;
-using SkiaSharp;
 using System.Globalization;
+using DrawnUi;
+using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json.Linq;
+using SkiaSharp;
 
 namespace DrawnUi.Views;
 
@@ -21,8 +22,9 @@ public partial class Canvas
             if (_backgroundColor != value)
             {
                 _backgroundColor = value;
-                base.BackgroundColor = string.IsNullOrWhiteSpace(value)
-                ? null: Color.FromSKColor(SKColor.Parse(value));
+
+                base.BackgroundColor =
+                    string.IsNullOrWhiteSpace(value) ? default(Color): Color.Parse(value);
             }
         }
     } 
@@ -34,7 +36,7 @@ public partial class Canvas
 
     private string BackgroundColorCss => string.IsNullOrWhiteSpace(BackgroundColor)
         ? "transparent"
-        : BackgroundColor;
+        : Color.Parse(BackgroundColor).ToHexRgba();
 
     private Thickness ParsedMargin => ParseThickness(Margin);
 

@@ -545,7 +545,7 @@ namespace DrawnUi.Views
                         usingColor = usingColor.MakeLighter(gradient.Light * 100 - 100);
                     }
 
-                    var newAlpha = usingColor.A * gradient.Opacity;
+                    var newAlpha = usingColor.Alpha * gradient.Opacity;
                     usingColor = usingColor.WithAlpha(newAlpha);
                     colors.Add(usingColor.ToSKColor());
                 }

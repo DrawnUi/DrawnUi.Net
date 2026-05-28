@@ -1,9 +1,8 @@
-﻿/*
-All the MAUI-related base SkiaControl implementation.
-Normally other partial code definitions should be framework independent.
+/*
+Blazor-specific SkiaControl partial.
+Styles code lives in SharedNet/Draw/SkiaControl.NetShared.cs (shared with Net/OpenTK).
 */
 
-using System.Collections;
 using System.Runtime.CompilerServices;
 using Color = DrawnUi.Color;
 
@@ -20,7 +19,6 @@ namespace DrawnUi.Draw
         {
         }
 
-
         public static Color TransparentColor = Colors.Transparent;
         public static Color WhiteColor = Colors.White;
         public static Color BlackColor = Colors.Black;
@@ -28,24 +26,9 @@ namespace DrawnUi.Draw
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            try
-            {
-                base.OnPropertyChanged(propertyName);
-            }
-            catch (Exception e)
-            {
-                //we are avoiding MAUI crashes due concurrent access to properties from different threads
-                Super.Log($"[{propertyName}] {e}");
-            }
+            base.OnPropertyChanged(propertyName);
 
-            //if (!isApplyingStyle && !string.IsNullOrEmpty(propertyName))
-            //{
-            //    ExplicitPropertiesSet[propertyName] = true;
-            //}
-
-            #region intercept properties coming from VisualElement..
-
-            //some VisualElement props will not call this method so we would override them as new
+            TrackExplicitPropertyChange(propertyName);
 
             if (propertyName == nameof(ZIndex))
             {
@@ -61,7 +44,7 @@ namespace DrawnUi.Draw
                          nameof(ScaleX), nameof(ScaleY)
                      ))
             {
-                Repaint(); 
+                Repaint();
             }
             else if (propertyName.IsEither(nameof(BackgroundColor),
                          nameof(IsClippedToBounds)
@@ -72,10 +55,6 @@ namespace DrawnUi.Draw
             else if (propertyName == nameof(Shadow))
             {
                 UpdatePlatformShadow();
-            }
-            else if (propertyName == "Shadows")
-            {
-                var stop = 1;
             }
             else if (propertyName == nameof(Clip))
             {
@@ -107,13 +86,8 @@ namespace DrawnUi.Draw
             else if (propertyName.IsEither(nameof(IsVisible)))
             {
                 OnVisibilityChanged(IsVisible);
-
                 Repaint();
             }
-
-            #endregion
         }
-         
-         
     }
 }

@@ -9,5 +9,7 @@ namespace DrawnUi.Draw
     /// </summary>
     public partial class BindableObject : LayoutComponentBase
     {
+        [Parameter]
+        public new string Tag { get; set; }
     }
 }
