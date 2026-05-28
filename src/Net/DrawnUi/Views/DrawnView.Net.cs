@@ -333,17 +333,17 @@ namespace DrawnUi.Views
 
         protected int CanvasViewVersion { get; private set; }
 
-        public static readonly BindableProperty UpdateLockedProperty = BindableProperty.Create(
-            nameof(UpdateLocked),
-            typeof(bool),
-            typeof(DrawnView),
-            false);
+        //public static readonly BindableProperty UpdateLockedProperty = BindableProperty.Create(
+        //    nameof(UpdateLocked),
+        //    typeof(bool),
+        //    typeof(DrawnView),
+        //    false);
 
-        public bool UpdateLocked
-        {
-            get { return (bool)GetValue(UpdateLockedProperty); }
-            set { SetValue(UpdateLockedProperty, value); }
-        }
+        //public bool UpdateLocked
+        //{
+        //    get { return (bool)GetValue(UpdateLockedProperty); }
+        //    set { SetValue(UpdateLockedProperty, value); }
+        //}
 
         bool rendererSet;
 
@@ -425,7 +425,7 @@ namespace DrawnUi.Views
                         usingColor = usingColor.MakeLighter(gradient.Light * 100 - 100);
                     }
 
-                    var newAlpha = usingColor.A * gradient.Opacity;
+                    var newAlpha = usingColor.Alpha * gradient.Opacity;
                     usingColor = usingColor.WithAlpha(newAlpha);
                     colors.Add(usingColor.ToSKColor());
                 }
