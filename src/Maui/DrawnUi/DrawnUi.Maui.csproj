@@ -61,6 +61,8 @@
         <Compile Remove="Platforms\Windows\ViewChainPanel.Windows.cs" />
         <Compile Remove="Platforms\Windows\Views\AngleSwapChainPanel.cs" />
         <Compile Remove="Controls\Extensions\**" />
+        <Compile Remove="Draw\Images\**" />
+        <Compile Remove="Draw\Scroll\**" />
         <Compile Remove="Features\Effects\**" />
         <Compile Remove="Platforms\Windows\Controls\**" />
         <Compile Remove="Platforms\Windows\NewFolder\**" />
@@ -164,6 +166,8 @@
 
     <ItemGroup>
         <EmbeddedResource Remove="Controls\Extensions\**" />
+        <EmbeddedResource Remove="Draw\Images\**" />
+        <EmbeddedResource Remove="Draw\Scroll\**" />
         <EmbeddedResource Remove="Features\Effects\**" />
         <EmbeddedResource Remove="Platforms\Windows\Controls\**" />
         <EmbeddedResource Remove="Platforms\Windows\NewFolder\**" />
@@ -171,6 +175,8 @@
 
     <ItemGroup>
         <MauiXaml Remove="Controls\Extensions\**" />
+        <MauiXaml Remove="Draw\Images\**" />
+        <MauiXaml Remove="Draw\Scroll\**" />
         <MauiXaml Remove="Features\Effects\**" />
         <MauiXaml Remove="Platforms\Windows\Controls\**" />
         <MauiXaml Remove="Platforms\Windows\NewFolder\**" />
@@ -178,19 +184,21 @@
 
     <ItemGroup>
         <MauiCss Remove="Controls\Extensions\**" />
+        <MauiCss Remove="Draw\Images\**" />
+        <MauiCss Remove="Draw\Scroll\**" />
         <MauiCss Remove="Features\Effects\**" />
         <MauiCss Remove="Platforms\Windows\Controls\**" />
         <MauiCss Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
     <ItemGroup>
         <AndroidAarLibrary Remove="Controls\Extensions\**" />
+        <None Remove="Draw\Images\**" />
+        <None Remove="Draw\Scroll\**" />
         <None Remove="Features\Effects\**" />
         <None Remove="Platforms\Windows\NewFolder\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Draw\Images\" />
-        <Folder Include="Draw\Scroll\" />
         <Folder Include="Internals\Handlers\" />
         <Folder Include="Platforms\Apple\Extensions\" />
     </ItemGroup>
