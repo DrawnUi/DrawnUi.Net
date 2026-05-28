@@ -4,6 +4,7 @@ Normally other partial code definitions should be framework independent.
 */
 
 using System.Collections;
+using System.Collections.Concurrent;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.HotReload;
 using IContainer = Microsoft.Maui.IContainer;
@@ -173,10 +174,6 @@ namespace DrawnUi.Draw
         public static Color BlackColor = Colors.Black;
         public static Color RedColor = Colors.Red;
 
-
-
-    
-
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             try
@@ -262,8 +259,6 @@ namespace DrawnUi.Draw
 
             #endregion
         }
-
-      
 
         /*
         #region HotReload
