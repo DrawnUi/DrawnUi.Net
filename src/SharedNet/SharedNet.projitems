@@ -34,6 +34,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\DisplayRotation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\DrawnExtensions.Blazor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\IFontCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\IStylesCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\StylesCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\FontCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\IAssetCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\DrawnUiBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\DrawnUiCompat.cs" />
