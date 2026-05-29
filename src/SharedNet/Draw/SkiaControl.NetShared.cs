@@ -39,8 +39,7 @@ namespace DrawnUi.Draw
         public void ApplyInitialStyles()
         {
             UpdateLocks++;
-            LockUpdate(true);
-
+            
             var resolved = _resolvedStylesCache.GetOrAdd(this.GetType(), ResolveStylesForType);
 
             foreach (var s in resolved.Inherited)
