@@ -255,7 +255,7 @@ public partial class ViewsAdapter : IDisposable
 
     void SetTemplatesAvailable(IList dataContexts)
     {
-        _dataContexts = dataContexts;
+        _dataContexts = dataContexts;   // property setter refreshes the render snapshot
         TemplatesInvalidated = false;
         TemplatesBusy = false;
         _parent.OnTemplatesAvailable();
@@ -831,15 +831,19 @@ public partial class ViewsAdapter : IDisposable
             throw new InvalidOperationException("Templates have not been initialized.");
         }
 
-        if (index < 0 || index >= _dataContexts.Count)
+        // Index the immutable render snapshot, not the live _dataContexts (which the consumer may be
+        // mutating on the UI thread). The volatile read returns a stable array; an out-of-range index
+        // just yields no view this frame and self-heals on the next.
+        object[] snapshot = _renderSnapshot;
+        if (index < 0 || index >= snapshot.Length)
         {
             return null;
         }
 
         if (template == null)
         {
-            // Get the binding context for this index
-            var bindingContext = _dataContexts[index];
+            // Get the binding context for this index (from the stable snapshot)
+            var bindingContext = snapshot[index];
             template = _templatedViewsPool.Get(height, bindingContext);
 
             if (LogEnabled && template != null)
@@ -1246,7 +1250,48 @@ public partial class ViewsAdapter : IDisposable
     }
 
     private TemplatedViewsPool _templatedViewsPool;
-    private IList _dataContexts;
+
+    // _dataContexts is a property so every assignment (init, incremental change, reset) refreshes the
+    // render-thread snapshot below. Assignments happen on the UI/mutation thread, so building the copy
+    // is race-free.
+    private IList _dataContextsBacking;
+    private IList _dataContexts
+    {
+        get => _dataContextsBacking;
+        set { _dataContextsBacking = value; RebuildRenderSnapshot(); }
+    }
+
+    // Render-thread-safe snapshot of the data contexts. _dataContexts is the live, bound ItemsSource;
+    // indexing it directly from the render thread (see GetOrCreateViewForIndexInternal) races a
+    // consumer's Insert/RemoveAt on the UI thread and can tear a read of the resizing backing array.
+    // The render thread reads this immutable array instead (atomic volatile reference swap).
+    private volatile object[] _renderSnapshot = System.Array.Empty<object>();
+
+    /// <summary>
+    /// Rebuilds the immutable render-thread snapshot of the current data contexts. Called on the
+    /// UI/mutation thread whenever the bound collection changes, so the render thread never indexes the
+    /// live (possibly resizing) collection. Allocates once per data change, not per rendered frame.
+    /// </summary>
+    protected virtual void RebuildRenderSnapshot()
+    {
+        IList src = _dataContexts;
+        if (src == null)
+        {
+            _renderSnapshot = System.Array.Empty<object>();
+            return;
+        }
+        try
+        {
+            object[] arr = new object[src.Count];
+            for (int i = 0; i < arr.Length; i++) arr[i] = src[i];
+            _renderSnapshot = arr;
+        }
+        catch (System.Exception)
+        {
+            // Rebuild must run on the mutation/UI thread; if the collection changed mid-copy, keep the
+            // previous snapshot — the next change rebuilds it.
+        }
+    }
 
     protected readonly object _lockTemplates = new object();
 
