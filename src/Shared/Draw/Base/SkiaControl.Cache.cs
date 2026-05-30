@@ -382,7 +382,7 @@ public partial class SkiaControl
 
     protected virtual bool CheckCachedObjectValid(CachedObject cache, SKRect recordingArea, SkiaDrawingContext context)
     {
-        if (cache != null)
+        if (cache != null && !RenderObjectNeedsUpdate)
         {
             if (cache.Surface != null && cache.Surface.Handle == 0)
             {
@@ -579,7 +579,7 @@ public partial class SkiaControl
                 recordingContext.Context.Canvas.Translate(recordArea.Left, recordArea.Top);
                 recordingContext.Context.Canvas.Flush();
 
-                renderObject = new(usingCacheType, surface, recordArea, recordArea)
+                renderObject = new(usingCacheType, surface, recordArea, recordingArea)
                 {
                     SurfaceIsRecycled = recordingContext.Context.IsRecycled
                 };
@@ -988,18 +988,18 @@ public partial class SkiaControl
     /// </summary>
     protected virtual SKRect GetCacheArea(SKRect value)
     {
-        var dirty = value;
-        if (ExpandDirtyRegion != Thickness.Zero)
+        var expand = GetRenderingExpandPixels();
+        if (expand.Left != 0 || expand.Top != 0 || expand.Right != 0 || expand.Bottom != 0)
         {
-            dirty = new(
-                value.Left - (float)Math.Round(ExpandDirtyRegion.Left * RenderingScale),
-                value.Top - (float)Math.Round(ExpandDirtyRegion.Top * RenderingScale),
-                value.Right + (float)Math.Round(ExpandDirtyRegion.Right * RenderingScale),
-                value.Bottom + (float)Math.Round(ExpandDirtyRegion.Bottom * RenderingScale)
+            return new(
+                value.Left - (float)Math.Round(expand.Left),
+                value.Top - (float)Math.Round(expand.Top),
+                value.Right + (float)Math.Round(expand.Right),
+                value.Bottom + (float)Math.Round(expand.Bottom)
             );
         }
 
-        return dirty;
+        return value;
     }
 
     /// <summary>

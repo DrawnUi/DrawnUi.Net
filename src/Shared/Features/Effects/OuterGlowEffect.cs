@@ -52,4 +52,13 @@ public class OuterGlowEffect : BaseImageFilterEffect
             return base.NeedApply && (this.Blur > 0);
         }
     }
+
+    public override Thickness GetEffectMargin(float scale)
+    {
+        if (!NeedApply)
+            return Thickness.Zero;
+
+        var spread = Blur * 3.0; //~3 sigma, no offset (glow is symmetric)
+        return new Thickness(spread);
+    }
 }

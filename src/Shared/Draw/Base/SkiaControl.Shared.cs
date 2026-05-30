@@ -4189,13 +4189,14 @@ namespace DrawnUi.Draw
             {
                 _drawingRect = value;
                 var dirty = value;
-                if (ExpandDirtyRegion != Thickness.Zero)
+                var expand = GetRenderingExpandPixels();
+                if (expand.Left != 0 || expand.Top != 0 || expand.Right != 0 || expand.Bottom != 0)
                 {
                     dirty = new(
-                        value.Left - (float)Math.Round(ExpandDirtyRegion.Left * RenderingScale),
-                        value.Top - (float)Math.Round(ExpandDirtyRegion.Top * RenderingScale),
-                        value.Right + (float)Math.Round(ExpandDirtyRegion.Right * RenderingScale),
-                        value.Bottom + (float)Math.Round(ExpandDirtyRegion.Bottom * RenderingScale)
+                        value.Left - (float)Math.Round(expand.Left),
+                        value.Top - (float)Math.Round(expand.Top),
+                        value.Right + (float)Math.Round(expand.Right),
+                        value.Bottom + (float)Math.Round(expand.Bottom)
                     );
                 }
 
@@ -6828,7 +6829,20 @@ namespace DrawnUi.Draw
                 }
                 else
                 {
-                    _preparedClipBounds.AddRect(ctx.Destination);
+                    var clipRect = ctx.Destination;
+                    var expand = GetRenderingExpandPixels();
+                    if (expand.Left != 0 || expand.Top != 0 || expand.Right != 0 || expand.Bottom != 0)
+                    {
+                        //expand clip so effects drawn beyond bounds (shadows, glow) are not cut off,
+                        //mirrors GetCacheArea inflation used when recording the cache
+                        clipRect = new SKRect(
+                            clipRect.Left - (float)Math.Round(expand.Left),
+                            clipRect.Top - (float)Math.Round(expand.Top),
+                            clipRect.Right + (float)Math.Round(expand.Right),
+                            clipRect.Bottom + (float)Math.Round(expand.Bottom));
+                    }
+
+                    _preparedClipBounds.AddRect(clipRect);
                     Clipping?.Invoke(_preparedClipBounds, ctx.Destination);
                 }
             }

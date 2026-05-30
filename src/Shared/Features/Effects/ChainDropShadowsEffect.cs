@@ -188,4 +188,25 @@ public class ChainDropShadowsEffect : BaseChainedEffect
     {
         get { return base.NeedApply && Shadows.Count > 0; }
     }
+
+    public override Thickness GetEffectMargin(float scale)
+    {
+        if (!NeedApply)
+            return Thickness.Zero;
+
+        double l = 0, t = 0, r = 0, b = 0;
+        foreach (var shadow in Shadows)
+        {
+            var spread = shadow.Blur * 3.0; //~3 sigma covers the gaussian tail
+            var ox = shadow.X * scale;
+            var oy = shadow.Y * scale;
+
+            l = Math.Max(l, spread + Math.Max(0, -ox));
+            t = Math.Max(t, spread + Math.Max(0, -oy));
+            r = Math.Max(r, spread + Math.Max(0, ox));
+            b = Math.Max(b, spread + Math.Max(0, oy));
+        }
+
+        return new Thickness(l, t, r, b);
+    }
 }

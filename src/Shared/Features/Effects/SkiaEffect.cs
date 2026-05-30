@@ -35,8 +35,17 @@ public class SkiaEffect : BindableObject, IDisposable, ICanBeUpdatedWithContext
     /// </summary>
     public virtual void Update()
     {
+        Parent?.InvalidateEffectsMargin();
         Parent?.Update();
     }
+
+    /// <summary>
+    /// Extra space in PIXELS this effect paints beyond the control's DrawingRect (drop shadow, glow, etc.).
+    /// Return Thickness.Zero (default) for effects that stay within bounds.
+    /// The engine reads this to auto-expand the cache surface and clip so out-of-bounds effects are not clipped.
+    /// Order is (left, top, right, bottom). Blur is treated as pixels, offsets are scaled by the passed scale.
+    /// </summary>
+    public virtual Thickness GetEffectMargin(float scale) => Thickness.Zero;
 
     protected static void NeedUpdate(BindableObject bindable, object oldvalue, object newvalue)
     {

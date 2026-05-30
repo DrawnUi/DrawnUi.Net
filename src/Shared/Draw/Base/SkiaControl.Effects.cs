@@ -91,7 +91,84 @@ namespace DrawnUi.Draw
                 EffectPostRenderers = VisualEffects.OfType<IPostRendererEffect>().ToList();
             }
 
+            InvalidateEffectsMargin();
             Update();
+        }
+
+        private Thickness _effectsMarginPixels = Thickness.Zero;
+        private bool _effectsMarginValid;
+        private float _effectsMarginScale = -1;
+
+        /// <summary>
+        /// Marks the cached effects margin as stale. Called when effects or their parameters change.
+        /// Also invalidates the rendering cache because the cache surface bounds depend on the margin.
+        /// </summary>
+        internal void InvalidateEffectsMargin()
+        {
+            _effectsMarginValid = false;
+            InvalidateCache();
+        }
+
+        /// <summary>
+        /// Aggregated extra space in PIXELS that all attached VisualEffects paint beyond DrawingRect
+        /// (drop shadows, glow). Cached; recomputed only when effects or rendering scale change.
+        /// </summary>
+        public Thickness EffectsMarginPixels
+        {
+            get
+            {
+                var scale = RenderingScale;
+                if (!_effectsMarginValid || _effectsMarginScale != scale)
+                {
+                    _effectsMarginPixels = ComputeEffectsMargin(scale);
+                    _effectsMarginScale = scale;
+                    _effectsMarginValid = true;
+                }
+
+                return _effectsMarginPixels;
+            }
+        }
+
+        protected virtual Thickness ComputeEffectsMargin(float scale)
+        {
+            if (DisableEffects)
+                return Thickness.Zero;
+
+            var effects = VisualEffects;
+            if (effects == null || effects.Count == 0)
+                return Thickness.Zero;
+
+            double l = 0, t = 0, r = 0, b = 0;
+            foreach (var effect in effects)
+            {
+                var m = effect.GetEffectMargin(scale);
+                if (m.Left > l) l = m.Left;
+                if (m.Top > t) t = m.Top;
+                if (m.Right > r) r = m.Right;
+                if (m.Bottom > b) b = m.Bottom;
+            }
+
+            return new Thickness(l, t, r, b);
+        }
+
+        /// <summary>
+        /// Total expansion in PIXELS applied to the cache surface, the clip and the dirty region:
+        /// the per-side maximum of the manual ExpandDirtyRegion (scaled to pixels) and the auto
+        /// effects margin. Returns Thickness.Zero when nothing expands beyond bounds.
+        /// </summary>
+        protected Thickness GetRenderingExpandPixels()
+        {
+            var fx = EffectsMarginPixels;
+            var expand = ExpandDirtyRegion;
+            if (expand == Thickness.Zero)
+                return fx;
+
+            var scale = RenderingScale;
+            return new Thickness(
+                Math.Max(fx.Left, expand.Left * scale),
+                Math.Max(fx.Top, expand.Top * scale),
+                Math.Max(fx.Right, expand.Right * scale),
+                Math.Max(fx.Bottom, expand.Bottom * scale));
         }
 
         protected List<ISkiaGestureProcessor> EffectsGestureProcessors = new();

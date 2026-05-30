@@ -64,4 +64,20 @@ public class DropShadowEffect : BaseImageFilterEffect
         }
     }
 
+    public override Thickness GetEffectMargin(float scale)
+    {
+        if (!NeedApply)
+            return Thickness.Zero;
+
+        var spread = Blur * 3.0; //~3 sigma covers the gaussian tail
+        var ox = X * scale;
+        var oy = Y * scale;
+
+        return new Thickness(
+            spread + Math.Max(0, -ox),
+            spread + Math.Max(0, -oy),
+            spread + Math.Max(0, ox),
+            spread + Math.Max(0, oy));
+    }
+
 }
