@@ -3753,9 +3753,12 @@ namespace DrawnUi.Draw
             {
                 //apply transfroms
                 var thisOffset = TranslateInputCoords(apply.ChildOffset, true);
-                //apply touch coords
-                var x = args.Event.Location.X + thisOffset.X;
-                var y = args.Event.Location.Y + thisOffset.Y;
+                //apply touch coords. Use the entry-mapped MappedLocation (which the gesture pipeline has
+                //already transformed into this control's space through any parent transforms) rather than
+                //the raw args.Event.Location, so span (link) hit-testing works when the label is inside a
+                //scaled/rotated/flipped/virtualized parent — e.g. an inverted chat list.
+                var x = apply.MappedLocation.X + thisOffset.X;
+                var y = apply.MappedLocation.Y + thisOffset.Y;
 
                 foreach (var span in Spans.ToList())
                 {

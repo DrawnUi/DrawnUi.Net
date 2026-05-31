@@ -891,10 +891,25 @@ namespace DrawnUi.Draw
             // Calculate the plane's current rendered position
             var planeOffsetY = currentScroll + plane.OffsetY;
 
-            // Keep gesture coordinates as-is, but adjust child HitRects to current plane position
+            // Adjust child HitRects to current plane position (below). Also map the gesture into this
+            // scroll's local (pre-transform) space so both hit-testing and the coordinates forwarded to
+            // children account for any transform on the scroll itself (e.g. ScaleY=-1 / RotationZ for an
+            // inverted chat list). The base ProcessGestures applies this at entry, but the virtualized
+            // planes path overrides ProcessGestures and never reaches it, so a transformed virtualized
+            // scroll would otherwise hit-test raw coords against un-transformed child rects (hitting the
+            // mirror-image child) and forward raw coords (dead taps inside transformed cells).
+            EnsureRenderTransformMatrixForGestures();
+
             var gesturePoint = new SKPoint(
                 args.Event.Location.X + thisOffset.X,
                 args.Event.Location.Y + thisOffset.Y);
+
+            var childMappedLocation = apply.MappedLocation;
+            if (HasTransform && RenderTransformMatrix.TryInvert(out SKMatrix gestureInverse))
+            {
+                gesturePoint = gestureInverse.MapPoint(gesturePoint);
+                childMappedLocation = gestureInverse.MapPoint(apply.MappedLocation);
+            }
 
 
             // Process gestures using plane's render tree in reverse Z-order
@@ -963,10 +978,10 @@ namespace DrawnUi.Draw
                         {
                             var childOffset = TranslateInputCoords(apply.ChildOffsetDirect, false);
 
-                            // Forward gesture to child with proper coordinate transformation
+                            // Forward gesture to child with the scroll-local mapped coordinate (see above).
                             var consumed = listener.OnSkiaGestureEvent(args,
                                 new GestureEventProcessingInfo(
-                                    apply.MappedLocation,
+                                    childMappedLocation,
                                     thisOffset,
                                     childOffset,
                                     apply.AlreadyConsumed));
@@ -981,7 +996,7 @@ namespace DrawnUi.Draw
                             {
                                 var attachedConsumed = effect.OnSkiaGestureEvent(args,
                                     new GestureEventProcessingInfo(
-                                        apply.MappedLocation,
+                                        childMappedLocation,
                                         thisOffset,
                                         childOffset,
                                         apply.AlreadyConsumed));

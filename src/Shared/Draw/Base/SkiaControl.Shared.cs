@@ -1724,6 +1724,7 @@ namespace DrawnUi.Draw
             if (child.Control != null && !child.Control.IsDisposing && !child.Control.IsDisposed &&
                 !child.Control.InputTransparent && child.Control.CanDraw)
             {
+                child.Control.EnsureRenderTransformMatrixForGestures();
                 if (child.Control.HasTransform && child.Control.RenderTransformMatrix.TryInvert(out SKMatrix inverse))
                 {
                     // Transform point into child's local space
@@ -2202,6 +2203,10 @@ namespace DrawnUi.Draw
 
             var consumedDefault = BlockGesturesBelow ? this as ISkiaGestureListener : null;
 
+            // Make sure our transform matrix is current before using it to map the incoming coordinate
+            // (node-attached / cached controls can leave it stale at Identity — see the helper).
+            EnsureRenderTransformMatrixForGestures();
+
             if (HasTransform)
             {
                 // Transform the mapped location using the inverse transformation matrix
@@ -2385,7 +2390,23 @@ namespace DrawnUi.Draw
                         if (CheckChildrenGesturesLocked(args.Type))
                             return consumedDefault;
 
-                        var point = TranslateInputOffsetToPixels(args.Event.Location, apply.ChildOffset);
+                        // For TRANSFORMED controls, hit-test registered gesture-listener children with the
+                        // entry-mapped location (apply.MappedLocation, already in this control's local space
+                        // incl. the transform), consistent with the rendering-tree branch above and the entry
+                        // inverse-map — the raw args.Event.Location ignored the transform so children of a
+                        // transformed control (e.g. an inverted/flipped chat scroll) were never hit. For the
+                        // common non-transformed case, keep the original path exactly (no behavioural change).
+                        SKPoint point;
+                        if (HasTransform)
+                        {
+                            var listenersOffset = TranslateInputCoords(apply.ChildOffset);
+                            point = new SKPoint(apply.MappedLocation.X + listenersOffset.X,
+                                apply.MappedLocation.Y + listenersOffset.Y);
+                        }
+                        else
+                        {
+                            point = TranslateInputOffsetToPixels(args.Event.Location, apply.ChildOffset);
+                        }
 
                         ISkiaGestureListener breakForChild = null;
 
@@ -4502,6 +4523,27 @@ namespace DrawnUi.Draw
             // Apply to canvas (concat with canvas total matrix)
             matrix = matrix.PostConcat(ctx.Canvas.TotalMatrix);
             ctx.Canvas.SetMatrix(matrix);
+        }
+
+        /// <summary>
+        /// Ensures <see cref="RenderTransformMatrix"/> reflects the current transform so gesture hit-testing
+        /// (the inverse-map in ProcessGestures and IsGestureForChild) accounts for it. Node-attached / cached
+        /// controls apply their transform to the canvas (or bake it into a cache) without storing it here, so
+        /// it can be left at Identity even though the control is visibly scaled/rotated/flipped — which makes
+        /// pointer events miss the control's children. Recompute on demand from the current DrawingRect; this
+        /// is cheap (a single matrix build) and only runs for transformed controls whose matrix is stale.
+        /// </summary>
+        public void EnsureRenderTransformMatrixForGestures()
+        {
+            // Always recompute for transformed controls from the CURRENT DrawingRect: besides the
+            // node-attached/cached case (matrix left at Identity), a virtualized control's DrawingRect
+            // moves as it scrolls, so a matrix built at render time carries a stale transform pivot and
+            // the inverse-map lands in the wrong place. Recomputing here keeps the pivot current. Cheap
+            // (one matrix build) and only for transformed controls.
+            if (HasTransform && DrawingRect != SKRect.Empty)
+            {
+                CreateTransformationMatrix(null, DrawingRect);
+            }
         }
 
         public virtual SKPoint TranslateInputDirectOffsetToPoints(PointF location, SKPoint childOffsetDirect)
