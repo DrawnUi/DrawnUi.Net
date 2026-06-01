@@ -138,6 +138,40 @@ public partial class ViewsAdapter : IDisposable
     #region INITIALIZE
 
     /// <summary>
+    /// Builds an immutable snapshot (fixed array) of the live collection. Called on the mutating
+    /// (UI) thread. Cost: one shallow copy of item references per collection change - cheap for bulk
+    /// updates (ObservableRangeCollection), O(n) per single-item op for a plain ObservableCollection.
+    /// </summary>
+    private static IList CreateDataContextsSnapshot(IList source)
+    {
+        if (source == null)
+            return null;
+
+        var snapshot = new object[source.Count];
+        source.CopyTo(snapshot, 0);
+        return snapshot;
+    }
+
+    /// <summary>
+    /// Swaps in a fresh immutable snapshot from the just-mutated live collection and refreshes any
+    /// per-thread iterators so they stop pointing at the previous snapshot. Must run on the mutating
+    /// (UI) thread, serialized with the collection mutation that triggered it.
+    /// </summary>
+    private void RefreshDataContexts(IList source)
+    {
+        _dataContextsSource = source;
+        _dataContexts = CreateDataContextsSnapshot(source);
+
+        lock (_lockTemplates)
+        {
+            foreach (var wrapper in _wrappers.Values)
+            {
+                wrapper.SetDataContexts(_dataContexts);
+            }
+        }
+    }
+
+    /// <summary>
     /// Main method to initialize templates, can use InitializeTemplatesInBackground as an option.
     /// </summary>
     /// <param name="template"></param>
@@ -171,10 +205,10 @@ public partial class ViewsAdapter : IDisposable
             layoutChanged = //todo cannot really optimize as can have same nb of cells, same references for  _dataContexts != dataContexts but different contexts
                 _parent.RenderingScale != _forScale || _parent.Split != _forSplit;
 
-        var changedData = _dataContexts != dataContexts;
+        var changedData = _dataContextsSource != dataContexts;
 
         var needReset = args.Action == NotifyCollectionChangedAction.Reset
-                        || (layoutChanged || _templatedViewsPool == null || _dataContexts != dataContexts ||
+                        || (layoutChanged || _templatedViewsPool == null || _dataContextsSource != dataContexts ||
                             CheckTemplateChanged());
 
         if (needReset)
@@ -189,6 +223,7 @@ public partial class ViewsAdapter : IDisposable
                 _forScale = _parent.RenderingScale;
                 _forSplit = _parent.Split;
                 _dataContexts = null;
+                _dataContextsSource = null;
                 AddedMore = 0;
             }
 
@@ -223,6 +258,10 @@ public partial class ViewsAdapter : IDisposable
                     $"[ViewsAdapter] Handle SmartCollectionChange: {args.Action} result {result}");
             }
 
+            // Refresh the immutable snapshot from the just-mutated live collection so the render
+            // thread sees the new items without ever indexing the live collection (issue #300).
+            RefreshDataContexts(dataContexts);
+
             //looks like only itemssource has changed, resize pool, keep old templates, be fast
             InitializeSoft(layoutChanged, dataContexts, poolSize);
         }
@@ -255,7 +294,7 @@ public partial class ViewsAdapter : IDisposable
 
     void SetTemplatesAvailable(IList dataContexts)
     {
-        _dataContexts = dataContexts;
+        RefreshDataContexts(dataContexts);
         TemplatesInvalidated = false;
         TemplatesBusy = false;
         _parent.OnTemplatesAvailable();
@@ -314,7 +353,7 @@ public partial class ViewsAdapter : IDisposable
                 await Task.Delay(10);
             }
 
-            _dataContexts = dataContexts;
+            RefreshDataContexts(dataContexts);
             TemplatesInvalidated = false; //enable TemplatesAvailable otherwise beackground measure will fail
             _parent.MeasureLayout(
                 new(_parent._lastMeasuredForWidth, _parent._lastMeasuredForHeight, _parent.RenderingScale), true);
@@ -558,7 +597,7 @@ public partial class ViewsAdapter : IDisposable
         var startIndex = args.NewStartingIndex;
 
         // Update data contexts first
-        _dataContexts = newDataContexts; //todo check if we need this here???
+        RefreshDataContexts(newDataContexts);
 
         // Update cached views with new contexts
         for (int i = 0; i < args.NewItems.Count; i++)
@@ -826,12 +865,16 @@ public partial class ViewsAdapter : IDisposable
 
     public SkiaControl GetOrCreateViewForIndexInternal(int index, float height = 0, SkiaControl template = null)
     {
-        if (_templatedViewsPool == null || _dataContexts == null)
+        // Capture the snapshot reference once: it can be swapped on the UI thread at any moment.
+        // Reading the local guarantees a consistent bounds-check + index against the same array.
+        var contexts = _dataContexts;
+
+        if (_templatedViewsPool == null || contexts == null)
         {
             throw new InvalidOperationException("Templates have not been initialized.");
         }
 
-        if (index < 0 || index >= _dataContexts.Count)
+        if (index < 0 || index >= contexts.Count)
         {
             return null;
         }
@@ -839,7 +882,7 @@ public partial class ViewsAdapter : IDisposable
         if (template == null)
         {
             // Get the binding context for this index
-            var bindingContext = _dataContexts[index];
+            var bindingContext = contexts[index];
             template = _templatedViewsPool.Get(height, bindingContext);
 
             if (LogEnabled && template != null)
@@ -1002,12 +1045,14 @@ public partial class ViewsAdapter : IDisposable
 
             try
             {
-                if (index < _dataContexts?.Count)
+                // Capture the snapshot reference once (it can be swapped on the UI thread mid-attach).
+                var contexts = _dataContexts;
+                if (index < contexts?.Count)
                 {
                     // Double-check before setting binding context
                     if (!view.IsDisposed && !view.IsDisposing)
                     {
-                        var context = _dataContexts[index];
+                        var context = contexts[index];
 
                         if (!isMeasuring)
                         {
@@ -1237,16 +1282,31 @@ public partial class ViewsAdapter : IDisposable
             return children.Count();
         }
 
-        if (_parent.ItemsSource != null)
+        // Use the immutable snapshot count, not the live ItemsSource.Count: the layout pass indexes
+        // _dataContexts, so its length must match what the render thread can safely read (issue #300).
+        var contexts = _dataContexts;
+        if (contexts != null)
         {
-            return _parent.ItemsSource.Count;
+            return contexts.Count;
         }
 
         return 0;
     }
 
     private TemplatedViewsPool _templatedViewsPool;
-    private IList _dataContexts;
+
+    // Immutable snapshot of the bound collection that the render thread indexes lock-free.
+    // We never store the live ItemsSource here: the GL render thread reads _dataContexts[index]
+    // concurrently while the UI thread mutates the bound collection (Add/RemoveAt/Insert). Indexing
+    // a live List/ObservableCollection across threads tears the backing array between the bounds
+    // check and the indexer -> SIGSEGV in mono on the GLThread (issue #300). The snapshot is a fixed
+    // object[] rebuilt on the mutating thread and swapped in atomically (reference assignment), so a
+    // render-thread read always sees one whole consistent array, never a half-resized one.
+    private volatile IList _dataContexts;
+
+    // The live collection reference, kept ONLY for identity comparison (detecting a new ItemsSource
+    // instance). Never indexed from the render thread.
+    private IList _dataContextsSource;
 
     protected readonly object _lockTemplates = new object();
 
@@ -1416,7 +1476,7 @@ public partial class ViewsAdapter : IDisposable
 public class ViewsIterator : IEnumerable<SkiaControl>, IDisposable
 {
     private TemplatedViewsPool _templatedViewsPool;
-    private IList _dataContexts;
+    private volatile IList _dataContexts;
     private IEnumerable<SkiaControl> _views;
     private DataContextIterator _iterator;
     private readonly LayoutType? _layoutType;
@@ -1438,6 +1498,15 @@ public class ViewsIterator : IEnumerable<SkiaControl>, IDisposable
     public void SetViews(IEnumerable<SkiaControl> views)
     {
         _views = views;
+    }
+
+    /// <summary>
+    /// Swaps in the latest immutable data-contexts snapshot. Called on the UI thread when the bound
+    /// collection changes so a cached per-thread iterator stops pointing at a stale snapshot.
+    /// </summary>
+    public void SetDataContexts(IList dataContexts)
+    {
+        _dataContexts = dataContexts;
     }
 
     public ViewsIterator(IEnumerable<SkiaControl> views)
@@ -1475,6 +1544,10 @@ public class DataContextIterator : IEnumerator<SkiaControl>
     private IEnumerator<SkiaControl> _viewEnumerator;
     private readonly LayoutType? _layoutType;
 
+    // Captured once at enumeration start: an immutable snapshot stays stable for the whole pass even
+    // if the UI thread swaps in a newer one mid-enumeration (issue #300).
+    private readonly IList _dataContexts;
+
     //added this to use more that 1 view at a time
     private readonly Queue<SkiaControl> _viewsInUse;
 
@@ -1502,6 +1575,7 @@ public class DataContextIterator : IEnumerator<SkiaControl>
     {
         _layoutType = layoutType;
         _viewsProvider = viewsProvider;
+        _dataContexts = viewsProvider.DataContexts;
         _currentIndex = -1;
         _viewsInUse = new Queue<SkiaControl>();
 
@@ -1531,7 +1605,7 @@ public class DataContextIterator : IEnumerator<SkiaControl>
 
             _currentIndex++;
 
-            if (_currentIndex < _viewsProvider.DataContexts.Count)
+            if (_currentIndex < _dataContexts.Count)
             {
                 _view = _viewsProvider.TemplatedViewsPool.Get();
 
@@ -1541,7 +1615,7 @@ public class DataContextIterator : IEnumerator<SkiaControl>
                 _viewsInUse.Enqueue(_view); // Keep track of the views in use.
 
                 _view.ContextIndex = _currentIndex;
-                _view.BindingContext = _viewsProvider.DataContexts[_currentIndex];
+                _view.BindingContext = _dataContexts[_currentIndex];
                 return true;
             }
 
@@ -1561,7 +1635,7 @@ public class DataContextIterator : IEnumerator<SkiaControl>
     {
         if (_viewsProvider.IsTemplated)
         {
-            if (_currentIndex >= 0 && _currentIndex < _viewsProvider.DataContexts.Count)
+            if (_currentIndex >= 0 && _currentIndex < _dataContexts.Count)
             {
                 _viewsProvider.TemplatedViewsPool.Return(_view, GetSizeKey(_view));
             }
@@ -1576,7 +1650,7 @@ public class DataContextIterator : IEnumerator<SkiaControl>
 
     public void Dispose()
     {
-        if (_viewsProvider.IsTemplated && _currentIndex >= 0 && _currentIndex < _viewsProvider.DataContexts.Count)
+        if (_viewsProvider.IsTemplated && _currentIndex >= 0 && _currentIndex < _dataContexts.Count)
         {
             _viewsProvider.TemplatedViewsPool.Return(_view, GetSizeKey(_view));
         }
