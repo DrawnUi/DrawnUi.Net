@@ -1,0 +1,140 @@
+﻿@page "/"
+@using AppoMobi.Specials
+@using DrawnUi
+@using DrawnUi.Controls
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>LoadMore Repro</PageTitle>
+
+<div style="padding: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+	<button @onclick="() => JumpToGlobal(0)">Top</button>
+	<span style="opacity: 0.75;">items: @_items.Count</span>
+</div>
+
+<Canvas Content="_root"
+		Gestures="@GesturesMode.Enabled"
+		WidthRequest="430"
+		HeightRequest="640"
+		BackgroundColor="Black" />
+
+@code {
+	public sealed class Row : BindableObject
+	{
+		public string Text { get; set; } = string.Empty;
+		public Color Color { get; set; } = Colors.White;
+	}
+
+	private sealed class RowCell : SkiaDynamicDrawnCell
+	{
+		private readonly SkiaLabel _label;
+		private readonly SkiaShape _shape;
+		private bool _tapped;
+
+		public RowCell()
+		{
+			HorizontalOptions = LayoutOptions.Fill;
+
+			_label = new SkiaLabel
+			{
+				TextColor = Colors.White,
+				FontSize = 15,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Center,
+			};
+
+			Children = new List<SkiaControl>
+			{
+				new SkiaShape
+				{
+					Type = ShapeType.Rectangle,
+					CornerRadius = 8,
+					Padding = new Thickness(12, 8),
+					Margin = new Thickness(8, 0),
+					BackgroundColor = Color.FromArgb("#2A2A2A"),
+					HorizontalOptions = LayoutOptions.Fill,
+					Children =
+					{
+						_label
+					}
+				}.Assign(out _shape)
+			};
+
+			this.OnTapped(me =>
+			{
+				_tapped = !_tapped;
+				_shape.BackgroundColor = _tapped ? Color.FromArgb("#1E6F50") : Color.FromArgb("#2A2A2A");
+				Console.WriteLine($"[TAP] {_label.Text}");
+			});
+		}
+
+		protected override void SetContent(object ctx)
+		{
+			if (ctx is Row row)
+			{
+				_label.Text = row.Text;
+				// reset visual toggle for recycled instance
+				_tapped = false;
+				_shape.BackgroundColor = Color.FromArgb("#2A2A2A");
+			}
+		}
+	}
+
+	private readonly ObservableRangeCollection<Row> _items = new();
+	private readonly SkiaScroll _scroll;
+	private readonly SkiaLayout _list;
+	private readonly SkiaControl _root;
+
+	public Home()
+	{
+		for (int i = 0; i < 1000; i++)
+		{
+			_items.Add(new Row { Text = $"Message {i}" });
+		}
+
+		_list = new SkiaLayout
+		{
+			Type = LayoutType.Column,
+			Spacing = 2,
+			Padding = new Thickness(0, 8),
+			ItemsSource = _items,
+			ItemTemplateType = typeof(RowCell),
+			Virtualisation = VirtualisationType.Managed,
+			ItemTemplatePoolSize = 64,
+			RecyclingTemplate = RecyclingTemplate.Enabled,
+			MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
+			HorizontalOptions = LayoutOptions.Fill,
+		};
+
+		_scroll = new SkiaScroll
+		{
+			Orientation = ScrollOrientation.Vertical,
+			Virtualisation = VirtualisationType.Managed,
+			DebugShowPlanes = true,
+				ResetScrollPositionOnContentSizeChanged = false,
+			HorizontalOptions = LayoutOptions.Fill,
+			VerticalOptions = LayoutOptions.Fill,
+			Content = _list,
+		};
+
+		_root = new SkiaLayout
+		{
+			Type = LayoutType.Absolute,
+			HorizontalOptions = LayoutOptions.Fill,
+			VerticalOptions = LayoutOptions.Fill,
+			Children =
+			{
+				_scroll
+			}
+		};
+	}
+
+	private void JumpToGlobal(int target)
+	{
+		if (_items.Count == 0)
+			return;
+
+		target = Math.Clamp(target, 0, _items.Count - 1);
+		_scroll.ScrollToIndex(target, false);
+	}
+}

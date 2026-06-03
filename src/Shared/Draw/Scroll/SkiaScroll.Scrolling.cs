@@ -5,6 +5,29 @@ namespace DrawnUi.Draw;
 
 public partial class SkiaScroll
 {
+    /// <summary>
+    /// Keeps visible content pinned when content above the viewport changes size (e.g. a virtualizing
+    /// layout removes/inserts items above the viewport and re-flows the rest). Shifts the vertical
+    /// viewport offset by <paramref name="deltaPoints"/>. Called by the content layout after it
+    /// resolves the new position of the anchored (first-visible) item. No-op for tiny deltas.
+    /// </summary>
+    public void OffsetVisibleAnchorY(float deltaPoints)
+    {
+        if (Math.Abs(deltaPoints) < 0.01f)
+            return;
+
+        ViewportOffsetY += deltaPoints;
+
+        // A running fling/scroll animator writes ViewportOffsetY every frame from its own trajectory and
+        // would instantly revert the anchor correction. Translate the active trajectory by the same delta
+        // so it keeps targeting the same content after the window shifted.
+        if (_animatorFlingY != null && _animatorFlingY.IsRunning)
+            _animatorFlingY.Shift(deltaPoints);
+
+        if (_vectorAnimatorBounceY != null && _vectorAnimatorBounceY.IsRunning)
+            _vectorAnimatorBounceY.Stop(); // bounce target is stale after a content shift; let it re-evaluate
+    }
+
     public float ViewportOffsetY
     {
         get { return _viewportOffsetY; }
@@ -77,7 +100,8 @@ public partial class SkiaScroll
 
     protected virtual void InitializeViewport(float scale)
     {
-        _loadMoreTriggeredAt = 0;
+        _loadMoreBottomTriggeredAt = 0;
+        _loadMoreTopTriggeredAt = 0;
 
         _lastContentBounds = ContentOffsetBounds;
 
@@ -544,6 +568,26 @@ public partial class SkiaScroll
     {
         ptsContentWidth = ContentSize.Units.Width;
         ptsContentHeight = ContentSize.Units.Height;
+
+        // Managed (planes) virtualization renders per-plane sliding windows, so the shared measured
+        // ContentSize is only a small seed window and can even collapse once everything is measured.
+        // Derive the scroll extent from a STABLE average-item estimate (avg * item count) that matches
+        // the per-plane window grid, so the scroll range always spans the whole virtual list.
+        if (UseVirtual && Content is SkiaLayout vlayout && vlayout.IsTemplated
+            && vlayout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+            && vlayout.ItemsSource != null && vlayout.ItemsSource.Count > 0)
+        {
+            float scale = (float)RenderingScale;
+            if (scale <= 0) scale = 1;
+            float avgPx = vlayout.GetAverageItemHeightPixels(scale);
+            float spacingPx = (float)(vlayout.Spacing * scale);
+            double estTotalPts = ((avgPx + spacingPx) * vlayout.ItemsSource.Count) / scale;
+
+            if (Orientation == ScrollOrientation.Vertical && estTotalPts > ptsContentHeight)
+                ptsContentHeight = (float)estTotalPts;
+            else if (Orientation == ScrollOrientation.Horizontal && estTotalPts > ptsContentWidth)
+                ptsContentWidth = (float)estTotalPts;
+        }
 
         if (Orientation == ScrollOrientation.Vertical)
         {

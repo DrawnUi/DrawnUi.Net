@@ -1746,6 +1746,18 @@ namespace DrawnUi.Draw
             set { SetValue(LoadMoreCommandProperty, value); }
         }
 
+        public static readonly BindableProperty LoadMoreTopCommandProperty = BindableProperty.Create(
+            nameof(LoadMoreTopCommand),
+            typeof(ICommand),
+            typeof(SkiaScroll),
+            null);
+
+        public ICommand LoadMoreTopCommand
+        {
+            get { return (ICommand)GetValue(LoadMoreTopCommandProperty); }
+            set { SetValue(LoadMoreTopCommandProperty, value); }
+        }
+
         public static readonly BindableProperty LoadMoreOffsetProperty = BindableProperty.Create(nameof(LoadMoreOffset),
             typeof(float),
             typeof(SkiaScroll),
@@ -1755,6 +1767,85 @@ namespace DrawnUi.Draw
         {
             get { return (float)GetValue(LoadMoreOffsetProperty); }
             set { SetValue(LoadMoreOffsetProperty, value); }
+        }
+
+        public static readonly BindableProperty LoadMoreTopOffsetProperty = BindableProperty.Create(
+            nameof(LoadMoreTopOffset),
+            typeof(float),
+            typeof(SkiaScroll),
+            0.0f,
+            propertyChanged: OnTrackingChanged);
+
+        public float LoadMoreTopOffset
+        {
+            get { return (float)GetValue(LoadMoreTopOffsetProperty); }
+            set { SetValue(LoadMoreTopOffsetProperty, value); }
+        }
+
+        private const double LoadMoreOppositeDirectionCooldownSeconds = 0.35;
+
+        private bool IsOppositeLoadMoreBlocked(LoadMoreDirection direction, float scale)
+        {
+            if (_lastLoadMoreDirection == null)
+                return false;
+
+            if (_lastLoadMoreDirection == direction)
+                return false;
+
+            if ((DateTime.Now - _lastLoadMoreDirectionTime).TotalSeconds <
+                LoadMoreOppositeDirectionCooldownSeconds)
+            {
+                return true;
+            }
+
+            // Require real movement away from the previous trigger before allowing
+            // the opposite command. This blocks one-frame rebound loops after rebase.
+            double currentOffset = Orientation == ScrollOrientation.Vertical
+                ? InternalViewportOffset.Units.Y
+                : InternalViewportOffset.Units.X;
+            var minTravel = (LoadMoreOffset + LoadMoreTopOffset + 20f) * scale;
+            if (Math.Abs(currentOffset - _lastLoadMoreDirectionOffset) < minTravel)
+            {
+                return true;
+            }
+
+            // Keep opposite direction blocked while still sitting inside the previously
+            // triggered edge zone (anchor correction can otherwise cause ping-pong loops).
+            if (Orientation == ScrollOrientation.Vertical)
+            {
+                if (_lastLoadMoreDirection == LoadMoreDirection.Bottom && direction == LoadMoreDirection.Top)
+                {
+                    return InternalViewportOffset.Units.Y <= _scrollMinY + (LoadMoreOffset * scale);
+                }
+
+                if (_lastLoadMoreDirection == LoadMoreDirection.Top && direction == LoadMoreDirection.Bottom)
+                {
+                    return InternalViewportOffset.Units.Y >= _scrollMaxY - (LoadMoreTopOffset * scale);
+                }
+            }
+            else if (Orientation == ScrollOrientation.Horizontal)
+            {
+                if (_lastLoadMoreDirection == LoadMoreDirection.Bottom && direction == LoadMoreDirection.Top)
+                {
+                    return InternalViewportOffset.Units.X <= _scrollMinX + (LoadMoreOffset * scale);
+                }
+
+                if (_lastLoadMoreDirection == LoadMoreDirection.Top && direction == LoadMoreDirection.Bottom)
+                {
+                    return InternalViewportOffset.Units.X >= _scrollMaxX - (LoadMoreTopOffset * scale);
+                }
+            }
+
+            return false;
+        }
+
+        private void MarkLoadMoreDirection(LoadMoreDirection direction)
+        {
+            _lastLoadMoreDirection = direction;
+            _lastLoadMoreDirectionTime = DateTime.Now;
+            _lastLoadMoreDirectionOffset = Orientation == ScrollOrientation.Vertical
+                ? InternalViewportOffset.Units.Y
+                : InternalViewportOffset.Units.X;
         }
 
         #endregion
@@ -2190,16 +2281,19 @@ namespace DrawnUi.Draw
 
             if (LoadMoreCommand != null)
             {
-                if (_loadMoreTriggeredAt != 0
-                    && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreTriggeredAt) > (LoadMoreOffset + 100) * scale
-                    && (DateTime.Now - _loadMoreTriggeredTime).TotalSeconds > 3)
+                if (_loadMoreBottomTriggeredAt != 0
+                    && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreBottomTriggeredAt) > (LoadMoreOffset + 100) * scale
+                    && (DateTime.Now - _loadMoreBottomTriggeredTime).TotalSeconds > 3)
                 //we have scrolled out of the triggered loadMore by 100pts
                 {
-                    _loadMoreTriggeredAt = 0; //so can track loadMore again
+                    _loadMoreBottomTriggeredAt = 0; //so can track loadMore again
                 }
 
-                if (HasContentToScroll && _loadMoreTriggeredAt == 0)
+                if (HasContentToScroll && _loadMoreBottomTriggeredAt == 0)
                 {
+                    if (IsOppositeLoadMoreBlocked(LoadMoreDirection.Bottom, scale))
+                        return true;
+
                     bool shouldTriggerLoadMore = false;
                     var threshold = LoadMoreOffset * scale;
                     shouldTriggerLoadMore = (Orientation == ScrollOrientation.Vertical &&
@@ -2214,24 +2308,77 @@ namespace DrawnUi.Draw
                         if (Content is IInsideViewport contentViewport)
                         {
                             // Ask the layout if it's ready for LoadMore based on its measurement state
-                            shouldTriggerLoadMore = contentViewport.ShouldTriggerLoadMore(ContentViewport);
+                            shouldTriggerLoadMore = contentViewport.ShouldTriggerLoadMore(ContentViewport, LoadMoreDirection.Bottom);
                         }
 
                         if (shouldTriggerLoadMore)
                         {
-                            _loadMoreTriggeredTime = DateTime.Now;
-                            _loadMoreTriggeredAt = InternalViewportOffset.Units.Y;
+                            _loadMoreBottomTriggeredTime = DateTime.Now;
+                            _loadMoreBottomTriggeredAt = InternalViewportOffset.Units.Y;
+                            MarkLoadMoreDirection(LoadMoreDirection.Bottom);
                             Debug.WriteLine("[SkiaScroll] LoadMoreCommand triggered via ShouldTriggerLoadMore");
                             LoadMoreCommand?.Execute(this);
+                            return true;
                         }
                         else
                         {
-                            _loadMoreTriggeredAt = 0;
+                            _loadMoreBottomTriggeredAt = 0;
                         }
                     }
                     else
                     {
-                        _loadMoreTriggeredAt = 0;
+                        _loadMoreBottomTriggeredAt = 0;
+                    }
+                }
+            }
+
+            if (LoadMoreTopCommand != null)
+            {
+                if (_loadMoreTopTriggeredAt != 0
+                    && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreTopTriggeredAt) > (LoadMoreTopOffset + 100) * scale
+                    && (DateTime.Now - _loadMoreTopTriggeredTime).TotalSeconds > 3)
+                {
+                    _loadMoreTopTriggeredAt = 0;
+                }
+
+                if (HasContentToScroll && _loadMoreTopTriggeredAt == 0)
+                {
+                    if (IsOppositeLoadMoreBlocked(LoadMoreDirection.Top, scale))
+                        return true;
+
+                    bool shouldTriggerTopLoadMore = false;
+                    var threshold = LoadMoreTopOffset * scale;
+                    shouldTriggerTopLoadMore = (Orientation == ScrollOrientation.Vertical &&
+                                                InternalViewportOffset.Units.Y >= _scrollMaxY - threshold)
+                                               || (Orientation == ScrollOrientation.Horizontal &&
+                                                   InternalViewportOffset.Units.X >= _scrollMaxX - threshold);
+
+                    if (shouldTriggerTopLoadMore)
+                    {
+                        if (Content is IInsideViewport contentViewport)
+                        {
+                            shouldTriggerTopLoadMore = contentViewport.ShouldTriggerLoadMore(ContentViewport, LoadMoreDirection.Top);
+                        }
+
+                        if (shouldTriggerTopLoadMore)
+                        {
+                            _loadMoreTopTriggeredTime = DateTime.Now;
+                            _loadMoreTopTriggeredAt = Orientation == ScrollOrientation.Vertical
+                                ? InternalViewportOffset.Units.Y
+                                : InternalViewportOffset.Units.X;
+                            MarkLoadMoreDirection(LoadMoreDirection.Top);
+                            Debug.WriteLine("[SkiaScroll] LoadMoreTopCommand triggered via ShouldTriggerLoadMore");
+                            LoadMoreTopCommand?.Execute(this);
+                            return true;
+                        }
+                        else
+                        {
+                            _loadMoreTopTriggeredAt = 0;
+                        }
+                    }
+                    else
+                    {
+                        _loadMoreTopTriggeredAt = 0;
                     }
                 }
             }
@@ -2323,7 +2470,8 @@ namespace DrawnUi.Draw
             }
         }
 
-        float _loadMoreTriggeredAt;
+        float _loadMoreBottomTriggeredAt;
+        float _loadMoreTopTriggeredAt;
 
         protected virtual void HideRefreshIndicator()
         {
@@ -3298,7 +3446,11 @@ namespace DrawnUi.Draw
         private float _zoomedScale = 1;
         private double _LastPanDistanceY;
         private double _LastPanDistanceX;
-        private DateTime _loadMoreTriggeredTime;
+        private DateTime _loadMoreBottomTriggeredTime;
+        private DateTime _loadMoreTopTriggeredTime;
+        private LoadMoreDirection? _lastLoadMoreDirection;
+        private DateTime _lastLoadMoreDirectionTime;
+        private double _lastLoadMoreDirectionOffset;
         private double _parallaxComputedValue;
         private float _offsetMoved;
         private long _offsetMovedTime;

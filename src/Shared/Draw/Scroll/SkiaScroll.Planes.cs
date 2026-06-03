@@ -55,8 +55,14 @@ namespace DrawnUi.Draw
             InvalidatePlanes();
         }
 
+        private bool _buildingPlaneWindow;
+
         protected virtual void InvalidatePlanes()
         {
+            // Measuring a plane's window must not invalidate the planes (would re-prepare every frame).
+            if (_buildingPlaneWindow)
+                return;
+
             PlaneCurrent?.Invalidate();
             PlaneBackward?.Invalidate();
             PlaneForward?.Invalidate();
@@ -272,6 +278,52 @@ namespace DrawnUi.Draw
                     return ScaledRect.FromPixels(insideViewport, _zoomedScale);
                 }
 
+                var measurePlaneArea = context.GetArgument("InitialMeasureVisibleArea") as bool? == true;
+
+                var initialViewport = ContentViewport.Pixels;
+                if (initialViewport.IsEmpty)
+                {
+                    initialViewport = Viewport.Pixels;
+                }
+                if (initialViewport.IsEmpty)
+                {
+                    initialViewport = DrawingRect;
+                }
+
+                if (measurePlaneArea && !initialViewport.IsEmpty)
+                {
+                    var planeWidth = _planeWidth > 0
+                        ? _planeWidth
+                        : (int)Math.Ceiling(initialViewport.Width);
+                    var planeHeight = _planeHeight > 0
+                        ? _planeHeight
+                        : Orientation == ScrollOrientation.Horizontal
+                            ? (int)Math.Ceiling(initialViewport.Height)
+                            : (int)Math.Ceiling(initialViewport.Height * 2f);
+
+                    if (Orientation == ScrollOrientation.Horizontal)
+                    {
+                        planeWidth = _planeWidth > 0
+                            ? _planeWidth
+                            : (int)Math.Ceiling(initialViewport.Width * 2f);
+                    }
+
+                    var planeViewport = new SKRect(
+                        initialViewport.Left,
+                        initialViewport.Top,
+                        initialViewport.Left + planeWidth,
+                        initialViewport.Top + planeHeight);
+
+                    planeViewport.Inflate(inflateByPixels.X, inflateByPixels.Y);
+                    return ScaledRect.FromPixels(planeViewport, _zoomedScale);
+                }
+
+                if (!initialViewport.IsEmpty)
+                {
+                    initialViewport.Inflate(inflateByPixels.X, inflateByPixels.Y);
+                    return ScaledRect.FromPixels(initialViewport, _zoomedScale);
+                }
+
                 return ScaledRect.FromPixels(context.Destination, _zoomedScale);
             }
 
@@ -283,7 +335,19 @@ namespace DrawnUi.Draw
                 var inflated = ContentViewport.Pixels;
                 if (ContentViewport.Pixels.IsEmpty)
                 {
-                    return ContentRectWithOffset; //do not inflate empty area
+                    var initialViewport = Viewport.Pixels;
+                    if (initialViewport.IsEmpty)
+                    {
+                        initialViewport = DrawingRect;
+                    }
+
+                    if (!initialViewport.IsEmpty)
+                    {
+                        initialViewport.Inflate(inflateByPixels.X, inflateByPixels.Y);
+                        return ScaledRect.FromPixels(initialViewport, RenderingScale);
+                    }
+
+                    return ContentRectWithOffset; // last-resort fallback before viewport is initialized
                 }
                 inflated.Inflate(inflateByPixels.X, inflateByPixels.Y);
                 return ScaledRect.FromPixels(inflated, RenderingScale);
@@ -442,6 +506,45 @@ namespace DrawnUi.Draw
 
 
 
+        /// <summary>Read-only snapshot of a plane's captured content, for diagnostics/testing.</summary>
+        public readonly record struct PlaneContentInfo(string Id, bool IsReady, int Count, int MinIndex, int MaxIndex, float OffsetY);
+
+        /// <summary>
+        /// Returns the captured item-index coverage of the current, forward and backward planes.
+        /// A plane spanning two viewports should capture roughly two viewports' worth of items; a much
+        /// smaller range means its far half is empty (unmeasured content at prepare time).
+        /// </summary>
+        public PlaneContentInfo[] GetPlanesContentInfo()
+        {
+            PlaneContentInfo Build(Plane p)
+            {
+                if (p == null)
+                    return new PlaneContentInfo("<null>", false, 0, -1, -1, 0);
+
+                int count = 0, min = int.MaxValue, max = -1;
+                var rt = p.RenderTree;
+                if (rt != null)
+                {
+                    for (int i = 0; i < rt.Count; i++)
+                    {
+                        var c = rt[i].Control;
+                        if (c == null) continue;
+                        count++;
+                        int idx = c.ContextIndex;
+                        if (idx >= 0)
+                        {
+                            if (idx < min) min = idx;
+                            if (idx > max) max = idx;
+                        }
+                    }
+                }
+
+                return new PlaneContentInfo(p.Id, p.IsReady, count, min == int.MaxValue ? -1 : min, max, p.OffsetY);
+            }
+
+            return new[] { Build(PlaneCurrent), Build(PlaneForward), Build(PlaneBackward) };
+        }
+
         protected virtual Plane GetPlaneById(string planeId)
         {
             return planeId switch
@@ -578,159 +681,278 @@ namespace DrawnUi.Draw
             return visualTrigger || contentBoundaryTrigger;
         }
 
+        // ===================================================================================
+        // TILED PLANES (redesign): the content is split into FIXED tiles of _planeHeight each.
+        // Tile N always covers content band [N*_planeHeight .. (N+1)*_planeHeight]. Each tile is
+        // rendered once to a bitmap (in the background for non-current tiles) and then SCROLLING
+        // only blits the bitmaps at (N*_planeHeight - scroll). No swaps, no floating plane offsets,
+        // no desync -> smooth blit-only scrolling, correct content at any position.
+        // ===================================================================================
+
+        private readonly Dictionary<int, Plane> _tiles = new();
+        private readonly HashSet<int> _tileBuilding = new();
+        private readonly Stack<SKSurface> _tileSurfacePool = new();
+        private const int TileBufferEachSide = 1;   // tiles kept above/below the visible range
+        private float _tileSlot;                     // cached avg item slot (height + spacing)
+
         /// <summary>
-        /// This is called when scrolling changes when in UseVirtual mode, override this to draw custom content
+        /// Debug aid: when true each tile's bitmap is tinted with a cycling color (red/green/blue/...)
+        /// so the tile boundaries are visible while scrolling. Cell content draws on top of the tint.
         /// </summary>
-        /// <param name="context"></param>
+        public bool DebugShowPlanes { get; set; }
+
+        private static readonly SKColor[] _debugPlaneColors =
+        {
+            new SKColor(255, 0, 0),     // red
+            new SKColor(0, 180, 0),     // green
+            new SKColor(0, 80, 255),    // blue
+            new SKColor(255, 180, 0),   // amber
+        };
+
+        protected virtual void InvalidateTiles()
+        {
+            foreach (var tile in _tiles.Values)
+                tile.Invalidate();
+        }
+
+        private SKSurface RentTileSurface()
+        {
+            if (_tileSurfacePool.Count > 0)
+                return _tileSurfacePool.Pop();
+            return SKSurface.Create(new SKImageInfo(_planeWidth, _planeHeight));
+        }
+
+        private Plane GetOrCreateTile(int index)
+        {
+            if (_tiles.TryGetValue(index, out var existing))
+                return existing;
+
+            var tile = new Plane
+            {
+                Id = $"T{index}",
+                OffsetY = index * _planeHeight,    // fixed content band top
+                OffsetX = 0,
+                Surface = RentTileSurface(),
+                Destination = new SKRect(0, 0, _planeWidth, _planeHeight),
+                BackgroundColor = SKColors.Transparent,
+            };
+            _tiles[index] = tile;
+            return tile;
+        }
+
+        private void EvictTilesOutside(int keepFirst, int keepLast)
+        {
+            if (_tiles.Count == 0)
+                return;
+            List<int> remove = null;
+            foreach (var kv in _tiles)
+            {
+                if (kv.Key < keepFirst || kv.Key > keepLast)
+                    (remove ??= new()).Add(kv.Key);
+            }
+            if (remove == null)
+                return;
+            foreach (var idx in remove)
+            {
+                if (_tileBuilding.Contains(idx))
+                    continue; // don't evict a tile being rendered
+                var tile = _tiles[idx];
+                _tiles.Remove(idx);
+                if (tile.CachedObject != null)
+                {
+                    DisposeObject(tile.CachedObject);
+                    tile.CachedObject = null;
+                }
+                if (tile.Surface != null && _tileSurfacePool.Count < 8)
+                    _tileSurfacePool.Push(tile.Surface);
+                else if (tile.Surface != null)
+                    DisposeObject(tile.Surface);
+                tile.Surface = null;
+            }
+        }
+
+        /// <summary>
+        /// Renders a tile's FIXED content band [tile.OffsetY .. +_planeHeight] into its bitmap, in the
+        /// absolute content frame (translate by -bandTop so the band maps onto the tile surface origin).
+        /// </summary>
+        private void RenderTile(DrawingContext context, Plane tile)
+        {
+            if (tile.Surface == null || Content is not SkiaLayout layout)
+                return;
+
+            float scale = Math.Max(0.0001f, (float)RenderingScale);
+            double bandTop = tile.OffsetY;
+            double bandBottom = bandTop + _planeHeight;
+
+            var recordingContext = context.CreateForRecordingImage(tile.Surface, new SKSize(_planeWidth, _planeHeight));
+            var canvas = recordingContext.Context.Canvas;
+            int save = canvas.Save();
+            canvas.Clear(SKColors.Transparent);
+            canvas.Translate(0, -(float)bandTop);   // content Y -> surface Y (band top -> 0)
+
+            var window = layout.BuildPlaneWindowStructure(bandTop, bandBottom, scale, _planeWidth);
+            layout.PlaneOverrideStructure = window;
+            _buildingPlaneWindow = true;
+            try
+            {
+                // Destination.Top = 0 -> a cell's drawn Y equals its content-from-0 Y (index * slot);
+                // the visibility area is the band, so only this band's cells are drawn.
+                var dest = new SKRect(0, 0, _planeWidth, (float)bandBottom);
+                var bandViewport = new SKRect(0, (float)bandTop, _planeWidth, (float)bandBottom);
+
+                // IMPORTANT: SkiaScroll.PaintViews re-applies the destination from the Rect argument
+                // (ContentRectWithOffset, scroll baked in). Override it with the band-aligned rect so the
+                // cells draw at their absolute content Y (origin 0) and our -bandTop translate lands them
+                // on the tile surface. Without this the scroll offset shifts cells out of the band -> empty.
+                PaintOnPlane(recordingContext.WithDestination(dest)
+                    .WithArguments(
+                        new(nameof(ContextArguments.Rect), dest),
+                        new(nameof(ContextArguments.Plane), tile.Id),
+                        new(nameof(ContextArguments.Viewport), bandViewport)), tile);
+                // Note: no RenderTree capture here — tile cells are recycled immediately, so gestures
+                // realize their own live cell on demand (see ProcessGesturesForTiles) instead.
+            }
+            finally
+            {
+                // Release WHILE PlaneOverrideStructure is still set so GetSizeKey routes returns to the
+                // generic bucket (symmetric with the Gets). DrawStack PASS2 left the cells it drew in-use;
+                // MarkViewAsHidden returns them to the pool. Cells PASS1 already hid are skipped (no-op).
+                if (window != null)
+                    foreach (var cell in window.GetChildrenAsSpans())
+                        if (cell != null)
+                            layout.ChildrenFactory.MarkViewAsHidden(cell.ControlIndex);
+
+                _buildingPlaneWindow = false;
+                layout.PlaneOverrideStructure = null;
+            }
+
+            if (DebugShowPlanes)
+            {
+                // Overlay (drawn over content, semi-transparent) so each tile's color + border is clearly
+                // visible while scrolling. Canvas is still translated by -bandTop, so use content coords.
+                int tileIndex = _planeHeight > 0 ? (int)Math.Round(bandTop / _planeHeight) : 0;
+                var color = _debugPlaneColors[tileIndex % _debugPlaneColors.Length];
+                var rect = new SKRect(0, (float)bandTop, _planeWidth, (float)bandBottom);
+                using (var fill = new SKPaint { Color = color.WithAlpha(45), Style = SKPaintStyle.Fill })
+                    canvas.DrawRect(rect, fill);
+                using (var border = new SKPaint { Color = color, Style = SKPaintStyle.Stroke, StrokeWidth = 8 })
+                    canvas.DrawRect(rect, border);
+            }
+
+            canvas.RestoreToCount(save);
+            canvas.Flush();
+
+            DisposeObject(tile.CachedObject);
+            tile.CachedObject = new CachedObject(
+                SkiaCacheType.Image,
+                tile.Surface,
+                new SKRect(0, 0, _planeWidth, _planeHeight),
+                new SKRect(0, 0, _planeWidth, _planeHeight)) { PreserveSourceFromDispose = true };
+
+            tile.IsReady = true;
+        }
+
+        private void TriggerRenderTileBackground(DrawingContext context, int index, Plane tile)
+        {
+            if (_tileBuilding.Contains(index))
+                return;
+            _tileBuilding.Add(index);
+
+            var clone = context;
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await _globalPlanePreparationLock.WaitAsync();
+                    if (_tiles.TryGetValue(index, out var t) && ReferenceEquals(t, tile)
+                        && t.Surface != null && !t.IsReady)
+                    {
+                        RenderTile(clone, t);
+                        Repaint();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Super.Log($"Error rendering tile {index}: {ex}");
+                }
+                finally
+                {
+                    _globalPlanePreparationLock.Release();
+                    _tileBuilding.Remove(index);
+                }
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Tiled virtual rendering: blit fixed content tiles at scroll-translated positions, rendering
+        /// missing tiles (current one synchronously, buffer tiles in the background).
+        /// </summary>
         public virtual void DrawVirtual(DrawingContext context)
         {
-            // Check if children need redraw and invalidate specific planes
             if (_childrenNeedRedraw)
             {
-                Content.ClearDirtyChildren();
+                Content?.ClearDirtyChildren();
                 _childrenNeedRedraw = false;
-
-                InvalidatePlanes();
+                InvalidateTiles();
             }
-            
-            if (PlaneCurrent == null)
+
+            if (Content is not SkiaLayout layout || !layout.IsTemplated
+                || layout.MeasureItemsStrategy != MeasuringStrategy.MeasureVisible
+                || layout.ItemsSource == null || layout.ItemsSource.Count == 0)
+                return;
+
+            if (_planeHeight <= 0)
             {
-                InitializePlanes();
-                if (PlaneCurrent == null || PlaneForward == null || PlaneBackward == null)
-                {
-                    Super.Log("Failed to create planes");
+                InitializePlanes();          // computes _planeWidth/_planeHeight from viewport
+                // we do NOT use the legacy current/forward/backward planes in tiled mode
+                if (_planeHeight <= 0)
                     return;
-                }
             }
 
-            var displayRectA = new SKRect(
-                ContentRectWithOffset.Pixels.Left,
-                ContentRectWithOffset.Pixels.Top,
-                ContentRectWithOffset.Pixels.Left + _planeWidth,
-                ContentRectWithOffset.Pixels.Top + _planeHeight
-            );
+            float scale = Math.Max(0.0001f, (float)RenderingScale);
+            int itemsCount = layout.ItemsSource.Count;
+            float avg = Math.Max(1f, layout.GetAverageItemHeightPixels(scale));
+            float spacing = (float)(layout.Spacing * scale);
+            _tileSlot = avg + spacing;
+            float totalContent = _tileSlot * itemsCount;
 
-            if (!PlaneCurrent.IsReady)
+            float tileH = _planeHeight;
+            float scrollTop = -InternalViewportOffset.Pixels.Y;       // content-from-0 at viewport top
+            float viewportH = Viewport.Pixels.Height;
+            if (viewportH <= 0) viewportH = DrawingRect.Height;
+
+            int maxTile = Math.Max(0, (int)Math.Floor(Math.Max(0, totalContent - 1) / tileH));
+            int firstVisibleTile = Math.Max(0, (int)Math.Floor(scrollTop / tileH));
+            int lastVisibleTile = Math.Min(maxTile, (int)Math.Floor((scrollTop + viewportH) / tileH));
+
+            int firstTile = Math.Max(0, firstVisibleTile - TileBufferEachSide);
+            int lastTile = Math.Min(maxTile, lastVisibleTile + TileBufferEachSide);
+
+            var canvas = context.Context.Canvas;
+
+            for (int t = firstTile; t <= lastTile; t++)
             {
-                //Debug.WriteLine($"Preparing PLANE {PlaneCurrent.Id}..");
-                PreparePlane(context.WithDestination(displayRectA), PlaneCurrent);
-            }
+                var tile = GetOrCreateTile(t);
 
-            // Draw the planes
-            var currentScroll = InternalViewportOffset.Pixels.Y;
-
-            var rectBase = new SKRect(0, 0, _planeWidth, _planeHeight);
-            rectBase.Offset(DrawingRect.Left, DrawingRect.Top);
-
-            var rectCurrent = rectBase;
-            var rectForward = rectBase;
-            var rectBackward = rectBase;
-
-            // Apply vertical offsets
-            rectCurrent.Offset(0, currentScroll + PlaneCurrent.OffsetY);
-            rectForward.Offset(0, currentScroll + PlaneForward.OffsetY);
-            rectBackward.Offset(0, currentScroll + PlaneBackward.OffsetY);
-
-            //  if we've moved enough can re-allow a swap
-            if (swappedDownAt != 0 && Math.Abs(currentScroll - swappedDownAt) > _planeHeight / 2f)
-            {
-                swappedDownAt = 0;
-            }
-
-            if (swappedUpAt != 0 && Math.Abs(currentScroll - swappedUpAt) > _planeHeight / 2f)
-            {
-                swappedUpAt = 0;
-            }
-
-            // Draw Backward
-            if (PlaneBackward.IsReady)
-            {
-                if (ContentViewport.Pixels.IntersectsWithInclusive(rectBackward))
+                if (!tile.IsReady && !_tileBuilding.Contains(t))
                 {
-                    PlaneBackward.CachedObject.Draw(context.Context.Canvas, rectBackward.Left, rectBackward.Top, null);
-                    PlaneBackward.LastDrawnAt = rectBackward;
+                    bool isVisible = t >= firstVisibleTile && t <= lastVisibleTile;
+                    if (isVisible)
+                        RenderTile(context, tile);                    // synchronous (must be on screen now)
+                    else
+                        TriggerRenderTileBackground(context, t, tile); // ahead-of-scroll, background
                 }
-            }
-            else
-            {
-                OrderToPreparePlaneBackwardInBackground(context);
-                PlaneBackward.CachedObject?.Draw(context.Context.Canvas, rectBackward.Left, rectBackward.Top, null);
-            }
 
-            // Draw Current
-            if (ContentViewport.Pixels.IntersectsWith(rectCurrent))
-            {
-                PlaneCurrent.CachedObject.Draw(context.Context.Canvas, rectCurrent.Left, rectCurrent.Top, null);
-                PlaneCurrent.LastDrawnAt = rectCurrent;
-            }
-
-            // Draw Forward
-            if (PlaneForward.IsReady)
-            {
-                if (ContentViewport.Pixels.IntersectsWith(rectForward))
+                if (tile.IsReady && tile.CachedObject != null)
                 {
-                    PlaneForward.CachedObject.Draw(context.Context.Canvas, rectForward.Left, rectForward.Top, null);
-                    PlaneForward.LastDrawnAt = rectForward;
+                    float canvasY = DrawingRect.Top + (t * tileH - scrollTop);
+                    tile.CachedObject.Draw(canvas, DrawingRect.Left, canvasY, null);
+                    tile.LastDrawnAt = new SKRect(DrawingRect.Left, canvasY,
+                        DrawingRect.Left + _planeWidth, canvasY + tileH);
                 }
             }
-            else
-            {
-                OrderToPreparePlaneForwardInBackground(context);
-                PlaneForward.CachedObject?.Draw(context.Context.Canvas, rectForward.Left, rectForward.Top,
-                    null); //repeat last image for fast scrolling
-            }
 
-            // --------------------------------------------------------------------
-            // Multiple-swap logic to handle fast scrolling
-            // --------------------------------------------------------------------
-
-            int swaps = 0;
-            bool swappedSomething = false;
-            while (!swappedSomething)
-            {
-                // ------------------------------------------------------
-                // then swap down as many times as needed
-                // ------------------------------------------------------
-                var topDown = -1f; // break when same 
-                while (topDown != rectForward.Top && ShouldSwapDown(rectForward))
-                {
-                    topDown = rectForward.Top;
-                    //if (swappedDownAt != 0)
-                    //    break;
-
-                    SwapDown();
-                    swaps++;
-                    swappedDownAt = currentScroll;
-                    swappedSomething = true;
-
-                    rectForward = rectBase;
-                    rectForward.Offset(0, currentScroll + PlaneForward.OffsetY);
-                }
-
-                // ------------------------------------------------------
-                // swap up as many times as needed
-                // ------------------------------------------------------
-                var topUp = -1f;
-                while (topUp != rectBackward.Top && ShouldSwapUp(rectBackward))
-                {
-                    topUp = rectBackward.Top;
-                    //if (swappedUpAt != 0)
-                    //    break;
-
-                    SwapUp();
-                    swaps++;
-                    swappedUpAt = currentScroll;
-                    swappedSomething = true;
-
-                    rectBackward = rectBase;
-                    rectBackward.Offset(0, currentScroll - rectBackward.Top);
-                }
-
-                if (!swappedSomething)
-                    break;
-            }
-
-
+            EvictTilesOutside(firstTile - TileBufferEachSide, lastTile + TileBufferEachSide);
         }
 
 
@@ -822,16 +1044,55 @@ namespace DrawnUi.Draw
             // Calculate plane-specific viewport for managed virtualization
             var planeSpecificViewport = CalculateViewportForPlane(plane, offsetToUse);
 
+            // Per-plane sliding window: realize only the items in THIS plane's content band (fits the
+            // recycling pool) so any scroll position renders correct content. For forward/backward planes
+            // PreparePlane runs on a background thread, so this measurement is off the render thread.
+            SkiaLayout windowLayout = null;
+            LayoutStructure windowStructure = null;
+            if (Content is SkiaLayout planeLayout && planeLayout.IsTemplated
+                && planeLayout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                && planeLayout.ItemsSource != null && planeLayout.ItemsSource.Count > 0)
+            {
+                double bandTopPx = plane.OffsetY;
+                double bandBottomPx = plane.OffsetY + _planeHeight;
+                _buildingPlaneWindow = true;
+                try
+                {
+                    windowStructure = planeLayout.BuildPlaneWindowStructure(bandTopPx, bandBottomPx,
+                        (float)RenderingScale, _planeWidth);
+                    planeLayout.PlaneOverrideStructure = windowStructure;
+                }
+                finally
+                {
+                    _buildingPlaneWindow = false;
+                }
+                windowLayout = planeLayout;
+            }
+
             var c = recordingContext.Context.Canvas.Save();
             recordingContext.Context.Canvas.Translate(-viewport.Left, -viewport.Top);
             recordingContext.Context.Canvas.Clear(plane.BackgroundColor);
 
-            PaintOnPlane(recordingContext
-                .WithDestination(viewport)
-                .WithArguments(
-                    new(nameof(ContextArguments.Plane), plane.Id),
-                    new(nameof(ContextArguments.Viewport), viewport),
-                    new(nameof(ContextArguments.PlaneViewport), planeSpecificViewport)), plane);
+            try
+            {
+                PaintOnPlane(recordingContext
+                    .WithDestination(viewport)
+                    .WithArguments(
+                        new(nameof(ContextArguments.Plane), plane.Id),
+                        new(nameof(ContextArguments.Viewport), viewport),
+                        new(nameof(ContextArguments.PlaneViewport), planeSpecificViewport)), plane);
+            }
+            finally
+            {
+                if (windowLayout != null)
+                {
+                    if (windowStructure != null)
+                        foreach (var wc in windowStructure.GetChildrenAsSpans())
+                            if (wc != null)
+                                windowLayout.ChildrenFactory.MarkViewAsHidden(wc.ControlIndex);
+                    windowLayout.PlaneOverrideStructure = null;
+                }
+            }
 
             recordingContext.Context.Canvas.RestoreToCount(c);
 
@@ -1005,6 +1266,105 @@ namespace DrawnUi.Draw
                         }
                     }
                 }
+            }
+
+            return null;
+        }
+
+        // ===================================================================================
+        // TILED PLANES gesture routing
+        // Tile cells are recycled to the pool right after a tile renders to its bitmap, so there is no
+        // persistent live control to hit-test between frames. Instead we materialize the candidate cell
+        // ON the gesture: realize it (which binds it to its data item), arrange it at its on-screen rect
+        // so HitBoxAuto/translation match the screen, hit-test with the framework's transform-aware
+        // HitIsInside, forward the gesture through the normal child path, then release it back to the pool.
+        // Items sit on the estimate grid (index*slot), so the candidate index = floor(contentY/slot).
+        // ===================================================================================
+
+        protected virtual ISkiaGestureListener ProcessGesturesForTiles(
+            SkiaGesturesParameters args,
+            GestureEventProcessingInfo apply)
+        {
+            if (Content is not SkiaLayout layout || _planeHeight <= 0
+                || layout.ItemsSource == null || layout.ItemsSource.Count == 0)
+                return null;
+
+            // Only discrete events target a cell. Skip the high-frequency scroll events (Panning/Wheel)
+            // so the scroll hot path never realizes a cell per move.
+            if (args.Type == TouchActionResult.Panning
+                || args.Type == TouchActionResult.Wheel)
+                return null;
+
+            float slot = _tileSlot > 1f ? _tileSlot : Math.Max(1f, layout.GetAverageItemHeightPixels((float)RenderingScale));
+            float scrollTop = -InternalViewportOffset.Pixels.Y;
+
+            var thisOffset = TranslateInputCoords(apply.ChildOffset);
+            float gx = args.Event.Location.X + thisOffset.X;
+            float gy = args.Event.Location.Y + thisOffset.Y;
+
+            float contentY = gy - DrawingRect.Top + scrollTop;
+            int count = layout.ItemsSource.Count;
+
+            // The estimate grid fully tiles the content with no gaps, so floor(contentY/slot) is the exact
+            // owning item of the point (the 2px inter-cell spacing belongs to the slot above it).
+            int idx = (int)Math.Floor(contentY / slot);
+            if (idx < 0 || idx >= count)
+                return null;
+
+            var cell = layout.ChildrenFactory.GetViewForIndex(idx, null, 0, false);
+            if (cell == null)
+                return null;
+
+            try
+            {
+                // Arrange the live cell at its on-screen rect so HitBoxAuto/translation match the screen
+                // (lets transform-aware children hit-test correctly).
+                float top = DrawingRect.Top + idx * slot - scrollTop;
+                var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + slot);
+                cell.Arrange(rect, _planeWidth / (float)RenderingScale, slot / (float)RenderingScale, (float)RenderingScale);
+
+                return ForwardGestureToCell(cell, args, apply, thisOffset);
+            }
+            finally
+            {
+                // Return to the GENERIC pool (symmetric with the tile renderer's height:0 gets) so gesture
+                // hit-testing never strands cells in a height bucket and starves tile rendering.
+                layout.ChildrenFactory.ReleaseMeasuringView(cell);
+            }
+        }
+
+        private ISkiaGestureListener ForwardGestureToCell(
+            SkiaControl cell,
+            SkiaGesturesParameters args,
+            GestureEventProcessingInfo apply,
+            SKPoint thisOffset)
+        {
+            if (cell.IsDisposed || cell.InputTransparent || !cell.CanDraw)
+                return null;
+
+            if (args.Type == TouchActionResult.Tapped)
+                Content.OnChildTapped(cell, args, apply);
+
+            ISkiaGestureListener listener = cell.GesturesEffect;
+            if (listener == null && cell is ISkiaGestureListener listen)
+                listener = listen;
+
+            var childOffset = TranslateInputCoords(apply.ChildOffsetDirect, false);
+
+            if (listener != null)
+            {
+                var consumed = listener.OnSkiaGestureEvent(args,
+                    new GestureEventProcessingInfo(apply.MappedLocation, thisOffset, childOffset, apply.AlreadyConsumed));
+                if (consumed != null)
+                    return consumed;
+            }
+
+            if (AddGestures.AttachedListeners.TryGetValue(cell, out var effect))
+            {
+                var attachedConsumed = effect.OnSkiaGestureEvent(args,
+                    new GestureEventProcessingInfo(apply.MappedLocation, thisOffset, childOffset, apply.AlreadyConsumed));
+                if (attachedConsumed != null)
+                    return effect;
             }
 
             return null;

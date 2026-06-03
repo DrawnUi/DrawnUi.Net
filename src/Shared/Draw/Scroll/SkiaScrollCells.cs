@@ -46,8 +46,6 @@
             Debug.WriteLine($"[TriggerIncrementalMeasurement] Starting background measurement batch (BatchSize: {IncrementalMeasureBatchSize}, AheadCount: {IncrementalMeasureAheadCount})");
             _incrementalMeasurementInProgress = true;
 
-            return;
-
             async Task DoMeasure()
             {
                 await _lockAdditionalMeasurement.WaitAsync();
@@ -58,7 +56,7 @@
                 _lockAdditionalMeasurement.Release();
 
                 _incrementalMeasurementInProgress = false;
-                
+
                 Debug.WriteLine($"[TriggerIncrementalMeasurement] Background measurement completed, measured {measuredCount} items");
 
                 Update();

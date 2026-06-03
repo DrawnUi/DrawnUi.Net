@@ -153,6 +153,18 @@ public partial class ViewsAdapter : IDisposable
     }
 
     /// <summary>
+    /// Returns the data context currently held at the given index in the render snapshot, or null.
+    /// Used to capture a scroll anchor before a collection change refreshes the snapshot.
+    /// </summary>
+    public object GetContextAt(int index)
+    {
+        var contexts = _dataContexts;
+        if (contexts != null && index >= 0 && index < contexts.Count)
+            return contexts[index];
+        return null;
+    }
+
+    /// <summary>
     /// Swaps in a fresh immutable snapshot from the just-mutated live collection and refreshes any
     /// per-thread iterators so they stop pointing at the previous snapshot. Must run on the mutating
     /// (UI) thread, serialized with the collection mutation that triggered it.
@@ -773,6 +785,28 @@ public partial class ViewsAdapter : IDisposable
     }
 
     /// <summary>
+    /// Releases a view that was realized transiently (offscreen measuring or on-demand gesture hit-testing
+    /// via GetViewForIndex). Removes it from the in-use map and returns it to the GENERIC pool (hKey 0) so
+    /// it is reusable by the same height-agnostic Get(height:0) path the plane/tile renderer uses. Using
+    /// the height-keyed MarkViewAsHidden here would strand instances in a height bucket the tile renderer
+    /// never reads -> the generic pool starves and tiles render empty.
+    /// </summary>
+    public void ReleaseMeasuringView(SkiaControl view)
+    {
+        if (view == null || _templatedViewsPool == null)
+            return;
+
+        lock (lockVisible)
+        {
+            var idx = view.ContextIndex;
+            if (idx >= 0 && _cellsInUseViews.TryGetValue(idx, out var inUse) && ReferenceEquals(inUse, view))
+                _cellsInUseViews.Remove(idx);
+        }
+
+        _templatedViewsPool.Return(view, 0);
+    }
+
+    /// <summary>
     /// Creates view from template and returns already existing view for a specific index.
     /// This uses cached views and tends to return same views matching index they already used.
     /// When cell recycling is off this will be a perfect match at all times.
@@ -946,6 +980,11 @@ public partial class ViewsAdapter : IDisposable
 
     int GetSizeKey(SkiaControl view)
     {
+        // Symmetric with SkiaLayout.GetSizeKey(SKSize): during plane/tile window rendering use the single
+        // generic pool bucket so Get/Return match and the pool cannot starve mid-scroll.
+        if (_parent.PlaneOverrideStructure != null)
+            return 0;
+
         int hKey = 0;
         if (_parent.RecyclingTemplate != RecyclingTemplate.Disabled)
         {

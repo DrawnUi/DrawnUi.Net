@@ -14,6 +14,13 @@ public partial class SkiaLayout
 
     public LayoutStructure LatestStackStructure => StackStructure ?? StackStructureMeasured;
 
+    /// <summary>
+    /// When set (during planes/Managed plane preparation), the layout paints THIS structure instead of
+    /// the shared one. Lets each plane render its own freshly-measured item band (a sliding window that
+    /// fits the recycling pool) without disturbing the shared structure.
+    /// </summary>
+    public LayoutStructure PlaneOverrideStructure { get; set; }
+
     public LayoutStructure LatestMeasuredStackStructure => StackStructureMeasured ?? StackStructure;
 
     protected virtual void ApplyStackMeasureResult()

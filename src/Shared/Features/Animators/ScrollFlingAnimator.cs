@@ -53,6 +53,22 @@ public class ScrollFlingAnimator : SkiaValueAnimator
     public DecelerationTimingParameters Parameters { get; set; }
     public float CurrentVelocity { get; protected set; }
 
+    /// <summary>
+    /// Translates the whole deceleration trajectory by <paramref name="delta"/> (same units as the
+    /// animated value). Used when content above the viewport changes size mid-fling so the fling keeps
+    /// targeting the same content instead of fighting a scroll-anchor offset correction.
+    /// </summary>
+    public void Shift(float delta)
+    {
+        if (Math.Abs(delta) < 0.0001f)
+            return;
+
+        if (Parameters != null)
+            Parameters.InitialValue += delta; // ValueAt = InitialValue + velocity*factor -> shifts curve
+
+        _lastValue += delta;
+    }
+
     public override void Start(double delayMs = 0)
     {
         SelfFinished = false;

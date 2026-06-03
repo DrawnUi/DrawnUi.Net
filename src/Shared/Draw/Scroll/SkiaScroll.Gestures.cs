@@ -261,10 +261,10 @@ public partial class SkiaScroll
         {
             passedToChildren = true;
 
-            // Use plane-aware gesture processing for 3-plane virtualization
-            if (UseVirtual && PlaneCurrent != null)
+            // Tiled-planes virtualization: route through the fixed content tiles' render trees.
+            if (UseVirtual)
             {
-                return ProcessGesturesForPlanes(args, apply);
+                return ProcessGesturesForTiles(args, apply);
             }
 
             return base.ProcessGestures(args, apply);

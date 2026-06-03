@@ -28,6 +28,15 @@ public partial class SkiaLayout
     /// </summary>
     public virtual bool ShouldTriggerLoadMore(ScaledRect viewport)
     {
+        return ShouldTriggerLoadMore(viewport, LoadMoreDirection.Bottom);
+    }
+
+    /// <summary>
+    /// Determines whether LoadMore should be triggered for the requested edge direction,
+    /// while honoring layout measurement readiness.
+    /// </summary>
+    public virtual bool ShouldTriggerLoadMore(ScaledRect viewport, LoadMoreDirection direction)
+    {
         // No items source or not templated - can't load more
         if (!IsTemplated || ItemsSource == null || ItemsSource.Count == 0)
             return false;
@@ -48,8 +57,11 @@ public partial class SkiaLayout
             return false;
         }
 
-        // Check if viewport is actually at the end of measured content
-        return IsViewportAtEndOfMeasuredContent(viewport);
+        return direction switch
+        {
+            LoadMoreDirection.Top => IsViewportAtStartOfMeasuredContent(viewport),
+            _ => IsViewportAtEndOfMeasuredContent(viewport)
+        };
     }
 
     /// <summary>
@@ -63,6 +75,22 @@ public partial class SkiaLayout
         if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
         {
             return LastMeasuredIndex == ItemsSource.Count - 1;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Checks if top-edge load more can be triggered.
+    /// </summary>
+    protected virtual bool IsViewportAtStartOfMeasuredContent(ScaledRect viewport)
+    {
+        if (StackStructure == null || StackStructure.Length == 0)
+            return false;
+
+        if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
+        {
+            return FirstMeasuredIndex <= 0;
         }
 
         return true;
@@ -347,7 +375,27 @@ public partial class SkiaLayout
 
             var inflate = (float)this.VirtualisationInflated * scale;
             var visibleArea =
-                base.GetOnScreenVisibleArea(new(null, rectForChildrenPixels, scale), new(inflate, inflate));
+                base.GetOnScreenVisibleArea(
+                    new(null, rectForChildrenPixels, scale,
+                        new[] { new KeyValuePair<string, object>("InitialMeasureVisibleArea", true) }),
+                    new(inflate, inflate));
+
+            // When this list is the content of a planes (Managed) scroll, the scroll renders planes that
+            // are TWO viewports tall and the FORWARD plane sits two viewports ahead. Measuring only the
+            // visible viewport leaves the current plane's far half AND the forward (green) plane with no
+            // measured items -> they render empty. Extend the measure area along the scroll axis to cover
+            // the current plane plus the forward plane (~4 viewports) so both are filled up-front.
+            if (Parent is SkiaScroll planesScroll && planesScroll.UseVirtual)
+            {
+                const float planesAheadViewports = 3f; // visible(1) + 3 => 4 viewports = current + forward plane
+                var vp = planesScroll.Viewport.Pixels;
+                var px = visibleArea.Pixels;
+                if (Type == LayoutType.Column && vp.Height >= 1)
+                    px = new SKRect(px.Left, px.Top, px.Right, px.Bottom + vp.Height * planesAheadViewports);
+                else if (Type == LayoutType.Row && vp.Width >= 1)
+                    px = new SKRect(px.Left, px.Top, px.Right + vp.Width * planesAheadViewports, px.Bottom);
+                visibleArea = ScaledRect.FromPixels(px, scale);
+            }
 
             if (visibleArea.Pixels.Height < 1 || visibleArea.Pixels.Width < 1)
             {
@@ -2759,8 +2807,103 @@ public partial class SkiaLayout
                 }
             }
         }
+        }
+
+        /// <summary>
+        /// Average measured item height in pixels, used to estimate item positions for the sliding window.
+        /// </summary>
+        public float GetAverageItemHeightPixels(float scale)
+        {
+            var s = LatestMeasuredStackStructure ?? LatestStackStructure;
+            if (s != null)
+            {
+                float sum = 0;
+                int n = 0;
+                foreach (var k in s.GetChildren())
+                {
+                    if (k != null && k.Measured.Pixels.Height > 0)
+                    {
+                        sum += k.Measured.Pixels.Height;
+                        n++;
+                    }
+                }
+                if (n > 0)
+                    return sum / n;
+            }
+            return 60f * scale;
+        }
+
+        /// <summary>
+        /// Builds a fresh structure for items whose estimated content position falls inside the band
+        /// [<paramref name="bandTopPx"/>..<paramref name="bandBottomPx"/>] (content-from-top pixels), with
+        /// cells taken from the recycling pool, correctly bound and positioned. This is the per-plane
+        /// sliding window: only the band's items are realized (fits the pool), so any scroll position
+        /// renders correct content. Caller MUST release the returned cells after painting.
+        /// Does NOT touch the shared structure, MeasuredSize, or trigger invalidation.
+        /// </summary>
+        /// <summary>
+        /// Builds an ESTIMATE-ONLY layout structure for a plane/tile's fixed content band
+        /// [bandTopPx .. bandBottomPx]. It positions every item i on a consistent grid (i * (avg+spacing))
+        /// with an estimated height (avg), and marks each cell measured. NO views are realized here:
+        /// the SkiaScroll plane paint feeds this as PlaneOverrideStructure and DrawStack's normal PASS2
+        /// owns the real GetViewForIndex / measure / draw / recycle lifecycle for the cells it draws.
+        /// This avoids double-ownership of pooled views (which corrupts the recycling pool).
+        /// The consistent grid also guarantees adjacent tiles align with no gaps/overlaps at boundaries.
+        /// </summary>
+        public LayoutStructure BuildPlaneWindowStructure(double bandTopPx, double bandBottomPx, float scale,
+            float contentWidth)
+        {
+            var rows = new List<List<ControlInStack>>();
+
+            if (!IsTemplated || ItemsSource == null || ItemsSource.Count == 0)
+                return new LayoutStructure(rows);
+
+            int count = ItemsSource.Count;
+            float avg = GetAverageItemHeightPixels(scale);
+            if (avg < 1f) avg = 60f * scale;
+
+            // Use the caller-provided (stable) content width — MeasuredSize/DrawingRect are unreliable on
+            // the background plane-preparation thread and can read as 0.
+            float width = contentWidth > 1f ? contentWidth
+                : (MeasuredSize.Pixels.Width > 1 ? MeasuredSize.Pixels.Width : DrawingRect.Width);
+            if (width < 1f) return new LayoutStructure(rows);
+
+            float spacing = (float)(Spacing * scale);
+            double slot = avg + spacing;
+
+            int firstIndex = Math.Max(0, (int)Math.Floor(bandTopPx / slot) - 1);   // overscan 1 above
+            int idx = firstIndex;
+            int rowNum = 0;
+
+            var estimated = ScaledSize.FromPixels(width, avg, scale);
+
+            while (idx < count)
+            {
+                double cellY = idx * slot;
+                if (cellY > bandBottomPx + slot)   // overscan 1 below
+                    break;
+
+                var dest = new SKRect(0, (float)cellY, width, (float)cellY + avg);
+                var cell = new ControlInStack
+                {
+                    ControlIndex = idx,
+                    Column = 0,
+                    Row = rowNum,
+                    Destination = dest,
+                    Area = dest,
+                    Measured = estimated,
+                    WasMeasured = true,
+                };
+
+                rows.Add(new List<ControlInStack> { cell });
+
+                idx++;
+                rowNum++;
+            }
+
+            return new LayoutStructure(rows);
+        }
     }
-}
 
 public record MeasuredListCell(ControlInStack Cell, int Index);
 

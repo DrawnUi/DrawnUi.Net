@@ -1076,7 +1076,7 @@ namespace DrawnUi.Draw
                     //stacklayout
                     if (IsStack)
                     {
-                        var structure = LatestStackStructure;
+                        var structure = PlaneOverrideStructure ?? LatestStackStructure;
                         if (structure != null && structure.GetCount() > 0)
                         {
                             //if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
