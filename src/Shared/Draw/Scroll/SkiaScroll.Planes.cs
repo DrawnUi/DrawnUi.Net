@@ -709,10 +709,73 @@ namespace DrawnUi.Draw
             new SKColor(255, 180, 0),   // amber
         };
 
+        // Auto-sizer state: the pool ceiling we last applied, so we only push changes (cheap per-frame).
+        private int _autoPoolMaxApplied;
+        private const float TilePoolMinRowFloorDip = 8f;   // clamp so a degenerate tiny row can't explode the cap
+
+        /// <summary>
+        /// Sizes the recycling pool ceiling from BAND GEOMETRY (not item count): a tile renders one
+        /// ~2-viewport band at a time, so the peak simultaneous realize ≈ ceil(planeHeight / minRowHeight)
+        /// + overscan + gesture. Uses the smallest measured row (worst case packs the most rows) clamped to
+        /// a floor so a degenerate tiny cell can't blow it up. If the app set ItemTemplatePoolSize, that is
+        /// honored as a floor (we only ever raise the ceiling, never starve). Pre-warms to the avg-based
+        /// working set to avoid a first-scroll lag spike. Independent of ItemsSource.Count.
+        /// </summary>
+        protected virtual void AutoSizeTilePool(SkiaLayout layout, float scale, float avg, float spacing)
+        {
+            if (_planeHeight <= 0)
+                return;
+
+            float floor = TilePoolMinRowFloorDip * scale;
+            float minRow = layout.GetMinItemHeightPixels(scale);
+            if (minRow < 1f) minRow = avg;                  // nothing measured yet -> use avg
+            float minSlot = Math.Max(floor, minRow + spacing);
+
+            const int overscan = 2;     // BuildPlaneWindowStructure overscans 1 above + 1 below
+            const int gesture = 1;      // one cell realized on-demand for gesture hit-testing
+            int worstCasePerBand = (int)Math.Ceiling(_planeHeight / minSlot) + overscan + gesture;
+            int needed = (int)Math.Ceiling(worstCasePerBand * 1.25f);   // ~25% slack
+
+            // Honor an explicit app-set ItemTemplatePoolSize as a floor (never go below what they asked).
+            if (layout.ItemTemplatePoolSize > 0 && layout.ItemTemplatePoolSize > needed)
+                needed = layout.ItemTemplatePoolSize;
+
+            // Re-apply if the pool's cap differs (e.g. after ItemsSource re-init reset it to the default).
+            if (layout.ChildrenFactory.PoolMaxSize == needed)
+                return;
+
+            bool grew = needed > _autoPoolMaxApplied;
+            _autoPoolMaxApplied = needed;
+
+            layout.ChildrenFactory.SetPoolMaxSize(needed);
+
+            // Pre-warm (only when growing) to the avg-based working set — typical, not worst case — to dodge
+            // the first-scroll lag spike without over-allocating for variable heights; the rest grows on
+            // demand up to the cap.
+            if (grew)
+            {
+                float avgSlot = Math.Max(floor, avg + spacing);
+                int prewarm = (int)Math.Ceiling(_planeHeight / avgSlot) + overscan;
+                layout.ChildrenFactory.FillPool(Math.Min(prewarm, needed));
+            }
+        }
+
         protected virtual void InvalidateTiles()
         {
             foreach (var tile in _tiles.Values)
                 tile.Invalidate();
+        }
+
+        // Tracks ItemsSource count so a LoadMore append (or any count change) re-renders the affected
+        // trailing tile(s): the tile that held the old content end was cached with empty space below it
+        // and must repaint to show the newly added items.
+        private int _lastTileItemsCount = -1;
+
+        protected virtual void InvalidateTilesFrom(int firstTileIndex)
+        {
+            foreach (var kv in _tiles)
+                if (kv.Key >= firstTileIndex)
+                    kv.Value.Invalidate();
         }
 
         private SKSurface RentTileSurface()
@@ -915,6 +978,21 @@ namespace DrawnUi.Draw
             float spacing = (float)(layout.Spacing * scale);
             _tileSlot = avg + spacing;
             float totalContent = _tileSlot * itemsCount;
+
+            // ItemsSource grew/shrank (e.g. LoadMore): repaint tiles from the changed boundary so the
+            // trailing tile that was cached with empty space now shows the appended items.
+            if (itemsCount != _lastTileItemsCount)
+            {
+                if (_lastTileItemsCount >= 0 && _planeHeight > 0)
+                {
+                    int changedFrom = Math.Max(0, Math.Min(_lastTileItemsCount, itemsCount) - 1);
+                    int fromTile = (int)Math.Floor(changedFrom * _tileSlot / _planeHeight);
+                    InvalidateTilesFrom(fromTile);
+                }
+                _lastTileItemsCount = itemsCount;
+            }
+
+            AutoSizeTilePool(layout, scale, avg, spacing);
 
             float tileH = _planeHeight;
             float scrollTop = -InternalViewportOffset.Pixels.Y;       // content-from-0 at viewport top

@@ -41,6 +41,13 @@ public partial class SkiaLayout
         if (!IsTemplated || ItemsSource == null || ItemsSource.Count == 0)
             return false;
 
+        // Tiled-planes virtualization: bottom/top detection comes from the ESTIMATE (plane) content bounds
+        // — the scroll already gated this by InternalViewportOffset vs _scrollMinY +/- LoadMoreOffset, i.e.
+        // the plane edge, not the real viewport. The per-item measurement gates below don't apply (tiles
+        // estimate positions for every item, they aren't measured up-front into StackStructure), so allow it.
+        if (Parent is SkiaScroll planesScroll && planesScroll.UseVirtual)
+            return true;
+
         // Still measuring existing items in background - don't load more yet
         if (_isBackgroundMeasuring && _backgroundMeasurementProgress < ItemsSource.Count - 1)
         {
@@ -2812,6 +2819,8 @@ public partial class SkiaLayout
         /// <summary>
         /// Average measured item height in pixels, used to estimate item positions for the sliding window.
         /// </summary>
+        private float _lastGoodAvgItemHeightPx;
+
         public float GetAverageItemHeightPixels(float scale)
         {
             var s = LatestMeasuredStackStructure ?? LatestStackStructure;
@@ -2828,9 +2837,41 @@ public partial class SkiaLayout
                     }
                 }
                 if (n > 0)
-                    return sum / n;
+                {
+                    _lastGoodAvgItemHeightPx = sum / n;
+                    return _lastGoodAvgItemHeightPx;
+                }
             }
+
+            // Stable fallback: when the measured structure is momentarily empty (e.g. right after a LoadMore
+            // re-init) keep the last good average so the tiled-planes slot doesn't jump — a slot jump would
+            // re-render/position tiles against a different grid and show empty/misaligned bands.
+            if (_lastGoodAvgItemHeightPx > 1f)
+                return _lastGoodAvgItemHeightPx;
+
             return 60f * scale;
+        }
+
+        /// <summary>
+        /// Smallest measured item height (pixels) across the latest measured structure. Used by the tiled
+        /// planes pool auto-sizer for the worst case (the shortest cell packs the most rows into a band).
+        /// Returns 0 if nothing measured yet.
+        /// </summary>
+        public float GetMinItemHeightPixels(float scale)
+        {
+            var s = LatestMeasuredStackStructure ?? LatestStackStructure;
+            if (s != null)
+            {
+                float min = float.MaxValue;
+                foreach (var k in s.GetChildren())
+                {
+                    if (k != null && k.Measured.Pixels.Height > 0 && k.Measured.Pixels.Height < min)
+                        min = k.Measured.Pixels.Height;
+                }
+                if (min != float.MaxValue)
+                    return min;
+            }
+            return 0f;
         }
 
         /// <summary>

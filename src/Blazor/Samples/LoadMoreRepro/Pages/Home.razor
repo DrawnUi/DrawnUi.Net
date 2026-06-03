@@ -85,12 +85,45 @@
 	private readonly SkiaLayout _list;
 	private readonly SkiaControl _root;
 
+	private int _loaded;
+	private bool _rendered;
+	private const int TotalItems = 1000;
+	private const int LoadBatch = 100; // bigger batch = more runway per load vs the scroll's load cooldown
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		base.OnAfterRender(firstRender);
+		_rendered = true;
+	}
+
+	private sealed class RelayCommand : System.Windows.Input.ICommand
+	{
+		private readonly Action _execute;
+		public RelayCommand(Action execute) => _execute = execute;
+		public event EventHandler? CanExecuteChanged;
+		public bool CanExecute(object? parameter) => true;
+		public void Execute(object? parameter) => _execute();
+	}
+
+	private void LoadMore()
+	{
+		if (_loaded >= TotalItems)
+			return;
+
+		int n = Math.Min(LoadBatch, TotalItems - _loaded);
+		var batch = new List<Row>(n);
+		for (int i = 0; i < n; i++)
+			batch.Add(new Row { Text = $"Message {_loaded + i}" });
+
+		_loaded += n;
+		_items.AddRange(batch); // one notification for the whole batch
+		if (_rendered)
+			InvokeAsync(StateHasChanged); // refresh the "items: N" counter (not during ctor seed)
+	}
+
 	public Home()
 	{
-		for (int i = 0; i < 1000; i++)
-		{
-			_items.Add(new Row { Text = $"Message {i}" });
-		}
+		LoadMore(); // seed the first batch instead of materializing all 1000
 
 		_list = new SkiaLayout
 		{
@@ -100,7 +133,7 @@
 			ItemsSource = _items,
 			ItemTemplateType = typeof(RowCell),
 			Virtualisation = VirtualisationType.Managed,
-			ItemTemplatePoolSize = 64,
+			ItemTemplatePoolSize = 0, // 0 = engine auto-sizes the pool from band geometry
 			RecyclingTemplate = RecyclingTemplate.Enabled,
 			MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
 			HorizontalOptions = LayoutOptions.Fill,
@@ -111,7 +144,9 @@
 			Orientation = ScrollOrientation.Vertical,
 			Virtualisation = VirtualisationType.Managed,
 			DebugShowPlanes = true,
-				ResetScrollPositionOnContentSizeChanged = false,
+			ResetScrollPositionOnContentSizeChanged = false,
+			LoadMoreCommand = new RelayCommand(LoadMore),
+			LoadMoreOffset = 800, // trigger well before the bottom so the next batch lands ahead of the view
 			HorizontalOptions = LayoutOptions.Fill,
 			VerticalOptions = LayoutOptions.Fill,
 			Content = _list,

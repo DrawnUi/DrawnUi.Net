@@ -301,7 +301,12 @@ public partial class ViewsAdapter : IDisposable
             Monitor.PulseAll(_lockTemplates);
         }
 
-        //SetTemplatesAvailable(dataContexts);
+        // Refresh the data-contexts snapshot from the (mutated) source. Without this a structure-preserving
+        // Add/Remove (e.g. LoadMore append) updates the pool size but leaves _dataContexts at the old count,
+        // so GetViewForIndex returns null for the new indices -> blank cells/planes. Runs on the mutating
+        // (UI) thread, serialized with the collection change that triggered it.
+        if (dataContexts != null)
+            RefreshDataContexts(dataContexts);
     }
 
     void SetTemplatesAvailable(IList dataContexts)
@@ -1136,6 +1141,19 @@ public partial class ViewsAdapter : IDisposable
     }
 
     #region POOL
+
+    /// <summary>
+    /// Sets the recycling pool ceiling to exactly <paramref name="size"/> (may raise OR lower it, so the
+    /// tiled-planes auto-sizer can replace the default item-count cap with a geometry-based one). Lowering
+    /// just lets surplus returns dispose down over time. Used together with FillPool to pre-warm.
+    /// </summary>
+    public void SetPoolMaxSize(int size)
+    {
+        if (_templatedViewsPool == null || IsDisposed || size < 1)
+            return;
+
+        _templatedViewsPool.MaxSize = size;
+    }
 
     public int PoolMaxSize
     {
