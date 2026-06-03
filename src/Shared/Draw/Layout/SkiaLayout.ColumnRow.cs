@@ -28,6 +28,12 @@ namespace DrawnUi.Draw
 
         public int GetSizeKey(SKSize size)
         {
+            // While rendering a plane/tile window every cell is realized & released within one paint over
+            // a transient per-band structure. Height-bucketing would scatter returns across buckets that
+            // the (estimate-height) Get never re-requests -> pool starves. Force the single generic bucket.
+            if (PlaneOverrideStructure != null)
+                return 0;
+
             int hKey = 0;
             //if (RecyclingTemplate != RecyclingTemplate.Disabled)
             {
@@ -1175,7 +1181,7 @@ else
                         rectForChild.Left = (float)Math.Round(stackX);
 
                         var rectFitChild = CreateChildMeasureRect(rectForChild, widthPerColumn, cell,
-                            hasFillHandling, spacePerFillChild, nonTemplated);
+                            hasFillHandling, spacePerFillChild, nonTemplated, rectForChildrenPixels);
 
                         var measured = MeasureChildCell(rectFitChild, cell, child, rectForChildrenPixels, scale,
                             isTemplated, needMeasureAll, ref firstCell);
@@ -1403,10 +1409,19 @@ else
         /// Create measurement rectangle for child
         /// </summary>
         private SKRect CreateChildMeasureRect(SKRect rectForChild, float widthPerColumn, ControlInStack cell,
-            bool hasFillHandling, float spacePerFillChild, SkiaControl[] nonTemplated)
+            bool hasFillHandling, float spacePerFillChild, SkiaControl[] nonTemplated, SKRect rectForChildrenPixels)
         {
             var rectFitChild = new SKRect(rectForChild.Left, rectForChild.Top,
                 rectForChild.Left + widthPerColumn, rectForChild.Bottom);
+
+            // Row main-axis slot must not extend past the row's right edge.
+            // Otherwise an End/Center-aligned child arranges itself to this out-of-bounds
+            // Right and overflows the row (ignoring Right padding). Pure upper-bound clamp:
+            // no-op for any in-bounds child, only pulls back overflowed slots.
+            if (Type == LayoutType.Row && rectFitChild.Right > rectForChildrenPixels.Right)
+            {
+                rectFitChild.Right = rectForChildrenPixels.Right;
+            }
 
             if (hasFillHandling)
             {
