@@ -2373,28 +2373,35 @@ public partial class SkiaLayout
 
     public int EstimatedTotalItems => ItemsSource?.Count ?? 0;
 
+    private double _lastMeasuredContentEnd = double.PositiveInfinity;
+
     // Returns how far we have measured content in units (vertical or horizontal)
     public double GetMeasuredContentEnd()
     {
         var structure = LatestStackStructure;
         if (structure != null)
         {
-            var last = LatestStackStructure.GetChildren().LastOrDefault();
-            if (last != null)
+            try
             {
-                if (Type == LayoutType.Column)
+                // Live structure — a background plane render can mutate it while we read the last cell.
+                var last = structure.GetChildren().LastOrDefault();
+                if (last != null)
                 {
-                    return last.Destination.Top / RenderingScale;
+                    var value = Type == LayoutType.Row
+                        ? last.Destination.Left / RenderingScale
+                        : last.Destination.Top / RenderingScale;
+                    _lastMeasuredContentEnd = value;
+                    return value;
                 }
-
-                if (Type == LayoutType.Row)
-                {
-                    return last.Destination.Left / RenderingScale;
-                }
+            }
+            catch (InvalidOperationException)
+            {
+                // structure mutated concurrently — use the cached value
+                return _lastMeasuredContentEnd;
             }
         }
 
-        return double.PositiveInfinity;
+        return _lastMeasuredContentEnd;
     }
 
     /// <summary>
@@ -2826,20 +2833,29 @@ public partial class SkiaLayout
             var s = LatestMeasuredStackStructure ?? LatestStackStructure;
             if (s != null)
             {
-                float sum = 0;
-                int n = 0;
-                foreach (var k in s.GetChildren())
+                try
                 {
-                    if (k != null && k.Measured.Pixels.Height > 0)
+                    float sum = 0;
+                    int n = 0;
+                    // GetChildren() is the live structure; a background plane render can mutate it while we
+                    // read. Tolerate that (catch below) and fall back to the last good value.
+                    foreach (var k in s.GetChildren())
                     {
-                        sum += k.Measured.Pixels.Height;
-                        n++;
+                        if (k != null && k.Measured.Pixels.Height > 0)
+                        {
+                            sum += k.Measured.Pixels.Height;
+                            n++;
+                        }
+                    }
+                    if (n > 0)
+                    {
+                        _lastGoodAvgItemHeightPx = sum / n;
+                        return _lastGoodAvgItemHeightPx;
                     }
                 }
-                if (n > 0)
+                catch (InvalidOperationException)
                 {
-                    _lastGoodAvgItemHeightPx = sum / n;
-                    return _lastGoodAvgItemHeightPx;
+                    // structure mutated concurrently — use the cached value
                 }
             }
 
@@ -2857,21 +2873,34 @@ public partial class SkiaLayout
         /// planes pool auto-sizer for the worst case (the shortest cell packs the most rows into a band).
         /// Returns 0 if nothing measured yet.
         /// </summary>
+        private float _lastGoodMinItemHeightPx;
+
         public float GetMinItemHeightPixels(float scale)
         {
             var s = LatestMeasuredStackStructure ?? LatestStackStructure;
             if (s != null)
             {
-                float min = float.MaxValue;
-                foreach (var k in s.GetChildren())
+                try
                 {
-                    if (k != null && k.Measured.Pixels.Height > 0 && k.Measured.Pixels.Height < min)
-                        min = k.Measured.Pixels.Height;
+                    float min = float.MaxValue;
+                    // Live structure — tolerate concurrent mutation from a background plane render.
+                    foreach (var k in s.GetChildren())
+                    {
+                        if (k != null && k.Measured.Pixels.Height > 0 && k.Measured.Pixels.Height < min)
+                            min = k.Measured.Pixels.Height;
+                    }
+                    if (min != float.MaxValue)
+                    {
+                        _lastGoodMinItemHeightPx = min;
+                        return min;
+                    }
                 }
-                if (min != float.MaxValue)
-                    return min;
+                catch (InvalidOperationException)
+                {
+                    // structure mutated concurrently — use the cached value
+                }
             }
-            return 0f;
+            return _lastGoodMinItemHeightPx; // 0 if nothing measured yet
         }
 
         /// <summary>
@@ -2899,7 +2928,12 @@ public partial class SkiaLayout
             if (!IsTemplated || ItemsSource == null || ItemsSource.Count == 0)
                 return new LayoutStructure(rows);
 
-            int count = ItemsSource.Count;
+            // Use the realized data-contexts snapshot count, not the live ItemsSource.Count: a cell built
+            // for an index the render thread can't realize yet (post-LoadMore, before the snapshot refresh)
+            // would fail GetViewForIndex in DrawStack PASS2 and blank the whole tile.
+            int count = ChildrenFactory.GetChildrenCount();
+            if (count <= 0)
+                return new LayoutStructure(rows);
             float avg = GetAverageItemHeightPixels(scale);
             if (avg < 1f) avg = 60f * scale;
 

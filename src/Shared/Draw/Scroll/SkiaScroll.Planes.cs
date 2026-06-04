@@ -778,6 +778,38 @@ namespace DrawnUi.Draw
                     kv.Value.Invalidate();
         }
 
+        /// <summary>
+        /// Cheaply refresh a SINGLE item after its bound data changed (e.g. a tap toggled/incremented
+        /// something, or live data arrived): invalidates ONLY the 1-2 tiles whose band contains that item,
+        /// so the next frame re-renders just those tiles (which re-bind the cell and redraw current content).
+        /// No global re-measure / no touching other planes. Safe to call from app code or gestures.
+        /// </summary>
+        public virtual void UpdateVirtualItem(int index)
+        {
+            if (!UseVirtual || _planeHeight <= 0 || _tileSlot <= 0f || index < 0)
+                return;
+
+            bool any = false;
+
+            int t1 = (int)Math.Floor(index * _tileSlot / _planeHeight);
+            if (_tiles.TryGetValue(t1, out var tile1))
+            {
+                tile1.Invalidate();
+                any = true;
+            }
+
+            // a row can straddle a tile boundary -> also refresh the next tile
+            int t2 = (int)Math.Floor((index + 1) * _tileSlot / _planeHeight);
+            if (t2 != t1 && _tiles.TryGetValue(t2, out var tile2))
+            {
+                tile2.Invalidate();
+                any = true;
+            }
+
+            if (any)
+                Repaint();
+        }
+
         private SKSurface RentTileSurface()
         {
             if (_tileSurfacePool.Count > 0)
@@ -972,8 +1004,17 @@ namespace DrawnUi.Draw
                     return;
             }
 
+            _lastDrawContext = context; // reused on tap to scratch-draw a cell so its span/link rects exist
+
             float scale = Math.Max(0.0001f, (float)RenderingScale);
-            int itemsCount = layout.ItemsSource.Count;
+            // Use the ADAPTER's realized data count (the immutable _dataContexts snapshot), NOT the live
+            // ItemsSource.Count. After a LoadMore append the snapshot refreshes on the UI thread slightly
+            // after ItemsSource grows; tiling against the live count would reference indices the render
+            // thread can't realize yet -> blank tile. Tracking the snapshot count also re-renders those
+            // tiles once it catches up (count-change detection below).
+            int itemsCount = layout.ChildrenFactory.GetChildrenCount();
+            if (itemsCount <= 0)
+                return;
             float avg = Math.Max(1f, layout.GetAverageItemHeightPixels(scale));
             float spacing = (float)(layout.Spacing * scale);
             _tileSlot = avg + spacing;
@@ -1031,6 +1072,70 @@ namespace DrawnUi.Draw
             }
 
             EvictTilesOutside(firstTile - TileBufferEachSide, lastTile + TileBufferEachSide);
+
+            DrawTapRipple(canvas);
+        }
+
+        // DEBUG tap ripple: the visible rows are cached bitmap tiles, so a cell's own (framework) ripple
+        // can't paint into the bitmap. We draw our own clearly-visible expanding ripple on the plane canvas,
+        // CLIPPED to the tapped cell's row (index-derived, so it always lands on the correct cell). Slow +
+        // bright so it's easy to see / verify. Set DebugRipple=false to disable.
+        public bool DebugRipple { get; set; } = true;
+        private SKPoint _tapRipplePoint;
+        private SKRect _tapRippleClip;
+        private long _tapRippleStartMs = -1;
+        private const int TapRippleDurationMs = 900;
+
+        protected void StartTapRipple(float x, float y, SKRect cellRect)
+        {
+            if (!DebugRipple)
+                return;
+            _tapRipplePoint = new SKPoint(x, y);
+            _tapRippleClip = cellRect;
+            _tapRippleStartMs = Environment.TickCount64;
+            Repaint();
+        }
+
+        private void DrawTapRipple(SKCanvas canvas)
+        {
+            if (_tapRippleStartMs < 0)
+                return;
+
+            long el = Environment.TickCount64 - _tapRippleStartMs;
+            if (el >= TapRippleDurationMs)
+            {
+                _tapRippleStartMs = -1;
+                return;
+            }
+
+            float p = el / (float)TapRippleDurationMs;
+            float maxR = _tapRippleClip.Width * 0.65f;       // grows across the row
+            float radius = Math.Max(2f, maxR * p);
+            float fade = 1f - p;
+
+            int save = canvas.Save();
+            canvas.ClipRect(_tapRippleClip);                 // scope to the tapped cell's row
+
+            using (var fill = new SKPaint
+            {
+                Color = new SKColor(255, 255, 255, (byte)(110 * fade)),
+                Style = SKPaintStyle.Fill,
+                IsAntialias = true
+            })
+                canvas.DrawCircle(_tapRipplePoint.X, _tapRipplePoint.Y, radius, fill);
+
+            using (var ring = new SKPaint
+            {
+                Color = new SKColor(255, 255, 255, (byte)(220 * fade)),
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 3f * (float)RenderingScale,
+                IsAntialias = true
+            })
+                canvas.DrawCircle(_tapRipplePoint.X, _tapRipplePoint.Y, radius, ring);
+
+            canvas.RestoreToCount(save);
+
+            Repaint(); // keep the animation going
         }
 
 
@@ -1349,14 +1454,16 @@ namespace DrawnUi.Draw
             return null;
         }
 
+        private DrawingContext _lastDrawContext;
+
         // ===================================================================================
         // TILED PLANES gesture routing
-        // Tile cells are recycled to the pool right after a tile renders to its bitmap, so there is no
-        // persistent live control to hit-test between frames. Instead we materialize the candidate cell
-        // ON the gesture: realize it (which binds it to its data item), arrange it at its on-screen rect
-        // so HitBoxAuto/translation match the screen, hit-test with the framework's transform-aware
-        // HitIsInside, forward the gesture through the normal child path, then release it back to the pool.
-        // Items sit on the estimate grid (index*slot), so the candidate index = floor(contentY/slot).
+        // Cells live only inside the tile bitmaps, so on a discrete gesture we materialize the candidate
+        // cell: realize it (binds it to its data item), arrange it at its on-screen rect, and DRAW it once
+        // to a scratch surface so its inner controls' hit rects + the label's link-span rects get populated
+        // (those only exist after a draw). Then forward through the standard child descent so the markdown
+        // label fires its link, or the cell its own tap. Finally release the cell back to the pool.
+        // Items sit on the estimate grid, so the candidate index = floor(contentY / slot).
         // ===================================================================================
 
         protected virtual ISkiaGestureListener ProcessGesturesForTiles(
@@ -1367,10 +1474,8 @@ namespace DrawnUi.Draw
                 || layout.ItemsSource == null || layout.ItemsSource.Count == 0)
                 return null;
 
-            // Only discrete events target a cell. Skip the high-frequency scroll events (Panning/Wheel)
-            // so the scroll hot path never realizes a cell per move.
-            if (args.Type == TouchActionResult.Panning
-                || args.Type == TouchActionResult.Wheel)
+            // Discrete events only — scroll events never target a cell (they pan the scroll).
+            if (args.Type == TouchActionResult.Panning || args.Type == TouchActionResult.Wheel)
                 return null;
 
             float slot = _tileSlot > 1f ? _tileSlot : Math.Max(1f, layout.GetAverageItemHeightPixels((float)RenderingScale));
@@ -1379,14 +1484,10 @@ namespace DrawnUi.Draw
             var thisOffset = TranslateInputCoords(apply.ChildOffset);
             float gx = args.Event.Location.X + thisOffset.X;
             float gy = args.Event.Location.Y + thisOffset.Y;
-
             float contentY = gy - DrawingRect.Top + scrollTop;
-            int count = layout.ItemsSource.Count;
 
-            // The estimate grid fully tiles the content with no gaps, so floor(contentY/slot) is the exact
-            // owning item of the point (the 2px inter-cell spacing belongs to the slot above it).
             int idx = (int)Math.Floor(contentY / slot);
-            if (idx < 0 || idx >= count)
+            if (idx < 0 || idx >= layout.ItemsSource.Count)
                 return null;
 
             var cell = layout.ChildrenFactory.GetViewForIndex(idx, null, 0, false);
@@ -1395,57 +1496,91 @@ namespace DrawnUi.Draw
 
             try
             {
-                // Arrange the live cell at its on-screen rect so HitBoxAuto/translation match the screen
-                // (lets transform-aware children hit-test correctly).
                 float top = DrawingRect.Top + idx * slot - scrollTop;
                 var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + slot);
                 cell.Arrange(rect, _planeWidth / (float)RenderingScale, slot / (float)RenderingScale, (float)RenderingScale);
 
-                return ForwardGestureToCell(cell, args, apply, thisOffset);
+                // Draw the cell once (offscreen) at its on-screen rect so its inner hit rects + link-span
+                // rects are populated; then the standard descent can hit them.
+                ScratchDrawForHit(cell, rect);
+
+                if (cell.IsDisposed || cell.InputTransparent || !cell.CanDraw)
+                    return null;
+
+                if (args.Type == TouchActionResult.Tapped)
+                {
+                    //StartTapRipple(gx, gy, rect); // feedback scoped to the tapped cell's row
+                    Content?.OnChildTapped(cell, args, apply);
+                }
+
+                var childOffset = TranslateInputCoords(apply.ChildOffsetDirect, false);
+                var info = new GestureEventProcessingInfo(apply.MappedLocation, thisOffset, childOffset, apply.AlreadyConsumed);
+
+                ISkiaGestureListener listener = cell.GesturesEffect;
+                if (listener == null && cell is ISkiaGestureListener gl)
+                    listener = gl;
+                if (listener != null)
+                {
+                    var consumed = listener.OnSkiaGestureEvent(args, info);
+                    if (consumed != null)
+                        return consumed;
+                }
+
+                if (AddGestures.AttachedListeners.TryGetValue(cell, out var effect))
+                {
+                    var consumed = effect.OnSkiaGestureEvent(args, info);
+                    if (consumed != null)
+                        return effect;
+                }
+
+                return null;
             }
             finally
             {
-                // Return to the GENERIC pool (symmetric with the tile renderer's height:0 gets) so gesture
-                // hit-testing never strands cells in a height bucket and starves tile rendering.
                 layout.ChildrenFactory.ReleaseMeasuringView(cell);
+
+                if (args.Type == TouchActionResult.Tapped)
+                {
+                    // re-render just this item's tile so any data mutation (counter/toggle) shows
+                    UpdateVirtualItem(idx);
+                    // debug ripple on the tapped cell's row (the framework per-cell ripple can't paint into
+                    // a cached tile, and reusing the pooled cell plays it on the wrong row). Recompute the
+                    // cell's on-screen row from idx (idx-derived -> always the correct cell).
+                    float ripTop = DrawingRect.Top + idx * slot - scrollTop;
+                    var ripRect = new SKRect(DrawingRect.Left, ripTop, DrawingRect.Left + _planeWidth, ripTop + slot);
+                    StartTapRipple(ripRect.MidX, ripRect.MidY, ripRect);
+                }
             }
         }
 
-        private ISkiaGestureListener ForwardGestureToCell(
-            SkiaControl cell,
-            SkiaGesturesParameters args,
-            GestureEventProcessingInfo apply,
-            SKPoint thisOffset)
+        // Draws a single cell offscreen at its on-screen rect to populate its (and its children's) hit rects
+        // — including the label's link-span rects, which only exist after a real draw. Pixels are discarded.
+        private void ScratchDrawForHit(SkiaControl cell, SKRect screenRectPx)
         {
-            if (cell.IsDisposed || cell.InputTransparent || !cell.CanDraw)
-                return null;
+            if (_lastDrawContext.Context == null)
+                return;
 
-            if (args.Type == TouchActionResult.Tapped)
-                Content.OnChildTapped(cell, args, apply);
+            int w = Math.Max(1, (int)Math.Ceiling(screenRectPx.Right));
+            int h = Math.Max(1, (int)Math.Ceiling(screenRectPx.Bottom));
+            // cap so a huge offset can't allocate an absurd surface
+            if (w > 4096 || h > 8192)
+                return;
 
-            ISkiaGestureListener listener = cell.GesturesEffect;
-            if (listener == null && cell is ISkiaGestureListener listen)
-                listener = listen;
-
-            var childOffset = TranslateInputCoords(apply.ChildOffsetDirect, false);
-
-            if (listener != null)
+            try
             {
-                var consumed = listener.OnSkiaGestureEvent(args,
-                    new GestureEventProcessingInfo(apply.MappedLocation, thisOffset, childOffset, apply.AlreadyConsumed));
-                if (consumed != null)
-                    return consumed;
+                using var surface = SKSurface.Create(new SKImageInfo(w, h));
+                if (surface == null)
+                    return;
+                var rec = _lastDrawContext
+                    .CreateForRecordingImage(surface, new SKSize(w, h))
+                    .WithDestination(screenRectPx);
+                cell.Render(rec);
+                rec.Context.Canvas.Flush();
             }
-
-            if (AddGestures.AttachedListeners.TryGetValue(cell, out var effect))
+            catch
             {
-                var attachedConsumed = effect.OnSkiaGestureEvent(args,
-                    new GestureEventProcessingInfo(apply.MappedLocation, thisOffset, childOffset, apply.AlreadyConsumed));
-                if (attachedConsumed != null)
-                    return effect;
+                // hit-testing is best-effort; ignore scratch-draw failures
             }
-
-            return null;
         }
     }
 }

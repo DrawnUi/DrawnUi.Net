@@ -2693,8 +2693,21 @@ namespace DrawnUi.Draw
 
             if (IsContentActive)
             {
+                bool contentSizeChanged = _lastContentSize != this.Content.MeasuredSize;
+
+                // For tiled-planes virtualization the scroll extent is derived from ItemsSource.Count (an
+                // estimate), not the measured window — which may not change on a LoadMore append. So also
+                // recompute bounds when the virtual item count changes, otherwise the scroll stays clamped
+                // to the previously loaded count and you can't scroll past it.
+                if (UseVirtual && this.Content is SkiaLayout vlayout
+                    && vlayout.ItemsSource != null && vlayout.ItemsSource.Count != _lastVirtualItemsCount)
+                {
+                    _lastVirtualItemsCount = vlayout.ItemsSource.Count;
+                    contentSizeChanged = true;
+                }
+
                 //content size changed, we need to initialize scroller again at least
-                if (_lastContentSize != this.Content.MeasuredSize)
+                if (contentSizeChanged)
                 {
                     needAdjustPos = true;
 
@@ -3441,6 +3454,7 @@ namespace DrawnUi.Draw
         bool isDrawing;
         private SKRect _destination;
         private ScaledSize _lastContentSize;
+        private int _lastVirtualItemsCount = -1;
         private float _velocityKY;
         private float _velocityKX;
         private float _zoomedScale = 1;

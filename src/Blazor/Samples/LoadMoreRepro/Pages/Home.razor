@@ -22,6 +22,7 @@
 	public sealed class Row : BindableObject
 	{
 		public string Text { get; set; } = string.Empty;
+		public int Taps { get; set; }
 		public Color Color { get; set; } = Colors.White;
 	}
 
@@ -29,7 +30,10 @@
 	{
 		private readonly SkiaLabel _label;
 		private readonly SkiaShape _shape;
-		private bool _tapped;
+		private readonly TextSpan _textSpan;
+			private readonly TextSpan _linkSpan;
+			private string _currentText = string.Empty;
+			private bool _tapped;
 
 		public RowCell()
 		{
@@ -60,11 +64,18 @@
 				}.Assign(out _shape)
 			};
 
-			this.OnTapped(me =>
+			_textSpan = new TextSpan { TextColor = Colors.White };
+				_linkSpan = new TextSpan { Text = "  Open link", TextColor = Colors.DeepSkyBlue, Underline = true };
+				// Clickable span (a link) inside the label — verifies span gestures land inside a plane.
+				_linkSpan.Tapped += (s, e) => Console.WriteLine($"[LINK] {_currentText}");
+				_label.Spans.Add(_textSpan);
+				_label.Spans.Add(_linkSpan);
+
+				this.OnTapped(me =>
 			{
-				_tapped = !_tapped;
-				_shape.BackgroundColor = _tapped ? Color.FromArgb("#1E6F50") : Color.FromArgb("#2A2A2A");
-				Console.WriteLine($"[TAP] {_label.Text}");
+				var row = me.BindingContext as Row; if (row != null) row.Taps++;
+				// (cell bg toggle removed — tap now mutates the bound model)
+				Console.WriteLine($"[TAP] {row?.Text} taps={row?.Taps}");
 			});
 		}
 
@@ -72,7 +83,8 @@
 		{
 			if (ctx is Row row)
 			{
-				_label.Text = row.Text;
+				_currentText = row.Text;
+					_textSpan.Text = row.Taps > 0 ? $"{row.Text}  (taps {row.Taps})" : row.Text;
 				// reset visual toggle for recycled instance
 				_tapped = false;
 				_shape.BackgroundColor = Color.FromArgb("#2A2A2A");

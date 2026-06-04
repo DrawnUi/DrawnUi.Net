@@ -790,11 +790,10 @@ public partial class ViewsAdapter : IDisposable
     }
 
     /// <summary>
-    /// Releases a view that was realized transiently (offscreen measuring or on-demand gesture hit-testing
-    /// via GetViewForIndex). Removes it from the in-use map and returns it to the GENERIC pool (hKey 0) so
-    /// it is reusable by the same height-agnostic Get(height:0) path the plane/tile renderer uses. Using
-    /// the height-keyed MarkViewAsHidden here would strand instances in a height bucket the tile renderer
-    /// never reads -> the generic pool starves and tiles render empty.
+    /// Releases a view realized transiently for on-demand gesture hit-testing (GetViewForIndex). Removes
+    /// it from the in-use map and returns it to the GENERIC pool (hKey 0) — symmetric with the height:0
+    /// gets the tiled-planes renderer uses, so gesture hit-testing never strands cells in a height bucket
+    /// and starves tile rendering.
     /// </summary>
     public void ReleaseMeasuringView(SkiaControl view)
     {

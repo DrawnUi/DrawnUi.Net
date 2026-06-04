@@ -261,7 +261,6 @@ public partial class SkiaScroll
         {
             passedToChildren = true;
 
-            // Tiled-planes virtualization: route through the fixed content tiles' render trees.
             if (UseVirtual)
             {
                 return ProcessGesturesForTiles(args, apply);
