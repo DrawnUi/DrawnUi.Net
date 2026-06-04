@@ -39,4 +39,7 @@ Console.WriteLine(totalFg == 0
     : $"=> NOT MET: {totalFg} cell measurements ran on the render thread during scroll (jank risk).");
 
 scene.Host.SavePng(Path.Combine(AppContext.BaseDirectory, "virt-demo-final.png"));
+
+VirtualizationHarnessDemo.GestureProbe.Run();
+
 Console.WriteLine("done.");

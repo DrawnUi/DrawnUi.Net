@@ -23,7 +23,11 @@ namespace DrawnUi.Draw
 
     public partial class SkiaScroll
     {
-        //todo complete and move
+                /// <summary>
+        // /// Debug aid: when true each tile's bitmap is tinted with a cycling color (red/green/blue/...)
+        // /// so the tile boundaries are visible while scrolling. Cell content draws on top of the tint.
+        // /// </summary>
+        public bool DebugShowPlanes { get; set; }
 
         public const string PlaneRed = "Red";
         public const string PlaneGreen = "Greeen";
@@ -692,14 +696,14 @@ namespace DrawnUi.Draw
         private readonly Dictionary<int, Plane> _tiles = new();
         private readonly HashSet<int> _tileBuilding = new();
         private readonly Stack<SKSurface> _tileSurfacePool = new();
+        // Cells realized for each resident tile stay ALIVE (in _cellsInUseViews) — NOT recycled after the tile
+        // bitmap is baked — so gestures (tap/pan/swipe) and per-cell state hit the real bound cell, and tile
+        // rebuilds reuse ready cells. A cell is released only when NO resident tile references its index.
+        private readonly Dictionary<int, int[]> _tileCellIndices = new();
+        private readonly object _tileCellsLock = new();   // RenderTile (bg) writes; eviction (render) reads
         private const int TileBufferEachSide = 1;   // tiles kept above/below the visible range
         private float _tileSlot;                     // cached avg item slot (height + spacing)
 
-        /// <summary>
-        /// Debug aid: when true each tile's bitmap is tinted with a cycling color (red/green/blue/...)
-        /// so the tile boundaries are visible while scrolling. Cell content draws on top of the tint.
-        /// </summary>
-        public bool DebugShowPlanes { get; set; }
 
         private static readonly SKColor[] _debugPlaneColors =
         {
@@ -732,9 +736,13 @@ namespace DrawnUi.Draw
             float minSlot = Math.Max(floor, minRow + spacing);
 
             const int overscan = 2;     // BuildPlaneWindowStructure overscans 1 above + 1 below
-            const int gesture = 1;      // one cell realized on-demand for gesture hit-testing
-            int worstCasePerBand = (int)Math.Ceiling(_planeHeight / minSlot) + overscan + gesture;
-            int needed = (int)Math.Ceiling(worstCasePerBand * 1.25f);   // ~25% slack
+            int worstCasePerBand = (int)Math.Ceiling(_planeHeight / minSlot) + overscan;
+
+            // Cells of ALL resident tiles stay alive (not recycled), so the pool must hold the whole resident
+            // working set, not one band. A plane spans 2 viewports, so the visible range covers ~2 tiles; plus
+            // buffer each side => resident tiles. Pool = residentTiles * worstCasePerBand (+ slack).
+            int residentTiles = 2 + 2 * TileBufferEachSide;
+            int needed = (int)Math.Ceiling(worstCasePerBand * residentTiles * 1.15f);
 
             // Honor an explicit app-set ItemTemplatePoolSize as a floor (never go below what they asked).
             if (layout.ItemTemplatePoolSize > 0 && layout.ItemTemplatePoolSize > needed)
@@ -810,6 +818,28 @@ namespace DrawnUi.Draw
                 Repaint();
         }
 
+        /// <summary>
+        /// Tile refresh for a CONTENT change of a realized cell. Routed here by SkiaLayout.UpdateByChild.
+        /// CRITICAL: UpdateByChild fires for BOTH Update() and Repaint(), and Repaint() is extremely common
+        /// (hover, transforms, every animation frame, many cells). Only a real content Update() — which ran
+        /// InvalidateCache() and set RenderObjectNeedsUpdate — may rebuild the tile. A bare Repaint() (cache
+        /// kept) is IGNORED here, otherwise every hover/repaint would thrash the whole tile band. Animations
+        /// that need to show motion use the gesture-pinned ripple/live overlay path, not this.
+        /// </summary>
+        public void InvalidateVirtualCell(SkiaControl cell)
+        {
+            if (cell == null || cell.ContextIndex < 0)
+                return;
+
+            if (!cell.RenderObjectNeedsUpdate)
+                return; // Repaint (hover/transform/animation): keep the tile, do nothing here
+
+            if (ReferenceEquals(cell, _rippleCell))
+                return; // don't rebuild a tile under an active ripple overlay
+
+            UpdateVirtualItem(cell.ContextIndex);
+        }
+
         private SKSurface RentTileSurface()
         {
             if (_tileSurfacePool.Count > 0)
@@ -863,7 +893,43 @@ namespace DrawnUi.Draw
                 else if (tile.Surface != null)
                     DisposeObject(tile.Surface);
                 tile.Surface = null;
+
+                ReleaseTileCells(idx);
             }
+        }
+
+        /// <summary>
+        /// Releases the cells that were kept alive for tile <paramref name="evictedTile"/>, but ONLY the indices
+        /// no remaining resident tile still references (shared overscan-boundary cells stay until both tiles go).
+        /// </summary>
+        private void ReleaseTileCells(int evictedTile)
+        {
+            int[] ids;
+            List<int> toRelease = null;
+            lock (_tileCellsLock)
+            {
+                if (!_tileCellIndices.TryGetValue(evictedTile, out ids))
+                    return;
+                _tileCellIndices.Remove(evictedTile);
+
+                if (ids == null || ids.Length == 0)
+                    return;
+
+                foreach (var idx in ids)
+                {
+                    bool stillUsed = false;
+                    foreach (var kv in _tileCellIndices)
+                        if (Array.IndexOf(kv.Value, idx) >= 0) { stillUsed = true; break; }
+                    if (!stillUsed)
+                        (toRelease ??= new()).Add(idx);
+                }
+            }
+
+            if (toRelease == null || Content is not SkiaLayout layout)
+                return;
+
+            foreach (var idx in toRelease)
+                layout.ChildrenFactory.ReleaseCellByIndex(idx);
         }
 
         /// <summary>
@@ -909,13 +975,19 @@ namespace DrawnUi.Draw
             }
             finally
             {
-                // Release WHILE PlaneOverrideStructure is still set so GetSizeKey routes returns to the
-                // generic bucket (symmetric with the Gets). DrawStack PASS2 left the cells it drew in-use;
-                // MarkViewAsHidden returns them to the pool. Cells PASS1 already hid are skipped (no-op).
+                // DO NOT recycle the cells this tile drew. They stay LIVE (in-use, bound, measured) so gestures
+                // and per-cell state use the real cell, and future tile rebuilds reuse them. Record this tile's
+                // index set; EvictTilesOutside releases a cell only when NO resident tile references it.
                 if (window != null)
+                {
+                    var ids = new List<int>();
                     foreach (var cell in window.GetChildrenAsSpans())
                         if (cell != null)
-                            layout.ChildrenFactory.MarkViewAsHidden(cell.ControlIndex);
+                            ids.Add(cell.ControlIndex);
+                    int tIndex = _planeHeight > 0 ? (int)Math.Round(bandTop / _planeHeight) : 0;
+                    lock (_tileCellsLock)
+                        _tileCellIndices[tIndex] = ids.ToArray();
+                }
 
                 _buildingPlaneWindow = false;
                 layout.PlaneOverrideStructure = null;
@@ -1073,14 +1145,15 @@ namespace DrawnUi.Draw
 
             EvictTilesOutside(firstTile - TileBufferEachSide, lastTile + TileBufferEachSide);
 
-            DrawTapRipple(canvas);
+            DrawRippleOverlay(context); // gesture-pinned ripple/animation overlaid on the cached tiles
+            DrawTapRipple(canvas);      // optional debug ripple (DebugRipple flag)
         }
 
         // DEBUG tap ripple: the visible rows are cached bitmap tiles, so a cell's own (framework) ripple
         // can't paint into the bitmap. We draw our own clearly-visible expanding ripple on the plane canvas,
         // CLIPPED to the tapped cell's row (index-derived, so it always lands on the correct cell). Slow +
         // bright so it's easy to see / verify. Set DebugRipple=false to disable.
-        public bool DebugRipple { get; set; } = true;
+        public bool DebugRipple { get; set; } = false;
         private SKPoint _tapRipplePoint;
         private SKRect _tapRippleClip;
         private long _tapRippleStartMs = -1;
@@ -1478,31 +1551,53 @@ namespace DrawnUi.Draw
             if (args.Type == TouchActionResult.Panning || args.Type == TouchActionResult.Wheel)
                 return null;
 
-            float slot = _tileSlot > 1f ? _tileSlot : Math.Max(1f, layout.GetAverageItemHeightPixels((float)RenderingScale));
+            // Use the SAME slot the current frame laid the tiles with (_tileSlot = avg+spacing, set in
+            // DrawVirtual). Recomputing avg here drifts from what's on screen (idle measurement creep) and
+            // maps the tap to the wrong row, so read the frame's slot and derive cell height from it.
+            float gscale = (float)RenderingScale;
+            float gspacing = (float)(layout.Spacing * gscale);
+            float slot = _tileSlot > 1f ? _tileSlot : Math.Max(1f, layout.GetAverageItemHeightPixels(gscale)) + gspacing;
+            float avgH = Math.Max(1f, slot - gspacing); // cell content height = slot minus spacing (tile uses avg)
+            // DrawStack contracts its destination by the layout's Padding, so the tile draws cell idx at
+            // screen Y = DrawingRect.Top + padTop + idx*slot - scrollTop. Account for padTop here too.
+            float padTop = (float)(layout.Padding.Top * gscale);
             float scrollTop = -InternalViewportOffset.Pixels.Y;
 
             var thisOffset = TranslateInputCoords(apply.ChildOffset);
             float gx = args.Event.Location.X + thisOffset.X;
             float gy = args.Event.Location.Y + thisOffset.Y;
-            float contentY = gy - DrawingRect.Top + scrollTop;
+            float contentY = gy - DrawingRect.Top + scrollTop - padTop;
 
             int idx = (int)Math.Floor(contentY / slot);
             if (idx < 0 || idx >= layout.ItemsSource.Count)
                 return null;
 
-            var cell = layout.ChildrenFactory.GetViewForIndex(idx, null, 0, false);
+            // The cell is ALIVE in the pool's in-use map (resident-tile cells are not recycled), so fetch the
+            // real, already-bound, already-measured cell — no realize, no measure, no rebind. Its inner hit /
+            // span-link rects are already populated from the real tile draw. This is what makes gestures (tap,
+            // pan, swipe) cheap and correct without touching the tile.
+            var cell = layout.ChildrenFactory.GetCellInUseOrNull(idx);
             if (cell == null)
                 return null;
 
             try
             {
-                float top = DrawingRect.Top + idx * slot - scrollTop;
-                var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + slot);
-                cell.Arrange(rect, _planeWidth / (float)RenderingScale, slot / (float)RenderingScale, (float)RenderingScale);
+                float top = DrawingRect.Top + padTop + idx * slot - scrollTop;
+                var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + avgH);
+                cell.Arrange(rect, _planeWidth / gscale, avgH / gscale, gscale);
 
-                // Draw the cell once (offscreen) at its on-screen rect so its inner hit rects + link-span
-                // rects are populated; then the standard descent can hit them.
-                ScratchDrawForHit(cell, rect);
+                // Only a discrete tap needs the inner span/link hit-rects re-populated at the on-screen rect
+                // (drawn once offscreen). Hover/pan/down don't — keep them cheap.
+                // InvalidateCache first so the draw DESCENDS into children (not a cache blit): the cell was
+                // last drawn into its tile at BAND-relative coords, so its children's X/Y + hit-rects are
+                // offset by the tile's bandTop. A descending render at the on-screen rect re-positions them to
+                // SCREEN coords, so a ripple's touch offset (read from label.X/Y at tap) lands correctly on any
+                // scrolled tile — not just tile 0 where band coords == screen coords.
+                if (args.Type == TouchActionResult.Tapped)
+                {
+                    InvalidateHostTree(cell);
+                    ScratchDrawForHit(cell, rect);
+                }
 
                 if (cell.IsDisposed || cell.InputTransparent || !cell.CanDraw)
                     return null;
@@ -1537,20 +1632,93 @@ namespace DrawnUi.Draw
             }
             finally
             {
-                layout.ChildrenFactory.ReleaseMeasuringView(cell);
-
-                if (args.Type == TouchActionResult.Tapped)
+                // The cell is a LIVE, tile-owned cell — never released here. It is freed only when its tile is
+                // evicted (ReleaseTileCells). If the tap started an overlay effect (ripple), mark it as the host
+                // so DrawRippleOverlay draws it over the tile while the animator runs.
+                if (args.Type == TouchActionResult.Tapped && HasActiveOverlayEffect(cell))
                 {
-                    // re-render just this item's tile so any data mutation (counter/toggle) shows
-                    UpdateVirtualItem(idx);
-                    // debug ripple on the tapped cell's row (the framework per-cell ripple can't paint into
-                    // a cached tile, and reusing the pooled cell plays it on the wrong row). Recompute the
-                    // cell's on-screen row from idx (idx-derived -> always the correct cell).
-                    float ripTop = DrawingRect.Top + idx * slot - scrollTop;
-                    var ripRect = new SKRect(DrawingRect.Left, ripTop, DrawingRect.Left + _planeWidth, ripTop + slot);
-                    StartTapRipple(ripRect.MidX, ripRect.MidY, ripRect);
+                    _rippleCell = cell;
+                    _rippleCellIndex = idx;
+                    Repaint();
+
+                    if (DebugRipple)
+                    {
+                        float ripTop = DrawingRect.Top + padTop + idx * slot - scrollTop;
+                        var ripRect = new SKRect(DrawingRect.Left, ripTop, DrawingRect.Left + _planeWidth, ripTop + slot);
+                        StartTapRipple(ripRect.MidX, ripRect.MidY, ripRect);
+                    }
                 }
             }
+        }
+
+        // ----- gesture-pinned ripple/animation overlay inside planes (cache-friendly) --------------------
+        // Bounded to a real tap: when a tap starts an overlay effect (the framework ripple) on the cell, we
+        // PIN that one cell and draw it — with its live animator — on top of its cached tile each frame, then
+        // release it when the animator finishes. This shows the real ripple without rebuilding the tile, and
+        // is scoped to the tapped cell only (NOT driven by Repaint, which fires for every hover/redraw).
+        private SkiaControl _rippleCell;
+        private int _rippleCellIndex = -1;
+
+        private static bool HasActiveOverlayEffect(SkiaControl c)
+        {
+            if (c == null) return false;
+            if (c.PostAnimators.Count > 0) return true;
+            foreach (var ch in c.GetOrderedSubviews())
+                if (ch is SkiaControl sc && HasActiveOverlayEffect(sc))
+                    return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Draws the pinned (recently-tapped) cell with its live animators ON TOP of the already-blitted tile,
+        /// at the cell's current on-screen row. No tile re-render — the cell's own ripple paints over the
+        /// cached content. Released once its animators finish.
+        /// </summary>
+        protected virtual void DrawRippleOverlay(DrawingContext context)
+        {
+            if (_rippleCell == null)
+                return;
+
+            if (!HasActiveOverlayEffect(_rippleCell) || _tileSlot <= 0f || _planeHeight <= 0 || Content is not SkiaLayout layout)
+            {
+                // The host is a live tile-owned cell — do NOT release it here; eviction owns its lifetime.
+                _rippleCell = null;
+                _rippleCellIndex = -1;
+                Repaint(); // one clean frame (overlay gone)
+                return;
+            }
+
+            float scale = Math.Max(0.0001f, (float)RenderingScale);
+            float spacing = (float)(layout.Spacing * scale);
+            float slot = _tileSlot > 1f ? _tileSlot : Math.Max(1f, layout.GetAverageItemHeightPixels(scale)) + spacing;
+            float avg = Math.Max(1f, slot - spacing);
+            float padTop = (float)(layout.Padding.Top * scale);
+            float scrollTop = -InternalViewportOffset.Pixels.Y;
+            float top = DrawingRect.Top + padTop + _rippleCellIndex * slot - scrollTop;
+            var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + avg);
+
+            _rippleCell.Arrange(rect, _planeWidth / scale, avg / scale, scale);
+            // Force an UNCACHED render of the WHOLE subtree: the cell was last drawn into its tile at content
+            // coords, and a cached blit (cell OR an inner cached shape) would (a) skip the inner label's draw,
+            // so its ripple post-animator never paints, and (b) leave the label at its old content position,
+            // so the ripple lands off-screen on scrolled tiles. Invalidating the subtree makes everything
+            // re-lay-out + draw at this on-screen rect each frame -> ripple paints on the correct row. Cheap
+            // (one cell, ~500ms while animating — same as any live-animating cached control).
+            InvalidateHostTree(_rippleCell);
+            _rippleCell.Render(context.WithDestination(rect)); // content + its animators (ripple) over the blit
+
+            Repaint(); // keep animating
+        }
+
+        /// <summary>Recursively invalidates a control's cache and all descendants' caches, so the next render
+        /// descends + re-positions the whole subtree (not a cached blit).</summary>
+        private static void InvalidateHostTree(SkiaControl c)
+        {
+            if (c == null) return;
+            c.InvalidateCache();
+            foreach (var ch in c.GetOrderedSubviews())
+                if (ch is SkiaControl sc)
+                    InvalidateHostTree(sc);
         }
 
         // Draws a single cell offscreen at its on-screen rect to populate its (and its children's) hit rects

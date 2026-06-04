@@ -811,6 +811,33 @@ public partial class ViewsAdapter : IDisposable
     }
 
     /// <summary>
+    /// Returns the live (in-use, bound, measured) cell currently realized for this index, or null. Does NOT
+    /// re-attach or measure — used by the tiled-planes renderer to keep resident-tile cells alive for gestures
+    /// and to release them only when no tile references the index anymore.
+    /// </summary>
+    public SkiaControl GetCellInUseOrNull(int index)
+    {
+        lock (lockVisible)
+        {
+            _cellsInUseViews.TryGetValue(index, out var view);
+            return view;
+        }
+    }
+
+    /// <summary>Releases an in-use cell by index back to the GENERIC pool (hKey 0), if one is realized.</summary>
+    public void ReleaseCellByIndex(int index)
+    {
+        SkiaControl view;
+        lock (lockVisible)
+        {
+            if (!_cellsInUseViews.TryGetValue(index, out view))
+                return;
+            _cellsInUseViews.Remove(index);
+        }
+        _templatedViewsPool?.Return(view, 0);
+    }
+
+    /// <summary>
     /// Creates view from template and returns already existing view for a specific index.
     /// This uses cached views and tends to return same views matching index they already used.
     /// When cell recycling is off this will be a perfect match at all times.
@@ -1883,20 +1910,29 @@ public class TemplatedViewsPool : IDisposable
 
     public void Reserve()
     {
-        //not using lock here
         if (IsDisposing)
             return;
 
-        if (_genericPool.Count < MaxSize)
+        // MUST lock: _genericPool is a Stack shared with Get/Return (which lock _syncLock). Pushing here
+        // without the lock races their Pop/ToArray on the background measure / tile-render threads and
+        // corrupts the Stack (IndexOutOfRangeException in ToArray). Pre-warming a larger planes pool makes
+        // this frequent.
+        lock (_syncLock)
         {
-            try
+            if (IsDisposing)
+                return;
+
+            if (_genericPool.Count < MaxSize)
             {
-                _genericPool.Push(CreateFromTemplate());
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e);
-                throw;
+                try
+                {
+                    _genericPool.Push(CreateFromTemplate());
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                    throw;
+                }
             }
         }
     }

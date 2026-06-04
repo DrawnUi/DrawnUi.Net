@@ -74,8 +74,10 @@
 				this.OnTapped(me =>
 			{
 				var row = me.BindingContext as Row; if (row != null) row.Taps++;
-				// (cell bg toggle removed — tap now mutates the bound model)
 				Console.WriteLine($"[TAP] {row?.Text} taps={row?.Taps}");
+				// Transparent: plain Update() like any non-virtualized list. The engine routes this cell's
+				// invalidation to its tile (SkiaLayout.UpdateByChild -> SkiaScroll.InvalidateVirtualCell).
+				this.Update();
 			});
 		}
 

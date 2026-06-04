@@ -13,6 +13,41 @@ public class SkiaDrawnCell : SkiaLayout, ISkiaCell
 
     }
 
+    private bool? _residentInPlanes;
+    private bool _refreshingContent;
+
+    /// <summary>
+    /// Cleared when the cell is re-parented so planes-residency is recomputed on next Update.
+    /// </summary>
+    public override void OnParentChanged(IDrawnBase newvalue, IDrawnBase oldvalue)
+    {
+        _residentInPlanes = null;
+        base.OnParentChanged(newvalue, oldvalue);
+    }
+
+    /// <summary>
+    /// In tiled-planes virtualization a realized cell stays bound to the SAME model object across its life
+    /// (it is not recycled while resident), so a model PROPERTY change never re-runs SetContent — the visual
+    /// would keep stale text. Make Update() (the universal "refresh me") re-pull content from the model so
+    /// `cell.Update()` after mutating the bound model just works, exactly like a non-virtualized list.
+    /// Only inside a planes scroll; guarded against re-entrancy.
+    /// </summary>
+    public override void Update()
+    {
+        if (!_refreshingContent)
+        {
+            _residentInPlanes ??= Parent is SkiaControl p && p.Parent is SkiaScroll s && s.UseVirtual;
+            if (_residentInPlanes == true && BindingContext != null)
+            {
+                _refreshingContent = true;
+                try { SetContent(BindingContext); }
+                finally { _refreshingContent = false; }
+            }
+        }
+
+        base.Update();
+    }
+
     public virtual void OnScrolled()
     {
 

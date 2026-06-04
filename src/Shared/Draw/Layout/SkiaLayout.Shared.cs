@@ -1113,6 +1113,27 @@ namespace DrawnUi.Draw
             }
         }
 
+        public override void UpdateByChild(SkiaControl child)
+        {
+            base.UpdateByChild(child);
+
+            // Tiled-planes transparency: a realized cell — or anything inside it (Lottie, drawer, video, a
+            // counter, any control that drives itself via Update()/Repaint()) — invalidates by bubbling up to
+            // here (each level passes itself, so `child` is this list's direct cell with a valid ContextIndex).
+            // The visible pixels come from a cached tile bitmap, so refresh that cell's tile, otherwise the
+            // change is invisible. Skipped while a tile is being built (PlaneOverrideStructure set) to avoid a
+            // self-feeding loop, and only for the templated planes path under a virtualizing scroll.
+            if (PlaneOverrideStructure == null
+                && IsTemplated
+                && child != null
+                && child.ContextIndex >= 0
+                && Parent is SkiaScroll scroll
+                && scroll.UseVirtual)
+            {
+                scroll.InvalidateVirtualCell(child);
+            }
+        }
+
         public override void OnDisposing()
         {
             CancelBackgroundMeasurement();

@@ -1853,9 +1853,10 @@ namespace DrawnUi.Draw
         protected SKSize LastContentSizePixels = new SKSize(-1, -1);
         protected SKSize LastMeasuredSizePixels = new SKSize(-1, -1);
 
-        protected virtual void ApplyContentSize()
+        protected virtual void ApplyContentSize(bool force = false)
         {
-            if (!CompareSize(ContentSize.Pixels, LastContentSizePixels, 1f) ||
+            if (force ||
+                !CompareSize(ContentSize.Pixels, LastContentSizePixels, 1f) ||
                 !CompareSize(MeasuredSize.Pixels, LastMeasuredSizePixels, 1f))
             {
                 LastContentSizePixels = ContentSize.Pixels;
@@ -2699,11 +2700,13 @@ namespace DrawnUi.Draw
                 // estimate), not the measured window — which may not change on a LoadMore append. So also
                 // recompute bounds when the virtual item count changes, otherwise the scroll stays clamped
                 // to the previously loaded count and you can't scroll past it.
+                bool virtualCountChanged = false;
                 if (UseVirtual && this.Content is SkiaLayout vlayout
                     && vlayout.ItemsSource != null && vlayout.ItemsSource.Count != _lastVirtualItemsCount)
                 {
                     _lastVirtualItemsCount = vlayout.ItemsSource.Count;
                     contentSizeChanged = true;
+                    virtualCountChanged = true;
                 }
 
                 //content size changed, we need to initialize scroller again at least
@@ -2719,7 +2722,11 @@ namespace DrawnUi.Draw
                     {
                         ContentSize = this.Content.MeasuredSize;
                         _lastContentSize = this.Content.MeasuredSize;
-                        ApplyContentSize();
+                        // On a virtual (LoadMore) count change the windowed ContentSize/MeasuredSize often
+                        // DON'T change, so ApplyContentSize's size-compare guard would skip re-initializing
+                        // the viewport -> scroll stays clamped to the old count (can't scroll past it). The
+                        // real extent comes from ItemsSource.Count (GetContentOffsetBounds), so force it.
+                        ApplyContentSize(virtualCountChanged);
                     }
                 }
             }
