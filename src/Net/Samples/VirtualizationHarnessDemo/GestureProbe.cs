@@ -29,7 +29,37 @@ public static class GestureProbe
             set { _counter = value; OnPropertyChanged(); OnPropertyChanged(nameof(Markdown)); }
         }
 
-        public string Markdown => Counter > 0 ? $"Message {Index} ({Counter})" : $"Message {Index}";
+        // Deterministic per-Index extra lines -> UNEVEN rows (1-3 lines), stable across rebinds.
+        private string _extra;
+        private string Extra => _extra ??= BuildExtra(Index);
+
+        public string Markdown =>
+            (Counter > 0 ? $"Message {Index} ({Counter})" : $"Message {Index}") + Extra;
+
+        private static readonly string[] Words =
+        {
+            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit", "sed",
+            "do", "eiusmod", "tempor", "incididunt", "labore", "magna", "aliqua", "enim", "minim",
+        };
+
+        private static string BuildExtra(int index)
+        {
+            var rnd = new Random(index);
+            int extraLines = rnd.Next(0, 3);
+            if (extraLines == 0) return string.Empty;
+            var sb = new System.Text.StringBuilder();
+            for (int l = 0; l < extraLines; l++)
+            {
+                sb.Append('\n');
+                int words = rnd.Next(4, 9);
+                for (int w = 0; w < words; w++)
+                {
+                    if (w > 0) sb.Append(' ');
+                    sb.Append(Words[rnd.Next(Words.Length)]);
+                }
+            }
+            return sb.ToString();
+        }
     }
 
     // Recorded by the cell on tap so the runner (no access to private label) can assert.
