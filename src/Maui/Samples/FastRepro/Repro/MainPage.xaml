@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"
+             xmlns:local="clr-namespace:DrawnUiRecycleMeasureRepro"
+             x:Class="DrawnUiRecycleMeasureRepro.MainPageRepro"
+             x:DataType="local:MainPageRepro"
+             BackgroundColor="#101010">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Plain-MAUI status overlay (always upright, not affected by any flip below). -->
+        <Label Grid.Row="0"
+               x:Name="StatusLabel"
+               Text="{Binding Status}"
+               FontSize="14"
+               FontAttributes="Bold"
+               TextColor="White"
+               BackgroundColor="#202020"
+               Padding="12,10"
+               HorizontalTextAlignment="Center" />
+
+        <!-- The list config matches a real chat list EXACTLY:
+               Canvas (Accelerated) › SkiaScroll (Virtualisation=Enabled)
+                 › SkiaLayout (Type=Column, Virtualisation=Enabled,
+                               RecyclingTemplate=Enabled, MeasureItemsStrategy=MeasureVisible).
+             Each cell is a shrink-wrap bubble (HorizontalOptions=Start, auto width) CAPPED at
+             ~75% of the list width via MaximumWidthRequest — the same width-cap mechanism a chat
+             bubble uses. The list GROWS as you scroll (see MainPage.xaml.cs OnScrolled). -->
+        <draw:Canvas Grid.Row="1"
+                     x:Name="Canvas"
+                     RenderingMode="Accelerated"
+                     Gestures="Enabled"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Fill"
+                     BackgroundColor="#101010">
+            <draw:SkiaScroll x:Name="Scroll"
+                             Orientation="Vertical"
+                             Virtualisation="Enabled"
+                             HorizontalOptions="Fill"
+                             VerticalOptions="Fill">
+                <draw:SkiaLayout x:Name="List"
+                                 Type="Column"
+                                 Spacing="6"
+                                 Padding="0,12"
+                                 ItemsSource="{Binding Items}"
+                                 Virtualisation="Enabled"
+                                 RecyclingTemplate="Enabled"
+                                 ItemTemplatePoolSize="60"
+                                 MeasureItemsStrategy="MeasureVisible"
+                                 UseCache="None"
+                                 HorizontalOptions="Fill">
+                    <draw:SkiaLayout.ItemTemplate>
+                        <DataTemplate x:DataType="local:Row">
+                            <local:MessageCell />
+                        </DataTemplate>
+                    </draw:SkiaLayout.ItemTemplate>
+                </draw:SkiaLayout>
+            </draw:SkiaScroll>
+        </draw:Canvas>
+
+    </Grid>
+
+</ContentPage>

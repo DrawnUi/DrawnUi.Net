@@ -150,6 +150,12 @@
     <ItemGroup>
       <ProjectReference Include="..\..\DrawnUi\DrawnUi.Maui.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Repro\MainPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+    </ItemGroup>
  
 
  
