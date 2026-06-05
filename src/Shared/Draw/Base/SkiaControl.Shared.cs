@@ -2966,7 +2966,7 @@ namespace DrawnUi.Draw
             string.Empty,
             propertyChanged: NeedDraw);
 
-        public string Tag
+        public new string Tag
         {
             get { return (string)GetValue(TagProperty); }
             set { SetValue(TagProperty, value); }
