@@ -6,7 +6,7 @@ namespace DrawnUi.Draw;
 /// </summary>
 public class SkiaMarkdownLabel : SkiaRichLabel
 {
-
+  
 }
 
 /// <summary>
