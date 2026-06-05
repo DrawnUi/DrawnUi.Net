@@ -7,6 +7,7 @@ public class SkiaEffect : BindableObject, IDisposable, ICanBeUpdatedWithContext
     /// </summary>
     public SkiaControl Parent { get; protected set; }
 
+    public string Tag { get; set; }
     protected virtual void OnDisposing()
     {
 

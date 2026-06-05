@@ -5,6 +5,8 @@ public class SkiaShadow : BindableObject, IComparable, IComparable<SkiaShadow>, 
 
     public ICanBeUpdatedWithContext Parent { get; set; }
 
+    public string Tag { get; set; }
+
     public void Attach(ICanBeUpdatedWithContext parent)
     {
         this.Parent = parent;
