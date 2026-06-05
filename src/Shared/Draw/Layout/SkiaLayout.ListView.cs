@@ -2405,6 +2405,45 @@ public partial class SkiaLayout
     }
 
     /// <summary>
+    /// Maps a content-from-top Y (pixels, in the layout's content-area space) to the item index whose REAL
+    /// measured row contains it, using the measured structure (variable heights). Returns -1 if the Y is
+    /// outside the measured content. Outputs the row's real top and height in pixels. Used by tiled-planes
+    /// gesture hit-testing so a tap lands on the correct variable-height row instead of a uniform-slot guess.
+    /// </summary>
+    public int GetIndexAtContentY(double contentYpx, out float rowTopPx, out float rowHeightPx)
+    {
+        rowTopPx = 0;
+        rowHeightPx = 0;
+        var s = LatestStackStructure ?? LatestMeasuredStackStructure;
+        if (s == null)
+            return -1;
+        try
+        {
+            // Monotonic by index; a background plane render can mutate it while we read — tolerate (catch).
+            foreach (var c in s.GetChildren())
+            {
+                if (c == null)
+                    continue;
+                float top = c.Destination.Top;
+                float bot = c.Destination.Bottom;
+                if (bot <= top)
+                    continue;
+                if (contentYpx >= top && contentYpx < bot)
+                {
+                    rowTopPx = top;
+                    rowHeightPx = bot - top;
+                    return c.ControlIndex;
+                }
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // structure mutated concurrently
+        }
+        return -1;
+    }
+
+    /// <summary>
     /// Gets estimated total content size for virtualized lists with unmeasured items
     /// </summary>
     public ScaledSize GetEstimatedContentSize(float scale)
@@ -2946,19 +2985,131 @@ public partial class SkiaLayout
             float spacing = (float)(Spacing * scale);
             double slot = avg + spacing;
 
-            int firstIndex = Math.Max(0, (int)Math.Floor(bandTopPx / slot) - 1);   // overscan 1 above
-            int idx = firstIndex;
-            int rowNum = 0;
+            // Snapshot REAL measured positions/heights per index from the measured structure. The uniform
+            // grid (idx*slot, height=avg) only works for equal-height cells; variable heights need each
+            // cell's actual cumulative top + measured height, otherwise every cell gets clamped to avg and
+            // positions desync (overlaps/gaps). Background plane-prep thread: tolerate concurrent mutation
+            // (same pattern as GetAverageItemHeightPixels).
+            var measured = new Dictionary<int, (float top, float height)>();
+            int measuredMaxIndex = -1;
+            double measuredTailTop = 0;   // content-top right after the highest measured cell
+            var s = LatestMeasuredStackStructure ?? LatestStackStructure;
+            if (s != null)
+            {
+                try
+                {
+                    foreach (var k in s.GetChildren())
+                    {
+                        if (k == null) continue;
+                        int ci = k.ControlIndex;
+                        if (ci < 0 || ci >= count) continue;
+                        float h = k.Measured.Pixels.Height;
+                        if (h <= 0) continue;
+                        float top = k.Destination.Top;
+                        measured[ci] = (top, h);
+                        if (ci > measuredMaxIndex)
+                        {
+                            measuredMaxIndex = ci;
+                            measuredTailTop = top + h + spacing;   // positions are monotonic with index
+                        }
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // structure mutated concurrently — fall back to whatever we collected
+                }
+            }
 
-            var estimated = ScaledSize.FromPixels(width, avg, scale);
+            // Measure the band's UNMEASURED cells now so their slots are REAL (cumulative from the measured
+            // tail), not avg estimates. The tile blit places cells at their Destination, so the slot MUST equal
+            // the cell's real height or the tile's content won't fill its band and a seam/gap appears. This runs
+            // on the render thread for a synchronous visible tile (the visible cells must be measured to draw
+            // anyway, exactly like non-plane virtualization) and on the bg thread for ahead tiles. Local-only:
+            // never mutates the shared structure / MeasuredSize (no measure->grow->invalidate->re-prepare loop).
+            if (measuredMaxIndex < count - 1 && bandBottomPx + slot > measuredTailTop
+                && RecyclingTemplate != RecyclingTemplate.Disabled)
+            {
+                SkiaControl template = ChildrenFactory.GetTemplateInstance();
+                try
+                {
+                    double runTop = measuredMaxIndex >= 0 ? measuredTailTop : 0;
+                    int mi = measuredMaxIndex + 1;
+                    while (mi < count && runTop <= bandBottomPx + slot)
+                    {
+                        var child = ChildrenFactory.GetViewForIndex(mi, template, 0, true);
+                        if (child == null)
+                            break;
+
+                        // Measure with UNBOUNDED height (Column) — constraining to avg would clip a tall cell
+                        // to avg and paint it a line short.
+                        var measureRect = new SKRect(0, (float)runTop, width, (float)runTop + float.PositiveInfinity);
+                        var tmpCell = new ControlInStack { ControlIndex = mi, Destination = measureRect, Area = measureRect };
+                        var m = MeasureAndArrangeCell(measureRect, tmpCell, child, measureRect, scale);
+                        float h = m.Pixels.Height;
+                        if (h <= 0) h = avg;
+
+                        measured[mi] = ((float)runTop, h);
+                        runTop += h + spacing;
+                        mi++;
+                    }
+                    measuredMaxIndex = mi - 1;
+                    measuredTailTop = runTop;
+                }
+                finally
+                {
+                    if (template != null)
+                        ChildrenFactory.ReleaseTemplateInstance(template);
+                }
+            }
+
+            // Real top + height for an index: measured value if known, else avg-estimate continuing from the
+            // measured tail (or pure uniform grid if nothing measured yet).
+            double TopFor(int index, out float height)
+            {
+                if (measured.TryGetValue(index, out var m))
+                {
+                    height = m.height;
+                    return m.top;
+                }
+                height = avg;
+                if (measuredMaxIndex >= 0 && index > measuredMaxIndex)
+                    return measuredTailTop + (index - measuredMaxIndex - 1) * slot;
+                return index * slot;
+            }
+
+            // Estimate a start index, then walk to the real first cell intersecting the band (heights vary,
+            // so the estimate can be off — the walk converges locally, not a full O(count) scan).
+            int start;
+            if (measuredMaxIndex >= 0 && bandTopPx >= measuredTailTop)
+                start = measuredMaxIndex + 1 + (int)Math.Floor((bandTopPx - measuredTailTop) / slot);
+            else
+                start = (int)Math.Floor(bandTopPx / slot);
+            start = Math.Clamp(start, 0, count - 1);
+
+            while (start > 0)
+            {
+                double t = TopFor(start, out _);
+                if (t <= bandTopPx) break;
+                start--;
+            }
+            while (start < count - 1)
+            {
+                double t = TopFor(start, out float hh);
+                if (t + hh > bandTopPx) break;
+                start++;
+            }
+            start = Math.Max(0, start - 1);   // overscan 1 above
+
+            int idx = start;
+            int rowNum = 0;
 
             while (idx < count)
             {
-                double cellY = idx * slot;
-                if (cellY > bandBottomPx + slot)   // overscan 1 below
+                double top = TopFor(idx, out float h);
+                if (top > bandBottomPx + slot)   // overscan 1 below
                     break;
 
-                var dest = new SKRect(0, (float)cellY, width, (float)cellY + avg);
+                var dest = new SKRect(0, (float)top, width, (float)top + h);
                 var cell = new ControlInStack
                 {
                     ControlIndex = idx,
@@ -2966,7 +3117,7 @@ public partial class SkiaLayout
                     Row = rowNum,
                     Destination = dest,
                     Area = dest,
-                    Measured = estimated,
+                    Measured = ScaledSize.FromPixels(width, h, scale),
                     WasMeasured = true,
                 };
 

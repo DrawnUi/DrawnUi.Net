@@ -2333,9 +2333,17 @@ else
                             var x = offsetOthers.X + cell.Drawn.Left;
                             var y = offsetOthers.Y + cell.Drawn.Top;
 
-                            if (child.NeedMeasure)
+                            // Drawing a plane/tile window: every cell is a recycled view just rebound to this
+                            // index's content, and GetSizeKey is forced to 0 here (single pool bucket), so the
+                            // size-key comparison below can't detect that the rebound content differs in height.
+                            // Force a measure so the painted cell matches its real height (and the reserved slot
+                            // from BuildPlaneWindowStructure) — otherwise a tall row painted by a previously-short
+                            // recycled cell paints short and leaves a gap (and vice-versa overlaps).
+                            bool forcePlaneMeasure = PlaneOverrideStructure != null;
+
+                            if (child.NeedMeasure || forcePlaneMeasure)
                             {
-                                if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
+                                if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible && !forcePlaneMeasure)
                                 {
                                     //we change structure elsewhere so no need to measure here
                                     if (child.WasMeasured)
@@ -2344,7 +2352,8 @@ else
                                     }
                                 }
 
-                                if (!IsTemplated ||
+                                if (forcePlaneMeasure ||
+                                    !IsTemplated ||
                                     !child.WasMeasured
                                     || InvalidatedChildrenInternal.Contains(child) ||
                                     //MeasureItemsStrategy == MeasuringStrategy.MeasureVisible ||
@@ -2374,20 +2383,28 @@ else
                                         {
                                             //Debug.WriteLine($"[DrawStack] OffsetOthers {cell.OffsetOthers}");
 
-                                            var measuredItem = new MeasuredItemInfo
+                                            // Drawing a transient plane/tile window (PlaneOverrideStructure set):
+                                            // do NOT feed its re-measures into the shared structure. The window's
+                                            // estimate-vs-real diffs would shift the shared cumulative positions
+                                            // and drift the scroll<->index mapping (scroll-back lands off-by-N).
+                                            // The shared structure advances only through its own background measure.
+                                            if (PlaneOverrideStructure == null)
                                             {
-                                                Cell = cell,
-                                                LastAccessed = DateTime.UtcNow,
-                                                IsInViewport = true,
-                                            };
-                                            _pendingStructureChanges.Add(
-                                                new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
+                                                var measuredItem = new MeasuredItemInfo
                                                 {
-                                                    OffsetOthers = cell.OffsetOthers,
-                                                    StartIndex = child.ContextIndex,
-                                                    Count = 1,
-                                                    MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
-                                                });
+                                                    Cell = cell,
+                                                    LastAccessed = DateTime.UtcNow,
+                                                    IsInViewport = true,
+                                                };
+                                                _pendingStructureChanges.Add(
+                                                    new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
+                                                    {
+                                                        OffsetOthers = cell.OffsetOthers,
+                                                        StartIndex = child.ContextIndex,
+                                                        Count = 1,
+                                                        MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
+                                                    });
+                                            }
 
                                             cell.OffsetOthers = Vector2.Zero;
                                         }

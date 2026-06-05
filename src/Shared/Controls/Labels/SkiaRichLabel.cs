@@ -228,20 +228,19 @@ public partial class SkiaRichLabel : SkiaLabel
                 var glyphInOriginal = SkiaLabel.GetGlyphs(glyphText, originalTypeFace).First();
                 if (glyphInOriginal.IsAvailable)
                 {
-                    var preferredTypeFace = SkiaFontManager.MatchCharacter(codePoint);
-                    if (preferredTypeFace == null || preferredTypeFace == originalTypeFace)
+                    // Original font can render this glyph — always switch back regardless of
+                    // what MatchCharacter returns for the codepoint. MatchCharacter finds any
+                    // capable font, not the preferred one; user's FontFamily wins when it can render.
+                    if (currentIndex - spanStart > 1)
                     {
-                        if (currentIndex - spanStart > 1)
-                        {
-                            BreakSpanAndSwitchTypeface(originalTypeFace);
-                        }
-                        else
-                        {
-                            currentIndex--;
-                            currentTypeFace = originalTypeFace;
-                            spanStart = currentIndex;
-                            needShape = false;
-                        }
+                        BreakSpanAndSwitchTypeface(originalTypeFace);
+                    }
+                    else
+                    {
+                        currentIndex--;
+                        currentTypeFace = originalTypeFace;
+                        spanStart = currentIndex;
+                        needShape = false;
                     }
                 }
             }

@@ -1568,23 +1568,40 @@ namespace DrawnUi.Draw
             float gy = args.Event.Location.Y + thisOffset.Y;
             float contentY = gy - DrawingRect.Top + scrollTop - padTop;
 
-            int idx = (int)Math.Floor(contentY / slot);
+            // Map the tap to the REAL variable-height row from the measured structure (cumulative real tops),
+            // NOT a uniform idx*slot guess — otherwise tapping the lower half of a tall row hits the next row.
+            // Fall back to the uniform slot only for content past the measured frontier (estimate region).
+            int idx = layout.GetIndexAtContentY(contentY, out float realRowTopPx, out float realRowHeightPx);
+            bool haveRealRow = idx >= 0;
+            if (!haveRealRow)
+            {
+                idx = (int)Math.Floor(contentY / slot);
+            }
             if (idx < 0 || idx >= layout.ItemsSource.Count)
                 return null;
 
-            // The cell is ALIVE in the pool's in-use map (resident-tile cells are not recycled), so fetch the
-            // real, already-bound, already-measured cell — no realize, no measure, no rebind. Its inner hit /
-            // span-link rects are already populated from the real tile draw. This is what makes gestures (tap,
-            // pan, swipe) cheap and correct without touching the tile.
+            // Prefer the ALIVE in-use cell (already bound/measured, inner hit/span-link rects populated). But a
+            // cell whose tile was recycled/evicted (common for taller rows, or cells whose tile is mid-build) is
+            // NOT in the in-use map — realize it on demand so the tap still lands. Released in the finally unless
+            // a ripple pins it.
+            bool realizedForGesture = false;
             var cell = layout.ChildrenFactory.GetCellInUseOrNull(idx);
+            if (cell == null)
+            {
+                cell = layout.ChildrenFactory.GetViewForIndex(idx, null, 0, true);
+                realizedForGesture = cell != null;
+            }
             if (cell == null)
                 return null;
 
             try
             {
-                float top = DrawingRect.Top + padTop + idx * slot - scrollTop;
-                var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + avgH);
-                cell.Arrange(rect, _planeWidth / gscale, avgH / gscale, gscale);
+                // Use the row's REAL top/height when known so the on-screen hit rect matches the drawn cell.
+                float rowTop = haveRealRow ? realRowTopPx : idx * slot;
+                float rowH = haveRealRow ? realRowHeightPx : avgH;
+                float top = DrawingRect.Top + padTop + rowTop - scrollTop;
+                var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + rowH);
+                cell.Arrange(rect, _planeWidth / gscale, rowH / gscale, gscale);
 
                 // Only a discrete tap needs the inner span/link hit-rects re-populated at the on-screen rect
                 // (drawn once offscreen). Hover/pan/down don't — keep them cheap.
@@ -1593,7 +1610,7 @@ namespace DrawnUi.Draw
                 // offset by the tile's bandTop. A descending render at the on-screen rect re-positions them to
                 // SCREEN coords, so a ripple's touch offset (read from label.X/Y at tap) lands correctly on any
                 // scrolled tile — not just tile 0 where band coords == screen coords.
-                if (args.Type == TouchActionResult.Tapped)
+                if (args.Type == TouchActionResult.Tapped || args.Type == TouchActionResult.Down)
                 {
                     InvalidateHostTree(cell);
                     ScratchDrawForHit(cell, rect);
@@ -1639,6 +1656,12 @@ namespace DrawnUi.Draw
                 {
                     _rippleCell = cell;
                     _rippleCellIndex = idx;
+                    // Remember the REAL row geometry so the overlay arranges the pinned cell at its true
+                    // variable-height row, not a uniform idx*slot guess (which paints the ripple on the wrong row).
+                    _rippleRowReal = haveRealRow;
+                    _rippleRowTopPx = realRowTopPx;
+                    _rippleRowHeightPx = realRowHeightPx;
+                    realizedForGesture = false; // pinned for the ripple overlay — keep it alive, don't release
                     Repaint();
 
                     if (DebugRipple)
@@ -1648,6 +1671,10 @@ namespace DrawnUi.Draw
                         StartTapRipple(ripRect.MidX, ripRect.MidY, ripRect);
                     }
                 }
+
+                // A cell realized just for this gesture (not tile-owned, not pinned for a ripple) is released.
+                if (realizedForGesture)
+                    layout.ChildrenFactory.ReleaseViewInUse(idx, cell);
             }
         }
 
@@ -1658,6 +1685,9 @@ namespace DrawnUi.Draw
         // is scoped to the tapped cell only (NOT driven by Repaint, which fires for every hover/redraw).
         private SkiaControl _rippleCell;
         private int _rippleCellIndex = -1;
+        private bool _rippleRowReal;
+        private float _rippleRowTopPx;
+        private float _rippleRowHeightPx;
 
         private static bool HasActiveOverlayEffect(SkiaControl c)
         {
@@ -1694,8 +1724,14 @@ namespace DrawnUi.Draw
             float avg = Math.Max(1f, slot - spacing);
             float padTop = (float)(layout.Padding.Top * scale);
             float scrollTop = -InternalViewportOffset.Pixels.Y;
-            float top = DrawingRect.Top + padTop + _rippleCellIndex * slot - scrollTop;
-            var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + avg);
+            // Arrange at the REAL row geometry (variable height) captured at tap time; the stored top is content
+            // -from-0 so subtracting scrollTop keeps the ripple on its row while scrolling. Fall back to the
+            // uniform slot only when the row wasn't measured at tap time.
+            float top = _rippleRowReal
+                ? DrawingRect.Top + padTop + _rippleRowTopPx - scrollTop
+                : DrawingRect.Top + padTop + _rippleCellIndex * slot - scrollTop;
+            float rowH = _rippleRowReal ? _rippleRowHeightPx : avg;
+            var rect = new SKRect(DrawingRect.Left, top, DrawingRect.Left + _planeWidth, top + rowH);
 
             _rippleCell.Arrange(rect, _planeWidth / scale, avg / scale, scale);
             // Force an UNCACHED render of the WHOLE subtree: the cell was last drawn into its tile at content
