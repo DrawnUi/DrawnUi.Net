@@ -6601,14 +6601,16 @@ namespace DrawnUi.Draw
             else if (UsesCacheDoubleBuffering
                      && RenderObject != null)
             {
-                if (!CompareRectsSize(DrawingRect, RenderObject.Bounds, 0.5f))
+                //todo make this account for new API which extends renderobject bounds to match visualeffects
+                if (!CompareRectsSize(DirtyRegion, RenderObject.Bounds, 0.5f))
                 {
                     InvalidateMeasure();
                 }
             }
             else if (IsCacheComposite && RenderObjectPrevious != null)
             {
-                if (!CompareRectsSize(DrawingRect, RenderObjectPrevious.Bounds, 0.5f))
+                //todo make this account for new API which extends renderobject bounds to match visualeffects
+                if (!CompareRectsSize(DirtyRegion, RenderObjectPrevious.Bounds, 0.5f))
                 {
                     InvalidateMeasure();
                 }
