@@ -48,6 +48,7 @@ This page highlights the latest updates, features, and improvements in DrawnUi.M
 * **Accelerated Handlers**: Performance and safety optimizations for `SkiaViewAccelerated:SKGLView` on all platforms
 * **Windows Sync**: Windows accelerated handler now synced with display when refresh rate is >=120Hz
 * **ImageComposite**: Cache now works inside another `ImageComposite`
+* **CacheSharing**: New `CacheSharing` property (`Default`/`Shared`) on `SkiaControl`. When set to `Shared`, all instances of the same control type on one Canvas share a single `CachedObject` instead of each allocating their own. Supported for `Operations`, `Image`, and `GPU` cache types. Shared entries are managed via `Canvas.Cache` (`Free<T>()`, `Free(Type)`, `Free()`). See [drawing pipeline docs](drawing-pipeline.md) for details.
 
 ### Gaming Enhancements
 * **Frame Interpolator**: Adjustments for DrawnUi.Maui.Game

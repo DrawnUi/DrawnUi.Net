@@ -21,6 +21,7 @@ namespace DrawnUi.Draw
     /// <summary>
     /// A high-performance text rendering control that provides advanced text formatting,
     /// layout, and styling capabilities using SkiaSharp for rendering.
+    /// Default cache is SkiaCacheType.Operations
     /// </summary>
     /// <remarks>
     /// SkiaLabel offers rich text formatting with features including:

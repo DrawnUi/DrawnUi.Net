@@ -133,8 +133,8 @@ public partial class SkiaControl
     /// <summary>
     /// Cache sharing is only supported for Image and GPU cache types.
     /// </summary>
-    private bool IsSharedCacheEligible =>
-        UsingCacheType == SkiaCacheType.Image || UsingCacheType == SkiaCacheType.GPU;
+    private bool IsSharedCacheEligible => UsingCacheType == SkiaCacheType.Operations ||
+                                          UsingCacheType == SkiaCacheType.Image || UsingCacheType == SkiaCacheType.GPU;
 
     public static readonly BindableProperty AutoCacheProperty = BindableProperty.Create(nameof(AutoCache),
         typeof(bool),
