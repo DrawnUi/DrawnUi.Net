@@ -820,6 +820,8 @@ namespace DrawnUi.Views
 
                     //Content = null;
 
+                    _cacheManager?.Dispose();
+
                     DisposeManager.Dispose();
 
                     SurfaceCacheManager.Dispose();
@@ -1605,6 +1607,14 @@ namespace DrawnUi.Views
         }
 
         protected DisposableManager DisposeManager { get; } = new();
+
+        private CacheManager _cacheManager;
+
+        /// <summary>
+        /// Shared cache registry for this Canvas. Controls with CacheSharing=Shared store
+        /// one CachedObject per type here. Use Cache.Free&lt;T&gt;() to evict a type, Cache.Free() to clear all.
+        /// </summary>
+        public CacheManager SharedCache => _cacheManager ??= new CacheManager(this);
 
         public readonly struct TimedDisposable : IDisposable
         {

@@ -132,6 +132,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Shaders\SKSL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\ControlLifecycleState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\SkiaCacheType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\CacheSharingType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\ThermalState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Extensions\PointFExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\Aria.cs" />
@@ -375,6 +376,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SKAutoCanvasRestoreFixed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DisposableManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\CacheManager.cs" />
     <!-- Controls -->
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\GifAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaRadioButton.cs" />

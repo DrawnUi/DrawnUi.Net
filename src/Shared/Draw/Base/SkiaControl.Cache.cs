@@ -111,6 +111,31 @@ public partial class SkiaControl
         }
     }
 
+    public static readonly BindableProperty CacheSharingProperty = BindableProperty.Create(
+        nameof(CacheSharing),
+        typeof(CacheSharingType),
+        typeof(SkiaControl),
+        CacheSharingType.Default,
+        propertyChanged: NeedDraw);
+
+    /// <summary>
+    /// When Shared, all instances of this control type on the same Canvas share one CachedObject
+    /// instead of each allocating their own. Effective only for Image and GPU cache types.
+    /// Individual control disposal does not release the shared cache;
+    /// use SuperView.Cache.Free&lt;T&gt;() or let the Canvas dispose it.
+    /// </summary>
+    public CacheSharingType CacheSharing
+    {
+        get => (CacheSharingType)GetValue(CacheSharingProperty);
+        set => SetValue(CacheSharingProperty, value);
+    }
+
+    /// <summary>
+    /// Cache sharing is only supported for Image and GPU cache types.
+    /// </summary>
+    private bool IsSharedCacheEligible =>
+        UsingCacheType == SkiaCacheType.Image || UsingCacheType == SkiaCacheType.GPU;
+
     public static readonly BindableProperty AutoCacheProperty = BindableProperty.Create(nameof(AutoCache),
         typeof(bool),
         typeof(SkiaControl),
@@ -237,9 +262,36 @@ public partial class SkiaControl
     //[EditorBrowsable(EditorBrowsableState.Never)]
     public CachedObject RenderObject
     {
-        get { return _renderObject; }
+        get
+        {
+            if (Superview!=null && CacheSharing == CacheSharingType.Shared && IsSharedCacheEligible && Superview != null)
+                return Superview.SharedCache.Get(GetType());
+            return _renderObject;
+        }
         set
         {
+            if (Superview != null && CacheSharing == CacheSharingType.Shared && IsSharedCacheEligible && Superview != null)
+            {
+                lock (LockDraw)
+                {
+                    if (value != null)
+                    {
+                        RenderObjectNeedsUpdate = false;
+                        Superview.SharedCache.Set(GetType(), value);
+                        OnCacheCreated();
+                    }
+                    else
+                    {
+                        // Don't clear shared cache on individual control dispose/invalidate.
+                        // Mark this instance as needing re-render so CheckCachedObjectValid fails.
+                        RenderObjectNeedsUpdate = true;
+                        OnCacheDestroyed();
+                    }
+                    Monitor.PulseAll(LockDraw);
+                }
+                return;
+            }
+
             RenderObjectNeedsUpdate = false;
             if (_renderObject != value)
             {
@@ -382,7 +434,12 @@ public partial class SkiaControl
 
     protected virtual bool CheckCachedObjectValid(CachedObject cache, SKRect recordingArea, SkiaDrawingContext context)
     {
-        if (cache != null && !RenderObjectNeedsUpdate)
+        // In shared mode the per-instance RenderObjectNeedsUpdate flag is irrelevant — the shared
+        // cache's existence and size are the only validity signals. Individual controls should call
+        // SuperView.Cache.Free<T>() to evict the shared entry and force a full re-render.
+        bool isSharedMode = CacheSharing == CacheSharingType.Shared && IsSharedCacheEligible;
+
+        if (cache != null && (!RenderObjectNeedsUpdate || isSharedMode))
         {
             if (cache.Surface != null && cache.Surface.Handle == 0)
             {
@@ -408,6 +465,9 @@ public partial class SkiaControl
                     return false;
                 }
             }
+
+            if (isSharedMode)
+                RenderObjectNeedsUpdate = false; // sync per-instance flag when accepting shared cache
 
             CacheValidity = CacheValidityType.Valid;
             return true;
