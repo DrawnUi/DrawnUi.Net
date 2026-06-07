@@ -181,6 +181,10 @@ public partial class TextSpan : Element //we subclassed Element only to be able 
         }
 
         //todo stroke and gradient for spans..
+        if (defaultPaint.Shader != null && Paint.Shader == null)
+        {
+            Paint.Shader = defaultPaint.Shader;
+        }
 
         return Paint;
     }
