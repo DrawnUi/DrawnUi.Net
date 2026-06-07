@@ -1483,6 +1483,12 @@ namespace DrawnUi.Draw
             {
                 foreach (var g in glyphs)
                 {
+                    if (g.Symbol == 0xFE0F || g.Symbol == 0xFE0E)
+                    {
+                        positions.Add(LineGlyph.FromGlyph(g, offsetX, 0f));
+                        continue;
+                    }
+
                     var print = g.GetGlyphText();
                     var mono = g.IsNumber();
                     var thisWidth = MeasureTextWidthWithAdvance(paint, print);
@@ -1536,6 +1542,14 @@ namespace DrawnUi.Draw
 
                 foreach (var g in glyphs)
                 {
+                    // VS16/VS15 variation selectors are zero-width modifiers; some Windows fonts report non-zero advance
+                    if (g.Symbol == 0xFE0F || g.Symbol == 0xFE0E)
+                    {
+                        positions.Add(LineGlyph.FromGlyph(g, offsetX, 0f));
+                        pos++;
+                        continue;
+                    }
+
                     var thisWidth = SpanMeasurement.MeasureTextWidthWithAdvanceSpan(paint, g.GetGlyphText());
                     if (pos == addAtIndex)
                     {
