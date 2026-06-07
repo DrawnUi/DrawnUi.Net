@@ -454,7 +454,7 @@ namespace DrawnUi.Draw
         }
 
 
-        public void DrawLines(
+        public virtual void DrawLines(
             DrawingContext ctx,
             SKPaint paintDefault,
             SKPoint startOffset,
@@ -681,6 +681,7 @@ namespace DrawnUi.Draw
                         var paint = paintDefault;
                         SKRect rectPrecalculatedSpanBounds = SKRect.Empty;
 
+                        //special span deco, might come from SkiaRichLabel
                         if (lineSpan.Span != null)
                         {
                             paint = lineSpan.Span.SetupPaint(scale, paintDefault);
@@ -1122,7 +1123,14 @@ namespace DrawnUi.Draw
                         if (AutoFont && Glyphs != null && Glyphs.Count > 0)
                         {
                             var first = Glyphs[0].Symbol;
-                            var matchedFace = SkiaFontManager.MatchCharacter(first);
+                            SKTypeface matchedFace = null;
+                            if (TypeFaceFallback != null)
+                            {
+                                var fallbackGlyph = GetGlyphs(char.ConvertFromUtf32(first), TypeFaceFallback).First();
+                                if (fallbackGlyph.IsAvailable)
+                                    matchedFace = TypeFaceFallback;
+                            }
+                            matchedFace ??= SkiaFontManager.MatchCharacter(first);
                             if (matchedFace != null)
                             {
                                 needsShaping = SkiaLabel.UnicodeNeedsShaping(first);
@@ -2750,6 +2758,20 @@ namespace DrawnUi.Draw
         protected static object LockSetup = new();
 
         protected string _fontFamily;
+        protected string _fontFamilyFallback;
+        protected SKTypeface TypeFaceFallback;
+
+        public static readonly BindableProperty FontFamilyFallbackProperty = BindableProperty.Create(nameof(FontFamilyFallback),
+            typeof(string), typeof(SkiaLabel), string.Empty, propertyChanged: NeedUpdateFont);
+
+        /// <summary>
+        /// When a glyph is not found in the current font will try this first before asking system to match a compatible font.
+        /// </summary>
+        public string FontFamilyFallback
+        {
+            get { return (string)GetValue(FontFamilyFallbackProperty); }
+            set { SetValue(FontFamilyFallbackProperty, value); }
+        }
 
         protected virtual void UpdateFont()
         {
@@ -2759,12 +2781,23 @@ namespace DrawnUi.Draw
             lock (LockSetup)
             {
                 if (_fontFamily != FontFamily
+                    || _fontFamilyFallback != FontFamilyFallback
                     || _fontWeight != FontWeight
                     || _fontFamily == null
                     || TypeFace == null)
                 {
                     _fontFamily = FontFamily;
+                    _fontFamilyFallback = FontFamilyFallback;
                     _fontWeight = FontWeight;
+
+                    if (!string.IsNullOrEmpty(FontFamilyFallback))
+                    {
+                        TypeFaceFallback = SkiaFontManager.Instance.GetFont(FontFamilyFallback);
+                    }
+                    else
+                    {
+                        TypeFaceFallback = null;
+                    }
 
                     var replaceFont = SkiaFontManager.Instance.GetFont(_fontFamily, _fontWeight);
 

@@ -180,7 +180,7 @@ public partial class SkiaRichLabel : SkiaLabel
     /// Produces a list of contiguous-typeface runs ready to become <see cref="TextSpan"/>s.
     /// Shared between SkiaRichLabel subclasses.
     /// </summary>
-    public static List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> BuildSpanData(
+    public virtual List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> BuildSpanData(
         string text,
         SKTypeface originalTypeFace)
     {
@@ -216,7 +216,14 @@ public partial class SkiaRichLabel : SkiaLabel
             //switch to fallback font
             if (!isStandardSymbol && !glyph.IsAvailable)
             {
-                SKTypeface newTypeFace = SkiaFontManager.MatchCharacter(codePoint);
+                SKTypeface newTypeFace = null;
+                if (TypeFaceFallback != null)
+                {
+                    var fallbackGlyph = SkiaLabel.GetGlyphs(glyphText, TypeFaceFallback).First();
+                    if (fallbackGlyph.IsAvailable)
+                        newTypeFace = TypeFaceFallback;
+                }
+                newTypeFace ??= SkiaFontManager.MatchCharacter(codePoint);
                 if (newTypeFace != null && newTypeFace != currentTypeFace)
                 {
                     BreakSpanAndSwitchTypeface(newTypeFace);
