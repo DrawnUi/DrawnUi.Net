@@ -1,3 +1,5 @@
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace DrawnUi.Draw;
 
 /// <summary>
@@ -407,7 +409,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
     }
 
     /// <summary>
-    /// Creates shader fresh each time - no caching of GPU resources
+    /// Creates shader fresh each time - no caching of GPU resources. Use for DEV cases ONLY!!! It re-compiles shader code everytime!
     /// </summary>
     public virtual SKShader CreateShader(DrawingContext ctx, SKImage source)
     {

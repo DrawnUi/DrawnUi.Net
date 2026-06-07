@@ -1,11 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DrawnUi.Infrastructure;
 
 public static class SkSl
 {
-
     private static async Task<Stream> OpenResourceStreamAsync(string fileName)
     {
 #if BROWSER || DRAWNUI_NET
@@ -18,22 +18,44 @@ public static class SkSl
 
     public static async Task<string> LoadFromResourcesAsync(string fileName)
     {
-        using var stream = await OpenResourceStreamAsync(fileName);
-        using var reader = new StreamReader(stream);
-        var json = await reader.ReadToEndAsync();
-        return json;
+        if (!LoadedCache.TryGetValue(fileName, out var shaderCode))
+        {
+            using var stream = await OpenResourceStreamAsync(fileName);
+            using var reader = new StreamReader(stream);
+            shaderCode = await reader.ReadToEndAsync();
+            LoadedCache[fileName] = shaderCode;
+        }
+        return shaderCode;
     }
 
     public static string LoadFromResources(string fileName)
     {
+        if (!LoadedCache.TryGetValue(fileName, out var shaderCode))
+        {
 #if BROWSER || DRAWNUI_NET
-        throw new NotSupportedException($"Synchronous shader resource loading is not supported in the browser for '{fileName}'. Use LoadFromResourcesAsync instead.");
+            throw new NotSupportedException(
+                $"Synchronous shader resource loading is not supported on this runtime for '{fileName}'. Use PrecompileAsync or LoadFromResourcesAsync instead.");
 #else
         using var stream = FileSystem.OpenAppPackageFileAsync(fileName).GetAwaiter().GetResult();
         using var reader = new StreamReader(stream);
-        var json = reader.ReadToEnd();
-        return json;
+        shaderCode = reader.ReadToEnd();
+        return shaderCode;
 #endif
+        }
+
+        return shaderCode;
+    }
+
+    public static void Precompile(string[] filenames, Action<string> onError = null)
+    {
+        foreach (var filename in filenames)
+        {
+            if (!CompiledCache.TryGetValue(filename, out _))
+            {
+                string shaderCode = SkSl.LoadFromResources(filename);
+                SkSl.Compile(shaderCode, filename, true, onError);
+            }
+        }
     }
 
     public static void Precompile(params string[] filenames)
@@ -47,6 +69,41 @@ public static class SkSl
             }
         }
     }
+
+    public static async Task<bool> PrecompileAsync(string[] filenames, Action<string> onError = null)
+    {
+        foreach (var filename in filenames)
+        {
+            if (!CompiledCache.TryGetValue(filename, out _))
+            {
+                string shaderCode = await SkSl.LoadFromResourcesAsync(filename);
+                var effect = SkSl.Compile(shaderCode, filename, true, onError);
+                if (effect == null)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static async Task PrecompileAsync(params string[] filenames)
+    {
+        foreach (var filename in filenames)
+        {
+            if (!CompiledCache.TryGetValue(filename, out _))
+            {
+                string shaderCode = await SkSl.LoadFromResourcesAsync(filename);
+                SkSl.Compile(shaderCode, filename, true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Sources from app resources
+    /// </summary>
+    public static ConcurrentDictionary<string, string> LoadedCache = new();
 
     /// <summary>
     /// Provides a thread-safe cache of compiled runtime effects, indexed by their string identifiers.
@@ -73,7 +130,8 @@ public static class SkSl
     /// <param name="shaderCode"></param>
     /// <param name="filename"></param>
     /// <returns></returns>
-    public static SKRuntimeEffect Compile(string shaderCode, string filename, bool useCache = true, Action<string> onError =null)
+    public static SKRuntimeEffect Compile(string shaderCode, string filename, bool useCache = true,
+        Action<string> onError = null)
     {
         SKRuntimeEffect compiled = null;
 
@@ -90,6 +148,10 @@ public static class SkSl
 
                 return compiled;
             }
+        }
+        else
+        {
+            Debug.WriteLine($"[SKSL] Warning: not using cache! {filename}");
         }
 
         string errors;
@@ -140,30 +202,32 @@ public static class SkSl
         {
             error = errors;
         }
+
         if (!string.IsNullOrEmpty(error))
         {
             if (!string.IsNullOrEmpty(filename))
             {
-                throw new ApplicationException($"Shader compilation of '{filename}' failed:{Environment.NewLine}{errors}{Environment.NewLine}" + error);
+                throw new ApplicationException(
+                    $"Shader compilation of '{filename}' failed:{Environment.NewLine}{errors}{Environment.NewLine}" +
+                    error);
             }
 
-            throw new ApplicationException($"Shader compilation failed:{Environment.NewLine}{errors}{Environment.NewLine}" + error);
+            throw new ApplicationException(
+                $"Shader compilation failed:{Environment.NewLine}{errors}{Environment.NewLine}" + error);
         }
     }
 
- 
-    public static SKShader CreateShader(SKRuntimeEffect compiled, SKRuntimeEffectUniforms uniforms, Dictionary<string, SKShader> textures)
-    {
 
+    public static SKShader CreateShader(SKRuntimeEffect compiled, SKRuntimeEffectUniforms uniforms,
+        Dictionary<string, SKShader> textures)
+    {
         var children = new SKRuntimeEffectChildren(compiled);
         foreach (var texture in textures)
         {
             children.Add(texture.Key, texture.Value);
         }
 
-        return compiled.ToShader(uniforms, children); ;
+        return compiled.ToShader(uniforms, children);
+        ;
     }
- 
-
-
 }
