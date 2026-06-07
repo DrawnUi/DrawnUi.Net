@@ -265,12 +265,6 @@ public partial class SkiaRichLabel : SkiaLabel
                 else
                     advance = 2;
             }
-            else if (currentIndex + 1 < text.Length)
-            {
-                char next = text[currentIndex + 1];
-                if (next == '️' || next == '︎') // VS16/VS15: zero-width on most platforms but Segoe gives them width
-                    advance = 2;
-            }
 
             currentIndex += advance;
 
