@@ -3619,7 +3619,10 @@ namespace DrawnUi.Draw
             }
             set
             {
-                SetValue(RenderingScaleProperty, value);
+                lock (lockMeasured)
+                {
+                    SetValue(RenderingScaleProperty, value);
+                }
             }
         }
 
@@ -3643,6 +3646,7 @@ namespace DrawnUi.Draw
         #endregion
 
         public SKRect RenderedAtDestination { get; set; }
+
 
         public virtual void OnScaleChanged()
         {
