@@ -109,7 +109,7 @@ public class CacheSharingTests
         host.AdvanceFrames(5);
 
         var canvas = host.Canvas;
-        var sharedEntry = canvas.Cache.Get(typeof(DividerLine));
+        var sharedEntry = canvas.SharedCache.Get(typeof(DividerLine));
 
         Assert.NotNull(sharedEntry);
 
@@ -131,7 +131,7 @@ public class CacheSharingTests
             d.CreatedCache += (_, __) => Interlocked.Increment(ref cacheCreatedCount);
 
         // Evict shared entry — all dividers must re-render
-        host.Canvas.Cache.Free<DividerLine>();
+        host.Canvas.SharedCache.Free<DividerLine>();
 
         host.AdvanceFrames(5);
 
@@ -141,7 +141,7 @@ public class CacheSharingTests
         Assert.Equal(1, cacheCreatedCount);
 
         // And shared entry is back
-        Assert.NotNull(host.Canvas.Cache.Get(typeof(DividerLine)));
+        Assert.NotNull(host.Canvas.SharedCache.Get(typeof(DividerLine)));
     }
 
     [Fact]
