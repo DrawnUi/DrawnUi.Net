@@ -254,7 +254,7 @@ public partial class TextSpan : IDisposable
         CommandTapped = null;
         Tapped = null;
 
-        Parent = null;
+        //Parent = null; can't do this in MAUI crash "at Microsoft.Maui.Controls.Element.Microsoft.Maui.Controls.IElementDefinition.RemoveResourcesChangedListener"
     }
 
     /// <summary>
