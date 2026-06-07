@@ -2727,11 +2727,23 @@ namespace DrawnUi.Draw
             var key = (paint.Typeface?.Handle ?? IntPtr.Zero, paint.TextSize);
             return _correctedAscentCache.GetOrAdd(key, _ =>
             {
+                var rawAscent = -paint.FontMetrics.Ascent;
+
                 var bounds = new SKRect();
-                paint.MeasureText("Á", ref bounds);
-                return bounds.IsEmpty || bounds.Top >= 0
-                    ? -paint.FontMetrics.Ascent
-                    : -bounds.Top;
+                paint.MeasureText("ÁÃǺẼỠ", ref bounds);
+                
+                if (bounds.IsEmpty || bounds.Top >= 0)
+                    return rawAscent;
+
+                var measuredAscent = -bounds.Top;
+
+                // Only correct if the measured value is meaningfully taller
+                // (e.g. the font has one or two outlier glyphs with crazy diacritics)
+                const float tolerance = 2.5f; // pixels, can tune
+                if (measuredAscent > rawAscent + tolerance)
+                    return measuredAscent;   // use correction for fonts that really need it
+
+                return rawAscent;
             });
         }
 #else
