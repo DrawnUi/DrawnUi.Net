@@ -959,7 +959,14 @@ namespace DrawnUi.Draw
                         }
                     }
 
-                    return MeasureLayout(request, false);
+                    var layout = MeasureLayout(request, false);
+
+                    if (layout.Pixels.Height<0 || layout.Pixels.Width<0)
+                    {
+                        return SetMeasuredAsEmpty(scale);
+                    }
+
+                    return layout;
                 } //end lock
             }
             catch (Exception e)

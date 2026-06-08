@@ -1435,6 +1435,11 @@ namespace DrawnUi.Draw
         public float AdaptWidthConstraintToContentRequest(MeasuringConstraints constraints, float contentWidthPixels,
             bool canExpand)
         {
+            if (float.IsNaN(contentWidthPixels) || contentWidthPixels <= 0)
+            {
+                return 0;
+            }
+
             var sideConstraintsPixels = NeedAutoWidth
                 ? constraints.TotalMargins.HorizontalThickness
                 : constraints.Margins.HorizontalThickness;
@@ -1453,6 +1458,10 @@ namespace DrawnUi.Draw
         public float AdaptHeightConstraintToContentRequest(MeasuringConstraints constraints,
             float contentHeightPixels, bool canExpand)
         {
+            if (float.IsNaN(contentHeightPixels) || contentHeightPixels <= 0)
+            {
+                return 0;
+            }
             var sideConstraintsPixels = NeedAutoHeight
                 ? constraints.TotalMargins.VerticalThickness
                 : constraints.Margins.VerticalThickness;
@@ -3982,6 +3991,7 @@ namespace DrawnUi.Draw
 
             bool useHorizontalThickness = widthRequest > 0;
             bool useVerticalThickness = heightRequest > 0;
+
             float marginHorizontalDelta = (float)((Margins.Left - Margins.Right) * scale);
             float marginVerticalDelta = (float)((Margins.Top - Margins.Bottom) * scale);
 
