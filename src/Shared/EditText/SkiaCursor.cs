@@ -33,6 +33,8 @@ public class SkiaCursor : SkiaShape
                 }
             };
         }
+
+        UpdateColors();
     }
 
     internal void OnMoved()

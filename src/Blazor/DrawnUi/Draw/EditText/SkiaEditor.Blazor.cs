@@ -49,6 +49,9 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
 
     public void SetFocusNative(bool focus)
     {
+        // Guard against timer race: if the 50ms defocus task fires AFTER a refocus task
+        // has already run, IsFocused will be true while focus=false — skip the unsubscribe.
+        if (!focus && IsFocused) return;
         SubscribeToKeyboard(focus);
     }
 

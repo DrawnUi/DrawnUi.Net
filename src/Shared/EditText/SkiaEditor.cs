@@ -5,9 +5,19 @@ using System.Windows.Input;
 
 namespace DrawnUi.Draw
 {
+    /// <summary>
+    /// Drawn entry, support number of lines and other.
+    /// Can customize cursor etc.
+    /// Default cache SkiaCacheType.Operations is set automatically in constructor.
+    /// </summary>
     public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     {
         public SkiaEditor()
+        {
+            UseCache = SkiaCacheType.Operations;
+        }
+
+        protected override void CreateDefaultContent()
         {
             CreateControl();
         }
@@ -118,24 +128,40 @@ namespace DrawnUi.Draw
                 Label.MaxLines = -1;
                 if (_scroll != null)
                     _scroll.Orientation = ScrollOrientation.Vertical;
+                if (Label != null)
+                {
+                    Label.HorizontalOptions = LayoutOptions.Fill;
+                }
             }
             else
             {
                 Label.HeightRequest = GetSingleLineHeightPts();
                 Label.MaxLines = 1;
                 if (_scroll != null)
-                    _scroll.Orientation = ScrollOrientation.Horizontal;
+                    _scroll.Orientation = ScrollOrientation.Horizontal;  
+                if (Label != null)
+                {
+                    Label.HorizontalOptions = LayoutOptions.Start;
+                }
             }
 
-            Cursor.Color = this.CursorColor;
-
+            UpdateCursorStyle();
             UpdateCursorVisibility();
+
             UpdatePlaceholder();
             UpdateViewportHeight();
 
             Invalidate();
         }
 
+        protected virtual void UpdateCursorStyle()
+        {
+            if (Cursor != null)
+            {
+                Cursor.Color = this.CursorColor;
+                Cursor.HeightRequest = GetSingleLineHeightPts();
+            }
+        }
         protected virtual void UpdatePlaceholder()
         {
             if (_placeholderLabel == null)
@@ -182,14 +208,15 @@ namespace DrawnUi.Draw
 
         public virtual SkiaLabel CreateLabel()
         {
-            var label = UseMarkdown ? new SkiaRichLabel() : new SkiaLabel()
+            SkiaLabel label = UseMarkdown ? new SkiaRichLabel() : new SkiaLabel()
             {
-                HorizontalOptions = LayoutOptions.Fill,
                 KeepSpacesOnLineBreaks = true,
                 NeedsGlyphPositions = true,
                 Margin = new Thickness(0, 0, 4, 0),
-                TextColor = Colors.Black
+                TextColor = this.TextColor
             };
+
+            label.HorizontalOptions = IsMultiline ? LayoutOptions.Fill : LayoutOptions.Start;
 
             return OnCreatingLabel(label);
         }
@@ -200,7 +227,8 @@ namespace DrawnUi.Draw
             {
                 UseCache = SkiaCacheType.Operations,
                 WidthRequest = 2,
-                HeightRequest = GetSingleLineHeightPts()
+                HeightRequest = GetSingleLineHeightPts(),
+                BackgroundColor = Colors.LimeGreen//debug color, will be replaced at initialization anyway
             };
         }
 
@@ -271,19 +299,19 @@ namespace DrawnUi.Draw
                             Children =
                             {
                                 Label,
+
                                 new SkiaEditorSelection
                                 {
                                     HorizontalOptions = LayoutOptions.Fill,
                                     VerticalOptions = LayoutOptions.Fill,
                                     SourceLabel = Label,
                                 }.Assign(out _selectionControl),
+
                                 Cursor
                             }
                         }.Assign(out _contentLayer)
                 }.Assign(out _scroll)
             };
-
-
 
             Cursor?.Initialize(Label);
 
@@ -598,6 +626,10 @@ namespace DrawnUi.Draw
         private SelectionDragMode _selectionDragMode;
         private int _selectionAnchor;
 
+        // Set by platform code to block spurious out-of-bounds Down events that arrive
+        // immediately after keyboard input (e.g. WinUI pointer events after TextChanged).
+        protected long _spuriousDownBlockUntilMs;
+
         public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
         {
 
@@ -633,8 +665,15 @@ namespace DrawnUi.Draw
 
             case TouchActionResult.Down:
 
+            Debug.WriteLine($"[EditorDown] StartXY=({args.Event.StartingLocation.X:F0},{args.Event.StartingLocation.Y:F0}) HitBox={HitBoxAuto} HitIsInside={HitIsInside(args.Event.StartingLocation.X, args.Event.StartingLocation.Y)} IsFocused={IsFocused}");
+
             if (!HitIsInside(args.Event.StartingLocation.X, args.Event.StartingLocation.Y))
             {
+                // Block spurious platform Down events (e.g. WinUI pointer after keystroke)
+                // that arrive immediately after text input while the editor is still focused.
+                if (IsFocused && Environment.TickCount64 < _spuriousDownBlockUntilMs)
+                    return this;
+
                 // tap outside bounds while focused — unfocus; let tap propagate
                 SetFocus(false);
                 return null;
@@ -685,6 +724,7 @@ namespace DrawnUi.Draw
 
             _selectionDragMode = SelectionDragMode.None;
             var pos = GetCursorPosition(x, y);
+            Debug.WriteLine($"[EditorDown] x={x:F0} y={y:F0} pos={pos} Text.Length={Text?.Length ?? 0}");
             CursorPosition = pos;
             SelectionLength = 0;
 
@@ -765,7 +805,8 @@ namespace DrawnUi.Draw
 
         protected void MoveInternalCursor()
         {
-            if (_suppressImmediateCursorMove) return;
+            if (_suppressImmediateCursorMove)
+                return;
 
             if (SelectionLength > 0)
                 SetCursorPositionNative(CursorPosition, CursorPosition + SelectionLength);
@@ -783,175 +824,182 @@ namespace DrawnUi.Draw
             SetCursorPositionNative(0, Text.Length);
         }
 
+        private object lockCursor = new();
+
         /// <summary>
         /// Positions cursor control where it should be using translation, and sets its visibility.
         /// </summary>
         public virtual void UpdateCursorVisibility()
         {
-            if (Label != null && Cursor != null)
+            lock (lockCursor)
             {
-
-                // Clamp to text length — CursorPosition can be stale (16 ms delay on Windows,
-                // 50 ms on Android) while text has already shrunk via native TextBox events.
-                // Without clamping, the glyph loop exits without calling MoveCursorTo and the
-                // cursor stays at its previous pixel position indefinitely.
-                var textLen = Text?.Length ?? 0;
-                var cursorIndex = SelectionLength > 0
-                    ? Math.Min(CursorPosition + SelectionLength, textLen)
-                    : Math.Min(CursorPosition, textLen);
-
-                //make cursor fit the line height
-                var lineH = Label.MeasuredLineHeight / RenderingScale;
-                if (lineH <= 0)
-                    lineH = (float)GetSingleLineHeightPts();
-                if (lineH > 0)
-                    Cursor.HeightRequest = lineH;
-                if (cursorIndex < 0)
+                if (Label != null && Cursor != null)
                 {
-                    CursorPosition = 0;
-                    MoveCursorTo(0, 0);
-                    SetCursorVisible(IsFocused && CanShowCursor);
-                    return;
-                }
 
-                if (Label.Lines == null || Label.LinesCount <= 0)
-                {
-#if !BROWSER
-                    // On Blazor, Lines are populated during the render pass which happens
-                    // after property-change handlers. Hiding cursor here would cause a
-                    // 1-frame invisible flicker every keystroke; defer instead (see DeferVisualCursorUpdate).
-                    if (string.IsNullOrEmpty(Text))
+                    // Clamp to text length — CursorPosition can be stale (16 ms delay on Windows,
+                    // 50 ms on Android) while text has already shrunk via native TextBox events.
+                    // Without clamping, the glyph loop exits without calling MoveCursorTo and the
+                    // cursor stays at its previous pixel position indefinitely.
+                    var textLen = Text?.Length ?? 0;
+                    var cursorIndex = SelectionLength > 0
+                        ? Math.Min(CursorPosition + SelectionLength, textLen)
+                        : Math.Min(CursorPosition, textLen);
+
+                    //make cursor fit the line height
+                    var lineH = Label.MeasuredLineHeight / RenderingScale;
+                    if (lineH <= 0)
+                        lineH = (float)GetSingleLineHeightPts();
+                    if (lineH > 0)
+                        Cursor.HeightRequest = lineH;
+
+                    if (cursorIndex < 0)
                     {
-                        // Empty editor: no lines — place cursor at the text insertion point
-                        // for the active horizontal alignment so it aligns with placeholder text.
-                        var cursorX = 0.0;
-                        // Use ViewportConstraintWidth (set from editor's real pixel width in Paint)
-                        // so cursor centers within the visible area, not the infinite scroll content.
-                        var viewportW = Label.ViewportConstraintWidth > 0
-                            ? Label.ViewportConstraintWidth / RenderingScale
-                            : Label.DrawingRect.Width / RenderingScale;
-                        if (viewportW > 0 && viewportW < SkiaControl.MaxRealPixelSize)
-                        {
-                            if (HorizontalTextAlignment == DrawTextAlignment.Center)
-                                cursorX = (viewportW - Cursor.WidthRequest) / 2.0;
-                            else if (HorizontalTextAlignment == DrawTextAlignment.End)
-                                cursorX = viewportW - Cursor.WidthRequest;
-                        }
-                        MoveCursorTo(cursorX, 0);
+                        CursorPosition = 0;
+                        MoveCursorTo(0, 0);
                         SetCursorVisible(IsFocused && CanShowCursor);
+                        return;
                     }
-                    else
+
+                    if (Label.Lines == null || Label.LinesCount <= 0 || string.IsNullOrEmpty(Text))
                     {
-                        // Text was just changed and label hasn't re-measured yet — hide
-                        // cursor briefly; it will be repositioned by the delayed position update.
-                        SetCursorVisible(false);
-                    }
-#endif
-                    return;
-                }
-
-                var index = 0;
-                var line = 0;
-                var endX = 0f;
-                var lastY = 0f;
-                foreach (var labelLine in Label.Lines)
-                {
-                    var lineGlyphs = GetLineGlyphs(labelLine);
-                    var nextIndex = AdvanceLineTextIndex(index, lineGlyphs.Length);
-
-                    // Check if we're on the last line and the cursor is at the last position
-                    if (line == Label.LinesCount - 1 && cursorIndex == index + lineGlyphs.Length)
-                    {
-                        var endsWithHardLineBreak = cursorIndex > 0
-                            && Text != null
-                            && cursorIndex == Text.Length
-                            && IsEditorBreak(Text[cursorIndex - 1]);
-
-                        double translateX;
-                        double translateY;
-
-                        if (endsWithHardLineBreak)
+                        if (string.IsNullOrEmpty(Text))
                         {
-                            var startX = labelLine.Bounds.Left + (lineGlyphs.Length > 0 ? lineGlyphs[0].Position : 0);
-                            translateX = (startX - Label.DrawingRect.Left) / RenderingScale;
-                            translateY = (labelLine.Bounds.Bottom - Label.DrawingRect.Top) / RenderingScale;
+                            // Empty editor: no lines — place cursor at the text insertion point
+                            // for the active horizontal alignment so it aligns with placeholder text.
+                            var cursorX = 0.0;
+                            // Use ViewportConstraintWidth (set from editor's real pixel width in Paint)
+                            // so cursor centers within the visible area, not the infinite scroll content.
+                            var viewportW = Label.ViewportConstraintWidth > 0
+                                ? Label.ViewportConstraintWidth / RenderingScale
+                                : Label.DrawingRect.Width / RenderingScale;
+                            if (viewportW > 0 && viewportW < SkiaControl.MaxRealPixelSize)
+                            {
+                                if (HorizontalTextAlignment == DrawTextAlignment.Center)
+                                    cursorX = (viewportW - Cursor.WidthRequest) / 2.0;
+                                else if (HorizontalTextAlignment == DrawTextAlignment.End)
+                                    cursorX = viewportW - Cursor.WidthRequest;
+                            }
+                            MoveCursorTo(cursorX, 0);
+                            SetCursorVisible(IsFocused && CanShowCursor);
                         }
+#if !BROWSER
                         else
                         {
-                            translateX = (labelLine.Bounds.Right - Label.DrawingRect.Left) / RenderingScale;
-                            translateY = (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale;
+                            // On Blazor, Lines are populated during the render pass which happens
+                            // after property-change handlers. Hiding cursor here would cause a
+                            // 1-frame invisible flicker every keystroke; defer instead (see DeferVisualCursorUpdate).
+                            // Text was just changed and label hasn't re-measured yet — hide
+                            // cursor briefly; it will be repositioned by the delayed position update.
+                            SetCursorVisible(false);
                         }
-
-                        MoveCursorTo(translateX, translateY);
-                        break;
+#endif
+                        return;
                     }
 
-                    if (cursorIndex == nextIndex && nextIndex > index + lineGlyphs.Length)
+                    var index = 0;
+                    var line = 0;
+                    var endX = 0f;
+                    var lastY = 0f;
+                    foreach (var labelLine in Label.Lines)
                     {
-                        var nextLine = line + 1 < Label.LinesCount ? Label.Lines[line + 1] : null;
-                        if (nextLine != null)
+                        var lineGlyphs = GetLineGlyphs(labelLine);
+                        var nextIndex = AdvanceLineTextIndex(index, lineGlyphs.Length);
+
+                        // Check if we're on the last line and the cursor is at the last position
+                        if (line == Label.LinesCount - 1 && cursorIndex == index + lineGlyphs.Length)
                         {
-                            var nextGlyphs = GetLineGlyphs(nextLine);
-                            var startX = nextLine.Bounds.Left + (nextGlyphs.Length > 0 ? nextGlyphs[0].Position : 0);
-                            MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
-                                (nextLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
-                            break;
-                        }
-                    }
-
-                    if (cursorIndex == nextIndex - 1 && nextIndex > index + lineGlyphs.Length)
-                    {
-                        MoveCursorTo((labelLine.Bounds.Right - Label.DrawingRect.Left) / RenderingScale,
-                            (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
-                        break;
-                    }
-
-                    if (cursorIndex < index + lineGlyphs.Length)
-                    {
-
-                        if (line > 0 && cursorIndex - index == 0)
-                        {
-                            var isHardLineBreak = cursorIndex > 0
+                            var endsWithHardLineBreak = cursorIndex > 0
                                 && Text != null
-                                && cursorIndex - 1 < Text.Length
+                                && cursorIndex == Text.Length
                                 && IsEditorBreak(Text[cursorIndex - 1]);
 
-                            if (isHardLineBreak)
+                            double translateX;
+                            double translateY;
+
+                            if (endsWithHardLineBreak)
                             {
                                 var startX = labelLine.Bounds.Left + (lineGlyphs.Length > 0 ? lineGlyphs[0].Position : 0);
-                                MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
-                                    (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
+                                translateX = (startX - Label.DrawingRect.Left) / RenderingScale;
+                                translateY = (labelLine.Bounds.Bottom - Label.DrawingRect.Top) / RenderingScale;
                             }
                             else
                             {
-                                MoveCursorTo((endX - Label.DrawingRect.Left) / RenderingScale,
-                                    (lastY - Label.DrawingRect.Top) / RenderingScale);
+                                translateX = (labelLine.Bounds.Right - Label.DrawingRect.Left) / RenderingScale;
+                                translateY = (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale;
                             }
+
+                            MoveCursorTo(translateX, translateY);
                             break;
                         }
 
-                        var x = labelLine.Bounds.Left + lineGlyphs[cursorIndex - index].Position;
-                        var y = labelLine.Bounds.Top;
+                        if (cursorIndex == nextIndex && nextIndex > index + lineGlyphs.Length)
+                        {
+                            var nextLine = line + 1 < Label.LinesCount ? Label.Lines[line + 1] : null;
+                            if (nextLine != null)
+                            {
+                                var nextGlyphs = GetLineGlyphs(nextLine);
+                                var startX = nextLine.Bounds.Left + (nextGlyphs.Length > 0 ? nextGlyphs[0].Position : 0);
+                                MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
+                                    (nextLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
+                                break;
+                            }
+                        }
 
-                        MoveCursorTo((x - Label.DrawingRect.Left) / RenderingScale, (y - Label.DrawingRect.Top) / RenderingScale);
-                        break;
+                        if (cursorIndex == nextIndex - 1 && nextIndex > index + lineGlyphs.Length)
+                        {
+                            MoveCursorTo((labelLine.Bounds.Right - Label.DrawingRect.Left) / RenderingScale,
+                                (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
+                            break;
+                        }
+
+                        if (cursorIndex < index + lineGlyphs.Length)
+                        {
+
+                            if (line > 0 && cursorIndex - index == 0)
+                            {
+                                var isHardLineBreak = cursorIndex > 0
+                                    && Text != null
+                                    && cursorIndex - 1 < Text.Length
+                                    && IsEditorBreak(Text[cursorIndex - 1]);
+
+                                if (isHardLineBreak)
+                                {
+                                    var startX = labelLine.Bounds.Left + (lineGlyphs.Length > 0 ? lineGlyphs[0].Position : 0);
+                                    MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
+                                        (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
+                                }
+                                else
+                                {
+                                    MoveCursorTo((endX - Label.DrawingRect.Left) / RenderingScale,
+                                        (lastY - Label.DrawingRect.Top) / RenderingScale);
+                                }
+                                break;
+                            }
+
+                            var x = labelLine.Bounds.Left + lineGlyphs[cursorIndex - index].Position;
+                            var y = labelLine.Bounds.Top;
+
+                            MoveCursorTo((x - Label.DrawingRect.Left) / RenderingScale, (y - Label.DrawingRect.Top) / RenderingScale);
+                            break;
+                        }
+
+                        endX = labelLine.Bounds.Right;
+                        lastY = labelLine.Bounds.Top;
+                        line++;
+                        index = nextIndex;
                     }
 
-                    endX = labelLine.Bounds.Right;
-                    lastY = labelLine.Bounds.Top;
-                    line++;
-                    index = nextIndex;
+                    SetCursorVisible(IsFocused && CanShowCursor);
+
+                    if (_selectionControl != null)
+                    {
+                        _selectionControl.SelectionStart = CursorPosition;
+                        _selectionControl.SelectionLength = SelectionLength;
+                        _selectionControl.SelectionColor = SelectionColor;
+                        _selectionControl.Invalidate();
+                    }
                 }
 
-                SetCursorVisible(IsFocused && CanShowCursor);
-
-                if (_selectionControl != null)
-                {
-                    _selectionControl.SelectionStart = CursorPosition;
-                    _selectionControl.SelectionLength = SelectionLength;
-                    _selectionControl.SelectionColor = SelectionColor;
-                    _selectionControl.Invalidate();
-                }
             }
 
         }
@@ -961,7 +1009,8 @@ namespace DrawnUi.Draw
             if (show)
             {
                 Cursor.Opacity = 1;
-                if (!Cursor.IsVisible) Cursor.Invalidate();
+                if (!Cursor.IsVisible)
+                    Cursor.Invalidate();
                 Cursor.IsVisible = true;
             }
             else
@@ -1154,14 +1203,10 @@ namespace DrawnUi.Draw
         }
 
 
-
-
         protected virtual void OnControlCreated()
         {
 
         }
-
-
 
         public static readonly BindableProperty CursorPositionProperty = BindableProperty.Create(
             nameof(CursorPosition),
@@ -1348,7 +1393,8 @@ namespace DrawnUi.Draw
         {
             base.OnLayoutChanged();
 
-            UpdateNativePosition();
+            if (DefaultContentCreated)
+                UpdateNativePosition();
         }
 
         #endregion
