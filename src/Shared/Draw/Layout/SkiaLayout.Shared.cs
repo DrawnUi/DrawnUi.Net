@@ -1663,11 +1663,14 @@ ExistingLogic:
             // Cancel any ongoing background measurement to avoid conflicts
             CancelBackgroundMeasurement();
 
-            // Stage the Remove change for rendering pipeline
+            // Stage the Remove change for rendering pipeline. Tail removal is detected HERE,
+            // synchronously with the mutation: at apply time the live count may already include
+            // a subsequent same-frame prepend (window trim before backward LoadMore).
             StageStructureChange(new StructureChange(StructureChangeType.Remove, MeasureStamp)
             {
                 StartIndex = args.OldStartingIndex,
-                Count = args.OldItems?.Count ?? 0
+                Count = args.OldItems?.Count ?? 0,
+                TailRemoval = args.OldStartingIndex == (ItemsSource?.Count ?? -1)
             });
 
             lock (LockMeasure)

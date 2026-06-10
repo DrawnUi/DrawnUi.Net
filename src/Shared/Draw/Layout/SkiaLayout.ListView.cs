@@ -158,6 +158,14 @@ public partial class SkiaLayout
         public bool IsInsertOperation { get; set; } // Flag for insert vs append
         public bool IsVisible { get; set; } // For VisibilityChange
 
+        /// <summary>
+        /// Remove was at the collection tail at the moment it was raised (window trim).
+        /// Must be detected at staging time: by the time the change is applied the live
+        /// ItemsSource may already contain a subsequent prepend from the same frame,
+        /// making StartIndex == Count checks unreliable.
+        /// </summary>
+        public bool TailRemoval { get; set; }
+
         // Background measurement offset compensation data
         public BackgroundMeasurementStartingPosition StartingPosition { get; set; }
     }
@@ -1370,6 +1378,16 @@ public partial class SkiaLayout
             if (change.StartIndex == 0 && LastMeasuredIndex >= 0
                 && !_headInsertMeasuring && _pendingHeadInsert == null)
             {
+                if (_pendingHeadRemove != null)
+                {
+                    // degenerate overlap: a head insert raced an uncommitted head trim — their
+                    // offset compensations cannot be merged, rebuild cleanly instead
+                    _pendingHeadRemove = null;
+                    Invalidate();
+                    return;
+                }
+
+
                 // Head insert (backward LoadMore prepend): existing measurements keep their
                 // positions, only their indices shift — nothing moves on screen this frame.
                 // The new block is measured in background, then committed atomically together
@@ -1433,10 +1451,10 @@ public partial class SkiaLayout
     private volatile bool _headInsertMeasuring;
 
     /// <summary>
-    /// A measured head-insert block is ready and must be committed by the parent scroll
-    /// before it computes its next frame offset (see SkiaScroll.Draw).
+    /// A measured head-insert block or a head-remove trim is ready and must be committed by
+    /// the parent scroll before it computes its next frame offset (see SkiaScroll.Draw).
     /// </summary>
-    public bool HasPendingStructureRebase => _pendingHeadInsert != null;
+    public bool HasPendingStructureRebase => _pendingHeadInsert != null || _pendingHeadRemove != null;
 
     /// <summary>
     /// True while a head insert is measuring or waiting for commit: tail background
@@ -1596,6 +1614,12 @@ public partial class SkiaLayout
     /// </summary>
     public void CommitPendingStructureRebase()
     {
+        CommitPendingHeadInsert();
+        CommitPendingHeadRemove();
+    }
+
+    private void CommitPendingHeadInsert()
+    {
         var pending = Interlocked.Exchange(ref _pendingHeadInsert, null);
         if (pending == null)
             return;
@@ -1710,12 +1734,240 @@ public partial class SkiaLayout
 
     #endregion
 
+    #region WINDOW TRIM (bounded in-memory ItemsSource: head/tail removal without reset)
+
+    private sealed class HeadRemoveRebase
+    {
+        public float Shift;
+        public long Stamp;
+        public int Epoch;
+        public float Scale;
+    }
+
+    private HeadRemoveRebase _pendingHeadRemove;
+
+    /// <summary>
+    /// True while a head trim waits for its pre-offset commit: tail background measurement
+    /// must not start meanwhile, its staged positions would not be translated by the commit.
+    /// </summary>
+    public bool HeadRemoveInFlight => _pendingHeadRemove != null;
+
+    /// <summary>
+    /// Head trim (window cap after forward LoadMore): drop items [0..count) that are far above
+    /// the viewport. Index-only this frame — adapter rekey, measurement cache shift, structure
+    /// rows dropped — survivors keep their absolute positions, so painted pixels are identical.
+    /// The dead space above is reclaimed next frame by CommitPendingHeadRemove, which the parent
+    /// SkiaScroll calls BEFORE computing its frame offset: cells translate up and the viewport
+    /// offset compensates in the same frame. No remeasure happens at any point.
+    /// Returns false to fall back to the generic remove path.
+    /// </summary>
+    private bool ApplyHeadRemoveChange(StructureChange change)
+    {
+        lock (LockMeasure)
+        {
+            var allCells = StackStructure.GetChildren().Where(c => c.ControlIndex >= 0).ToList();
+            var survivors = allCells.Where(c => c.ControlIndex >= change.Count)
+                .OrderBy(c => c.ControlIndex).ToList();
+
+            // need the first survivor measured in place to know how much dead space to reclaim
+            if (survivors.Count == 0 || survivors[0].ControlIndex != change.Count)
+            {
+                Debug.WriteLine(
+                    $"[SkiaLayout] Head remove fast path rejected: first survivor {survivors.FirstOrDefault()?.ControlIndex ?? -1} != {change.Count}");
+                return false;
+            }
+
+            var blockShift = survivors[0].Destination.Top;
+
+            // adapter must rekey in the same frame as the structure indices shift (released
+            // views for removed items, survivors rekeyed, fresh snapshot) — see ApplyInsertShift
+            ChildrenFactory.ApplyRemoveShift(ItemsSource, 0, change.Count);
+
+            for (int i = 0; i < change.Count; i++)
+            {
+                _measuredItems.TryRemove(i, out _);
+            }
+
+            // rekeys _measuredItems and structure-cell indices, bumps the shift epoch
+            // (drops in-flight background batches), clamps LastMeasuredIndex
+            ShiftMeasurementIndices(change.Count, -change.Count);
+
+            // structure keeps only survivors, positions untouched this frame
+            RebuildStructureFromCells(survivors);
+
+            _pendingHeadRemove = new HeadRemoveRebase
+            {
+                Shift = blockShift, Stamp = MeasureStamp, Epoch = _itemsShiftEpoch, Scale = RenderingScale
+            };
+
+            Debug.WriteLine(
+                $"[SkiaLayout] Head remove applied: {change.Count} items, {blockShift:0.0}px pending reclaim");
+        }
+
+        Repaint();
+        return true;
+    }
+
+    /// <summary>
+    /// Tail trim (window cap before backward LoadMore): drop items at the collection tail,
+    /// far below the viewport. Fully synchronous: survivors keep positions and indices, no
+    /// offset compensation needed — only the content size shrinks at the bottom.
+    /// Returns false to fall back to the generic remove path.
+    /// </summary>
+    private bool ApplyTailRemoveChange(StructureChange change)
+    {
+        lock (LockMeasure)
+        {
+            ChildrenFactory.ApplyRemoveShift(ItemsSource, change.StartIndex, change.Count);
+
+            for (int i = change.StartIndex; i < change.StartIndex + change.Count; i++)
+            {
+                _measuredItems.TryRemove(i, out _);
+            }
+
+            // nothing exists after the removed tail so no indices shift, but in-flight
+            // background batches may still target the removed range — invalidate them
+            _itemsShiftEpoch++;
+
+            if (LastMeasuredIndex >= change.StartIndex)
+            {
+                LastMeasuredIndex = change.StartIndex - 1;
+            }
+
+            var survivors = StackStructure.GetChildren()
+                .Where(c => c.ControlIndex >= 0 && c.ControlIndex < change.StartIndex)
+                .OrderBy(c => c.ControlIndex).ToList();
+
+            RebuildStructureFromCells(survivors);
+
+            UpdateProgressiveContentSize();
+
+            Debug.WriteLine(
+                $"[SkiaLayout] Tail remove applied: {change.Count} items from {change.StartIndex}");
+        }
+
+        Repaint();
+        return true;
+    }
+
+    /// <summary>
+    /// Reclaims the dead space left above the content by a head trim: translates all cells up
+    /// by the removed block height and compensates the parent scroll offset by the same delta,
+    /// in the same frame — identical pixels, shorter content. Called via
+    /// CommitPendingStructureRebase from SkiaScroll.Draw before the frame offset is computed.
+    /// </summary>
+    private void CommitPendingHeadRemove()
+    {
+        var pending = Interlocked.Exchange(ref _pendingHeadRemove, null);
+        if (pending == null)
+            return;
+
+        if (pending.Stamp != MeasureStamp)
+        {
+            // a full remeasure rebuilt all positions from scratch — no dead space left
+            Debug.WriteLine("[SkiaLayout] Head remove commit dropped, structure was remeasured");
+            return;
+        }
+
+        if (pending.Epoch != _itemsShiftEpoch || StackStructure == null || StackStructure.GetCount() == 0)
+        {
+            // another index shift landed between trim and commit: positions were translated
+            // under different assumptions, the dead space cannot be reclaimed consistently —
+            // force a clean rebuild instead of leaving a permanent gap above the content
+            Debug.WriteLine("[SkiaLayout] Head remove commit dropped (shifted meanwhile), forcing rebuild");
+            Invalidate();
+            return;
+        }
+
+        lock (LockMeasure)
+        {
+            var blockShift = pending.Shift;
+
+            // structure and measurement cache can hold distinct ControlInStack instances —
+            // cover both, each instance once
+            var translated = new HashSet<ControlInStack>();
+
+            void Translate(ControlInStack cell)
+            {
+                if (cell == null || !translated.Add(cell))
+                    return;
+                cell.Destination = new SKRect(cell.Destination.Left, cell.Destination.Top - blockShift,
+                    cell.Destination.Right, cell.Destination.Bottom - blockShift);
+                cell.Area = new SKRect(cell.Area.Left, cell.Area.Top - blockShift,
+                    cell.Area.Right, cell.Area.Bottom - blockShift);
+            }
+
+            foreach (var cell in StackStructure.GetChildren())
+            {
+                Translate(cell);
+            }
+
+            foreach (var kvp in _measuredItems)
+            {
+                Translate(kvp.Value.Cell);
+            }
+
+            UpdateProgressiveContentSize();
+
+            if (Parent is SkiaScroll scroll)
+            {
+                scroll.OffsetVisibleAnchorY(blockShift / pending.Scale);
+            }
+
+            Debug.WriteLine($"[SkiaLayout] Head remove committed: reclaimed {blockShift:0.0}px");
+        }
+
+        Repaint();
+    }
+
+    /// <summary>
+    /// Rebuilds StackStructure from index-ordered cells, chunked by the current column count.
+    /// Positions are taken as-is; the LayoutStructure constructor renumbers rows/columns.
+    /// </summary>
+    private void RebuildStructureFromCells(List<ControlInStack> orderedCells)
+    {
+        var columnsCount = (Split > 0) ? Split : 1;
+        var rows = new List<List<ControlInStack>>();
+        var currentRow = new List<ControlInStack>(columnsCount);
+        foreach (var cell in orderedCells)
+        {
+            currentRow.Add(cell);
+            if (currentRow.Count >= columnsCount)
+            {
+                rows.Add(currentRow);
+                currentRow = new List<ControlInStack>(columnsCount);
+            }
+        }
+
+        if (currentRow.Count > 0)
+        {
+            rows.Add(currentRow);
+        }
+
+        StackStructure = new LayoutStructure(rows);
+    }
+
+    #endregion
+
     /// <summary>
     /// Applies Remove changes to StackStructure
     /// </summary>
     private void ApplyRemoveChange(StructureChange change)
     {
         //Debug.WriteLine($"[StackStructure] Removing {change.Count} items at index {change.StartIndex}");
+
+        if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+            && StackStructure != null && StackStructure.GetCount() > 0
+            && !HeadInsertInFlight && _pendingHeadRemove == null)
+        {
+            // Window-trim fast paths for a bounded in-memory ItemsSource (LoadMore both
+            // directions with a capped window): structure-preserving, no remeasure, no reset.
+            if (change.StartIndex == 0 && LastMeasuredIndex >= 0 && ApplyHeadRemoveChange(change))
+                return;
+
+            if (change.TailRemoval && ApplyTailRemoveChange(change))
+                return;
+        }
 
         // Remove items from measurement cache and shift indices
         for (int i = change.StartIndex; i < change.StartIndex + change.Count; i++)

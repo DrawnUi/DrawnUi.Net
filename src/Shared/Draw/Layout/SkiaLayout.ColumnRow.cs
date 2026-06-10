@@ -2251,7 +2251,8 @@ else
                     ItemsSource != null &&
                     lastVisibleIndex < ItemsSource.Count - 1 && // More items to measure
                     !IsBackgroundMeasuring && _pendingStructureChanges.Count == 0 &&
-                    !HeadInsertInFlight) // tail measuring would integrate positions made stale by the head commit
+                    !HeadInsertInFlight && // tail measuring would integrate positions made stale by the head commit
+                    !HeadRemoveInFlight) // same: staged positions would miss the pending head-trim translation
                 {
                     // We have unmeasured items beyond visible area
                     var nextUnmeasuredIndex = lastVisibleIndex + 1;

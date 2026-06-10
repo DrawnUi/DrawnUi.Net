@@ -401,6 +401,33 @@ public partial class ViewsAdapter : IDisposable
     }
 
     /// <summary>
+    /// Synchronously aligns the adapter with a removal the layout structure is applying right
+    /// now (window trim for a bounded in-memory ItemsSource): releases views bound to removed
+    /// items, rekeys views after the removed range, and swaps in a fresh data-contexts snapshot.
+    /// ShiftCachedViewIndexes alone is wrong here — views INSIDE the removed range would be
+    /// shifted onto surviving indices instead of released.
+    /// Call from the render thread, atomically with the structure change, after the source
+    /// mutation has completed.
+    /// </summary>
+    public void ApplyRemoveShift(IList source, int startIndex, int count)
+    {
+        lock (lockVisible)
+        {
+            foreach (var kvp in _cellsInUseViews.ToArray())
+            {
+                if (kvp.Key >= startIndex && kvp.Key < startIndex + count)
+                {
+                    _cellsInUseViews.Remove(kvp.Key);
+                    ReleaseViewToPool(kvp.Value);
+                }
+            }
+        }
+
+        ShiftCachedViewIndexes(startIndex + count, -count);
+        RefreshDataContexts(source);
+    }
+
+    /// <summary>
     /// Shifts cached view indexes when items are inserted/removed
     /// </summary>
     /// <param name="startIndex">Index where change occurred</param>
