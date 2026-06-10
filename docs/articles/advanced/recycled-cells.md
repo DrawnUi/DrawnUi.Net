@@ -149,8 +149,19 @@ Use `ReserveTemplates` to pre-allocate cell instances for smoother scrolling:
 ## Performance Best Practices
 
 ### 1. Use Appropriate Caching
+
+Pick the cell root cache from the measuring strategy:
+
 ```xml
-<!-- For cells with varying heights -->
+<!-- MeasureVisible: plain Image is enough — measurement runs in background,
+     so the latency ImageDoubleBuffered hides is not on the hot path,
+     and you save the second surface per cell -->
+<draw:SkiaDynamicDrawnCell UseCache="Image">
+
+<!-- MeasureFirst / MeasureAll, even-height rows with large cells -->
+<draw:SkiaDynamicDrawnCell UseCache="GPU">
+
+<!-- MeasureFirst / MeasureAll, other cases (varying heights etc.) -->
 <draw:SkiaDynamicDrawnCell UseCache="ImageDoubleBuffered">
 
 <!-- For complex layouts within cells -->

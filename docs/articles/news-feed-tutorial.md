@@ -225,7 +225,7 @@ These are friends when it comes to creating recycled or "bindable layout-like" s
 
 ### 🏗️ Create Your Cell
 
-> **Caching Strategy Note**: For recycled cells `UseCache="ImageDoubleBuffered"` is a must - it displays the previous cache while the next one is being prepared in background, allowing smooth scrolling. It supports painting placeholders when no cache is available at all.
+> **Caching Strategy Note**: Pick the cell cache from the measuring strategy. With `MeasureVisible` plain `UseCache="Image"` is enough for smooth scrolling — measurement already runs in background. `ImageDoubleBuffered` displays the previous cache while the next one is prepared in background and supports painting placeholders when no cache is available at all (`DrawPlaceholder`) — this tutorial uses it for the placeholders; it is the right default for `MeasureFirst`/`MeasureAll` (for even-height rows with large cells prefer `GPU` there).
 
 > **Shadow Performance**: Shadows are cached in a separate background layer to avoid performance issues. The shadow layer is cached independently from the content.
 
@@ -757,7 +757,7 @@ DrawnUI gives you the freedom to **just draw what you need**. This tutorial demo
 - **One universal recycled cell** handling 5 different content types with uneven heights
 - **Real internet images** from RandomUser.me (avatars) and Picsum Photos (content)
 - **Image preloading** for both avatars and content images using SkiaImageManager
-- **Smart caching strategy** using `UseCache="ImageDoubleBuffered"` with MeasureVisible
+- **Smart caching strategy** using `UseCache="ImageDoubleBuffered"` for cell placeholders support (with MeasureVisible alone, plain `Image` would suffice)
 - **Shadow performance optimization** with separate cached background layer
 - **Proper LoadMore** implementation with `AddRange()` vs `Clear()` + `AddRange()`
 - **Strategic spacing** using cell margin/padding instead of stack spacing
@@ -766,7 +766,7 @@ DrawnUI gives you the freedom to **just draw what you need**. This tutorial demo
 - **Debug information** display for monitoring performance
 
 ### 🎯 **Performance Reminders**
-- **Caching**: `UseCache="ImageDoubleBuffered"` for cells, `UseCache="Image"` for heavy content, `UseCache="Operations"` for simple text and vectors.
+- **Caching**: for cells pick by measuring strategy — `Image` with `MeasureVisible`, `GPU` for even rows + large cells under `MeasureFirst`/`MeasureAll`, `ImageDoubleBuffered` for the rest (or when you want `DrawPlaceholder`); `UseCache="Image"` for heavy content, `UseCache="Operations"` for simple text and vectors.
 - **Layering**: Separate UI into layers for caching
 - **Debug**: Monitor how your optimizations affect FPS in real-time to notice drastic difference with and without caching and other techniques.
 

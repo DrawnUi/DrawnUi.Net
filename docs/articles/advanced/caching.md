@@ -44,7 +44,7 @@ Use for: complex layouts, buttons, cards, anything with shadows or gradients.
 ### `ImageDoubleBuffered`
 Creates two CPU surfaces. Shows previous cache while rendering new one on a background thread — zero jank during updates.
 
-Use for: recycled list cells of the same size. Memory cost is 2× `Image`.
+Use for: recycled list cells under `MeasureFirst`/`MeasureAll` (for even-height rows with large cells prefer `GPU` instead). Not needed under `MeasureItemsStrategy="MeasureVisible"` — measurement already runs in background there, so plain `Image` gives the same smoothness and saves the second surface. Memory cost is 2× `Image`.
 
 ### `ImageComposite` / `ImageCompositeGPU`
 Maintains one surface and repaints only dirty (changed) child regions. Preserves unchanged areas.
@@ -66,7 +66,9 @@ Use for: small, stable overlays — headers, navigation bars, toolbars.
 |---|---|
 | Static text, icon, SVG | `Operations` |
 | Button, card, complex shape | `Image` |
-| Recycled list cell (uniform size) | `ImageDoubleBuffered` |
+| Recycled list cell, `MeasureVisible` strategy | `Image` |
+| Recycled list cell, `MeasureFirst`/`MeasureAll`, even rows + large cells | `GPU` |
+| Recycled list cell, `MeasureFirst`/`MeasureAll`, other | `ImageDoubleBuffered` |
 | Container with mixed static + live children | `ImageComposite` |
 | Small header/navbar overlay | `GPU` |
 | Scroll view, drawer, carousel | `None` |
