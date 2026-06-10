@@ -18,6 +18,10 @@ public partial class SkiaScroll
 
         ViewportOffsetY += deltaPoints;
 
+        // Panning is incremental over _panningCurrentOffsetPts; without shifting that baseline the
+        // next pan move would compute from the stale base and revert the anchor correction.
+        _panningCurrentOffsetPts.Y += deltaPoints;
+
         // A running fling/scroll animator writes ViewportOffsetY every frame from its own trajectory and
         // would instantly revert the anchor correction. Translate the active trajectory by the same delta
         // so it keeps targeting the same content after the window shifted.

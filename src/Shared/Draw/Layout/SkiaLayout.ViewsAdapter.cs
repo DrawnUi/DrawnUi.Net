@@ -384,6 +384,23 @@ public partial class ViewsAdapter : IDisposable
     #region SHIFT
 
     /// <summary>
+    /// Synchronously aligns the adapter with an index shift the layout structure is applying
+    /// right now (e.g. head insert for backward LoadMore): rekeys the views currently in use
+    /// (so a visible cell keeps its view and binding — rebinding becomes a no-op) and swaps in
+    /// a fresh data-contexts snapshot. Without this the structure indices move immediately on
+    /// the render thread while the adapter waits for a POSTED InitializeSoft — for one frame
+    /// visible indices resolve to pre-insert items: wrong contexts flash and their draw-time
+    /// remeasure poisons the structure with wrong heights.
+    /// Call from the render thread, atomically with the structure index shift, after the
+    /// source mutation has completed.
+    /// </summary>
+    public void ApplyInsertShift(IList source, int startIndex, int count)
+    {
+        ShiftCachedViewIndexes(startIndex, count);
+        RefreshDataContexts(source);
+    }
+
+    /// <summary>
     /// Shifts cached view indexes when items are inserted/removed
     /// </summary>
     /// <param name="startIndex">Index where change occurred</param>

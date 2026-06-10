@@ -48,6 +48,12 @@ public partial class SkiaLayout
         if (Parent is SkiaScroll planesScroll && planesScroll.UseVirtual)
             return true;
 
+        // Backward (top) loads must not be gated by TAIL measurement progress: after a window
+        // rebase/jump the tail may still be measuring in background while the user is already
+        // at the start of the window asking for items above it.
+        if (direction == LoadMoreDirection.Top)
+            return IsViewportAtStartOfMeasuredContent(viewport);
+
         // Still measuring existing items in background - don't load more yet
         if (_isBackgroundMeasuring && _backgroundMeasurementProgress < ItemsSource.Count - 1)
         {
@@ -97,7 +103,10 @@ public partial class SkiaLayout
 
         if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
         {
-            return FirstMeasuredIndex <= 0;
+            // Head of the content must be measured (no gap at index 0). While a head-insert
+            // (backward LoadMore) is in flight, indices 0..N-1 are vacated until its commit,
+            // which naturally serializes backward loads — no retrigger until content landed.
+            return _measuredItems.ContainsKey(0);
         }
 
         return true;
@@ -131,6 +140,13 @@ public partial class SkiaLayout
         }
 
         public long Stamp { get; set; }
+
+        /// <summary>
+        /// Value of _itemsShiftEpoch this change was computed under; background measurement
+        /// changes from an older epoch reference pre-shift indices/positions and must be dropped.
+        /// </summary>
+        public int Epoch { get; set; }
+
         public StructureChangeType Type { get; set; }
         public Vector2? OffsetOthers { get; set; }
         public int StartIndex { get; set; }
@@ -203,6 +219,10 @@ public partial class SkiaLayout
     // Track measurement state
     private readonly ConcurrentDictionary<int, MeasuredItemInfo> _measuredItems = new();
     private volatile int _backgroundMeasurementProgress = 0;
+
+    // Bumped by ShiftMeasurementIndices; guards against straggler background batches
+    // (measured under old indices/positions) landing after a shift. See StructureChange.Epoch.
+    private volatile int _itemsShiftEpoch;
 
     // Universal structure changes staging for rendering pipeline integration
     private readonly object _structureChangesLock = new();
@@ -840,10 +860,20 @@ public partial class SkiaLayout
     /// </summary>
     private void IntegrateMeasuredBatch(List<MeasuredItemInfo> measuredBatch, float scale,
         BackgroundMeasurementContext context = null,
-        BackgroundMeasurementStartingPosition startingPosition = null)
+        BackgroundMeasurementStartingPosition startingPosition = null,
+        int epoch = 0)
     {
         if (measuredBatch?.Count > 0)
         {
+            // Indices were shifted while this batch was measuring: its ControlIndexes and
+            // positions are stale — writing them would corrupt the measurement cache/structure.
+            if (epoch != _itemsShiftEpoch)
+            {
+                Debug.WriteLine(
+                    $"[IntegrateMeasuredBatch] DROPPED stale batch of {measuredBatch.Count} (epoch {epoch} != {_itemsShiftEpoch})");
+                return;
+            }
+
             var count = 0;
             foreach (var item in measuredBatch)
             {
@@ -861,7 +891,8 @@ public partial class SkiaLayout
                     InsertAtIndex = context?.InsertAtIndex,
                     IsInsertOperation = context?.IsInsertOperation ?? false,
                     StartingPosition = startingPosition, // CRITICAL: Store starting position for offset compensation
-                    Count = count
+                    Count = count,
+                    Epoch = epoch
                 });
             }
 
@@ -998,6 +1029,14 @@ public partial class SkiaLayout
     /// </summary>
     private void ApplyBackgroundMeasurementChange(StructureChange change)
     {
+        if (change.Epoch != _itemsShiftEpoch)
+        {
+            // Staged before a shift (head insert etc.) was applied: indices/positions are stale.
+            Debug.WriteLine(
+                $"[ApplyBackgroundMeasurementChange] DROPPED stale change of {change.Count} (epoch {change.Epoch} != {_itemsShiftEpoch})");
+            return;
+        }
+
         if (change.MeasuredItems?.Count > 0)
         {
             // CRITICAL: Check for position changes and apply offset compensation
@@ -1328,6 +1367,22 @@ public partial class SkiaLayout
 
         if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
         {
+            if (change.StartIndex == 0 && LastMeasuredIndex >= 0
+                && !_headInsertMeasuring && _pendingHeadInsert == null)
+            {
+                // Head insert (backward LoadMore prepend): existing measurements keep their
+                // positions, only their indices shift — nothing moves on screen this frame.
+                // The new block is measured in background, then committed atomically together
+                // with scroll-offset compensation in CommitPendingStructureRebase, which the
+                // parent SkiaScroll calls BEFORE computing its frame offset.
+                // The adapter MUST shift in the same frame: rekey in-use views + fresh snapshot,
+                // otherwise this frame draws pre-insert contexts at the shifted indices.
+                ChildrenFactory.ApplyInsertShift(ItemsSource, change.StartIndex, change.Count);
+                ShiftMeasurementIndices(change.StartIndex, change.Count);
+                StartHeadInsertMeasurement(change.Items, change.Count, change.Stamp);
+                return;
+            }
+
             if (change.StartIndex <= LastMeasuredIndex)
             {
                 // Insert in middle of measured items - shift existing measurements
@@ -1363,6 +1418,297 @@ public partial class SkiaLayout
 
         UpdateProgressiveContentSize();
     }
+
+    #region HEAD INSERT (backward LoadMore over a windowed ItemsSource)
+
+    private sealed class HeadInsertRebase
+    {
+        public List<MeasuredItemInfo> Items;
+        public long Stamp;
+        public int Epoch;
+        public float Scale;
+    }
+
+    private HeadInsertRebase _pendingHeadInsert;
+    private volatile bool _headInsertMeasuring;
+
+    /// <summary>
+    /// A measured head-insert block is ready and must be committed by the parent scroll
+    /// before it computes its next frame offset (see SkiaScroll.Draw).
+    /// </summary>
+    public bool HasPendingStructureRebase => _pendingHeadInsert != null;
+
+    /// <summary>
+    /// True while a head insert is measuring or waiting for commit: tail background
+    /// measurement must not run concurrently (it would integrate stale positions).
+    /// </summary>
+    public bool HeadInsertInFlight => _headInsertMeasuring || _pendingHeadInsert != null;
+
+    /// <summary>
+    /// Measures the prepended block [0..count) off-thread, laid out from y=0 like a fresh head,
+    /// then stages it for atomic commit. Indices of existing measurements were already shifted.
+    /// </summary>
+    private void StartHeadInsertMeasurement(List<object> items, int count, long stamp)
+    {
+        if (items == null || items.Count != count)
+        {
+            Debug.WriteLine("[SkiaLayout] Head insert has no items payload, skipped");
+            return;
+        }
+
+        var constraints = new SKRect(0, 0, _lastMeasuredForWidth, _lastMeasuredForHeight);
+        var scale = RenderingScale;
+        var epoch = _itemsShiftEpoch; // captured AFTER the head shift; another shift invalidates us
+
+        _headInsertMeasuring = true;
+
+        Debug.WriteLine(
+            $"[SkiaLayout] Head insert measuring {count} items, constraints {constraints.Width:0.0}x{constraints.Height:0.0}px scale {scale:0.00}");
+
+        Task.Run(() =>
+        {
+            try
+            {
+                var measured = MeasureHeadBatchDirect(items, constraints, scale);
+
+                if (measured.Count == count && stamp == MeasureStamp && epoch == _itemsShiftEpoch)
+                {
+                    _pendingHeadInsert = new HeadInsertRebase
+                    {
+                        Items = measured, Stamp = stamp, Epoch = epoch, Scale = scale
+                    };
+                    Debug.WriteLine($"[SkiaLayout] Head insert measured {count} items, pending commit");
+                }
+                else
+                {
+                    Debug.WriteLine(
+                        $"[SkiaLayout] Head insert measurement dropped (measured {measured.Count}/{count}, stamp {stamp}/{MeasureStamp})");
+                }
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+            finally
+            {
+                _headInsertMeasuring = false;
+                Repaint();
+            }
+        });
+    }
+
+    /// <summary>
+    /// Measures the inserted head items binding views DIRECTLY to the provided items.
+    /// The adapter's data-contexts snapshot must NOT be used here: it is refreshed via a
+    /// posted action (InitializeSoft) and can still hold the PRE-insert window when this runs,
+    /// which would silently measure heights of the wrong rows (random gaps with uneven rows).
+    /// </summary>
+    private List<MeasuredItemInfo> MeasureHeadBatchDirect(List<object> items, SKRect constraints, float scale)
+    {
+        var measuredBatch = new List<MeasuredItemInfo>(items.Count);
+        SkiaControl template = null;
+
+        try
+        {
+            template = ChildrenFactory.GetTemplateInstance();
+
+            var columnsCount = (Split > 0) ? Split : 1;
+            var columnWidth = ComputeColumnWidth(columnsCount);
+
+            float currentX = 0f;
+            float currentY = 0f;
+            float rowHeight = 0f;
+            int row = 0;
+            int col = 0;
+
+            float availableWidth = columnWidth;
+            float availableHeight = float.PositiveInfinity;
+
+            if (this.Type == LayoutType.Row)
+            {
+                availableHeight = columnWidth;
+                availableWidth = float.PositiveInfinity;
+            }
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                template.ContextIndex = i;
+                template.BindingContext = items[i];
+                template.NeedMeasure = true;
+
+                var rectForChild = new SKRect(
+                    currentX,
+                    currentY,
+                    currentX + availableWidth,
+                    currentY + availableHeight);
+
+                var cell = new ControlInStack
+                {
+                    ControlIndex = i,
+                    Column = col,
+                    Row = row,
+                    Destination = rectForChild
+                };
+
+                var measured = MeasureAndArrangeCell(rectForChild, cell, template, constraints, scale);
+
+                if (measured.Pixels.Height > rowHeight)
+                    rowHeight = measured.Pixels.Height;
+
+                measuredBatch.Add(new MeasuredItemInfo
+                {
+                    Cell = cell,
+                    LastAccessed = DateTime.UtcNow,
+                    IsInViewport = false
+                });
+
+                col++;
+                if (col >= columnsCount)
+                {
+                    row++;
+                    col = 0;
+                    currentX = 0f;
+                    currentY += rowHeight + (float)(Spacing * scale);
+                    rowHeight = 0f;
+                }
+                else
+                {
+                    currentX += columnWidth + (float)(Spacing * scale);
+                }
+            }
+        }
+        finally
+        {
+            if (template != null)
+            {
+                ChildrenFactory.ReleaseTemplateInstance(template);
+            }
+        }
+
+        return measuredBatch;
+    }
+
+    /// <summary>
+    /// Commits a measured head-insert block atomically: prepends its rows, translates all existing
+    /// cells down by the block height, grows progressive content size and compensates the parent
+    /// scroll offset by the same delta — so the frame painted right after shows identical pixels.
+    /// Called by the parent SkiaScroll at the start of its Draw, before the frame offset is used.
+    /// </summary>
+    public void CommitPendingStructureRebase()
+    {
+        var pending = Interlocked.Exchange(ref _pendingHeadInsert, null);
+        if (pending == null)
+            return;
+
+        if (pending.Stamp != MeasureStamp || pending.Epoch != _itemsShiftEpoch
+            || StackStructure == null || StackStructure.GetCount() == 0)
+        {
+            // a full remeasure or another index shift happened meanwhile
+            Debug.WriteLine("[SkiaLayout] Head insert commit dropped, structure was rebuilt/shifted");
+            return;
+        }
+
+        lock (LockMeasure)
+        {
+            var newCells = pending.Items;
+            var scale = pending.Scale;
+            var spacingPixels = (float)(Spacing * scale);
+
+            // vertical space the new block occupies; next row starts after trailing spacing
+            float blockBottom = 0f;
+            foreach (var item in newCells)
+            {
+                var bottom = item.Cell.Destination.Top + item.Cell.Measured.Pixels.Height;
+                if (bottom > blockBottom)
+                    blockBottom = bottom;
+            }
+
+            var blockShift = blockBottom + spacingPixels;
+
+            // translate every existing measured cell down (structure and measurement cache can
+            // hold distinct ControlInStack instances — cover both, each instance once)
+            var translated = new HashSet<ControlInStack>();
+
+            void Translate(ControlInStack cell)
+            {
+                if (cell == null || !translated.Add(cell))
+                    return;
+                cell.Destination = new SKRect(cell.Destination.Left, cell.Destination.Top + blockShift,
+                    cell.Destination.Right, cell.Destination.Bottom + blockShift);
+                cell.Area = new SKRect(cell.Area.Left, cell.Area.Top + blockShift,
+                    cell.Area.Right, cell.Area.Bottom + blockShift);
+            }
+
+            var existingCells = StackStructure.GetChildren().ToList();
+            foreach (var cell in existingCells)
+            {
+                Translate(cell);
+            }
+
+            foreach (var kvp in _measuredItems)
+            {
+                if (kvp.Key >= newCells.Count)
+                    Translate(kvp.Value.Cell);
+            }
+
+            // register the new measurements and rebuild the structure: new rows on top,
+            // existing rows below, rows/columns renumbered by the constructor
+            foreach (var item in newCells)
+            {
+                _measuredItems[item.Cell.ControlIndex] = item;
+            }
+
+            var allCells = new List<ControlInStack>(newCells.Count + existingCells.Count);
+            allCells.AddRange(newCells.Select(x => x.Cell));
+            allCells.AddRange(existingCells.OrderBy(c => c.ControlIndex));
+
+            var columnsCount = (Split > 0) ? Split : 1;
+            var rows = new List<List<ControlInStack>>();
+            var currentRow = new List<ControlInStack>(columnsCount);
+            foreach (var cell in allCells)
+            {
+                currentRow.Add(cell);
+                if (currentRow.Count >= columnsCount)
+                {
+                    rows.Add(currentRow);
+                    currentRow = new List<ControlInStack>(columnsCount);
+                }
+            }
+
+            if (currentRow.Count > 0)
+            {
+                rows.Add(currentRow);
+            }
+
+            StackStructure = new LayoutStructure(rows);
+
+            UpdateProgressiveContentSize();
+
+            if (Parent is SkiaScroll scroll)
+            {
+                scroll.OffsetVisibleAnchorY(-blockShift / scale);
+            }
+
+            Debug.WriteLine(
+                $"[SkiaLayout] Head insert committed: {newCells.Count} items, shift {blockShift:0.0}px");
+#if DEBUG
+            // diagnostic: per-cell layout of the inserted block, "index:top+height"
+            var sb = new System.Text.StringBuilder("[HEAD CELLS] ");
+            foreach (var item in newCells)
+            {
+                sb.Append(item.Cell.ControlIndex).Append(':')
+                    .Append(item.Cell.Destination.Top.ToString("0")).Append('+')
+                    .Append(item.Cell.Measured.Pixels.Height.ToString("0")).Append(' ');
+            }
+
+            Debug.WriteLine(sb.ToString());
+#endif
+        }
+
+        Repaint();
+    }
+
+    #endregion
 
     /// <summary>
     /// Applies Remove changes to StackStructure
@@ -1658,6 +2004,11 @@ public partial class SkiaLayout
     /// </summary>
     private void ShiftMeasurementIndices(int startIndex, int offset)
     {
+        // Invalidate any in-flight background measurement batch: it was measured against
+        // pre-shift indices/positions and would corrupt the structure if integrated late
+        // (cancellation is cooperative, a straggler batch can still try to land).
+        _itemsShiftEpoch++;
+
         var affectedCount = _measuredItems.Keys.Count(k => k >= startIndex);
 
         if (affectedCount <= DIRECT_SHIFT_THRESHOLD)
@@ -2060,6 +2411,10 @@ public partial class SkiaLayout
                 LayoutType = this.Type
             };
 
+            // Positions/indices above are only valid for the current shift epoch; if a shift
+            // (e.g. head insert) lands while this batch measures, the batch must be dropped.
+            var epoch = _itemsShiftEpoch;
+
             // Measure batch on background thread
             var measuredBatch = await Task.Run(() => MeasureBatchInBackground(
                 constraints, scale, currentBatchStart, itemsToMeasure, startX, startY, startRow, startCol,
@@ -2074,7 +2429,7 @@ public partial class SkiaLayout
             // Integrate results on background thread (safe for reading/staging)
             if (!cancellationToken.IsCancellationRequested)
             {
-                IntegrateMeasuredBatch(measuredBatch, scale, context, startingPosition);
+                IntegrateMeasuredBatch(measuredBatch, scale, context, startingPosition, epoch);
                 ApplySlidingWindowCleanup();
             }
 

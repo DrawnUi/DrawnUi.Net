@@ -1784,6 +1784,8 @@ namespace DrawnUi.Draw
 
         private const double LoadMoreOppositeDirectionCooldownSeconds = 0.35;
 
+        private const double LoadMoreOppositeDirectionMaxBlockSeconds = 1.5;
+
         private bool IsOppositeLoadMoreBlocked(LoadMoreDirection direction, float scale)
         {
             if (_lastLoadMoreDirection == null)
@@ -1792,10 +1794,20 @@ namespace DrawnUi.Draw
             if (_lastLoadMoreDirection == direction)
                 return false;
 
-            if ((DateTime.Now - _lastLoadMoreDirectionTime).TotalSeconds <
-                LoadMoreOppositeDirectionCooldownSeconds)
+            var sinceLastTrigger = (DateTime.Now - _lastLoadMoreDirectionTime).TotalSeconds;
+
+            if (sinceLastTrigger < LoadMoreOppositeDirectionCooldownSeconds)
             {
                 return true;
+            }
+
+            // The travel/zone rules below only protect against the immediate rebound after a
+            // trigger (anchor correction ping-pong). Applied forever they would freeze the
+            // opposite direction — e.g. a no-op top trigger at startup permanently blocking
+            // bottom loads. Time-bound them.
+            if (sinceLastTrigger > LoadMoreOppositeDirectionMaxBlockSeconds)
+            {
+                return false;
             }
 
             // Require real movement away from the previous trigger before allowing
@@ -2280,6 +2292,11 @@ namespace DrawnUi.Draw
 
             CheckNeedRefresh();
 
+            // While a programmatic jump (ScrollToIndex) is pending the viewport is parked at a
+            // meaningless position — evaluating edge triggers there causes load cascades.
+            if (OrderedScrollToIndex.IsSet)
+                return true;
+
             if (LoadMoreCommand != null)
             {
                 if (_loadMoreBottomTriggeredAt != 0
@@ -2315,7 +2332,10 @@ namespace DrawnUi.Draw
                         if (shouldTriggerLoadMore)
                         {
                             _loadMoreBottomTriggeredTime = DateTime.Now;
-                            _loadMoreBottomTriggeredAt = InternalViewportOffset.Units.Y;
+                            // 0 is the "unlatched" sentinel; an edge can sit exactly at offset 0,
+                            // which would re-execute the command every frame
+                            var triggeredAtY = InternalViewportOffset.Units.Y;
+                            _loadMoreBottomTriggeredAt = triggeredAtY == 0 ? float.Epsilon : triggeredAtY;
                             MarkLoadMoreDirection(LoadMoreDirection.Bottom);
                             Debug.WriteLine("[SkiaScroll] LoadMoreCommand triggered via ShouldTriggerLoadMore");
                             LoadMoreCommand?.Execute(this);
@@ -2364,9 +2384,12 @@ namespace DrawnUi.Draw
                         if (shouldTriggerTopLoadMore)
                         {
                             _loadMoreTopTriggeredTime = DateTime.Now;
-                            _loadMoreTopTriggeredAt = Orientation == ScrollOrientation.Vertical
+                            // 0 is the "unlatched" sentinel; the top edge IS offset 0,
+                            // which would re-execute the command every frame
+                            var triggeredAt = Orientation == ScrollOrientation.Vertical
                                 ? InternalViewportOffset.Units.Y
                                 : InternalViewportOffset.Units.X;
+                            _loadMoreTopTriggeredAt = triggeredAt == 0 ? float.Epsilon : triggeredAt;
                             MarkLoadMoreDirection(LoadMoreDirection.Top);
                             Debug.WriteLine("[SkiaScroll] LoadMoreTopCommand triggered via ShouldTriggerLoadMore");
                             LoadMoreTopCommand?.Execute(this);
@@ -2689,6 +2712,22 @@ namespace DrawnUi.Draw
             }
 
             isDrawing = true;
+
+            // A head-insert (backward LoadMore prepend) must be committed BEFORE this frame's offset
+            // is computed so the structure translation and the viewport compensation land in the same
+            // frame — otherwise content would flash shifted for one frame.
+            if (this.Content is SkiaLayout layoutContent && layoutContent.HasPendingStructureRebase)
+            {
+                layoutContent.CommitPendingStructureRebase();
+            }
+
+            // A ScrollToIndex to an index that is not yet measured/created stays pending; retry it
+            // every frame until the structure can resolve it (previously it was only retried on
+            // scroller init, so e.g. a jump ordered after startup never executed).
+            if (OrderedScrollToIndex.IsSet)
+            {
+                ExecuteScrollToIndexOrder();
+            }
 
             var needAdjustPos = false;
 
