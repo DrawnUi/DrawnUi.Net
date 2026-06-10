@@ -365,7 +365,7 @@ namespace DrawnUi.Draw
             }
         }
 
-        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+        //partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
 
         partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
 
