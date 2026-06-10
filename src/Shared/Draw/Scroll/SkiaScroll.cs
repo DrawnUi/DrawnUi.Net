@@ -2770,6 +2770,23 @@ namespace DrawnUi.Draw
                 }
             }
 
+            // Content grew during an edge-cut fling (backward LoadMore prepend): bounds are fresh
+            // now, restart the fling from the current position with its remaining velocity so it
+            // decelerates naturally into the new content instead of slam-stopping at the old edge.
+            if (_replanFlingY)
+            {
+                _replanFlingY = false;
+                if (_animatorFlingY != null && _animatorFlingY.IsRunning)
+                {
+                    var remainingVelocity = (float)_animatorFlingY.CurrentVelocity;
+                    _animatorFlingY.Stop();
+                    if (Math.Abs(remainingVelocity) > _minVelocity)
+                    {
+                        StartToFlingFrom(_animatorFlingY, ViewportOffsetY, remainingVelocity);
+                    }
+                }
+            }
+
             Arrange(context.Destination, SizeRequest.Width, SizeRequest.Height, context.Scale);
             //we exit with DrawingRect assigned to new destination
 

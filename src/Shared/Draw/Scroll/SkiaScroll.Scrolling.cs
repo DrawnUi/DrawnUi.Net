@@ -26,11 +26,26 @@ public partial class SkiaScroll
         // would instantly revert the anchor correction. Translate the active trajectory by the same delta
         // so it keeps targeting the same content after the window shifted.
         if (_animatorFlingY != null && _animatorFlingY.IsRunning)
+        {
             _animatorFlingY.Shift(deltaPoints);
+
+            // A fast fling gets its duration CUT to stop exactly at the content edge
+            // (PrepareToFlingAfterInitialized). The content just grew past that edge, so the cut
+            // trajectory would race at full speed and slam-stop at the OLD edge's content position.
+            // Re-plan it with the remaining velocity once this frame's bounds are refreshed.
+            if (_changeSpeed != null)
+                _replanFlingY = true;
+        }
 
         if (_vectorAnimatorBounceY != null && _vectorAnimatorBounceY.IsRunning)
             _vectorAnimatorBounceY.Stop(); // bounce target is stale after a content shift; let it re-evaluate
     }
+
+    /// <summary>
+    /// Set when a duration-cut fling must be re-planned against refreshed content bounds
+    /// (content grew during the fling, e.g. backward LoadMore prepend). Consumed in Draw.
+    /// </summary>
+    protected bool _replanFlingY;
 
     public float ViewportOffsetY
     {
