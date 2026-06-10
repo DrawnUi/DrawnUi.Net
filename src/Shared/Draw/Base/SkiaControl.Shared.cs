@@ -749,6 +749,11 @@ namespace DrawnUi.Draw
 
         protected bool DefaultContentCreated { get; set; }
 
+        /// <summary>
+        /// Called by InitializeDefaultContent, can be used by controls to create default content for different ControlStyles. This is needed for example for MAUI controls to work with XAML without extra code.
+        /// After the call InitializeDefaultContent with set DefaultContentCreated = true;
+        /// You don't need to call SkiaControl base.CreateDefaultContent it's empty.
+        /// </summary>
         protected virtual void CreateDefaultContent()
         {
         }
@@ -1462,6 +1467,7 @@ namespace DrawnUi.Draw
             {
                 return 0;
             }
+
             var sideConstraintsPixels = NeedAutoHeight
                 ? constraints.TotalMargins.VerticalThickness
                 : constraints.Margins.VerticalThickness;
