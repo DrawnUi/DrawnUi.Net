@@ -195,6 +195,29 @@ namespace DrawnUi.Draw
             }
         }
 
+        private CancellationTokenSource? _deferCts;
+
+        private async void DeferVisualCursorUpdate()
+        {
+            _deferCts?.Cancel();
+            _deferCts = new CancellationTokenSource();
+            var token = _deferCts.Token;
+            try
+            {
+                await Task.Delay(50, token);
+                _suppressImmediateCursorMove = false;
+                MoveInternalCursor();
+            }
+            catch (OperationCanceledException)
+            {
+                _suppressImmediateCursorMove = false;
+            }
+        }
+
+        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+
+        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
+
         public int GenerateUniqueId()
         {
             long currentTime = DateTime.Now.Ticks;

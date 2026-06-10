@@ -344,6 +344,31 @@ namespace DrawnUi.Draw
             _suppressSelectionChanged = false;
         }
 
+        private CancellationTokenSource? _deferCts;
+
+        // Label.Lines is populated during the render pass, which happens after property-change
+        // events. Suppress the immediate MoveInternalCursor() and defer until after the next render.
+        private async void DeferVisualCursorUpdate()
+        {
+            _deferCts?.Cancel();
+            _deferCts = new CancellationTokenSource();
+            var token = _deferCts.Token;
+            try
+            {
+                await Task.Delay(50, token);
+                _suppressImmediateCursorMove = false;
+                MoveInternalCursor();
+            }
+            catch (OperationCanceledException)
+            {
+                _suppressImmediateCursorMove = false;
+            }
+        }
+
+        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+
+        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
+
         public int GenerateUniqueId()
         {
             long currentTime = DateTime.Now.Ticks;

@@ -1324,6 +1324,7 @@ namespace DrawnUi.Draw
             var len = Math.Clamp(SelectionLength, 0, existing.Length - start);
             var normalized = NormalizeEditorInput(value);
             Text = existing.Remove(start, len).Insert(start, normalized);
+            _suppressImmediateCursorMove = true;
             CursorPosition = start + normalized.Length;
             SelectionLength = 0;
             OnTextInsertedAtCursor();
