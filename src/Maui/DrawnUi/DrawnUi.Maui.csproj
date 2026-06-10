@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <Target Name="IssueCustomWarning" BeforeTargets="BeforeBuild">
         <Warning Text="------ Building $(TargetFramework) using MAUI $(MauiVersion) ------" />
@@ -101,7 +101,7 @@
 
         <!--MIT open source-->
         <!--MIT open source .net helpers and extensions-->
-        <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
+        <PackageReference Include="AppoMobi.Specials" Version="10.0.2" />
         <!--caching bitmaps etc-->
         <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
     </ItemGroup>
