@@ -409,14 +409,24 @@ public class SkiaImage : SkiaControl
         }
     }
 
-    public void SetFromBase64(string input)
+    public virtual void SetFromBase64(string input)
     {
-        var pixelArray = Convert.FromBase64String(input);
+        try
+        {
+            var pixelArray = Convert.FromBase64String(input);
 
-        var bitmap = SKBitmap.Decode(pixelArray);
+            var bitmap = SKBitmap.Decode(pixelArray);
 
-        ImageBitmap = new LoadedImageSource(bitmap) { ProtectBitmapFromDispose = SkiaImageManager.ReuseBitmaps };
-        //SetImage(new InstancedBitmap(bitmap));
+            ImageBitmap = new LoadedImageSource(bitmap)
+            {
+                ProtectBitmapFromDispose = SkiaImageManager.ReuseBitmaps
+            };
+            //was long ago SetImage(new InstancedBitmap(bitmap));
+        }
+        catch (Exception e)
+        {
+            Super.Log(e);
+        }
     }
 
     private LoadedImageSource _applyNewSource;
