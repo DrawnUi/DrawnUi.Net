@@ -441,6 +441,13 @@ namespace DrawnUi.Draw
         private float GetAutoVisibleHeightPixels(float scale)
         {
             var lines = MaxLines > 0 ? MaxLines : 1;
+            if (AutoHeight && IsMultiline)
+            {
+                var actualLines = Label?.LinesCount ?? 0;
+                if (actualLines < 1)
+                    actualLines = 1;
+                lines = MaxLines > 0 ? Math.Min(actualLines, MaxLines) : actualLines;
+            }
             var lineHeightPx = GetAutoLineHeightPixels(scale);
             if (lineHeightPx <= 0)
                 return 0f;
@@ -1802,6 +1809,20 @@ namespace DrawnUi.Draw
         {
             get { return (int)GetValue(MaxLinesProperty); }
             set { SetValue(MaxLinesProperty, value); }
+        }
+
+        public static readonly BindableProperty AutoHeightProperty = BindableProperty.Create(nameof(AutoHeight),
+            typeof(bool), typeof(SkiaEditor), false, propertyChanged: OnMaxLinesChanged);
+
+        /// <summary>
+        /// When true and the editor is multiline, the visible height follows the actual number
+        /// of text lines (starting at 1) instead of always reserving MaxLines lines.
+        /// Growth stops at MaxLines, then content scrolls. Ignored when HeightRequest is set.
+        /// </summary>
+        public bool AutoHeight
+        {
+            get { return (bool)GetValue(AutoHeightProperty); }
+            set { SetValue(AutoHeightProperty, value); }
         }
 
 
