@@ -77,6 +77,25 @@ namespace DrawnUi.Draw
 
         bool _hasContentToScroll;
 
+        /// <summary>
+        /// Content is measured but does not fill the viewport along the scroll orientation.
+        /// This is exactly when LoadMore must stay available even though nothing can scroll yet
+        /// (e.g. a window rebase landed near the dataset end with a single resident item).
+        /// </summary>
+        public bool ContentUnderfillsViewport
+        {
+            get
+            {
+                if (Orientation == ScrollOrientation.Vertical)
+                    return ptsContentHeight > 0 && ptsContentHeight < Viewport.Units.Height;
+
+                if (Orientation == ScrollOrientation.Horizontal)
+                    return ptsContentWidth > 0 && ptsContentWidth < Viewport.Units.Width;
+
+                return false;
+            }
+        }
+
         public static readonly BindableProperty HeaderStickyProperty = BindableProperty.Create(
             nameof(HeaderSticky),
             typeof(bool),
@@ -1788,6 +1807,12 @@ namespace DrawnUi.Draw
 
         private bool IsOppositeLoadMoreBlocked(LoadMoreDirection direction, float scale)
         {
+            // Filling phase: content doesn't fill the viewport yet, both directions may be needed
+            // to fill it and there is no scrolling to rebound — ping-pong protection doesn't apply.
+            // Each fire either grows content (progress) or no-ops into the trigger latch.
+            if (ContentUnderfillsViewport)
+                return false;
+
             if (_lastLoadMoreDirection == null)
                 return false;
 
@@ -2307,7 +2332,10 @@ namespace DrawnUi.Draw
                     _loadMoreBottomTriggeredAt = 0; //so can track loadMore again
                 }
 
-                if (HasContentToScroll && _loadMoreBottomTriggeredAt == 0)
+                // Underfilled viewport must NOT block LoadMore: that's precisely when more content
+                // is needed. Storm protection comes from the trigger latch (re-armed only by
+                // InitializeViewport on content-size change) and the layout measurement veto.
+                if ((HasContentToScroll || ContentUnderfillsViewport) && _loadMoreBottomTriggeredAt == 0)
                 {
                     if (IsOppositeLoadMoreBlocked(LoadMoreDirection.Bottom, scale))
                         return true;
@@ -2339,7 +2367,11 @@ namespace DrawnUi.Draw
                             MarkLoadMoreDirection(LoadMoreDirection.Bottom);
                             Debug.WriteLine("[SkiaScroll] LoadMoreCommand triggered via ShouldTriggerLoadMore");
                             LoadMoreCommand?.Execute(this);
-                            return true;
+                            // Filling phase: the command may have been a no-op (nothing below) producing
+                            // no invalidation, and triggers only run during a draw — so don't wait for a
+                            // next frame that may never come, evaluate the top edge in this same pass.
+                            if (!ContentUnderfillsViewport)
+                                return true;
                         }
                         else
                         {
@@ -2362,7 +2394,8 @@ namespace DrawnUi.Draw
                     _loadMoreTopTriggeredAt = 0;
                 }
 
-                if (HasContentToScroll && _loadMoreTopTriggeredAt == 0)
+                // Same underfilled rule as for the bottom edge above.
+                if ((HasContentToScroll || ContentUnderfillsViewport) && _loadMoreTopTriggeredAt == 0)
                 {
                     if (IsOppositeLoadMoreBlocked(LoadMoreDirection.Top, scale))
                         return true;

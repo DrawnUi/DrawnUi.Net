@@ -1463,6 +1463,26 @@ public partial class SkiaLayout
     public bool HeadInsertInFlight => _headInsertMeasuring || _pendingHeadInsert != null;
 
     /// <summary>
+    /// True while ANY collection structure change is staged, measuring or waiting for its
+    /// scroll-offset commit — i.e. the current StackStructure geometry is about to change.
+    /// Consumers resolving positions from the structure (e.g. a ScrollToIndex order) should
+    /// wait it out instead of computing from geometry that the commit will rebase.
+    /// </summary>
+    public bool HasPendingStructureChanges
+    {
+        get
+        {
+            if (HeadInsertInFlight || HeadRemoveInFlight)
+                return true;
+
+            lock (_structureChangesLock)
+            {
+                return _pendingStructureChanges.Count > 0;
+            }
+        }
+    }
+
+    /// <summary>
     /// Measures the prepended block [0..count) off-thread, laid out from y=0 like a fresh head,
     /// then stages it for atomic commit. Indices of existing measurements were already shifted.
     /// </summary>

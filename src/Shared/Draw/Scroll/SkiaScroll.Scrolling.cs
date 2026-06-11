@@ -888,6 +888,15 @@ public partial class SkiaScroll
     {
         if (OrderedScrollToIndex.IsSet)
         {
+            // A staged/uncommitted collection change (e.g. a head insert raised this same frame)
+            // is about to rebase the structure geometry: resolving the order NOW would compute
+            // the target from pre-change positions and could consume it as a no-op (target ==
+            // current offset), while the upcoming pinning commit shifts the viewport with no
+            // order left to correct it. Keep the order pending — Draw retries every frame and
+            // executes it against the post-commit geometry.
+            if (Content is SkiaLayout layout && layout.HasPendingStructureChanges)
+                return false;
+
             //saving to use upon creating control if this was called before its internal structure was really created
             var offset = CalculateScrollOffsetForIndex(OrderedScrollToIndex.Index,
                 OrderedScrollToIndex.RelativePosition);
