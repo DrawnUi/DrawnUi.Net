@@ -321,14 +321,18 @@ public partial class SkiaLayout
                 height);
         }
 
+        // The structure is padding-agnostic: it receives constraints already reduced by the
+        // grid's padding and its cells are drawn inside the already padding-contracted rect.
+        // Accounting Padding here too would subtract/offset it twice (eats bottom/right padding).
+
         public double GridHeight()
         {
-            return SumDefinitions(Rows, RowSpacing) + Padding.VerticalThickness;
+            return SumDefinitions(Rows, RowSpacing);
         }
 
         public double GridWidth()
         {
-            return SumDefinitions(Columns, ColumnSpacing) + Padding.HorizontalThickness;
+            return SumDefinitions(Columns, ColumnSpacing);
         }
 
         public double MeasuredGridHeight()
@@ -398,8 +402,36 @@ public partial class SkiaLayout
             // Apply minimum dimensions from Fill children
             ApplyMinimumDimensionsFromFillChildren();
 
-            // Compress the star values to their minimums for measurement 
+            // Fill children in all-Auto cells were measured unconstrained on their fill axes;
+            // re-measure them at the resolved cell size so they arrange to fill it.
+            // (Cells spanning Absolute/Star tracks are re-measured in MeasureKnownCells.)
+            RemeasureFillChildrenInAutoCells();
+
+            // Compress the star values to their minimums for measurement
             CompressStarMeasurements();
+        }
+
+        void RemeasureFillChildrenInAutoCells()
+        {
+            foreach (var cell in _cells)
+            {
+                if (cell.NeedsKnownMeasurePass)
+                {
+                    continue;
+                }
+
+                var control = _childrenToLayOut[cell.ViewIndex];
+
+                if (control is not SkiaControl skiaChild || !control.IsVisible
+                    || (!skiaChild.NeedFillX && !skiaChild.NeedFillY))
+                {
+                    continue;
+                }
+
+                var rectCell = GetCellBoundsFor(control, 0, 0);
+                var scale = (float)control.RenderingScale;
+                control.Measure((float)(rectCell.Width * scale), (float)Math.Round(rectCell.Height * scale), scale);
+            }
         }
 
         void MeasureChild(Cell cell)
@@ -417,6 +449,22 @@ public partial class SkiaLayout
             var availableWidth = AvailableWidth(cell);
             var availableHeight = AvailableHeight(cell);
 
+            // A Fill child measured against a finite constraint returns that whole constraint,
+            // which would inflate an Auto column/row to all the available space. Measure it
+            // unconstrained on that axis instead, so the Auto track is sized by its content
+            // (like MAUI Grid desired size); the child then fills the resolved track.
+            if (_childrenToLayOut[cell.ViewIndex] is SkiaControl skiaChild)
+            {
+                if (cell.IsColumnSpanAuto && skiaChild.NeedFillX)
+                {
+                    availableWidth = double.PositiveInfinity;
+                }
+
+                if (cell.IsRowSpanAuto && skiaChild.NeedFillY)
+                {
+                    availableHeight = double.PositiveInfinity;
+                }
+            }
 
             //if (availableWidth > 0 && availableHeight > 0)
             {
@@ -619,7 +667,7 @@ public partial class SkiaLayout
 
         public double LeftEdgeOfColumn(int column)
         {
-            double left = Padding.Left;
+            double left = 0;
 
             for (int n = 0; n < column; n++)
             {
@@ -632,7 +680,7 @@ public partial class SkiaLayout
 
         public double TopEdgeOfRow(int row)
         {
-            double top = Padding.Top;
+            double top = 0;
 
             for (int n = 0; n < row; n++)
             {

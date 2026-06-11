@@ -87,8 +87,9 @@ public partial class SkiaLayout
         // Fix for Auto columns not filling available width when NeedAutoWidth is false
         if (!NeedAutoWidth && GridStructureMeasured.Columns.Length > 0)
         {
-            var currentGridWidth = GridStructureMeasured.GridWidth() - GridStructureMeasured.Padding.HorizontalThickness;
-            var availableContentWidth = constraints.Width - GridStructureMeasured.Padding.HorizontalThickness;
+            // constraints and GridWidth() are both content-sized (padding excluded)
+            var currentGridWidth = GridStructureMeasured.GridWidth();
+            var availableContentWidth = constraints.Width;
 
             if (currentGridWidth < availableContentWidth)
             {
@@ -102,8 +103,9 @@ public partial class SkiaLayout
         // Fix for Auto rows not filling available height when NeedAutoHeight is false  
         if (!NeedAutoHeight && GridStructureMeasured.Rows.Length > 0)
         {
-            var currentGridHeight = GridStructureMeasured.GridHeight() - GridStructureMeasured.Padding.VerticalThickness;
-            var availableContentHeight = constraints.Height - GridStructureMeasured.Padding.VerticalThickness;
+            // constraints and GridHeight() are both content-sized (padding excluded)
+            var currentGridHeight = GridStructureMeasured.GridHeight();
+            var availableContentHeight = constraints.Height;
 
             if (currentGridHeight < availableContentHeight)
             {
@@ -123,14 +125,16 @@ public partial class SkiaLayout
             spacing = (GridStructureMeasured.Columns.Length - 1) * ColumnSpacing;
         }
 
-        var contentWidth = (float)((GridStructureMeasured.Columns.Sum(x => x.Size) + spacing + UsePadding.Left + UsePadding.Right) * scale);
+        // ContentSize excludes padding: SetMeasuredAdaptToContentSize adds it back for auto-sized
+        // dimensions (TotalMargins), adding it here too would double-count it
+        var contentWidth = (float)((GridStructureMeasured.Columns.Sum(x => x.Size) + spacing) * scale);
 
         spacing = 0.0;
         if (GridStructureMeasured.Rows.Length > 1)
         {
             spacing = (GridStructureMeasured.Rows.Length - 1) * RowSpacing;
         }
-        var contentHeight = (float)((GridStructureMeasured.Rows.Sum(x => x.Size) + spacing + UsePadding.Top + UsePadding.Bottom) * scale);
+        var contentHeight = (float)((GridStructureMeasured.Rows.Sum(x => x.Size) + spacing) * scale);
 
         if (contentWidth > maxWidth)
             maxWidth = contentWidth;
