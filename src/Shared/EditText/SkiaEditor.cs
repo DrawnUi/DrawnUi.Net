@@ -513,13 +513,14 @@ namespace DrawnUi.Draw
         /// </summary>
         public void Submit()
         {
-            if (IsMultiline)
+            if (IsMultiline && !ShouldSubmitOnEnter)
             {
                 Text += GetEditorBreakText(false);
             }
             else
             {
-                ExecuteSubmit(clearFocus: true);
+                // Multiline Send keeps focus so the user can continue typing the next message.
+                ExecuteSubmit(clearFocus: !IsMultiline);
             }
         }
 
@@ -1418,19 +1419,29 @@ namespace DrawnUi.Draw
             Email
         }
 
-#if !BROWSER
         public static readonly BindableProperty ReturnTypeProperty = BindableProperty.Create(
             nameof(ReturnType),
             typeof(ReturnType),
             typeof(SkiaEditor),
             ReturnType.Done);
 
+        /// <summary>
+        /// Return key action. On soft keyboards selects the action key label.
+        /// On a multiline editor, <see cref="ReturnType.Send"/> changes Enter semantics:
+        /// Enter submits, Shift+Enter inserts a line break. All other values keep
+        /// Enter inserting a line break.
+        /// </summary>
         public ReturnType ReturnType
         {
             get { return (ReturnType)GetValue(ReturnTypeProperty); }
             set { SetValue(ReturnTypeProperty, value); }
         }
-#endif
+
+        /// <summary>
+        /// True when an unmodified Enter should submit instead of inserting a line break:
+        /// multiline editor with <see cref="ReturnType.Send"/>.
+        /// </summary>
+        protected bool ShouldSubmitOnEnter => IsMultiline && ReturnType == ReturnType.Send;
 
         public static readonly BindableProperty KeyboardTypeProperty = BindableProperty.Create(
             nameof(KeyboardType),
