@@ -66,7 +66,7 @@ public class SkiaVisualComparisonTests
         Assert.Equal(0, first.CompareTo("not-a-shader"));
         Assert.False(first.Equals("not-a-shader"));
 
-        second.MouseCurrent = new PointF(4, 5);
+        second.MouseCurrent = new System.Drawing.PointF(4, 5);
 
         Assert.NotEqual(0, first.CompareTo(second));
         Assert.False(first.Equals(second));
@@ -102,8 +102,8 @@ public class SkiaVisualComparisonTests
             MipmapMode = SKMipmapMode.Linear,
             TileMode = SKShaderTileMode.Mirror,
             TimeSeconds = 3.5f,
-            MouseCurrent = new PointF(1, 2),
-            MouseInitial = new PointF(3, 4)
+            MouseCurrent = new System.Drawing.PointF(1, 2),
+            MouseInitial = new System.Drawing.PointF(3, 4)
         };
     }
 }
