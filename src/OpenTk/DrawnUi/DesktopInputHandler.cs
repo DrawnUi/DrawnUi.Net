@@ -21,11 +21,12 @@ public class DesktopInputHandler
     {
         var shift = keyboardState.IsKeyDown(Keys.LeftShift) || keyboardState.IsKeyDown(Keys.RightShift);
         var ctrl = keyboardState.IsKeyDown(Keys.LeftControl) || keyboardState.IsKeyDown(Keys.RightControl);
+        var alt = keyboardState.IsKeyDown(Keys.LeftAlt) || keyboardState.IsKeyDown(Keys.RightAlt);
         switch (e.Key)
         {
             case Keys.Backspace: _canvas.DesktopEditorBackspace(); break;
             case Keys.Delete: _canvas.DesktopEditorDelete(); break;
-            case Keys.Enter: _canvas.DesktopEditorEnter(); break;
+            case Keys.Enter: _canvas.DesktopEditorEnter(alt, shift); break;
             case Keys.Left: _canvas.DesktopEditorMoveCursor(-1, shift); break;
             case Keys.Right: _canvas.DesktopEditorMoveCursor(1, shift); break;
             case Keys.Home: _canvas.DesktopEditorMoveToStart(shift); break;
