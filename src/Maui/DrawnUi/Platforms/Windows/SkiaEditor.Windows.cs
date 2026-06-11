@@ -272,14 +272,31 @@ namespace DrawnUi.Draw
                 return;
             }
 
-            // Must block Enter for single-line here, before TextBox processes it.
+            // Must block Enter here, before TextBox processes it.
             // KeyDown fires after TextBox inserts the character; AcceptsReturn=true
             // means a \n would already be in the text by the time KeyDown runs.
-            if (!IsMultiline && e.Key == Windows.System.VirtualKey.Enter)
+            if (e.Key == Windows.System.VirtualKey.Enter)
             {
-                e.Handled = true;
-                ExecuteSubmit(clearFocus: false);
-                return;
+                if (!IsMultiline)
+                {
+                    e.Handled = true;
+                    ExecuteSubmit(clearFocus: false);
+                    return;
+                }
+
+                if (ShouldSubmitOnEnter)
+                {
+                    bool shiftDown = Microsoft.UI.Input.InputKeyboardSource
+                        .GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift)
+                        .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
+                    if (!shiftDown)
+                    {
+                        e.Handled = true;
+                        ExecuteSubmit(clearFocus: false);
+                        return;
+                    }
+                    // Shift+Enter falls through: native TextBox inserts the line break.
+                }
             }
 
             if (IsMultiline && (e.Key == Windows.System.VirtualKey.Up || e.Key == Windows.System.VirtualKey.Down))

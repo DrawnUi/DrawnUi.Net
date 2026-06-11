@@ -89,7 +89,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
                 StubDelete();
                 break;
             case InputKey.Enter:
-                StubPressEnter(alt);
+                StubPressEnter(alt, shift);
                 break;
             case InputKey.ArrowLeft:
                 StubMoveCursor(-1, shift);
@@ -136,10 +136,16 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         ReplaceSelection(value);
     }
 
-    public void StubPressEnter(bool splitLine = false)
+    public void StubPressEnter(bool splitLine = false, bool shift = false)
     {
         if (IsMultiline)
         {
+            if (!splitLine && !shift && ShouldSubmitOnEnter)
+            {
+                ExecuteSubmit(clearFocus: false);
+                return;
+            }
+
             ReplaceSelection(GetEditorBreakText(splitLine));
             return;
         }

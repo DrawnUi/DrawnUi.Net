@@ -44,7 +44,10 @@ namespace DrawnUi.Draw
 
             public override bool ShouldChangeText(UITextView textView, NSRange range, string text)
             {
-                if (!_editor.IsMultiline && text == "\n")
+                // Multiline + ReturnType.Send: return key submits instead of inserting a break.
+                // Hardware Shift+Enter is not distinguishable here (no modifier info in this
+                // delegate); soft keyboards have no Shift+Enter, so Send wins for "\n".
+                if (text == "\n" && (!_editor.IsMultiline || _editor.ShouldSubmitOnEnter))
                 {
                     _editor.ExecuteSubmit(clearFocus: false);
                     return false;

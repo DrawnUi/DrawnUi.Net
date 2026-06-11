@@ -139,9 +139,14 @@ namespace DrawnUi.Draw
         {
             if (IsMultiline)
             {
-                // Let the native EditText insert the line break and advance selection.
-                e.Handled = false;
-                return;
+                // Hardware Shift+Enter keeps inserting a line break even with ReturnType.Send.
+                var shiftPressed = e.Event?.IsShiftPressed ?? false;
+                if (!ShouldSubmitOnEnter || shiftPressed)
+                {
+                    // Let the native EditText insert the line break and advance selection.
+                    e.Handled = false;
+                    return;
+                }
             }
 
             e.Handled = true;
@@ -348,8 +353,20 @@ namespace DrawnUi.Draw
             Control.SetImeActionLabel(ActionNext, ImeAction.Next);
             break;
             case ReturnType.Send:
-            Control.SetSingleLine(true);
-            Control.ImeOptions = ImeAction.Send;
+            if (IsMultiline)
+            {
+                // Send action on a multiline field: keep TextView multiline behavior but
+                // report a non-multiline raw input type so the IME shows Send instead of Enter.
+                Control.SetSingleLine(false);
+                Control.ImeOptions = ImeAction.Send;
+                Control.SetRawInputType(Android.Text.InputTypes.ClassText |
+                                        Android.Text.InputTypes.TextFlagCapSentences);
+            }
+            else
+            {
+                Control.SetSingleLine(true);
+                Control.ImeOptions = ImeAction.Send;
+            }
             Control.SetImeActionLabel(ActionSend, ImeAction.Send);
             break;
             case ReturnType.Search:
