@@ -82,7 +82,7 @@ public partial class Canvas
 
     public void DesktopEditorBackspace() => EditorAction(e => e.StubBackspace());
     public void DesktopEditorDelete() => EditorAction(e => e.StubDelete());
-    public void DesktopEditorEnter() => EditorAction(e => e.StubPressEnter());
+    public void DesktopEditorEnter(bool splitLine = false, bool shift = false) => EditorAction(e => e.StubPressEnter(splitLine, shift));
     public void DesktopEditorMoveCursor(int delta, bool select) => EditorAction(e => e.StubMoveCursor(delta, select));
     public void DesktopEditorMoveToStart(bool select) => EditorAction(e => e.StubMoveCursor(-e.CursorPosition, select));
     public void DesktopEditorMoveToEnd(bool select) => EditorAction(e => e.StubMoveCursor((e.Text?.Length ?? 0) - e.CursorPosition, select));

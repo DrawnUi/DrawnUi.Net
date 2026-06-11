@@ -57,10 +57,16 @@ public partial class SkiaEditor
         ReplaceSelection(value);
     }
 
-    public void StubPressEnter(bool splitLine = false)
+    public void StubPressEnter(bool splitLine = false, bool shift = false)
     {
         if (IsMultiline)
         {
+            if (!splitLine && !shift && ShouldSubmitOnEnter)
+            {
+                ExecuteSubmit(clearFocus: false);
+                return;
+            }
+
             ReplaceSelection(GetEditorBreakText(splitLine));
             return;
         }
