@@ -264,6 +264,7 @@ public class DrawnUiWindow : GameWindow
         base.OnKeyDown(e);
         var shift = KeyboardState.IsKeyDown(Keys.LeftShift) || KeyboardState.IsKeyDown(Keys.RightShift);
         var ctrl = KeyboardState.IsKeyDown(Keys.LeftControl) || KeyboardState.IsKeyDown(Keys.RightControl);
+        var alt = KeyboardState.IsKeyDown(Keys.LeftAlt) || KeyboardState.IsKeyDown(Keys.RightAlt);
         switch (e.Key)
         {
             case Keys.F11: ToggleFullscreen(); break;
@@ -271,7 +272,7 @@ public class DrawnUiWindow : GameWindow
                 WindowState = WindowState.Normal; break;
             case Keys.Backspace: _canvas.DesktopEditorBackspace(); break;
             case Keys.Delete: _canvas.DesktopEditorDelete(); break;
-            case Keys.Enter: _canvas.DesktopEditorEnter(); break;
+            case Keys.Enter: _canvas.DesktopEditorEnter(alt, shift); break;
             case Keys.Left: _canvas.DesktopEditorMoveCursor(-1, shift); break;
             case Keys.Right: _canvas.DesktopEditorMoveCursor(1, shift); break;
             case Keys.Home: _canvas.DesktopEditorMoveToStart(shift); break;
