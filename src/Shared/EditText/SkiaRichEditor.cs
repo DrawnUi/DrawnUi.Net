@@ -147,10 +147,16 @@ public class SkiaRichEditor : SkiaEditor
         InsertTextAtCursor(NormalizeRich(value));
     }
 
-    public new void StubPressEnter(bool splitLine = false)
+    public new void StubPressEnter(bool splitLine = false, bool shift = false)
     {
         if (IsMultiline)
         {
+            if (!splitLine && !shift && ShouldSubmitOnEnter)
+            {
+                ExecuteSubmit(clearFocus: false);
+                return;
+            }
+
             InsertTextAtCursor(GetEditorBreakText(splitLine));
             return;
         }
