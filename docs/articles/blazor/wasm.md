@@ -133,9 +133,14 @@ Use the hosted sample to demonstrate the current browser-side DrawnUI runtime:
 
 - <a href="https://drawnui-wasm.appomobi.com/" target="_blank" rel="noopener noreferrer">Open Blazor WebAssembly sample</a>
 
+## Publishing
+
+Before shipping to production, read [Publishing (AOT & Compression)](publishing.md). The default Release publish runs your code on the interpreter and most servers will not serve the precompressed assets — both will make your app feel broken on real-world hardware.
+
 ## Related Docs
 
 - [Blazor](index.md)
 - [Blazor FAQ](faq.md)
+- [Publishing (AOT & Compression)](publishing.md)
 - [Startup Settings](../startup-settings.md)
 - [Handling Gestures](../gestures.md)
