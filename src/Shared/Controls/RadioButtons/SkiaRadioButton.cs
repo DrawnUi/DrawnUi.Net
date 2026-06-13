@@ -81,8 +81,6 @@ public class SkiaRadioButton : SkiaToggle, ISkiaRadioButton
                 Margin = new(24, 0, 0, 0),
                 FontSize = 14,
                 MaxLines = 2,
-                Tag = "Text",
-                //FontFamily = "FontTextTitle",
                 TextColor = ColorThumbOff,
                 VerticalOptions = LayoutOptions.Center
             }
