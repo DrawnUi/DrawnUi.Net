@@ -2036,16 +2036,15 @@ public class TemplatedViewsPool : IDisposable
             if (IsDisposing)
                 return null;
 
+            if (bindingContext != null && _genericPool.Count > 0)
+            {
+                var matchingView = GetViewWithMatchingBindingContext(_genericPool, bindingContext);
+                if (matchingView != null)
+                    return matchingView;
+            }
+
             if (height == 0)
             {
-                // ENHANCED: Support bindingContext matching for generic pool too
-                if (bindingContext != null && _genericPool.Count > 0)
-                {
-                    var matchingView = GetViewWithMatchingBindingContext(_genericPool, bindingContext);
-                    if (matchingView != null)
-                        return matchingView;
-                }
-
                 if (_genericPool.Count > 0)
                 {
                     var generic = _genericPool.Pop();
@@ -2066,14 +2065,6 @@ public class TemplatedViewsPool : IDisposable
                 {
                     stack = new();
                     _heightPools[hKey] = stack;
-                }
-
-                // ENHANCED: Support bindingContext matching for generic pool fallback
-                if (bindingContext != null && _genericPool.Count > 0)
-                {
-                    var matchingView = GetViewWithMatchingBindingContext(_genericPool, bindingContext);
-                    if (matchingView != null)
-                        return matchingView;
                 }
 
                 if (_genericPool.Count > 0)

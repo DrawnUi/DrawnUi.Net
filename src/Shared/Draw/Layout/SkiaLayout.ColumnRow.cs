@@ -2154,8 +2154,9 @@ else
 
                         if (Virtualisation != VirtualisationType.Disabled)
                         {
-                            if (needrebuild && UsingCacheType == SkiaCacheType.None &&
-                                Virtualisation == VirtualisationType.Smart
+                            if (needrebuild
+                                && UsingCacheType == SkiaCacheType.None
+                                && Virtualisation == VirtualisationType.Smart
                                 && !(IsTemplated && RecyclingTemplate == RecyclingTemplate.Enabled))
                             {
                                 cell.IsVisible = true;
