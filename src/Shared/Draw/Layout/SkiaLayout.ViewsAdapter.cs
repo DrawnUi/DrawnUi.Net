@@ -1800,6 +1800,10 @@ public class TemplatedViewsPool : IDisposable
     private Stack<SkiaControl> _standalonePool = new();
     private readonly object _syncLock = new object();
 
+    // Reused under _syncLock by GetViewWithMatchingBindingContext to hold scanned non-matches
+    // while searching the pool top, so the search+remove is allocation-free on the hot path.
+    private readonly List<SkiaControl> _matchScanBuffer = new(16);
+
     public TemplatedViewsPool(Func<object> initialViewModel, int maxSize, Action<IDisposable> dispose)
     {
         CreateTemplate = initialViewModel;
@@ -1847,47 +1851,39 @@ public class TemplatedViewsPool : IDisposable
         if (stack == null || stack.Count == 0 || bindingContext == null)
             return null;
 
-        // Convert stack to array for efficient searching
-        var stackArray = stack.ToArray();
+        // Search only the top items for performance (or full stack if smaller).
+        // Pop into a reused buffer instead of allocating ToArray/ToList per call: this keeps the
+        // hot path (called per appearing cell) allocation-free. Bounded to searchLimit ops.
+        var searchLimit = Math.Min(10, stack.Count);
 
-        // Search only top 10 items for performance (or full stack if smaller)
-        var searchLimit = Math.Min(10, stackArray.Length);
+        SkiaControl found = null;
+        _matchScanBuffer.Clear();
 
         for (int i = 0; i < searchLimit; i++)
         {
-            var view = stackArray[i];
-            if (view != null && !view.IsDisposed &&
-                view.BindingContext != null &&
-                view.BindingContext.Equals(bindingContext))
+            var view = stack.Pop();
+
+            // Reference equality only: matching by value (overridden Equals) could falsely pair
+            // two distinct data items onto one recycled cell. We only want the literal same instance.
+            if (found == null && view != null && !view.IsDisposed &&
+                ReferenceEquals(view.BindingContext, bindingContext))
             {
-                // Found matching view - remove it from stack
-                RemoveViewFromStack(stack, view);
-                return view;
+                found = view; // removed = not pushed back
+            }
+            else
+            {
+                _matchScanBuffer.Add(view);
             }
         }
 
-        return null; // No matching view found
-    }
-
-    /// <summary>
-    /// Removes a specific view from the stack efficiently
-    /// </summary>
-    /// <param name="stack">Stack to remove from</param>
-    /// <param name="viewToRemove">View to remove</param>
-    private void RemoveViewFromStack(Stack<SkiaControl> stack, SkiaControl viewToRemove)
-    {
-        if (stack == null || viewToRemove == null)
-            return;
-
-        // Convert to list, remove item, rebuild stack
-        var items = stack.ToList();
-        items.Remove(viewToRemove);
-
-        stack.Clear();
-        for (int i = items.Count - 1; i >= 0; i--)
+        // Restore the scanned non-matches preserving original top-down order.
+        for (int i = _matchScanBuffer.Count - 1; i >= 0; i--)
         {
-            stack.Push(items[i]);
+            stack.Push(_matchScanBuffer[i]);
         }
+
+        _matchScanBuffer.Clear();
+        return found; // null if no matching instance found
     }
 
     protected virtual void Dispose(bool disposing)
