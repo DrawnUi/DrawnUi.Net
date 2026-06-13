@@ -1404,6 +1404,18 @@ namespace DrawnUi.Draw
 
             if (DefaultContentCreated)
                 UpdateNativePosition();
+
+            if (_pendingSuperviewFocusSync && Superview != null)
+            {
+                _pendingSuperviewFocusSync = false;
+                if (IsFocused)
+                {
+                    // The focus attempt at property-change time had no Superview/handler:
+                    // native focus silently no-oped. Redo both halves now that we're attached.
+                    SetFocusInternal(true);
+                    SyncSuperviewFocus(true);
+                }
+            }
         }
 
         #endregion
@@ -1560,7 +1572,32 @@ namespace DrawnUi.Draw
             if (bindable is SkiaEditor control)
             {
                 control.SetFocusInternal((bool)newvalue);
+                control.SyncSuperviewFocus((bool)newvalue);
             }
+        }
+
+        private bool _pendingSuperviewFocusSync;
+
+        /// <summary>
+        /// Mirrors programmatic IsFocused changes into Canvas.FocusedChild so code-behind focus
+        /// behaves like the tap path. The canvas routes desktop keyboard input through
+        /// FocusedChild (Net/OpenTK) and uses it for unfocus-on-outside-tap and keyboard
+        /// adaptation — without this, programmatic focus shows a blinking cursor but typing is dead.
+        /// </summary>
+        private void SyncSuperviewFocus(bool focus)
+        {
+            var super = Superview;
+            if (super == null)
+            {
+                // Not attached yet (focus set in page constructor) — reapply when layout is ready.
+                _pendingSuperviewFocusSync = true;
+                return;
+            }
+
+            if (focus)
+                super.FocusedChild = this;
+            else if (super.FocusedChild == this)
+                super.FocusedChild = null;
         }
 
         public new bool IsFocused
@@ -1597,9 +1634,17 @@ namespace DrawnUi.Draw
             {
                 control.TextChanged?.Invoke(control, (string)newvalue);
                 control.CommandOnTextChanged?.Execute((string)newvalue);
+                control.SyncNativeText();
                 OnNeedUpdateText(bindable, oldvalue, newvalue);
             }
         }
+
+        // Push a programmatic Text change into the platform's native input control.
+        // Without this the native control keeps the old text while unfocused/focused and
+        // resurrects it on the next native text event (e.g. clearing a chat input, then the
+        // next keystroke brings the old message back). No-op where the platform guard flag
+        // indicates the change originated from the native control itself.
+        partial void SyncNativeText();
 
         public static readonly BindableProperty FontSizeProperty = BindableProperty.Create(nameof(FontSize),
             typeof(double), typeof(SkiaEditor), 12.0,

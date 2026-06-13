@@ -135,6 +135,20 @@ namespace DrawnUi.Draw
             }
         }
 
+        partial void SyncNativeText()
+        {
+            if (Control == null || _updatingText)
+                return;
+
+            var newText = Text ?? string.Empty;
+            if ((Control.Text ?? string.Empty) == newText)
+                return;
+
+            _updatingText = true;
+            try { Control.Text = newText; }
+            finally { _updatingText = false; }
+        }
+
         private void Control_EditorAction(object sender, TextView.EditorActionEventArgs e)
         {
             if (IsMultiline)

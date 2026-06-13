@@ -64,6 +64,8 @@ namespace DrawnUi.Draw
                     _hiddenTextBox.GotFocus -= HiddenTextBox_GotFocus;
                     _hiddenTextBox.PreviewKeyDown -= HiddenTextBox_PreviewKeyDown;
                     _hiddenTextBox.KeyDown -= HiddenTextBox_KeyDown;
+                    _hiddenTextBox.Loaded -= HiddenTextBox_Loaded;
+                    _hiddenTextBox.LostFocus -= HiddenTextBox_LostFocus;
 
                     var layout = (Panel)Superview?.Handler?.PlatformView;
                     if (layout != null)
@@ -93,6 +95,20 @@ namespace DrawnUi.Draw
 
         // TextBox is an off-screen keyboard sink — size and position are fixed.
         public void UpdateNativePosition() { }
+
+        partial void SyncNativeText()
+        {
+            if (_hiddenTextBox == null || _updatingText)
+                return;
+
+            var newText = Text ?? string.Empty;
+            if (_hiddenTextBox.Text == newText)
+                return;
+
+            _updatingText = true;
+            try { _hiddenTextBox.Text = newText; }
+            finally { _updatingText = false; }
+        }
 
         private void EnsureTextBox()
         {
@@ -128,6 +144,8 @@ namespace DrawnUi.Draw
             _hiddenTextBox.GotFocus += HiddenTextBox_GotFocus;
             _hiddenTextBox.PreviewKeyDown += HiddenTextBox_PreviewKeyDown;
             _hiddenTextBox.KeyDown += HiddenTextBox_KeyDown;
+            _hiddenTextBox.Loaded += HiddenTextBox_Loaded;
+            _hiddenTextBox.LostFocus += HiddenTextBox_LostFocus;
 
             layout.Children.Add(_hiddenTextBox);
 
@@ -238,6 +256,37 @@ namespace DrawnUi.Draw
             {
                 Debug.WriteLine($"[SetFocusNative] {e}");
             }
+        }
+
+        // Focus(FocusState.Programmatic) returns false while the TextBox is not yet loaded
+        // into the visual tree (programmatic IsFocused before first layout). Retry on load.
+        private void HiddenTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (IsFocused && _hiddenTextBox != null && _hiddenTextBox.FocusState == FocusState.Unfocused)
+                _hiddenTextBox.Focus(FocusState.Programmatic);
+        }
+
+        // WinUI hands pointer focus to the canvas on tap/press-release even while a drawn
+        // editor is logically focused (e.g. focus set programmatically during an ongoing
+        // press — the UP lands on canvas AFTER our Focus(Programmatic) and silently steals
+        // WinUI focus; keyboard goes dead with the cursor still blinking). While IsFocused
+        // is true, take focus back. Posted via dispatcher: calling Focus() inside a
+        // LostFocus handler is re-entrant in WinUI. When the editor is logically unfocused
+        // (IsFocused=false set by ReportFocus before any rival native focus), this no-ops.
+        private void HiddenTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine($"[LostFocus] IsFocused={IsFocused} FocusState={_hiddenTextBox?.FocusState}");
+            if (!IsFocused || _hiddenTextBox == null)
+                return;
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (IsFocused && _hiddenTextBox != null && _hiddenTextBox.FocusState == FocusState.Unfocused)
+                {
+                    var got = _hiddenTextBox.Focus(FocusState.Programmatic);
+                    Debug.WriteLine($"[LostFocus] re-steal Focus()={got}");
+                }
+            });
         }
 
         private void HiddenTextBox_TextChanged(object sender, TextChangedEventArgs textChangedEventArgs)

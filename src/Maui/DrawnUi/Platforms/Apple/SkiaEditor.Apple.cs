@@ -126,6 +126,20 @@ namespace DrawnUi.Draw
             _layout.AddSubview(Control);
         }
 
+        partial void SyncNativeText()
+        {
+            if (Control == null || _updatingText)
+                return;
+
+            var newText = Text ?? string.Empty;
+            if ((Control.Text ?? string.Empty) == newText)
+                return;
+
+            _updatingText = true;
+            try { Control.Text = newText; }
+            finally { _updatingText = false; }
+        }
+
         public void SetFocusNative(bool focus)
         {
             try
