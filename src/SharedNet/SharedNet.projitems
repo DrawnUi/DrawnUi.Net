@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\Canvas.NetShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\SkiaFontManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedNet.GlobalUsings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Extensions\FluentExtensions.NonMaui.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\BindableObject.Plain.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\SkiaControl.NetShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Core\BindingMode.cs" />

@@ -168,6 +168,7 @@ public enum ContextArguments
     PlaneViewport,
     ShapePaint,
     Offset,
+    Measure,
     Custom
 }
 

@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace DrawnUi.Draw
 {
@@ -2274,237 +2274,7 @@ else
                 ClearDirtyChildren();
 
                 //PASS 2 DRAW VISIBLE
-                bool hadAdjustments = false;
-                bool wasVisible = false;
-                var index = -1;
-                var cellsToRelease = new List<SkiaControl>();
-                int countRendered = 0;
-                offsetOthers = Vector2.Zero;
-
-                try
-                {
-                    if (WillDrawFromFreshItemssSource == 0 && IsTemplated &&
-                        RecyclingTemplate != RecyclingTemplate.Disabled)
-                    {
-                        if (ReserveTemplates > 0)
-                        {
-                            Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
-                                () => { ChildrenFactory.FillPool(visibleElements.Count + ReserveTemplates); });
-                        }
-                    }
-
-
-                    foreach (var cell in CollectionsMarshal.AsSpan(visibleElements))
-                    {
-                        // Update measured items access time for visible items
-                        if (_measuredItems.TryGetValue(cell.ControlIndex, out var info))
-                        {
-                            info.LastAccessed = DateTime.UtcNow;
-                            info.IsInViewport = true;
-                        }
-
-                        if (cell.IsCollapsed)
-                            continue;
-
-                        if (!cell.WasMeasured)
-                        {
-                            continue; // Skip unmeasured
-                        }
-
-                        index++;
-
-                        SkiaControl child = null;
-                        if (IsTemplated)
-                        {
-                            child = ChildrenFactory.GetViewForIndex(cell.ControlIndex, null,
-                                GetSizeKey(cell.Measured.Pixels));
-                            if (child == null)
-                            {
-                                return countRendered;
-                            }
-
-                            cellsToRelease.Add(child);
-                        }
-                        else
-                        {
-                            child = cell.View;
-                        }
-
-                        if (child is SkiaControl control)
-                        {
-                            SKRect destinationRect;
-                            var x = offsetOthers.X + cell.Drawn.Left;
-                            var y = offsetOthers.Y + cell.Drawn.Top;
-
-                            // Drawing a plane/tile window: every cell is a recycled view just rebound to this
-                            // index's content, and GetSizeKey is forced to 0 here (single pool bucket), so the
-                            // size-key comparison below can't detect that the rebound content differs in height.
-                            // Force a measure so the painted cell matches its real height (and the reserved slot
-                            // from BuildPlaneWindowStructure) — otherwise a tall row painted by a previously-short
-                            // recycled cell paints short and leaves a gap (and vice-versa overlaps).
-                            bool forcePlaneMeasure = PlaneOverrideStructure != null;
-
-                            if (child.NeedMeasure || forcePlaneMeasure)
-                            {
-                                if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible && !forcePlaneMeasure)
-                                {
-                                    //we change structure elsewhere so no need to measure here
-                                    if (child.WasMeasured)
-                                    {
-                                        child.NeedMeasure = false;
-                                    }
-                                }
-
-                                if (forcePlaneMeasure ||
-                                    !IsTemplated ||
-                                    !child.WasMeasured
-                                    || InvalidatedChildrenInternal.Contains(child) ||
-                                    //MeasureItemsStrategy == MeasuringStrategy.MeasureVisible ||
-                                    GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels))
-                                {
-                                    var oldSize = child.MeasuredSize.Pixels;
-                                    var measured = child.Measure((float)cell.Area.Width, (float)cell.Area.Height,
-                                        ctx.Scale);
-
-                                    //Debug.WriteLine($"[DrawStack] measured while drawing {child.ContextIndex}");
-
-                                    cell.Measured = measured;
-                                    cell.WasMeasured = true;
-
-                                    if (child.IsVisible)
-                                    {
-                                        LayoutCell(measured, cell, child, cell.Area, ctx.Scale);
-                                    }
-
-                                    if (oldSize != SKSize.Empty && !CompareSize(oldSize, child.MeasuredSize.Pixels, 1f))
-                                    {
-                                        //Trace.WriteLine($"[CELL] remeasured {child.Uid}");
-                                        var diff = child.MeasuredSize.Pixels - oldSize;
-                                        cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
-
-                                        if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
-                                        {
-                                            //Debug.WriteLine($"[DrawStack] OffsetOthers {cell.OffsetOthers}");
-
-                                            // Drawing a transient plane/tile window (PlaneOverrideStructure set):
-                                            // do NOT feed its re-measures into the shared structure. The window's
-                                            // estimate-vs-real diffs would shift the shared cumulative positions
-                                            // and drift the scroll<->index mapping (scroll-back lands off-by-N).
-                                            // The shared structure advances only through its own background measure.
-                                            if (PlaneOverrideStructure == null)
-                                            {
-                                                var measuredItem = new MeasuredItemInfo
-                                                {
-                                                    Cell = cell,
-                                                    LastAccessed = DateTime.UtcNow,
-                                                    IsInViewport = true,
-                                                };
-                                                _pendingStructureChanges.Add(
-                                                    new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
-                                                    {
-                                                        OffsetOthers = cell.OffsetOthers,
-                                                        StartIndex = child.ContextIndex,
-                                                        Count = 1,
-                                                        MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
-                                                    });
-                                            }
-
-                                            cell.OffsetOthers = Vector2.Zero;
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (child.IsVisible)
-                            {
-                                bool willDraw = true;
-
-                                if (child.MeasuredSize.Pixels.Width >= 1 && child.MeasuredSize.Pixels.Height >= 1)
-                                {
-                                    destinationRect = GetStackChildDrawRect(index, x, y, cell);
-
-                                    if (IsRenderingWithComposition)
-                                    {
-                                        if (child.PostAnimators.Count > 0)
-                                        {
-                                            updateInternal = true;
-                                        }
-
-                                        if (DirtyChildrenInternal.Contains(child) || child.PostAnimators.Count > 0)
-                                        {
-                                            if (usesExpandedViewport)
-                                            {
-                                                if (!cell.Drawn.IntersectsWith(visibilityAreaReal.Pixels))
-                                                {
-                                                    willDraw = false;
-                                                }
-                                            }
-
-                                            if (willDraw)
-                                            {
-                                                DrawChild(ctx.WithDestination(destinationRect), child);
-                                                countRendered++;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // Use ArrangeCache to update cache's LastDestination for gesture coordinate translation
-                                            child.ArrangeCache(destinationRect, child.SizeRequest.Width,
-                                                child.SizeRequest.Height,
-                                                ctx.Scale);
-
-                                            willDraw = true; //simulate to be entered in rendering tree, for gestures etc
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (usesExpandedViewport)
-                                        {
-                                            if (!cell.Drawn.IntersectsWith(visibilityAreaReal.Pixels))
-                                            {
-                                                willDraw = false;
-                                            }
-                                        }
-
-                                        if (willDraw)
-                                        {
-                                            DrawChild(ctx.WithDestination(destinationRect), child);
-                                            countRendered++;
-                                        }
-                                    }
-
-                                    cell.WasLastDrawn = willDraw;
-
-                                    if (willDraw)
-                                    {
-                                        drawn++;
-
-                                        tree.Add(new SkiaControlWithRect(control,
-                                            destinationRect,
-                                            control.CreateHitRect(),
-                                            index,
-                                            control.ContextIndex, // freeze index
-                                            control.BindingContext)); // freeze binding context
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                Debug.WriteLine($"INVISIBLE {child.ContextIndex}");
-                            }
-                        }
-                    }
-
-                    OnAfterDrawingVisibleChildren(ctx, structure, visibleElements);
-                }
-                finally
-                {
-                    if (IsTemplated)
-                        foreach (var cell in cellsToRelease)
-                        {
-                            ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
-                        }
-                }
+                drawn = DrawStackVisibleChildren(ctx, structure, visibleElements, usesExpandedViewport, visibilityAreaReal, tree, ref updateInternal);
             }
 
             if (needrebuild && visibleElements.Count > 0)
@@ -2513,6 +2283,7 @@ else
             }
 
             SetRenderingTree(tree);
+
             if (Parent is IDefinesViewport viewport &&
                 viewport.TrackIndexPosition != RelativePositionType.None)
             {
@@ -2534,6 +2305,254 @@ else
                 Task.Run(ApplySlidingWindowCleanup);
             }
 
+            return drawn;
+        }
+
+        /// <summary>
+        /// Draws visible stack children (PASS 2).
+        /// Returns drawn count; when <paramref name="shouldExitEarly"/> is true, caller must return that value immediately.
+        /// </summary>
+        protected virtual int DrawStackVisibleChildren(
+            DrawingContext ctx,
+            LayoutStructure structure,
+            List<ControlInStack> visibleElements,
+            bool usesExpandedViewport,
+            ScaledRect visibilityAreaReal,
+            List<SkiaControlWithRect> tree,
+            ref bool updateInternal)
+        {
+            var drawn = 0;
+            bool hadAdjustments = false;
+            bool wasVisible = false;
+            var index = -1;
+            var cellsToRelease = new List<SkiaControl>();
+            int countRendered = 0;
+            Vector2 offsetOthers = Vector2.Zero;
+
+            try
+            {
+                if (WillDrawFromFreshItemssSource == 0 && IsTemplated &&
+                    RecyclingTemplate != RecyclingTemplate.Disabled)
+                {
+                    if (ReserveTemplates > 0)
+                    {
+                        Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
+                            () => { ChildrenFactory.FillPool(visibleElements.Count + ReserveTemplates); });
+                    }
+                }
+
+
+                foreach (var cell in CollectionsMarshal.AsSpan(visibleElements))
+                {
+                    // Update measured items access time for visible items
+                    if (_measuredItems.TryGetValue(cell.ControlIndex, out var info))
+                    {
+                        info.LastAccessed = DateTime.UtcNow;
+                        info.IsInViewport = true;
+                    }
+
+                    if (cell.IsCollapsed)
+                        continue;
+
+                    if (!cell.WasMeasured)
+                    {
+                        continue; // Skip unmeasured
+                    }
+
+                    index++;
+
+                    SkiaControl child = null;
+                    if (IsTemplated)
+                    {
+                        child = ChildrenFactory.GetViewForIndex(cell.ControlIndex, null,
+                            GetSizeKey(cell.Measured.Pixels));
+                        if (child == null)
+                        {
+                            return countRendered;
+                        }
+
+                        cellsToRelease.Add(child);
+                    }
+                    else
+                    {
+                        child = cell.View;
+                    }
+
+                    if (child is SkiaControl control)
+                    {
+                        SKRect destinationRect;
+                        var x = offsetOthers.X + cell.Drawn.Left;
+                        var y = offsetOthers.Y + cell.Drawn.Top;
+
+                        // Drawing a plane/tile window: every cell is a recycled view just rebound to this
+                        // index's content, and GetSizeKey is forced to 0 here (single pool bucket), so the
+                        // size-key comparison below can't detect that the rebound content differs in height.
+                        // Force a measure so the painted cell matches its real height (and the reserved slot
+                        // from BuildPlaneWindowStructure) — otherwise a tall row painted by a previously-short
+                        // recycled cell paints short and leaves a gap (and vice-versa overlaps).
+                        bool forcePlaneMeasure = PlaneOverrideStructure != null;
+
+                        if (child.NeedMeasure || forcePlaneMeasure)
+                        {
+                            if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible && !forcePlaneMeasure)
+                            {
+                                //we change structure elsewhere so no need to measure here
+                                if (child.WasMeasured)
+                                {
+                                    child.NeedMeasure = false;
+                                }
+                            }
+
+                            if (forcePlaneMeasure ||
+                                !IsTemplated ||
+                                !child.WasMeasured
+                                || InvalidatedChildrenInternal.Contains(child) ||
+                                //MeasureItemsStrategy == MeasuringStrategy.MeasureVisible ||
+                                GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels))
+                            {
+                                var oldSize = child.MeasuredSize.Pixels;
+                                var measured = child.Measure((float)cell.Area.Width, (float)cell.Area.Height,
+                                    ctx.Scale);
+
+                                //Debug.WriteLine($"[DrawStack] measured while drawing {child.ContextIndex}");
+
+                                cell.Measured = measured;
+                                cell.WasMeasured = true;
+
+                                if (child.IsVisible)
+                                {
+                                    LayoutCell(measured, cell, child, cell.Area, ctx.Scale);
+                                }
+
+                                if (oldSize != SKSize.Empty && !CompareSize(oldSize, child.MeasuredSize.Pixels, 1f))
+                                {
+                                    //Trace.WriteLine($"[CELL] remeasured {child.Uid}");
+                                    var diff = child.MeasuredSize.Pixels - oldSize;
+                                    cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
+
+                                    if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
+                                    {
+                                        //Debug.WriteLine($"[DrawStack] OffsetOthers {cell.OffsetOthers}");
+
+                                        // Drawing a transient plane/tile window (PlaneOverrideStructure set):
+                                        // do NOT feed its re-measures into the shared structure. The window's
+                                        // estimate-vs-real diffs would shift the shared cumulative positions
+                                        // and drift the scroll<->index mapping (scroll-back lands off-by-N).
+                                        // The shared structure advances only through its own background measure.
+                                        if (PlaneOverrideStructure == null)
+                                        {
+                                            var measuredItem = new MeasuredItemInfo
+                                            {
+                                                Cell = cell,
+                                                LastAccessed = DateTime.UtcNow,
+                                                IsInViewport = true,
+                                            };
+                                            _pendingStructureChanges.Add(
+                                                new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
+                                                {
+                                                    OffsetOthers = cell.OffsetOthers,
+                                                    StartIndex = child.ContextIndex,
+                                                    Count = 1,
+                                                    MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
+                                                });
+                                        }
+
+                                        cell.OffsetOthers = Vector2.Zero;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (child.IsVisible)
+                        {
+                            bool willDraw = true;
+
+                            if (child.MeasuredSize.Pixels.Width >= 1 && child.MeasuredSize.Pixels.Height >= 1)
+                            {
+                                destinationRect = GetStackChildDrawRect(index, x, y, cell);
+
+                                if (IsRenderingWithComposition)
+                                {
+                                    if (child.PostAnimators.Count > 0)
+                                    {
+                                        updateInternal = true;
+                                    }
+
+                                    if (DirtyChildrenInternal.Contains(child) || child.PostAnimators.Count > 0)
+                                    {
+                                        if (usesExpandedViewport)
+                                        {
+                                            if (!cell.Drawn.IntersectsWith(visibilityAreaReal.Pixels))
+                                            {
+                                                willDraw = false;
+                                            }
+                                        }
+
+                                        if (willDraw)
+                                        {
+                                            DrawChild(ctx.WithDestination(destinationRect), child);
+                                            countRendered++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Use ArrangeCache to update cache's LastDestination for gesture coordinate translation
+                                        child.ArrangeCache(destinationRect, child.SizeRequest.Width,
+                                            child.SizeRequest.Height,
+                                            ctx.Scale);
+
+                                        willDraw = true; //simulate to be entered in rendering tree, for gestures etc
+                                    }
+                                }
+                                else
+                                {
+                                    if (usesExpandedViewport)
+                                    {
+                                        if (!cell.Drawn.IntersectsWith(visibilityAreaReal.Pixels))
+                                        {
+                                            willDraw = false;
+                                        }
+                                    }
+
+                                    if (willDraw)
+                                    {
+                                        DrawChild(ctx.WithDestination(destinationRect), child);
+                                        countRendered++;
+                                    }
+                                }
+
+                                cell.WasLastDrawn = willDraw;
+
+                                if (willDraw)
+                                {
+                                    drawn++;
+
+                                    tree.Add(new SkiaControlWithRect(control,
+                                        destinationRect,
+                                        control.CreateHitRect(),
+                                        index,
+                                        control.ContextIndex, // freeze index
+                                        control.BindingContext)); // freeze binding context
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"INVISIBLE {child.ContextIndex}");
+                        }
+                    }
+                }
+
+                OnAfterDrawingVisibleChildren(ctx, structure, visibleElements);
+            }
+            finally
+            {
+                if (IsTemplated)
+                    foreach (var cell in cellsToRelease)
+                    {
+                        ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                    }
+            }
             return drawn;
         }
     }

@@ -411,7 +411,10 @@ public partial class SkiaControl
         var usingCacheType = asOperations ? SkiaCacheType.Operations : SkiaCacheType.Image;
 
         var renderObject = CreateRenderingObject(ctx, area, null, usingCacheType,
-            (context) => { PaintWithEffects(context.WithDestination(area)); });
+            (context) =>
+            {
+                PaintWithEffects(context.WithDestination(area));
+            });
 
         return renderObject;
     }
@@ -776,7 +779,7 @@ public partial class SkiaControl
                         }
                         else
                         {
-                            if (!BindingsContextCacheWasRendered)
+                            if (!ExistingCacheWasRendered)
                                 DrawPlaceholder(context);
                         }
                     }
@@ -812,13 +815,13 @@ public partial class SkiaControl
                         }
                         else
                         {
-                            if (!BindingsContextCacheWasRendered)
+                            if (!ExistingCacheWasRendered)
                                 DrawPlaceholder(context);
                         }
                     }
                     else
                     {
-                        if (!BindingsContextCacheWasRendered)
+                        if (!ExistingCacheWasRendered)
                             DrawPlaceholder(context);
                     }
 
@@ -1094,46 +1097,10 @@ public partial class SkiaControl
 
                 //paint from cache
                 var clone = AddPaintArguments(context).WithDestination(destination);
-                if (!UseRenderingObject(clone, recordArea))
+
+                if (TryUseExistingRenderingObjectOrCreateNewAndPaint(clone, recordArea))
                 {
-                    //record to cache and paint 
-                    if (UsesCacheDoubleBuffering)
-                    {
-                        if (!BindingsContextCacheWasRendered)
-                            DrawPlaceholder(clone);
-
-                        //use cloned struct in another thread 
-                        PushToOffscreenRendering(() =>
-                        {
-                            //will be executed on background thread in parallel
-                            var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing, UsingCacheType,
-                                (ctx) =>
-                                {
-                                    PaintWithEffects(ctx);
-                                });
-
-                            RenderObjectPreparing = prepared;
-                            if (prepared != null)
-                            {
-                                RenderObject = prepared;
-                                _renderObjectPreparing = null;
-                            }
-
-                            if (Parent != null && Parent.UpdateLocks < 1)
-                            {
-                                Repaint();
-                            }
-                        });
-                    }
-                    else
-                    {
-                        CreateRenderingObjectAndPaint(clone, recordArea,
-                            (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
-                    }
-                }
-                else
-                {
-                    BindingsContextCacheWasRendered = true;
+                    ExistingCacheWasRendered = true;
                 }
             }
             else
@@ -1146,6 +1113,59 @@ public partial class SkiaControl
         FinalizeDrawingWithRenderObject(context); //NeedUpdate will go false
 
         return willDraw;
+    }
+
+    /// <summary>
+    /// Returns true if existing cache was rendered, without creating new one and painting it.
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext clone, SKRect recordArea)
+    {
+        if (!UseRenderingObject(clone, recordArea))
+        {
+            //record to cache and paint 
+            if (UsesCacheDoubleBuffering)
+            {
+                if (!ExistingCacheWasRendered)
+                    DrawPlaceholder(clone);
+
+                //use cloned struct in another thread 
+                PushToOffscreenRendering(() =>
+                {
+                    //will be executed on background thread in parallel
+                    var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing, UsingCacheType,
+                        (ctx) =>
+                        {
+                            PaintWithEffects(ctx);
+                        });
+
+                    RenderObjectPreparing = prepared;
+                    if (prepared != null)
+                    {
+                        RenderObject = prepared;
+                        _renderObjectPreparing = null;
+                    }
+
+                    if (Parent != null && Parent.UpdateLocks < 1)
+                    {
+                        Repaint();
+                    }
+                });
+            }
+            else
+            {
+                CreateRenderingObjectAndPaint(clone, recordArea,
+                    (ctx) =>
+                    {
+                        PaintWithEffects(ctx.WithDestination(DrawingRect));
+                    });
+            }
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public virtual VisualLayer? PrepareNode(DrawingContext context, float widthRequest, float heightRequest)
@@ -1293,4 +1313,6 @@ public partial class SkiaControl
             //Update();
         }
     }
+
+ 
 }

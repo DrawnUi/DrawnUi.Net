@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Resources;
+using static DrawnUi.Draw.SkiaShape;
 using SKBlendMode = SkiaSharp.SKBlendMode;
 using SKCanvas = SkiaSharp.SKCanvas;
 using SKClipOperation = SkiaSharp.SKClipOperation;
@@ -1943,6 +1944,8 @@ namespace DrawnUi.Draw
         /// If this is set then the Tapped gesture will be consumed by this control without alternatives.
         /// </summary>
         public event EventHandler<ControlTappedEventArgs> Tapped;
+
+        public event EventHandler<ControlTappedEventArgs> LongPressing;
 
         /// <summary>
         /// Gestures event handler for fast access. To mark a gesture as consumed set `e.Consumed` to `true` inside a synchronous (!) event handler.
@@ -5467,7 +5470,7 @@ namespace DrawnUi.Draw
 
         public event EventHandler ApplyingBindingContext;
         protected bool BindingContextWasSet { get; set; }
-        protected bool BindingsContextCacheWasRendered { get; set; }
+        protected bool ExistingCacheWasRendered { get; set; }
 
         /// <summary>
         /// First Maui will apply bindings to your controls, then it would call OnBindingContextChanged, so beware on not to break bindings.
@@ -5478,7 +5481,7 @@ namespace DrawnUi.Draw
                 return;
 
             BindingContextWasSet = true;
-            BindingsContextCacheWasRendered = false;
+            ExistingCacheWasRendered = false;
 
             try
             {
@@ -7531,7 +7534,10 @@ namespace DrawnUi.Draw
                 return DelegateGetOnScreenVisibleArea(inflateByPixels);
             }
 
-            if (this.UsingCacheType != SkiaCacheType.None)
+            bool forCache = this.UsingCacheType != SkiaCacheType.None;
+
+            //read
+            if (forCache)  
             {
                 //we are going to cache our children so they all must draw
                 //regardless of the fact they might still be offscreen
