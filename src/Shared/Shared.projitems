@@ -9,6 +9,7 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\RenderingSubTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platforms\Windows\WindowsUiaInterfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.Maui.cs" />

@@ -37,7 +37,7 @@ public partial class SkiaControl
                 }
 
                 //make intersecting children dirty too
-                var asSpan = CollectionsMarshal.AsSpan(RenderTree);
+                var asSpan = RenderTree.AsSpans();
                 foreach (var cell in asSpan)
                 {
                     //use full transform-aware bounds (handles rotation, scale, skew, perspective)
