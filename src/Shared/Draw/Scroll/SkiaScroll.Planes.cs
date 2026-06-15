@@ -1355,7 +1355,7 @@ namespace DrawnUi.Draw
             // Capture rendering tree for gesture processing after content is painted
             if (Content is SkiaLayout layout && layout.RenderTree != null)
             {
-                plane.CaptureRenderTree(layout.RenderTree, offsetToUse, plane.OffsetY);
+                plane.CaptureRenderTree(layout.RenderTree.Tree, offsetToUse, plane.OffsetY);
                 //Debug.WriteLine($"Captured render tree for {plane.Id}: {plane.RenderTree?.Count ?? 0} controls at offset {offsetToUse}, planeOffsetY: {plane.OffsetY}");
             }
 

@@ -552,6 +552,27 @@ namespace DrawnUi.Draw
             set { SetValue(VirtualisationInflatedProperty, value); }
         }
 
+        public static readonly BindableProperty VirtualisationInflatedRatioProperty = BindableProperty.Create(
+            nameof(VirtualisationInflatedRatio),
+            typeof(double),
+            typeof(SkiaControl),
+            -1.0,
+            propertyChanged: NeedInvalidateMeasure);
+
+        /// <summary>
+        /// Extra virtualization inflation expressed as a RATIO of the visible viewport size measured along the
+        /// layout Orientation — viewport HEIGHT for a Column, WIDTH for a Row. Added on top of
+        /// <see cref="VirtualisationInflated"/> but only in that one direction. For example 0.5 expands the
+        /// considered-visible area by half a viewport beyond each edge along the scroll axis, so cells are
+        /// realized before they scroll in. Being viewport-relative it adapts to screen size and orientation.
+        /// Default is -1 = disabled (only the fixed <see cref="VirtualisationInflated"/> in points is used).
+        /// </summary>
+        public double VirtualisationInflatedRatio
+        {
+            get { return (double)GetValue(VirtualisationInflatedRatioProperty); }
+            set { SetValue(VirtualisationInflatedRatioProperty, value); }
+        }
+
 
         protected static SKBlendMode DefaultBlendMode = SKBlendMode.SrcOver;
 
@@ -2016,7 +2037,7 @@ namespace DrawnUi.Draw
             if (UsesRenderingTree && RenderTree != null && !Super.UseFrozenVisualLayers)
             {
                 bool found = false;
-                var asSpan = CollectionsMarshal.AsSpan(RenderTree);
+                var asSpan = RenderTree.AsSpans();
                 for (int i = 0; i < asSpan.Length; i++)
                 {
                     if (asSpan[i].Control == child)
@@ -2160,7 +2181,7 @@ namespace DrawnUi.Draw
 
                     // Try to find child in RenderTree to use its layout geometry like ProcessGestures does
                     bool found = false;
-                    var asSpan = CollectionsMarshal.AsSpan(RenderTree);
+                    var asSpan = RenderTree.AsSpans();
                     for (int i = 0; i < asSpan.Length; i++)
                     {
                         if (asSpan[i].Control == child)
@@ -2224,6 +2245,12 @@ namespace DrawnUi.Draw
 
             var consumedDefault = BlockGesturesBelow ? this as ISkiaGestureListener : null;
 
+            // Save the parent-space MappedLocation before any HasTransform inversion.
+            // Used for two things: (1) hit-testing against HitRects which are in parent drawing space,
+            // and (2) as the base for dispatchML = parentSpaceML + (thisOffset - dispatchOffset),
+            // which maps from current canvas space to recording space for child dispatch.
+            var parentSpaceMappedLocation = apply.MappedLocation;
+
             if (HasTransform)
             {
                 // Transform the mapped location using the inverse transformation matrix
@@ -2237,6 +2264,7 @@ namespace DrawnUi.Draw
                         apply.AlreadyConsumed
                     );
                 }
+
             }
 
             if (EffectsGestureProcessors.Count > 0)
@@ -2273,12 +2301,26 @@ namespace DrawnUi.Draw
             if (UsesRenderingTree && RenderTree != null)
             {
                 var hadInputConsumed = consumed;
-                var thisOffset = TranslateInputCoords(apply.ChildOffset);
+
+                // thisOffset: AdjustOffset maps current-canvas coords to stack-recording space
+                // (subtracts RenderTree.Offset blit delta). accountForCache=true then applies the
+                // cell's Image-cache correction via CachedObject.TranslateInputCoords, which uses
+                // LastDestination (not DrawingRect) — so it adds (cacheBounds.Top - LastDestination.Top)
+                // to map from stack-recording-space into cell Image-cache-recording-space where
+                // children's HitRects live. Safe: correction=0 when LastDestination==Bounds.
+                var thisOffset = TranslateInputCoords(RenderTree.AdjustOffset(apply.ChildOffset), true);
+
+                // dispatchOffset: accountForCache=false so the Image-cache correction is NOT
+                // applied here. dispatchML = parentSpaceML + (thisOffset - dispatchOffset)
+                // carries the full correction forward to children automatically.
+                var dispatchOffset = TranslateInputCoords(apply.ChildOffset, false);
+
+                //apply = RenderTree.OffsetGestures(apply);
 
                 //if previously having input didn't keep it
                 if (consumed == null || args.Type == TouchActionResult.Up)
                 {
-                    var asSpan = CollectionsMarshal.AsSpan(RenderTree);
+                    var asSpan = RenderTree.AsSpans();
 
                     for (int i = asSpan.Length - 1; i >= 0; i--)
                     {
@@ -2304,6 +2346,13 @@ namespace DrawnUi.Draw
                             }
                             else
                             {
+                                // Use post-HasTransform apply.MappedLocation for hit-testing.
+                                // When this control has a transform (e.g. Rotation=180), apply.MappedLocation
+                                // has already been mapped through the inverse transform matrix, placing the
+                                // gesture in the same coordinate space as children's DrawingRects (HitRects).
+                                // Using parentSpaceMappedLocation (pre-transform) mismatches coordinate spaces:
+                                // a tap at visual-bottom of a Rotation=180 cell arrives as pre-rotation ptY near
+                                // DrawingRect.Top, which lands in a wrong child's HitRect zone, creating a dead zone.
                                 var touchLocationWIthOffset = new SKPoint(apply.MappedLocation.X + thisOffset.X,
                                     apply.MappedLocation.Y + thisOffset.Y);
 
@@ -2333,11 +2382,20 @@ namespace DrawnUi.Draw
 
                                     var childOffset = TranslateInputCoords(apply.ChildOffsetDirect, false);
 
+                                    // Deliver child-canvas-space coordinates to children.
+                                    // apply.MappedLocation is in the rotated/transformed canvas space where children's
+                                    // DrawingRects live (inverse transform was applied above when HasTransform is true).
+                                    // thisOffset - dispatchOffset corrects for blit delta (RenderTree.Offset) and
+                                    // Image-cache recording drift — these offsets are in the same canvas space.
+                                    var dispatchML = new SKPoint(
+                                        apply.MappedLocation.X + thisOffset.X - dispatchOffset.X,
+                                        apply.MappedLocation.Y + thisOffset.Y - dispatchOffset.Y);
+
                                     //standart gesture processing
                                     var c = listener.OnSkiaGestureEvent(args,
                                         new GestureEventProcessingInfo(
-                                            apply.MappedLocation,
-                                            thisOffset,
+                                            dispatchML,
+                                            dispatchOffset,
                                             childOffset,
                                             apply.AlreadyConsumed));
                                     if (c != null)
@@ -2351,8 +2409,8 @@ namespace DrawnUi.Draw
                                         {
                                             c = effect.OnSkiaGestureEvent(args,
                                                 new GestureEventProcessingInfo(
-                                                    apply.MappedLocation,
-                                                    thisOffset,
+                                                    dispatchML,
+                                                    dispatchOffset,
                                                     childOffset,
                                                     apply.AlreadyConsumed));
                                             if (c != null)
@@ -4948,6 +5006,15 @@ namespace DrawnUi.Draw
         {
             Arrange(destination, widthRequest, heightRequest, scale);
 
+            // Keep the gesture transform matrix in sync with the new position. RenderTransformMatrix is
+            // otherwise rebuilt only on the draw path (PrepareNode -> CreateTransformationMatrix); a gated
+            // cell positioned via ArrangeCache (e.g. a cached, rotated/inverted chat cell that scrolled away
+            // from where it was last drawn) would keep a STALE matrix, so IsGestureForChild would inverse-map
+            // taps at the cell's old position — taps land in a dead band the size of the move. Cheap: this is
+            // pure matrix math from DrawingRect (the ctx argument is unused by CreateTransformationMatrix).
+            if (HasTransform)
+                CreateTransformationMatrix(null, DrawingRect);
+
             // Update cache's LastDestination for gesture coordinate translation
             // even though we're not actually drawing
             var cache = RenderObject ?? RenderObjectPrevious;
@@ -7438,11 +7505,11 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Last rendered controls tree. Used by gestures etc..Please use SetRenderingTree method for setting it correctly.
         /// </summary>
-        public List<SkiaControlWithRect> RenderTree { get; protected set; }
+        public RenderingSubTree RenderTree { get; protected set; }
 
         public virtual void SetRenderingTree(List<SkiaControlWithRect> tree)
         {
-            RenderTree = tree;
+            RenderTree = new(tree);
             _builtRenderTreeStamp = _measuredStamp;
         }
 
@@ -7928,6 +7995,8 @@ namespace DrawnUi.Draw
             {
                 if (UsingCacheType == SkiaCacheType.ImageDoubleBuffered)
                 {
+                    NeedMeasure = true; //instead of previously InvalidateWithChildren();
+                    InvalidateParent();
                     Update();
                 }
                 if (IsCacheComposite)

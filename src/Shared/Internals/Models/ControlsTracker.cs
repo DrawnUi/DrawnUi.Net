@@ -17,6 +17,11 @@ public class ControlsTracker
         }
     }
 
+    public IEnumerable<SkiaControl> GetEnumerator()
+    {
+        return _dic.Values; 
+    }
+
     public bool HasItems => _dic.Count > 0;
 
     public bool IsEmpty => _dic.Count < 1;

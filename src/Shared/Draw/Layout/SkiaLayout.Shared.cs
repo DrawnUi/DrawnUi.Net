@@ -1887,7 +1887,7 @@ ExistingLogic:
         public virtual ContainsPointResult GetVisibleChildIndexAt(SKPoint point)
         {
             //relative inside parent:
-            var asSpan = CollectionsMarshal.AsSpan(RenderTree);
+            var asSpan = RenderTree.AsSpans();
             for (int i = 0; i < asSpan.Length; i++)
             {
                 var child = asSpan[i];
