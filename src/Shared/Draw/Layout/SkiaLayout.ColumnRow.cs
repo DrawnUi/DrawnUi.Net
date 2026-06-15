@@ -2024,7 +2024,20 @@ else
 
             // Calculate new visible area (expensive operation)
             var inflate = (float)(this.VirtualisationInflated * ctx.Scale);
-            var visibleArea = GetOnScreenVisibleArea(ctx, new(inflate, inflate));
+            float inflateX = inflate, inflateY = inflate;
+
+            // VirtualisationInflatedRatio: extra inflation as a fraction of the viewport size along the
+            // Orientation (height for Column, width for Row). Viewport-relative band ahead of the viewport.
+            if (VirtualisationInflatedRatio >= 0)
+            {
+                var viewport = GetOnScreenVisibleArea(ctx).Pixels; // un-inflated viewport
+                if (Type == LayoutType.Row)
+                    inflateX += (float)(VirtualisationInflatedRatio * viewport.Width);
+                else
+                    inflateY += (float)(VirtualisationInflatedRatio * viewport.Height);
+            }
+
+            var visibleArea = GetOnScreenVisibleArea(ctx, new(inflateX, inflateY));
 
             // Cache the result
             _visibleAreaCache = new VisibleAreaCache
