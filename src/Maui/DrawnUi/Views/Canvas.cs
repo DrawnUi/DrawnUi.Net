@@ -1189,7 +1189,7 @@ public class Canvas : DrawnView, IGestureListener
         // Use RenderTree if available as it contains the most accurate layout/hit-test information
         if (current.RenderTree != null)
         {
-            var asSpan = CollectionsMarshal.AsSpan(current.RenderTree);
+            var asSpan = current.RenderTree.AsSpans();
             for (int i = 0; i < asSpan.Length; i++)
             {
                 var node = asSpan[i];
