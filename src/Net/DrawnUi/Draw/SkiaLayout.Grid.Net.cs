@@ -1,6 +1,3 @@
-using DrawnUi.Blazor.Views;
-using DrawnUi.Infrastructure.Xaml;
-
 namespace DrawnUi.Draw;
 
 public partial class SkiaLayout

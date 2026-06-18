@@ -12,7 +12,6 @@ global using DrawnUi.Extensions;
 global using DrawnUi.Infrastructure;
 global using DrawnUi.Infrastructure.Models;
 global using DrawnUi.Models;
-global using DrawnUi.Draw.ApplicationModel;
 global using DrawnUi;
 global using DrawnUi.Views;
 global using SkiaSharp;

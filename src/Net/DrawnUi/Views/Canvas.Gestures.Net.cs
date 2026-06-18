@@ -15,6 +15,11 @@ public partial class Canvas
         return type == TouchActionResult.Panning || type == TouchActionResult.Wheel || type == TouchActionResult.Up;
     }
 
+    /// <summary>
+    /// Not used in pur .NET yet
+    /// </summary>
+    public GesturesMode Gestures { get; set; }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AddHadInput(ISkiaGestureListener consumed)
     {
