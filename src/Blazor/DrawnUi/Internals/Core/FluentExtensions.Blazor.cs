@@ -5,24 +5,7 @@ namespace DrawnUi.Draw
 {
     public static partial class FluentExtensions
     {
-        public static T WithColumn<T>(this T view, int column) where T : SkiaControl
-        {
-            Grid.SetColumn(view, column);
-            return view;
-        }
 
-        public static SkiaLayout WithColumnDefinitions(this SkiaLayout grid, string columnDefinitions)
-        {
-            var columns = new ColumnDefinitionCollection();
-
-            foreach (var segment in columnDefinitions.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            {
-                columns.Add(new ColumnDefinition(ParseGridLength(segment)));
-            }
-
-            grid.ColumnDefinitions = columns;
-            return grid;
-        }
 
         public static T OnToggled<T>(this T view, Action<T, bool> action) where T : SkiaToggle
         {
