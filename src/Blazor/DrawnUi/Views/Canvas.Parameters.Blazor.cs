@@ -11,21 +11,15 @@ public partial class Canvas
     public ElementReference HostReference => _hostElement;
 
     [Parameter]
-    public new string BackgroundColor
+    public new Color BackgroundColor
     {
         get
         {
-            return _backgroundColor;
+            return base.BackgroundColor;
         }
         set
         {
-            if (_backgroundColor != value)
-            {
-                _backgroundColor = value;
-
-                base.BackgroundColor =
-                    string.IsNullOrWhiteSpace(value) ? default(Color): Color.Parse(value);
-            }
+            base.BackgroundColor = value;
         }
     } 
 
@@ -34,9 +28,8 @@ public partial class Canvas
     [Parameter]
     public new string Margin { get; set; } = string.Empty;
 
-    private string BackgroundColorCss => string.IsNullOrWhiteSpace(BackgroundColor)
-        ? "transparent"
-        : Color.Parse(BackgroundColor).ToHexRgba();
+    private string BackgroundColorCss => BackgroundColor == Colors.Transparent
+        ? "transparent" : BackgroundColor.ToHexRgba();
 
     private Thickness ParsedMargin => ParseThickness(Margin);
 

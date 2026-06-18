@@ -10,72 +10,6 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
-@if (IsVisible)
-{
-
-<div class="xaml-element xaml-contentview xaml-canvas @CanvasLayoutClass @Class"
-    @ref="_hostElement"
-    style="@CssMargins @CssPadding @CssGridPosition @CssStyle @GestureStyle">
-
-    <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" aria-hidden="true">
-        <div class="xaml-canvas-element" @ref="_inputElement" style="@CanvasSurfaceElementStyle">
-            @if(RenderingMode == RenderingModeType.Default)
-            {
-                <SkiaView Superview="@this"
-                          DrawHandler="DrawFrame"
-                          EnableRenderLoop="@IsRenderLoopEnabled"
-                          Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
-            }
-            else
-            {
-                <SkiaViewAccelerated Superview="@this"
-                                     DrawHandler="DrawFrame"
-                                     EnableRenderLoop="@IsRenderLoopEnabled"
-                                    Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
-            }
-        </div>
-    </div>
-
-    @if (_accessibilityNodes.Length > 0)
-    {
-        <div class="xaml-a11y-overlay">
-            @foreach (var node in _accessibilityNodes)
-            {
-                @if (node.CanInteract)
-                {
-                    <div role="@node.Role"
-                         aria-label="@node.Label"
-                         title="@node.Hint"
-                         aria-pressed="@(node.IsPressed?.ToString().ToLower())"
-                         tabindex="0"
-                         class="xaml-a11y-element xaml-a11y-interactive"
-                         style="@A11yNodeStyle(node)"
-                         @onclick="() => OnA11yActivated(node)"
-                         @onkeydown="(e) => OnA11yKeyDown(e, node)">
-                            @node.Label
-                    </div>
-                }
-                else
-                {
-                    <div role="@node.Role"
-                         aria-label="@node.Label"
-                         title="@node.Hint"
-                         class="xaml-a11y-element"
-                         style="@A11yNodeStyle(node)">
-                        @node.Label
-                    </div>
-                }
-            }
-        </div>
-    }
-
-    @*<div class="xaml-canvas-content">
-    @ChildContent
-    </div> *@
-    </div>
-
-}
-
 <style>
     .xaml-canvas {
         position: relative;
@@ -168,6 +102,74 @@
 
 
 </style>
+
+
+@if (IsVisible)
+{
+
+<div class="xaml-element xaml-contentview xaml-canvas @CanvasLayoutClass @Class"
+    @ref="_hostElement"
+    style="@CssMargins @CssPadding @CssGridPosition @CssStyle @GestureStyle">
+
+    <div class="xaml-canvas-surface @(CenterSurface ? "centered" : "")" aria-hidden="true">
+        <div class="xaml-canvas-element" @ref="_inputElement" style="@CanvasSurfaceElementStyle">
+            @if(RenderingMode == RenderingModeType.Default)
+            {
+                <SkiaView Superview="@this"
+                          DrawHandler="DrawFrame"
+                          EnableRenderLoop="@IsRenderLoopEnabled"
+                          Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
+            }
+            else
+            {
+                <SkiaViewAccelerated Superview="@this"
+                                     DrawHandler="DrawFrame"
+                                     EnableRenderLoop="@IsRenderLoopEnabled"
+                                    Width="@CanvasElementWidth" Height="@CanvasElementHeight" />
+            }
+        </div>
+    </div>
+
+    @if (_accessibilityNodes.Length > 0)
+    {
+        <div class="xaml-a11y-overlay">
+            @foreach (var node in _accessibilityNodes)
+            {
+                @if (node.CanInteract)
+                {
+                    <div role="@node.Role"
+                         aria-label="@node.Label"
+                         title="@node.Hint"
+                         aria-pressed="@(node.IsPressed?.ToString().ToLower())"
+                         tabindex="0"
+                         class="xaml-a11y-element xaml-a11y-interactive"
+                         style="@A11yNodeStyle(node)"
+                         @onclick="() => OnA11yActivated(node)"
+                         @onkeydown="(e) => OnA11yKeyDown(e, node)">
+                            @node.Label
+                    </div>
+                }
+                else
+                {
+                    <div role="@node.Role"
+                         aria-label="@node.Label"
+                         title="@node.Hint"
+                         class="xaml-a11y-element"
+                         style="@A11yNodeStyle(node)">
+                        @node.Label
+                    </div>
+                }
+            }
+        </div>
+    }
+
+    @*<div class="xaml-canvas-content">
+    @ChildContent
+    </div> *@
+    </div>
+
+}
+
 
 @code {
 
