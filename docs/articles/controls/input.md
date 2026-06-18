@@ -121,6 +121,29 @@ DrawnUi.Maui provides various input controls for user interaction, including sli
 
 - `SelectionChanged`: Raised when the selected item changes
 
+### Two-Way Binding `SelectedIndex` (C# code-behind)
+
+Instead of wiring the `SelectedIndexChanged` event by hand, keep `SelectedIndex` in sync with a model both directions using the fluent `ObservePropertyTwoWay` extension. A separate one-way `ObserveProperty` then drives any UI (e.g. a label) from the model. The model must be `INotifyPropertyChanged`; the picker's `SelectedIndex` is a bindable property, so its setter raises change notifications.
+
+```csharp
+// model : INotifyPropertyChanged with an int SelectedIndex
+new SkiaWheelPicker()
+    {
+        ItemsSource = _items,
+        VisibleItems = 5,
+    }
+    .Assign(out _picker)
+    .ObservePropertyTwoWay(model,
+        nameof(model.SelectedIndex),  me   => me.SelectedIndex = model.SelectedIndex,    // model -> picker
+        nameof(SkiaWheelPicker.SelectedIndex), (src, me) => src.SelectedIndex = me.SelectedIndex); // picker -> model
+
+new SkiaLabel()
+    .ObserveProperty(model, nameof(model.SelectedIndex),
+        me => me.Text = $"Selected: {model.SelectedIndex}");
+```
+
+Scrolling the wheel updates `model.SelectedIndex`; setting `model.SelectedIndex` scrolls the wheel. Re-entrancy is guarded internally. See the [Fluent Extensions](../fluent-extensions.md) guide for more on `ObserveProperty` / `ObservePropertyTwoWay`.
+
 ## SkiaSpinner
 
 `SkiaSpinner` is a spinner control to test your luck, providing a rotating wheel with customizable segments.
