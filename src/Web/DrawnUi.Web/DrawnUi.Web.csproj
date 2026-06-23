@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- DRAWNUI_NET = use non-Blazor base classes from SharedNet (#else path) -->
+        <!-- WEB = Web-specific code paths -->
+        <DefineConstants>$(DefineConstants);DRAWNUI_NET;WEB;NET;NET10</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Title>DrawnUI for Web (Pure WASM)</Title>
+        <PackageId>DrawnUi.Web</PackageId>
+        <Description>DrawnUI rendering engine for pure WebAssembly - no Blazor required.</Description>
+        <PackageTags>drawnui web wasm webassembly skia skiasharp canvas</PackageTags>
+        <CreatePackage>false</CreatePackage>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration)'=='Release'">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AppoMobi.Gestures" Version="3.10.4" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="8.3.1.6-preview.2.1" />
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-preview.2.1" />
+        <PackageReference Include="SkiaSharp.Skottie" Version="4.147.0-preview.2.1" />
+        <PackageReference Include="Svg.Skia" Version="4.9.0" />
+        <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+        <PackageReference Include="AppoMobi.Specials" Version="10.0.2" />
+        <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
+        <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
+    </ItemGroup>
+
+    <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
+    <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
+
+    <ItemGroup>
+        <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
+        <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\SharedNet\Internals\Core\FontCollection.cs" Link="FontCollection.cs" />
+      <Compile Include="..\..\SharedNet\Internals\Core\IStylesCollection.cs" Link="IStylesCollection.cs" />
+      <Compile Include="..\..\SharedNet\Internals\Core\StylesCollection.cs" Link="StylesCollection.cs" />
+    </ItemGroup>
+
+    <!-- Net shim files for non-MAUI platforms -->
+    <ItemGroup>
+      <Compile Include="..\..\Net\DrawnUi\Draw\ReturnType.Net.cs" Link="Draw\ReturnType.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Draw\SkiaControl.Net.cs" Link="Draw\SkiaControl.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Draw\SkiaEditor.Net.cs" Link="Draw\SkiaEditor.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Draw\SkiaLayout.Grid.Net.cs" Link="Draw\SkiaLayout.Grid.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Draw\SkiaShape.Net.cs" Link="Draw\SkiaShape.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Draw\VisualDiagnostics.cs" Link="Draw\VisualDiagnostics.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Features\SkiaImageManager.Net.cs" Link="Features\SkiaImageManager.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Gestures\TouchEffect.Net.cs" Link="Gestures\TouchEffect.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Views\Canvas.Gestures.Net.cs" Link="Views\Canvas.Gestures.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Views\Canvas.Net.cs" Link="Views\Canvas.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Views\DrawnView.Net.cs" Link="Views\DrawnView.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Views\Grid.Net.cs" Link="Views\Grid.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Views\SkiaViewAccelerated.Net.cs" Link="Views\SkiaViewAccelerated.Net.cs" />
+      <Compile Include="..\..\Net\DrawnUi\Views\VisualElement.Net.cs" Link="Views\VisualElement.Net.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="wwwroot\**\*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+</Project>
