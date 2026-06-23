@@ -2164,6 +2164,7 @@ public partial class SkiaLayout
         _removedIndices.Clear();
         LastMeasuredIndex = -1;
         FirstMeasuredIndex = -1;
+        ChildrenFactory.TemplatesInvalidated = true;
         UpdateProgressiveContentSize();
 
         OnStructureChanged();

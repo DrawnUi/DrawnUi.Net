@@ -1078,7 +1078,7 @@ namespace DrawnUi.Draw
                     if (IsStack)
                     {
                         var structure = GetStackStructure();
-                        if (structure != null && structure.GetCount() > 0)
+                        if (structure != null)// && structure.GetCount() > 0)
                         {
                             //if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
                             //{

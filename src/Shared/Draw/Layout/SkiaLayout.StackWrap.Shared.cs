@@ -2,9 +2,25 @@ namespace DrawnUi.Draw;
 
 public partial class SkiaLayout
 {
-    public virtual LayoutStructure GetStackStructure() => StackStructure ?? StackStructureMeasured;
+    public virtual LayoutStructure GetStackStructure()
+    {
+        var ret = StackStructure ?? StackStructureMeasured;
+        if (ret == null)
+        {
+            return new LayoutStructure();
+        }
+        return ret;
+    }
 
-    public virtual LayoutStructure GetStackStructureForMeasuring() => StackStructureMeasured ?? StackStructure;
+    public virtual LayoutStructure GetStackStructureForMeasuring()
+    {
+        var ret = StackStructureMeasured ?? StackStructure;
+        if (ret == null)
+        {
+            return new LayoutStructure();
+        }
+        return ret;
+    }
 
     /// <summary>
     /// Used for stack-like layouts such as Column, Row, and Wrap.
@@ -19,10 +35,9 @@ public partial class SkiaLayout
     //public LayoutStructure LatestStackStructure => StackStructure ?? StackStructureMeasured;
 
 
-
     //public LayoutStructure LatestMeasuredStackStructure => StackStructureMeasured ?? StackStructure;
 
-    
+
     protected virtual void ApplyStackMeasureResult()
     {
         if (StackStructureMeasured != null)
@@ -89,7 +104,8 @@ public partial class SkiaLayout
                     }
                     else if (child.HorizontalOptions.Alignment == LayoutAlignment.Center)
                     {
-                        var left = rectForChildrenPixels.Left + (float)Math.Ceiling((rectForChildrenPixels.Width - desiredWidth) / 2f);
+                        var left = rectForChildrenPixels.Left +
+                                   (float)Math.Ceiling((rectForChildrenPixels.Width - desiredWidth) / 2f);
                         area = new(left,
                             area.Top,
                             left + desiredWidth,
@@ -123,7 +139,8 @@ public partial class SkiaLayout
                     }
                     else if (child.VerticalOptions.Alignment == LayoutAlignment.Center)
                     {
-                        var top = rectForChildrenPixels.Top + (float)Math.Ceiling((rectForChildrenPixels.Height - desiredHeight) / 2f);
+                        var top = rectForChildrenPixels.Top +
+                                  (float)Math.Ceiling((rectForChildrenPixels.Height - desiredHeight) / 2f);
                         area = new(area.Left,
                             top,
                             area.Right,
@@ -216,13 +233,19 @@ public partial class SkiaLayout
 
             if (Type == LayoutType.Column)
             {
-                var childWidth = measured.Pixels.Width > 0 ? Math.Min(measured.Pixels.Width, rectForChildrenPixels.Width) : rectForChildrenPixels.Width;
-                cell.Area = new SKRect(rectForChildrenPixels.Left, currentTop, rectForChildrenPixels.Left + childWidth, currentTop + measured.Pixels.Height);
+                var childWidth = measured.Pixels.Width > 0
+                    ? Math.Min(measured.Pixels.Width, rectForChildrenPixels.Width)
+                    : rectForChildrenPixels.Width;
+                cell.Area = new SKRect(rectForChildrenPixels.Left, currentTop, rectForChildrenPixels.Left + childWidth,
+                    currentTop + measured.Pixels.Height);
             }
             else
             {
-                var childHeight = measured.Pixels.Height > 0 ? Math.Min(measured.Pixels.Height, rectForChildrenPixels.Height) : rectForChildrenPixels.Height;
-                cell.Area = new SKRect(currentLeft, rectForChildrenPixels.Top, currentLeft + measured.Pixels.Width, rectForChildrenPixels.Top + childHeight);
+                var childHeight = measured.Pixels.Height > 0
+                    ? Math.Min(measured.Pixels.Height, rectForChildrenPixels.Height)
+                    : rectForChildrenPixels.Height;
+                cell.Area = new SKRect(currentLeft, rectForChildrenPixels.Top, currentLeft + measured.Pixels.Width,
+                    rectForChildrenPixels.Top + childHeight);
             }
 
             var layoutArea = Type == LayoutType.Column

@@ -2179,6 +2179,11 @@ else
 
             if (structure != null)
             {
+                if (IsTemplated && !ChildrenFactory.TemplatesAvailable)
+                {
+                    return 0;
+                }
+
                 //var inflate = (float)(this.VirtualisationInflated * ctx.Scale);
 
                 ScaledRect visibilityAreaReal = GetVisibleAreaCached(ctx);

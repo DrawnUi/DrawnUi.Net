@@ -2786,14 +2786,6 @@ namespace DrawnUi.Draw
                 layoutContent.CommitPendingStructureRebase();
             }
 
-            // A ScrollToIndex to an index that is not yet measured/created stays pending; retry it
-            // every frame until the structure can resolve it (previously it was only retried on
-            // scroller init, so e.g. a jump ordered after startup never executed).
-            if (OrderedScrollToIndex.IsSet)
-            {
-                ExecuteScrollToIndexOrder();
-            }
-
             var needAdjustPos = false;
 
             if (IsContentActive)
@@ -2833,6 +2825,16 @@ namespace DrawnUi.Draw
                         ApplyContentSize(virtualCountChanged);
                     }
                 }
+            }
+
+            // A ScrollToIndex to an index not yet measured/created stays pending; retry it every
+            // frame until the structure can resolve it. MUST run AFTER the content-size reconciliation
+            // above so the clamp uses THIS frame's fresh ptsContentHeight: a jump issued the same frame
+            // background measurement grows the content (scroll-to-oldest) would otherwise clamp the
+            // target offset against the stale previous-frame content height and land mid-list.
+            if (OrderedScrollToIndex.IsSet)
+            {
+                ExecuteScrollToIndexOrder();
             }
 
             // Content grew during an edge-cut fling (backward LoadMore prepend): bounds are fresh

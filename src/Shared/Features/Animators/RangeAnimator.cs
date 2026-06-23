@@ -24,8 +24,6 @@ public class RangeAnimator : SkiaValueAnimator
 
         lock (lockUpdate)
         {
-            //System.Diagnostics.Debug.WriteLine($"[RangeAnimator] {start}->{end} for {ms}");
-
             _callback = callback;
             mValue = start;
             LastFrameTimeNanos = 0;

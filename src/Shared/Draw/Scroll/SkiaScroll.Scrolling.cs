@@ -810,13 +810,21 @@ public partial class SkiaScroll
     /// We might order a scroll before the control was drawn, so it's a kind of startup position
     /// saved every time one calls ScrollTo
     /// </summary>
-    protected ScrollToPointOrder OrderedScrollTo = ScrollToPointOrder.NotValid;
+    public ScrollToPointOrder OrderedScrollTo = ScrollToPointOrder.NotValid;
 
     /// <summary>
     /// We might order a scroll before the control was drawn, so it's a kind of startup position
     /// saved every time one calls ScrollToIndex
     /// </summary>
     protected ScrollToIndexOrder OrderedScrollToIndex;
+
+    public bool OrderedScrollToIndexIsSet
+    {
+        get
+        {
+            return OrderedScrollToIndex.IsSet;
+        }
+    }
 
     /// <summary>
     /// True while an explicit ScrollToIndex order is pending. The head-insert viewport pin
@@ -896,14 +904,17 @@ public partial class SkiaScroll
     {
         if (OrderedScrollToIndex.IsSet)
         {
-            // A staged/uncommitted collection change (e.g. a head insert raised this same frame)
-            // is about to rebase the structure geometry: resolving the order NOW would compute
-            // the target from pre-change positions and could consume it as a no-op (target ==
-            // current offset), while the upcoming pinning commit shifts the viewport with no
-            // order left to correct it. Keep the order pending — Draw retries every frame and
-            // executes it against the post-commit geometry.
-            if (Content is SkiaLayout layout && layout.HasPendingStructureChanges)
-                return false;
+            if (Content is SkiaLayout layout)
+            {
+                if (layout.HasPendingStructureChanges)
+                    return false;
+
+                // Target still in BACKGROUND measurement (e.g. right after a window rebase the oldest item
+                // isn't really measured yet): its Destination.Top AND the content bounds are estimates, so the
+                // offset is wrong and gets clamped to a stale-short max. Wait for real measurement, then retry.
+                if (layout.IsBackgroundMeasuring && layout.BackgroundMeasurementProgress < OrderedScrollToIndex.Index)
+                    return false;
+            }
 
             //saving to use upon creating control if this was called before its internal structure was really created
             var offset = CalculateScrollOffsetForIndex(OrderedScrollToIndex.Index,
@@ -914,6 +925,12 @@ public partial class SkiaScroll
                 var time = 0f;
                 if (OrderedScrollToIndex.Animated)
                     time = SystemAnimationTimeSecs;
+
+                //Debug.WriteLine($"[STI] idx={OrderedScrollToIndex.Index} contentH={ptsContentHeight:0} " +
+                //                $"bgMeasuring={(Content as SkiaLayout)?.IsBackgroundMeasuring} " +
+                //                $"bgProgress={(Content as SkiaLayout)?.BackgroundMeasurementProgress} " +
+                //                $"totalMeasured={(Content as SkiaLayout)?.TotalMeasuredItems} " +
+                //                $"count={(Content as SkiaLayout)?.ItemsSource?.Count}");
 
                 ScrollTo(offset.X, offset.Y, time, OrderedScrollToIndex.Clamp);
                 OrderedScrollToIndex = ScrollToIndexOrder.Default;
