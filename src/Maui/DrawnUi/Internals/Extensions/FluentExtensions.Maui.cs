@@ -311,7 +311,6 @@ namespace DrawnUi.Draw
 
         #endregion
 
-
         #region GESTURES MAUI
 
         public static T OnLongPressing<T>(this T view, Action<T> action) where T : SkiaControl

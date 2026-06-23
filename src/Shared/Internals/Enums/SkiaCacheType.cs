@@ -9,6 +9,11 @@ public enum SkiaCacheType
     None,
 
     /// <summary>
+    /// Default cache type, will use the most appropriate strategy based on the control logic
+    /// </summary>
+    Auto,
+
+    /// <summary>
     /// Create and reuse SKPicture. Try this first for labels, svg etc. 
     /// Do not use this when dropping shadows or with other effects, better use Bitmap. 
     /// </summary>

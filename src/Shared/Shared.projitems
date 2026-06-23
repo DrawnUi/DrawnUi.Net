@@ -9,6 +9,10 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\DataContextIterator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\TemplatedViewsPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\ViewsAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\ViewsIterator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\RenderingSubTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platforms\Windows\WindowsUiaInterfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.cs" />
@@ -81,15 +85,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Grid.Structure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.IList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.ListView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.ViewsAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\CellWIthHeight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.Wrap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SnappingLayout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\StackLayoutStructure.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\Plane.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\PlanesScroll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Gestures.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Planes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Virtual.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Scrolling.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScrollCells.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScrollLooped.cs" />

@@ -389,7 +389,7 @@ namespace DrawnUi.Controls
         private SkiaControl GetView(DrawingContext context, WheelCellInfo item)
         {
             // Get stack structure from content
-            var structure = ItemsWrapper.LatestStackStructure;
+            var structure = ItemsWrapper.GetStackStructure();
             if (structure == null || structure.GetCount() <= 0)
                 return null;
 

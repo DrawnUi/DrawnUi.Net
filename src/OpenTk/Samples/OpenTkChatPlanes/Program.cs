@@ -30,7 +30,7 @@ var gameSettings = new GameWindowSettings
 
 var nativeSettings = new NativeWindowSettings
 {
-    ClientSize = new Vector2i(440, 820),
+    ClientSize = new Vector2i(440, 920),
     Title = "DrawnUi Chat Planes (GPU)",
     API = ContextAPI.OpenGL,
     APIVersion = new Version(3, 3),
@@ -106,7 +106,11 @@ namespace OpenTkChatPlanes
             }
             _lastFrameTicks = now;
 
-            return; //uncomment for user manual testing  (comment out to run WalkAndDump probe)
+
+            //return; //uncomment for user manual testing  (comment out to run WalkAndDump probe)
+
+            //OffsetTest();
+            //return;
 
             // PHASE 0: overscroll the BOTTOM (newest) edge and watch the spring-back every frame.
             // At rest the inverted chat sits at offY≈0 (newest). Dragging UP (bottom->top) pulls past the
@@ -584,6 +588,82 @@ namespace OpenTkChatPlanes
                         Console.WriteLine($"[DayChip830] y={_dcSweepY,4:0} child={_scene.LastChildIndex,4} image={_scene.LastImageIndex,4} {kind}");
                         _dcSweepY += 2;
                         if (_dcSweepY > _dcCellBot + 25) { Console.WriteLine("[DayChip] scan complete."); Close(); }
+                    }
+                    break;
+            }
+        }
+
+
+        // TEST: tap a visible IsFirstDay cell -> chip hides -> cell shrinks. Sweep screen-Y to land the tap,
+        // detect the IsFirstDay flip, then check (RenderTree) that the cells below it follow up (gap ~Spacing),
+        // and capture a frame. before/after both in RenderTree space = consistent.
+        private int _otPhase, _otSettle, _otTarget = -1;
+        private float _otSweepY, _otCellBot, _otCellH, _otNextTop;
+
+        private bool OtIsFirstDay(int local)
+        {
+            var tree = _scene.ChatStack?.RenderTree;
+            if (tree != null)
+                foreach (var t in tree)
+                    if (t.FreezeIndex == local && t.FreezeBindingContext is DrawnUiRepro.ChatMessage m)
+                        return m.IsFirstDay;
+            return false;
+        }
+
+        private void OffsetTest()
+        {
+            switch (_otPhase)
+            {
+                case 0:
+                    if (++_otSettle >= 120) { _otSettle = 0; _otPhase = 1; _otSweepY = 80; }
+                    break;
+                case 1:
+                    if (_otTarget < 0)
+                    {
+                        var tree = _scene.ChatStack?.RenderTree;
+                        if (tree == null) break;
+                        var byIdx = new Dictionary<int, (bool day, float top, float bot)>();
+                        foreach (var t in tree)
+                            if (t.FreezeBindingContext is DrawnUiRepro.ChatMessage m)
+                                byIdx[t.FreezeIndex] = (m.IsFirstDay, t.HitRect.Top, t.HitRect.Bottom);
+                        foreach (var kv in byIdx.OrderBy(x => x.Key))
+                            if (kv.Value.day && byIdx.ContainsKey(kv.Key + 1))
+                            {
+                                _otTarget = kv.Key; _otCellBot = kv.Value.bot; _otCellH = kv.Value.bot - kv.Value.top;
+                                _otNextTop = byIdx[kv.Key + 1].top;
+                                Console.WriteLine($"[OT] watch local={_otTarget} cellH={_otCellH:0} cellBot={_otCellBot:0} nextTop={_otNextTop:0} gap={_otNextTop - _otCellBot:0}");
+                                break;
+                            }
+                        if (_otTarget < 0) break;
+                    }
+                    if (QuickTap(ClientSize.X / 2f, _otSweepY))
+                    {
+                        if (!OtIsFirstDay(_otTarget))
+                        {
+                            Console.WriteLine($"[OT] toggled local={_otTarget} at screenY={_otSweepY:0}");
+                            Capture("ot-before.png");
+                            _otPhase = 2; _otSettle = 0; break;
+                        }
+                        _otSweepY += 12;
+                        if (_otSweepY > ClientSize.Y - 80) { Console.WriteLine("[OT] never toggled - ABORT"); Close(); }
+                    }
+                    break;
+                case 2:
+                    if (++_otSettle >= 40)
+                    {
+                        var tree = _scene.ChatStack?.RenderTree;
+                        float cellTop = 0, cellBot = 0, nextTop = 0;
+                        foreach (var t in tree)
+                        {
+                            if (t.FreezeIndex == _otTarget) { cellTop = t.HitRect.Top; cellBot = t.HitRect.Bottom; }
+                            if (t.FreezeIndex == _otTarget + 1) nextTop = t.HitRect.Top;
+                        }
+                        float newH = cellBot - cellTop, shrink = _otCellH - newH;
+                        float gapBefore = _otNextTop - _otCellBot, gapAfter = nextTop - cellBot;
+                        Console.WriteLine($"[OT] AFTER cellH={newH:0} (shrank {shrink:0}) gapBefore={gapBefore:0} gapAfter={gapAfter:0}");
+                        Console.WriteLine($"[OT] {(shrink < 2 ? "NO-SHRINK" : Math.Abs(gapAfter - gapBefore) < 5 ? "OFFSET-OK (rows below followed)" : "BUG: hole")}");
+                        Capture("ot-after.png");
+                        Close();
                     }
                     break;
             }

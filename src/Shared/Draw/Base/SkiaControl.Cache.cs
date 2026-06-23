@@ -5,6 +5,45 @@ public partial class SkiaControl
 {
     private readonly LimitedQueue<Action> _offscreenCacheRenderingQueue = new(1);
 
+    // Supersession token for offscreen rendering. The latest scheduled offscreen render always wins;
+    // earlier in-flight renders (which cannot be aborted mid-call) observe cancellation/supersession and
+    // abandon their result instead of publishing it. Also tripped on dispose so a render in flight while the
+    // control is being torn down bails before touching freed surfaces/children.
+    private CancellationTokenSource _offscreenRenderCts;
+    private long _offscreenRenderGeneration;
+
+    /// <summary>Token of the currently scheduled offscreen render (see <see cref="RenewOffscreenRenderToken"/>).</summary>
+    public CancellationToken OffscreenRenderToken => _offscreenRenderCts?.Token ?? CancellationToken.None;
+
+    /// <summary>
+    /// Cancels the previous offscreen render (if any) and returns a fresh token + generation stamp for the new one.
+    /// Long-running offscreen actions should poll the returned token at safe checkpoints and MUST NOT publish their
+    /// result once it is cancelled or <see cref="IsOffscreenRenderSuperseded"/> returns true.
+    /// </summary>
+    public CancellationToken RenewOffscreenRenderToken(out long generation)
+    {
+        var previous = _offscreenRenderCts;
+        var fresh = new CancellationTokenSource();
+        _offscreenRenderCts = fresh;
+        generation = Interlocked.Increment(ref _offscreenRenderGeneration);
+        if (previous != null)
+        {
+            try { previous.Cancel(); } catch { /* nop */ }
+            previous.Dispose(); // reading token.IsCancellationRequested after dispose is safe
+        }
+        return fresh.Token;
+    }
+
+    /// <summary>True once a newer offscreen render was scheduled after the one identified by <paramref name="generation"/>.</summary>
+    public bool IsOffscreenRenderSuperseded(long generation) =>
+        Interlocked.Read(ref _offscreenRenderGeneration) != generation;
+
+    /// <summary>Cancels any scheduled/in-flight offscreen render for this control without scheduling a new one.</summary>
+    public void CancelOffscreenRendering()
+    {
+        try { _offscreenRenderCts?.Cancel(); } catch { /* nop */ }
+    }
+
     /// <summary>
     /// Find intersections between changed children and DrawingRect,
     /// add intersecting ones to DirtyChildrenInternal and set IsRenderingWithComposition = true if any.
@@ -448,7 +487,7 @@ public partial class SkiaControl
             {
                 return false; //maybe disposed by GC
             }
-
+            
             if (!CompareSize(cache.RecordingArea.Size, recordingArea.Size, 1))
             {
                 CacheValidity = CacheValidityType.SizeMismatch;

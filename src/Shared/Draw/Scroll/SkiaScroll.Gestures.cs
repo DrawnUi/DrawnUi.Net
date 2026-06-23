@@ -261,9 +261,11 @@ public partial class SkiaScroll
         {
             passedToChildren = true;
 
+            // Virtual scrolls (wheel pickers) draw their own cells and do not route gestures into a
+            // child tile/cell tree; scrolling/snapping is handled by the scroll itself upstream.
             if (UseVirtual)
             {
-                return ProcessGesturesForTiles(args, apply);
+                return null;
             }
 
             return base.ProcessGestures(args, apply);
@@ -688,61 +690,6 @@ public partial class SkiaScroll
         }
 
         return consumedDefault;
-    }
-
-    /// <summary>
-    /// Process gestures across all visible planes in correct Z-order
-    /// </summary>
-    protected virtual ISkiaGestureListener ProcessGesturesForPlanes(
-        SkiaGesturesParameters args,
-        GestureEventProcessingInfo apply)
-    {
-        var gestureLocation = args.Event.Location;//.ToMauiPointF();
-
-        // Process planes in Z-order (top to bottom): Forward -> Current -> Backward
-        // Check Forward plane first (top layer)
-        if (PlaneForward?.IsReady == true && PlaneForward.RenderTree != null)
-        {
-            if (IsGestureInPlane(PlaneForward, gestureLocation))
-            {
-                var consumed = ProcessGesturesForPlane(PlaneForward, args, apply);
-                if (consumed != null)
-                {
-                    Debug.WriteLine($"Gesture consumed by Forward plane ({PlaneForward.Id})");
-                    return consumed;
-                }
-            }
-        }
-
-        // Check Current plane (middle layer)
-        if (PlaneCurrent?.IsReady == true && PlaneCurrent.RenderTree != null)
-        {
-            if (IsGestureInPlane(PlaneCurrent, gestureLocation))
-            {
-                var consumed = ProcessGesturesForPlane(PlaneCurrent, args, apply);
-                if (consumed != null)
-                {
-                    Debug.WriteLine($"Gesture consumed by Current plane ({PlaneCurrent.Id})");
-                    return consumed;
-                }
-            }
-        }
-
-        // Check Backward plane (bottom layer)
-        if (PlaneBackward?.IsReady == true && PlaneBackward.RenderTree != null)
-        {
-            if (IsGestureInPlane(PlaneBackward, gestureLocation))
-            {
-                var consumed = ProcessGesturesForPlane(PlaneBackward, args, apply);
-                if (consumed != null)
-                {
-                    Debug.WriteLine($"Gesture consumed by Backward plane ({PlaneBackward.Id})");
-                    return consumed;
-                }
-            }
-        }
-
-        return null;
     }
 
     private long _lastVelocitySetTime = 0;

@@ -1,4 +1,6 @@
-﻿namespace DrawnUi.Draw;
+﻿using SkiaSharp;
+
+namespace DrawnUi.Draw;
 
 public enum LoadMoreDirection
 {
@@ -38,4 +40,13 @@ public interface IInsideViewport : IVisibilityAware, IDisposable
     {
         return direction == LoadMoreDirection.Bottom && ShouldTriggerLoadMore(viewport);
     }
+
+    /// <summary>
+    /// Lets the content limit how far the scroll may travel toward a desired offset when its backing
+    /// (e.g. a background plane cache) is not ready there yet. Return possibly-narrowed offset bounds; the
+    /// scroll applies its normal bounce/rubber-band against them, so the unready edge feels like a content
+    /// edge. Default: no limit. MUST keep the current offset inside the returned bounds (never yank back).
+    /// </summary>
+    SKRect LimitScrollBounds(float desiredX, float desiredY, SKRect contentOffsetBounds, ScrollOrientation orientation)
+        => contentOffsetBounds;
 }

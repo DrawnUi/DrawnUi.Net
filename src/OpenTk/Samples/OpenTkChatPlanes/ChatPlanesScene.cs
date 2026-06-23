@@ -64,14 +64,23 @@ public sealed partial class ChatPlanesScene : IChatCellActions
         return batch;
     }
 
+    // INLINE trim-before-load, matching MAUI ChatPage and the documented windowed contract: trim the
+    // OPPOSITE end atomically before growing. The previous DEFERRED trim (SafeAction) raced the head-insert
+    // index shift and produced duplicate local indices (DUP-idx structure corruption).
     private void LoadOlder()
     {
         LoadOlderCalls++;
         if (_windowStart <= 0) return;
         int n = Math.Min(LoadBatch, _windowStart);
+
+        if (LimitMemoryWindow)
+        {
+            int over = _items.Count + n - MaxItemsInMemory;
+            if (over > 0) { _items.RemoveRange(0, over); _windowEnd -= over; TrimEvents++; } // trim newest (front)
+        }
+
         _windowStart -= n;
-        _items.AddRange(ReversedRange(_windowStart, n)); // grow; trim is deferred to a settled frame
-        ForceTrimIfOverHardCap();
+        _items.AddRange(ReversedRange(_windowStart, n));
     }
 
     private void LoadNewer()
@@ -79,9 +88,15 @@ public sealed partial class ChatPlanesScene : IChatCellActions
         LoadNewerCalls++;
         if (_windowEnd >= _all.Count) return;
         int n = Math.Min(LoadBatch, _all.Count - _windowEnd);
-        _items.InsertRange(0, ReversedRange(_windowEnd, n)); // grow; trim is deferred to a settled frame
+
+        if (LimitMemoryWindow)
+        {
+            int over = _items.Count + n - MaxItemsInMemory;
+            if (over > 0) { _items.RemoveRange(_items.Count - over, over); _windowStart += over; TrimEvents++; } // trim oldest (tail)
+        }
+
+        _items.InsertRange(0, ReversedRange(_windowEnd, n));
         _windowEnd += n;
-        ForceTrimIfOverHardCap();
     }
 
     /// <summary>
@@ -93,9 +108,9 @@ public sealed partial class ChatPlanesScene : IChatCellActions
     /// </summary>
     public void MaybeTrimDeferred()
     {
-        if (!LimitMemoryWindow) return;
-        if (_items.Count <= MaxItemsInMemory) return;
-        EnqueueTrim();
+        // Trim now happens INLINE in LoadOlder/LoadNewer (see above). Deferred far-side trim raced the
+        // head-insert and corrupted indices (DUP-idx), so it is disabled. Kept as a no-op so the harness
+        // call site is unchanged.
     }
 
     // Safety net: window overshot the hard cap (e.g. an endless fling) — queue a trim so memory can't run away.

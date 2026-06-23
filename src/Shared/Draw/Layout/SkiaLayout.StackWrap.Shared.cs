@@ -2,27 +2,27 @@ namespace DrawnUi.Draw;
 
 public partial class SkiaLayout
 {
+    public virtual LayoutStructure GetStackStructure() => StackStructure ?? StackStructureMeasured;
+
+    public virtual LayoutStructure GetStackStructureForMeasuring() => StackStructureMeasured ?? StackStructure;
+
     /// <summary>
     /// Used for stack-like layouts such as Column, Row, and Wrap.
     /// </summary>
-    public LayoutStructure StackStructure { get; set; }
+    protected LayoutStructure StackStructure { get; set; }
 
     /// <summary>
     /// Set during measure and swapped into StackStructure when measure result is applied.
     /// </summary>
-    public LayoutStructure StackStructureMeasured { get; set; }
+    protected LayoutStructure StackStructureMeasured { get; set; }
 
-    public LayoutStructure LatestStackStructure => StackStructure ?? StackStructureMeasured;
+    //public LayoutStructure LatestStackStructure => StackStructure ?? StackStructureMeasured;
 
-    /// <summary>
-    /// When set (during planes/Managed plane preparation), the layout paints THIS structure instead of
-    /// the shared one. Lets each plane render its own freshly-measured item band (a sliding window that
-    /// fits the recycling pool) without disturbing the shared structure.
-    /// </summary>
-    public LayoutStructure PlaneOverrideStructure { get; set; }
 
-    public LayoutStructure LatestMeasuredStackStructure => StackStructureMeasured ?? StackStructure;
 
+    //public LayoutStructure LatestMeasuredStackStructure => StackStructureMeasured ?? StackStructure;
+
+    
     protected virtual void ApplyStackMeasureResult()
     {
         if (StackStructureMeasured != null)
@@ -49,6 +49,9 @@ public partial class SkiaLayout
         cell.WasMeasured = true;
 
         LayoutCell(measured, cell, child, rectForChildrenPixels, scale);
+
+        //SkiaLayout.TraceIdx(cell.ControlIndex, "FG-MEASURE",
+        //    $"ctx={child?.ContextIndex} measuredH={measured.Pixels.Height:0} areaTop={cell.Area.Top:0} destTop={cell.Destination.Top:0} destH={cell.Destination.Height:0}");
 
         return measured;
     }

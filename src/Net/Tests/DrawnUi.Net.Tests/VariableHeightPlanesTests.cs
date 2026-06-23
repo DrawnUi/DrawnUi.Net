@@ -161,7 +161,7 @@ public class VariableHeightPlanesTests
         // LOWER portion; both must hit THAT row. The old uniform-slot mapping sent the lower part of a tall row
         // to the next row — this asserts it no longer does.
         int tested = 0, tallTested = 0;
-        foreach (var c in new List<ControlInStack>(list.StackStructure.GetChildren()))
+        foreach (var c in new List<ControlInStack>(list.GetStackStructure().GetChildren()))
         {
             if (c == null) continue;
             float screenTop = drawTop + c.Destination.Top - scrollTopPx;

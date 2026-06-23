@@ -33,6 +33,31 @@ public class CachedObject : ISkiaDisposable
     }
 
     /// <summary>
+    /// Calculate offset where cache should be drawn
+    /// </summary>
+    /// <param name="destination"></param>
+    /// <returns></returns>
+    public SKPoint CalculateDrawingOffset(SKRect destination)
+    {
+        if (Type == SkiaCacheType.Operations)
+        {
+            var moveY = Bounds.Top - RecordingArea.Top;
+            var moveX = Bounds.Left - RecordingArea.Left;
+            var x = (float)(destination.Left - Bounds.Left + moveX);
+            var y = (float)(destination.Top - Bounds.Top + moveY);
+            return new SKPoint(x, y);
+        }
+        else
+        {
+            var moveY = Bounds.Top - RecordingArea.Top;
+            var moveX = Bounds.Left - RecordingArea.Left;
+            var x = (float)(destination.Left + moveX);
+            var y = (float)(destination.Top + moveY);
+            return new SKPoint(x, y);
+        }
+    }
+
+    /// <summary>
     /// This will draw with destination corrected by offset that it had when was recorded
     /// </summary>
     /// <param name="canvas"></param>
@@ -41,38 +66,26 @@ public class CachedObject : ISkiaDisposable
     public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint)
     {
         LastDestination = destination;
+        var drawAt = CalculateDrawingOffset(destination);
 
         try
         {
             if (Picture != null)
             {
-                var moveY = Bounds.Top - RecordingArea.Top;
-                var moveX = Bounds.Left - RecordingArea.Left;
-
-                var x = (float)(destination.Left - Bounds.Left + moveX);
-                var y = (float)(destination.Top - Bounds.Top + moveY);
-
-                canvas.DrawPicture(Picture, x, y, paint);
-
-                LastDrawnAt = new(x, y, Bounds.Width + x, Bounds.Height + y);
+                canvas.DrawPicture(Picture, drawAt.X, drawAt.Y, paint);
+                LastDrawnAt = new(drawAt.X, drawAt.Y, Bounds.Width + drawAt.X, Bounds.Height + drawAt.Y);
             }
             else
             if (Image != null)
             {
-                var moveY = Bounds.Top - RecordingArea.Top;
-                var moveX = Bounds.Left - RecordingArea.Left;
+                canvas.DrawImage(Image, drawAt.X, drawAt.Y, paint);
+                LastDrawnAt = new(drawAt.X, drawAt.Y, Bounds.Width + drawAt.X, Bounds.Height + drawAt.Y);
 
-                var x = (float)(destination.Left + moveX);
-                var y = (float)(destination.Top + moveY);
-
-                canvas.DrawImage(Image, x, y, paint);
-                LastDrawnAt = new(x, y, Bounds.Width + x, Bounds.Height + y);
-
-                if (Surface != null && Surface.Context != null)
-                {
-                    //GPU
-                    //canvas.Flush();
-                }
+                //if (Surface != null && Surface.Context != null)
+                //{
+                //    //GPU
+                //    canvas.Flush();
+                //}
             }
         }
         catch (Exception e)

@@ -28,12 +28,6 @@ namespace DrawnUi.Draw
 
         public int GetSizeKey(SKSize size)
         {
-            // While rendering a plane/tile window every cell is realized & released within one paint over
-            // a transient per-band structure. Height-bucketing would scatter returns across buckets that
-            // the (estimate-height) Get never re-requests -> pool starves. Force the single generic bucket.
-            if (PlaneOverrideStructure != null)
-                return 0;
-
             int hKey = 0;
             //if (RecyclingTemplate != RecyclingTemplate.Disabled)
             {
@@ -866,7 +860,6 @@ else
         }
 
 
-
         /// <summary>
         /// Measuring column/row for templated for fastest way possible
         /// </summary>
@@ -1070,7 +1063,8 @@ else
         /// <summary>
         /// Core measurement logic shared between templated and non-templated scenarios
         /// </summary>
-        protected virtual ScaledSize MeasureStack(SKRect rectForChildrenPixels, float scale, LayoutStructure layoutStructure,
+        protected virtual ScaledSize MeasureStack(SKRect rectForChildrenPixels, float scale,
+            LayoutStructure layoutStructure,
             bool isTemplated, SkiaControl template, SkiaControl[] nonTemplated)
         {
             var stackHeight = 0.0f;
@@ -1175,6 +1169,7 @@ else
                         {
                             stackY += GetSpacingForIndex(row, scale);
                         }
+
                         rectForChild.Top = (float)Math.Round(stackY);
 
                         stackX += GetSpacingForIndex(column, scale);
@@ -1200,14 +1195,16 @@ else
                                 // Column layout: check Fill-X children for MinimumWidthRequest
                                 if (isColumn && child.NeedFillX && child.MinimumWidthRequest >= 0)
                                 {
-                                    var minWidth = (float)Math.Round((child.MinimumWidthRequest + child.Margins.HorizontalThickness) * scale);
+                                    var minWidth = (float)Math.Round(
+                                        (child.MinimumWidthRequest + child.Margins.HorizontalThickness) * scale);
                                     if (minWidth > minStackWidthFromFill)
                                         minStackWidthFromFill = minWidth;
                                 }
                                 // Row layout: check Fill-Y children for MinimumHeightRequest
                                 else if (!isColumn && child.NeedFillY && child.MinimumHeightRequest >= 0)
                                 {
-                                    var minHeight = (float)Math.Round((child.MinimumHeightRequest + child.Margins.VerticalThickness) * scale);
+                                    var minHeight = (float)Math.Round(
+                                        (child.MinimumHeightRequest + child.Margins.VerticalThickness) * scale);
                                     if (minHeight > minStackHeightFromFill)
                                         minStackHeightFromFill = minHeight;
                                 }
@@ -1225,6 +1222,7 @@ else
                                 {
                                     widthToUse = spacePerFillChild;
                                 }
+
                                 maxWidth += widthToUse + GetSpacingForIndex(column, scale);
                             }
 
@@ -1239,6 +1237,7 @@ else
                                 {
                                     heightToUse = spacePerFillChild;
                                 }
+
                                 if (heightToUse > maxRowHeight)
                                     maxRowHeight = heightToUse;
                             }
@@ -1310,10 +1309,12 @@ else
                     stackHeight = minStackHeightFromFill;
 
                 // apply fill constraints
-                if (float.IsFinite(rectForChildrenPixels.Width) && HorizontalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Width >= 0)
+                if (float.IsFinite(rectForChildrenPixels.Width) &&
+                    HorizontalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Width >= 0)
                     stackWidth = rectForChildrenPixels.Width;
 
-                if (float.IsFinite(rectForChildrenPixels.Height) && VerticalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Height >= 0)
+                if (float.IsFinite(rectForChildrenPixels.Height) && VerticalOptions.Alignment == LayoutAlignment.Fill ||
+                    SizeRequest.Height >= 0)
                     stackHeight = rectForChildrenPixels.Height;
 
                 if (needSecondPass)
@@ -1709,7 +1710,7 @@ else
             }
 
 
-            var layoutStructure = LatestMeasuredStackStructure;
+            var layoutStructure = GetStackStructureForMeasuring();
             if (layoutStructure?.GetChildren() == null || layoutStructure.GetCount() == 0)
             {
                 return false; // No previous layout to work with
@@ -2042,9 +2043,7 @@ else
             // Cache the result
             _visibleAreaCache = new VisibleAreaCache
             {
-                Destination = ctx.Destination,
-                VisibleArea = visibleArea,
-                CalculatedAt = now
+                Destination = ctx.Destination, VisibleArea = visibleArea, CalculatedAt = now
             };
 
             return visibleArea;
@@ -2057,6 +2056,87 @@ else
         protected virtual void OnBeforeDrawingVisibleChildren(DrawingContext ctx, LayoutStructure structure,
             List<ControlInStack> visibleElements)
         {
+        }
+
+        // DEBUG: color-code each visible cell by the background-measure batch that produced it. A left-edge
+        // stripe + a top seam line per cell. Where the color changes = a batch boundary (cells glued in by a
+        // background MeasureVisible pass). Overlaps / wrong gaps at a color change point straight at the bug.
+        private void DrawMeasureBatchOverlay(DrawingContext ctx, List<ControlInStack> visible)
+        {
+            if (visible == null) return;
+            var canvas = ctx.Context.Canvas;
+            using var paint = new SKPaint { Style = SKPaintStyle.Fill, IsAntialias = false };
+            foreach (var cell in visible)
+            {
+                if (cell == null) continue;
+                paint.Color = DebugBatchColor(cell.DebugMeasureBatch);
+                float l = cell.Drawn.Left, t = cell.Drawn.Top, r = cell.Drawn.Right, b = cell.Drawn.Bottom;
+                canvas.DrawRect(l, t, 6f, b - t, paint);      // left-edge stripe = this cell's batch
+                canvas.DrawRect(l, t, r - l, 2f, paint);      // top seam line = batch boundary visible across width
+            }
+        }
+
+        private static SKColor DebugBatchColor(int batch)
+        {
+            if (batch <= 0)
+                return new SKColor(0x99, 0x99, 0x99, 0xCC); // gray = initial / foreground measure
+            var hue = (batch * 67) % 360;                    // distinct hue per background batch
+            return SKColor.FromHsv(hue, 90, 100).WithAlpha(0xCC);
+        }
+
+        // DEBUG: enable to log structural corruption the instant it's in the structure: a cell whose slot
+        // height (Destination) disagrees with its measured content height, or that overlaps the previous
+        // cell (Top above prev Bottom). Prints only offending cells with the exact numbers.
+        public static bool DebugAssertStructure;
+
+        // DEBUG: trace one specific item (by ContextIndex/ControlIndex) and its immediate neighbours through
+        // every measure, draw and shift. Set to -1 to disable. The window is target-1 .. target+1.
+        public static int DebugTraceIndex = -1;
+
+        // True if idx is the traced item or one of its two neighbours.
+        public static bool IsTraced(int idx) =>
+            DebugTraceIndex >= 0 && Math.Abs(idx - DebugTraceIndex) <= 1;
+
+        public static void TraceIdx(int idx, string where, string msg)
+        {
+            if (IsTraced(idx))
+                Super.Log($"[TRACE {idx}{(idx == DebugTraceIndex ? "*" : "")}] {where}: {msg}");
+        }
+
+        private void DebugAssertStructureIntegrity(LayoutStructure structure, SKRect visiblePixels)
+        {
+            if (structure == null) return;
+
+            // Head insert/remove stages new cells at unsettled positions until CommitPendingStructureRebase;
+            // those are legitimately overlapping for a frame -> skip to avoid drowning the real signal.
+            if (HeadInsertInFlight || HeadRemoveInFlight) return;
+
+            var spacingPx = (float)Math.Round(Spacing * RenderingScale);
+
+            // Collect only cells actually painted last frame AND inside the visible viewport, then compare
+            // in POSITION order (sorted by paint Top) — structure iteration order is scrambled by shifts.
+            var painted = new List<ControlInStack>();
+            foreach (var cell in structure.GetChildren())
+            {
+                if (cell == null || !cell.WasLastDrawn || cell.IsCollapsed || cell.Drawn.Height <= 0)
+                    continue;
+                var r = new SKRect(cell.Drawn.Left, cell.Drawn.Top, cell.Drawn.Left + cell.Drawn.Width, cell.Drawn.Bottom);
+                if (!r.IntersectsWith(visiblePixels))
+                    continue;
+                painted.Add(cell);
+            }
+            painted.Sort((a, b) => a.Drawn.Top.CompareTo(b.Drawn.Top));
+
+            for (int i = 1; i < painted.Count; i++)
+            {
+                var prev = painted[i - 1];
+                var cell = painted[i];
+                var delta = cell.Drawn.Top - prev.Drawn.Bottom; // expected ~= spacingPx
+                if (delta < spacingPx - 2f)
+                    Super.Log($"[DRAWN-BAD overlap] idx{cell.ControlIndex} top={cell.Drawn.Top:0} < prev idx{prev.ControlIndex} bottom={prev.Drawn.Bottom:0} (overlap {prev.Drawn.Bottom - cell.Drawn.Top:0}) prevH={prev.Drawn.Height:0} thisH={cell.Drawn.Height:0} prevBatch{prev.DebugMeasureBatch} batch{cell.DebugMeasureBatch}");
+                else if (delta > spacingPx + 2f)
+                    Super.Log($"[DRAWN-BAD gap] idx{cell.ControlIndex} top={cell.Drawn.Top:0} > prev idx{prev.ControlIndex} bottom={prev.Drawn.Bottom:0} (gap {delta - spacingPx:0}) prevH={prev.Drawn.Height:0} thisH={cell.Drawn.Height:0} prevBatch{prev.DebugMeasureBatch} batch{cell.DebugMeasureBatch}");
+            }
         }
 
         /// <summary>
@@ -2101,22 +2181,9 @@ else
             {
                 //var inflate = (float)(this.VirtualisationInflated * ctx.Scale);
 
-                // For managed virtualization, bypass cache to ensure each plane gets its own visibility area
-                ScaledRect visibilityAreaReal;
-                ScaledRect visibilityArea;
+                ScaledRect visibilityAreaReal = GetVisibleAreaCached(ctx);
+                ScaledRect visibilityArea = visibilityAreaReal;
                 bool usesExpandedViewport = false;
-
-                if (Virtualisation == VirtualisationType.Managed)
-                {
-                    var inflate = (float)(this.VirtualisationInflated * ctx.Scale);
-                    visibilityAreaReal = GetOnScreenVisibleArea(ctx, new(inflate, inflate));
-                }
-                else
-                {
-                    visibilityAreaReal = GetVisibleAreaCached(ctx);
-                }
-
-                visibilityArea = visibilityAreaReal;
 
                 var recyclingAreaPixels = visibilityArea.Pixels;
                 var expendRecycle = ((float)RecyclingBuffer * ctx.Scale);
@@ -2157,6 +2224,11 @@ else
                         cell.Drawn.Set(x, y, x + cell.Destination.Width, y + cell.Destination.Height);
 
                         offsetOthers += cell.OffsetOthers;
+
+                        if (offsetOthers.Y != 0)
+                        {
+                            Debug.WriteLine($"Offset others: {offsetOthers.Y}");
+                        }
 
                         var insideViewport = cell.Drawn.IntersectsWith(visibilityArea.Pixels);
 
@@ -2287,7 +2359,11 @@ else
                 ClearDirtyChildren();
 
                 //PASS 2 DRAW VISIBLE
-                drawn = DrawStackVisibleChildren(ctx, structure, visibleElements, usesExpandedViewport, visibilityAreaReal, tree, ref updateInternal);
+                drawn = DrawStackVisibleChildren(ctx, structure, visibleElements, usesExpandedViewport,
+                    visibilityAreaReal, tree, ref updateInternal);
+
+                if (DebugDrawMeasureBatches)
+                    DrawMeasureBatchOverlay(ctx, visibleElements);
             }
 
             if (needrebuild && visibleElements.Count > 0)
@@ -2310,13 +2386,6 @@ else
             }
 
             WillDrawFromFreshItemssSource++;
-
-            //todo move/remove???
-            if (_measuredItems.Count > SLIDING_WINDOW_SIZE)
-            {
-                // Schedule cleanup on next frame to avoid blocking
-                Task.Run(ApplySlidingWindowCleanup);
-            }
 
             return drawn;
         }
@@ -2344,13 +2413,17 @@ else
 
             try
             {
-                if (WillDrawFromFreshItemssSource == 0 && IsTemplated &&
-                    RecyclingTemplate != RecyclingTemplate.Disabled)
+                if (WillDrawFromFreshItemssSource == 0 && IsTemplated
+                   //&& RecyclingTemplate != RecyclingTemplate.Disabled
+                   )
                 {
                     if (ReserveTemplates > 0)
                     {
                         Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
-                            () => { ChildrenFactory.FillPool(visibleElements.Count + ReserveTemplates); });
+                            () =>
+                            {
+                                ChildrenFactory.FillPool(visibleElements.Count + ReserveTemplates);
+                            });
                     }
                 }
 
@@ -2397,33 +2470,36 @@ else
                         var x = offsetOthers.X + cell.Drawn.Left;
                         var y = offsetOthers.Y + cell.Drawn.Top;
 
+                        //SkiaLayout.TraceIdx(cell.ControlIndex, "DRAW-in",
+                        //    $"ctx={child.ContextIndex} slotMeasuredH={cell.Measured.Pixels.Height:0} drawnTop={cell.Drawn.Top:0} drawnH={cell.Drawn.Height:0} destTop={cell.Destination.Top:0} destH={cell.Destination.Height:0} viewMeasuredH={child.MeasuredSize.Pixels.Height:0} need={child.NeedMeasure} sizeKeyReq={GetSizeKey(cell.Measured.Pixels)} sizeKeyView={GetSizeKey(child.MeasuredSize.Pixels)} x={x:0} y={y:0} offOthersY={offsetOthers.Y:0}");
+
                         // Drawing a plane/tile window: every cell is a recycled view just rebound to this
                         // index's content, and GetSizeKey is forced to 0 here (single pool bucket), so the
                         // size-key comparison below can't detect that the rebound content differs in height.
                         // Force a measure so the painted cell matches its real height (and the reserved slot
                         // from BuildPlaneWindowStructure) — otherwise a tall row painted by a previously-short
                         // recycled cell paints short and leaves a gap (and vice-versa overlaps).
-                        bool forcePlaneMeasure = PlaneOverrideStructure != null;
+                        //bool forcePlaneMeasure = PlaneOverrideStructure != null;
 
-                        if (child.NeedMeasure || forcePlaneMeasure)
+                   
+
+                        if (child.NeedMeasure)
                         {
-                            if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible && !forcePlaneMeasure)
-                            {
-                                //we change structure elsewhere so no need to measure here
-                                if (child.WasMeasured)
-                                {
-                                    child.NeedMeasure = false;
-                                }
-                            }
-
-                            if (forcePlaneMeasure ||
-                                !IsTemplated ||
-                                !child.WasMeasured
-                                || InvalidatedChildrenInternal.Contains(child) ||
-                                //MeasureItemsStrategy == MeasuringStrategy.MeasureVisible ||
-                                GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels))
+                            if (!IsTemplated
+                              || MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                              || (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && !child.WasMeasured)
+                              || GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels)
+                              || InvalidatedChildrenInternal.Contains(child)
+                              )
                             {
                                 var oldSize = child.MeasuredSize.Pixels;
+
+                                // DETECTOR(B): the slot the structure RESERVED for this index, captured before
+                                // cell.Measured is overwritten. The OffsetOthers delta below is computed from
+                                // oldSize (the recycled view's PREVIOUS item size), not from this reserved slot
+                                // -> followers in the same batch can be shifted by the wrong magnitude.
+                                var reservedSlot = cell.Measured.Pixels;
+
                                 var measured = child.Measure((float)cell.Area.Width, (float)cell.Area.Height,
                                     ctx.Scale);
 
@@ -2437,41 +2513,49 @@ else
                                     LayoutCell(measured, cell, child, cell.Area, ctx.Scale);
                                 }
 
-                                if (oldSize != SKSize.Empty && !CompareSize(oldSize, child.MeasuredSize.Pixels, 1f))
+
+                                /*
+                                  Bug fixed: when a recycled view re-measures during draw, the code shifted all following cells by diff = newMeasuredHeight −
+                                    oldSize, where oldSize was the recycled view's previous item content (e.g. it last showed a 698px message). So a cell
+                                    whose real size exactly matched its slot (130→130, zero change) still shoved every follower by 130 − 698 = −568px →
+                                    overlap at wrong Top. Confirmed by trace: oldView=698 reservedSlot=130 newReal=130 diffApplied=−568 correctDelta=0.
+
+                                    Fix: compute the follower shift against the slot the structure reserved for that index, not the recycled view's prior
+                                    size:
+                                 */
+
+                                // was: var diff = child.MeasuredSize.Pixels - oldSize;   // oldSize = recycled view's PREVIOUS item
+
+                                if (reservedSlot != SKSize.Empty && !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
                                 {
-                                    //Trace.WriteLine($"[CELL] remeasured {child.Uid}");
-                                    var diff = child.MeasuredSize.Pixels - oldSize;
+                                    var diff = child.MeasuredSize.Pixels - reservedSlot;
                                     cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
 
+                                    /*
                                     if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
                                     {
                                         //Debug.WriteLine($"[DrawStack] OffsetOthers {cell.OffsetOthers}");
 
-                                        // Drawing a transient plane/tile window (PlaneOverrideStructure set):
-                                        // do NOT feed its re-measures into the shared structure. The window's
-                                        // estimate-vs-real diffs would shift the shared cumulative positions
-                                        // and drift the scroll<->index mapping (scroll-back lands off-by-N).
-                                        // The shared structure advances only through its own background measure.
-                                        if (PlaneOverrideStructure == null)
+                                        var measuredItem = new MeasuredItemInfo
                                         {
-                                            var measuredItem = new MeasuredItemInfo
+                                            Cell = cell, LastAccessed = DateTime.UtcNow, IsInViewport = true,
+                                        };
+                                        _pendingStructureChanges.Add(
+                                            new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
                                             {
-                                                Cell = cell,
-                                                LastAccessed = DateTime.UtcNow,
-                                                IsInViewport = true,
-                                            };
-                                            _pendingStructureChanges.Add(
-                                                new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
-                                                {
-                                                    OffsetOthers = cell.OffsetOthers,
-                                                    StartIndex = child.ContextIndex,
-                                                    Count = 1,
-                                                    MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
-                                                });
-                                        }
+                                                OffsetOthers = cell.OffsetOthers,
+                                                StartIndex = child.ContextIndex,
+                                                Count = 1,
+                                                MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
+                                            });
 
                                         cell.OffsetOthers = Vector2.Zero;
                                     }
+                                    */
+                                }
+                                else
+                                {
+                                    var diff = child.MeasuredSize.Pixels - oldSize;   // oldSize = recycled view's PREVIOUS item
                                 }
                             }
                         }
@@ -2483,6 +2567,9 @@ else
                             if (child.MeasuredSize.Pixels.Width >= 1 && child.MeasuredSize.Pixels.Height >= 1)
                             {
                                 destinationRect = GetStackChildDrawRect(index, x, y, cell);
+
+                                //SkiaLayout.TraceIdx(cell.ControlIndex, "DRAW-paint",
+                                //    $"ctx={child.ContextIndex} paintTop={destinationRect.Top:0} paintBottom={destinationRect.Bottom:0} paintH={destinationRect.Height:0} viewMeasuredH={child.MeasuredSize.Pixels.Height:0} cellDrawnTop={cell.Drawn.Top:0} cellDrawnH={cell.Drawn.Height:0}");
 
                                 if (IsRenderingWithComposition)
                                 {
@@ -2566,6 +2653,7 @@ else
                         ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
                     }
             }
+
             return drawn;
         }
     }

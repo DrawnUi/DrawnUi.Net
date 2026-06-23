@@ -103,7 +103,7 @@ public partial class SkiaDecoratedColumn : SkiaStack
 
     public virtual void CreateLines()
     {
-        var structure = LatestStackStructure;
+        var structure = GetStackStructure();
         if (structure == null || structure.Length == 0)
         {
             return;

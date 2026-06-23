@@ -8529,6 +8529,8 @@ namespace DrawnUi.Draw
         {
             IsDisposing = true;
 
+            CancelOffscreenRendering(); // abandon any in-flight offscreen render before surfaces/children are freed
+
             DelegateDrawCache = null;
             Clipping = null;
             CustomizeLayerPaint = null;

@@ -98,4 +98,10 @@ public class ControlInStack
     /// Cell's own visibility state (independent of viewport visibility)
     /// </summary>
     public bool IsCollapsed { get; set; }
+
+    /// <summary>
+    /// DEBUG: which background-measurement batch produced this row. 0 = initial/foreground measure,
+    /// 1..N = the Nth background (MeasureVisible) batch. Used to color-code seams in the debug overlay.
+    /// </summary>
+    public int DebugMeasureBatch { get; set; }
 }

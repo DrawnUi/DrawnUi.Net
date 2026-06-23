@@ -48,7 +48,7 @@ public class SkiaScrollLooped : SkiaScroll
 
     public override ContainsPointResult GetItemIndex(SkiaLayout layout, float pixelsOffsetX, float pixelsOffsetY, RelativePositionType option)
     {
-        if (layout.LatestStackStructure == null)
+        if (layout.GetStackStructure() == null)
             return ContainsPointResult.NotFound();
 
         bool trace = false;
@@ -93,7 +93,7 @@ public class SkiaScrollLooped : SkiaScroll
 
             if (layout.Type == LayoutType.Column || layout.Type == LayoutType.Wrap && layout.Split > 0) //todo grid
             {
-                var stackStructure = layout.LatestStackStructure;
+                var stackStructure = layout.GetStackStructure();
                 int index = -1;
                 int row;
                 int col;
@@ -163,7 +163,7 @@ public class SkiaScrollLooped : SkiaScroll
             //horizontal stack
             if (layout.Type == LayoutType.Row || layout.Type == LayoutType.Wrap && layout.Split == 0) //todo grid
             {
-                var stackStructure = layout.StackStructure;
+                var stackStructure = layout.GetStackStructure();
                 int index = -1;
                 int row;
                 int col;

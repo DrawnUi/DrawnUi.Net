@@ -819,6 +819,14 @@ public partial class SkiaScroll
     protected ScrollToIndexOrder OrderedScrollToIndex;
 
     /// <summary>
+    /// True while an explicit ScrollToIndex order is pending. The head-insert viewport pin
+    /// (CommitPendingHeadInsert) is suppressed when this is set: an explicit scroll target and the
+    /// position-preserving pin are mutually exclusive intents — honoring both in the same frame causes
+    /// a 1-frame blink (e.g. a just-sent message that orders ScrollToIndex(0)).
+    /// </summary>
+    public bool HasPendingScrollOrder => OrderedScrollToIndex.IsSet;
+
+    /// <summary>
     /// In Units
     /// </summary>
     /// <param name="offset"></param>

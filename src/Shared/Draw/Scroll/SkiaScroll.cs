@@ -28,8 +28,6 @@ namespace DrawnUi.Draw
             ScrollingEnded = null;
             Scrolled = null;
 
-            DisposeVirtualPlanes();
-
             Content?.Dispose();
             Header?.Dispose();
             Footer?.Dispose();
@@ -531,8 +529,46 @@ namespace DrawnUi.Draw
 
         public static int Elastic = 100;
 
+        // Virtualization cull viewport for the Content layout: the content's GetOnScreenVisibleArea walks up
+        // to this and uses the returned rect to decide which cells are "visible" (others get recycled). When
+        // planes were removed this override went with SkiaScroll.Planes.cs -> the walk-up never reached the
+        // real viewport -> every cell was considered visible (cells == Data, recycling effectively off).
+        // Restores the non-planes branch: return the actual ContentViewport (inflated by the requested band).
+        public override ScaledRect GetOnScreenVisibleArea(DrawingContext context, Vector2 inflateByPixels = default)
+        {
+            if (Virtualisation != VirtualisationType.Disabled) //true by default
+            {
+                var inflated = ContentViewport.Pixels;
+                if (inflated.IsEmpty)
+                {
+                    var initialViewport = Viewport.Pixels;
+                    if (initialViewport.IsEmpty)
+                        initialViewport = DrawingRect;
+
+                    if (!initialViewport.IsEmpty)
+                    {
+                        initialViewport.Inflate(inflateByPixels.X, inflateByPixels.Y);
+                        return ScaledRect.FromPixels(initialViewport, RenderingScale);
+                    }
+
+                    return ContentRectWithOffset; // last-resort before viewport is initialized
+                }
+
+                inflated.Inflate(inflateByPixels.X, inflateByPixels.Y);
+                return ScaledRect.FromPixels(inflated, RenderingScale);
+            }
+
+            // Virtualisation disabled: whole content drawn, just translated while scrolling.
+            return ContentRectWithOffset;
+        }
+
         public virtual Vector2 ClampOffset(float x, float y, SKRect contentOffsetBounds, bool strict = false)
         {
+            // The content may cap travel toward a region its backing (e.g. background plane cache) hasn't
+            // baked yet -> the unready edge becomes a temporary content edge and the existing bounce applies.
+            if (Content is IInsideViewport insideViewport)
+                contentOffsetBounds = insideViewport.LimitScrollBounds(x, y, contentOffsetBounds, Orientation);
+
             if (!Bounces || strict)
             {
                 var clampedX = Math.Max(contentOffsetBounds.Left, Math.Min(contentOffsetBounds.Right, x));
@@ -1219,7 +1255,7 @@ namespace DrawnUi.Draw
             ContainsPointResult startResult = ContainsPointResult.NotFound();
             ContainsPointResult endResult = ContainsPointResult.NotFound();
 
-            if (layout.LatestStackStructure != null)
+            if (layout.GetStackStructure() != null)
             {
                 bool trace = false;
 
@@ -1238,7 +1274,7 @@ namespace DrawnUi.Draw
                     if (layout.Type == LayoutType.Column || layout.Type == LayoutType.Row ||
                         layout.Type == LayoutType.Wrap && layout.Split > 0) //todo grid
                     {
-                        var stackStructure = layout.LatestStackStructure;
+                        var stackStructure = layout.GetStackStructure();
                         int index = -1;
 
                         foreach (var childInfo in stackStructure.GetChildren())
@@ -1287,7 +1323,7 @@ namespace DrawnUi.Draw
         public virtual ContainsPointResult GetItemIndex(SkiaLayout layout, float pixelsOffsetX, float pixelsOffsetY,
             RelativePositionType option)
         {
-            if (layout.LatestStackStructure == null)
+            if (layout.GetStackStructure() == null)
                 return ContainsPointResult.NotFound();
 
             bool trace = false;
@@ -1330,7 +1366,7 @@ namespace DrawnUi.Draw
 
                 if (layout.Type == LayoutType.Column || layout.Type == LayoutType.Wrap && layout.Split > 0) //todo grid
                 {
-                    var stackStructure = layout.LatestStackStructure;
+                    var stackStructure = layout.GetStackStructure();
                     int index = -1;
                     int row;
                     int col;
@@ -1397,7 +1433,7 @@ namespace DrawnUi.Draw
 
                 if (layout.Type == LayoutType.Row || layout.Type == LayoutType.Wrap && layout.Split == 0) //todo grid
                 {
-                    var stackStructure = layout.StackStructure;
+                    var stackStructure = layout.GetStackStructure();
                     int index = -1;
                     int row;
                     int col;
@@ -1481,7 +1517,7 @@ namespace DrawnUi.Draw
                     return NotValidPoint(); //can throw too
                 }
 
-                var structure = layout.LatestStackStructure;
+                var structure = layout.GetStackStructure();
                 if (structure != null && structure.GetCount() > 0) // && layout.StackStructure.Count == childrenCount)
                 {
                     float offset = 0;
@@ -2546,11 +2582,7 @@ namespace DrawnUi.Draw
             //{
             //    ApplyScrollPositionToRefreshViewUnsafe();
             //}
-            if (UseVirtual)
-            {
-                OnScrolledForPlanes();
-            }
-            else
+            if (!UseVirtual)
             {
                 CheckForIncrementalMeasurementTrigger();
             }

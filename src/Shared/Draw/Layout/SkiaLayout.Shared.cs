@@ -338,18 +338,6 @@ namespace DrawnUi.Draw
 
             var onscreen = base.GetOnScreenVisibleArea(context, inflateByPixels);
 
-            if (Virtualisation == VirtualisationType.Managed)
-            {
-                // Check if we have a plane-specific viewport for managed virtualization
-                var planeSpecificViewport = context.GetArgument(nameof(ContextArguments.PlaneViewport)) as SKRect?;
-                if (planeSpecificViewport.HasValue)
-                {
-                    return ScaledRect.FromPixels(planeSpecificViewport.Value, RenderingScale);
-                }
-
-                return onscreen;
-            }
-
             var visible = SKRect.Intersect(onscreen.Pixels, context.Destination);
 
             return ScaledRect.FromPixels(visible, RenderingScale);
@@ -613,9 +601,14 @@ namespace DrawnUi.Draw
 
         protected virtual int GetTemplatesPoolPrefill()
         {
-            if (RecyclingTemplate == RecyclingTemplate.Disabled)
+            if (RecyclingTemplate == RecyclingTemplate.Disabled && ItemTemplatePoolSize<1)
             {
                 return ItemsSource.Count;
+            }
+
+            if (ItemTemplatePoolSize>0)
+            {
+                return GetTemplatesPoolLimit();
             }
 
             var mult = 1;
@@ -1030,6 +1023,7 @@ namespace DrawnUi.Draw
             if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
             {
                 //RemeasureSingleItemInBackground(child.ContextIndex);
+                child.NeedMeasure = true;
                 return;
             }
 
@@ -1083,7 +1077,7 @@ namespace DrawnUi.Draw
                     //stacklayout
                     if (IsStack)
                     {
-                        var structure = PlaneOverrideStructure ?? LatestStackStructure;
+                        var structure = GetStackStructure();
                         if (structure != null && structure.GetCount() > 0)
                         {
                             //if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
@@ -1124,21 +1118,6 @@ namespace DrawnUi.Draw
         {
             base.UpdateByChild(child);
 
-            // Tiled-planes transparency: a realized cell — or anything inside it (Lottie, drawer, video, a
-            // counter, any control that drives itself via Update()/Repaint()) — invalidates by bubbling up to
-            // here (each level passes itself, so `child` is this list's direct cell with a valid ContextIndex).
-            // The visible pixels come from a cached tile bitmap, so refresh that cell's tile, otherwise the
-            // change is invisible. Skipped while a tile is being built (PlaneOverrideStructure set) to avoid a
-            // self-feeding loop, and only for the templated planes path under a virtualizing scroll.
-            if (PlaneOverrideStructure == null
-                && IsTemplated
-                && child != null
-                && child.ContextIndex >= 0
-                && Parent is SkiaScroll scroll
-                && scroll.UseVirtual)
-            {
-                scroll.InvalidateVirtualCell(child);
-            }
         }
 
         public override void OnDisposing()
@@ -1616,8 +1595,7 @@ ExistingLogic:
         {
             if (ViewsAdapter.LogEnabled)
             {
-                Trace.WriteLine(
-                    $"[SkiaLayout] {Tag} Structure-preserving ADD: {args.NewItems?.Count ?? 0} items at index {args.NewStartingIndex}");
+                Super.Log($"[SkiaLayout] {Tag} Structure-preserving ADD: {args.NewItems?.Count ?? 0} items at index {args.NewStartingIndex}");
             }
 
             // Cancel any ongoing background measurement to avoid conflicts
@@ -1641,7 +1619,7 @@ ExistingLogic:
 
                     if (ViewsAdapter.LogEnabled)
                     {
-                        Trace.WriteLine($"[SkiaLayout] {Tag} Structure preserved using InitializeSoft");
+                        Super.Log($"[SkiaLayout] {Tag} Structure preserved using InitializeSoft");
                     }
 
                     Repaint();
