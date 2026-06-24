@@ -110,25 +110,25 @@ namespace DrawnUi.Controls
         {
             _autoCacheContent = value;
 
-            AdjustCache();
+            ApplyAutoCache();
         }
 
 
         private bool _autoCacheContent;
         private SkiaCacheType _cacheType;
 
-        protected void AdjustCache()
+        protected virtual void ApplyAutoCache()
         {
             if (Content != null && AutoCache)
             {
                 //Debug.WriteLine($"[c] cacheContent: {cacheContent}");
                 if (_autoCacheContent)
                 {
-                    Content.UseCache = SkiaCacheType.Operations;
+                    UseCache = SkiaCacheType.Operations;
                 }
                 else
                 {
-                    Content.UseCache = _cacheType;
+                    UseCache = _cacheType;
                 }
             }
         }
@@ -272,9 +272,9 @@ namespace DrawnUi.Controls
                     AddSubView(view);
                 }
 
-                _cacheType = view.UseCache;
+                _cacheType = UseCache;
                 _autoCacheContent = AutoCache;
-                AdjustCache();
+                ApplyAutoCache();
             }
         }
 
