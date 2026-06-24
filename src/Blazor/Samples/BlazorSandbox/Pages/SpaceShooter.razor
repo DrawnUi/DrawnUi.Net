@@ -1,4 +1,5 @@
 @page "/space-shooter"
+@using DrawnUi
 @using DrawnUi.Draw
 @using DrawnUi.Views
 @using Microsoft.AspNetCore.Components
@@ -29,7 +30,7 @@
         LogicalHeight="@ViewportHeight"
         HorizontalOptions="LayoutOptions.Fill"
         VerticalOptions="LayoutOptions.Fill"
-        BackgroundColor="#020816"
+        BackgroundColor="@Color.Parse("#020816")"
         UpdateMode="@UpdateModeType.Constant"
         RenderingMode="@RenderingModeType.Accelerated"
         Gestures="@GesturesMode.Enabled"

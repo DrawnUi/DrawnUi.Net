@@ -100,6 +100,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawnUi.Maui.Camera", "..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTkChatPlanes", "OpenTk\Samples\OpenTkChatPlanes\OpenTkChatPlanes.csproj", "{C93CA2D5-DE15-DA2C-51E0-3215278A9079}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{2611A57E-ECB4-4F46-8434-C730E44AEDC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawnUi.Web.Sample", "Web\DrawnUi.Web.Sample\DrawnUi.Web.Sample.csproj", "{7DCAF131-DEE9-C87E-08B5-A934A9DC79F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{700980EE-0C23-4A4F-9B69-E0E94D4CDF1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawnUi.Web", "Web\DrawnUi.Web\DrawnUi.Web.csproj", "{9C14B0D0-A891-D7C8-80AD-17A065425F9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -233,6 +241,14 @@ Global
 		{C93CA2D5-DE15-DA2C-51E0-3215278A9079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C93CA2D5-DE15-DA2C-51E0-3215278A9079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C93CA2D5-DE15-DA2C-51E0-3215278A9079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DCAF131-DEE9-C87E-08B5-A934A9DC79F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DCAF131-DEE9-C87E-08B5-A934A9DC79F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DCAF131-DEE9-C87E-08B5-A934A9DC79F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCAF131-DEE9-C87E-08B5-A934A9DC79F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C14B0D0-A891-D7C8-80AD-17A065425F9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C14B0D0-A891-D7C8-80AD-17A065425F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C14B0D0-A891-D7C8-80AD-17A065425F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C14B0D0-A891-D7C8-80AD-17A065425F9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -276,6 +292,9 @@ Global
 		{B9726DC8-5E20-BF93-5EED-AC166CD612BF} = {32FF08BC-102F-411B-930A-F1561250A7BE}
 		{B908CF8F-86DA-57A3-E68C-E59E36316522} = {32FF08BC-102F-411B-930A-F1561250A7BE}
 		{C93CA2D5-DE15-DA2C-51E0-3215278A9079} = {21FAF385-A56F-4844-B7DB-58A4AECD3A75}
+		{2611A57E-ECB4-4F46-8434-C730E44AEDC4} = {31616691-6743-4833-B7C9-4A2B6F5443D6}
+		{7DCAF131-DEE9-C87E-08B5-A934A9DC79F8} = {2611A57E-ECB4-4F46-8434-C730E44AEDC4}
+		{9C14B0D0-A891-D7C8-80AD-17A065425F9F} = {700980EE-0C23-4A4F-9B69-E0E94D4CDF1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {329E3D0C-A3F7-4A3E-B61C-6B2D1BD7F708}
@@ -288,6 +307,7 @@ Global
 		Shared\Shared.projitems*{83974207-9636-48dd-bdb3-98edecbb1107}*SharedItemsImports = 13
 		SharedGame\SharedGame.projitems*{85d50df4-70cb-1cf6-1b0c-04d4e225cf89}*SharedItemsImports = 5
 		Shared\Shared.projitems*{93e119b1-4378-87df-2dd2-a818d1e6c2a2}*SharedItemsImports = 5
+		Shared\Shared.projitems*{9c14b0d0-a891-d7c8-80ad-17a065425f9f}*SharedItemsImports = 5
 		Shared\Shared.projitems*{a600fd05-5de5-e382-db79-8e53ad2fed7e}*SharedItemsImports = 5
 		SharedGame\SharedGame.projitems*{af9d42a8-9f94-460c-bb52-d1474332099d}*SharedItemsImports = 5
 		SharedNet\SharedNet.projitems*{c4d8f2a1-7b3e-4f9c-a8d6-5e1b9f2c8d3a}*SharedItemsImports = 13

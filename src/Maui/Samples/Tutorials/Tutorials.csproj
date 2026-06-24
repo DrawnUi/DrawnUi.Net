@@ -5,7 +5,7 @@
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
         
         <ApplicationId>com.drawnui.tutorials</ApplicationId>
-        <ApplicationIdGuid>430e66b0-efc2-4fde-9ac8-074d5c3299b4</ApplicationIdGuid>
+        <ApplicationIdGuid>430e66b0-efc2-4fde-9ac8-074d5c329912</ApplicationIdGuid>
         <ApplicationTitle>DrawnUI Tutorials</ApplicationTitle>
         <OutputType>Exe</OutputType>
         <RootNamespace>DrawnUI.Tutorials</RootNamespace>

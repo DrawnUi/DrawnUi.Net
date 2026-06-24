@@ -4,7 +4,6 @@ using DrawnUi.Controls;
 using DrawnUi.Draw;
 using DrawnUi.Views;
 using DrawnUiRepro;
-using NetGrid = DrawnUi.Blazor.Views.Grid; // Net/OpenTk grid attached-property shim
 
 namespace OpenTkChatPlanes;
 
@@ -87,7 +86,7 @@ internal static class OpenTkGridFluent
 {
     public static T WithColumn<T>(this T view, int column) where T : SkiaControl
     {
-        NetGrid.SetColumn(view, column);
+        Grid.SetColumn(view, column);
         return view;
     }
 

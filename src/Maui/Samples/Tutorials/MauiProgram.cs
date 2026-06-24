@@ -2,6 +2,40 @@ using Microsoft.Extensions.Logging;
 
 namespace DrawnUI.Tutorials;
 
+public class DiDiStack : SkiaStack
+{
+    public override void UpdateByChild(SkiaControl child)
+    {
+        base.UpdateByChild(child);
+    }
+
+    public override void Repaint()
+    {
+        base.Repaint();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+    }
+
+    public override void InvalidateByChild(SkiaControl child)
+    {
+        base.InvalidateByChild(child);
+    }
+
+    public override void InvalidateInternal()
+    {
+        base.InvalidateInternal();
+    }
+
+    protected override void InvalidateMeasure()
+    {
+        base.InvalidateMeasure();
+    }
+}
+
+
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()

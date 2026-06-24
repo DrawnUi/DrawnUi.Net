@@ -3,8 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using AppoMobi.Specials;
-using DrawnUi.Draw;
-using DrawnUi.Draw.ApplicationModel;
+using DrawnUi;
 
 namespace BlazorSandbox.Pages.NewsFeed;
 
