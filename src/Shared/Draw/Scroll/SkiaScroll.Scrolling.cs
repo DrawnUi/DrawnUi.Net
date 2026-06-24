@@ -904,6 +904,22 @@ public partial class SkiaScroll
     {
         if (OrderedScrollToIndex.IsSet)
         {
+            // Already AT the target? Consume the order now — there is nothing to scroll. This runs even
+            // while structure is pending/measuring (unlike the deferral guards below): an order issued
+            // while the view is pinned at the target (e.g. ScrollToIndex(0) right after a head-insert at
+            // the newest message) would otherwise stay pending and re-fire on the next user scroll,
+            // yanking the view back to the target before continuing. We only consume on an EXACT,
+            // computable match, so a deferred-because-unmeasured order is left to retry as before.
+            var reached = CalculateScrollOffsetForIndex(OrderedScrollToIndex.Index,
+                OrderedScrollToIndex.RelativePosition);
+            if (PointIsValid(reached)
+                && AreEqual((float)InternalViewportOffset.Units.X, reached.X, 0.5)
+                && AreEqual((float)InternalViewportOffset.Units.Y, reached.Y, 0.5))
+            {
+                OrderedScrollToIndex = ScrollToIndexOrder.Default;
+                return true;
+            }
+
             if (Content is SkiaLayout layout)
             {
                 if (layout.HasPendingStructureChanges)
