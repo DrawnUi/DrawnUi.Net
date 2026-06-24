@@ -94,7 +94,7 @@ namespace DrawnUi.Controls
             {
                 if (view is IInsideViewport viewport)
                 {
-                    viewport.OnViewportWasChanged(ScaledRect.FromPixels(DrawingRect, RenderingScale));
+                    viewport.OnViewportWasChanged(ScaledRect.FromPixels(DrawingRect, RenderingScale), ScaledPoint.Empty);
                 }
             }
         }
@@ -132,7 +132,7 @@ namespace DrawnUi.Controls
         {
             if (view is IInsideViewport viewport)
             {
-                viewport.OnViewportWasChanged(ScaledRect.FromPixels(DrawingRect, RenderingScale));
+                viewport.OnViewportWasChanged(ScaledRect.FromPixels(DrawingRect, RenderingScale), new ScaledPoint());
             }
 
             base.OnChildAdded(view);
@@ -686,7 +686,7 @@ namespace DrawnUi.Controls
             {
                 if (state && view is IInsideViewport viewport)
                 {
-                    viewport.OnViewportWasChanged(ScaledRect.FromPixels(DrawingRect, RenderingScale));
+                    viewport.OnViewportWasChanged(ScaledRect.FromPixels(DrawingRect, RenderingScale), new ScaledPoint());
                 }
 
                 view.IsVisible = state;

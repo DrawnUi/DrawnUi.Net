@@ -2348,7 +2348,7 @@ namespace DrawnUi.Draw
 
                 ContentViewport = ScaledRect.FromPixels(absoluteViewPort, scale);
 
-                viewport.OnViewportWasChanged(ContentViewport);
+                viewport.OnViewportWasChanged(ContentViewport, InternalViewportOffset);
             }
 
             CheckNeedRefresh();

@@ -8,6 +8,8 @@ public struct ScaledPoint
         Units = SKPoint.Empty;
         Pixels = SKPoint.Empty;
     }
+
+    public static ScaledPoint Empty => new ScaledPoint();
     public double Scale { get; set; }
     public SKPoint Units { get; set; }
     public SKPoint Pixels { get; set; }

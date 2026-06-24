@@ -7,7 +7,7 @@ namespace DrawnUi.Draw;
 
 public partial class SkiaLayout
 {
-    public virtual void OnViewportWasChanged(ScaledRect viewport)
+    public virtual void OnViewportWasChanged(ScaledRect viewport, ScaledPoint offset)
     {
         //RenderingViewport = new(viewport.Pixels);
         if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
@@ -161,6 +161,15 @@ public partial class SkiaLayout
         public Vector2? OffsetOthers { get; set; }
         public int StartIndex { get; set; }
         public int Count { get; set; }
+
+        /// <summary>
+        /// For Replace: number of OLD items being replaced. May differ from Count (new items)
+        /// when a range Replace shrinks or grows the collection (e.g. windowed list trim/jump).
+        /// ApplyReplaceChange removes OldCount entries then adds Count entries; reusing Count for
+        /// both halves leaves stale structure entries on a shrinking Replace.
+        /// </summary>
+        public int OldCount { get; set; }
+
         public List<object> Items { get; set; } // For Add/Replace
         public int TargetIndex { get; set; } // For Move
         public List<MeasuredItemInfo> MeasuredItems { get; set; } // For BackgroundMeasurement
@@ -175,6 +184,14 @@ public partial class SkiaLayout
         /// making StartIndex == Count checks unreliable.
         /// </summary>
         public bool TailRemoval { get; set; }
+
+        /// <summary>
+        /// Remove was emitted as the remove-half of a Replace, NOT a window head/tail trim.
+        /// The trim fast paths assume cells beyond the removed block are real survivors that keep
+        /// their positions; for a Replace that is false (the range is being swapped), so they must
+        /// be skipped or the structure keeps stale survivors and rebases content into empty space.
+        /// </summary>
+        public bool SkipTrimFastPath { get; set; }
 
         // Background measurement offset compensation data
         public BackgroundMeasurementStartingPosition StartingPosition { get; set; }
@@ -2071,11 +2088,15 @@ public partial class SkiaLayout
             {
                 // Window-trim fast paths for a bounded in-memory ItemsSource (LoadMore both
                 // directions with a capped window): structure-preserving, no remeasure, no reset.
-                if (change.StartIndex == 0 && LastMeasuredIndex >= 0 && ApplyHeadRemoveChange(change))
-                    return;
+                // Skipped for a Replace-remove: that is not a trim and has no real survivors.
+                if (!change.SkipTrimFastPath)
+                {
+                    if (change.StartIndex == 0 && LastMeasuredIndex >= 0 && ApplyHeadRemoveChange(change))
+                        return;
 
-                if (change.TailRemoval && ApplyTailRemoveChange(change))
-                    return;
+                    if (change.TailRemoval && ApplyTailRemoveChange(change))
+                        return;
+                }
             }
 
             // Remove items from measurement cache and shift indices
@@ -2110,11 +2131,32 @@ public partial class SkiaLayout
     {
         //Debug.WriteLine($"[StackStructure] Replacing {change.Count} items at index {change.StartIndex}");
 
-        // For Replace: Split into Remove + Add in same frame
+        var oldStructureCount = StackStructure?.GetCount() ?? 0;
+        var removeCount = change.OldCount > 0 ? change.OldCount : change.Count;
+
+        // Full-collection swap (windowed list jump: ReplaceRange clears + re-adds everything).
+        // Remove+Add with index shifting would mis-attribute the old window's stale measurements to the
+        // new items and can leave a stale LastMeasuredIndex, so the scheduler thinks the new cells are
+        // already measured and never lays them out -> scroll into empty space. Instead invalidate the
+        // measurement state and let the next MeasureVisible pass rebuild + measure the new items.
+        // Templates/pool are preserved (InitializeSoft already ran in HandleStructurePreservingReplace),
+        // so NO adapter rebuild (InitializeTemplates) happens.
+        if (change.StartIndex == 0 && oldStructureCount > 0 && removeCount >= oldStructureCount)
+        {
+            ResetMeasurementForReplace();
+            return;
+        }
+
+        // Partial Replace: Split into Remove + Add in same frame.
+        // Remove uses OldCount (entries actually present), Add uses Count (new items).
+        // A range Replace that shrinks the collection has OldCount > Count; reusing Count for the
+        // remove would leave stale structure entries and desync structure vs ItemsSource.
+        // SkipTrimFastPath: a replace-remove is not a window trim (no real survivors beyond it).
         var removeChange = new StructureChange(StructureChangeType.Remove, MeasureStamp)
         {
             StartIndex = change.StartIndex,
-            Count = change.Count
+            Count = removeCount,
+            SkipTrimFastPath = true
         };
 
         var addChange = new StructureChange(StructureChangeType.Add, MeasureStamp)
@@ -2168,6 +2210,39 @@ public partial class SkiaLayout
         UpdateProgressiveContentSize();
 
         OnStructureChanged();
+    }
+
+    /// <summary>
+    /// Invalidates measurement/structure state for a full-collection Replace (windowed list jump)
+    /// WITHOUT invalidating templates. The adapter pool stays intact (InitializeSoft already ran),
+    /// so no InitializeTemplates rebuild; the next MeasureVisible pass rebuilds the structure and
+    /// measures the new items. Used instead of Remove+Add to avoid carrying the old window's stale
+    /// measurements and LastMeasuredIndex onto the new items (which renders into empty space).
+    /// </summary>
+    protected void ResetMeasurementForReplace()
+    {
+        // Stop any in-flight background pass and clear its progress: a stale _backgroundMeasurementProgress
+        // from the old window both lies to the ScrollToIndex gate (it thinks far indices are measured and
+        // resolves against an unmeasured cell) and blocks a restart (StartBackgroundMeasurement skips when
+        // progress >= startFromIndex).
+        CancelBackgroundMeasurement();
+        _backgroundMeasurementProgress = -1;
+
+        StackStructure = null;
+        _measuredItems.Clear();
+        _indexOffsets.Clear();
+        _removedIndices.Clear();
+        LastMeasuredIndex = -1;
+        FirstMeasuredIndex = -1;
+        _itemsShiftEpoch++; // drop any in-flight background measurement batches from the old window
+        UpdateProgressiveContentSize();
+
+        OnStructureChanged();
+
+        // Structure was nulled: drive a measure pass so MeasureVisible rebuilds it and measures the new
+        // items (the structure-preserving Replace handler only calls Update()/repaint, which alone would
+        // never re-measure -> empty viewport). NeedMeasure=true via Invalidate; templates stay intact.
+        Invalidate();
     }
 
     /// <summary>

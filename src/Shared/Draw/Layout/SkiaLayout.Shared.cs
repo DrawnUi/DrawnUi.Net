@@ -1385,9 +1385,27 @@ namespace DrawnUi.Draw
         {
             return
                 args.Action != NotifyCollectionChangedAction.Reset &&
+                !IsFullCollectionReplace(args) &&
                 StackStructure != null
                 && StackStructure.Length > 0
                 && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible;
+        }
+
+        /// <summary>
+        /// A Replace that swaps the ENTIRE collection at once (windowed-list jump via ObservableRangeCollection
+        /// .ReplaceRange: clears + re-adds all, raising one Replace at index 0 covering every item). The
+        /// structure-preserving Replace path can't service this — it carries the old window's partial
+        /// measurement onto unrelated new items and starves background measurement — so it routes through the
+        /// clean reset cycle instead (which still resolves InitializeTemplates to InitializeSoft, because the
+        /// ItemsSource reference is unchanged, so NO adapter rebuild happens).
+        /// </summary>
+        protected bool IsFullCollectionReplace(NotifyCollectionChangedEventArgs args)
+        {
+            return args.Action == NotifyCollectionChangedAction.Replace
+                   && args.NewStartingIndex == 0
+                   && args.NewItems != null
+                   && ItemsSource != null
+                   && args.NewItems.Count == ItemsSource.Count;
         }
 
 
@@ -1432,9 +1450,18 @@ namespace DrawnUi.Draw
                     return;
                 }
 
+                var fullReplace = IsFullCollectionReplace(args);
+
                 if (args.Action == NotifyCollectionChangedAction.Reset)
                 {
                     ApplyResetChange();
+                }
+                else if (fullReplace)
+                {
+                    // Full-window swap: clear measurement/structure so background measurement runs fresh on
+                    // the new window (exact content size), but keep templates intact. InitializeTemplates
+                    // below resolves to InitializeSoft (Action=Replace, same ItemsSource ref) — no rebuild.
+                    ResetMeasurementForReplace();
                 }
                 ApplyNewItemsSource = false;
 
@@ -1448,6 +1475,11 @@ namespace DrawnUi.Draw
                     if (args.Action == NotifyCollectionChangedAction.Reset)
                     {
                         ResetScroll();
+                        Invalidate();
+                    }
+                    else if (fullReplace)
+                    {
+                        // Don't ResetScroll: the caller issues a ScrollToIndex for the jump target.
                         Invalidate();
                     }
                     else if (NeedAutoSize || MeasuredSize.Pixels.Height == 0 || MeasuredSize.Pixels.Width == 0 || MeasureItemsStrategy != MeasuringStrategy.MeasureVisible)
@@ -1689,6 +1721,7 @@ ExistingLogic:
             {
                 StartIndex = args.NewStartingIndex,
                 Count = args.NewItems?.Count ?? 0,
+                OldCount = args.OldItems?.Count ?? 0,
                 Items = args.NewItems?.Cast<object>().ToList()
             });
 

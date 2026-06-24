@@ -30,7 +30,7 @@ public class ScrollPickerWheel : SkiaLayout, ILayoutInsideViewport
         //base.OnLayoutReady();
     }
 
-    public override void OnViewportWasChanged(ScaledRect viewport)
+    public override void OnViewportWasChanged(ScaledRect viewport, ScaledPoint offset)
     {
         var realHeight = ComputeViewportHeightFromTransformed(viewport.Pixels.Height, 1);
         WheelHeight = realHeight;
@@ -38,7 +38,7 @@ public class ScrollPickerWheel : SkiaLayout, ILayoutInsideViewport
         WheelCenterY = viewport.Pixels.MidY;
         ViewportHeightK = realHeight / viewport.Pixels.Height;
 
-        base.OnViewportWasChanged(viewport);
+        base.OnViewportWasChanged(viewport, offset);
     }
 
     private float ComputeViewportHeightFromTransformed(double height, double radians)
