@@ -3,7 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pong — DrawnUI Web</title>
+    <title>Pong — DrawnUI for Web</title>
+
+    <meta name="description" content="Pong built with DrawnUI on SkiaSharp, running as pure .NET WebAssembly — high-performance 2D graphics in any modern browser.">
+    <meta name="theme-color" content="#0A0F1E">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-icon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pong.appomobi.com/">
+    <meta property="og:site_name" content="Pong — DrawnUI for Web">
+    <meta property="og:title" content="Pong — DrawnUI for Web">
+    <meta property="og:description" content="Pong built with DrawnUI on SkiaSharp, running as pure .NET WebAssembly.">
+    <meta property="og:image" content="https://pong.appomobi.com/pure.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="320">
+    <meta property="og:image:alt" content=".NET SkiaSharp Pure WebAssembly">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://pong.appomobi.com/">
+    <meta name="twitter:title" content="Pong — DrawnUI for Web">
+    <meta name="twitter:description" content="Pong built with DrawnUI on SkiaSharp, running as pure .NET WebAssembly.">
+    <meta name="twitter:image" content="https://pong.appomobi.com/pure.jpg">
+    <meta name="twitter:image:alt" content=".NET SkiaSharp Pure WebAssembly">
+
     <style>
         body {
             margin: 0;
@@ -19,19 +47,10 @@
             display: block;
             touch-action: none;
         }
-
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
-            color: #ccc;
-        }
     </style>
+
 </head>
 <body>
-    <div id="loading">Loading Pong...</div>
     <canvas id="drawnui-canvas"></canvas>
 
     <script type="module" src="./main.js"></script>

@@ -25,6 +25,10 @@ public static partial class BrowserHost
         Super.Init();
         await builder.BuildAsync();
 
+        // Fonts registered via ConfigureFonts can't load from the Mono VFS (WasmFilesToBundle is a
+        // no-op in the .NET WASM SDK), so fetch them over HTTP from static web assets, like Blazor.
+        await SkiaFontManager.Instance.InitializeWebAsync(JsInterop.GetBaseUrl());
+
         // Wire DOM input listeners + read the element's CSS size / device pixel ratio.
         JsInterop.InitCanvas(0, 0);
         JsInterop.UpdateCanvasSize();
@@ -38,6 +42,11 @@ public static partial class BrowserHost
             canvas.HeightRequest = JsInterop.CanvasHeight;
         _canvas = canvas;
         WebInput.TargetCanvas = canvas;
+
+        // Mirror Blazor Canvas GestureStyle at lib level: route Gestures mode to canvas/page CSS
+        // (+ iOS swipe-away guard for Lock). Disabled = leave page defaults untouched.
+        if (canvas.Gestures != GesturesMode.Disabled)
+            JsInterop.ApplyGestureStyle(elementId, canvas.Gestures == GesturesMode.Lock);
 
         // The renderer/handler is created from the Canvas: RenderingMode picks GPU vs raster.
         var view = new WebSkiaView(elementId, OnRenderFrame);

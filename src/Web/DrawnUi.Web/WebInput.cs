@@ -183,6 +183,35 @@ public static partial class WebInput
         TargetCanvas?.OnGestureEvent(TouchActionType.Wheel, args, TouchActionResult.Wheel);
     }
 
+    /// <summary>
+    /// Called by JS on keydown. <paramref name="code"/> is the DOM <c>KeyboardEvent.code</c>
+    /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>.
+    /// </summary>
+    [JSExport]
+    public static void OnKeyDown(string code)
+    {
+        KeyboardManager.KeyboardPressed(MapCode(code));
+    }
+
+    /// <summary>
+    /// Called by JS on keyup. See <see cref="OnKeyDown"/> for the code contract.
+    /// </summary>
+    [JSExport]
+    public static void OnKeyUp(string code)
+    {
+        KeyboardManager.KeyboardReleased(MapCode(code));
+    }
+
+    private static InputKey MapCode(string? code)
+    {
+        if (string.IsNullOrWhiteSpace(code))
+            return InputKey.Unknown;
+
+        return Enum.TryParse<InputKey>(code, ignoreCase: false, out var mapped)
+            ? mapped
+            : InputKey.Unknown;
+    }
+
     private static TouchActionEventArgs MakeTouchArgs(long pointerId, TouchActionType type, PointF location)
     {
         var args = new TouchActionEventArgs(

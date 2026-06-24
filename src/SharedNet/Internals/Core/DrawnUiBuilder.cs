@@ -8,6 +8,12 @@ public class DrawnUiBuilder
         return this;
     }
 
+    public DrawnUiBuilder ConfigureStyles(Action<IStylesCollection> configure)
+    {
+        configure(new StylesCollection());
+        return this;
+    }
+
     public DrawnUiBuilder PreloadAssets(Action<IAssetCollection> configure)
     {
         configure(new AssetCollection());

@@ -2,7 +2,7 @@
 // Loads the WASM module and initializes the app
 
 import { dotnet } from './_framework/dotnet.js';
-import { setModuleExports } from './_content/DrawnUi.Web/drawnui-web.js';
+import { setModuleExports, showLoader, hideLoader, showError } from './_content/DrawnUi.Web/drawnui-web.js';
 
 // Recursively find the [JSExport] Main in an exports tree (no per-app namespace hardcode).
 function findExport(obj, name) {
@@ -22,21 +22,15 @@ console.log('DrawnUI.Web.Sample: Starting...');
 // Expose dotnet runtime globally so drawnui-web.js can find Emscripten GL module
 globalThis.dotnet = dotnet;
 
-// Show loading message
-const loadingDiv = document.getElementById('loading');
+showLoader();
 
 try {
-    // Load the .NET runtime
-    loadingDiv.textContent = 'Loading .NET runtime...';
-    
     const { getAssemblyExports, getConfig } = await dotnet
         .withDiagnosticTracing(false)
         .withApplicationArgumentsFromQuery()
         .create();
 
     const config = getConfig();
-
-    loadingDiv.textContent = 'Initializing DrawnUI...';
 
     // Input / frame / resize callbacks live in the DrawnUi.Web library assembly.
     const lib = await getAssemblyExports('DrawnUi.Web');
@@ -52,6 +46,8 @@ try {
         onPointerUp: Input.OnPointerUp,
         onPointerCancel: Input.OnPointerCancel,
         onWheel: Input.OnWheel,
+        onKeyDown: Input.OnKeyDown,
+        onKeyUp: Input.OnKeyUp,
     });
 
     // App entry point: builds DrawnUI and runs the Canvas (RunAsync does all glue).
@@ -59,14 +55,11 @@ try {
     const main = findExport(app, 'Main');
     if (!main) throw new Error(`No [JSExport] Main found in ${config.mainAssemblyName}`);
     main();
-    
-    // Hide loading message
-    loadingDiv.style.display = 'none';
-    
+
+    hideLoader();
     console.log('DrawnUI.Web.Sample: Ready!');
-    
+
 } catch (error) {
     console.error('DrawnUI.Web.Sample: Failed to start:', error);
-    loadingDiv.textContent = 'Failed to load: ' + error.message;
-    loadingDiv.style.color = 'red';
+    showError('Failed to load: ' + error.message);
 }

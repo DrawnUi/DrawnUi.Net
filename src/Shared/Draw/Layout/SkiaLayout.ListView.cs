@@ -3479,7 +3479,7 @@ public partial class SkiaLayout
         Debug.WriteLine(
             $"[MeasureAdditionalItems] INCREMENTAL: Measuring items {startIndex}-{endIndex - 1} (batch: {batchSize}, ahead: {aheadCount})");
 
-        if (startIndex >= endIndex)
+        if (startIndex > endIndex)
             return 0;
 
         int countToMeasure = endIndex - startIndex;

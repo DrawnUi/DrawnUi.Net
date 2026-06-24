@@ -31,6 +31,17 @@ public static partial class JsInterop
     public static partial void InitCanvas(int targetWidth, int targetHeight);
 
     /// <summary>
+    /// Apply gesture CSS to the canvas (and page) based on the DrawnUI Canvas.Gestures mode.
+    /// Mirrors the Blazor Canvas GestureStyle: Lock disables page panning / text selection and,
+    /// since Web has no AppoMobi TouchEffect, also installs a non-passive touchmove guard plus
+    /// overscroll-behavior to stop iOS rubber-band and edge-swipe-away.
+    /// </summary>
+    /// <param name="elementId">Id of the HTML canvas element.</param>
+    /// <param name="lockGestures">True for <c>GesturesMode.Lock</c>, false for <c>GesturesMode.Enabled</c>.</param>
+    [JSImport("applyGestureStyle", "drawnui-web")]
+    public static partial void ApplyGestureStyle(string elementId, bool lockGestures);
+
+    /// <summary>
     /// Get the raw WebGL texture ID from JS (for GPU rendering)
     /// Returns -1 if not available
     /// </summary>
@@ -61,6 +72,14 @@ public static partial class JsInterop
     /// </summary>
     [JSImport("getDevicePixelRatio", "drawnui-web")]
     public static partial double GetDevicePixelRatio();
+
+    /// <summary>
+    /// Absolute base URL of the document (honours &lt;base href&gt;). Used to resolve
+    /// relative font/asset paths for HttpClient, since WASM-bundled VFS files are not
+    /// available in the .NET WASM SDK and assets are fetched over HTTP instead.
+    /// </summary>
+    [JSImport("getBaseUrl", "drawnui-web")]
+    public static partial string GetBaseUrl();
 
     /// <summary>
     /// Request a single frame callback to OnBrowserFrame

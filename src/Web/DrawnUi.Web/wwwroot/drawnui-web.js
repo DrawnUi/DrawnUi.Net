@@ -255,6 +255,13 @@ export function getDevicePixelRatio() {
     return window.devicePixelRatio || 1;
 }
 
+// Absolute base URL (respects <base href>) so C# HttpClient can resolve relative
+// font/asset paths. WasmFilesToBundle is a no-op in the .NET WASM SDK, so fonts are
+// served as normal static web assets and fetched over HTTP, mirroring the Blazor path.
+export function getBaseUrl() {
+    return document.baseURI;
+}
+
 export function requestAnimationFrameLegacy() {
     window.requestAnimationFrame(handleFrame);
 }
@@ -283,6 +290,104 @@ function setupInputHandlers() {
     window.addEventListener('resize', reportCanvasSize);
 }
 
+// ============================================================================
+// Gesture lock — mirrors Blazor Canvas GestureStyle (Lock/Enabled) at lib level.
+// Web has no AppoMobi TouchEffect to preventDefault the touch stream, so for Lock
+// we also kill iOS rubber-band / edge-swipe-away via a non-passive touchmove guard
+// + overscroll-behavior on the page. CSS-only (Enabled) costs nothing per frame.
+// ============================================================================
+
+let _gestureGuardEl = null;       // canvas the guard is bound to
+let _gestureGuardHandler = null;  // touchmove listener (non-passive)
+
+function detachGestureGuard() {
+    if (_gestureGuardEl && _gestureGuardHandler) {
+        _gestureGuardEl.removeEventListener('touchmove', _gestureGuardHandler);
+    }
+    _gestureGuardEl = null;
+    _gestureGuardHandler = null;
+}
+
+/**
+ * Apply gesture CSS to the canvas (and page) based on the DrawnUI Canvas.Gestures mode.
+ * @param {string} elementId canvas element id
+ * @param {boolean} lock true = GesturesMode.Lock, false = GesturesMode.Enabled
+ */
+export function applyGestureStyle(elementId, lock) {
+    const el = document.getElementById(elementId);
+    if (!el) {
+        console.error(`applyGestureStyle: canvas "${elementId}" not found`);
+        return;
+    }
+
+    el.style.touchAction = 'none';
+
+    if (lock) {
+        el.style.userSelect = 'none';
+        el.style.webkitUserSelect = 'none';
+        document.documentElement.style.overscrollBehavior = 'none';
+        document.body.style.overscrollBehavior = 'none';
+
+        detachGestureGuard();
+        _gestureGuardEl = el;
+        _gestureGuardHandler = e => e.preventDefault();
+        el.addEventListener('touchmove', _gestureGuardHandler, { passive: false });
+    } else {
+        el.style.userSelect = '';
+        el.style.webkitUserSelect = '';
+        document.documentElement.style.overscrollBehavior = '';
+        document.body.style.overscrollBehavior = '';
+        detachGestureGuard();
+    }
+}
+
+// ============================================================================
+// Loading spinner — self-contained, no per-app HTML/CSS needed.
+// ============================================================================
+
+let loaderEl = null;
+
+function ensureLoaderStyles() {
+    if (document.getElementById('drawnui-loader-style')) return;
+    const style = document.createElement('style');
+    style.id = 'drawnui-loader-style';
+    style.textContent =
+        '.drawnui-loader{position:absolute;top:50%;left:50%;width:42px;height:42px;' +
+        'margin:-21px 0 0 -21px;border:4px solid rgba(255,255,255,.15);' +
+        'border-top-color:#4CC9F0;border-radius:50%;' +
+        'animation:drawnui-spin .8s linear infinite;z-index:2147483647;}' +
+        '@keyframes drawnui-spin{to{transform:rotate(360deg)}}' +
+        '.drawnui-loader.drawnui-error{width:auto;height:auto;margin:0;' +
+        'transform:translate(-50%,-50%);border:0;animation:none;' +
+        'font:16px sans-serif;color:#FF5555;white-space:nowrap;}';
+    document.head.appendChild(style);
+}
+
+/** Show a centered rotating spinner (injects element + styles on first call). */
+export function showLoader() {
+    ensureLoaderStyles();
+    if (!loaderEl) {
+        loaderEl = document.createElement('div');
+        loaderEl.className = 'drawnui-loader';
+        document.body.appendChild(loaderEl);
+    }
+    loaderEl.style.display = '';
+    loaderEl.classList.remove('drawnui-error');
+    loaderEl.textContent = '';
+}
+
+/** Hide the spinner (call when the app is ready). */
+export function hideLoader() {
+    if (loaderEl) loaderEl.style.display = 'none';
+}
+
+/** Replace the spinner with an error message. */
+export function showError(message) {
+    showLoader();
+    loaderEl.classList.add('drawnui-error');
+    loaderEl.textContent = message;
+}
+
 /**
  * Wire C# [JSExport] callbacks (called from main.js, JS→JS, no marshaling).
  */
@@ -294,7 +399,31 @@ export function setModuleExports(exports) {
     onPointerCancel = exports.onPointerCancel;
     moduleOnWheel = exports.onWheel;
     onCanvasResize = exports.onCanvasResize;
+    onKeyDown = exports.onKeyDown;
+    onKeyUp = exports.onKeyUp;
+    setupKeyboardHandlers();
     console.log('DrawnUI.Web: Module exports set up');
+}
+
+// DOM keys that would scroll the page — suppress default while DrawnUI handles them.
+const PREVENT_DEFAULT_KEYS = new Set([
+    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space',
+]);
+
+let keyboardAttached = false;
+function setupKeyboardHandlers() {
+    if (keyboardAttached) return;
+    keyboardAttached = true;
+    // Window-level: the WebGL canvas can't hold focus for key events.
+    window.addEventListener('keydown', e => {
+        if (e.repeat) return;
+        if (PREVENT_DEFAULT_KEYS.has(e.code)) e.preventDefault();
+        onKeyDown?.(e.code);
+    });
+    window.addEventListener('keyup', e => {
+        if (PREVENT_DEFAULT_KEYS.has(e.code)) e.preventDefault();
+        onKeyUp?.(e.code);
+    });
 }
 
 let onBrowserFrame = null;
@@ -304,3 +433,5 @@ let onPointerUp = null;
 let onPointerCancel = null;
 let moduleOnWheel = null;
 let onCanvasResize = null;
+let onKeyDown = null;
+let onKeyUp = null;

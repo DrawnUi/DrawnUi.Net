@@ -19,9 +19,9 @@ public partial class PongGame : DrawnGame
     public const float PADDLE_MARGIN = 40f;
     public const int WIN_SCORE = 7;
 
-    public BallSprite Ball { get; private set; }
-    public PaddleSprite PlayerPaddle { get; private set; }
-    public PaddleSprite AiPaddle { get; private set; }
+    public BallSprite Ball;
+    public PaddleSprite PlayerPaddle;
+    public PaddleSprite AiPaddle;
 
     private int _playerScore;
     private int _aiScore;
@@ -57,64 +57,66 @@ public partial class PongGame : DrawnGame
         BackgroundColor = Colors.DarkGreen;
         Type = LayoutType.Absolute;
 
-        BuildUi();
+        Children = new List<SkiaControl>
+        {
+            new SkiaShape
+            {
+                Type = ShapeType.Rectangle,
+                BackgroundColor = Colors.Transparent,
+                StrokeColor = Color.Parse("#FEFEFE"),
+                StrokeWidth = 2,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+            },
+
+            new PaddleSprite(AiColor)
+            {
+                Left = (WIDTH - PADDLE_WIDTH) / 2.0,
+                Top = PADDLE_MARGIN,
+            }.Assign(out AiPaddle),
+
+            new PaddleSprite(PlayerColor)
+            {
+                Left = (WIDTH - PADDLE_WIDTH) / 2.0,
+                Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT,
+            }.Assign(out PlayerPaddle),
+
+            new BallSprite
+            {
+                Left = (WIDTH - 14) / 2.0,
+                Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT - 14,
+            }.Assign(out Ball),
+
+            new SkiaLabel
+            {
+                Text = "0 : 0",
+                FontFamily = "FontGame",
+                FontSize = 28,
+                TextColor = Colors.White,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Start,
+                Margin = new Thickness(0, HEIGHT / 2.0 - 24, 0, 0),
+                HorizontalTextAlignment = DrawTextAlignment.Center,
+            }.Assign(out _scoreLabel),
+
+            new SkiaLabel
+            {
+                Text = "TAP TO SERVE",
+                FontFamily = "FontGame",
+                FontSize = 14,
+                TextColor = Colors.White.WithAlpha(0.8f),
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Start,
+                Margin = new Thickness(0, HEIGHT / 2.0 + 12, 0, 0),
+                HorizontalTextAlignment = DrawTextAlignment.Center,
+            }.Assign(out _messageLabel),
+        };
 
         ResetBall(true);
         _ai = new PongAI(this, AIDifficulty.Medium);
 
         StartLoop();
         IgnoreChildrenInvalidations = true;
-    }
-
-    private void BuildUi()
-    {
-        AddSubView(new SkiaShape()
-        {
-            Type = ShapeType.Rectangle,
-            BackgroundColor = Colors.Transparent,
-            StrokeColor = Color.Parse("#FEFEFE"),
-            StrokeWidth = 2,
-            HorizontalOptions = LayoutOptions.Fill,
-            VerticalOptions = LayoutOptions.Fill,
-        });
-
-        AiPaddle = new PaddleSprite(AiColor) { Left = (WIDTH - PADDLE_WIDTH) / 2.0, Top = PADDLE_MARGIN, };
-        AddSubView(AiPaddle);
-
-        PlayerPaddle = new PaddleSprite(PlayerColor)
-        {
-            Left = (WIDTH - PADDLE_WIDTH) / 2.0, Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT,
-        };
-        AddSubView(PlayerPaddle);
-
-        Ball = new BallSprite() { Left = (WIDTH - 14) / 2.0, Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT - 14, };
-        AddSubView(Ball);
-
-        _scoreLabel = new SkiaLabel()
-        {
-            Text = "0 : 0",
-            FontFamily = "FontGame",
-            FontSize = 28,
-            TextColor = Colors.White,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Start,
-            Margin = new Thickness(0, HEIGHT / 2.0 - 24, 0, 0),
-            HorizontalTextAlignment = DrawTextAlignment.Center,
-        };
-        AddSubView(_scoreLabel);
-
-        _messageLabel = new SkiaLabel()
-        {
-            Text = "TAP TO SERVE",
-            FontFamily = "FontGame",
-            FontSize = 14,
-            TextColor = Colors.White.WithAlpha(0.8f),
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Start,
-            Margin = new Thickness(0, HEIGHT / 2.0 + 12, 0, 0),
-            HorizontalTextAlignment = DrawTextAlignment.Center,
-        };
-        AddSubView(_messageLabel);
     }
 
     private void ResetBall(bool playerServes)

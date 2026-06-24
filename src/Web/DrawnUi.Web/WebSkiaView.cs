@@ -293,7 +293,9 @@ public class WebSkiaView : ISkiaDrawable, IDisposable
 
     // IsHardwareAccelerated already defined above
 
-    public double FPS => 0;
+    public double FPS { get; private set; }
+
+    private long _lastFrameNanos;
 
     public bool IsDrawing => false;
 
@@ -321,6 +323,14 @@ public class WebSkiaView : ISkiaDrawable, IDisposable
 
     public void SignalFrame(long nanoseconds)
     {
+        if (_lastFrameNanos > 0 && nanoseconds > _lastFrameNanos)
+        {
+            var delta = nanoseconds - _lastFrameNanos;
+            var instant = 1_000_000_000.0 / delta;
+            FPS = FPS * 0.9 + instant * 0.1; // exponential moving average
+        }
+
+        _lastFrameNanos = nanoseconds;
         FrameTime = nanoseconds;
     }
 }

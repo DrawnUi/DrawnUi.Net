@@ -5,17 +5,18 @@ namespace Pong.Game;
 
 public static class GameExtensions
 {
+    /// <summary>
+    /// Returns the sprite's collision rect in field-space (logical game coords), built from
+    /// Left/Top + Width/Height. The whole game logic (Ball.Top, WIDTH/HEIGHT, paddle.Left,
+    /// scoring) lives in field-space, so collisions must stay there too. Using a canvas-space
+    /// position here breaks once RescalingCanvas scales/letterboxes the field (mobile/narrow),
+    /// where canvas-space != field-space.
+    /// </summary>
     public static SKRect GetHitBox(this SkiaControl sprite)
     {
-        SKPoint position;
-        if (sprite.VisualLayer == null)
-            position = sprite.GetFuturePositionOnCanvasInPoints();
-        else
-            position = sprite.VisualLayer.HitBoxWithTransforms.Units.Location;
-
         return new SKRect(
-            position.X, position.Y,
-            (float)(position.X + sprite.Width),
-            (float)(position.Y + sprite.Height));
+            (float)sprite.Left, (float)sprite.Top,
+            (float)(sprite.Left + sprite.Width),
+            (float)(sprite.Top + sprite.Height));
     }
 }

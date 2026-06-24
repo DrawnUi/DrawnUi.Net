@@ -35,10 +35,8 @@
         </WasmExtraConfig>
     </ItemGroup>
 
-    <!-- Bundle fonts into the WASM virtual filesystem so SkiaFontManager.FromFile finds them. -->
-    <ItemGroup>
-        <WasmFilesToBundle Include="fonts\**" />
-    </ItemGroup>
+    <!-- Fonts are served as static web assets (wwwroot/fonts) and fetched over HTTP by
+         SkiaFontManager.InitializeWebAsync. WasmFilesToBundle is a no-op in the .NET WASM SDK. -->
 
     <!-- ProjectReference does not auto-import a package's buildTransitive props, so import
          it explicitly. NuGet consumers of DrawnUi.Web get this automatically. Single source
