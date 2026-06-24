@@ -7,6 +7,11 @@ namespace DrawnUi.Controls
     [ContentProperty("Content")]
     public class SkiaDrawer : SnappingLayout, IVisibilityAware
     {
+        public SkiaDrawer()
+        {
+            AutoCache = true;
+        }
+
         public override void ApplyBindingContext()
         {
             if (Content != null && Content.BindingContext == null)

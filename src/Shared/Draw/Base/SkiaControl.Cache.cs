@@ -189,7 +189,6 @@ public partial class SkiaControl
         get { return (bool)GetValue(AutoCacheProperty); }
         set { SetValue(AutoCacheProperty, value); }
     }
- 
 
     public static readonly BindableProperty UseCacheProperty = BindableProperty.Create(nameof(UseCache),
         typeof(SkiaCacheType),
@@ -220,6 +219,8 @@ public partial class SkiaControl
         get { return (bool)GetValue(AllowCachingProperty); }
         set { SetValue(AllowCachingProperty, value); }
     }
+
+
 
     /// <summary>
     /// Used by the UseCacheDoubleBuffering process. 
