@@ -1,5 +1,9 @@
 using DrawnUi.Testing;
 
+// Repro for the reported blank-screen-after-second-jump bug (memo on vs off). Runs first, then returns.
+VirtualizationHarnessDemo.BlankJumpRepro.Run();
+return;
+
 // Headless reconstruction of LoadMoreRepro (static 1000 items, Managed planes).
 // Drives scrolling and reports the measurement frontier + whether item measurement happens on the
 // render thread (foreground = non-fluid) or on background threadpool threads (fluid).

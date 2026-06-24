@@ -72,12 +72,58 @@ public sealed class ChatLikeScene : IDisposable
         }
     }
 
+    // Mirrors the app's CellsStack: suppresses auto-LoadMore during a programmatic jump and while an
+    // ordered ScrollToIndex is settling, so a LoadOlder/LoadNewer can't shift _items mid-jump.
+    private sealed class HarnessStack : SkiaLayout
+    {
+        public bool SuppressLoadMore;
+        public Action OnAdded;
+
+        public override bool ShouldTriggerLoadMore(ScaledRect viewport, LoadMoreDirection direction)
+        {
+            if (SuppressLoadMore)
+                return false;
+            if (Parent is SkiaScroll scroll && (scroll.OrderedScrollToIndexIsSet || scroll.OrderedScrollTo.IsValid))
+                return false;
+            return base.ShouldTriggerLoadMore(viewport, direction);
+        }
+
+        protected override void ApplyBackgroundMeasurementChange(StructureChange change)
+        {
+            base.ApplyBackgroundMeasurementChange(change);
+            OnAdded?.Invoke();
+        }
+
+        protected override void OnHeadInsertCommitted()
+        {
+            base.OnHeadInsertCommitted();
+            OnAdded?.Invoke();
+        }
+
+        public string DumpRows(int max = 60)
+        {
+            var s = StackStructure;
+            if (s == null) return "structure=null";
+            var sb = new System.Text.StringBuilder();
+            int n = 0;
+            foreach (var c in s.GetChildren())
+            {
+                if (n++ >= max) break;
+                sb.Append($"[{c.ControlIndex}]t{c.Destination.Top:0}/b{c.Destination.Bottom:0}/h{c.Measured.Pixels.Height:0} ");
+            }
+            return sb.ToString();
+        }
+    }
+
+    public string DumpRows(int max = 60) => _stack.DumpRows(max);
+
     private readonly List<ChatRow> _all = new();
     private readonly ObservableRangeCollection<ChatRow> _items = new();
     private int _windowStart;
     private int _windowEnd;
     private const int LoadBatch = 50;
     private const int MaxResident = 150;
+    private readonly HarnessStack _stack;
 
     public int LoadOlderCalls;
     public int LoadNewerCalls;
@@ -89,7 +135,7 @@ public sealed class ChatLikeScene : IDisposable
     public int WindowStart => _windowStart;
     public int WindowEnd => _windowEnd;
 
-    public ChatLikeScene(int total = 1000, int width = 430, int height = 720)
+    public ChatLikeScene(int total = 1000, int width = 430, int height = 720, int measurementCacheCapacity = 1000)
     {
         for (int i = 0; i < total; i++)
         {
@@ -109,7 +155,7 @@ public sealed class ChatLikeScene : IDisposable
 
         Host = new HeadlessCanvasHost(width, height, scale: 1f, background: Colors.Black);
 
-        List = new SkiaLayout
+        List = _stack = new HarnessStack
         {
             Type = LayoutType.Column,
             Spacing = 4,
@@ -119,6 +165,9 @@ public sealed class ChatLikeScene : IDisposable
             RecyclingTemplate = RecyclingTemplate.Enabled,
             MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
             VirtualisationInflated = 100,
+            MeasurementCacheCapacity = measurementCacheCapacity,
+            UseCache = SkiaCacheType.None,   // mirror CellsStack (it owns its own draw/cache)
+            FastMeasurement = true,
             HorizontalOptions = LayoutOptions.Fill,
             // Virtualisation left at default (Enabled) — the working chat path, NOT Managed.
         };
@@ -179,6 +228,43 @@ public sealed class ChatLikeScene : IDisposable
         _items.InsertRange(0, ReversedRange(_windowEnd, n));
         _windowEnd += n;
     }
+
+    // ---- jump buttons (mirror ChatPage.ScrollToOldest / ScrollToNewest) ----
+
+    public bool AtPresent => _windowEnd == _all.Count;
+    public bool AtOldest => _windowStart == 0;
+
+    /// <summary>Mirror of ScrollToOldest: suppress LoadMore, rebase the window to history start via
+    /// ReplaceRange (structure-preserving), then ordered-scroll to the visual top (oldest = last resident).</summary>
+    public void JumpToOldest()
+    {
+        _stack.SuppressLoadMore = true;
+        _windowStart = 0;
+        _windowEnd = Math.Min(LoadBatch, _all.Count);
+        _items.ReplaceRange(ReversedRange(_windowStart, _windowEnd - _windowStart));
+        Scroll.ScrollToIndex(_items.Count - 1, false, RelativePositionType.Start, true);
+    }
+
+    /// <summary>Mirror of ScrollToNewest: if detached, rebase to the present via ReplaceRange + instant snap
+    /// to content start (offset 0 = newest); else ordered-scroll to index 0.</summary>
+    public void JumpToNewest()
+    {
+        _stack.SuppressLoadMore = true;
+        if (!AtPresent)
+        {
+            _windowEnd = _all.Count;
+            _windowStart = Math.Max(0, _windowEnd - LoadBatch);
+            _items.ReplaceRange(ReversedRange(_windowStart, _windowEnd - _windowStart));
+            Scroll.ScrollTo(0, 0, 0, false);
+        }
+        else
+        {
+            Scroll.ScrollToIndex(0, false, RelativePositionType.Start, true);
+        }
+    }
+
+    /// <summary>Release the jump's LoadMore block (the app does this in OnChatScrolled once the target lands).</summary>
+    public void ReleaseSuppress() => _stack.SuppressLoadMore = false;
 
     public void Warmup(int frames = 10, int sleepMs = 15)
     {

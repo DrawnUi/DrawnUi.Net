@@ -63,6 +63,11 @@ public partial class SkiaLayout
         cell.Measured = measured;
         cell.WasMeasured = true;
 
+        // Feed the item-keyed memo: data item (templated cell's BindingContext) -> size at this width.
+        // Survives window swaps/recycling so a later revisit is seeded instead of remeasured.
+        if (IsTemplated)
+            StoreMemoSize(child?.BindingContext, cell.Area.Width, measured);
+
         LayoutCell(measured, cell, child, rectForChildrenPixels, scale);
 
         //SkiaLayout.TraceIdx(cell.ControlIndex, "FG-MEASURE",

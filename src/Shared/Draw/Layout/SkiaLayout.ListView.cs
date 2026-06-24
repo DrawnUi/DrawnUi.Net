@@ -286,6 +286,124 @@ public partial class SkiaLayout
         public bool IsInViewport { get; set; }
     }
 
+    #region ITEM-KEYED MEASUREMENT MEMO
+
+    // _measuredItems is keyed by LOCAL ControlIndex, so a full-collection Replace (windowed list jump)
+    // MUST clear it (ResetMeasurementForReplace) — the same slots now host different data. That throws
+    // away perfectly good sizes and forces a full remeasure of the new window every jump.
+    //
+    // This memo is keyed by the DATA ITEM (object identity) + the constraint WIDTH it was measured under,
+    // so it survives window swaps and view recycling: revisit a region and its cells are seeded from here
+    // instead of remeasured. LRU-capped (default 1000) so it cannot grow unbounded.
+    //
+    // Contract: an entry is valid only while the item's content AND the available width are unchanged.
+    // Re-measuring an item (e.g. RemeasureSingleItemInBackground after image load, or a foreground measure
+    // under a new width) overwrites its entry via StoreMemoSize, so refreshes happen naturally. A consumer
+    // that mutates an item's content in place without triggering a remeasure must call ClearMeasurementCache.
+
+    private sealed class MeasureMemoEntry
+    {
+        public object Item;
+        public float Width;
+        public ScaledSize Measured;
+    }
+
+    private readonly object _memoLock = new();
+    private readonly Dictionary<object, LinkedListNode<MeasureMemoEntry>> _memo = new();
+    private readonly LinkedList<MeasureMemoEntry> _memoLru = new(); // most-recently-used at head
+
+    /// <summary>
+    /// Max number of item-keyed measured sizes retained across window swaps / recycling (LRU-evicted).
+    /// Set to 0 (or less) to disable the memo entirely. Default 1000.
+    /// </summary>
+    public int MeasurementCacheCapacity { get; set; } = 1000;
+
+    /// <summary>Drop all memoized item sizes (call after mutating item content without a remeasure).</summary>
+    public void ClearMeasurementCache()
+    {
+        lock (_memoLock)
+        {
+            _memo.Clear();
+            _memoLru.Clear();
+        }
+    }
+
+    private bool TryGetMemoSize(object item, float width, out ScaledSize size)
+    {
+        size = ScaledSize.Default;
+        if (item == null || MeasurementCacheCapacity <= 0)
+            return false;
+
+        lock (_memoLock)
+        {
+            if (_memo.TryGetValue(item, out var node) && Math.Abs(node.Value.Width - width) < 0.5f)
+            {
+                _memoLru.Remove(node);
+                _memoLru.AddFirst(node);
+                size = node.Value.Measured;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void StoreMemoSize(object item, float width, ScaledSize measured)
+    {
+        if (item == null || MeasurementCacheCapacity <= 0)
+            return;
+        if (width <= 0 || float.IsInfinity(width) || measured == null || measured.IsEmpty)
+            return;
+
+        // Clone: MeasureChild may return the (recycled) control's own MeasuredSize instance, which gets
+        // mutated when that control is re-measured for another item — storing the live ref would alias.
+        var snapshot = measured.Clone();
+
+        lock (_memoLock)
+        {
+            if (_memo.TryGetValue(item, out var node))
+            {
+                node.Value.Width = width;
+                node.Value.Measured = snapshot;
+                _memoLru.Remove(node);
+                _memoLru.AddFirst(node);
+            }
+            else
+            {
+                node = new LinkedListNode<MeasureMemoEntry>(
+                    new MeasureMemoEntry { Item = item, Width = width, Measured = snapshot });
+                _memo[item] = node;
+                _memoLru.AddFirst(node);
+
+                while (_memo.Count > MeasurementCacheCapacity && _memoLru.Last != null)
+                {
+                    var last = _memoLru.Last;
+                    _memoLru.RemoveLast();
+                    _memo.Remove(last.Value.Item);
+                }
+            }
+        }
+    }
+
+    // Reads the data item at a window-local index for memo keying, off the render thread. ItemsSource may
+    // mutate concurrently; a stale/out-of-range read just misses the memo (epoch guard drops stale batches).
+    private object GetItemForMemo(int index)
+    {
+        var source = ItemsSource;
+        if (source == null || index < 0 || index >= source.Count)
+            return null;
+        try
+        {
+            return source[index];
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    #endregion
+
     /// <summary>
     /// Cancels any ongoing background measurement
     /// </summary>
@@ -824,64 +942,85 @@ public partial class SkiaLayout
                 if (_measuredItems.ContainsKey(itemIndex))
                     continue;
 
-                var child = ChildrenFactory.GetViewForIndex(itemIndex, template, 0, true);
-                if (template == null && child != null)
+                var rectForChild = new SKRect(
+                    currentX,
+                    currentY,
+                    currentX + availableWidth,
+                    currentY + availableHeight
+                );
+
+                var cell = new ControlInStack
                 {
-                    cellsToRelease.Add(child);
-                }
+                    ControlIndex = itemIndex,
+                    Column = col,
+                    Row = row,
+                    Destination = rectForChild
+                };
 
-                if (child?.CanDraw == true)
+                ScaledSize measured;
+
+                // Memo fast path: a known item size at this width seeds the cell WITHOUT instantiating or
+                // measuring a view. Background measurement only needs sizes (off-screen, never drawn), so
+                // this is the whole win after a window jump — revisited cells skip GetViewForIndex+Measure.
+                var dataItem = GetItemForMemo(itemIndex);
+                if (dataItem != null && TryGetMemoSize(dataItem, availableWidth, out var cachedSize))
                 {
-                    // Create proper destination rect with actual positioning
-                    var rectForChild = new SKRect(
-                        currentX,
-                        currentY,
-                        currentX + availableWidth,
-                        currentY + availableHeight
-                    );
-
-                    var cell = new ControlInStack
-                    {
-                        ControlIndex = itemIndex,
-                        Column = col,
-                        Row = row,
-                        Destination = rectForChild
-                    };
-
-                    var measured = MeasureAndArrangeCell(rectForChild, cell, child, constraints, scale);
+                    measured = cachedSize;
                     cell.Measured = measured;
                     cell.WasMeasured = true;
-
-                    // Update max row height
-                    if (measured.Pixels.Height > rowHeight)
-                        rowHeight = measured.Pixels.Height;
-
-                    measuredBatch.Add(new MeasuredItemInfo
-                    {
-                        Cell = cell,
-                        LastAccessed = DateTime.UtcNow,
-                        IsInViewport = false
-                    });
-
-                    // Move to next column
-                    col++;
-                    if (col >= columnsCount)
-                    {
-                        // Complete row - move to next row
-                        row++;
-                        col = 0;
-                        currentX = 0f;
-                        currentY += rowHeight + (float)(Spacing * scale);
-                        rowHeight = 0f;
-                    }
-                    else
-                    {
-                        // Move to next column horizontally
-                        currentX += columnWidth + (float)(Spacing * scale);
-                    }
-
-                    //Debug.WriteLine($"[MeasureBatchInBackground] Measured item {itemIndex} at ({cell.Destination.Left:F1},{cell.Destination.Top:F1}): {measured.Pixels.Width:F1}x{measured.Pixels.Height:F1}");
+                    // Mirror MeasureAndArrangeCell: set BOTH Area and Destination. ComputeBottomOfRow (used to
+                    // position the NEXT background batch) reads cell.Area.Top — leaving Area default (Top=0)
+                    // makes every memo cell report bottom=height, so the next batch stacks at the top (overlap
+                    // -> collapsed content -> blank). Area.Top must be the cell's real Y (rectForChild.Top).
+                    cell.Area = rectForChild;
+                    cell.Destination = new SKRect(currentX, currentY,
+                        currentX + availableWidth, currentY + measured.Pixels.Height);
                 }
+                else
+                {
+                    var child = ChildrenFactory.GetViewForIndex(itemIndex, template, 0, true);
+                    if (template == null && child != null)
+                    {
+                        cellsToRelease.Add(child);
+                    }
+
+                    if (child?.CanDraw != true)
+                        continue;
+
+                    measured = MeasureAndArrangeCell(rectForChild, cell, child, constraints, scale);
+                    cell.Measured = measured;
+                    cell.WasMeasured = true;
+                }
+
+                // Update max row height
+                if (measured.Pixels.Height > rowHeight)
+                    rowHeight = measured.Pixels.Height;
+
+                measuredBatch.Add(new MeasuredItemInfo
+                {
+                    Cell = cell,
+                    LastAccessed = DateTime.UtcNow,
+                    IsInViewport = false
+                });
+
+                // Move to next column
+                col++;
+                if (col >= columnsCount)
+                {
+                    // Complete row - move to next row
+                    row++;
+                    col = 0;
+                    currentX = 0f;
+                    currentY += rowHeight + (float)(Spacing * scale);
+                    rowHeight = 0f;
+                }
+                else
+                {
+                    // Move to next column horizontally
+                    currentX += columnWidth + (float)(Spacing * scale);
+                }
+
+                //Debug.WriteLine($"[MeasureBatchInBackground] Measured item {itemIndex} at ({cell.Destination.Left:F1},{cell.Destination.Top:F1}): {measured.Pixels.Width:F1}x{measured.Pixels.Height:F1}");
             }
         }
         finally

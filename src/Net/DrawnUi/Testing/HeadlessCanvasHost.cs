@@ -86,6 +86,35 @@ public sealed class HeadlessCanvasHost : IDisposable
             RenderFrame(advanceMs);
     }
 
+    /// <summary>
+    /// Fraction (0..1) of surface pixels whose colour differs from <paramref name="background"/> beyond
+    /// <paramref name="tolerance"/> (per channel, 0..255). Near-zero on a populated scene = a blank/empty
+    /// render. Render a frame first. Test-only diagnostic (per-pixel scan).
+    /// </summary>
+    public double NonBackgroundFraction(DrawnUi.Color background, int tolerance = 8)
+    {
+        using var image = _surface.Snapshot();
+        using var bmp = SKBitmap.FromImage(image);
+
+        int br = (int)Math.Round(background.Red * 255);
+        int bg = (int)Math.Round(background.Green * 255);
+        int bb = (int)Math.Round(background.Blue * 255);
+
+        long differ = 0;
+        long total = (long)bmp.Width * bmp.Height;
+        for (int y = 0; y < bmp.Height; y++)
+        for (int x = 0; x < bmp.Width; x++)
+        {
+            var p = bmp.GetPixel(x, y);
+            if (Math.Abs(p.Red - br) > tolerance ||
+                Math.Abs(p.Green - bg) > tolerance ||
+                Math.Abs(p.Blue - bb) > tolerance)
+                differ++;
+        }
+
+        return total == 0 ? 0 : (double)differ / total;
+    }
+
     /// <summary>Saves the current surface contents to a PNG file (useful for visual diffing).</summary>
     public void SavePng(string filePath)
     {
