@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>87BD2DFC-ED81-49F7-8391-214D40802417</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Pong</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Game\PongGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game\PongGame.Loop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game\GameExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game\IWithHitBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game\Ai\PongAI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game\Sprites\BallSprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game\Sprites\PaddleSprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RescalingCanvas.cs" />
+  </ItemGroup>
+</Project>

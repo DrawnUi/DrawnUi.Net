@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -71,11 +71,7 @@
       <Compile Include="..\..\Net\DrawnUi\Views\VisualElement.Net.cs" Link="Views\VisualElement.Net.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="wwwroot\**\*.*">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
+    <!-- wwwroot\** auto-served as static web assets under _content/DrawnUi.Web/ (Razor SDK). -->
 
     <!-- Ship the GPU-enabling emcc js-library + props so consumers get WebGL automatically.
          buildTransitive flows the js-library link flag to any app referencing this package. -->

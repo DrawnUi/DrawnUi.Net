@@ -108,6 +108,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{700980EE-0C2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawnUi.Web", "Web\DrawnUi.Web\DrawnUi.Web.csproj", "{9C14B0D0-A891-D7C8-80AD-17A065425F9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PongWeb", "Web\Samples\PongWeb\PongWeb.csproj", "{798BF54A-6314-F232-4C04-D97CE4BAF85B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Pong.Shared", "Samples\Pong.Shared\Pong.Shared.shproj", "{87BD2DFC-ED81-49F7-8391-214D40802417}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -249,6 +253,10 @@ Global
 		{9C14B0D0-A891-D7C8-80AD-17A065425F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C14B0D0-A891-D7C8-80AD-17A065425F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C14B0D0-A891-D7C8-80AD-17A065425F9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798BF54A-6314-F232-4C04-D97CE4BAF85B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798BF54A-6314-F232-4C04-D97CE4BAF85B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798BF54A-6314-F232-4C04-D97CE4BAF85B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798BF54A-6314-F232-4C04-D97CE4BAF85B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -295,6 +303,8 @@ Global
 		{2611A57E-ECB4-4F46-8434-C730E44AEDC4} = {31616691-6743-4833-B7C9-4A2B6F5443D6}
 		{7DCAF131-DEE9-C87E-08B5-A934A9DC79F8} = {2611A57E-ECB4-4F46-8434-C730E44AEDC4}
 		{9C14B0D0-A891-D7C8-80AD-17A065425F9F} = {700980EE-0C23-4A4F-9B69-E0E94D4CDF1E}
+		{798BF54A-6314-F232-4C04-D97CE4BAF85B} = {2611A57E-ECB4-4F46-8434-C730E44AEDC4}
+		{87BD2DFC-ED81-49F7-8391-214D40802417} = {2611A57E-ECB4-4F46-8434-C730E44AEDC4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {329E3D0C-A3F7-4A3E-B61C-6B2D1BD7F708}
@@ -303,14 +313,17 @@ Global
 		..\..\BlockChampion\src\Shared\BlockChampion.Shared.projitems*{088aa981-9316-9a3d-0524-c58456d56f5e}*SharedItemsImports = 5
 		..\..\BlockChampion\src\Shared\BlockChampion.Shared.projitems*{4f7b6a38-9545-4c98-958c-cb783f847422}*SharedItemsImports = 13
 		Shared\Shared.projitems*{51f7ec60-4642-3a6f-6c99-f6f62233c374}*SharedItemsImports = 5
+		Samples\Pong.Shared\Pong.Shared.projitems*{798bf54a-6314-f232-4c04-d97ce4baf85b}*SharedItemsImports = 5
 		SharedGame\SharedGame.projitems*{7a411dc6-774f-ce71-459e-2515e1d3af92}*SharedItemsImports = 5
 		Shared\Shared.projitems*{83974207-9636-48dd-bdb3-98edecbb1107}*SharedItemsImports = 13
 		SharedGame\SharedGame.projitems*{85d50df4-70cb-1cf6-1b0c-04d4e225cf89}*SharedItemsImports = 5
+		Samples\Pong.Shared\Pong.Shared.projitems*{87bd2dfc-ed81-49f7-8391-214d40802417}*SharedItemsImports = 13
 		Shared\Shared.projitems*{93e119b1-4378-87df-2dd2-a818d1e6c2a2}*SharedItemsImports = 5
 		Shared\Shared.projitems*{9c14b0d0-a891-d7c8-80ad-17a065425f9f}*SharedItemsImports = 5
 		Shared\Shared.projitems*{a600fd05-5de5-e382-db79-8e53ad2fed7e}*SharedItemsImports = 5
 		SharedGame\SharedGame.projitems*{af9d42a8-9f94-460c-bb52-d1474332099d}*SharedItemsImports = 5
 		SharedNet\SharedNet.projitems*{c4d8f2a1-7b3e-4f9c-a8d6-5e1b9f2c8d3a}*SharedItemsImports = 13
+		Samples\Pong.Shared\Pong.Shared.projitems*{d1b96898-763f-4bb2-a7a5-1f388b0a2703}*SharedItemsImports = 5
 		Shared\Shared.projitems*{ed99ddb0-602d-46f9-aeef-4ad047bfce8d}*SharedItemsImports = 5
 		SharedGame\SharedGame.projitems*{f1532dec-e3ee-4616-8f16-b594c891fcc3}*SharedItemsImports = 13
 	EndGlobalSection

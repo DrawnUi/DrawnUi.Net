@@ -2,7 +2,20 @@
 // Loads the WASM module and initializes the app
 
 import { dotnet } from './_framework/dotnet.js';
-import { setModuleExports } from './drawnui-web.js';
+import { setModuleExports } from './_content/DrawnUi.Web/drawnui-web.js';
+
+// Recursively find the [JSExport] Main in an exports tree (no per-app namespace hardcode).
+function findExport(obj, name) {
+    for (const key in obj) {
+        const val = obj[key];
+        if (key === name && typeof val === 'function') return val;
+        if (val && typeof val === 'object') {
+            const found = findExport(val, name);
+            if (found) return found;
+        }
+    }
+    return null;
+}
 
 console.log('DrawnUI.Web.Sample: Starting...');
 
@@ -22,39 +35,30 @@ try {
         .create();
 
     const config = getConfig();
-    
-    // Get exports from our assembly
+
     loadingDiv.textContent = 'Initializing DrawnUI...';
-    const exports = await getAssemblyExports(config.mainAssemblyName);
-    
-    // Exports are keyed by namespace path. Stash for debugging.
-    window.__drawnUiExports = exports;
-    console.log('DrawnUI exports:', exports);
-    
-    // All [JSExport] methods live on Program in the main assembly.
-    // (WebInput is in the library assembly, which doesn't generate JS exports,
-    //  so Program re-exports them as pass-throughs.)
-    const programExports = exports?.DrawnUi?.Web?.Sample?.Program
-                        ?? exports?.Program;
-    
-    if (!programExports) {
-        console.error('Program exports missing. Full exports:', exports);
-        throw new Error('Could not locate Program exports. Inspect window.__drawnUiExports.');
-    }
-    
-    // Wire C# [JSExport] callbacks into the drawnui-web.js module (JS->JS, no marshaling)
+
+    // Input / frame / resize callbacks live in the DrawnUi.Web library assembly.
+    const lib = await getAssemblyExports('DrawnUi.Web');
+    const Input = lib.DrawnUi.Draw.WebInput;
+    const Super = lib.DrawnUi.Draw.Super;
+    const Host = lib.DrawnUi.Draw.BrowserHost;
+
     setModuleExports({
-        onBrowserFrame: programExports.OnBrowserFrame,
-        onCanvasResize: programExports.OnCanvasResize,
-        onPointerDown: programExports.OnPointerDown,
-        onPointerMove: programExports.OnPointerMove,
-        onPointerUp: programExports.OnPointerUp,
-        onPointerCancel: programExports.OnPointerCancel,
-        onWheel: programExports.OnWheel,
+        onBrowserFrame: Super.OnBrowserFrame,
+        onCanvasResize: Host.OnCanvasResize,
+        onPointerDown: Input.OnPointerDown,
+        onPointerMove: Input.OnPointerMove,
+        onPointerUp: Input.OnPointerUp,
+        onPointerCancel: Input.OnPointerCancel,
+        onWheel: Input.OnWheel,
     });
 
-    // Call Main to initialize the app (initCanvas is called from C# via JSImport)
-    programExports.Main();
+    // App entry point: builds DrawnUI and runs the Canvas (RunAsync does all glue).
+    const app = await getAssemblyExports(config.mainAssemblyName);
+    const main = findExport(app, 'Main');
+    if (!main) throw new Error(`No [JSExport] Main found in ${config.mainAssemblyName}`);
+    main();
     
     // Hide loading message
     loadingDiv.style.display = 'none';
