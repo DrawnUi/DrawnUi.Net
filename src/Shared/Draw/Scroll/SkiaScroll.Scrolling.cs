@@ -916,8 +916,6 @@ public partial class SkiaScroll
                     return false;
             }
 
- 
-
             //saving to use upon creating control if this was called before its internal structure was really created
             var offset = CalculateScrollOffsetForIndex(OrderedScrollToIndex.Index,
                 OrderedScrollToIndex.RelativePosition);
