@@ -33,7 +33,13 @@ public partial class PongGame : DrawnGame
     private SkiaLabel _scoreLabel;
     private SkiaLabel _messageLabel;
 
-    private enum GamePhase { WaitingToStart, Playing, Scored, GameOver }
+    private enum GamePhase
+    {
+        WaitingToStart,
+        Playing,
+        Scored,
+        GameOver
+    }
 
     private GamePhase _phase = GamePhase.WaitingToStart;
     private float _phaseTimer;
@@ -72,40 +78,16 @@ public partial class PongGame : DrawnGame
             VerticalOptions = LayoutOptions.Fill,
         });
 
-        //for (int i = 0; i < 18; i++)
-        //{
-        //    AddSubView(new SkiaShape()
-        //    {
-        //        Type = ShapeType.Rectangle,
-        //        BackgroundColor = NetColor,
-        //        WidthRequest = 4,
-        //        HeightRequest = 20,
-        //        Left = (WIDTH - 4) / 2.0,
-        //        Top = 10 + i * 34,
-        //        HorizontalOptions = LayoutOptions.Start,
-        //        VerticalOptions = LayoutOptions.Start,
-        //    });
-        //}
-
-        AiPaddle = new PaddleSprite(AiColor)
-        {
-            Left = (WIDTH - PADDLE_WIDTH) / 2.0,
-            Top = PADDLE_MARGIN,
-        };
+        AiPaddle = new PaddleSprite(AiColor) { Left = (WIDTH - PADDLE_WIDTH) / 2.0, Top = PADDLE_MARGIN, };
         AddSubView(AiPaddle);
 
         PlayerPaddle = new PaddleSprite(PlayerColor)
         {
-            Left = (WIDTH - PADDLE_WIDTH) / 2.0,
-            Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT,
+            Left = (WIDTH - PADDLE_WIDTH) / 2.0, Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT,
         };
         AddSubView(PlayerPaddle);
 
-        Ball = new BallSprite()
-        {
-            Left = (WIDTH - 14) / 2.0,
-            Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT - 14,
-        };
+        Ball = new BallSprite() { Left = (WIDTH - 14) / 2.0, Top = HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT - 14, };
         AddSubView(Ball);
 
         _scoreLabel = new SkiaLabel()
@@ -140,7 +122,7 @@ public partial class PongGame : DrawnGame
         Ball.Left = (WIDTH - 14) / 2.0;
         Ball.Top = playerServes
             ? HEIGHT - PADDLE_MARGIN - PADDLE_HEIGHT - 14
-            : PADDLE_MARGIN + PADDLE_HEIGHT + 2;
+            : PADDLE_MARGIN + PADDLE_HEIGHT - 1;
         Ball.IsMoving = false;
         Ball.UpdateState(0, true);
 
@@ -197,18 +179,18 @@ public partial class PongGame : DrawnGame
     {
         switch (key)
         {
-        case InputKey.ArrowLeft:
-            SetPlayerMovement(-1);
-            break;
-        case InputKey.ArrowRight:
-            SetPlayerMovement(1);
-            break;
-        case InputKey.Space:
-        case InputKey.ArrowUp:
-        case InputKey.ArrowDown:
-        case InputKey.Enter:
-            Serve();
-            break;
+            case InputKey.ArrowLeft:
+                SetPlayerMovement(-1);
+                break;
+            case InputKey.ArrowRight:
+                SetPlayerMovement(1);
+                break;
+            case InputKey.Space:
+            case InputKey.ArrowUp:
+            case InputKey.ArrowDown:
+            case InputKey.Enter:
+                Serve();
+                break;
         }
     }
 
@@ -216,12 +198,12 @@ public partial class PongGame : DrawnGame
     {
         switch (key)
         {
-        case InputKey.ArrowLeft when _playerMovement < 0:
-            SetPlayerMovement(0);
-            break;
-        case InputKey.ArrowRight when _playerMovement > 0:
-            SetPlayerMovement(0);
-            break;
+            case InputKey.ArrowLeft when _playerMovement < 0:
+                SetPlayerMovement(0);
+                break;
+            case InputKey.ArrowRight when _playerMovement > 0:
+                SetPlayerMovement(0);
+                break;
         }
     }
 

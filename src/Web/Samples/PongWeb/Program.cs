@@ -27,24 +27,18 @@ public static partial class Program
                 LogicalWidth = PongGame.WIDTH,
                 LogicalHeight = PongGame.HEIGHT,
                 BackgroundColor = Color.FromArgb("#0A0F1E"),
-                RenderingMode = RenderingModeType.Accelerated,
-                UpdateMode = UpdateModeType.Constant,
-                Gestures = GesturesMode.Enabled,
+                RenderingMode = RenderingModeType.Accelerated, //gpu acceleration
+                UpdateMode = UpdateModeType.Constant, //more smooth anims on web
+                Gestures = GesturesMode.Lock,
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Content = new SkiaLayer
                 {
-                    HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Fill,
                     Children =
                     {
-                        new PongGame
-                        {
-                            WidthRequest = PongGame.WIDTH,
-                            HeightRequest = PongGame.HEIGHT,
-                            HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.Center,
-                        },
+                        new PongGame().Center(),
+
                         new SkiaLabelFps
                         {
                             UseCache = SkiaCacheType.GPU,
