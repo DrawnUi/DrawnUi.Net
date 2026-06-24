@@ -956,7 +956,18 @@ namespace DrawnUi.Draw
 
                     if (layout.Pixels.Height<0 || layout.Pixels.Width<0)
                     {
-                        return SetMeasuredAsEmpty(scale);
+                        float width=0, height = 0;
+                        bool widthCut = layout.Pixels.Width > 0;
+                        bool heightCut = layout.Pixels.Height > 0;
+                        if (widthCut)
+                        {
+                            width = layout.Pixels.Width;
+                        }
+                        if (heightCut)
+                        {
+                            height = layout.Pixels.Height;
+                        }
+                        return SetMeasured(width, height, widthCut, heightCut, scale);
                     }
 
                     return layout;

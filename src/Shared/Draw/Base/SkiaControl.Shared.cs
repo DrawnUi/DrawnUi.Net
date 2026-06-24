@@ -5406,6 +5406,16 @@ namespace DrawnUi.Draw
                         // Don't call PostProcessMeasuredChild for fill children
                     }
 
+                    if (maxChildHeight == 0)
+                    {
+                        maxChildHeight = measured.Pixels.Height;
+                    }
+
+                    if (maxChildWidth == 0)
+                    {
+                        maxChildWidth = measured.Pixels.Width;
+                    }
+
                     widthCut |= measured.WidthCut;
                     heightCut |= measured.HeightCut;
                 }
