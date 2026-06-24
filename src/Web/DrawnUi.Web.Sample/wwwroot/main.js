@@ -6,6 +6,9 @@ import { setModuleExports } from './drawnui-web.js';
 
 console.log('DrawnUI.Web.Sample: Starting...');
 
+// Expose dotnet runtime globally so drawnui-web.js can find Emscripten GL module
+globalThis.dotnet = dotnet;
+
 // Show loading message
 const loadingDiv = document.getElementById('loading');
 

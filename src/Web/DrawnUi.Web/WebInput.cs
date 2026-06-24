@@ -145,13 +145,42 @@ public static partial class WebInput
     }
 
     /// <summary>
-    /// Called by JS when wheel/scrolling occurs
+    /// Called by JS when a mouse wheel / trackpad scroll occurs.
+    /// Mirrors the Net <c>GestureRobot.WheelScroll</c> contract: emits a
+    /// <see cref="TouchActionType.Wheel"/> gesture carrying <see cref="WheelEventArgs"/>.
+    /// SkiaScroll uses only the sign of <c>Wheel.Delta</c> for scrolling; zoom controls
+    /// use its magnitude. Browser <c>deltaY &gt; 0</c> (scroll down) maps to a negative
+    /// Delta so content scrolls down (DrawnUI decreases ViewportOffsetY when scrolling down).
     /// </summary>
+    /// <param name="deltaX">Horizontal wheel delta (browser units).</param>
+    /// <param name="deltaY">Vertical wheel delta (browser units).</param>
+    /// <param name="deltaMode">0 = pixel, 1 = line, 2 = page.</param>
+    /// <param name="x">Cursor X in CSS pixels.</param>
+    /// <param name="y">Cursor Y in CSS pixels.</param>
     [JSExport]
-    public static void OnWheel(double deltaX, double deltaY, int deltaMode)
+    public static void OnWheel(double deltaX, double deltaY, int deltaMode, double x, double y)
     {
-        // TODO: Implement wheel handling
-        Console.WriteLine($"Wheel: dx={deltaX}, dy={deltaY}, mode={deltaMode}");
+        // Normalize line/page modes to an approximate pixel magnitude (sign preserved).
+        var factor = deltaMode switch
+        {
+            1 => 40.0,  // lines
+            2 => 800.0, // pages
+            _ => 1.0,   // pixels
+        };
+        var dominant = Math.Abs(deltaY) >= Math.Abs(deltaX) ? deltaY : deltaX;
+
+        var location = new PointF((float)x, (float)y);
+        var args = MakeTouchArgs(0, TouchActionType.Wheel, location);
+        args.NumberOfTouches = Math.Max(1, ActiveTouchIds.Count);
+        args.Wheel = new WheelEventArgs
+        {
+            // Negate: browser down (positive) → DrawnUI scroll down (negative Delta).
+            Delta = (float)(-dominant * factor),
+            Scale = 1f,
+            Center = location,
+        };
+
+        TargetCanvas?.OnGestureEvent(TouchActionType.Wheel, args, TouchActionResult.Wheel);
     }
 
     private static TouchActionEventArgs MakeTouchArgs(long pointerId, TouchActionType type, PointF location)

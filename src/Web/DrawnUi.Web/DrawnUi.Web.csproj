@@ -77,4 +77,11 @@
         </Content>
     </ItemGroup>
 
+    <!-- Ship the GPU-enabling emcc js-library + props so consumers get WebGL automatically.
+         buildTransitive flows the js-library link flag to any app referencing this package. -->
+    <ItemGroup>
+        <None Include="buildTransitive\DrawnUi.Web.props" Pack="true" PackagePath="buildTransitive\DrawnUi.Web.props" />
+        <None Include="buildTransitive\SkiaSharpInterop.js" Pack="true" PackagePath="buildTransitive\SkiaSharpInterop.js" />
+    </ItemGroup>
+
 </Project>

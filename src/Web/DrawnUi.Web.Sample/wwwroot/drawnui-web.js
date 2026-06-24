@@ -1,252 +1,290 @@
-// DrawnUI.Web JavaScript module
-// Provides JS interop helpers for DrawnUI on WASM
+// DrawnUI.Web — SkiaSharp canvas bridge for pure WebAssembly (no Blazor).
+// Ported from SkiaSharp.Views.Blazor SKHtmlCanvas.ts + SKHtmlCanvasInterop.cs.
+//
+// Two rendering paths:
+//   GL (GPU)    — Emscripten GL.createContext → GRContext → SKSurface on framebuffer. Zero copy.
+//   Raster (CPU)— 2D context + putImageData from pinned byte[] buffer.
+//
+// Export-friendly: designed so this could be contributed back as SkiaSharp.Views.Web.
+
+// --- Emscripten aliases (resolved at runtime, not import-time) ---
+function getGL() {
+    // The Emscripten GL object is exposed on globalThis.SkiaSharpGL by the native
+    // InterceptBrowserObjects() call (C#), linked via --js-library SkiaSharpInterop.js.
+    // Do NOT probe Module.GL / getDotnetRuntime().Module.GL: GL is not in
+    // EXPORTED_RUNTIME_METHODS, and accessing it ABORTS the .NET WASM runtime.
+    return globalThis.SkiaSharpGL || null;
+}
+function getModule() {
+    return globalThis.SkiaSharpModule || null;
+}
+function getGLctx() {
+    const GL = getGL();
+    if (!GL) return null;
+    return (GL.currentContext && GL.currentContext.GLctx) || (typeof GLctx !== 'undefined' ? GLctx : null);
+}
+
+// --- Per-canvas view state (mirrors SKHtmlCanvas class) ---
+const views = new Map(); // elementId → SKHtmlCanvasView
+
+class SKHtmlCanvasView {
+    constructor(htmlCanvas, renderFrameCallback) {
+        this.htmlCanvas = htmlCanvas;
+        this.renderFrameCallback = renderFrameCallback; // C# [JSExport] function
+        this.glInfo = null;        // { context, fboId, stencil, sample, depth } or null for raster
+        this.renderLoopEnabled = false;
+        this.renderLoopRequest = 0;
+    }
+
+    deinit() {
+        this.setEnableRenderLoop(false);
+    }
+
+    requestAnimationFrame(renderLoop, width, height) {
+        if (renderLoop !== undefined && this.renderLoopEnabled !== renderLoop)
+            this.setEnableRenderLoop(renderLoop);
+
+        if (width && height) {
+            this.htmlCanvas.width = width;
+            this.htmlCanvas.height = height;
+        }
+
+        if (this.renderLoopRequest !== 0)
+            return;
+
+        this.renderLoopRequest = window.requestAnimationFrame(() => {
+            if (this.glInfo) {
+                const GL = getGL();
+                if (GL) GL.makeContextCurrent(this.glInfo.context);
+            }
+
+            if (this.renderFrameCallback) {
+                this.renderFrameCallback();
+            }
+            this.renderLoopRequest = 0;
+
+            if (this.renderLoopEnabled)
+                this.requestAnimationFrame();
+        });
+    }
+
+    setEnableRenderLoop(enable) {
+        this.renderLoopEnabled = enable;
+        if (enable) {
+            this.requestAnimationFrame();
+        } else if (this.renderLoopRequest !== 0) {
+            window.cancelAnimationFrame(this.renderLoopRequest);
+            this.renderLoopRequest = 0;
+        }
+    }
+
+    // Raster path: blit byte[] to 2D context (pure WASM passes array, not pointer)
+    putImageData(pixels, width, height) {
+        if (this.glInfo || !pixels || width <= 0 || height <= 0)
+            return false;
+
+        const ctx2d = this.htmlCanvas.getContext('2d');
+        if (!ctx2d) {
+            console.error('Failed to obtain 2D canvas context.');
+            return false;
+        }
+
+        this.htmlCanvas.width = width;
+        this.htmlCanvas.height = height;
+
+        const buffer = new Uint8ClampedArray(pixels.buffer || pixels, 0, width * height * 4);
+        const imageData = new ImageData(buffer, width, height);
+        ctx2d.putImageData(imageData, 0, 0);
+        return true;
+    }
+}
+
+// --- WebGL context creation (mirrors SKHtmlCanvas.createWebGLContext) ---
+function createWebGLContext(htmlCanvas) {
+    const contextAttributes = {
+        alpha: 1,
+        depth: 1,
+        stencil: 8,
+        antialias: 1,
+        premultipliedAlpha: 1,
+        preserveDrawingBuffer: 0,
+        preferLowPowerToHighPerformance: 0,
+        failIfMajorPerformanceCaveat: 0,
+        majorVersion: 2,
+        minorVersion: 0,
+        enableExtensionsByDefault: 1,
+        explicitSwapControl: 0,
+        renderViaOffscreenBackBuffer: 0,
+    };
+
+    const GL = getGL();
+    if (!GL) {
+        console.error('Emscripten GL module not found. GPU rendering unavailable.');
+        return null;
+    }
+
+    let ctx = GL.createContext(htmlCanvas, contextAttributes);
+    if (!ctx && contextAttributes.majorVersion > 1) {
+        console.warn('Falling back to WebGL 1.0');
+        contextAttributes.majorVersion = 1;
+        contextAttributes.minorVersion = 0;
+        ctx = GL.createContext(htmlCanvas, contextAttributes);
+    }
+    return ctx;
+}
+
+// ============================================================================
+// Exported functions — called from C# via [JSImport]
+// ============================================================================
+
+/**
+ * Initialize a GPU (WebGL) canvas view. Returns GL info or null on failure.
+ * Mirrors SKHtmlCanvas.initGL.
+ */
+export function initGL(elementId, callback) {
+    const canvasEl = document.getElementById(elementId);
+    if (!canvasEl) {
+        console.error(`Canvas element "${elementId}" not found`);
+        return null;
+    }
+
+    const view = new SKHtmlCanvasView(canvasEl, callback);
+    views.set(elementId, view);
+
+    const ctx = createWebGLContext(canvasEl);
+    if (!ctx) {
+        console.error('Failed to create WebGL context');
+        return null;
+    }
+
+    const GL = getGL();
+    GL.makeContextCurrent(ctx);
+
+    const GLctx = getGLctx();
+    if (!GLctx) {
+        console.error('Failed to get current WebGL context');
+        return null;
+    }
+
+    const fbo = GLctx.getParameter(GLctx.FRAMEBUFFER_BINDING);
+    view.glInfo = {
+        context: ctx,
+        fboId: fbo ? fbo.id : 0,
+        stencil: GLctx.getParameter(GLctx.STENCIL_BITS),
+        sample: 0,
+        depth: GLctx.getParameter(GLctx.DEPTH_BITS),
+    };
+
+    console.log(`DrawnUI.Web GL init: fbo=${view.glInfo.fboId} stencil=${view.glInfo.stencil} depth=${view.glInfo.depth}`);
+    return view.glInfo;
+}
+
+/**
+ * Initialize a raster (CPU) canvas view. Returns true on success.
+ */
+export function initRaster(elementId, callback) {
+    const canvasEl = document.getElementById(elementId);
+    if (!canvasEl) {
+        console.error(`Canvas element "${elementId}" not found`);
+        return false;
+    }
+
+    const view = new SKHtmlCanvasView(canvasEl, callback);
+    views.set(elementId, view);
+    return true;
+}
+
+/** Deinitialize a canvas view. */
+export function deinit(elementId) {
+    const view = views.get(elementId);
+    if (!view) return;
+    view.deinit();
+    views.delete(elementId);
+}
+
+/** Request a frame render. Optionally set render loop + resize. */
+export function requestAnimationFrame(elementId, renderLoop, width, height) {
+    const view = views.get(elementId);
+    if (!view) return;
+    view.requestAnimationFrame(renderLoop, width, height);
+}
+
+/** Enable/disable continuous render loop. */
+export function setEnableRenderLoop(elementId, enable) {
+    const view = views.get(elementId);
+    if (!view) return;
+    view.setEnableRenderLoop(enable);
+}
+
+/** Raster path: blit pixel buffer to canvas via putImageData. */
+export function putImageData(elementId, pixels, width, height) {
+    const view = views.get(elementId);
+    if (!view) return;
+    view.putImageData(pixels, width, height);
+}
+
+// ============================================================================
+// Legacy compat — old initCanvas/getCanvasWidth etc. (used during bring-up)
+// ============================================================================
 
 let canvas = null;
 let ctx = null;
-let gl = null;
-let texture = null;
-let moduleExports = null;
 
-// Exported functions from C# will be set after module loads
-let onBrowserFrame = null;
-let onPointerDown = null;
-let onPointerMove = null;
-let onPointerUp = null;
-let onPointerCancel = null;
-let moduleOnWheel = null;
-let onCanvasResize = null;
-
-/**
- * Initialize the canvas and get its dimensions
- */
 export function initCanvas(targetWidth, targetHeight) {
     canvas = document.getElementById('drawnui-canvas');
     if (!canvas) {
         console.error('Canvas element with id "drawnui-canvas" not found');
         return;
     }
-
-    // Software rendering path: use 2D context for putImageData blits.
-    // (GPU/WebGL path will be wired separately via GRDirectContext later.)
-    ctx = canvas.getContext('2d', { alpha: false });
-
-    // Set up input handlers
+    // Do NOT acquire a 2D context here: a canvas can only ever hold ONE context
+    // type. Grabbing '2d' permanently blocks the WebGL (GPU) path. The raster
+    // fallback lazily acquires '2d' in putImageData only if GPU init fails.
     setupInputHandlers();
-
-    // Report initial size
     reportCanvasSize();
 }
 
-/**
- * Get the current canvas width in CSS pixels
- */
 export function getCanvasWidth() {
-    if (!canvas) return 0;
-    return canvas.clientWidth;
+    return canvas ? canvas.clientWidth : 0;
 }
 
-/**
- * Get the current canvas height in CSS pixels
- */
 export function getCanvasHeight() {
-    if (!canvas) return 0;
-    return canvas.clientHeight;
+    return canvas ? canvas.clientHeight : 0;
 }
 
-/**
- * Get device pixel ratio
- */
 export function getDevicePixelRatio() {
     return window.devicePixelRatio || 1;
 }
 
-/**
- * Request a single animation frame callback
- */
-export function requestAnimationFrame() {
+export function requestAnimationFrameLegacy() {
     window.requestAnimationFrame(handleFrame);
 }
 
-/**
- * Handle animation frame - call into C#
- */
 function handleFrame(timestamp) {
-    if (onBrowserFrame) {
-        onBrowserFrame(timestamp);
-    }
+    if (onBrowserFrame) onBrowserFrame(timestamp);
 }
 
-/**
- * Report canvas size to C#
- */
 function reportCanvasSize() {
     if (!canvas) return;
-
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
     const pixelRatio = getDevicePixelRatio();
-
-    // Resize canvas buffer to match display size
     canvas.width = Math.floor(width * pixelRatio);
     canvas.height = Math.floor(height * pixelRatio);
-
-    // Notify C# about resize
-    if (onCanvasResize) {
-        onCanvasResize(width, height, pixelRatio);
-    }
+    if (onCanvasResize) onCanvasResize(width, height, pixelRatio);
 }
 
-/**
- * Set up input event handlers
- */
 function setupInputHandlers() {
     if (!canvas) return;
-
-    // Pointer events
-    canvas.addEventListener('pointerdown', handlePointerDown);
-    canvas.addEventListener('pointermove', handlePointerMove);
-    canvas.addEventListener('pointerup', handlePointerUp);
-    canvas.addEventListener('pointercancel', handlePointerCancel);
-    canvas.addEventListener('wheel', handleWheel);
-
-    // Window resize
+    canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, e.clientX, e.clientY, e.button, e.buttons));
+    canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, e.clientX, e.clientY, e.buttons));
+    canvas.addEventListener('pointerup', e => onPointerUp?.(e.pointerId, e.clientX, e.clientY, e.button, e.buttons));
+    canvas.addEventListener('pointercancel', e => onPointerCancel?.(e.pointerId));
+    canvas.addEventListener('wheel', e => { e.preventDefault(); moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, e.clientX, e.clientY); }, { passive: false });
     window.addEventListener('resize', reportCanvasSize);
 }
 
-function handlePointerDown(e) {
-    if (onPointerDown) {
-        onPointerDown(e.pointerId, e.clientX, e.clientY, e.button, e.buttons);
-    }
-}
-
-function handlePointerMove(e) {
-    if (onPointerMove) {
-        onPointerMove(e.pointerId, e.clientX, e.clientY, e.buttons);
-    }
-}
-
-function handlePointerUp(e) {
-    if (onPointerUp) {
-        onPointerUp(e.pointerId, e.clientX, e.clientY, e.button, e.buttons);
-    }
-}
-
-function handlePointerCancel(e) {
-    if (onPointerCancel) {
-        onPointerCancel(e.pointerId);
-    }
-}
-
-function handleWheel(e) {
-    e.preventDefault();
-    if (moduleOnWheel) {
-        moduleOnWheel(e.deltaX, e.deltaY, e.deltaMode);
-    }
-}
-
 /**
- * Update canvas with PNG image data (software rendering path)
- */
-export function updateCanvasWithPng(pngBytes) {
-    if (!ctx) {
-        console.warn('2D context not available for PNG update');
-        return;
-    }
-
-    const blob = new Blob([pngBytes], { type: 'image/png' });
-    const url = URL.createObjectURL(blob);
-    const img = new Image();
-    
-    img.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        URL.revokeObjectURL(url);
-    };
-    
-    img.src = url;
-}
-
-/**
- * Blit pixel buffer to HTML canvas via putImageData.
- * Receives a byte array directly from C# (pure WASM runtime doesn't expose
- * HEAPU8 like Emscripten, so we pass the array instead of a pointer).
- */
-export function putImageData(pixels, width, height) {
-    if (!ctx) {
-        console.warn('2D context not available for putImageData');
-        return;
-    }
-    if (!pixels || width <= 0 || height <= 0)
-        return;
-
-    // make sure the canvas is scaled correctly for the drawing
-    canvas.width = width;
-    canvas.height = height;
-
-    // pixels is a Uint8Array from the marshaller; wrap into ImageData
-    const buffer = new Uint8ClampedArray(pixels.buffer || pixels, 0, width * height * 4);
-    const imageData = new ImageData(buffer, width, height);
-    ctx.putImageData(imageData, 0, 0);
-}
-
-/**
- * Get the Emscripten Module (SKHtmlCanvas.getModule pattern).
- * In pure .NET WASM the global may be named differently than in Blazor.
- * Try every known location until we find HEAPU8.
- */
-function getModule() {
-    // SkiaSharp may register its own module
-    const candidates = [
-        globalThis.SkiaSharpModule,
-        (typeof Module !== 'undefined') ? Module : null,
-        globalThis.Module,
-        globalThis.__dotnet_module,
-    ];
-    for (const m of candidates) {
-        if (m && m.HEAPU8) return m;
-    }
-    // Fall back: scan globalThis for any object with HEAPU8
-    for (const k of Object.keys(globalThis)) {
-        const v = globalThis[k];
-        if (v && typeof v === 'object' && v.HEAPU8) {
-            return v;
-        }
-    }
-    return null;
-}
-
-/**
- * Get WebGL texture ID for GPU rendering
- * Returns -1 if WebGL not available
- */
-export function getGlTextureId() {
-    if (!gl) return -1;
-
-    if (!texture) {
-        texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    }
-
-    // Return some identifier - in WebGL we can't get the actual numeric ID
-    // We'll use 1 as a placeholder
-    return texture ? 1 : -1;
-}
-
-/**
- * Get WebGL context handle
- * Returns 0 if WebGL not available
- */
-export function getGlContext() {
-    return gl ? 1 : 0;
-}
-
-/**
- * Store C# function references after module loads.
- * Called from main.js with the resolved assembly exports object.
+ * Wire C# [JSExport] callbacks (called from main.js, JS→JS, no marshaling).
  */
 export function setModuleExports(exports) {
     onBrowserFrame = exports.onBrowserFrame;
@@ -256,6 +294,13 @@ export function setModuleExports(exports) {
     onPointerCancel = exports.onPointerCancel;
     moduleOnWheel = exports.onWheel;
     onCanvasResize = exports.onCanvasResize;
-
-    console.log('DrawnUI: Module exports set up successfully');
+    console.log('DrawnUI.Web: Module exports set up');
 }
+
+let onBrowserFrame = null;
+let onPointerDown = null;
+let onPointerMove = null;
+let onPointerUp = null;
+let onPointerCancel = null;
+let moduleOnWheel = null;
+let onCanvasResize = null;

@@ -32,4 +32,9 @@
         </WasmExtraConfig>
     </ItemGroup>
 
+    <!-- ProjectReference does not auto-import a package's buildTransitive props, so import
+         it explicitly. NuGet consumers of DrawnUi.Web get this automatically. Single source
+         of truth for the GPU-enabling js-library link flag. -->
+    <Import Project="..\DrawnUi.Web\buildTransitive\DrawnUi.Web.props" />
+
 </Project>
