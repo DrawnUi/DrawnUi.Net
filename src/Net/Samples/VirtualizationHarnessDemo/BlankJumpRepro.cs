@@ -55,8 +55,26 @@ public static class BlankJumpRepro
 
     private static void Settle(ChatLikeScene scene, VirtualizationProbe probe)
     {
-        probe.SettleBackground();
-        scene.Host.AdvanceFrames(12, 16); // let the ordered scroll + draw catch up
+        // The jump is async: first wait for it to APPLY (loading flags set synchronously on trigger, cleared
+        // when the replace+scroll lands) — otherwise the pre-jump window already reads as "measured+visible"
+        // and we'd snapshot a half-applied frame.
+        for (int i = 0; i < 240 && (scene.IsLoadingJump || scene.IsLoadingOlder || scene.IsLoadingNewer); i++)
+        {
+            scene.Host.RenderFrame(16);
+            Thread.Sleep(4);
+        }
+
+        // Then settle until the (new) window is FULLY measured AND something is visible — not merely until
+        // the frontier stops advancing (a stalled-but-incomplete frontier reads as "stable"). Render keeps
+        // re-triggering background measurement.
+        for (int f = 0; f < 240; f++)
+        {
+            scene.Host.RenderFrame(16);
+            Thread.Sleep(4);
+            if (probe.Frontier >= probe.ItemsCount - 1 && probe.LastVisible >= 0)
+                break;
+        }
+        scene.Host.AdvanceFrames(6, 16);
     }
 
     private static void Report(ChatLikeScene scene, VirtualizationProbe probe, string label)

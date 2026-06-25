@@ -30,7 +30,7 @@
 </ItemGroup>
 
   <!-- Shared Pong game code (PongGame, AI, sprites, RescalingCanvas) -->
-  <Import Project="..\..\..\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
+    <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />

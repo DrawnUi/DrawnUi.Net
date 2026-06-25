@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <WasmBuildNative>true</WasmBuildNative>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- Use DRAWNUI_NET for non-Blazor base, WEB for Web-specific -->
+        <DefineConstants>$(DefineConstants);DRAWNUI_NET;WEB;NET;NET10</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="8.3.1.6-preview.2.1" />
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-preview.2.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.147.0-preview.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\DrawnUi\DrawnUi.Wasm.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <WasmExtraConfig Include="emcc_flags">
+            <Value>-s ERROR_ON_UNDEFINED_SYMBOLS=0 -s ALLOW_MEMORY_GROWTH=1</Value>
+        </WasmExtraConfig>
+    </ItemGroup>
+
+    <!-- ProjectReference does not auto-import a package's buildTransitive props, so import
+         it explicitly. NuGet consumers of DrawnUi.Web get this automatically. Single source
+         of truth for the GPU-enabling js-library link flag. -->
+    <Import Project="..\..\DrawnUi\buildTransitive\DrawnUi.Wasm.props" />
+
+</Project>

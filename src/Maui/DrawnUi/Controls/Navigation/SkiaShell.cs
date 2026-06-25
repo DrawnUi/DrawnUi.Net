@@ -2552,8 +2552,8 @@ namespace DrawnUi.Controls
 
         public virtual void OnLayoutInvalidated()
         {
-            TopInsets = Super.Screen.BottomInset;
-            ;
+            TopInsets = Super.Screen.BottomInset; //WTF is this???
+            
             BottomInsets = Super.Screen.BottomInset;
             StatusBarHeight = Super.StatusBarHeight;
 

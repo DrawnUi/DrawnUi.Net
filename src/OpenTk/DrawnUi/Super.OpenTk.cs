@@ -106,7 +106,14 @@ namespace DrawnUi.Draw
                 DrawnExtensions.StartupSettings.Logger?.Log(logLevel, message);
             }
 
-            Console.WriteLine(message);
+            if (logLevel == LogLevel.Error || logLevel == LogLevel.Critical)
+            {
+                Trace.TraceError(message);
+            }
+            else
+            {
+                Debug.WriteLine(message);
+            }
         }
 
         public static void Log(LogLevel level, string message, [CallerMemberName] string caller = null)

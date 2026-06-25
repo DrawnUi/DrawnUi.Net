@@ -39,8 +39,7 @@
   <!-- Strip PDB files from publish output -->
   <Target Name="ExcludePdbsFromPublish" AfterTargets="ComputeFilesToPublish">
     <ItemGroup>
-      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
-                             Condition="'%(Extension)' == '.pdb'" />
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb'" />
     </ItemGroup>
   </Target>
 
@@ -48,8 +47,7 @@
     <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj" />
   </ItemGroup>
 
-  <!-- Shared Pong game code (PongGame, AI, sprites, RescalingCanvas) -->
-  <Import Project="..\..\..\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
     <!-- Required for Linux publish to include native Skia runtime -->

@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿using Android.App;
+using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.OS;
@@ -158,11 +159,7 @@ public partial class Super
 
     private static EventHandler ExecAfterInit;
 
-    /// <summary>
-    /// ToDo resolve obsolete for android api 30 and later
-    /// </summary>
-    /// <param name="activity"></param>
-    public static void SetFullScreen(Android.App.Activity activity)
+    public static void AttachActivity(Android.App.Activity activity)
     {
         if (_insetsListener == null)
         {
@@ -171,17 +168,47 @@ public partial class Super
 
         if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
         {
+            var contentView = activity.FindViewById(Android.Resource.Id.Content);
+            if (contentView != null)
+                contentView.SetOnApplyWindowInsetsListener(_insetsListener);
+        }
+
+        if (DrawnExtensions.StartupSettings != null)
+        {
+            if (DrawnExtensions.StartupSettings.MobileIsFullscreen.HasValue && DrawnExtensions.StartupSettings.MobileIsFullscreen.Value)
+            {
+                Super.SetFullScreen(activity);
+            }
+
+            if (DrawnExtensions.StartupSettings.UseDesktopKeyboard)
+            {
+                KeyboardManager.AttachToKeyboard(activity);
+            }
+        }
+    }
+
+    /// <summary>
+    /// ToDo resolve obsolete for android api 30 and later
+    /// </summary>
+    /// <param name="activity"></param>
+    public static void SetFullScreen(Android.App.Activity activity)
+    {
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
+        {
             // https://stackoverflow.com/a/33355089/7149454
             var uiOptions = (int)activity.Window.DecorView.SystemUiVisibility;
             uiOptions |= (int)SystemUiFlags.LayoutStable;
             uiOptions |= (int)SystemUiFlags.LayoutFullscreen;
             activity.Window.DecorView.SystemUiVisibility = (StatusBarVisibility)uiOptions;
             activity.Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
-            var contentView = activity.FindViewById(Android.Resource.Id.Content);
-            if (contentView != null)
-                contentView.SetOnApplyWindowInsetsListener(_insetsListener);
+            //var contentView = activity.FindViewById(Android.Resource.Id.Content);
+            //if (contentView != null)
+            //    contentView.SetOnApplyWindowInsetsListener(_insetsListener);
+            isFullscreen = true;
         }
     }
+
+    private static bool isFullscreen = false;
 
     public static void SetStatusBarColor(Color color)
     {
@@ -207,22 +234,27 @@ public partial class Super
             if (_returnInsets == null)
             {
                 Super.Screen.TopInset = insets.SystemWindowInsetTop / Super.Screen.Density;
-
-                bool invalidate = false;
-
-                if (Super.StatusBarHeight != Super.Screen.TopInset)
-                    invalidate = true;
+                Super.Screen.BottomInset= insets.StableInsetBottom / Super.Screen.Density;
+                Super.Screen.LeftInset = insets.StableInsetLeft / Super.Screen.Density;
+                Super.Screen.RightInset = insets.StableInsetRight / Super.Screen.Density;
 
                 Super.StatusBarHeight = Super.Screen.TopInset;
 
                 InsetsChanged?.Invoke(this, null);
 
-                _returnInsets = insets.ReplaceSystemWindowInsets(
-                    insets.SystemWindowInsetLeft,
-                    0,
-                    insets.SystemWindowInsetRight,
-                    insets.SystemWindowInsetBottom
-                );
+                if (isFullscreen) //our android fullscreen
+                {
+                    _returnInsets = insets.ReplaceSystemWindowInsets(
+                        insets.SystemWindowInsetLeft,
+                        0,
+                        insets.SystemWindowInsetRight,
+                        insets.SystemWindowInsetBottom //todo would be breaking now to put 0?..
+                    );
+                }
+                else
+                {
+                    _returnInsets = insets;
+                }
             }
 
             return _returnInsets;

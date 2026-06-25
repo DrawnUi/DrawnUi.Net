@@ -2,6 +2,9 @@ using DrawnUi.Testing;
 
 // Repro for the reported blank-screen-after-second-jump bug (memo on vs off). Runs first, then returns.
 VirtualizationHarnessDemo.BlankJumpRepro.Run();
+VirtualizationHarnessDemo.LoadMoreSpinnerRepro.Run();
+VirtualizationHarnessDemo.JumpReleaseRepro.Run();
+VirtualizationHarnessDemo.AssetResolveRepro.Run();
 return;
 
 // Headless reconstruction of LoadMoreRepro (static 1000 items, Managed planes).
