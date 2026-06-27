@@ -11,6 +11,7 @@ Use this page first when you need to decide which package to install and which r
 | MAUI (Android/iOS/MacCatalyst/Windows) | `DrawnUi.Maui` | You are building a native cross-platform app | App UI, gestures, animation-heavy native experiences |
 | Blazor WebAssembly | `DrawnUi.Blazor.Wasm` | DrawnUI should render locally in the browser | Canvas-like browser UI, high-fps, local responsiveness, animation-heavy, web surfaces |
 | Blazor Server | `DrawnUi.Blazor.Server` | DrawnUI should be hosted in a Blazor Server or `InteractiveServer` app | Event-driven widgets, low-fps, dashboards, mixed Razor + DrawnUI pages |
+| Pure WebAssembly | `DrawnUi.Wasm` | You want a standalone fully drawn web app with no Blazor | Games, tools, full-canvas web surfaces; smallest WASM payload |
 | OpenTK (Windows/Linux) | `DrawnUi.OpenTk.Game` | You need fast and small-sized desktop app/game | create from scratch or overlay drawn layouts on top of your OpenGL window |
 | Platform-agnostic .NET | `DrawnUi.Net` | You need DrawnUI without a framework-specific UI host | Headless rendering, console app, server-side, image/PDF generation, harnesses, shared-logic debugging |
 
@@ -55,6 +56,29 @@ Start here:
 - [Blazor](blazor/index.md)
 - [Blazor Packages](blazor/packages.md)
 - [Blazor FAQ](blazor/faq.md)
+
+## DrawnUi.Wasm (Pure WebAssembly)
+
+Install:
+
+```bash
+dotnet add package DrawnUi.Wasm
+```
+
+Choose `DrawnUi.Wasm` when you want DrawnUI to run in the browser as a standalone pure-WebAssembly app — no Blazor, no Razor, only `[JSImport]`/`[JSExport]` interop. DrawnUI owns an HTML `<canvas>` and renders to it via WebGL (with raster fallback).
+
+Use it for:
+
+- standalone fully drawn web apps and games
+- full-canvas web surfaces without the Blazor component model
+- the smallest WASM payload for a single-canvas app
+
+Prefer `DrawnUi.Blazor.Wasm` instead when DrawnUI should be a `Canvas` component inside a Blazor app alongside Razor UI.
+
+Start here:
+
+- [DrawnUi.Wasm](web/index.md)
+- [Getting Started (DrawnUi.Wasm)](web/getting-started.md)
 
 ## OpenTK (Windows / Linux)
 
@@ -105,4 +129,4 @@ Start here:
 
 ## More targets coming
 
-The DrawnUI umbrella is expanding and your PRs are welcome. Current docs cover MAUI, Blazor, DrawnUi.Net, and OpenTK, while future platform targets can slot into the same package-and-host model.
+The DrawnUI umbrella is expanding and your PRs are welcome. Current docs cover MAUI, Blazor, DrawnUi.Wasm, DrawnUi.Net, and OpenTK, while future platform targets can slot into the same package-and-host model.

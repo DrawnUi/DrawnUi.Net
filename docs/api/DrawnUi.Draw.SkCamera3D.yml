@@ -23,11 +23,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkCamera3D
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -60,11 +60,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -89,11 +89,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: fLocation
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -116,11 +116,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: fAxis
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -143,11 +143,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: fZenith
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -170,11 +170,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: fObserver
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -197,11 +197,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DoUpdate
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -223,11 +223,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 66
   assemblies:
   - DrawnUi.Maui
@@ -249,11 +249,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reset
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 73
   assemblies:
   - DrawnUi.Maui
@@ -275,11 +275,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PatchToMatrix
-    path: ../src/Shared/Internals/Helpers/3D/SkCamera3D.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/SkCamera3D.cs
     startLine: 126
   assemblies:
   - DrawnUi.Maui

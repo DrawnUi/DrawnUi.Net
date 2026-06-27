@@ -1,0 +1,1735 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.DomNode
+  commentId: T:DrawnUi.Draw.DomNode
+  id: DomNode
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.DomNode.AbsoluteRect
+  - DrawnUi.Draw.DomNode.AccessibilityCanInteract
+  - DrawnUi.Draw.DomNode.AccessibilityHint
+  - DrawnUi.Draw.DomNode.AccessibilityIsPressed
+  - DrawnUi.Draw.DomNode.AccessibilityLabel
+  - DrawnUi.Draw.DomNode.AccessibilityRole
+  - DrawnUi.Draw.DomNode.CanDraw
+  - DrawnUi.Draw.DomNode.Children
+  - DrawnUi.Draw.DomNode.ControlType
+  - DrawnUi.Draw.DomNode.DumpTree(System.Int32)
+  - DrawnUi.Draw.DomNode.HasTransform
+  - DrawnUi.Draw.DomNode.IsVisible
+  - DrawnUi.Draw.DomNode.LocalRect
+  - DrawnUi.Draw.DomNode.Tag
+  - DrawnUi.Draw.DomNode.Text
+  - DrawnUi.Draw.DomNode.ToString
+  langs:
+  - csharp
+  - vb
+  name: DomNode
+  nameWithType: DomNode
+  fullName: DrawnUi.Draw.DomNode
+  type: Class
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: DomNode
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 8
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Represents a node in the inspected DOM tree with absolute coordinates
+  example: []
+  syntax:
+    content: public class DomNode
+    content.vb: Public Class DomNode
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.DumpDom
+  - DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindButtonByText(System.String,System.Boolean)
+  - DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindByTag(System.String)
+  - DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindByType``1
+  - DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindInteractive
+  - DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindNodes(System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  - DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.GetCenter
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.DomNode.ControlType
+  commentId: P:DrawnUi.Draw.DomNode.ControlType
+  id: ControlType
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: ControlType
+  nameWithType: DomNode.ControlType
+  fullName: DrawnUi.Draw.DomNode.ControlType
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ControlType
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 10
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string ControlType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ControlType As String
+  overload: DrawnUi.Draw.DomNode.ControlType*
+- uid: DrawnUi.Draw.DomNode.Tag
+  commentId: P:DrawnUi.Draw.DomNode.Tag
+  id: Tag
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: Tag
+  nameWithType: DomNode.Tag
+  fullName: DrawnUi.Draw.DomNode.Tag
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Tag
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string? Tag { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Tag As String
+  overload: DrawnUi.Draw.DomNode.Tag*
+- uid: DrawnUi.Draw.DomNode.Text
+  commentId: P:DrawnUi.Draw.DomNode.Text
+  id: Text
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: Text
+  nameWithType: DomNode.Text
+  fullName: DrawnUi.Draw.DomNode.Text
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Text
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 12
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string? Text { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Text As String
+  overload: DrawnUi.Draw.DomNode.Text*
+- uid: DrawnUi.Draw.DomNode.IsVisible
+  commentId: P:DrawnUi.Draw.DomNode.IsVisible
+  id: IsVisible
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: IsVisible
+  nameWithType: DomNode.IsVisible
+  fullName: DrawnUi.Draw.DomNode.IsVisible
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IsVisible
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public bool IsVisible { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsVisible As Boolean
+  overload: DrawnUi.Draw.DomNode.IsVisible*
+- uid: DrawnUi.Draw.DomNode.CanDraw
+  commentId: P:DrawnUi.Draw.DomNode.CanDraw
+  id: CanDraw
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: CanDraw
+  nameWithType: DomNode.CanDraw
+  fullName: DrawnUi.Draw.DomNode.CanDraw
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: CanDraw
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 14
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public bool CanDraw { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property CanDraw As Boolean
+  overload: DrawnUi.Draw.DomNode.CanDraw*
+- uid: DrawnUi.Draw.DomNode.AbsoluteRect
+  commentId: P:DrawnUi.Draw.DomNode.AbsoluteRect
+  id: AbsoluteRect
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: AbsoluteRect
+  nameWithType: DomNode.AbsoluteRect
+  fullName: DrawnUi.Draw.DomNode.AbsoluteRect
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AbsoluteRect
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Absolute position and size in canvas/screen coordinates
+  example: []
+  syntax:
+    content: public SKRect AbsoluteRect { get; set; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKRect
+    content.vb: Public Property AbsoluteRect As SKRect
+  overload: DrawnUi.Draw.DomNode.AbsoluteRect*
+- uid: DrawnUi.Draw.DomNode.LocalRect
+  commentId: P:DrawnUi.Draw.DomNode.LocalRect
+  id: LocalRect
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: LocalRect
+  nameWithType: DomNode.LocalRect
+  fullName: DrawnUi.Draw.DomNode.LocalRect
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LocalRect
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 24
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Local position and size within parent
+  example: []
+  syntax:
+    content: public SKRect LocalRect { get; set; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKRect
+    content.vb: Public Property LocalRect As SKRect
+  overload: DrawnUi.Draw.DomNode.LocalRect*
+- uid: DrawnUi.Draw.DomNode.AccessibilityRole
+  commentId: P:DrawnUi.Draw.DomNode.AccessibilityRole
+  id: AccessibilityRole
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityRole
+  nameWithType: DomNode.AccessibilityRole
+  fullName: DrawnUi.Draw.DomNode.AccessibilityRole
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityRole
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 29
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Accessibility information
+  example: []
+  syntax:
+    content: public string? AccessibilityRole { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property AccessibilityRole As String
+  overload: DrawnUi.Draw.DomNode.AccessibilityRole*
+- uid: DrawnUi.Draw.DomNode.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.DomNode.AccessibilityLabel
+  id: AccessibilityLabel
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityLabel
+  nameWithType: DomNode.AccessibilityLabel
+  fullName: DrawnUi.Draw.DomNode.AccessibilityLabel
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityLabel
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 30
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string? AccessibilityLabel { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property AccessibilityLabel As String
+  overload: DrawnUi.Draw.DomNode.AccessibilityLabel*
+- uid: DrawnUi.Draw.DomNode.AccessibilityHint
+  commentId: P:DrawnUi.Draw.DomNode.AccessibilityHint
+  id: AccessibilityHint
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityHint
+  nameWithType: DomNode.AccessibilityHint
+  fullName: DrawnUi.Draw.DomNode.AccessibilityHint
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityHint
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 31
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string? AccessibilityHint { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property AccessibilityHint As String
+  overload: DrawnUi.Draw.DomNode.AccessibilityHint*
+- uid: DrawnUi.Draw.DomNode.AccessibilityIsPressed
+  commentId: P:DrawnUi.Draw.DomNode.AccessibilityIsPressed
+  id: AccessibilityIsPressed
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityIsPressed
+  nameWithType: DomNode.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.DomNode.AccessibilityIsPressed
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityIsPressed
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 32
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public bool? AccessibilityIsPressed { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Boolean}
+    content.vb: Public Property AccessibilityIsPressed As Boolean?
+  overload: DrawnUi.Draw.DomNode.AccessibilityIsPressed*
+- uid: DrawnUi.Draw.DomNode.AccessibilityCanInteract
+  commentId: P:DrawnUi.Draw.DomNode.AccessibilityCanInteract
+  id: AccessibilityCanInteract
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityCanInteract
+  nameWithType: DomNode.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.DomNode.AccessibilityCanInteract
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AccessibilityCanInteract
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 33
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public bool? AccessibilityCanInteract { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Boolean}
+    content.vb: Public Property AccessibilityCanInteract As Boolean?
+  overload: DrawnUi.Draw.DomNode.AccessibilityCanInteract*
+- uid: DrawnUi.Draw.DomNode.HasTransform
+  commentId: P:DrawnUi.Draw.DomNode.HasTransform
+  id: HasTransform
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: HasTransform
+  nameWithType: DomNode.HasTransform
+  fullName: DrawnUi.Draw.DomNode.HasTransform
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: HasTransform
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 38
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Whether this control has a RenderTransformMatrix applied
+  example: []
+  syntax:
+    content: public bool HasTransform { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property HasTransform As Boolean
+  overload: DrawnUi.Draw.DomNode.HasTransform*
+- uid: DrawnUi.Draw.DomNode.Children
+  commentId: P:DrawnUi.Draw.DomNode.Children
+  id: Children
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: Children
+  nameWithType: DomNode.Children
+  fullName: DrawnUi.Draw.DomNode.Children
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Children
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 43
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Child nodes
+  example: []
+  syntax:
+    content: public List<DomNode> Children { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+    content.vb: Public Property Children As List(Of DomNode)
+  overload: DrawnUi.Draw.DomNode.Children*
+- uid: DrawnUi.Draw.DomNode.ToString
+  commentId: M:DrawnUi.Draw.DomNode.ToString
+  id: ToString
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: DomNode.ToString()
+  fullName: DrawnUi.Draw.DomNode.ToString()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ToString
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: DrawnUi.Draw.DomNode.ToString*
+- uid: DrawnUi.Draw.DomNode.DumpTree(System.Int32)
+  commentId: M:DrawnUi.Draw.DomNode.DumpTree(System.Int32)
+  id: DumpTree(System.Int32)
+  parent: DrawnUi.Draw.DomNode
+  langs:
+  - csharp
+  - vb
+  name: DumpTree(int)
+  nameWithType: DomNode.DumpTree(int)
+  fullName: DrawnUi.Draw.DomNode.DumpTree(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: DumpTree
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 62
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Returns a hierarchical string representation of the subtree
+  example: []
+  syntax:
+    content: public string DumpTree(int indent = 0)
+    parameters:
+    - id: indent
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Function DumpTree(indent As Integer = 0) As String
+  overload: DrawnUi.Draw.DomNode.DumpTree*
+  nameWithType.vb: DomNode.DumpTree(Integer)
+  fullName.vb: DrawnUi.Draw.DomNode.DumpTree(Integer)
+  name.vb: DumpTree(Integer)
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.DumpDom
+  commentId: M:DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_DumpDom_DrawnUi_Draw_DomNode_
+  name: DumpDom(DomNode)
+  nameWithType: FluentExtensions.DumpDom(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+    name: DumpDom
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_DumpDom_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+    name: DumpDom
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_DumpDom_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindButtonByText(System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindButtonByText_DrawnUi_Draw_DomNode_System_String_System_Boolean_
+  name: FindButtonByText(DomNode, string, bool)
+  nameWithType: FluentExtensions.FindButtonByText(DomNode, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode, string, bool)
+  nameWithType.vb: FluentExtensions.FindButtonByText(DomNode, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode, String, Boolean)
+  name.vb: FindButtonByText(DomNode, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+    name: FindButtonByText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindButtonByText_DrawnUi_Draw_DomNode_System_String_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+    name: FindButtonByText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindButtonByText_DrawnUi_Draw_DomNode_System_String_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindByTag(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByTag_DrawnUi_Draw_DomNode_System_String_
+  name: FindByTag(DomNode, string)
+  nameWithType: FluentExtensions.FindByTag(DomNode, string)
+  fullName: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode, string)
+  nameWithType.vb: FluentExtensions.FindByTag(DomNode, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode, String)
+  name.vb: FindByTag(DomNode, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+    name: FindByTag
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByTag_DrawnUi_Draw_DomNode_System_String_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+    name: FindByTag
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByTag_DrawnUi_Draw_DomNode_System_String_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindByType``1
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByType__1_DrawnUi_Draw_DomNode_
+  name: FindByType<T>(DomNode)
+  nameWithType: FluentExtensions.FindByType<T>(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.FindByType<T>(DrawnUi.Draw.DomNode)
+  nameWithType.vb: FluentExtensions.FindByType(Of T)(DomNode)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindByType(Of T)(DrawnUi.Draw.DomNode)
+  name.vb: FindByType(Of T)(DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+    name: FindByType
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByType__1_DrawnUi_Draw_DomNode_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+    name: FindByType
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByType__1_DrawnUi_Draw_DomNode_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindInteractive
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindInteractive_DrawnUi_Draw_DomNode_
+  name: FindInteractive(DomNode)
+  nameWithType: FluentExtensions.FindInteractive(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+    name: FindInteractive
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindInteractive_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+    name: FindInteractive
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindInteractive_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.FindNodes(System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindNodes_DrawnUi_Draw_DomNode_System_Func_DrawnUi_Draw_DomNode_System_Boolean__
+  name: FindNodes(DomNode, Func<DomNode, bool>)
+  nameWithType: FluentExtensions.FindNodes(DomNode, Func<DomNode, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode, System.Func<DrawnUi.Draw.DomNode, bool>)
+  nameWithType.vb: FluentExtensions.FindNodes(DomNode, Func(Of DomNode, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode, System.Func(Of DrawnUi.Draw.DomNode, Boolean))
+  name.vb: FindNodes(DomNode, Func(Of DomNode, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+    name: FindNodes
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindNodes_DrawnUi_Draw_DomNode_System_Func_DrawnUi_Draw_DomNode_System_Boolean__
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+    name: FindNodes
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindNodes_DrawnUi_Draw_DomNode_System_Func_DrawnUi_Draw_DomNode_System_Boolean__
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.DomNode.DrawnUi.Draw.FluentExtensions.GetCenter
+  commentId: M:DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetCenter_DrawnUi_Draw_DomNode_
+  name: GetCenter(DomNode)
+  nameWithType: FluentExtensions.GetCenter(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+    name: GetCenter
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetCenter_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+    name: GetCenter
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetCenter_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_DumpDom_DrawnUi_Draw_DomNode_
+  name: DumpDom(DomNode)
+  nameWithType: FluentExtensions.DumpDom(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+    name: DumpDom
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_DumpDom_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+    name: DumpDom
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_DumpDom_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions
+  commentId: T:DrawnUi.Draw.FluentExtensions
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FluentExtensions.html
+  name: FluentExtensions
+  nameWithType: FluentExtensions
+  fullName: DrawnUi.Draw.FluentExtensions
+- uid: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindButtonByText_DrawnUi_Draw_DomNode_System_String_System_Boolean_
+  name: FindButtonByText(DomNode, string, bool)
+  nameWithType: FluentExtensions.FindButtonByText(DomNode, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode, string, bool)
+  nameWithType.vb: FluentExtensions.FindButtonByText(DomNode, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode, String, Boolean)
+  name.vb: FindButtonByText(DomNode, String, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+    name: FindButtonByText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindButtonByText_DrawnUi_Draw_DomNode_System_String_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+    name: FindButtonByText
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindButtonByText_DrawnUi_Draw_DomNode_System_String_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByTag_DrawnUi_Draw_DomNode_System_String_
+  name: FindByTag(DomNode, string)
+  nameWithType: FluentExtensions.FindByTag(DomNode, string)
+  fullName: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode, string)
+  nameWithType.vb: FluentExtensions.FindByTag(DomNode, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode, String)
+  name.vb: FindByTag(DomNode, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+    name: FindByTag
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByTag_DrawnUi_Draw_DomNode_System_String_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+    name: FindByTag
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByTag_DrawnUi_Draw_DomNode_System_String_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByType__1_DrawnUi_Draw_DomNode_
+  name: FindByType<T>(DomNode)
+  nameWithType: FluentExtensions.FindByType<T>(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.FindByType<T>(DrawnUi.Draw.DomNode)
+  nameWithType.vb: FluentExtensions.FindByType(Of T)(DomNode)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindByType(Of T)(DrawnUi.Draw.DomNode)
+  name.vb: FindByType(Of T)(DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+    name: FindByType
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByType__1_DrawnUi_Draw_DomNode_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+    name: FindByType
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByType__1_DrawnUi_Draw_DomNode_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindInteractive_DrawnUi_Draw_DomNode_
+  name: FindInteractive(DomNode)
+  nameWithType: FluentExtensions.FindInteractive(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+    name: FindInteractive
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindInteractive_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+    name: FindInteractive
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindInteractive_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindNodes_DrawnUi_Draw_DomNode_System_Func_DrawnUi_Draw_DomNode_System_Boolean__
+  name: FindNodes(DomNode, Func<DomNode, bool>)
+  nameWithType: FluentExtensions.FindNodes(DomNode, Func<DomNode, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode, System.Func<DrawnUi.Draw.DomNode, bool>)
+  nameWithType.vb: FluentExtensions.FindNodes(DomNode, Func(Of DomNode, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode, System.Func(Of DrawnUi.Draw.DomNode, Boolean))
+  name.vb: FindNodes(DomNode, Func(Of DomNode, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+    name: FindNodes
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindNodes_DrawnUi_Draw_DomNode_System_Func_DrawnUi_Draw_DomNode_System_Boolean__
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+    name: FindNodes
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindNodes_DrawnUi_Draw_DomNode_System_Func_DrawnUi_Draw_DomNode_System_Boolean__
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetCenter_DrawnUi_Draw_DomNode_
+  name: GetCenter(DomNode)
+  nameWithType: FluentExtensions.GetCenter(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+    name: GetCenter
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetCenter_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+    name: GetCenter
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetCenter_DrawnUi_Draw_DomNode_
+  - name: (
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.DomNode.ControlType*
+  commentId: Overload:DrawnUi.Draw.DomNode.ControlType
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_ControlType
+  name: ControlType
+  nameWithType: DomNode.ControlType
+  fullName: DrawnUi.Draw.DomNode.ControlType
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: DrawnUi.Draw.DomNode.Tag*
+  commentId: Overload:DrawnUi.Draw.DomNode.Tag
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_Tag
+  name: Tag
+  nameWithType: DomNode.Tag
+  fullName: DrawnUi.Draw.DomNode.Tag
+- uid: DrawnUi.Draw.DomNode.Text*
+  commentId: Overload:DrawnUi.Draw.DomNode.Text
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_Text
+  name: Text
+  nameWithType: DomNode.Text
+  fullName: DrawnUi.Draw.DomNode.Text
+- uid: DrawnUi.Draw.DomNode.IsVisible*
+  commentId: Overload:DrawnUi.Draw.DomNode.IsVisible
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_IsVisible
+  name: IsVisible
+  nameWithType: DomNode.IsVisible
+  fullName: DrawnUi.Draw.DomNode.IsVisible
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Draw.DomNode.CanDraw*
+  commentId: Overload:DrawnUi.Draw.DomNode.CanDraw
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_CanDraw
+  name: CanDraw
+  nameWithType: DomNode.CanDraw
+  fullName: DrawnUi.Draw.DomNode.CanDraw
+- uid: DrawnUi.Draw.DomNode.AbsoluteRect*
+  commentId: Overload:DrawnUi.Draw.DomNode.AbsoluteRect
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_AbsoluteRect
+  name: AbsoluteRect
+  nameWithType: DomNode.AbsoluteRect
+  fullName: DrawnUi.Draw.DomNode.AbsoluteRect
+- uid: SkiaSharp.SKRect
+  commentId: T:SkiaSharp.SKRect
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  name: SKRect
+  nameWithType: SKRect
+  fullName: SkiaSharp.SKRect
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Draw.DomNode.LocalRect*
+  commentId: Overload:DrawnUi.Draw.DomNode.LocalRect
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_LocalRect
+  name: LocalRect
+  nameWithType: DomNode.LocalRect
+  fullName: DrawnUi.Draw.DomNode.LocalRect
+- uid: DrawnUi.Draw.DomNode.AccessibilityRole*
+  commentId: Overload:DrawnUi.Draw.DomNode.AccessibilityRole
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_AccessibilityRole
+  name: AccessibilityRole
+  nameWithType: DomNode.AccessibilityRole
+  fullName: DrawnUi.Draw.DomNode.AccessibilityRole
+- uid: DrawnUi.Draw.DomNode.AccessibilityLabel*
+  commentId: Overload:DrawnUi.Draw.DomNode.AccessibilityLabel
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: DomNode.AccessibilityLabel
+  fullName: DrawnUi.Draw.DomNode.AccessibilityLabel
+- uid: DrawnUi.Draw.DomNode.AccessibilityHint*
+  commentId: Overload:DrawnUi.Draw.DomNode.AccessibilityHint
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: DomNode.AccessibilityHint
+  fullName: DrawnUi.Draw.DomNode.AccessibilityHint
+- uid: DrawnUi.Draw.DomNode.AccessibilityIsPressed*
+  commentId: Overload:DrawnUi.Draw.DomNode.AccessibilityIsPressed
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_AccessibilityIsPressed
+  name: AccessibilityIsPressed
+  nameWithType: DomNode.AccessibilityIsPressed
+  fullName: DrawnUi.Draw.DomNode.AccessibilityIsPressed
+- uid: System.Nullable{System.Boolean}
+  commentId: T:System.Nullable{System.Boolean}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool?
+  nameWithType: bool?
+  fullName: bool?
+  nameWithType.vb: Boolean?
+  fullName.vb: Boolean?
+  name.vb: Boolean?
+  spec.csharp:
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  spec.vb:
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.DomNode.AccessibilityCanInteract*
+  commentId: Overload:DrawnUi.Draw.DomNode.AccessibilityCanInteract
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_AccessibilityCanInteract
+  name: AccessibilityCanInteract
+  nameWithType: DomNode.AccessibilityCanInteract
+  fullName: DrawnUi.Draw.DomNode.AccessibilityCanInteract
+- uid: DrawnUi.Draw.DomNode.HasTransform*
+  commentId: Overload:DrawnUi.Draw.DomNode.HasTransform
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_HasTransform
+  name: HasTransform
+  nameWithType: DomNode.HasTransform
+  fullName: DrawnUi.Draw.DomNode.HasTransform
+- uid: DrawnUi.Draw.DomNode.Children*
+  commentId: Overload:DrawnUi.Draw.DomNode.Children
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_Children
+  name: Children
+  nameWithType: DomNode.Children
+  fullName: DrawnUi.Draw.DomNode.Children
+- uid: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+  commentId: T:System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<DomNode>
+  nameWithType: List<DomNode>
+  fullName: System.Collections.Generic.List<DrawnUi.Draw.DomNode>
+  nameWithType.vb: List(Of DomNode)
+  fullName.vb: System.Collections.Generic.List(Of DrawnUi.Draw.DomNode)
+  name.vb: List(Of DomNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.DomNode.ToString*
+  commentId: Overload:DrawnUi.Draw.DomNode.ToString
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_ToString
+  name: ToString
+  nameWithType: DomNode.ToString
+  fullName: DrawnUi.Draw.DomNode.ToString
+- uid: DrawnUi.Draw.DomNode.DumpTree*
+  commentId: Overload:DrawnUi.Draw.DomNode.DumpTree
+  href: DrawnUi.Draw.DomNode.html#DrawnUi_Draw_DomNode_DumpTree_System_Int32_
+  name: DumpTree
+  nameWithType: DomNode.DumpTree
+  fullName: DrawnUi.Draw.DomNode.DumpTree
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

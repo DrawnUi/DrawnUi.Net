@@ -16,11 +16,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animations/ExecuteOnTick.cs
+      path: src/Shared/DrawnUi/Features/Animations/ExecuteOnTick.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionOnTickAnimator
-    path: ../src/Shared/Features/Animations/ExecuteOnTick.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/ExecuteOnTick.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -82,11 +82,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/ExecuteOnTick.cs
+      path: src/Shared/DrawnUi/Features/Animations/ExecuteOnTick.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TickFrame
-    path: ../src/Shared/Features/Animations/ExecuteOnTick.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/ExecuteOnTick.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -121,11 +121,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animations/ExecuteOnTick.cs
+      path: src/Shared/DrawnUi/Features/Animations/ExecuteOnTick.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animations/ExecuteOnTick.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/ExecuteOnTick.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui

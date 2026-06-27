@@ -8,6 +8,7 @@ items:
   - DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKPicture,SkiaSharp.SKRect,SkiaSharp.SKRect)
   - DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKSurface,SkiaSharp.SKRect,SkiaSharp.SKRect)
   - DrawnUi.Draw.CachedObject.Bounds
+  - DrawnUi.Draw.CachedObject.CalculateDrawingOffset(SkiaSharp.SKRect)
   - DrawnUi.Draw.CachedObject.CalculatePositionOffset(SkiaSharp.SKPoint)
   - DrawnUi.Draw.CachedObject.Children
   - DrawnUi.Draw.CachedObject.Dispose
@@ -38,11 +39,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CachedObject
-    path: ../src/Shared/Internals/Models/CachedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -78,11 +79,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateInputCoords
-    path: ../src/Shared/Internals/Models/CachedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -109,11 +110,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculatePositionOffset
-    path: ../src/Shared/Internals/Models/CachedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -140,11 +141,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Test
-    path: ../src/Shared/Internals/Models/CachedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -158,6 +159,41 @@ items:
       type: SkiaSharp.SKPoint
     content.vb: Public Function Test(drawingRect As SKRect) As SKPoint
   overload: DrawnUi.Draw.CachedObject.Test*
+- uid: DrawnUi.Draw.CachedObject.CalculateDrawingOffset(SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.CachedObject.CalculateDrawingOffset(SkiaSharp.SKRect)
+  id: CalculateDrawingOffset(SkiaSharp.SKRect)
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: CalculateDrawingOffset(SKRect)
+  nameWithType: CachedObject.CalculateDrawingOffset(SKRect)
+  fullName: DrawnUi.Draw.CachedObject.CalculateDrawingOffset(SkiaSharp.SKRect)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: CalculateDrawingOffset
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 39
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Calculate offset where cache should be drawn
+  example: []
+  syntax:
+    content: public SKPoint CalculateDrawingOffset(SKRect destination)
+    parameters:
+    - id: destination
+      type: SkiaSharp.SKRect
+      description: ''
+    return:
+      type: SkiaSharp.SKPoint
+      description: ''
+    content.vb: Public Function CalculateDrawingOffset(destination As SKRect) As SKPoint
+  overload: DrawnUi.Draw.CachedObject.CalculateDrawingOffset*
 - uid: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint)
   commentId: M:DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint)
   id: Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint)
@@ -171,12 +207,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 40
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -209,12 +245,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastDrawnAt
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 86
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 93
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -238,12 +274,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastDestination
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 91
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 98
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -267,12 +303,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 100
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -311,12 +347,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 129
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -349,12 +385,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 137
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -387,12 +423,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Id
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 146
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -414,12 +450,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SurfaceIsRecycled
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 152
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 159
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -445,12 +481,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Picture
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 154
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -474,12 +510,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Image
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 156
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -503,12 +539,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Bounds
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 158
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 165
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -532,12 +568,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RecordingArea
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 160
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -561,12 +597,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Type
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 162
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -590,12 +626,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 164
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -620,12 +656,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 186
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 193
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -649,12 +685,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Tag
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 188
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 195
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -678,12 +714,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreserveSourceFromDispose
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 190
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -707,12 +743,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetBitmap
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 192
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 199
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -735,12 +771,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Surface
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 197
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -764,12 +800,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Children
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 199
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -793,12 +829,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/CachedObject.cs
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAlive
-    path: ../src/Shared/Internals/Models/CachedObject.cs
-    startLine: 201
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 208
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1218,6 +1254,12 @@ references:
   name: Test
   nameWithType: CachedObject.Test
   fullName: DrawnUi.Draw.CachedObject.Test
+- uid: DrawnUi.Draw.CachedObject.CalculateDrawingOffset*
+  commentId: Overload:DrawnUi.Draw.CachedObject.CalculateDrawingOffset
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_CalculateDrawingOffset_SkiaSharp_SKRect_
+  name: CalculateDrawingOffset
+  nameWithType: CachedObject.CalculateDrawingOffset
+  fullName: DrawnUi.Draw.CachedObject.CalculateDrawingOffset
 - uid: DrawnUi.Draw.CachedObject.Draw*
   commentId: Overload:DrawnUi.Draw.CachedObject.Draw
   href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_Draw_SkiaSharp_SKCanvas_SkiaSharp_SKRect_SkiaSharp_SKPaint_

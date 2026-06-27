@@ -22,12 +22,12 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StructureChangeType
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 143
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 258
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -51,12 +51,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Add
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 145
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 260
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -77,12 +77,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Remove
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 146
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 261
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -103,12 +103,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Replace
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 147
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 262
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -129,12 +129,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Move
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 148
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 263
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -155,12 +155,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reset
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 149
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 264
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -181,12 +181,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BackgroundMeasurement
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 150
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -207,12 +207,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VisibilityChange
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 151
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 266
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -233,12 +233,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SingleItemUpdate
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 152
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 267
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

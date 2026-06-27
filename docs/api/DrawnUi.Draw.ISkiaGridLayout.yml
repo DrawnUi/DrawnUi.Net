@@ -25,11 +25,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ISkiaGridLayout
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -105,9 +105,11 @@ items:
   - DrawnUi.Draw.ICanBeUpdated.Update
   - DrawnUi.Draw.ILayoutInsideViewport.GetVisibleChildIndexAt(SkiaSharp.SKPoint)
   - DrawnUi.Draw.ILayoutInsideViewport.GetChildIndexAt(SkiaSharp.SKPoint)
-  - DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  - DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
   - DrawnUi.Draw.IInsideViewport.OnLoaded
   - DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect)
+  - DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  - DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
   - DrawnUi.Draw.IVisibilityAware.OnAppearing
   - DrawnUi.Draw.IVisibilityAware.OnAppeared
   - DrawnUi.Draw.IVisibilityAware.OnDisappeared
@@ -129,11 +131,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Split
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -158,11 +160,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DefaultColumnDefinition
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -187,11 +189,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DefaultRowDefinition
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -216,11 +218,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RowDefinitions
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -247,11 +249,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnDefinitions
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 18
   assemblies:
   - DrawnUi.Maui
@@ -278,11 +280,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RowSpacing
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -309,11 +311,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColumnSpacing
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -340,11 +342,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetRow
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -375,11 +377,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetRowSpan
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui
@@ -410,11 +412,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetColumn
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -445,11 +447,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetColumnSpan
-    path: ../src/Shared/Internals/Interfaces/ISkiaGridLayout.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGridLayout.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -1617,30 +1619,40 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
   - name: )
-- uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
-  commentId: M:DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+- uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
+  commentId: M:DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
   parent: DrawnUi.Draw.IInsideViewport
-  href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_
-  name: OnViewportWasChanged(ScaledRect)
-  nameWithType: IInsideViewport.OnViewportWasChanged(ScaledRect)
-  fullName: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_ScaledPoint_
+  name: OnViewportWasChanged(ScaledRect, ScaledPoint)
+  nameWithType: IInsideViewport.OnViewportWasChanged(ScaledRect, ScaledPoint)
+  fullName: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect, DrawnUi.Draw.ScaledPoint)
   spec.csharp:
-  - uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  - uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
     name: OnViewportWasChanged
-    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_
+    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_ScaledPoint_
   - name: (
   - uid: DrawnUi.Draw.ScaledRect
     name: ScaledRect
     href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.ScaledPoint
+    name: ScaledPoint
+    href: DrawnUi.Draw.ScaledPoint.html
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  - uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
     name: OnViewportWasChanged
-    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_
+    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_ScaledPoint_
   - name: (
   - uid: DrawnUi.Draw.ScaledRect
     name: ScaledRect
     href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.ScaledPoint
+    name: ScaledPoint
+    href: DrawnUi.Draw.ScaledPoint.html
   - name: )
 - uid: DrawnUi.Draw.IInsideViewport.OnLoaded
   commentId: M:DrawnUi.Draw.IInsideViewport.OnLoaded
@@ -1685,6 +1697,108 @@ references:
   - uid: DrawnUi.Draw.ScaledRect
     name: ScaledRect
     href: DrawnUi.Draw.ScaledRect.html
+  - name: )
+- uid: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  commentId: M:DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  parent: DrawnUi.Draw.IInsideViewport
+  href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_ShouldTriggerLoadMore_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_LoadMoreDirection_
+  name: ShouldTriggerLoadMore(ScaledRect, LoadMoreDirection)
+  nameWithType: IInsideViewport.ShouldTriggerLoadMore(ScaledRect, LoadMoreDirection)
+  fullName: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect, DrawnUi.Draw.LoadMoreDirection)
+  spec.csharp:
+  - uid: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+    name: ShouldTriggerLoadMore
+    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_ShouldTriggerLoadMore_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_LoadMoreDirection_
+  - name: (
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LoadMoreDirection
+    name: LoadMoreDirection
+    href: DrawnUi.Draw.LoadMoreDirection.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+    name: ShouldTriggerLoadMore
+    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_ShouldTriggerLoadMore_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_LoadMoreDirection_
+  - name: (
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LoadMoreDirection
+    name: LoadMoreDirection
+    href: DrawnUi.Draw.LoadMoreDirection.html
+  - name: )
+- uid: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
+  commentId: M:DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
+  parent: DrawnUi.Draw.IInsideViewport
+  isExternal: true
+  href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_LimitScrollBounds_System_Single_System_Single_SkiaSharp_SKRect_Microsoft_Maui_ScrollOrientation_
+  name: LimitScrollBounds(float, float, SKRect, ScrollOrientation)
+  nameWithType: IInsideViewport.LimitScrollBounds(float, float, SKRect, ScrollOrientation)
+  fullName: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(float, float, SkiaSharp.SKRect, Microsoft.Maui.ScrollOrientation)
+  nameWithType.vb: IInsideViewport.LimitScrollBounds(Single, Single, SKRect, ScrollOrientation)
+  fullName.vb: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(Single, Single, SkiaSharp.SKRect, Microsoft.Maui.ScrollOrientation)
+  name.vb: LimitScrollBounds(Single, Single, SKRect, ScrollOrientation)
+  spec.csharp:
+  - uid: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
+    name: LimitScrollBounds
+    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_LimitScrollBounds_System_Single_System_Single_SkiaSharp_SKRect_Microsoft_Maui_ScrollOrientation_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.ScrollOrientation
+    name: ScrollOrientation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.scrollorientation
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
+    name: LimitScrollBounds
+    href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_LimitScrollBounds_System_Single_System_Single_SkiaSharp_SKRect_Microsoft_Maui_ScrollOrientation_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.ScrollOrientation
+    name: ScrollOrientation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.scrollorientation
   - name: )
 - uid: DrawnUi.Draw.IVisibilityAware.OnAppearing
   commentId: M:DrawnUi.Draw.IVisibilityAware.OnAppearing

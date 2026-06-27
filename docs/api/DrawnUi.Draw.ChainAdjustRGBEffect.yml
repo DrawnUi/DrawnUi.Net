@@ -22,11 +22,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ChainAdjustRGBEffect
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 71
   assemblies:
   - DrawnUi.Maui
@@ -51,9 +51,11 @@ items:
   - DrawnUi.Draw.BaseChainedEffect.Update
   - DrawnUi.Draw.BaseChainedEffect.OnDisposing
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
+  - DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   - Microsoft.Maui.Controls.BindableObject.BindingContextProperty
   - Microsoft.Maui.Controls.BindableObject.ClearValue(Microsoft.Maui.Controls.BindableProperty)
@@ -100,11 +102,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RedProperty
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 73
   assemblies:
   - DrawnUi.Maui
@@ -127,11 +129,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GreenProperty
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 80
   assemblies:
   - DrawnUi.Maui
@@ -154,11 +156,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlueProperty
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 87
   assemblies:
   - DrawnUi.Maui
@@ -181,11 +183,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Red
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 94
   assemblies:
   - DrawnUi.Maui
@@ -210,11 +212,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Green
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -239,11 +241,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Blue
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 106
   assemblies:
   - DrawnUi.Maui
@@ -268,11 +270,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 112
   assemblies:
   - DrawnUi.Maui
@@ -310,11 +312,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/AdjustRGBEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
-    path: ../src/Shared/Features/Effects/AdjustRGBEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AdjustRGBEffect.cs
     startLine: 144
   assemblies:
   - DrawnUi.Maui
@@ -480,6 +482,13 @@ references:
   name: Parent
   nameWithType: SkiaEffect.Parent
   fullName: DrawnUi.Draw.SkiaEffect.Parent
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
 - uid: DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.SkiaEffect
@@ -542,6 +551,37 @@ references:
     name: Dispose
     href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Dispose
   - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin(float)
+  nameWithType: SkiaEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin(float)
+  nameWithType.vb: SkiaEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)

@@ -55,6 +55,7 @@ See [OpenTK Samples](samples.md) for a fuller walkthrough of the sample projects
 ## Related
 
 - [OpenTK Samples](samples.md)
+- [OpenTK Resources (Images, Lottie, Fonts)](resources.md) — raw assets need `Content` + `CopyToOutputDirectory`
 - [Window Patterns](window.md) — `DrawnUiWindow` and `CanvasHost` integration, GL state, render order
 - [Input and Window Features](gestures.md) — keys, fullscreen, DWM styling, icon, publish
 - [OpenTK FAQ](faq.md)

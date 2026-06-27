@@ -16,11 +16,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Shared/Views/CanvasRestoreScope.cs
+      path: src/Shared/DrawnUi/Views/CanvasRestoreScope.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanvasRestoreScope
-    path: ../src/Shared/Views/CanvasRestoreScope.cs
+    path: ../src/Shared/DrawnUi/Views/CanvasRestoreScope.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -57,11 +57,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Views/CanvasRestoreScope.cs
+      path: src/Shared/DrawnUi/Views/CanvasRestoreScope.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Views/CanvasRestoreScope.cs
+    path: ../src/Shared/DrawnUi/Views/CanvasRestoreScope.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -89,11 +89,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/CanvasRestoreScope.cs
+      path: src/Shared/DrawnUi/Views/CanvasRestoreScope.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Views/CanvasRestoreScope.cs
+    path: ../src/Shared/DrawnUi/Views/CanvasRestoreScope.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui

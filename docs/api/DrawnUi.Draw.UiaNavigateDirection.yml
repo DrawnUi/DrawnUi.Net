@@ -19,11 +19,11 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UiaNavigateDirection
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -46,11 +46,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -72,11 +72,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NextSibling
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -98,11 +98,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreviousSibling
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -124,11 +124,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FirstChild
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -150,11 +150,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastChild
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui

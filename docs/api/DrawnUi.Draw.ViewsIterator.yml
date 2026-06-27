@@ -11,6 +11,7 @@ items:
   - DrawnUi.Draw.ViewsIterator.Dispose
   - DrawnUi.Draw.ViewsIterator.GetEnumerator
   - DrawnUi.Draw.ViewsIterator.IsTemplated
+  - DrawnUi.Draw.ViewsIterator.SetDataContexts(System.Collections.IList)
   - DrawnUi.Draw.ViewsIterator.SetViews(System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})
   - DrawnUi.Draw.ViewsIterator.TemplatedViewsPool
   - DrawnUi.Draw.ViewsIterator.Views
@@ -23,12 +24,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewsIterator
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1415
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 7
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -66,12 +67,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsTemplated
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1423
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 15
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -95,12 +96,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatedViewsPool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1425
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 17
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -124,12 +125,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DataContexts
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1426
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 18
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -153,12 +154,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Views
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1427
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 19
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -182,12 +183,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1429
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 21
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -218,12 +219,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetViews
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1437
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 29
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -237,6 +238,40 @@ items:
   nameWithType.vb: ViewsIterator.SetViews(IEnumerable(Of SkiaControl))
   fullName.vb: DrawnUi.Draw.ViewsIterator.SetViews(System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.SkiaControl))
   name.vb: SetViews(IEnumerable(Of SkiaControl))
+- uid: DrawnUi.Draw.ViewsIterator.SetDataContexts(System.Collections.IList)
+  commentId: M:DrawnUi.Draw.ViewsIterator.SetDataContexts(System.Collections.IList)
+  id: SetDataContexts(System.Collections.IList)
+  parent: DrawnUi.Draw.ViewsIterator
+  langs:
+  - csharp
+  - vb
+  name: SetDataContexts(IList)
+  nameWithType: ViewsIterator.SetDataContexts(IList)
+  fullName: DrawnUi.Draw.ViewsIterator.SetDataContexts(System.Collections.IList)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SetDataContexts
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 38
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Swaps in the latest immutable data-contexts snapshot. Called on the UI thread when the bound
+
+    collection changes so a cached per-thread iterator stops pointing at a stale snapshot.
+  example: []
+  syntax:
+    content: public void SetDataContexts(IList dataContexts)
+    parameters:
+    - id: dataContexts
+      type: System.Collections.IList
+    content.vb: Public Sub SetDataContexts(dataContexts As IList)
+  overload: DrawnUi.Draw.ViewsIterator.SetDataContexts*
 - uid: DrawnUi.Draw.ViewsIterator.#ctor(System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})
   commentId: M:DrawnUi.Draw.ViewsIterator.#ctor(System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})
   id: '#ctor(System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})'
@@ -250,12 +285,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1442
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -282,12 +317,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEnumerator
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1448
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 49
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -315,12 +350,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1459
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsIterator.cs
+    startLine: 60
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -934,6 +969,12 @@ references:
   name: SetViews
   nameWithType: ViewsIterator.SetViews
   fullName: DrawnUi.Draw.ViewsIterator.SetViews
+- uid: DrawnUi.Draw.ViewsIterator.SetDataContexts*
+  commentId: Overload:DrawnUi.Draw.ViewsIterator.SetDataContexts
+  href: DrawnUi.Draw.ViewsIterator.html#DrawnUi_Draw_ViewsIterator_SetDataContexts_System_Collections_IList_
+  name: SetDataContexts
+  nameWithType: ViewsIterator.SetDataContexts
+  fullName: DrawnUi.Draw.ViewsIterator.SetDataContexts
 - uid: DrawnUi.Draw.ViewsIterator.GetEnumerator*
   commentId: Overload:DrawnUi.Draw.ViewsIterator.GetEnumerator
   href: DrawnUi.Draw.ViewsIterator.html#DrawnUi_Draw_ViewsIterator_GetEnumerator

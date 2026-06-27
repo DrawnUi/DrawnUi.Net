@@ -10,6 +10,7 @@ items:
   - DrawnUi.Draw.OuterGlowEffect.Color
   - DrawnUi.Draw.OuterGlowEffect.ColorProperty
   - DrawnUi.Draw.OuterGlowEffect.CreateFilter(SkiaSharp.SKRect)
+  - DrawnUi.Draw.OuterGlowEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.OuterGlowEffect.NeedApply
   langs:
   - csharp
@@ -20,11 +21,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OuterGlowEffect
-    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -49,6 +50,7 @@ items:
   - DrawnUi.Draw.BaseImageFilterEffect.Update
   - DrawnUi.Draw.BaseImageFilterEffect.OnDisposing
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
@@ -98,11 +100,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorProperty
-    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -125,11 +127,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color
-    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -154,11 +156,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlurProperty
-    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -181,11 +183,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Blur
-    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -210,11 +212,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateFilter
-    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -243,11 +245,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/OuterGlowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
-    path: ../src/Shared/Features/Effects/OuterGlowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
     startLine: 47
   assemblies:
   - DrawnUi.Maui
@@ -261,6 +263,50 @@ items:
     content.vb: Public Overrides ReadOnly Property NeedApply As Boolean
   overridden: DrawnUi.Draw.SkiaEffect.NeedApply
   overload: DrawnUi.Draw.OuterGlowEffect.NeedApply*
+- uid: DrawnUi.Draw.OuterGlowEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.OuterGlowEffect.GetEffectMargin(System.Single)
+  id: GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.OuterGlowEffect
+  langs:
+  - csharp
+  - vb
+  name: GetEffectMargin(float)
+  nameWithType: OuterGlowEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.OuterGlowEffect.GetEffectMargin(float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetEffectMargin
+    path: ../src/Shared/DrawnUi/Features/Effects/OuterGlowEffect.cs
+    startLine: 55
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Extra space in PIXELS this effect paints beyond the control's DrawingRect (drop shadow, glow, etc.).
+
+    Return Thickness.Zero (default) for effects that stay within bounds.
+
+    The engine reads this to auto-expand the cache surface and clip so out-of-bounds effects are not clipped.
+
+    Order is (left, top, right, bottom). Blur is treated as pixels, offsets are scaled by the passed scale.
+  example: []
+  syntax:
+    content: public override Thickness GetEffectMargin(float scale)
+    parameters:
+    - id: scale
+      type: System.Single
+    return:
+      type: Microsoft.Maui.Thickness
+    content.vb: Public Overrides Function GetEffectMargin(scale As Single) As Thickness
+  overridden: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  overload: DrawnUi.Draw.OuterGlowEffect.GetEffectMargin*
+  nameWithType.vb: OuterGlowEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.OuterGlowEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -413,6 +459,13 @@ references:
   name: Parent
   nameWithType: SkiaEffect.Parent
   fullName: DrawnUi.Draw.SkiaEffect.Parent
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
 - uid: DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.SkiaEffect
@@ -1865,3 +1918,86 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin(float)
+  nameWithType: SkiaEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin(float)
+  nameWithType.vb: SkiaEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.OuterGlowEffect.GetEffectMargin*
+  commentId: Overload:DrawnUi.Draw.OuterGlowEffect.GetEffectMargin
+  href: DrawnUi.Draw.OuterGlowEffect.html#DrawnUi_Draw_OuterGlowEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin
+  nameWithType: OuterGlowEffect.GetEffectMargin
+  fullName: DrawnUi.Draw.OuterGlowEffect.GetEffectMargin
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Microsoft.Maui.Thickness
+  commentId: T:Microsoft.Maui.Thickness
+  parent: Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
+  name: Thickness
+  nameWithType: Thickness
+  fullName: Microsoft.Maui.Thickness
+- uid: Microsoft.Maui
+  commentId: N:Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Maui
+  nameWithType: Microsoft.Maui
+  fullName: Microsoft.Maui
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui

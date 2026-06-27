@@ -15,11 +15,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ICanRenderOnCanvas
-    path: ../src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -42,11 +42,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Render
-    path: ../src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui

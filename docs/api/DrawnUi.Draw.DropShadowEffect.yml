@@ -10,6 +10,7 @@ items:
   - DrawnUi.Draw.DropShadowEffect.Color
   - DrawnUi.Draw.DropShadowEffect.ColorProperty
   - DrawnUi.Draw.DropShadowEffect.CreateFilter(SkiaSharp.SKRect)
+  - DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.DropShadowEffect.NeedApply
   - DrawnUi.Draw.DropShadowEffect.X
   - DrawnUi.Draw.DropShadowEffect.XProperty
@@ -24,11 +25,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DropShadowEffect
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -55,6 +56,7 @@ items:
   - DrawnUi.Draw.BaseImageFilterEffect.Update
   - DrawnUi.Draw.BaseImageFilterEffect.OnDisposing
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
@@ -104,11 +106,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorProperty
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -131,11 +133,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -160,11 +162,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlurProperty
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -187,11 +189,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Blur
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -216,11 +218,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: XProperty
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -243,11 +245,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: X
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 27
   assemblies:
   - DrawnUi.Maui
@@ -272,11 +274,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: YProperty
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 33
   assemblies:
   - DrawnUi.Maui
@@ -299,11 +301,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Y
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -328,11 +330,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateFilter
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui
@@ -361,11 +363,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/DropShadowEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
-    path: ../src/Shared/Features/Effects/DropShadowEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -379,6 +381,50 @@ items:
     content.vb: Public Overrides ReadOnly Property NeedApply As Boolean
   overridden: DrawnUi.Draw.SkiaEffect.NeedApply
   overload: DrawnUi.Draw.DropShadowEffect.NeedApply*
+- uid: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
+  id: GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.DropShadowEffect
+  langs:
+  - csharp
+  - vb
+  name: GetEffectMargin(float)
+  nameWithType: DropShadowEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetEffectMargin
+    path: ../src/Shared/DrawnUi/Features/Effects/DropShadowEffect.cs
+    startLine: 66
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Extra space in PIXELS this effect paints beyond the control's DrawingRect (drop shadow, glow, etc.).
+
+    Return Thickness.Zero (default) for effects that stay within bounds.
+
+    The engine reads this to auto-expand the cache surface and clip so out-of-bounds effects are not clipped.
+
+    Order is (left, top, right, bottom). Blur is treated as pixels, offsets are scaled by the passed scale.
+  example: []
+  syntax:
+    content: public override Thickness GetEffectMargin(float scale)
+    parameters:
+    - id: scale
+      type: System.Single
+    return:
+      type: Microsoft.Maui.Thickness
+    content.vb: Public Overrides Function GetEffectMargin(scale As Single) As Thickness
+  overridden: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  overload: DrawnUi.Draw.DropShadowEffect.GetEffectMargin*
+  nameWithType.vb: DropShadowEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -531,6 +577,13 @@ references:
   name: Parent
   nameWithType: SkiaEffect.Parent
   fullName: DrawnUi.Draw.SkiaEffect.Parent
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
 - uid: DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.SkiaEffect
@@ -1995,3 +2048,86 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin(float)
+  nameWithType: SkiaEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin(float)
+  nameWithType.vb: SkiaEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.DropShadowEffect.GetEffectMargin*
+  commentId: Overload:DrawnUi.Draw.DropShadowEffect.GetEffectMargin
+  href: DrawnUi.Draw.DropShadowEffect.html#DrawnUi_Draw_DropShadowEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin
+  nameWithType: DropShadowEffect.GetEffectMargin
+  fullName: DrawnUi.Draw.DropShadowEffect.GetEffectMargin
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Microsoft.Maui.Thickness
+  commentId: T:Microsoft.Maui.Thickness
+  parent: Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
+  name: Thickness
+  nameWithType: Thickness
+  fullName: Microsoft.Maui.Thickness
+- uid: Microsoft.Maui
+  commentId: N:Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Maui
+  nameWithType: Microsoft.Maui
+  fullName: Microsoft.Maui
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui

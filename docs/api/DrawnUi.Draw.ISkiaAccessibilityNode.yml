@@ -27,11 +27,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ISkiaAccessibilityNode
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -63,11 +63,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AccessibilityRole
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -94,11 +94,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AccessibilityLabel
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -125,11 +125,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AccessibilityHint
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -156,11 +156,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AccessibilityCanInteract
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -190,11 +190,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AccessibilityIsPressed
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -221,11 +221,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AccessibilityLive
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -257,11 +257,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAccessibilityElement
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -288,11 +288,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetAccessibilityPixelRect
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -321,11 +321,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAccessibilityActivated
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 50
   assemblies:
   - DrawnUi.Maui
@@ -352,11 +352,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NotifyAccessibility
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -383,11 +383,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAccessibilityUnregistered
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 59
   assemblies:
   - DrawnUi.Maui
@@ -411,11 +411,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NotifyAccessibilityFocused
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 65
   assemblies:
   - DrawnUi.Maui
@@ -448,11 +448,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnAccessibilityFocused
-    path: ../src/Shared/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 73
   assemblies:
   - DrawnUi.Maui

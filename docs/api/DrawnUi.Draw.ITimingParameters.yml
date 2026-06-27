@@ -16,11 +16,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/TimingParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/TimingParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ITimingParameters
-    path: ../src/Shared/Features/Animations/Parameters/TimingParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/TimingParameters.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -43,11 +43,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/TimingParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/TimingParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationSecs
-    path: ../src/Shared/Features/Animations/Parameters/TimingParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/TimingParameters.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -72,11 +72,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/TimingParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/TimingParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueAt
-    path: ../src/Shared/Features/Animations/Parameters/TimingParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/TimingParameters.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui

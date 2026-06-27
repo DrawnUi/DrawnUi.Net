@@ -6,6 +6,7 @@ items:
   children:
   - DrawnUi.Views.AccessibilityNode
   - DrawnUi.Views.BasePageReloadable
+  - DrawnUi.Views.CacheManager
   - DrawnUi.Views.Canvas
   - DrawnUi.Views.CanvasRestoreScope
   - DrawnUi.Views.DisposableManager
@@ -189,6 +190,13 @@ references:
   name: DisposableManager
   nameWithType: DisposableManager
   fullName: DrawnUi.Views.DisposableManager
+- uid: DrawnUi.Views.CacheManager
+  commentId: T:DrawnUi.Views.CacheManager
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.CacheManager.html
+  name: CacheManager
+  nameWithType: CacheManager
+  fullName: DrawnUi.Views.CacheManager
 - uid: DrawnUi.Views.SurfaceCacheManager
   commentId: T:DrawnUi.Views.SurfaceCacheManager
   parent: DrawnUi.Views

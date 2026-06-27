@@ -1,0 +1,473 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.IWindowHost
+  commentId: T:DrawnUi.Draw.IWindowHost
+  id: IWindowHost
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.IWindowHost.OnMeasured
+  - DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
+  - DrawnUi.Draw.IWindowHost.ScrollToLocal(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  - DrawnUi.Draw.IWindowHost.SnapToStart
+  - DrawnUi.Draw.IWindowHost.SuppressLoadMore
+  - DrawnUi.Draw.IWindowHost.VisibleCount
+  langs:
+  - csharp
+  - vb
+  name: IWindowHost
+  nameWithType: IWindowHost
+  fullName: DrawnUi.Draw.IWindowHost
+  type: Interface
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IWindowHost
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 8
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The scroll + virtualizing-stack surface a <xref href="DrawnUi.Draw.WindowedSource%601" data-throw-if-not-resolved="false"></xref> drives. One thin
+
+    adapter wires it to the concrete controls (<xref href="DrawnUi.Draw.SkiaScroll" data-throw-if-not-resolved="false"></xref> + <xref href="DrawnUi.Draw.SkiaLayout" data-throw-if-not-resolved="false"></xref>);
+
+    the controller itself stays free of any control type so it is fully reusable/testable.
+
+    The built-in adapter is <xref href="DrawnUi.Draw.SkiaScrollWindowHost" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public interface IWindowHost
+    content.vb: Public Interface IWindowHost
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.IWindowHost.VisibleCount
+  commentId: P:DrawnUi.Draw.IWindowHost.VisibleCount
+  id: VisibleCount
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: VisibleCount
+  nameWithType: IWindowHost.VisibleCount
+  fullName: DrawnUi.Draw.IWindowHost.VisibleCount
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: VisibleCount
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Resident (windowed) item count = the bound ItemsSource length.
+  example: []
+  syntax:
+    content: int VisibleCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property VisibleCount As Integer
+  overload: DrawnUi.Draw.IWindowHost.VisibleCount*
+- uid: DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
+  commentId: P:DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
+  id: OrderedScrollInProgress
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: OrderedScrollInProgress
+  nameWithType: IWindowHost.OrderedScrollInProgress
+  fullName: DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OrderedScrollInProgress
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 14
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: An ordered ScrollToIndex is still settling (target not yet measured/landed).
+  example: []
+  syntax:
+    content: bool OrderedScrollInProgress { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property OrderedScrollInProgress As Boolean
+  overload: DrawnUi.Draw.IWindowHost.OrderedScrollInProgress*
+- uid: DrawnUi.Draw.IWindowHost.SuppressLoadMore
+  commentId: P:DrawnUi.Draw.IWindowHost.SuppressLoadMore
+  id: SuppressLoadMore
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: SuppressLoadMore
+  nameWithType: IWindowHost.SuppressLoadMore
+  fullName: DrawnUi.Draw.IWindowHost.SuppressLoadMore
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SuppressLoadMore
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 17
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Blocks auto-LoadMore while a programmatic jump is in flight.
+  example: []
+  syntax:
+    content: bool SuppressLoadMore { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property SuppressLoadMore As Boolean
+  overload: DrawnUi.Draw.IWindowHost.SuppressLoadMore*
+- uid: DrawnUi.Draw.IWindowHost.OnMeasured
+  commentId: P:DrawnUi.Draw.IWindowHost.OnMeasured
+  id: OnMeasured
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: OnMeasured
+  nameWithType: IWindowHost.OnMeasured
+  fullName: DrawnUi.Draw.IWindowHost.OnMeasured
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OnMeasured
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 20
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: 'Trim-after-measure hook: invoked once the stack has applied a structure change.'
+  example: []
+  syntax:
+    content: Action OnMeasured { get; set; }
+    parameters: []
+    return:
+      type: System.Action
+    content.vb: Property OnMeasured As Action
+  overload: DrawnUi.Draw.IWindowHost.OnMeasured*
+- uid: DrawnUi.Draw.IWindowHost.ScrollToLocal(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  commentId: M:DrawnUi.Draw.IWindowHost.ScrollToLocal(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  id: ScrollToLocal(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: ScrollToLocal(int, RelativePositionType, bool)
+  nameWithType: IWindowHost.ScrollToLocal(int, RelativePositionType, bool)
+  fullName: DrawnUi.Draw.IWindowHost.ScrollToLocal(int, DrawnUi.Draw.RelativePositionType, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ScrollToLocal
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 23
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Ordered scroll to a LOCAL (resident) index with the given alignment.
+  example: []
+  syntax:
+    content: void ScrollToLocal(int local, RelativePositionType align, bool animate)
+    parameters:
+    - id: local
+      type: System.Int32
+    - id: align
+      type: DrawnUi.Draw.RelativePositionType
+    - id: animate
+      type: System.Boolean
+    content.vb: Sub ScrollToLocal(local As Integer, align As RelativePositionType, animate As Boolean)
+  overload: DrawnUi.Draw.IWindowHost.ScrollToLocal*
+  nameWithType.vb: IWindowHost.ScrollToLocal(Integer, RelativePositionType, Boolean)
+  fullName.vb: DrawnUi.Draw.IWindowHost.ScrollToLocal(Integer, DrawnUi.Draw.RelativePositionType, Boolean)
+  name.vb: ScrollToLocal(Integer, RelativePositionType, Boolean)
+- uid: DrawnUi.Draw.IWindowHost.SnapToStart
+  commentId: M:DrawnUi.Draw.IWindowHost.SnapToStart
+  id: SnapToStart
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: SnapToStart()
+  nameWithType: IWindowHost.SnapToStart()
+  fullName: DrawnUi.Draw.IWindowHost.SnapToStart()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SnapToStart
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 26
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Instant snap to content start (offset 0) — newest in an inverted list.
+  example: []
+  syntax:
+    content: void SnapToStart()
+    content.vb: Sub SnapToStart()
+  overload: DrawnUi.Draw.IWindowHost.SnapToStart*
+references:
+- uid: DrawnUi.Draw.WindowedSource`1
+  commentId: T:DrawnUi.Draw.WindowedSource`1
+  href: DrawnUi.Draw.WindowedSource-1.html
+  name: WindowedSource<T>
+  nameWithType: WindowedSource<T>
+  fullName: DrawnUi.Draw.WindowedSource<T>
+  nameWithType.vb: WindowedSource(Of T)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T)
+  name.vb: WindowedSource(Of T)
+  spec.csharp:
+  - uid: DrawnUi.Draw.WindowedSource`1
+    name: WindowedSource
+    href: DrawnUi.Draw.WindowedSource-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DrawnUi.Draw.WindowedSource`1
+    name: WindowedSource
+    href: DrawnUi.Draw.WindowedSource-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll
+  commentId: T:DrawnUi.Draw.SkiaScroll
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaScroll.html
+  name: SkiaScroll
+  nameWithType: SkiaScroll
+  fullName: DrawnUi.Draw.SkiaScroll
+- uid: DrawnUi.Draw.SkiaLayout
+  commentId: T:DrawnUi.Draw.SkiaLayout
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaLayout.html
+  name: SkiaLayout
+  nameWithType: SkiaLayout
+  fullName: DrawnUi.Draw.SkiaLayout
+- uid: DrawnUi.Draw.SkiaScrollWindowHost
+  commentId: T:DrawnUi.Draw.SkiaScrollWindowHost
+  href: DrawnUi.Draw.SkiaScrollWindowHost.html
+  name: SkiaScrollWindowHost
+  nameWithType: SkiaScrollWindowHost
+  fullName: DrawnUi.Draw.SkiaScrollWindowHost
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.IWindowHost.VisibleCount*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.VisibleCount
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_VisibleCount
+  name: VisibleCount
+  nameWithType: IWindowHost.VisibleCount
+  fullName: DrawnUi.Draw.IWindowHost.VisibleCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Draw.IWindowHost.OrderedScrollInProgress*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_OrderedScrollInProgress
+  name: OrderedScrollInProgress
+  nameWithType: IWindowHost.OrderedScrollInProgress
+  fullName: DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Draw.IWindowHost.SuppressLoadMore*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.SuppressLoadMore
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_SuppressLoadMore
+  name: SuppressLoadMore
+  nameWithType: IWindowHost.SuppressLoadMore
+  fullName: DrawnUi.Draw.IWindowHost.SuppressLoadMore
+- uid: DrawnUi.Draw.IWindowHost.OnMeasured*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.OnMeasured
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_OnMeasured
+  name: OnMeasured
+  nameWithType: IWindowHost.OnMeasured
+  fullName: DrawnUi.Draw.IWindowHost.OnMeasured
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: DrawnUi.Draw.IWindowHost.ScrollToLocal*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.ScrollToLocal
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_ScrollToLocal_System_Int32_DrawnUi_Draw_RelativePositionType_System_Boolean_
+  name: ScrollToLocal
+  nameWithType: IWindowHost.ScrollToLocal
+  fullName: DrawnUi.Draw.IWindowHost.ScrollToLocal
+- uid: DrawnUi.Draw.RelativePositionType
+  commentId: T:DrawnUi.Draw.RelativePositionType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.RelativePositionType.html
+  name: RelativePositionType
+  nameWithType: RelativePositionType
+  fullName: DrawnUi.Draw.RelativePositionType
+- uid: DrawnUi.Draw.IWindowHost.SnapToStart*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.SnapToStart
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_SnapToStart
+  name: SnapToStart
+  nameWithType: IWindowHost.SnapToStart
+  fullName: DrawnUi.Draw.IWindowHost.SnapToStart

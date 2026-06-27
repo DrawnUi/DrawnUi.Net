@@ -17,12 +17,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OffscreenCommand
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1707
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1716
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -56,12 +56,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1707
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1716
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -90,12 +90,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Control
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1707
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1716
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -119,12 +119,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cancel
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1707
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1716
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views

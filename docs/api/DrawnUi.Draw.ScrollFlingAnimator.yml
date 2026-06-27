@@ -12,6 +12,7 @@ items:
   - DrawnUi.Draw.ScrollFlingAnimator.Parameters
   - DrawnUi.Draw.ScrollFlingAnimator.RunAsync(System.Single,System.Single,System.Single,System.Threading.CancellationToken)
   - DrawnUi.Draw.ScrollFlingAnimator.SelfFinished
+  - DrawnUi.Draw.ScrollFlingAnimator.Shift(System.Single)
   - DrawnUi.Draw.ScrollFlingAnimator.Start(System.Double)
   - DrawnUi.Draw.ScrollFlingAnimator.UpdateValue(System.Int64,System.Int64)
   - DrawnUi.Draw.ScrollFlingAnimator.ValueThreshold
@@ -24,11 +25,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollFlingAnimator
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -112,11 +113,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelfFinished
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -141,11 +142,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueThreshold
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -170,11 +171,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunAsync
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -210,11 +211,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeWithVelocity
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -254,11 +255,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeWithDestination
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -301,11 +302,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parameters
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 52
   assemblies:
   - DrawnUi.Maui
@@ -330,11 +331,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentVelocity
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -346,6 +347,45 @@ items:
       type: System.Single
     content.vb: Public Property CurrentVelocity As Single
   overload: DrawnUi.Draw.ScrollFlingAnimator.CurrentVelocity*
+- uid: DrawnUi.Draw.ScrollFlingAnimator.Shift(System.Single)
+  commentId: M:DrawnUi.Draw.ScrollFlingAnimator.Shift(System.Single)
+  id: Shift(System.Single)
+  parent: DrawnUi.Draw.ScrollFlingAnimator
+  langs:
+  - csharp
+  - vb
+  name: Shift(float)
+  nameWithType: ScrollFlingAnimator.Shift(float)
+  fullName: DrawnUi.Draw.ScrollFlingAnimator.Shift(float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Shift
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
+    startLine: 60
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Translates the whole deceleration trajectory by <code class="paramref">delta</code> (same units as the
+
+    animated value). Used when content above the viewport changes size mid-fling so the fling keeps
+
+    targeting the same content instead of fighting a scroll-anchor offset correction.
+  example: []
+  syntax:
+    content: public void Shift(float delta)
+    parameters:
+    - id: delta
+      type: System.Single
+    content.vb: Public Sub Shift(delta As Single)
+  overload: DrawnUi.Draw.ScrollFlingAnimator.Shift*
+  nameWithType.vb: ScrollFlingAnimator.Shift(Single)
+  fullName.vb: DrawnUi.Draw.ScrollFlingAnimator.Shift(Single)
+  name.vb: Shift(Single)
 - uid: DrawnUi.Draw.ScrollFlingAnimator.Start(System.Double)
   commentId: M:DrawnUi.Draw.ScrollFlingAnimator.Start(System.Double)
   id: Start(System.Double)
@@ -359,12 +399,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
-    startLine: 55
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
+    startLine: 71
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -393,12 +433,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateValue
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
-    startLine: 62
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
+    startLine: 78
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -437,12 +477,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animators/ScrollFlingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animators/ScrollFlingAnimator.cs
-    startLine: 106
+    path: ../src/Shared/DrawnUi/Features/Animators/ScrollFlingAnimator.cs
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1629,6 +1669,12 @@ references:
   name: CurrentVelocity
   nameWithType: ScrollFlingAnimator.CurrentVelocity
   fullName: DrawnUi.Draw.ScrollFlingAnimator.CurrentVelocity
+- uid: DrawnUi.Draw.ScrollFlingAnimator.Shift*
+  commentId: Overload:DrawnUi.Draw.ScrollFlingAnimator.Shift
+  href: DrawnUi.Draw.ScrollFlingAnimator.html#DrawnUi_Draw_ScrollFlingAnimator_Shift_System_Single_
+  name: Shift
+  nameWithType: ScrollFlingAnimator.Shift
+  fullName: DrawnUi.Draw.ScrollFlingAnimator.Shift
 - uid: DrawnUi.Draw.SkiaValueAnimator.Start(System.Double)
   commentId: M:DrawnUi.Draw.SkiaValueAnimator.Start(System.Double)
   parent: DrawnUi.Draw.SkiaValueAnimator

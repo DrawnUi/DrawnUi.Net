@@ -17,11 +17,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpringExtensions
-    path: ../src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -53,11 +53,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Damping
-    path: ../src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -85,11 +85,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Beta
-    path: ../src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -117,11 +117,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DampedNaturalFrequency
-    path: ../src/Shared/Features/Animations/Extensions/SpringExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/SpringExtensions.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui

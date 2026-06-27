@@ -27,12 +27,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaDrawingContext
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 173
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 174
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -66,12 +66,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Canvas
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 175
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 176
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -95,12 +95,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Surface
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 176
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 177
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -124,12 +124,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 177
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -153,12 +153,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 178
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -182,12 +182,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameTimeNanos
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 179
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 180
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -211,12 +211,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Superview
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 180
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 181
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -240,12 +240,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsVirtual
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 185
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -271,12 +271,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRecycled
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 190
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -302,12 +302,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clone
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 192
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 193
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -330,12 +330,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateForRecordingImage
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 205
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -363,12 +363,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateForRecordingOperations
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 219
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -396,12 +396,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeviceDensity
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 233
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 234
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -425,12 +425,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Services
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 241
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 242
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

@@ -20,12 +20,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Images/SkiaImage.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RescaledBitmap
-    path: ../src/Shared/Draw/Images/SkiaImage.cs
-    startLine: 1380
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1390
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -59,12 +59,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Images/SkiaImage.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Bitmap
-    path: ../src/Shared/Draw/Images/SkiaImage.cs
-    startLine: 1382
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1392
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -88,12 +88,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Images/SkiaImage.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _image
-    path: ../src/Shared/Draw/Images/SkiaImage.cs
-    startLine: 1384
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1394
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -115,12 +115,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Images/SkiaImage.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Image
-    path: ../src/Shared/Draw/Images/SkiaImage.cs
-    startLine: 1386
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1396
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -144,12 +144,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Images/SkiaImage.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Quality
-    path: ../src/Shared/Draw/Images/SkiaImage.cs
-    startLine: 1399
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1409
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -173,12 +173,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Images/SkiaImage.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Source
-    path: ../src/Shared/Draw/Images/SkiaImage.cs
-    startLine: 1401
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1411
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -202,12 +202,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Images/SkiaImage.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Draw/Images/SkiaImage.cs
-    startLine: 1403
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1413
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

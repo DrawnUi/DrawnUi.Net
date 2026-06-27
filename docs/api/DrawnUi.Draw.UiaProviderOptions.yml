@@ -16,11 +16,11 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UiaProviderOptions
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 72
   assemblies:
   - DrawnUi.Maui
@@ -53,11 +53,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ServerSideProvider
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 75
   assemblies:
   - DrawnUi.Maui
@@ -79,11 +79,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseComThreading
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 76
   assemblies:
   - DrawnUi.Maui

@@ -75,11 +75,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaRichLabel
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -186,6 +186,10 @@ items:
   - DrawnUi.Draw.SkiaLabel.GliphsInvalidated
   - DrawnUi.Draw.SkiaLabel.LockSetup
   - DrawnUi.Draw.SkiaLabel._fontFamily
+  - DrawnUi.Draw.SkiaLabel._fontFamilyFallback
+  - DrawnUi.Draw.SkiaLabel.TypeFaceFallback
+  - DrawnUi.Draw.SkiaLabel.FontFamilyFallbackProperty
+  - DrawnUi.Draw.SkiaLabel.FontFamilyFallback
   - DrawnUi.Draw.SkiaLabel.UpdateFont
   - DrawnUi.Draw.SkiaLabel.ReplaceFont
   - DrawnUi.Draw.SkiaLabel.NeedUpdateFont(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
@@ -299,7 +303,13 @@ items:
   - DrawnUi.Draw.SkiaControl.WhiteColor
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
+  - DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
+  - DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  - DrawnUi.Draw.SkiaControl.CacheSharing
   - DrawnUi.Draw.SkiaControl.AutoCacheProperty
   - DrawnUi.Draw.SkiaControl.AutoCache
   - DrawnUi.Draw.SkiaControl.UseCacheProperty
@@ -339,11 +349,15 @@ items:
   - DrawnUi.Draw.SkiaControl.GetCacheRecordingArea(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.GetCacheArea(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.DrawUsingRenderObject(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.DrawDirectInternal(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.CreateRenderingObjectAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Action{DrawnUi.Draw.DrawingContext})
   - DrawnUi.Draw.SkiaControl.AttachEffects
   - DrawnUi.Draw.SkiaControl.OnVisualEffectsChanged
+  - DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  - DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  - DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
   - DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
   - DrawnUi.Draw.SkiaControl.EffectsState
   - DrawnUi.Draw.SkiaControl.EffectRenderers
@@ -406,6 +420,8 @@ items:
   - DrawnUi.Draw.SkiaControl.Virtualisation
   - DrawnUi.Draw.SkiaControl.VirtualisationInflatedProperty
   - DrawnUi.Draw.SkiaControl.VirtualisationInflated
+  - DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  - DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
   - DrawnUi.Draw.SkiaControl.DefaultBlendMode
   - DrawnUi.Draw.SkiaControl.IsVisibleInViewTree
   - DrawnUi.Draw.SkiaControl.GetPositionOnCanvasInPoints
@@ -486,6 +502,7 @@ items:
   - DrawnUi.Draw.SkiaControl.IsGestureInside(DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.OnGestures
   - DrawnUi.Draw.SkiaControl.Tapped
+  - DrawnUi.Draw.SkiaControl.LongPressing
   - DrawnUi.Draw.SkiaControl.ConsumeGestures
   - DrawnUi.Draw.SkiaControl.OnChildTapped(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.GetGesturePositionInsideChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -693,7 +710,7 @@ items:
   - DrawnUi.Draw.SkiaControl.SetInheritedBindingContext(System.Object)
   - DrawnUi.Draw.SkiaControl.ApplyingBindingContext
   - DrawnUi.Draw.SkiaControl.BindingContextWasSet
-  - DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+  - DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
   - DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   - DrawnUi.Draw.SkiaControl.MeasureInternal(DrawnUi.Draw.MeasureRequest)
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
@@ -1082,6 +1099,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.AnimateExtensions.Translate(System.Numerics.Vector2,System.Single,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.DrawnExtensions.AnimateRangeAsync(System.Action{System.Double},System.Double,System.Double,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.DrawnExtensions.BackgroundColorToAsync(Microsoft.Maui.Graphics.Color,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
+  - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(System.Nullable{SkiaSharp.SKPoint})
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1
   - DrawnUi.Draw.SkiaLabel.DrawnUi.Draw.DrawnExtensions.TextColorToAsync(Microsoft.Maui.Graphics.Color,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaLabel.DrawnUi.Draw.FluentExtensions.OnTextChanged(System.Action{DrawnUi.Draw.SkiaLabel,System.String})
@@ -1179,11 +1197,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetTextInternal
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -1208,11 +1226,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderBlock
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 64
   assemblies:
   - DrawnUi.Maui
@@ -1241,11 +1259,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderOrderedListItem
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 184
   assemblies:
   - DrawnUi.Maui
@@ -1275,11 +1293,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderBulletListItem
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 208
   assemblies:
   - DrawnUi.Maui
@@ -1304,11 +1322,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderInline
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 232
   assemblies:
   - DrawnUi.Maui
@@ -1333,11 +1351,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderBlock
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 305
   assemblies:
   - DrawnUi.Maui
@@ -1362,11 +1380,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddCodeSpan
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 378
   assemblies:
   - DrawnUi.Maui
@@ -1391,11 +1409,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddLinkSpan
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 390
   assemblies:
   - DrawnUi.Maui
@@ -1420,11 +1438,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetLinkLabelText
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 407
   assemblies:
   - DrawnUi.Maui
@@ -1451,11 +1469,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateLineBreak
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 428
   assemblies:
   - DrawnUi.Maui
@@ -1481,11 +1499,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateLiteral
-    path: ../src/Shared/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
     startLine: 436
   assemblies:
   - DrawnUi.Maui
@@ -1517,11 +1535,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -1546,11 +1564,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -1578,11 +1596,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasureLineGlyphsProbe
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 32
   assemblies:
   - DrawnUi.Maui
@@ -1620,11 +1638,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorLink
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui
@@ -1647,11 +1665,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorCodeBackground
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 98
   assemblies:
   - DrawnUi.Maui
@@ -1674,11 +1692,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorCodeBlock
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 99
   assemblies:
   - DrawnUi.Maui
@@ -1701,11 +1719,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorCode
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -1728,11 +1746,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorStrikeout
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 101
   assemblies:
   - DrawnUi.Maui
@@ -1755,11 +1773,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaskPrefixBullet
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
@@ -1782,11 +1800,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaskPrefixNumbered
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 103
   assemblies:
   - DrawnUi.Maui
@@ -1809,11 +1827,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpanWithAttributes
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 117
   assemblies:
   - DrawnUi.Maui
@@ -1847,11 +1865,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddTextSpan
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 153
   assemblies:
   - DrawnUi.Maui
@@ -1881,11 +1899,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BuildSpanData
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
     startLine: 182
   assemblies:
   - DrawnUi.Maui
@@ -1900,7 +1918,7 @@ items:
     Shared between SkiaRichLabel subclasses.
   example: []
   syntax:
-    content: public static List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> BuildSpanData(string text, SKTypeface originalTypeFace)
+    content: public virtual List<(string Text, SKTypeface Typeface, int Symbol, bool Shape)> BuildSpanData(string text, SKTypeface originalTypeFace)
     parameters:
     - id: text
       type: System.String
@@ -1908,7 +1926,7 @@ items:
       type: SkiaSharp.SKTypeface
     return:
       type: System.Collections.Generic.List{System.ValueTuple{System.String,SkiaSharp.SKTypeface,System.Int32,System.Boolean}}
-    content.vb: Public Shared Function BuildSpanData(text As String, originalTypeFace As SKTypeface) As List(Of (Text As String, Typeface As SKTypeface, Symbol As Integer, Shape As Boolean))
+    content.vb: Public Overridable Function BuildSpanData(text As String, originalTypeFace As SKTypeface) As List(Of (Text As String, Typeface As SKTypeface, Symbol As Integer, Shape As Boolean))
   overload: DrawnUi.Draw.SkiaRichLabel.BuildSpanData*
   nameWithType.vb: SkiaRichLabel.BuildSpanData(String, SKTypeface)
   fullName.vb: DrawnUi.Draw.SkiaRichLabel.BuildSpanData(String, SkiaSharp.SKTypeface)
@@ -1926,12 +1944,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: standardSymbols
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 274
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 280
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1953,12 +1971,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessSpanData
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 281
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 287
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1991,12 +2009,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessSpanDataStatic
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 288
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2027,12 +2045,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: hadParagraph
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 335
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2054,12 +2072,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: isBold
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 336
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2081,12 +2099,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: isItalic
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 337
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 343
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2108,12 +2126,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: isCodeBlock
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 338
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 344
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2135,12 +2153,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: isHeading1
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 339
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 345
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2162,12 +2180,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: isHeading2
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 340
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 346
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2189,12 +2207,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: isHeading3
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 341
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 347
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2216,12 +2234,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: isStrikethrough
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 342
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 348
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2243,12 +2261,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSpanTapped
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 351
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 357
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2279,12 +2297,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandLinkTappedProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 359
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 365
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2306,12 +2324,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandLinkTapped
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 364
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 370
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2335,12 +2353,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LinkTapped
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 370
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2362,12 +2380,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 372
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 378
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2391,12 +2409,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLinkTapped
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 379
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 385
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2425,12 +2443,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrikeoutColorProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 389
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 395
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2452,12 +2470,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrikeoutColor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 396
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 402
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2481,12 +2499,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LinkColorProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 402
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 408
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2508,12 +2526,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LinkColor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 409
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 415
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2537,12 +2555,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CodeTextColorProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 415
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 421
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2564,12 +2582,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CodeTextColor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 422
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 428
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2593,12 +2611,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeadingTextColorProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 428
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 434
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2620,12 +2638,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeadingTextColor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 435
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 441
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2649,12 +2667,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CodeBlockBackgroundColorProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 441
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 447
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2676,12 +2694,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CodeBlockBackgroundColor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 448
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 454
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2705,12 +2723,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CodeBackgroundColorProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 454
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 460
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2732,12 +2750,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CodeBackgroundColor
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 461
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 467
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2761,12 +2779,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrefixBulletProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 467
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 473
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2788,12 +2806,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrefixBullet
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 474
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 480
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2817,12 +2835,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrefixNumberedProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 480
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 486
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2844,12 +2862,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrefixNumbered
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 487
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2873,12 +2891,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnderlineLinkProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 493
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 499
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2900,12 +2918,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnderlineLink
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 500
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 506
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2929,12 +2947,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnderlineWidthProperty
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 506
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 512
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2956,12 +2974,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Controls/Labels/SkiaRichLabel.cs
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnderlineWidth
-    path: ../src/Shared/Controls/Labels/SkiaRichLabel.cs
-    startLine: 516
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
+    startLine: 522
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5440,6 +5458,34 @@ references:
   name: _fontFamily
   nameWithType: SkiaLabel._fontFamily
   fullName: DrawnUi.Draw.SkiaLabel._fontFamily
+- uid: DrawnUi.Draw.SkiaLabel._fontFamilyFallback
+  commentId: F:DrawnUi.Draw.SkiaLabel._fontFamilyFallback
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel__fontFamilyFallback
+  name: _fontFamilyFallback
+  nameWithType: SkiaLabel._fontFamilyFallback
+  fullName: DrawnUi.Draw.SkiaLabel._fontFamilyFallback
+- uid: DrawnUi.Draw.SkiaLabel.TypeFaceFallback
+  commentId: F:DrawnUi.Draw.SkiaLabel.TypeFaceFallback
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_TypeFaceFallback
+  name: TypeFaceFallback
+  nameWithType: SkiaLabel.TypeFaceFallback
+  fullName: DrawnUi.Draw.SkiaLabel.TypeFaceFallback
+- uid: DrawnUi.Draw.SkiaLabel.FontFamilyFallbackProperty
+  commentId: F:DrawnUi.Draw.SkiaLabel.FontFamilyFallbackProperty
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_FontFamilyFallbackProperty
+  name: FontFamilyFallbackProperty
+  nameWithType: SkiaLabel.FontFamilyFallbackProperty
+  fullName: DrawnUi.Draw.SkiaLabel.FontFamilyFallbackProperty
+- uid: DrawnUi.Draw.SkiaLabel.FontFamilyFallback
+  commentId: P:DrawnUi.Draw.SkiaLabel.FontFamilyFallback
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_FontFamilyFallback
+  name: FontFamilyFallback
+  nameWithType: SkiaLabel.FontFamilyFallback
+  fullName: DrawnUi.Draw.SkiaLabel.FontFamilyFallback
 - uid: DrawnUi.Draw.SkiaLabel.UpdateFont
   commentId: M:DrawnUi.Draw.SkiaLabel.UpdateFont
   parent: DrawnUi.Draw.SkiaLabel
@@ -6750,6 +6796,96 @@ references:
   name: RedColor
   nameWithType: SkiaControl.RedColor
   fullName: DrawnUi.Draw.SkiaControl.RedColor
+- uid: DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  commentId: P:DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OffscreenRenderToken
+  name: OffscreenRenderToken
+  nameWithType: SkiaControl.OffscreenRenderToken
+  fullName: DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+- uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  commentId: M:DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  name: RenewOffscreenRenderToken(out long)
+  nameWithType: SkiaControl.RenewOffscreenRenderToken(out long)
+  fullName: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(out long)
+  nameWithType.vb: SkiaControl.RenewOffscreenRenderToken(Long)
+  fullName.vb: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(Long)
+  name.vb: RenewOffscreenRenderToken(Long)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+    name: RenewOffscreenRenderToken
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+    name: RenewOffscreenRenderToken
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  commentId: M:DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  name: IsOffscreenRenderSuperseded(long)
+  nameWithType: SkiaControl.IsOffscreenRenderSuperseded(long)
+  fullName: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(long)
+  nameWithType.vb: SkiaControl.IsOffscreenRenderSuperseded(Long)
+  fullName.vb: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(Long)
+  name.vb: IsOffscreenRenderSuperseded(Long)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+    name: IsOffscreenRenderSuperseded
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+    name: IsOffscreenRenderSuperseded
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  commentId: M:DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  name: CancelOffscreenRendering()
+  nameWithType: SkiaControl.CancelOffscreenRendering()
+  fullName: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+    name: CancelOffscreenRendering
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+    name: CancelOffscreenRendering
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -6775,6 +6911,20 @@ references:
     name: DrawingContext
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CacheSharingProperty
+  name: CacheSharingProperty
+  nameWithType: SkiaControl.CacheSharingProperty
+  fullName: DrawnUi.Draw.SkiaControl.CacheSharingProperty
+- uid: DrawnUi.Draw.SkiaControl.CacheSharing
+  commentId: P:DrawnUi.Draw.SkiaControl.CacheSharing
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CacheSharing
+  name: CacheSharing
+  nameWithType: SkiaControl.CacheSharing
+  fullName: DrawnUi.Draw.SkiaControl.CacheSharing
 - uid: DrawnUi.Draw.SkiaControl.AutoCacheProperty
   commentId: F:DrawnUi.Draw.SkiaControl.AutoCacheProperty
   parent: DrawnUi.Draw.SkiaControl
@@ -7669,6 +7819,44 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  name: TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext, SKRect)
+  nameWithType: SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext, SKRect)
+  fullName: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+    name: TryUseExistingRenderingObjectOrCreateNewAndPaint
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+    name: TryUseExistingRenderingObjectOrCreateNewAndPaint
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   commentId: M:DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaControl
@@ -7861,6 +8049,63 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.OnVisualEffectsChanged
     name: OnVisualEffectsChanged
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnVisualEffectsChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  commentId: P:DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_EffectsMarginPixels
+  name: EffectsMarginPixels
+  nameWithType: SkiaControl.EffectsMarginPixels
+  fullName: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+- uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  name: ComputeEffectsMargin(float)
+  nameWithType: SkiaControl.ComputeEffectsMargin(float)
+  fullName: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(float)
+  nameWithType.vb: SkiaControl.ComputeEffectsMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(Single)
+  name.vb: ComputeEffectsMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+  commentId: M:DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
+  name: GetRenderingExpandPixels()
+  nameWithType: SkiaControl.GetRenderingExpandPixels()
+  fullName: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+    name: GetRenderingExpandPixels
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+    name: GetRenderingExpandPixels
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
@@ -8735,6 +8980,20 @@ references:
   name: VirtualisationInflated
   nameWithType: SkiaControl.VirtualisationInflated
   fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflated
+- uid: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_VirtualisationInflatedRatioProperty
+  name: VirtualisationInflatedRatioProperty
+  nameWithType: SkiaControl.VirtualisationInflatedRatioProperty
+  fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+- uid: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
+  commentId: P:DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_VirtualisationInflatedRatio
+  name: VirtualisationInflatedRatio
+  nameWithType: SkiaControl.VirtualisationInflatedRatio
+  fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
 - uid: DrawnUi.Draw.SkiaControl.DefaultBlendMode
   commentId: F:DrawnUi.Draw.SkiaControl.DefaultBlendMode
   parent: DrawnUi.Draw.SkiaControl
@@ -11421,6 +11680,13 @@ references:
   name: Tapped
   nameWithType: SkiaControl.Tapped
   fullName: DrawnUi.Draw.SkiaControl.Tapped
+- uid: DrawnUi.Draw.SkiaControl.LongPressing
+  commentId: E:DrawnUi.Draw.SkiaControl.LongPressing
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LongPressing
+  name: LongPressing
+  nameWithType: SkiaControl.LongPressing
+  fullName: DrawnUi.Draw.SkiaControl.LongPressing
 - uid: DrawnUi.Draw.SkiaControl.ConsumeGestures
   commentId: E:DrawnUi.Draw.SkiaControl.ConsumeGestures
   parent: DrawnUi.Draw.SkiaControl
@@ -14987,13 +15253,13 @@ references:
   name: BindingContextWasSet
   nameWithType: SkiaControl.BindingContextWasSet
   fullName: DrawnUi.Draw.SkiaControl.BindingContextWasSet
-- uid: DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
-  commentId: P:DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+- uid: DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
+  commentId: P:DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BindingsContextCacheWasRendered
-  name: BindingsContextCacheWasRendered
-  nameWithType: SkiaControl.BindingsContextCacheWasRendered
-  fullName: DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExistingCacheWasRendered
+  name: ExistingCacheWasRendered
+  nameWithType: SkiaControl.ExistingCacheWasRendered
+  fullName: DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
 - uid: DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   commentId: M:DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   parent: DrawnUi.Draw.SkiaControl
@@ -23771,6 +24037,46 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtokensource
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(System.Nullable{SkiaSharp.SKPoint})
+  commentId: M:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  name: BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  nameWithType: FluentExtensions.BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1
   commentId: M:DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.StaticResourcesExtensions
@@ -30086,6 +30392,52 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtokensource
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  commentId: M:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  name: BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  nameWithType: FluentExtensions.BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions
+  commentId: T:DrawnUi.Draw.FluentExtensions
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FluentExtensions.html
+  name: FluentExtensions
+  nameWithType: FluentExtensions
+  fullName: DrawnUi.Draw.FluentExtensions
 - uid: DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   href: DrawnUi.Draw.StaticResourcesExtensions.html#DrawnUi_Draw_StaticResourcesExtensions_FindParentByType__1_DrawnUi_Draw_SkiaControl_
@@ -30268,13 +30620,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions
-  commentId: T:DrawnUi.Draw.FluentExtensions
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.FluentExtensions.html
-  name: FluentExtensions
-  nameWithType: FluentExtensions
-  fullName: DrawnUi.Draw.FluentExtensions
 - uid: DrawnUi.Draw.FluentExtensions.Adapt``1(``0,System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.Adapt``1(``0,System.Action{``0})
   isExternal: true

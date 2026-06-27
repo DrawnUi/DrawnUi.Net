@@ -17,11 +17,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IPostRendererEffect
-    path: ../src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -50,11 +50,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Render
-    path: ../src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -79,11 +79,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseBackground
-    path: ../src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -110,11 +110,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AquiredBackground
-    path: ../src/Shared/Features/Effects/ISkiaPostRendererEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ISkiaPostRendererEffect.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui

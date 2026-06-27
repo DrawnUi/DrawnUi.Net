@@ -15,11 +15,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DiagnosticData
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -52,11 +52,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LayersSaved
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 55
   assemblies:
   - DrawnUi.Maui

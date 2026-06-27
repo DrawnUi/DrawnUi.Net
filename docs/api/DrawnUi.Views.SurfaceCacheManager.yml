@@ -18,11 +18,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SurfaceCacheManager
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -55,11 +55,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -87,11 +87,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSurface
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -123,11 +123,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnSurface
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -152,11 +152,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 123
   assemblies:
   - DrawnUi.Maui

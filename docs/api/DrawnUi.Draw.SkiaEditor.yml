@@ -12,6 +12,8 @@ items:
   - DrawnUi.Draw.SkiaEditor.ActionSearch
   - DrawnUi.Draw.SkiaEditor.ActionSend
   - DrawnUi.Draw.SkiaEditor.ApplyKeyboardType
+  - DrawnUi.Draw.SkiaEditor.AutoHeight
+  - DrawnUi.Draw.SkiaEditor.AutoHeightProperty
   - DrawnUi.Draw.SkiaEditor.CanShowCursor
   - DrawnUi.Draw.SkiaEditor.CanShowCursorProperty
   - DrawnUi.Draw.SkiaEditor.CommandOnFocusChanged
@@ -23,6 +25,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.CopySelection
   - DrawnUi.Draw.SkiaEditor.CreateControl
   - DrawnUi.Draw.SkiaEditor.CreateCursor
+  - DrawnUi.Draw.SkiaEditor.CreateDefaultContent
   - DrawnUi.Draw.SkiaEditor.CreateLabel
   - DrawnUi.Draw.SkiaEditor.CreatePlaceholderLabel
   - DrawnUi.Draw.SkiaEditor.Cursor
@@ -107,6 +110,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.SetFocusInternal(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.SetFocusNative(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.SetSelection(System.Int32,System.Int32)
+  - DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter
   - DrawnUi.Draw.SkiaEditor.SoftLineBreakChar
   - DrawnUi.Draw.SkiaEditor.Submit
   - DrawnUi.Draw.SkiaEditor.Text
@@ -118,6 +122,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.TextProperty
   - DrawnUi.Draw.SkiaEditor.TextSubmitted
   - DrawnUi.Draw.SkiaEditor.TimerUpdateParentCursorPosition
+  - DrawnUi.Draw.SkiaEditor.UpdateCursorStyle
   - DrawnUi.Draw.SkiaEditor.UpdateCursorVisibility
   - DrawnUi.Draw.SkiaEditor.UpdateLabel
   - DrawnUi.Draw.SkiaEditor.UpdateNativePosition
@@ -131,6 +136,7 @@ items:
   - DrawnUi.Draw.SkiaEditor._placeholderLabel
   - DrawnUi.Draw.SkiaEditor._scroll
   - DrawnUi.Draw.SkiaEditor._selectionControl
+  - DrawnUi.Draw.SkiaEditor._spuriousDownBlockUntilMs
   - DrawnUi.Draw.SkiaEditor._suppressImmediateCursorMove
   langs:
   - csharp
@@ -141,15 +147,22 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaEditor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 7
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 12
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Drawn entry, support number of lines and other.
+
+    Can customize cursor etc.
+
+    Default cache SkiaCacheType.Operations is set automatically in constructor.
+  example: []
   syntax:
     content: 'public class SkiaEditor : SkiaShape, INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList<IView>, ICollection<IView>, IEnumerable<IView>, IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener'
     content.vb: Public Class SkiaEditor Inherits SkiaShape Implements INotifyPropertyChanged, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IVisualElementController, IElementController, IView, ITransform, IElement, IVisualTreeElement, IContainer, IList(Of IView), ICollection(Of IView), IEnumerable(Of IView), IEnumerable, ISkiaAccessibilityNode, IHasAfterEffects, ISkiaDisposable, ISkiaGridLayout, ISkiaLayout, ISkiaControl, IDrawnBase, ICanBeUpdatedWithContext, ICanBeUpdated, ILayoutInsideViewport, IInsideViewport, IVisibilityAware, IDisposable, ISkiaGestureListener
@@ -285,9 +298,14 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureStackTemplated(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.MeasureStack(SkiaSharp.SKRect,System.Single,DrawnUi.Draw.LayoutStructure,System.Boolean,DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl[])
   - DrawnUi.Draw.SkiaLayout.OnBeforeDrawingVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack})
+  - DrawnUi.Draw.SkiaLayout.DebugAssertStructure
+  - DrawnUi.Draw.SkiaLayout.DebugTraceIndex
+  - DrawnUi.Draw.SkiaLayout.IsTraced(System.Int32)
+  - DrawnUi.Draw.SkiaLayout.TraceIdx(System.Int32,System.String,System.String)
   - DrawnUi.Draw.SkiaLayout.OnAfterDrawingVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack})
   - DrawnUi.Draw.SkiaLayout.GetStackChildDrawRect(System.Int32,System.Single,System.Single,DrawnUi.Draw.ControlInStack)
   - DrawnUi.Draw.SkiaLayout.DrawStack(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure)
+  - DrawnUi.Draw.SkiaLayout.DrawStackVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack},System.Boolean,DrawnUi.Draw.ScaledRect,System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect},System.Boolean@)
   - DrawnUi.Draw.SkiaLayout.OnScaleChanged
   - DrawnUi.Draw.SkiaLayout.PreArrange(SkiaSharp.SKRect,System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaLayout.IsGestureForChild(DrawnUi.Draw.SkiaControlWithRect,SkiaSharp.SKPoint)
@@ -353,6 +371,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.InvalidateByChild(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaLayout.WillDrawFromFreshItemssSource
   - DrawnUi.Draw.SkiaLayout.WillMeasureFromFreshItemssSource
+  - DrawnUi.Draw.SkiaLayout.UpdateByChild(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaLayout.DrawViews(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.IsStack
   - DrawnUi.Draw.SkiaLayout.MeasureItemsStrategyProperty
@@ -371,6 +390,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.ApplyItemsSource
   - DrawnUi.Draw.SkiaLayout.ResetScroll
   - DrawnUi.Draw.SkiaLayout.ShouldPreserveStructureOnCollectionChange(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  - DrawnUi.Draw.SkiaLayout.IsFullCollectionReplace(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   - DrawnUi.Draw.SkiaLayout.OnItemsSourceCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   - DrawnUi.Draw.SkiaLayout.OnItemsSourceChangesApplied
   - DrawnUi.Draw.SkiaLayout.ItemsSourceChangesApplied
@@ -415,9 +435,14 @@ items:
   - DrawnUi.Draw.SkiaLayout.UpdateSizeChangedHandlers(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   - DrawnUi.Draw.SkiaLayout.Invalidate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   - DrawnUi.Draw.SkiaLayout.UpdateRowColumnBindingContexts
-  - DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  - DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
+  - DrawnUi.Draw.SkiaLayout.ParentViewport
+  - DrawnUi.Draw.SkiaLayout.SuppressLoadMore
+  - DrawnUi.Draw.SkiaLayout.MeasurementApplied
   - DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect)
+  - DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
   - DrawnUi.Draw.SkiaLayout.IsViewportAtEndOfMeasuredContent(DrawnUi.Draw.ScaledRect)
+  - DrawnUi.Draw.SkiaLayout.IsViewportAtStartOfMeasuredContent(DrawnUi.Draw.ScaledRect)
   - DrawnUi.Draw.SkiaLayout.IsBackgroundMeasuring
   - DrawnUi.Draw.SkiaLayout.BackgroundMeasurementProgress
   - DrawnUi.Draw.SkiaLayout.TotalMeasuredItems
@@ -426,25 +451,43 @@ items:
   - DrawnUi.Draw.SkiaLayout.FirstVisibleIndex
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndex
   - DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
+  - DrawnUi.Draw.SkiaLayout.BackgroundMeasurementBatchSize
+  - DrawnUi.Draw.SkiaLayout.DebugBackgroundMeasureDelayMs
+  - DrawnUi.Draw.SkiaLayout.DebugDrawMeasureBatches
+  - DrawnUi.Draw.SkiaLayout.MeasurementCacheCapacity
+  - DrawnUi.Draw.SkiaLayout.ClearMeasurementCache
   - DrawnUi.Draw.SkiaLayout.CancelBackgroundMeasurement
   - DrawnUi.Draw.SkiaLayout.RemeasureSingleItemInBackground(System.Int32)
   - DrawnUi.Draw.SkiaLayout.MeasureStamp
   - DrawnUi.Draw.SkiaLayout.MeasureList(SkiaSharp.SKRect,System.Single)
-  - DrawnUi.Draw.SkiaLayout.NeedMeasure
   - DrawnUi.Draw.SkiaLayout.ApplyStructureChanges
+  - DrawnUi.Draw.SkiaLayout.ApplyBackgroundMeasurementChange(DrawnUi.Draw.SkiaLayout.StructureChange)
+  - DrawnUi.Draw.SkiaLayout.HasPendingStructureRebase
+  - DrawnUi.Draw.SkiaLayout.HeadInsertInFlight
+  - DrawnUi.Draw.SkiaLayout.HasPendingStructureChanges
+  - DrawnUi.Draw.SkiaLayout.CommitPendingStructureRebase
+  - DrawnUi.Draw.SkiaLayout.OnHeadInsertCommitted
+  - DrawnUi.Draw.SkiaLayout.HeadRemoveInFlight
+  - DrawnUi.Draw.SkiaLayout.OnContentTranslatedVertically(System.Single)
+  - DrawnUi.Draw.SkiaLayout.OnStructureChanged
   - DrawnUi.Draw.SkiaLayout.ApplyResetChange
+  - DrawnUi.Draw.SkiaLayout.ResetMeasurementForReplace
   - DrawnUi.Draw.SkiaLayout.MeasureSingleItem(System.Int32,SkiaSharp.SKRect,System.Single,System.Threading.CancellationToken,System.Boolean)
   - DrawnUi.Draw.SkiaLayout.DrawList(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure)
   - DrawnUi.Draw.SkiaLayout.EstimatedTotalItems
   - DrawnUi.Draw.SkiaLayout.GetMeasuredContentEnd
+  - DrawnUi.Draw.SkiaLayout.GetIndexAtContentY(System.Double,System.Single@,System.Single@)
   - DrawnUi.Draw.SkiaLayout.GetEstimatedContentSize(System.Single)
   - DrawnUi.Draw.SkiaLayout.MeasureAdditionalItems(System.Int32,System.Int32,System.Single)
+  - DrawnUi.Draw.SkiaLayout.GetAverageItemHeightPixels(System.Single)
+  - DrawnUi.Draw.SkiaLayout.GetMinItemHeightPixels(System.Single)
+  - DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
   - DrawnUi.Draw.SkiaLayout.MeasureWrap(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.PropagateVisibilityChanged(System.Boolean)
+  - DrawnUi.Draw.SkiaLayout.GetStackStructure
+  - DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
   - DrawnUi.Draw.SkiaLayout.StackStructure
   - DrawnUi.Draw.SkiaLayout.StackStructureMeasured
-  - DrawnUi.Draw.SkiaLayout.LatestStackStructure
-  - DrawnUi.Draw.SkiaLayout.LatestMeasuredStackStructure
   - DrawnUi.Draw.SkiaLayout.ApplyStackMeasureResult
   - DrawnUi.Draw.SkiaLayout.MeasureAndArrangeCell(SkiaSharp.SKRect,DrawnUi.Draw.ControlInStack,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.LayoutCell(DrawnUi.Draw.ScaledSize,DrawnUi.Draw.ControlInStack,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,System.Single)
@@ -468,7 +511,13 @@ items:
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
   - DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
+  - DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
+  - DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  - DrawnUi.Draw.SkiaControl.CacheSharing
   - DrawnUi.Draw.SkiaControl.AutoCacheProperty
   - DrawnUi.Draw.SkiaControl.AutoCache
   - DrawnUi.Draw.SkiaControl.UseCacheProperty
@@ -508,11 +557,15 @@ items:
   - DrawnUi.Draw.SkiaControl.GetCacheRecordingArea(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.GetCacheArea(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.DrawUsingRenderObject(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.DrawDirectInternal(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.CreateRenderingObjectAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Action{DrawnUi.Draw.DrawingContext})
   - DrawnUi.Draw.SkiaControl.AttachEffects
   - DrawnUi.Draw.SkiaControl.OnVisualEffectsChanged
+  - DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  - DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  - DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
   - DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
   - DrawnUi.Draw.SkiaControl.EffectsState
   - DrawnUi.Draw.SkiaControl.EffectRenderers
@@ -530,7 +583,6 @@ items:
   - DrawnUi.Draw.SkiaControl.InvalidateViewport
   - DrawnUi.Draw.SkiaControl.DirtyChildrenTracker
   - DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
-  - DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   - DrawnUi.Draw.SkiaControl.Initialized
   - DrawnUi.Draw.SkiaControl.Destroyed
@@ -571,6 +623,8 @@ items:
   - DrawnUi.Draw.SkiaControl.Virtualisation
   - DrawnUi.Draw.SkiaControl.VirtualisationInflatedProperty
   - DrawnUi.Draw.SkiaControl.VirtualisationInflated
+  - DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  - DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
   - DrawnUi.Draw.SkiaControl.DefaultBlendMode
   - DrawnUi.Draw.SkiaControl.IsVisibleInViewTree
   - DrawnUi.Draw.SkiaControl.GetPositionOnCanvasInPoints
@@ -584,7 +638,6 @@ items:
   - DrawnUi.Draw.SkiaControl.CanDraw
   - DrawnUi.Draw.SkiaControl.SkipRendering
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
-  - DrawnUi.Draw.SkiaControl.CreateDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -649,6 +702,7 @@ items:
   - DrawnUi.Draw.SkiaControl.IsGestureInside(DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.OnGestures
   - DrawnUi.Draw.SkiaControl.Tapped
+  - DrawnUi.Draw.SkiaControl.LongPressing
   - DrawnUi.Draw.SkiaControl.ConsumeGestures
   - DrawnUi.Draw.SkiaControl.OnChildTapped(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.GetGesturePositionInsideChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -853,7 +907,7 @@ items:
   - DrawnUi.Draw.SkiaControl.SetInheritedBindingContext(System.Object)
   - DrawnUi.Draw.SkiaControl.ApplyingBindingContext
   - DrawnUi.Draw.SkiaControl.BindingContextWasSet
-  - DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+  - DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
   - DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   - DrawnUi.Draw.SkiaControl.MeasureInternal(DrawnUi.Draw.MeasureRequest)
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
@@ -937,6 +991,7 @@ items:
   - DrawnUi.Draw.SkiaControl.IsSimpleRectangle(SkiaSharp.SKPath)
   - DrawnUi.Draw.SkiaControl.ClipSmart(SkiaSharp.SKCanvas,SkiaSharp.SKPath,SkiaSharp.SKClipOperation)
   - DrawnUi.Draw.SkiaControl.ShouldClipAntialiased
+  - DrawnUi.Draw.SkiaControl.NeedMeasure
   - DrawnUi.Draw.SkiaControl.SafeAction(System.Action,System.Int64)
   - DrawnUi.Draw.SkiaControl.PostDrawAction(System.Action)
   - DrawnUi.Draw.SkiaControl.NeedRemeasuring
@@ -1224,6 +1279,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.AnimateExtensions.Translate(System.Numerics.Vector2,System.Single,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.DrawnExtensions.AnimateRangeAsync(System.Action{System.Double},System.Double,System.Double,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.DrawnExtensions.BackgroundColorToAsync(Microsoft.Maui.Graphics.Color,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
+  - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(System.Nullable{SkiaSharp.SKPoint})
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.Adapt``1(System.Action{DrawnUi.Draw.SkiaEditor})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.AssignNative``1(DrawnUi.Draw.SkiaEditor@)
@@ -1330,12 +1386,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 9
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1346,6 +1402,40 @@ items:
   nameWithType.vb: SkiaEditor.New()
   fullName.vb: DrawnUi.Draw.SkiaEditor.New()
   name.vb: New()
+- uid: DrawnUi.Draw.SkiaEditor.CreateDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaEditor.CreateDefaultContent
+  id: CreateDefaultContent
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: CreateDefaultContent()
+  nameWithType: SkiaEditor.CreateDefaultContent()
+  fullName: DrawnUi.Draw.SkiaEditor.CreateDefaultContent()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: CreateDefaultContent
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Called by InitializeDefaultContent, can be used by controls to create default content for different ControlStyles. This is needed for example for MAUI controls to work with XAML without extra code.
+
+    After the call InitializeDefaultContent with set DefaultContentCreated = true;
+
+    You don't need to call SkiaControl base.CreateDefaultContent it's empty.
+  example: []
+  syntax:
+    content: protected override void CreateDefaultContent()
+    content.vb: Protected Overrides Sub CreateDefaultContent()
+  overridden: DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  overload: DrawnUi.Draw.SkiaEditor.CreateDefaultContent*
 - uid: DrawnUi.Draw.SkiaEditor.WillClipBounds
   commentId: P:DrawnUi.Draw.SkiaEditor.WillClipBounds
   id: WillClipBounds
@@ -1359,12 +1449,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillClipBounds
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 14
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 24
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1391,12 +1481,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWillDisposeWithChildren
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 16
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 26
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1423,12 +1513,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextChanged
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 31
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1452,12 +1542,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusChanged
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 36
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1481,12 +1571,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorMoved
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 41
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 51
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1510,12 +1600,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextSubmitted
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 46
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 56
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1539,12 +1629,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scroll
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 52
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 62
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1566,12 +1656,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _contentLayer
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 53
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 63
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1593,12 +1683,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _selectionControl
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 54
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1620,12 +1710,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _placeholderLabel
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 55
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1647,12 +1737,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ParagraphBreakChar
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 56
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 66
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1674,12 +1764,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SoftLineBreakChar
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 57
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1701,12 +1791,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateLabel
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 84
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 94
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1714,6 +1804,32 @@ items:
     content: public virtual void UpdateLabel()
     content.vb: Public Overridable Sub UpdateLabel()
   overload: DrawnUi.Draw.SkiaEditor.UpdateLabel*
+- uid: DrawnUi.Draw.SkiaEditor.UpdateCursorStyle
+  commentId: M:DrawnUi.Draw.SkiaEditor.UpdateCursorStyle
+  id: UpdateCursorStyle
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: UpdateCursorStyle()
+  nameWithType: SkiaEditor.UpdateCursorStyle()
+  fullName: DrawnUi.Draw.SkiaEditor.UpdateCursorStyle()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: UpdateCursorStyle
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 156
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: protected virtual void UpdateCursorStyle()
+    content.vb: Protected Overridable Sub UpdateCursorStyle()
+  overload: DrawnUi.Draw.SkiaEditor.UpdateCursorStyle*
 - uid: DrawnUi.Draw.SkiaEditor.UpdatePlaceholder
   commentId: M:DrawnUi.Draw.SkiaEditor.UpdatePlaceholder
   id: UpdatePlaceholder
@@ -1727,12 +1843,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdatePlaceholder
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 138
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 164
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1753,12 +1869,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCreatingLabel
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 165
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1784,12 +1900,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreatePlaceholderLabel
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 170
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 196
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1812,12 +1928,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateLabel
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 182
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 208
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1840,12 +1956,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateCursor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 196
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 223
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1868,12 +1984,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSingleLineHeightPts
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 209
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1898,12 +2014,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateControl
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 245
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1924,12 +2040,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Label
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 294
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1953,12 +2069,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Cursor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 296
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 324
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1982,12 +2098,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 302
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 330
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2020,12 +2136,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NormalizeEditorLineBreaks
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 338
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 366
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2054,12 +2170,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetEditorBreakText
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 346
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 374
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2088,12 +2204,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEditorBreak
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 349
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 377
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2122,12 +2238,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsTrailingEditorBreak
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 352
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 380
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2156,12 +2272,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReplaceEditorBreaksWithSpaces
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 355
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 383
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2190,12 +2306,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasuring
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 456
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 491
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2235,12 +2351,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetContentSizeForAutosizeInPixels
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 461
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 496
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2267,12 +2383,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Submit
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 478
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 513
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2295,12 +2411,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteSubmit
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 490
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 526
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2327,12 +2443,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsMultiline
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 499
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 535
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2356,12 +2472,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnFocusChanged
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 507
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 543
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2400,12 +2516,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetLineGlyphs
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 530
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 566
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2436,12 +2552,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCursorPosition
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 541
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 577
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2464,6 +2580,33 @@ items:
   nameWithType.vb: SkiaEditor.GetCursorPosition(Single, Single)
   fullName.vb: DrawnUi.Draw.SkiaEditor.GetCursorPosition(Single, Single)
   name.vb: GetCursorPosition(Single, Single)
+- uid: DrawnUi.Draw.SkiaEditor._spuriousDownBlockUntilMs
+  commentId: F:DrawnUi.Draw.SkiaEditor._spuriousDownBlockUntilMs
+  id: _spuriousDownBlockUntilMs
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: _spuriousDownBlockUntilMs
+  nameWithType: SkiaEditor._spuriousDownBlockUntilMs
+  fullName: DrawnUi.Draw.SkiaEditor._spuriousDownBlockUntilMs
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: _spuriousDownBlockUntilMs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 638
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: protected long _spuriousDownBlockUntilMs
+    return:
+      type: System.Int64
+    content.vb: Protected _spuriousDownBlockUntilMs As Long
 - uid: DrawnUi.Draw.SkiaEditor.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaEditor.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   id: ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -2477,12 +2620,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessGestures
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 600
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 640
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2512,12 +2655,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocusInternal
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 733
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 781
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2544,12 +2687,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _suppressImmediateCursorMove
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 763
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 811
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2573,12 +2716,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveInternalCursor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 765
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 813
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2599,12 +2742,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectAll
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 777
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 826
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2625,12 +2768,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateCursorVisibility
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 788
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 839
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2653,12 +2796,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorVisible
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 958
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1014
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2685,12 +2828,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveCursorTo
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 977
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1034
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2723,12 +2866,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCursorMoved
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1045
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2751,12 +2894,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCursorLine
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1068
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1125
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2781,12 +2924,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocus
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1092
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2813,12 +2956,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandleVerticalArrow
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1116
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2845,12 +2988,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnControlCreated
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1158
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2871,12 +3014,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorPositionProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1165
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2898,12 +3041,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorPosition
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1179
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1232
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2927,12 +3070,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TimerUpdateParentCursorPosition
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1188
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1241
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2954,12 +3097,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorPositionWithDelay
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1196
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1249
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2995,12 +3138,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetSelection
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1213
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1266
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3029,12 +3172,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetWordBoundaries
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1221
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1274
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3063,12 +3206,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectWord
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1241
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3095,12 +3238,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSelectedText
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1252
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1305
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3123,12 +3266,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeleteSelection
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1261
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1314
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3149,12 +3292,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InsertAtCursor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1273
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1326
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3181,12 +3324,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CutSelection
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1287
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3207,12 +3350,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CopySelection
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1307
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1361
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3233,12 +3376,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PasteFromClipboard
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1314
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1368
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3259,12 +3402,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1339
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1393
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3288,12 +3431,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLayoutChanged
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1346
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1400
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3317,12 +3460,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnTypeProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1367
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1433
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3344,15 +3487,24 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnType
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1373
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1445
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Return key action. On soft keyboards selects the action key label.
+
+    On a multiline editor, <xref href="Microsoft.Maui.ReturnType.Send" data-throw-if-not-resolved="false"></xref> changes Enter semantics:
+
+    Enter submits, Shift+Enter inserts a line break. All other values keep
+
+    Enter inserting a line break.
+  example: []
   syntax:
     content: public ReturnType ReturnType { get; set; }
     parameters: []
@@ -3360,6 +3512,40 @@ items:
       type: Microsoft.Maui.ReturnType
     content.vb: Public Property ReturnType As ReturnType
   overload: DrawnUi.Draw.SkiaEditor.ReturnType*
+- uid: DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter
+  commentId: P:DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter
+  id: ShouldSubmitOnEnter
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: ShouldSubmitOnEnter
+  nameWithType: SkiaEditor.ShouldSubmitOnEnter
+  fullName: DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ShouldSubmitOnEnter
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1455
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    True when an unmodified Enter should submit instead of inserting a line break:
+
+    multiline editor with <xref href="Microsoft.Maui.ReturnType.Send" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: protected bool ShouldSubmitOnEnter { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected ReadOnly Property ShouldSubmitOnEnter As Boolean
+  overload: DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter*
 - uid: DrawnUi.Draw.SkiaEditor.KeyboardTypeProperty
   commentId: F:DrawnUi.Draw.SkiaEditor.KeyboardTypeProperty
   id: KeyboardTypeProperty
@@ -3373,12 +3559,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardTypeProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1380
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1457
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3400,12 +3586,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardType
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1387
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1464
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3429,12 +3615,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPasswordProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1393
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1470
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3456,12 +3642,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPassword
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1407
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1484
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3485,12 +3671,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmitProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1413
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1490
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3512,12 +3698,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnSubmit
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1419
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1496
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3541,12 +3727,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChangedProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1425
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1502
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3568,12 +3754,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnFocusChanged
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1431
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1508
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3597,12 +3783,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChangedProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1437
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1514
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3624,12 +3810,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommandOnTextChanged
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1443
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1520
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3653,12 +3839,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseMarkdownProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1449
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1526
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3680,12 +3866,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseMarkdown
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1465
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1542
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3709,12 +3895,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanShowCursorProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1472
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1549
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3736,12 +3922,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanShowCursor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1478
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1555
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3765,12 +3951,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocusedProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1484
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1561
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3792,12 +3978,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsFocused
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1500
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1602
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3821,12 +4007,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1514
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1616
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3848,12 +4034,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Text
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1523
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1625
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3877,12 +4063,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSizeProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1538
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1648
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3904,12 +4090,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSize
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1542
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1652
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3933,12 +4119,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalTextAlignmentProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1548
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1658
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3960,12 +4146,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HorizontalTextAlignment
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1555
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1665
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3989,12 +4175,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalTextAlignmentProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1561
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1671
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4016,12 +4202,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VerticalTextAlignment
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1568
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1678
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4045,12 +4231,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LineHeightProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1575
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1685
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4072,12 +4258,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LineHeight
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1582
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1692
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4101,12 +4287,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamilyProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1588
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1698
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4128,12 +4314,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontFamily
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1590
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1700
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4157,12 +4343,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColorProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1596
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1706
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4184,12 +4370,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextColor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1600
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1710
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4213,12 +4399,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeightProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1606
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1716
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4240,12 +4426,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontWeight
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1613
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1723
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4269,12 +4455,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextGradientProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1620
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1730
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4296,12 +4482,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TextGradient
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1627
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1737
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4325,12 +4511,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorColorProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1633
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1743
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4352,12 +4538,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorColor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1640
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1750
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4381,12 +4567,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorGradientProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1647
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1757
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4408,12 +4594,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CursorGradient
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1655
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1765
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4437,12 +4623,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLengthProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1662
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1772
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4464,12 +4650,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLength
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1677
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1787
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4493,12 +4679,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColorProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1683
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1793
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4520,12 +4706,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1690
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1800
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4549,12 +4735,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderTextProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1696
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1806
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4576,12 +4762,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderText
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1703
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1813
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4605,12 +4791,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderColorProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1709
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1819
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4632,12 +4818,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderColor
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1716
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1826
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4661,12 +4847,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignmentProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1722
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1832
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4688,12 +4874,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaceholderHorizontalAlignment
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1729
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1839
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4717,12 +4903,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLinesProperty
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1751
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1861
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4744,12 +4930,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxLines
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1753
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1863
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4760,6 +4946,69 @@ items:
       type: System.Int32
     content.vb: Public Property MaxLines As Integer
   overload: DrawnUi.Draw.SkiaEditor.MaxLines*
+- uid: DrawnUi.Draw.SkiaEditor.AutoHeightProperty
+  commentId: F:DrawnUi.Draw.SkiaEditor.AutoHeightProperty
+  id: AutoHeightProperty
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: AutoHeightProperty
+  nameWithType: SkiaEditor.AutoHeightProperty
+  fullName: DrawnUi.Draw.SkiaEditor.AutoHeightProperty
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AutoHeightProperty
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1869
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static readonly BindableProperty AutoHeightProperty
+    return:
+      type: Microsoft.Maui.Controls.BindableProperty
+    content.vb: Public Shared ReadOnly AutoHeightProperty As BindableProperty
+- uid: DrawnUi.Draw.SkiaEditor.AutoHeight
+  commentId: P:DrawnUi.Draw.SkiaEditor.AutoHeight
+  id: AutoHeight
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: AutoHeight
+  nameWithType: SkiaEditor.AutoHeight
+  fullName: DrawnUi.Draw.SkiaEditor.AutoHeight
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AutoHeight
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1877
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    When true and the editor is multiline, the visible height follows the actual number
+
+    of text lines (starting at 1) instead of always reserving MaxLines lines.
+
+    Growth stops at MaxLines, then content scrolls. Ignored when HeightRequest is set.
+  example: []
+  syntax:
+    content: public bool AutoHeight { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AutoHeight As Boolean
+  overload: DrawnUi.Draw.SkiaEditor.AutoHeight*
 - uid: DrawnUi.Draw.SkiaEditor.ActionGo
   commentId: F:DrawnUi.Draw.SkiaEditor.ActionGo
   id: ActionGo
@@ -4773,12 +5022,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionGo
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1765
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1889
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4800,12 +5049,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionNext
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1766
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1890
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4827,12 +5076,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSend
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1767
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1891
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4854,12 +5103,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionSearch
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1768
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1892
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4881,12 +5130,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActionDone
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1769
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1893
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4908,12 +5157,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetCursorPositionNative
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1776
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1900
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4942,12 +5191,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposePlatform
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1781
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1905
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4968,12 +5217,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetFocusNative
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1786
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1910
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5000,12 +5249,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateNativePosition
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1791
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1915
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5026,12 +5275,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyKeyboardType
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1796
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1920
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7706,6 +7955,106 @@ references:
     href: DrawnUi.Draw.ControlInStack.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DebugAssertStructure
+  commentId: F:DrawnUi.Draw.SkiaLayout.DebugAssertStructure
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DebugAssertStructure
+  name: DebugAssertStructure
+  nameWithType: SkiaLayout.DebugAssertStructure
+  fullName: DrawnUi.Draw.SkiaLayout.DebugAssertStructure
+- uid: DrawnUi.Draw.SkiaLayout.DebugTraceIndex
+  commentId: F:DrawnUi.Draw.SkiaLayout.DebugTraceIndex
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DebugTraceIndex
+  name: DebugTraceIndex
+  nameWithType: SkiaLayout.DebugTraceIndex
+  fullName: DrawnUi.Draw.SkiaLayout.DebugTraceIndex
+- uid: DrawnUi.Draw.SkiaLayout.IsTraced(System.Int32)
+  commentId: M:DrawnUi.Draw.SkiaLayout.IsTraced(System.Int32)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsTraced_System_Int32_
+  name: IsTraced(int)
+  nameWithType: SkiaLayout.IsTraced(int)
+  fullName: DrawnUi.Draw.SkiaLayout.IsTraced(int)
+  nameWithType.vb: SkiaLayout.IsTraced(Integer)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.IsTraced(Integer)
+  name.vb: IsTraced(Integer)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.IsTraced(System.Int32)
+    name: IsTraced
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsTraced_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.IsTraced(System.Int32)
+    name: IsTraced
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsTraced_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.TraceIdx(System.Int32,System.String,System.String)
+  commentId: M:DrawnUi.Draw.SkiaLayout.TraceIdx(System.Int32,System.String,System.String)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TraceIdx_System_Int32_System_String_System_String_
+  name: TraceIdx(int, string, string)
+  nameWithType: SkiaLayout.TraceIdx(int, string, string)
+  fullName: DrawnUi.Draw.SkiaLayout.TraceIdx(int, string, string)
+  nameWithType.vb: SkiaLayout.TraceIdx(Integer, String, String)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.TraceIdx(Integer, String, String)
+  name.vb: TraceIdx(Integer, String, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.TraceIdx(System.Int32,System.String,System.String)
+    name: TraceIdx
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TraceIdx_System_Int32_System_String_System_String_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.TraceIdx(System.Int32,System.String,System.String)
+    name: TraceIdx
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TraceIdx_System_Int32_System_String_System_String_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.OnAfterDrawingVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack})
   commentId: M:DrawnUi.Draw.SkiaLayout.OnAfterDrawingVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack})
   parent: DrawnUi.Draw.SkiaLayout
@@ -7868,6 +8217,129 @@ references:
   - uid: DrawnUi.Draw.LayoutStructure
     name: LayoutStructure
     href: DrawnUi.Draw.LayoutStructure.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.DrawStackVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack},System.Boolean,DrawnUi.Draw.ScaledRect,System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect},System.Boolean@)
+  commentId: M:DrawnUi.Draw.SkiaLayout.DrawStackVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack},System.Boolean,DrawnUi.Draw.ScaledRect,System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect},System.Boolean@)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DrawStackVisibleChildren_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_LayoutStructure_System_Collections_Generic_List_DrawnUi_Draw_ControlInStack__System_Boolean_DrawnUi_Draw_ScaledRect_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__System_Boolean__
+  name: DrawStackVisibleChildren(DrawingContext, LayoutStructure, List<ControlInStack>, bool, ScaledRect, List<SkiaControlWithRect>, ref bool)
+  nameWithType: SkiaLayout.DrawStackVisibleChildren(DrawingContext, LayoutStructure, List<ControlInStack>, bool, ScaledRect, List<SkiaControlWithRect>, ref bool)
+  fullName: DrawnUi.Draw.SkiaLayout.DrawStackVisibleChildren(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.LayoutStructure, System.Collections.Generic.List<DrawnUi.Draw.ControlInStack>, bool, DrawnUi.Draw.ScaledRect, System.Collections.Generic.List<DrawnUi.Draw.SkiaControlWithRect>, ref bool)
+  nameWithType.vb: SkiaLayout.DrawStackVisibleChildren(DrawingContext, LayoutStructure, List(Of ControlInStack), Boolean, ScaledRect, List(Of SkiaControlWithRect), Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.DrawStackVisibleChildren(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.LayoutStructure, System.Collections.Generic.List(Of DrawnUi.Draw.ControlInStack), Boolean, DrawnUi.Draw.ScaledRect, System.Collections.Generic.List(Of DrawnUi.Draw.SkiaControlWithRect), Boolean)
+  name.vb: DrawStackVisibleChildren(DrawingContext, LayoutStructure, List(Of ControlInStack), Boolean, ScaledRect, List(Of SkiaControlWithRect), Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.DrawStackVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack},System.Boolean,DrawnUi.Draw.ScaledRect,System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect},System.Boolean@)
+    name: DrawStackVisibleChildren
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DrawStackVisibleChildren_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_LayoutStructure_System_Collections_Generic_List_DrawnUi_Draw_ControlInStack__System_Boolean_DrawnUi_Draw_ScaledRect_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__System_Boolean__
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LayoutStructure
+    name: LayoutStructure
+    href: DrawnUi.Draw.LayoutStructure.html
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.ControlInStack
+    name: ControlInStack
+    href: DrawnUi.Draw.ControlInStack.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.DrawStackVisibleChildren(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.LayoutStructure,System.Collections.Generic.List{DrawnUi.Draw.ControlInStack},System.Boolean,DrawnUi.Draw.ScaledRect,System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect},System.Boolean@)
+    name: DrawStackVisibleChildren
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DrawStackVisibleChildren_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_LayoutStructure_System_Collections_Generic_List_DrawnUi_Draw_ControlInStack__System_Boolean_DrawnUi_Draw_ScaledRect_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__System_Boolean__
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LayoutStructure
+    name: LayoutStructure
+    href: DrawnUi.Draw.LayoutStructure.html
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.ControlInStack
+    name: ControlInStack
+    href: DrawnUi.Draw.ControlInStack.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.OnScaleChanged
   commentId: M:DrawnUi.Draw.SkiaLayout.OnScaleChanged
@@ -8998,6 +9470,31 @@ references:
   name: WillMeasureFromFreshItemssSource
   nameWithType: SkiaLayout.WillMeasureFromFreshItemssSource
   fullName: DrawnUi.Draw.SkiaLayout.WillMeasureFromFreshItemssSource
+- uid: DrawnUi.Draw.SkiaLayout.UpdateByChild(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.SkiaLayout.UpdateByChild(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_UpdateByChild_DrawnUi_Draw_SkiaControl_
+  name: UpdateByChild(SkiaControl)
+  nameWithType: SkiaLayout.UpdateByChild(SkiaControl)
+  fullName: DrawnUi.Draw.SkiaLayout.UpdateByChild(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.UpdateByChild(DrawnUi.Draw.SkiaControl)
+    name: UpdateByChild
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_UpdateByChild_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.UpdateByChild(DrawnUi.Draw.SkiaControl)
+    name: UpdateByChild
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_UpdateByChild_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.DrawViews(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaLayout.DrawViews(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaLayout
@@ -9205,6 +9702,34 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.ShouldPreserveStructureOnCollectionChange(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
     name: ShouldPreserveStructureOnCollectionChange
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ShouldPreserveStructureOnCollectionChange_System_Collections_Specialized_NotifyCollectionChangedEventArgs_
+  - name: (
+  - uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+    name: NotifyCollectionChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedeventargs
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.IsFullCollectionReplace(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  commentId: M:DrawnUi.Draw.SkiaLayout.IsFullCollectionReplace(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsFullCollectionReplace_System_Collections_Specialized_NotifyCollectionChangedEventArgs_
+  name: IsFullCollectionReplace(NotifyCollectionChangedEventArgs)
+  nameWithType: SkiaLayout.IsFullCollectionReplace(NotifyCollectionChangedEventArgs)
+  fullName: DrawnUi.Draw.SkiaLayout.IsFullCollectionReplace(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.IsFullCollectionReplace(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+    name: IsFullCollectionReplace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsFullCollectionReplace_System_Collections_Specialized_NotifyCollectionChangedEventArgs_
+  - name: (
+  - uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
+    name: NotifyCollectionChangedEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedeventargs
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.IsFullCollectionReplace(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+    name: IsFullCollectionReplace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsFullCollectionReplace_System_Collections_Specialized_NotifyCollectionChangedEventArgs_
   - name: (
   - uid: System.Collections.Specialized.NotifyCollectionChangedEventArgs
     name: NotifyCollectionChangedEventArgs
@@ -10152,31 +10677,62 @@ references:
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_UpdateRowColumnBindingContexts
   - name: (
   - name: )
-- uid: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
-  commentId: M:DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+- uid: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
   parent: DrawnUi.Draw.SkiaLayout
-  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_
-  name: OnViewportWasChanged(ScaledRect)
-  nameWithType: SkiaLayout.OnViewportWasChanged(ScaledRect)
-  fullName: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_ScaledPoint_
+  name: OnViewportWasChanged(ScaledRect, ScaledPoint)
+  nameWithType: SkiaLayout.OnViewportWasChanged(ScaledRect, ScaledPoint)
+  fullName: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect, DrawnUi.Draw.ScaledPoint)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  - uid: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
     name: OnViewportWasChanged
-    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_ScaledPoint_
   - name: (
   - uid: DrawnUi.Draw.ScaledRect
     name: ScaledRect
     href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.ScaledPoint
+    name: ScaledPoint
+    href: DrawnUi.Draw.ScaledPoint.html
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  - uid: DrawnUi.Draw.SkiaLayout.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
     name: OnViewportWasChanged
-    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_ScaledPoint_
   - name: (
   - uid: DrawnUi.Draw.ScaledRect
     name: ScaledRect
     href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.ScaledPoint
+    name: ScaledPoint
+    href: DrawnUi.Draw.ScaledPoint.html
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.ParentViewport
+  commentId: P:DrawnUi.Draw.SkiaLayout.ParentViewport
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ParentViewport
+  name: ParentViewport
+  nameWithType: SkiaLayout.ParentViewport
+  fullName: DrawnUi.Draw.SkiaLayout.ParentViewport
+- uid: DrawnUi.Draw.SkiaLayout.SuppressLoadMore
+  commentId: P:DrawnUi.Draw.SkiaLayout.SuppressLoadMore
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_SuppressLoadMore
+  name: SuppressLoadMore
+  nameWithType: SkiaLayout.SuppressLoadMore
+  fullName: DrawnUi.Draw.SkiaLayout.SuppressLoadMore
+- uid: DrawnUi.Draw.SkiaLayout.MeasurementApplied
+  commentId: E:DrawnUi.Draw.SkiaLayout.MeasurementApplied
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasurementApplied
+  name: MeasurementApplied
+  nameWithType: SkiaLayout.MeasurementApplied
+  fullName: DrawnUi.Draw.SkiaLayout.MeasurementApplied
 - uid: DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect)
   commentId: M:DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect)
   parent: DrawnUi.Draw.SkiaLayout
@@ -10202,6 +10758,41 @@ references:
     name: ScaledRect
     href: DrawnUi.Draw.ScaledRect.html
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  commentId: M:DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ShouldTriggerLoadMore_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_LoadMoreDirection_
+  name: ShouldTriggerLoadMore(ScaledRect, LoadMoreDirection)
+  nameWithType: SkiaLayout.ShouldTriggerLoadMore(ScaledRect, LoadMoreDirection)
+  fullName: DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect, DrawnUi.Draw.LoadMoreDirection)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+    name: ShouldTriggerLoadMore
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ShouldTriggerLoadMore_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_LoadMoreDirection_
+  - name: (
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LoadMoreDirection
+    name: LoadMoreDirection
+    href: DrawnUi.Draw.LoadMoreDirection.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+    name: ShouldTriggerLoadMore
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ShouldTriggerLoadMore_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_LoadMoreDirection_
+  - name: (
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.LoadMoreDirection
+    name: LoadMoreDirection
+    href: DrawnUi.Draw.LoadMoreDirection.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.IsViewportAtEndOfMeasuredContent(DrawnUi.Draw.ScaledRect)
   commentId: M:DrawnUi.Draw.SkiaLayout.IsViewportAtEndOfMeasuredContent(DrawnUi.Draw.ScaledRect)
   parent: DrawnUi.Draw.SkiaLayout
@@ -10222,6 +10813,31 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.IsViewportAtEndOfMeasuredContent(DrawnUi.Draw.ScaledRect)
     name: IsViewportAtEndOfMeasuredContent
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsViewportAtEndOfMeasuredContent_DrawnUi_Draw_ScaledRect_
+  - name: (
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.IsViewportAtStartOfMeasuredContent(DrawnUi.Draw.ScaledRect)
+  commentId: M:DrawnUi.Draw.SkiaLayout.IsViewportAtStartOfMeasuredContent(DrawnUi.Draw.ScaledRect)
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsViewportAtStartOfMeasuredContent_DrawnUi_Draw_ScaledRect_
+  name: IsViewportAtStartOfMeasuredContent(ScaledRect)
+  nameWithType: SkiaLayout.IsViewportAtStartOfMeasuredContent(ScaledRect)
+  fullName: DrawnUi.Draw.SkiaLayout.IsViewportAtStartOfMeasuredContent(DrawnUi.Draw.ScaledRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.IsViewportAtStartOfMeasuredContent(DrawnUi.Draw.ScaledRect)
+    name: IsViewportAtStartOfMeasuredContent
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsViewportAtStartOfMeasuredContent_DrawnUi_Draw_ScaledRect_
+  - name: (
+  - uid: DrawnUi.Draw.ScaledRect
+    name: ScaledRect
+    href: DrawnUi.Draw.ScaledRect.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.IsViewportAtStartOfMeasuredContent(DrawnUi.Draw.ScaledRect)
+    name: IsViewportAtStartOfMeasuredContent
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_IsViewportAtStartOfMeasuredContent_DrawnUi_Draw_ScaledRect_
   - name: (
   - uid: DrawnUi.Draw.ScaledRect
     name: ScaledRect
@@ -10283,6 +10899,53 @@ references:
   name: MeasuredItemsPercentage
   nameWithType: SkiaLayout.MeasuredItemsPercentage
   fullName: DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
+- uid: DrawnUi.Draw.SkiaLayout.BackgroundMeasurementBatchSize
+  commentId: P:DrawnUi.Draw.SkiaLayout.BackgroundMeasurementBatchSize
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BackgroundMeasurementBatchSize
+  name: BackgroundMeasurementBatchSize
+  nameWithType: SkiaLayout.BackgroundMeasurementBatchSize
+  fullName: DrawnUi.Draw.SkiaLayout.BackgroundMeasurementBatchSize
+- uid: DrawnUi.Draw.SkiaLayout.DebugBackgroundMeasureDelayMs
+  commentId: F:DrawnUi.Draw.SkiaLayout.DebugBackgroundMeasureDelayMs
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DebugBackgroundMeasureDelayMs
+  name: DebugBackgroundMeasureDelayMs
+  nameWithType: SkiaLayout.DebugBackgroundMeasureDelayMs
+  fullName: DrawnUi.Draw.SkiaLayout.DebugBackgroundMeasureDelayMs
+- uid: DrawnUi.Draw.SkiaLayout.DebugDrawMeasureBatches
+  commentId: F:DrawnUi.Draw.SkiaLayout.DebugDrawMeasureBatches
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_DebugDrawMeasureBatches
+  name: DebugDrawMeasureBatches
+  nameWithType: SkiaLayout.DebugDrawMeasureBatches
+  fullName: DrawnUi.Draw.SkiaLayout.DebugDrawMeasureBatches
+- uid: DrawnUi.Draw.SkiaLayout.MeasurementCacheCapacity
+  commentId: P:DrawnUi.Draw.SkiaLayout.MeasurementCacheCapacity
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasurementCacheCapacity
+  name: MeasurementCacheCapacity
+  nameWithType: SkiaLayout.MeasurementCacheCapacity
+  fullName: DrawnUi.Draw.SkiaLayout.MeasurementCacheCapacity
+- uid: DrawnUi.Draw.SkiaLayout.ClearMeasurementCache
+  commentId: M:DrawnUi.Draw.SkiaLayout.ClearMeasurementCache
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ClearMeasurementCache
+  name: ClearMeasurementCache()
+  nameWithType: SkiaLayout.ClearMeasurementCache()
+  fullName: DrawnUi.Draw.SkiaLayout.ClearMeasurementCache()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.ClearMeasurementCache
+    name: ClearMeasurementCache
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ClearMeasurementCache
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.ClearMeasurementCache
+    name: ClearMeasurementCache
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ClearMeasurementCache
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.CancelBackgroundMeasurement
   commentId: M:DrawnUi.Draw.SkiaLayout.CancelBackgroundMeasurement
   parent: DrawnUi.Draw.SkiaLayout
@@ -10383,13 +11046,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaLayout.NeedMeasure
-  commentId: P:DrawnUi.Draw.SkiaLayout.NeedMeasure
-  parent: DrawnUi.Draw.SkiaLayout
-  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_NeedMeasure
-  name: NeedMeasure
-  nameWithType: SkiaLayout.NeedMeasure
-  fullName: DrawnUi.Draw.SkiaLayout.NeedMeasure
 - uid: DrawnUi.Draw.SkiaLayout.ApplyStructureChanges
   commentId: M:DrawnUi.Draw.SkiaLayout.ApplyStructureChanges
   parent: DrawnUi.Draw.SkiaLayout
@@ -10409,6 +11065,147 @@ references:
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ApplyStructureChanges
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.ApplyBackgroundMeasurementChange(DrawnUi.Draw.SkiaLayout.StructureChange)
+  commentId: M:DrawnUi.Draw.SkiaLayout.ApplyBackgroundMeasurementChange(DrawnUi.Draw.SkiaLayout.StructureChange)
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ApplyBackgroundMeasurementChange_DrawnUi_Draw_SkiaLayout_StructureChange_
+  name: ApplyBackgroundMeasurementChange(StructureChange)
+  nameWithType: SkiaLayout.ApplyBackgroundMeasurementChange(SkiaLayout.StructureChange)
+  fullName: DrawnUi.Draw.SkiaLayout.ApplyBackgroundMeasurementChange(DrawnUi.Draw.SkiaLayout.StructureChange)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.ApplyBackgroundMeasurementChange(DrawnUi.Draw.SkiaLayout.StructureChange)
+    name: ApplyBackgroundMeasurementChange
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ApplyBackgroundMeasurementChange_DrawnUi_Draw_SkiaLayout_StructureChange_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout.StructureChange
+    name: StructureChange
+    href: DrawnUi.Draw.SkiaLayout.StructureChange.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.ApplyBackgroundMeasurementChange(DrawnUi.Draw.SkiaLayout.StructureChange)
+    name: ApplyBackgroundMeasurementChange
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ApplyBackgroundMeasurementChange_DrawnUi_Draw_SkiaLayout_StructureChange_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaLayout.StructureChange
+    name: StructureChange
+    href: DrawnUi.Draw.SkiaLayout.StructureChange.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.HasPendingStructureRebase
+  commentId: P:DrawnUi.Draw.SkiaLayout.HasPendingStructureRebase
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_HasPendingStructureRebase
+  name: HasPendingStructureRebase
+  nameWithType: SkiaLayout.HasPendingStructureRebase
+  fullName: DrawnUi.Draw.SkiaLayout.HasPendingStructureRebase
+- uid: DrawnUi.Draw.SkiaLayout.HeadInsertInFlight
+  commentId: P:DrawnUi.Draw.SkiaLayout.HeadInsertInFlight
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_HeadInsertInFlight
+  name: HeadInsertInFlight
+  nameWithType: SkiaLayout.HeadInsertInFlight
+  fullName: DrawnUi.Draw.SkiaLayout.HeadInsertInFlight
+- uid: DrawnUi.Draw.SkiaLayout.HasPendingStructureChanges
+  commentId: P:DrawnUi.Draw.SkiaLayout.HasPendingStructureChanges
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_HasPendingStructureChanges
+  name: HasPendingStructureChanges
+  nameWithType: SkiaLayout.HasPendingStructureChanges
+  fullName: DrawnUi.Draw.SkiaLayout.HasPendingStructureChanges
+- uid: DrawnUi.Draw.SkiaLayout.CommitPendingStructureRebase
+  commentId: M:DrawnUi.Draw.SkiaLayout.CommitPendingStructureRebase
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_CommitPendingStructureRebase
+  name: CommitPendingStructureRebase()
+  nameWithType: SkiaLayout.CommitPendingStructureRebase()
+  fullName: DrawnUi.Draw.SkiaLayout.CommitPendingStructureRebase()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.CommitPendingStructureRebase
+    name: CommitPendingStructureRebase
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_CommitPendingStructureRebase
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.CommitPendingStructureRebase
+    name: CommitPendingStructureRebase
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_CommitPendingStructureRebase
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.OnHeadInsertCommitted
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnHeadInsertCommitted
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnHeadInsertCommitted
+  name: OnHeadInsertCommitted()
+  nameWithType: SkiaLayout.OnHeadInsertCommitted()
+  fullName: DrawnUi.Draw.SkiaLayout.OnHeadInsertCommitted()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnHeadInsertCommitted
+    name: OnHeadInsertCommitted
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnHeadInsertCommitted
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnHeadInsertCommitted
+    name: OnHeadInsertCommitted
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnHeadInsertCommitted
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.HeadRemoveInFlight
+  commentId: P:DrawnUi.Draw.SkiaLayout.HeadRemoveInFlight
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_HeadRemoveInFlight
+  name: HeadRemoveInFlight
+  nameWithType: SkiaLayout.HeadRemoveInFlight
+  fullName: DrawnUi.Draw.SkiaLayout.HeadRemoveInFlight
+- uid: DrawnUi.Draw.SkiaLayout.OnContentTranslatedVertically(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnContentTranslatedVertically(System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnContentTranslatedVertically_System_Single_
+  name: OnContentTranslatedVertically(float)
+  nameWithType: SkiaLayout.OnContentTranslatedVertically(float)
+  fullName: DrawnUi.Draw.SkiaLayout.OnContentTranslatedVertically(float)
+  nameWithType.vb: SkiaLayout.OnContentTranslatedVertically(Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.OnContentTranslatedVertically(Single)
+  name.vb: OnContentTranslatedVertically(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnContentTranslatedVertically(System.Single)
+    name: OnContentTranslatedVertically
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnContentTranslatedVertically_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnContentTranslatedVertically(System.Single)
+    name: OnContentTranslatedVertically
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnContentTranslatedVertically_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.OnStructureChanged
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnStructureChanged
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnStructureChanged
+  name: OnStructureChanged()
+  nameWithType: SkiaLayout.OnStructureChanged()
+  fullName: DrawnUi.Draw.SkiaLayout.OnStructureChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnStructureChanged
+    name: OnStructureChanged
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnStructureChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnStructureChanged
+    name: OnStructureChanged
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnStructureChanged
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.ApplyResetChange
   commentId: M:DrawnUi.Draw.SkiaLayout.ApplyResetChange
   parent: DrawnUi.Draw.SkiaLayout
@@ -10426,6 +11223,25 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.ApplyResetChange
     name: ApplyResetChange
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ApplyResetChange
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.ResetMeasurementForReplace
+  commentId: M:DrawnUi.Draw.SkiaLayout.ResetMeasurementForReplace
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ResetMeasurementForReplace
+  name: ResetMeasurementForReplace()
+  nameWithType: SkiaLayout.ResetMeasurementForReplace()
+  fullName: DrawnUi.Draw.SkiaLayout.ResetMeasurementForReplace()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.ResetMeasurementForReplace
+    name: ResetMeasurementForReplace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ResetMeasurementForReplace
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.ResetMeasurementForReplace
+    name: ResetMeasurementForReplace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ResetMeasurementForReplace
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.MeasureSingleItem(System.Int32,SkiaSharp.SKRect,System.Single,System.Threading.CancellationToken,System.Boolean)
@@ -10568,6 +11384,65 @@ references:
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetMeasuredContentEnd
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.GetIndexAtContentY(System.Double,System.Single@,System.Single@)
+  commentId: M:DrawnUi.Draw.SkiaLayout.GetIndexAtContentY(System.Double,System.Single@,System.Single@)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetIndexAtContentY_System_Double_System_Single__System_Single__
+  name: GetIndexAtContentY(double, out float, out float)
+  nameWithType: SkiaLayout.GetIndexAtContentY(double, out float, out float)
+  fullName: DrawnUi.Draw.SkiaLayout.GetIndexAtContentY(double, out float, out float)
+  nameWithType.vb: SkiaLayout.GetIndexAtContentY(Double, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.GetIndexAtContentY(Double, Single, Single)
+  name.vb: GetIndexAtContentY(Double, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.GetIndexAtContentY(System.Double,System.Single@,System.Single@)
+    name: GetIndexAtContentY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetIndexAtContentY_System_Double_System_Single__System_Single__
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.GetIndexAtContentY(System.Double,System.Single@,System.Single@)
+    name: GetIndexAtContentY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetIndexAtContentY_System_Double_System_Single__System_Single__
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GetEstimatedContentSize(System.Single)
   commentId: M:DrawnUi.Draw.SkiaLayout.GetEstimatedContentSize(System.Single)
   parent: DrawnUi.Draw.SkiaLayout
@@ -10654,6 +11529,135 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.GetAverageItemHeightPixels(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.GetAverageItemHeightPixels(System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetAverageItemHeightPixels_System_Single_
+  name: GetAverageItemHeightPixels(float)
+  nameWithType: SkiaLayout.GetAverageItemHeightPixels(float)
+  fullName: DrawnUi.Draw.SkiaLayout.GetAverageItemHeightPixels(float)
+  nameWithType.vb: SkiaLayout.GetAverageItemHeightPixels(Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.GetAverageItemHeightPixels(Single)
+  name.vb: GetAverageItemHeightPixels(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.GetAverageItemHeightPixels(System.Single)
+    name: GetAverageItemHeightPixels
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetAverageItemHeightPixels_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.GetAverageItemHeightPixels(System.Single)
+    name: GetAverageItemHeightPixels
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetAverageItemHeightPixels_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.GetMinItemHeightPixels(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.GetMinItemHeightPixels(System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetMinItemHeightPixels_System_Single_
+  name: GetMinItemHeightPixels(float)
+  nameWithType: SkiaLayout.GetMinItemHeightPixels(float)
+  fullName: DrawnUi.Draw.SkiaLayout.GetMinItemHeightPixels(float)
+  nameWithType.vb: SkiaLayout.GetMinItemHeightPixels(Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.GetMinItemHeightPixels(Single)
+  name.vb: GetMinItemHeightPixels(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.GetMinItemHeightPixels(System.Single)
+    name: GetMinItemHeightPixels
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetMinItemHeightPixels_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.GetMinItemHeightPixels(System.Single)
+    name: GetMinItemHeightPixels
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetMinItemHeightPixels_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildPlaneWindowStructure_System_Double_System_Double_System_Single_System_Single_
+  name: BuildPlaneWindowStructure(double, double, float, float)
+  nameWithType: SkiaLayout.BuildPlaneWindowStructure(double, double, float, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(double, double, float, float)
+  nameWithType.vb: SkiaLayout.BuildPlaneWindowStructure(Double, Double, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(Double, Double, Single, Single)
+  name.vb: BuildPlaneWindowStructure(Double, Double, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
+    name: BuildPlaneWindowStructure
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildPlaneWindowStructure_System_Double_System_Double_System_Single_System_Single_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
+    name: BuildPlaneWindowStructure
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildPlaneWindowStructure_System_Double_System_Double_System_Single_System_Single_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.MeasureWrap(SkiaSharp.SKRect,System.Single)
   commentId: M:DrawnUi.Draw.SkiaLayout.MeasureWrap(SkiaSharp.SKRect,System.Single)
   parent: DrawnUi.Draw.SkiaLayout
@@ -10728,6 +11732,44 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.GetStackStructure
+  commentId: M:DrawnUi.Draw.SkiaLayout.GetStackStructure
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetStackStructure
+  name: GetStackStructure()
+  nameWithType: SkiaLayout.GetStackStructure()
+  fullName: DrawnUi.Draw.SkiaLayout.GetStackStructure()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.GetStackStructure
+    name: GetStackStructure
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetStackStructure
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.GetStackStructure
+    name: GetStackStructure
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetStackStructure
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
+  commentId: M:DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetStackStructureForMeasuring
+  name: GetStackStructureForMeasuring()
+  nameWithType: SkiaLayout.GetStackStructureForMeasuring()
+  fullName: DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
+    name: GetStackStructureForMeasuring
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetStackStructureForMeasuring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
+    name: GetStackStructureForMeasuring
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetStackStructureForMeasuring
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.StackStructure
   commentId: P:DrawnUi.Draw.SkiaLayout.StackStructure
   parent: DrawnUi.Draw.SkiaLayout
@@ -10742,20 +11784,6 @@ references:
   name: StackStructureMeasured
   nameWithType: SkiaLayout.StackStructureMeasured
   fullName: DrawnUi.Draw.SkiaLayout.StackStructureMeasured
-- uid: DrawnUi.Draw.SkiaLayout.LatestStackStructure
-  commentId: P:DrawnUi.Draw.SkiaLayout.LatestStackStructure
-  parent: DrawnUi.Draw.SkiaLayout
-  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_LatestStackStructure
-  name: LatestStackStructure
-  nameWithType: SkiaLayout.LatestStackStructure
-  fullName: DrawnUi.Draw.SkiaLayout.LatestStackStructure
-- uid: DrawnUi.Draw.SkiaLayout.LatestMeasuredStackStructure
-  commentId: P:DrawnUi.Draw.SkiaLayout.LatestMeasuredStackStructure
-  parent: DrawnUi.Draw.SkiaLayout
-  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_LatestMeasuredStackStructure
-  name: LatestMeasuredStackStructure
-  nameWithType: SkiaLayout.LatestMeasuredStackStructure
-  fullName: DrawnUi.Draw.SkiaLayout.LatestMeasuredStackStructure
 - uid: DrawnUi.Draw.SkiaLayout.ApplyStackMeasureResult
   commentId: M:DrawnUi.Draw.SkiaLayout.ApplyStackMeasureResult
   parent: DrawnUi.Draw.SkiaLayout
@@ -11469,6 +12497,96 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  commentId: P:DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OffscreenRenderToken
+  name: OffscreenRenderToken
+  nameWithType: SkiaControl.OffscreenRenderToken
+  fullName: DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+- uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  commentId: M:DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  name: RenewOffscreenRenderToken(out long)
+  nameWithType: SkiaControl.RenewOffscreenRenderToken(out long)
+  fullName: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(out long)
+  nameWithType.vb: SkiaControl.RenewOffscreenRenderToken(Long)
+  fullName.vb: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(Long)
+  name.vb: RenewOffscreenRenderToken(Long)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+    name: RenewOffscreenRenderToken
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+    name: RenewOffscreenRenderToken
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  commentId: M:DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  name: IsOffscreenRenderSuperseded(long)
+  nameWithType: SkiaControl.IsOffscreenRenderSuperseded(long)
+  fullName: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(long)
+  nameWithType.vb: SkiaControl.IsOffscreenRenderSuperseded(Long)
+  fullName.vb: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(Long)
+  name.vb: IsOffscreenRenderSuperseded(Long)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+    name: IsOffscreenRenderSuperseded
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+    name: IsOffscreenRenderSuperseded
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  commentId: M:DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  name: CancelOffscreenRendering()
+  nameWithType: SkiaControl.CancelOffscreenRendering()
+  fullName: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+    name: CancelOffscreenRendering
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+    name: CancelOffscreenRendering
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -11494,6 +12612,20 @@ references:
     name: DrawingContext
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CacheSharingProperty
+  name: CacheSharingProperty
+  nameWithType: SkiaControl.CacheSharingProperty
+  fullName: DrawnUi.Draw.SkiaControl.CacheSharingProperty
+- uid: DrawnUi.Draw.SkiaControl.CacheSharing
+  commentId: P:DrawnUi.Draw.SkiaControl.CacheSharing
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CacheSharing
+  name: CacheSharing
+  nameWithType: SkiaControl.CacheSharing
+  fullName: DrawnUi.Draw.SkiaControl.CacheSharing
 - uid: DrawnUi.Draw.SkiaControl.AutoCacheProperty
   commentId: F:DrawnUi.Draw.SkiaControl.AutoCacheProperty
   parent: DrawnUi.Draw.SkiaControl
@@ -12388,6 +13520,44 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  name: TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext, SKRect)
+  nameWithType: SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext, SKRect)
+  fullName: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+    name: TryUseExistingRenderingObjectOrCreateNewAndPaint
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+    name: TryUseExistingRenderingObjectOrCreateNewAndPaint
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   commentId: M:DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaControl
@@ -12582,6 +13752,63 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnVisualEffectsChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  commentId: P:DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_EffectsMarginPixels
+  name: EffectsMarginPixels
+  nameWithType: SkiaControl.EffectsMarginPixels
+  fullName: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+- uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  name: ComputeEffectsMargin(float)
+  nameWithType: SkiaControl.ComputeEffectsMargin(float)
+  fullName: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(float)
+  nameWithType.vb: SkiaControl.ComputeEffectsMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(Single)
+  name.vb: ComputeEffectsMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+  commentId: M:DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
+  name: GetRenderingExpandPixels()
+  nameWithType: SkiaControl.GetRenderingExpandPixels()
+  fullName: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+    name: GetRenderingExpandPixels
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+    name: GetRenderingExpandPixels
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
   commentId: F:DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
   parent: DrawnUi.Draw.SkiaControl
@@ -12737,31 +13964,6 @@ references:
   name: DirtyChildrenInternal
   nameWithType: SkiaControl.DirtyChildrenInternal
   fullName: DrawnUi.Draw.SkiaControl.DirtyChildrenInternal
-- uid: DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
-  commentId: M:DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateByChild_DrawnUi_Draw_SkiaControl_
-  name: UpdateByChild(SkiaControl)
-  nameWithType: SkiaControl.UpdateByChild(SkiaControl)
-  fullName: DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
-    name: UpdateByChild
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateByChild_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.UpdateByChild(DrawnUi.Draw.SkiaControl)
-    name: UpdateByChild
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateByChild_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
 - uid: DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   commentId: F:DrawnUi.Draw.SkiaControl.MaxRealPixelSize
   parent: DrawnUi.Draw.SkiaControl
@@ -13384,6 +14586,20 @@ references:
   name: VirtualisationInflated
   nameWithType: SkiaControl.VirtualisationInflated
   fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflated
+- uid: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_VirtualisationInflatedRatioProperty
+  name: VirtualisationInflatedRatioProperty
+  nameWithType: SkiaControl.VirtualisationInflatedRatioProperty
+  fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+- uid: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
+  commentId: P:DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_VirtualisationInflatedRatio
+  name: VirtualisationInflatedRatio
+  nameWithType: SkiaControl.VirtualisationInflatedRatio
+  fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
 - uid: DrawnUi.Draw.SkiaControl.DefaultBlendMode
   commentId: F:DrawnUi.Draw.SkiaControl.DefaultBlendMode
   parent: DrawnUi.Draw.SkiaControl
@@ -13721,25 +14937,6 @@ references:
   name: DefaultContentCreated
   nameWithType: SkiaControl.DefaultContentCreated
   fullName: DrawnUi.Draw.SkiaControl.DefaultContentCreated
-- uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
-  commentId: M:DrawnUi.Draw.SkiaControl.CreateDefaultContent
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
-  name: CreateDefaultContent()
-  nameWithType: SkiaControl.CreateDefaultContent()
-  fullName: DrawnUi.Draw.SkiaControl.CreateDefaultContent()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
-    name: CreateDefaultContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
-    name: CreateDefaultContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
-  - name: (
-  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   commentId: M:DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   parent: DrawnUi.Draw.SkiaControl
@@ -16013,6 +17210,13 @@ references:
   name: Tapped
   nameWithType: SkiaControl.Tapped
   fullName: DrawnUi.Draw.SkiaControl.Tapped
+- uid: DrawnUi.Draw.SkiaControl.LongPressing
+  commentId: E:DrawnUi.Draw.SkiaControl.LongPressing
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LongPressing
+  name: LongPressing
+  nameWithType: SkiaControl.LongPressing
+  fullName: DrawnUi.Draw.SkiaControl.LongPressing
 - uid: DrawnUi.Draw.SkiaControl.ConsumeGestures
   commentId: E:DrawnUi.Draw.SkiaControl.ConsumeGestures
   parent: DrawnUi.Draw.SkiaControl
@@ -19414,13 +20618,13 @@ references:
   name: BindingContextWasSet
   nameWithType: SkiaControl.BindingContextWasSet
   fullName: DrawnUi.Draw.SkiaControl.BindingContextWasSet
-- uid: DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
-  commentId: P:DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+- uid: DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
+  commentId: P:DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BindingsContextCacheWasRendered
-  name: BindingsContextCacheWasRendered
-  nameWithType: SkiaControl.BindingsContextCacheWasRendered
-  fullName: DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExistingCacheWasRendered
+  name: ExistingCacheWasRendered
+  nameWithType: SkiaControl.ExistingCacheWasRendered
+  fullName: DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
 - uid: DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   commentId: M:DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   parent: DrawnUi.Draw.SkiaControl
@@ -21331,6 +22535,13 @@ references:
   name: ShouldClipAntialiased
   nameWithType: SkiaControl.ShouldClipAntialiased
   fullName: DrawnUi.Draw.SkiaControl.ShouldClipAntialiased
+- uid: DrawnUi.Draw.SkiaControl.NeedMeasure
+  commentId: P:DrawnUi.Draw.SkiaControl.NeedMeasure
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_NeedMeasure
+  name: NeedMeasure
+  nameWithType: SkiaControl.NeedMeasure
+  fullName: DrawnUi.Draw.SkiaControl.NeedMeasure
 - uid: DrawnUi.Draw.SkiaControl.SafeAction(System.Action,System.Int64)
   commentId: M:DrawnUi.Draw.SkiaControl.SafeAction(System.Action,System.Int64)
   parent: DrawnUi.Draw.SkiaControl
@@ -27639,6 +28850,46 @@ references:
     name: CancellationTokenSource
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtokensource
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(System.Nullable{SkiaSharp.SKPoint})
+  commentId: M:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  name: BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  nameWithType: FluentExtensions.BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1
   commentId: M:DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
@@ -34530,6 +35781,52 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtokensource
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  commentId: M:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  name: BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  nameWithType: FluentExtensions.BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions
+  commentId: T:DrawnUi.Draw.FluentExtensions
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FluentExtensions.html
+  name: FluentExtensions
+  nameWithType: FluentExtensions
+  fullName: DrawnUi.Draw.FluentExtensions
 - uid: DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   href: DrawnUi.Draw.StaticResourcesExtensions.html#DrawnUi_Draw_StaticResourcesExtensions_FindParentByType__1_DrawnUi_Draw_SkiaControl_
@@ -34624,13 +35921,6 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions
-  commentId: T:DrawnUi.Draw.FluentExtensions
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.FluentExtensions.html
-  name: FluentExtensions
-  nameWithType: FluentExtensions
-  fullName: DrawnUi.Draw.FluentExtensions
 - uid: DrawnUi.Draw.FluentExtensions.AssignNative``1(``0,``0@)
   commentId: M:DrawnUi.Draw.FluentExtensions.AssignNative``1(``0,``0@)
   href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_AssignNative__1___0___0__
@@ -39830,6 +41120,31 @@ references:
   nameWithType.vb: SkiaEditor.New
   fullName.vb: DrawnUi.Draw.SkiaEditor.New
   name.vb: New
+- uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
+  name: CreateDefaultContent()
+  nameWithType: SkiaControl.CreateDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.CreateDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
+    name: CreateDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
+    name: CreateDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.CreateDefaultContent*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.CreateDefaultContent
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_CreateDefaultContent
+  name: CreateDefaultContent
+  nameWithType: SkiaEditor.CreateDefaultContent
+  fullName: DrawnUi.Draw.SkiaEditor.CreateDefaultContent
 - uid: DrawnUi.Draw.SkiaControl.WillClipBounds
   commentId: P:DrawnUi.Draw.SkiaControl.WillClipBounds
   parent: DrawnUi.Draw.SkiaControl
@@ -40022,6 +41337,12 @@ references:
   name: UpdateLabel
   nameWithType: SkiaEditor.UpdateLabel
   fullName: DrawnUi.Draw.SkiaEditor.UpdateLabel
+- uid: DrawnUi.Draw.SkiaEditor.UpdateCursorStyle*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.UpdateCursorStyle
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_UpdateCursorStyle
+  name: UpdateCursorStyle
+  nameWithType: SkiaEditor.UpdateCursorStyle
+  fullName: DrawnUi.Draw.SkiaEditor.UpdateCursorStyle
 - uid: DrawnUi.Draw.SkiaEditor.UpdatePlaceholder*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.UpdatePlaceholder
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_UpdatePlaceholder
@@ -40429,6 +41750,17 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
 - uid: DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   parent: DrawnUi.Draw.SkiaControl
@@ -40836,6 +42168,13 @@ references:
   name: OnLayoutChanged
   nameWithType: SkiaEditor.OnLayoutChanged
   fullName: DrawnUi.Draw.SkiaEditor.OnLayoutChanged
+- uid: Microsoft.Maui.ReturnType.Send
+  commentId: F:Microsoft.Maui.ReturnType.Send
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.returntype#microsoft-maui-returntype-send
+  name: Send
+  nameWithType: ReturnType.Send
+  fullName: Microsoft.Maui.ReturnType.Send
 - uid: DrawnUi.Draw.SkiaEditor.ReturnType*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.ReturnType
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_ReturnType
@@ -40850,6 +42189,12 @@ references:
   name: ReturnType
   nameWithType: ReturnType
   fullName: Microsoft.Maui.ReturnType
+- uid: DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_ShouldSubmitOnEnter
+  name: ShouldSubmitOnEnter
+  nameWithType: SkiaEditor.ShouldSubmitOnEnter
+  fullName: DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter
 - uid: DrawnUi.Draw.SkiaEditor.KeyboardType*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.KeyboardType
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_KeyboardType
@@ -41135,6 +42480,12 @@ references:
   name: MaxLines
   nameWithType: SkiaEditor.MaxLines
   fullName: DrawnUi.Draw.SkiaEditor.MaxLines
+- uid: DrawnUi.Draw.SkiaEditor.AutoHeight*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.AutoHeight
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_AutoHeight
+  name: AutoHeight
+  nameWithType: SkiaEditor.AutoHeight
+  fullName: DrawnUi.Draw.SkiaEditor.AutoHeight
 - uid: DrawnUi.Draw.SkiaEditor.SetCursorPositionNative*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.SetCursorPositionNative
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_SetCursorPositionNative_System_Int32_System_Int32_

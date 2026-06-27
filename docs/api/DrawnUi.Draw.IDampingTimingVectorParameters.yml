@@ -15,11 +15,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IDampingTimingVectorParameters
-    path: ../src/Shared/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -45,11 +45,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AmplitudeAt
-    path: ../src/Shared/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IDampingTimingVectorParameters.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui

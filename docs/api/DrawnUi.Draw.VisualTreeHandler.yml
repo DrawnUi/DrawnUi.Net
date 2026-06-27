@@ -24,11 +24,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: VisualTreeHandler
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -61,11 +61,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DumpPreparedTree
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -87,11 +87,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DumpActiveTree
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -113,11 +113,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DumpTree
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -151,11 +151,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsReady
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 66
   assemblies:
   - DrawnUi.Maui
@@ -180,11 +180,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WasRendered
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 74
   assemblies:
   - DrawnUi.Maui
@@ -209,11 +209,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ActiveTree
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 85
   assemblies:
   - DrawnUi.Maui
@@ -238,11 +238,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreparedTree
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 90
   assemblies:
   - DrawnUi.Maui
@@ -267,11 +267,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrepareRenderingTree
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui
@@ -308,11 +308,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Render
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 120
   assemblies:
   - DrawnUi.Maui
@@ -340,11 +340,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/VisualTreeHandler.cs
+      path: src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderTreeInternal
-    path: ../src/Shared/Draw/Base/VisualTreeHandler.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualTreeHandler.cs
     startLine: 175
   assemblies:
   - DrawnUi.Maui

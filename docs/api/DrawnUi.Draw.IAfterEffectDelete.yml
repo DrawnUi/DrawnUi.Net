@@ -23,11 +23,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IAfterEffectDelete
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -52,11 +52,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TypeId
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -83,11 +83,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Render
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -123,11 +123,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -159,11 +159,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -185,11 +185,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRunning
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -214,11 +214,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WasStopped
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 18
   assemblies:
   - DrawnUi.Maui
@@ -243,11 +243,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Repeat
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -272,11 +272,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnUpdated
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -299,11 +299,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnFinished
-    path: ../src/Shared/Features/Animations/Interfaces/IAfterEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/IAfterEffect.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui

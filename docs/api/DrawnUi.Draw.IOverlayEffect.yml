@@ -14,11 +14,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
+      path: src/Shared/DrawnUi/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IOverlayEffect
-    path: ../src/Shared/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Interfaces/ICanRenderOnCanvas.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui

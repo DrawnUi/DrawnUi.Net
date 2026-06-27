@@ -6,6 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.ContextArguments.Custom
+  - DrawnUi.Draw.ContextArguments.Measure
   - DrawnUi.Draw.ContextArguments.Offset
   - DrawnUi.Draw.ContextArguments.Paint
   - DrawnUi.Draw.ContextArguments.Plane
@@ -23,11 +24,11 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContextArguments
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 160
   assemblies:
   - DrawnUi.Maui
@@ -50,11 +51,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 162
   assemblies:
   - DrawnUi.Maui
@@ -76,11 +77,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Scale
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 163
   assemblies:
   - DrawnUi.Maui
@@ -102,11 +103,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Rect
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 164
   assemblies:
   - DrawnUi.Maui
@@ -128,11 +129,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Viewport
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 165
   assemblies:
   - DrawnUi.Maui
@@ -154,11 +155,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Plane
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 166
   assemblies:
   - DrawnUi.Maui
@@ -180,11 +181,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PlaneViewport
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 167
   assemblies:
   - DrawnUi.Maui
@@ -206,11 +207,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShapePaint
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 168
   assemblies:
   - DrawnUi.Maui
@@ -232,17 +233,43 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Offset
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
     startLine: 169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
     content: Offset = 7
+    return:
+      type: DrawnUi.Draw.ContextArguments
+- uid: DrawnUi.Draw.ContextArguments.Measure
+  commentId: F:DrawnUi.Draw.ContextArguments.Measure
+  id: Measure
+  parent: DrawnUi.Draw.ContextArguments
+  langs:
+  - csharp
+  - vb
+  name: Measure
+  nameWithType: ContextArguments.Measure
+  fullName: DrawnUi.Draw.ContextArguments.Measure
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Measure
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 170
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: Measure = 8
     return:
       type: DrawnUi.Draw.ContextArguments
 - uid: DrawnUi.Draw.ContextArguments.Custom
@@ -258,17 +285,17 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/DrawingContext.cs
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Custom
-    path: ../src/Shared/Internals/Models/DrawingContext.cs
-    startLine: 170
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: Custom = 8
+    content: Custom = 9
     return:
       type: DrawnUi.Draw.ContextArguments
 references:

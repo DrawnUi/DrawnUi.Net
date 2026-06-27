@@ -8,6 +8,7 @@ items:
   - DrawnUi.Draw.ControlsTracker.Add(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.ControlsTracker.Clear
   - DrawnUi.Draw.ControlsTracker.Count
+  - DrawnUi.Draw.ControlsTracker.GetEnumerator
   - DrawnUi.Draw.ControlsTracker.GetList
   - DrawnUi.Draw.ControlsTracker.HasItems
   - DrawnUi.Draw.ControlsTracker.Invalidate
@@ -25,11 +26,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlsTracker
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -62,11 +63,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _dic
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -89,11 +90,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Sorted
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -118,11 +119,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _isDirty
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -145,11 +146,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clear
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -158,6 +159,34 @@ items:
     content: public void Clear()
     content.vb: Public Sub Clear()
   overload: DrawnUi.Draw.ControlsTracker.Clear*
+- uid: DrawnUi.Draw.ControlsTracker.GetEnumerator
+  commentId: M:DrawnUi.Draw.ControlsTracker.GetEnumerator
+  id: GetEnumerator
+  parent: DrawnUi.Draw.ControlsTracker
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: ControlsTracker.GetEnumerator()
+  fullName: DrawnUi.Draw.ControlsTracker.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetEnumerator
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public IEnumerable<SkiaControl> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl}
+    content.vb: Public Function GetEnumerator() As IEnumerable(Of SkiaControl)
+  overload: DrawnUi.Draw.ControlsTracker.GetEnumerator*
 - uid: DrawnUi.Draw.ControlsTracker.HasItems
   commentId: P:DrawnUi.Draw.ControlsTracker.HasItems
   id: HasItems
@@ -171,12 +200,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HasItems
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
-    startLine: 19
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 24
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -200,12 +229,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEmpty
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
-    startLine: 21
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 26
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -229,12 +258,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Count
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
-    startLine: 23
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 28
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -258,12 +287,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetList
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
-    startLine: 25
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -286,12 +315,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Add
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
-    startLine: 39
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 44
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -315,12 +344,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Remove
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
-    startLine: 49
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -344,12 +373,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ControlsTracker.cs
+      path: src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
-    path: ../src/Shared/Internals/Models/ControlsTracker.cs
-    startLine: 60
+    path: ../src/Shared/DrawnUi/Internals/Models/ControlsTracker.cs
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -907,6 +936,73 @@ references:
   name: Clear
   nameWithType: ControlsTracker.Clear
   fullName: DrawnUi.Draw.ControlsTracker.Clear
+- uid: DrawnUi.Draw.ControlsTracker.GetEnumerator*
+  commentId: Overload:DrawnUi.Draw.ControlsTracker.GetEnumerator
+  href: DrawnUi.Draw.ControlsTracker.html#DrawnUi_Draw_ControlsTracker_GetEnumerator
+  name: GetEnumerator
+  nameWithType: ControlsTracker.GetEnumerator
+  fullName: DrawnUi.Draw.ControlsTracker.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl}
+  commentId: T:System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<SkiaControl>
+  nameWithType: IEnumerable<SkiaControl>
+  fullName: System.Collections.Generic.IEnumerable<DrawnUi.Draw.SkiaControl>
+  nameWithType.vb: IEnumerable(Of SkiaControl)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.SkiaControl)
+  name.vb: IEnumerable(Of SkiaControl)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: DrawnUi.Draw.ControlsTracker.HasItems*
   commentId: Overload:DrawnUi.Draw.ControlsTracker.HasItems
   href: DrawnUi.Draw.ControlsTracker.html#DrawnUi_Draw_ControlsTracker_HasItems

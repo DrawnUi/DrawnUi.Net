@@ -180,6 +180,7 @@ items:
   - DrawnUi.Views.DrawnView.SetMeasured(System.Single,System.Single,System.Single)
   - DrawnUi.Views.DrawnView.SetPauseStateOfAllAnimatorsByParent(DrawnUi.Draw.SkiaControl,System.Boolean)
   - DrawnUi.Views.DrawnView.SetViewTreeVisibilityByParent(DrawnUi.Draw.SkiaControl,System.Boolean)
+  - DrawnUi.Views.DrawnView.SharedCache
   - DrawnUi.Views.DrawnView.ShouldInvalidateByChildren
   - DrawnUi.Views.DrawnView.StopDrawingWhenUpdateIsLocked
   - DrawnUi.Views.DrawnView.StreamFromString(System.String)
@@ -187,6 +188,7 @@ items:
   - DrawnUi.Views.DrawnView.SurfaceCacheManager
   - DrawnUi.Views.DrawnView.SwapInvalidations
   - DrawnUi.Views.DrawnView.Tag
+  - DrawnUi.Views.DrawnView.TagProperty
   - DrawnUi.Views.DrawnView.TakeScreenShot(System.Action{SkiaSharp.SKImage})
   - DrawnUi.Views.DrawnView.TakeScreenShotInternal(SkiaSharp.SKSurface)
   - DrawnUi.Views.DrawnView.TimeDrawingComplete
@@ -230,11 +232,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawnView
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -1196,11 +1198,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DumpLayersTree
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -1234,11 +1236,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Diagnostics
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -1261,11 +1263,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 60
   assemblies:
   - DrawnUi.Maui
@@ -1291,11 +1293,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsUsingHardwareAcceleration
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 75
   assemblies:
   - DrawnUi.Maui
@@ -1320,11 +1322,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedRedraw
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 86
   assemblies:
   - DrawnUi.Maui
@@ -1349,11 +1351,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDirty
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 88
   assemblies:
   - DrawnUi.Maui
@@ -1378,11 +1380,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsVisibleInViewTree
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 108
   assemblies:
   - DrawnUi.Maui
@@ -1409,11 +1411,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TakeScreenShot
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 113
   assemblies:
   - DrawnUi.Maui
@@ -1441,11 +1443,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateByChild
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 119
   assemblies:
   - DrawnUi.Maui
@@ -1474,11 +1476,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateByChild
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 124
   assemblies:
   - DrawnUi.Maui
@@ -1507,11 +1509,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOnScreenVisibleArea
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 137
   assemblies:
   - DrawnUi.Maui
@@ -1551,11 +1553,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HandlerWasSet
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 148
   assemblies:
   - DrawnUi.Maui
@@ -1578,11 +1580,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TakeScreenShotInternal
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 150
   assemblies:
   - DrawnUi.Maui
@@ -1607,11 +1609,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PostponeExecutionBeforeDraw
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 167
   assemblies:
   - DrawnUi.Maui
@@ -1644,11 +1646,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PostponeExecutionAfterDraw
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 176
   assemblies:
   - DrawnUi.Maui
@@ -1676,11 +1678,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteBeforeDraw
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 181
   assemblies:
   - DrawnUi.Maui
@@ -1705,11 +1707,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteAfterDraw
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 182
   assemblies:
   - DrawnUi.Maui
@@ -1734,11 +1736,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CallbackScreenshot
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 183
   assemblies:
   - DrawnUi.Maui
@@ -1761,11 +1763,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderingSubscribers
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 189
   assemblies:
   - DrawnUi.Maui
@@ -1790,11 +1792,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SubscribeToRenderingFinished
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 195
   assemblies:
   - DrawnUi.Maui
@@ -1822,11 +1824,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UsubscribeFromRenderingFinished
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 200
   assemblies:
   - DrawnUi.Maui
@@ -1851,11 +1853,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RegisterGestureListener
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 205
   assemblies:
   - DrawnUi.Maui
@@ -1883,11 +1885,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterGestureListener
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 214
   assemblies:
   - DrawnUi.Maui
@@ -1915,11 +1917,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LockIterateListeners
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 223
   assemblies:
   - DrawnUi.Maui
@@ -1942,11 +1944,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GestureListeners
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 228
   assemblies:
   - DrawnUi.Maui
@@ -1973,11 +1975,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawingRect
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 232
   assemblies:
   - DrawnUi.Maui
@@ -2005,11 +2007,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddAnimator
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 237
   assemblies:
   - DrawnUi.Maui
@@ -2037,11 +2039,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveAnimator
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 258
   assemblies:
   - DrawnUi.Maui
@@ -2069,11 +2071,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RegisterAnimator
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 275
   assemblies:
   - DrawnUi.Maui
@@ -2107,11 +2109,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterAnimator
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 282
   assemblies:
   - DrawnUi.Maui
@@ -2139,11 +2141,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterAllAnimatorsByType
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 287
   assemblies:
   - DrawnUi.Maui
@@ -2173,11 +2175,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterAllAnimatorsByParent
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 308
   assemblies:
   - DrawnUi.Maui
@@ -2204,11 +2206,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetViewTreeVisibilityByParent
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 335
   assemblies:
   - DrawnUi.Maui
@@ -2245,11 +2247,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetPauseStateOfAllAnimatorsByParent
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 356
   assemblies:
   - DrawnUi.Maui
@@ -2281,11 +2283,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecutePostAnimators
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 380
   assemblies:
   - DrawnUi.Maui
@@ -2312,11 +2314,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PostAnimators
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 420
   assemblies:
   - DrawnUi.Maui
@@ -2345,11 +2347,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimatingControls
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 428
   assemblies:
   - DrawnUi.Maui
@@ -2379,11 +2381,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameTimeInterpolator
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 430
   assemblies:
   - DrawnUi.Maui
@@ -2406,11 +2408,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastFrameTimeNanos
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 431
   assemblies:
   - DrawnUi.Maui
@@ -2433,11 +2435,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: mLastFrameTime
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 433
   assemblies:
   - DrawnUi.Maui
@@ -2462,11 +2464,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteAnimators
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 436
   assemblies:
   - DrawnUi.Maui
@@ -2496,11 +2498,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCanvasViewChanged
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 519
   assemblies:
   - DrawnUi.Maui
@@ -2522,11 +2524,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanvasView
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 527
   assemblies:
   - DrawnUi.Maui
@@ -2551,11 +2553,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RequestedCanvasViewIsHardwareAccelerated
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 542
   assemblies:
   - DrawnUi.Maui
@@ -2580,11 +2582,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanvasViewRequestVersion
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 544
   assemblies:
   - DrawnUi.Maui
@@ -2609,11 +2611,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetDeviceOrientation
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 549
   assemblies:
   - DrawnUi.Maui
@@ -2638,11 +2640,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrientationChanged
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 554
   assemblies:
   - DrawnUi.Maui
@@ -2665,11 +2667,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrientationProperty
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 556
   assemblies:
   - DrawnUi.Maui
@@ -2692,11 +2694,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Orientation
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 564
   assemblies:
   - DrawnUi.Maui
@@ -2721,11 +2723,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HasHandler
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 583
   assemblies:
   - DrawnUi.Maui
@@ -2750,11 +2752,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisconnectedHandler
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 585
   assemblies:
   - DrawnUi.Maui
@@ -2776,11 +2778,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedGlobalRefreshCount
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 591
   assemblies:
   - DrawnUi.Maui
@@ -2805,11 +2807,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateGlobal
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 598
   assemblies:
   - DrawnUi.Maui
@@ -2831,11 +2833,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedMeasureDrawn
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 610
   assemblies:
   - DrawnUi.Maui
@@ -2862,11 +2864,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCanRenderChanged
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 616
   assemblies:
   - DrawnUi.Maui
@@ -2897,11 +2899,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ConnectedHandler
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 625
   assemblies:
   - DrawnUi.Maui
@@ -2923,11 +2925,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StopDrawingWhenUpdateIsLocked
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 636
   assemblies:
   - DrawnUi.Maui
@@ -2954,11 +2956,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TimeDrawingStarted
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 638
   assemblies:
   - DrawnUi.Maui
@@ -2983,11 +2985,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TimeDrawingComplete
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 639
   assemblies:
   - DrawnUi.Maui
@@ -3012,11 +3014,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateViewport
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 642
   assemblies:
   - DrawnUi.Maui
@@ -3041,11 +3043,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Repaint
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 647
   assemblies:
   - DrawnUi.Maui
@@ -3070,11 +3072,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetUpdate
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 654
   assemblies:
   - DrawnUi.Maui
@@ -3096,11 +3098,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidatedCanvas
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 663
   assemblies:
   - DrawnUi.Maui
@@ -3127,11 +3129,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRendering
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 665
   assemblies:
   - DrawnUi.Maui
@@ -3156,11 +3158,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetDensity
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 667
   assemblies:
   - DrawnUi.Maui
@@ -3184,11 +3186,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateSkiaView
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 675
   assemblies:
   - DrawnUi.Maui
@@ -3212,11 +3214,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDestroyingVew
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 712
   assemblies:
   - DrawnUi.Maui
@@ -3238,11 +3240,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DestroySkiaView
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 716
   assemblies:
   - DrawnUi.Maui
@@ -3264,11 +3266,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposing
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 756
   assemblies:
   - DrawnUi.Maui
@@ -3296,11 +3298,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Finalize
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 758
   assemblies:
   - DrawnUi.Maui
@@ -3325,11 +3327,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 765
   assemblies:
   - DrawnUi.Maui
@@ -3355,11 +3357,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewDisposing
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 789
   assemblies:
   - DrawnUi.Maui
@@ -3382,11 +3384,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillDispose
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 791
   assemblies:
   - DrawnUi.Maui
@@ -3408,11 +3410,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDispose
-    path: ../src/Shared/Views/DrawnView.cs
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
     startLine: 799
   assemblies:
   - DrawnUi.Maui
@@ -3434,12 +3436,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidate
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 842
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 844
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3464,12 +3466,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateParents
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 848
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 850
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3494,12 +3496,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSuperviewShouldRenderChanged
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 853
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 855
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3526,12 +3528,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateChildren
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 864
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 866
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3554,12 +3556,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrintDebug
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 877
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 879
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3586,12 +3588,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedAutoSize
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 887
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 889
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3615,12 +3617,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedAutoHeight
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 892
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 894
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3644,12 +3646,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedAutoWidth
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 897
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 899
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3673,12 +3675,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldInvalidateByChildren
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 902
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 904
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3705,12 +3707,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateLocks
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 907
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 909
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3737,12 +3739,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPropertyChanged
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 909
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 911
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3773,12 +3775,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Uid
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 933
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 935
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3802,12 +3804,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LinearGradientAngleToPoints
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 935
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 937
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3836,12 +3838,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsGhost
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1004
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1006
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3865,12 +3867,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1023
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1025
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3894,12 +3896,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clipping
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1028
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1030
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3923,12 +3925,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateClip
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1030
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1032
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3960,38 +3962,6 @@ items:
   nameWithType.vb: DrawnView.CreateClip(Object, Boolean, SKPath)
   fullName.vb: DrawnUi.Views.DrawnView.CreateClip(Object, Boolean, SkiaSharp.SKPath)
   name.vb: CreateClip(Object, Boolean, SKPath)
-- uid: DrawnUi.Views.DrawnView.Tag
-  commentId: P:DrawnUi.Views.DrawnView.Tag
-  id: Tag
-  parent: DrawnUi.Views.DrawnView
-  langs:
-  - csharp
-  - vb
-  name: Tag
-  nameWithType: DrawnView.Tag
-  fullName: DrawnUi.Views.DrawnView.Tag
-  type: Property
-  source:
-    remote:
-      path: src/Shared/Views/DrawnView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
-    id: Tag
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1046
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Views
-  example: []
-  syntax:
-    content: public string Tag { get; set; }
-    parameters: []
-    return:
-      type: System.String
-    content.vb: Public Property Tag As String
-  overload: DrawnUi.Views.DrawnView.Tag*
-  implements:
-  - DrawnUi.Draw.IDrawnBase.Tag
 - uid: DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   commentId: M:DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   id: CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
@@ -4005,12 +3975,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CalculateLayout
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1055
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1056
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4051,12 +4021,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Arrange
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1171
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1172
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4095,12 +4065,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuredSize
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1176
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1177
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4127,12 +4097,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Measure
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1178
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4163,12 +4133,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedMeasure
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1206
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4194,12 +4164,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetMeasured
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1212
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4232,12 +4202,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMeasured
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1251
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1252
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4258,12 +4228,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Measured
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1256
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1257
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4285,12 +4255,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1263
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1264
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4317,12 +4287,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateContext
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1265
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1266
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4348,12 +4318,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawingThreadId
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1281
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1282
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4379,12 +4349,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WasRendered
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1283
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4408,12 +4378,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WasDrawn
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1288
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1289
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4437,12 +4407,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillDraw
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1293
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4466,12 +4436,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WillFirstTimeDraw
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1298
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4495,12 +4465,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LastDrawnRect
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1300
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4522,12 +4492,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDrawSurface
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1302
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4555,12 +4525,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanRender
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1360
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1361
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4586,12 +4556,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnStartRendering
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1375
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4617,12 +4587,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AccessibilityManager
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1397
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1398
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4646,12 +4616,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnGestureEvent
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1399
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1400
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4679,12 +4649,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnFinalizeRendering
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1401
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1402
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4705,12 +4675,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1433
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1434
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4731,12 +4701,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AvailableDestination
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1451
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1452
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4760,12 +4730,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrderedSubviews
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1462
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1463
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4791,12 +4761,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateViewsList
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1475
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1476
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4821,12 +4791,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _fps
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1484
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1485
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4848,12 +4818,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameTime
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1489
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1490
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4879,12 +4849,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanvasFps
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1494
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1495
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4910,12 +4880,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FPS
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1507
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1508
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4941,12 +4911,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LockDraw
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1511
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1512
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4968,12 +4938,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FrameNumber
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1513
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1514
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4997,12 +4967,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SurfaceCacheManager
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1515
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1516
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5026,12 +4996,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetGRContext
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1517
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1518
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5054,12 +5024,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateSurface
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1535
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1536
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5098,12 +5068,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnSurface
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1567
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1568
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5130,12 +5100,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeObject
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1584
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1585
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5168,12 +5138,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeManager
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1607
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1608
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5184,6 +5154,40 @@ items:
       type: DrawnUi.Views.DisposableManager
     content.vb: Protected ReadOnly Property DisposeManager As DisposableManager
   overload: DrawnUi.Views.DrawnView.DisposeManager*
+- uid: DrawnUi.Views.DrawnView.SharedCache
+  commentId: P:DrawnUi.Views.DrawnView.SharedCache
+  id: SharedCache
+  parent: DrawnUi.Views.DrawnView
+  langs:
+  - csharp
+  - vb
+  name: SharedCache
+  nameWithType: DrawnView.SharedCache
+  fullName: DrawnUi.Views.DrawnView.SharedCache
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SharedCache
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1616
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Shared cache registry for this Canvas. Controls with CacheSharing=Shared store
+
+    one CachedObject per type here. Use Cache.Free&lt;T&gt;() to evict a type, Cache.Free() to clear all.
+  example: []
+  syntax:
+    content: public CacheManager SharedCache { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Views.CacheManager
+    content.vb: Public ReadOnly Property SharedCache As CacheManager
+  overload: DrawnUi.Views.DrawnView.SharedCache*
 - uid: DrawnUi.Views.DrawnView.PostponeInvalidation(DrawnUi.Draw.SkiaControl,System.Action)
   commentId: M:DrawnUi.Views.DrawnView.PostponeInvalidation(DrawnUi.Draw.SkiaControl,System.Action)
   id: PostponeInvalidation(DrawnUi.Draw.SkiaControl,System.Action)
@@ -5197,12 +5201,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PostponeInvalidation
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1628
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1637
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5228,12 +5232,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidationActionsA
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1639
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1648
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5255,12 +5259,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidationActionsB
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1640
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1649
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5282,12 +5286,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetFrontInvalidations
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1642
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1651
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5310,12 +5314,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetBackInvalidations
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1650
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1659
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5338,12 +5342,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SwapInvalidations
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1658
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1667
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5364,12 +5368,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawingThreads
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1669
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1678
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5395,12 +5399,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DirtyChildrenTracker
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1671
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1680
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5422,12 +5426,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetChildAsDirty
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1673
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1682
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5451,12 +5455,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CommitInvalidations
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1683
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1692
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5477,12 +5481,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LockStartOffscreenQueue
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1697
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1706
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5504,12 +5508,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: semaphoreOffscreenProcess
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1705
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1714
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5531,12 +5535,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KickOffscreenCacheRendering
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1712
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1721
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5559,12 +5563,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PushToOffscreenRendering
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1727
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1736
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5592,12 +5596,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessOffscreenCacheRenderingAsync
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1733
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1742
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5620,12 +5624,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Draw
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1802
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1811
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5649,12 +5653,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderingScaleProperty
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1987
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 1996
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5676,12 +5680,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedInvalidateCanvas
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 1992
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2001
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5712,12 +5716,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDensityChanged
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2003
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2012
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5738,12 +5742,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderingScale
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2012
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2021
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5771,12 +5775,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderingModeProperty
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2050
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2059
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5798,12 +5802,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RenderingMode
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2060
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2069
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5829,12 +5833,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanRenderOffScreenProperty
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2066
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2075
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5856,12 +5860,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanRenderOffScreen
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2075
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2084
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5887,12 +5891,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanDraw
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2085
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2094
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5906,6 +5910,65 @@ items:
       description: ''
     content.vb: Public ReadOnly Property CanDraw As Boolean
   overload: DrawnUi.Views.DrawnView.CanDraw*
+- uid: DrawnUi.Views.DrawnView.TagProperty
+  commentId: F:DrawnUi.Views.DrawnView.TagProperty
+  id: TagProperty
+  parent: DrawnUi.Views.DrawnView
+  langs:
+  - csharp
+  - vb
+  name: TagProperty
+  nameWithType: DrawnView.TagProperty
+  fullName: DrawnUi.Views.DrawnView.TagProperty
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: TagProperty
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2103
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public static readonly BindableProperty TagProperty
+    return:
+      type: Microsoft.Maui.Controls.BindableProperty
+    content.vb: Public Shared ReadOnly TagProperty As BindableProperty
+- uid: DrawnUi.Views.DrawnView.Tag
+  commentId: P:DrawnUi.Views.DrawnView.Tag
+  id: Tag
+  parent: DrawnUi.Views.DrawnView
+  langs:
+  - csharp
+  - vb
+  name: Tag
+  nameWithType: DrawnView.Tag
+  fullName: DrawnUi.Views.DrawnView.Tag
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Tag
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2108
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  example: []
+  syntax:
+    content: public string Tag { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Tag As String
+  overload: DrawnUi.Views.DrawnView.Tag*
+  implements:
+  - DrawnUi.Draw.IDrawnBase.Tag
 - uid: DrawnUi.Views.DrawnView.IsHiddenInViewTree
   commentId: P:DrawnUi.Views.DrawnView.IsHiddenInViewTree
   id: IsHiddenInViewTree
@@ -5919,12 +5982,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsHiddenInViewTree
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2116
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5953,12 +6016,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChangingtIsHiddenInViewTree
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2139
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2159
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6000,12 +6063,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedCheckParentVisibility
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2159
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6029,12 +6092,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StreamFromString
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2176
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2196
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6063,12 +6126,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintSystem
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2181
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6092,12 +6155,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Destination
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2182
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2202
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6124,12 +6187,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PaintTintBackground
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2184
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6153,12 +6216,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RedrawCanvas
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2199
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6189,12 +6252,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnBindingContextChanged
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2210
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2230
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6219,12 +6282,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Views
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2222
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2242
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6252,12 +6315,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearChildren
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2224
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2244
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6278,12 +6341,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetChildren
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2236
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2256
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6310,12 +6373,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddSubView
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2245
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6343,12 +6406,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReportHotreloadChildAdded
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2255
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2275
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6372,12 +6435,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChildAdded
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2266
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2286
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6401,12 +6464,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnChildRemoved
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2271
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2291
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6430,12 +6493,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Children
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2284
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2304
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6459,12 +6522,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddOrRemoveView
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2329
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2349
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6493,12 +6556,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RemoveSubView
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2347
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2367
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6529,12 +6592,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateModeProperty
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2386
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2406
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6556,12 +6619,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateMode
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2401
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2421
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6585,12 +6648,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClipEffectsProperty
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2407
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2427
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6612,12 +6675,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClipEffects
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2413
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2433
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6644,12 +6707,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value1Property
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2419
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2439
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6671,12 +6734,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value1
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2426
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2446
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6700,12 +6763,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value2Property
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2432
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2452
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6727,12 +6790,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value2
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2439
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2459
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6756,12 +6819,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value3Property
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2445
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2465
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6783,12 +6846,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value3
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2452
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2472
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6812,12 +6875,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value4Property
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2458
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2478
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6839,12 +6902,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Value4
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2465
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2485
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6868,12 +6931,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusLocked
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2473
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6897,12 +6960,12 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusedItemChanged
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2486
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2506
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6924,12 +6987,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReportFocus
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2504
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2524
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6957,12 +7020,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResetFocusWithDelay
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2554
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2574
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6989,12 +7052,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusedChild
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2595
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2615
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7020,12 +7083,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateCanvas
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2608
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2628
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7060,12 +7123,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnParentSet
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2687
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2707
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7093,12 +7156,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetIsVisibleWithParent
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2713
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2733
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7124,12 +7187,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CheckElementVisibility
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2754
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2774
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7153,12 +7216,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnSizeChanged
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2759
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2779
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7179,12 +7242,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DrawnView.cs
+      path: src/Shared/DrawnUi/Views/DrawnView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClipSmart
-    path: ../src/Shared/Views/DrawnView.cs
-    startLine: 2764
+    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    startLine: 2784
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -15320,19 +15383,6 @@ references:
   name: SKPath
   nameWithType: SKPath
   fullName: SkiaSharp.SKPath
-- uid: DrawnUi.Views.DrawnView.Tag*
-  commentId: Overload:DrawnUi.Views.DrawnView.Tag
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Tag
-  name: Tag
-  nameWithType: DrawnView.Tag
-  fullName: DrawnUi.Views.DrawnView.Tag
-- uid: DrawnUi.Draw.IDrawnBase.Tag
-  commentId: P:DrawnUi.Draw.IDrawnBase.Tag
-  parent: DrawnUi.Draw.IDrawnBase
-  href: DrawnUi.Draw.IDrawnBase.html#DrawnUi_Draw_IDrawnBase_Tag
-  name: Tag
-  nameWithType: IDrawnBase.Tag
-  fullName: DrawnUi.Draw.IDrawnBase.Tag
 - uid: DrawnUi.Views.DrawnView.CalculateLayout*
   commentId: Overload:DrawnUi.Views.DrawnView.CalculateLayout
   href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CalculateLayout_SkiaSharp_SKRect_System_Double_System_Double_System_Double_
@@ -15870,6 +15920,19 @@ references:
   name: DisposableManager
   nameWithType: DisposableManager
   fullName: DrawnUi.Views.DisposableManager
+- uid: DrawnUi.Views.DrawnView.SharedCache*
+  commentId: Overload:DrawnUi.Views.DrawnView.SharedCache
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SharedCache
+  name: SharedCache
+  nameWithType: DrawnView.SharedCache
+  fullName: DrawnUi.Views.DrawnView.SharedCache
+- uid: DrawnUi.Views.CacheManager
+  commentId: T:DrawnUi.Views.CacheManager
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.CacheManager.html
+  name: CacheManager
+  nameWithType: CacheManager
+  fullName: DrawnUi.Views.CacheManager
 - uid: DrawnUi.Views.DrawnView.PostponeInvalidation*
   commentId: Overload:DrawnUi.Views.DrawnView.PostponeInvalidation
   href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PostponeInvalidation_DrawnUi_Draw_SkiaControl_System_Action_
@@ -16164,6 +16227,19 @@ references:
   name: CanDraw
   nameWithType: DrawnView.CanDraw
   fullName: DrawnUi.Views.DrawnView.CanDraw
+- uid: DrawnUi.Views.DrawnView.Tag*
+  commentId: Overload:DrawnUi.Views.DrawnView.Tag
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Tag
+  name: Tag
+  nameWithType: DrawnView.Tag
+  fullName: DrawnUi.Views.DrawnView.Tag
+- uid: DrawnUi.Draw.IDrawnBase.Tag
+  commentId: P:DrawnUi.Draw.IDrawnBase.Tag
+  parent: DrawnUi.Draw.IDrawnBase
+  href: DrawnUi.Draw.IDrawnBase.html#DrawnUi_Draw_IDrawnBase_Tag
+  name: Tag
+  nameWithType: IDrawnBase.Tag
+  fullName: DrawnUi.Draw.IDrawnBase.Tag
 - uid: DrawnUi.Views.DrawnView.IsHiddenInViewTree*
   commentId: Overload:DrawnUi.Views.DrawnView.IsHiddenInViewTree
   href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsHiddenInViewTree

@@ -20,11 +20,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animators/BlinkAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlinkAnimator
-    path: ../src/Shared/Features/Animators/BlinkAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -111,11 +111,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animators/BlinkAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animators/BlinkAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -143,11 +143,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/BlinkAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnProgressChanged
-    path: ../src/Shared/Features/Animators/BlinkAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -177,11 +177,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/BlinkAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CurrentColor
-    path: ../src/Shared/Features/Animators/BlinkAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -206,11 +206,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/BlinkAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color1
-    path: ../src/Shared/Features/Animators/BlinkAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
     startLine: 33
   assemblies:
   - DrawnUi.Maui
@@ -235,11 +235,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/BlinkAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color2
-    path: ../src/Shared/Features/Animators/BlinkAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
     startLine: 34
   assemblies:
   - DrawnUi.Maui
@@ -264,11 +264,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/BlinkAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorsRatio
-    path: ../src/Shared/Features/Animators/BlinkAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/BlinkAnimator.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui

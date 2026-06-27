@@ -31,11 +31,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Sk3dView
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -70,11 +70,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -99,11 +99,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invalidated
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -126,11 +126,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CameraDistance
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 33
   assemblies:
   - DrawnUi.Maui
@@ -155,11 +155,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Save
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -183,11 +183,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Restore
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 55
   assemblies:
   - DrawnUi.Maui
@@ -211,11 +211,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyToCanvas
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 77
   assemblies:
   - DrawnUi.Maui
@@ -242,11 +242,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reset
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 88
   assemblies:
   - DrawnUi.Maui
@@ -270,11 +270,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnReset
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 106
   assemblies:
   - DrawnUi.Maui
@@ -296,11 +296,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnRestore
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 108
   assemblies:
   - DrawnUi.Maui
@@ -322,11 +322,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotateXDegrees
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 113
   assemblies:
   - DrawnUi.Maui
@@ -356,11 +356,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotateYDegrees
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 122
   assemblies:
   - DrawnUi.Maui
@@ -390,11 +390,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotateZDegrees
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 131
   assemblies:
   - DrawnUi.Maui
@@ -424,11 +424,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateX
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 140
   assemblies:
   - DrawnUi.Maui
@@ -458,11 +458,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateY
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 149
   assemblies:
   - DrawnUi.Maui
@@ -492,11 +492,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TranslateZ
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 158
   assemblies:
   - DrawnUi.Maui
@@ -526,11 +526,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Translate
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 167
   assemblies:
   - DrawnUi.Maui
@@ -564,11 +564,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Helpers/3D/Sk3dView.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Matrix
-    path: ../src/Shared/Internals/Helpers/3D/Sk3dView.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/3D/Sk3dView.cs
     startLine: 178
   assemblies:
   - DrawnUi.Maui

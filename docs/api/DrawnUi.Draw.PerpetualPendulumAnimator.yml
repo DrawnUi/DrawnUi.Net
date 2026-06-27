@@ -16,11 +16,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animators/PerpetualPendulumAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/PerpetualPendulumAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PerpetualPendulumAnimator
-    path: ../src/Shared/Features/Animators/PerpetualPendulumAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/PerpetualPendulumAnimator.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -114,11 +114,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animators/PerpetualPendulumAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/PerpetualPendulumAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animators/PerpetualPendulumAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/PerpetualPendulumAnimator.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -148,11 +148,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/PerpetualPendulumAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/PerpetualPendulumAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreatePendulum
-    path: ../src/Shared/Features/Animators/PerpetualPendulumAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/PerpetualPendulumAnimator.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui

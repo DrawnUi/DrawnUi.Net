@@ -19,11 +19,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimateExtensions
-    path: ../src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -55,11 +55,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Translate
-    path: ../src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -98,11 +98,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FadeIn
-    path: ../src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -139,11 +139,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FadeOut
-    path: ../src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -180,11 +180,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimateWith
-    path: ../src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -222,11 +222,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+      path: src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WhenCompleted
-    path: ../src/Shared/Features/Animations/Extensions/AnimateExtensions.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Extensions/AnimateExtensions.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui

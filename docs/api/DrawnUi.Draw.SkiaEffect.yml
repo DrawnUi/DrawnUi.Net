@@ -8,10 +8,12 @@ items:
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
+  - DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.SkiaEffect.NeedApply
   - DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   - DrawnUi.Draw.SkiaEffect.OnDisposing
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Update
   langs:
   - csharp
@@ -22,11 +24,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaEffect
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -94,11 +96,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -112,6 +114,35 @@ items:
       type: DrawnUi.Draw.SkiaControl
     content.vb: Public Property Parent As SkiaControl
   overload: DrawnUi.Draw.SkiaEffect.Parent*
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  id: Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  langs:
+  - csharp
+  - vb
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Tag
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string Tag { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Tag As String
+  overload: DrawnUi.Draw.SkiaEffect.Tag*
 - uid: DrawnUi.Draw.SkiaEffect.OnDisposing
   commentId: M:DrawnUi.Draw.SkiaEffect.OnDisposing
   id: OnDisposing
@@ -125,12 +156,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
-    startLine: 9
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -151,12 +182,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Attach
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
-    startLine: 14
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 15
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -180,12 +211,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dettach
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
-    startLine: 20
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 21
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -206,12 +237,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
-    startLine: 26
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -236,12 +267,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Update
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
-    startLine: 35
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 36
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -253,6 +284,49 @@ items:
   overload: DrawnUi.Draw.SkiaEffect.Update*
   implements:
   - DrawnUi.Draw.ICanBeUpdated.Update
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  id: GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaEffect
+  langs:
+  - csharp
+  - vb
+  name: GetEffectMargin(float)
+  nameWithType: SkiaEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin(float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetEffectMargin
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 48
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Extra space in PIXELS this effect paints beyond the control's DrawingRect (drop shadow, glow, etc.).
+
+    Return Thickness.Zero (default) for effects that stay within bounds.
+
+    The engine reads this to auto-expand the cache surface and clip so out-of-bounds effects are not clipped.
+
+    Order is (left, top, right, bottom). Blur is treated as pixels, offsets are scaled by the passed scale.
+  example: []
+  syntax:
+    content: public virtual Thickness GetEffectMargin(float scale)
+    parameters:
+    - id: scale
+      type: System.Single
+    return:
+      type: Microsoft.Maui.Thickness
+    content.vb: Public Overridable Function GetEffectMargin(scale As Single) As Thickness
+  overload: DrawnUi.Draw.SkiaEffect.GetEffectMargin*
+  nameWithType.vb: SkiaEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
 - uid: DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   id: NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
@@ -266,12 +340,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedUpdate
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
-    startLine: 40
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 50
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -302,12 +376,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedApply
-    path: ../src/Shared/Features/Effects/SkiaEffect.cs
-    startLine: 48
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaEffect.cs
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1580,6 +1654,23 @@ references:
   name: SkiaControl
   nameWithType: SkiaControl
   fullName: DrawnUi.Draw.SkiaControl
+- uid: DrawnUi.Draw.SkiaEffect.Tag*
+  commentId: Overload:DrawnUi.Draw.SkiaEffect.Tag
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: DrawnUi.Draw.SkiaEffect.OnDisposing*
   commentId: Overload:DrawnUi.Draw.SkiaEffect.OnDisposing
   href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_OnDisposing
@@ -1651,6 +1742,58 @@ references:
     href: DrawnUi.Draw.ICanBeUpdated.html#DrawnUi_Draw_ICanBeUpdated_Update
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin*
+  commentId: Overload:DrawnUi.Draw.SkiaEffect.GetEffectMargin
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin
+  nameWithType: SkiaEffect.GetEffectMargin
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Microsoft.Maui.Thickness
+  commentId: T:Microsoft.Maui.Thickness
+  parent: Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
+  name: Thickness
+  nameWithType: Thickness
+  fullName: Microsoft.Maui.Thickness
+- uid: Microsoft.Maui
+  commentId: N:Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Maui
+  nameWithType: Microsoft.Maui
+  fullName: Microsoft.Maui
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
 - uid: DrawnUi.Draw.SkiaEffect.NeedUpdate*
   commentId: Overload:DrawnUi.Draw.SkiaEffect.NeedUpdate
   href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_NeedUpdate_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_

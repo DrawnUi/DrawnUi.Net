@@ -39,11 +39,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScaledSize
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -77,11 +77,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -106,11 +106,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithCut
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -142,11 +142,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Default
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 26
   assemblies:
   - DrawnUi.Maui
@@ -171,11 +171,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _scale
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -198,11 +198,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Scale
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -227,11 +227,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Units
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 41
   assemblies:
   - DrawnUi.Maui
@@ -256,11 +256,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Pixels
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui
@@ -285,11 +285,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WidthCut
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -314,11 +314,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HeightCut
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -343,11 +343,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 46
   assemblies:
   - DrawnUi.Maui
@@ -390,11 +390,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 61
   assemblies:
   - DrawnUi.Maui
@@ -430,11 +430,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 82
   assemblies:
   - DrawnUi.Maui
@@ -467,11 +467,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 87
   assemblies:
   - DrawnUi.Maui
@@ -506,11 +506,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -538,11 +538,11 @@ items:
   type: Operator
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Equality
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui
@@ -574,11 +574,11 @@ items:
   type: Operator
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Inequality
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
@@ -610,11 +610,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clone
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 107
   assemblies:
   - DrawnUi.Maui
@@ -638,11 +638,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateEmpty
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 119
   assemblies:
   - DrawnUi.Maui
@@ -672,11 +672,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsEmpty
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 129
   assemblies:
   - DrawnUi.Maui
@@ -701,11 +701,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ToString
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 137
   assemblies:
   - DrawnUi.Maui
@@ -733,11 +733,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SnapToPixel
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 142
   assemblies:
   - DrawnUi.Maui
@@ -769,11 +769,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromUnits
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 148
   assemblies:
   - DrawnUi.Maui
@@ -807,11 +807,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPixels
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 180
   assemblies:
   - DrawnUi.Maui
@@ -843,11 +843,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPixels
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 185
   assemblies:
   - DrawnUi.Maui
@@ -881,11 +881,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledSize.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPixels
-    path: ../src/Shared/Internals/Models/ScaledSize.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
     startLine: 190
   assemblies:
   - DrawnUi.Maui

@@ -5,9 +5,11 @@ items:
   id: IInsideViewport
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
   - DrawnUi.Draw.IInsideViewport.OnLoaded
-  - DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  - DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
   - DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect)
+  - DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
   langs:
   - csharp
   - vb
@@ -17,12 +19,12 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/IInsideViewport.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IInsideViewport
-    path: ../src/Shared/Internals/Interfaces/IInsideViewport.cs
-    startLine: 2
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+    startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -37,37 +39,40 @@ items:
   - System.IDisposable.Dispose
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
-  commentId: M:DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
-  id: OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+- uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
+  commentId: M:DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
+  id: OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
   parent: DrawnUi.Draw.IInsideViewport
   langs:
   - csharp
   - vb
-  name: OnViewportWasChanged(ScaledRect)
-  nameWithType: IInsideViewport.OnViewportWasChanged(ScaledRect)
-  fullName: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect)
+  name: OnViewportWasChanged(ScaledRect, ScaledPoint)
+  nameWithType: IInsideViewport.OnViewportWasChanged(ScaledRect, ScaledPoint)
+  fullName: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged(DrawnUi.Draw.ScaledRect, DrawnUi.Draw.ScaledPoint)
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/IInsideViewport.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnViewportWasChanged
-    path: ../src/Shared/Internals/Interfaces/IInsideViewport.cs
-    startLine: 8
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+    startLine: 18
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will be called when viewport containing this view has changed
   example: []
   syntax:
-    content: void OnViewportWasChanged(ScaledRect viewport)
+    content: void OnViewportWasChanged(ScaledRect viewport, ScaledPoint e)
     parameters:
     - id: viewport
       type: DrawnUi.Draw.ScaledRect
       description: ''
-    content.vb: Sub OnViewportWasChanged(viewport As ScaledRect)
+    - id: e
+      type: DrawnUi.Draw.ScaledPoint
+      description: ''
+    content.vb: Sub OnViewportWasChanged(viewport As ScaledRect, e As ScaledPoint)
   overload: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged*
 - uid: DrawnUi.Draw.IInsideViewport.OnLoaded
   commentId: M:DrawnUi.Draw.IInsideViewport.OnLoaded
@@ -82,12 +87,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/IInsideViewport.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLoaded
-    path: ../src/Shared/Internals/Interfaces/IInsideViewport.cs
-    startLine: 13
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+    startLine: 23
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -110,12 +115,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/IInsideViewport.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldTriggerLoadMore
-    path: ../src/Shared/Internals/Interfaces/IInsideViewport.cs
-    startLine: 21
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+    startLine: 31
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -135,6 +140,96 @@ items:
       description: True if LoadMore should be triggered, false otherwise
     content.vb: Function ShouldTriggerLoadMore(viewport As ScaledRect) As Boolean
   overload: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore*
+- uid: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  commentId: M:DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  id: ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.LoadMoreDirection)
+  parent: DrawnUi.Draw.IInsideViewport
+  langs:
+  - csharp
+  - vb
+  name: ShouldTriggerLoadMore(ScaledRect, LoadMoreDirection)
+  nameWithType: IInsideViewport.ShouldTriggerLoadMore(ScaledRect, LoadMoreDirection)
+  fullName: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore(DrawnUi.Draw.ScaledRect, DrawnUi.Draw.LoadMoreDirection)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ShouldTriggerLoadMore
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+    startLine: 40
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Determines whether LoadMore should be triggered for a specific edge direction.
+
+    Default behavior routes to the legacy bottom-only API for backward compatibility.
+  example: []
+  syntax:
+    content: bool ShouldTriggerLoadMore(ScaledRect viewport, LoadMoreDirection direction)
+    parameters:
+    - id: viewport
+      type: DrawnUi.Draw.ScaledRect
+      description: Current viewport rectangle
+    - id: direction
+      type: DrawnUi.Draw.LoadMoreDirection
+      description: Requested load direction
+    return:
+      type: System.Boolean
+      description: True if LoadMore should be triggered for the given direction
+    content.vb: Function ShouldTriggerLoadMore(viewport As ScaledRect, direction As LoadMoreDirection) As Boolean
+  overload: DrawnUi.Draw.IInsideViewport.ShouldTriggerLoadMore*
+- uid: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
+  commentId: M:DrawnUi.Draw.IInsideViewport.LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
+  id: LimitScrollBounds(System.Single,System.Single,SkiaSharp.SKRect,Microsoft.Maui.ScrollOrientation)
+  parent: DrawnUi.Draw.IInsideViewport
+  langs:
+  - csharp
+  - vb
+  name: LimitScrollBounds(float, float, SKRect, ScrollOrientation)
+  nameWithType: IInsideViewport.LimitScrollBounds(float, float, SKRect, ScrollOrientation)
+  fullName: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(float, float, SkiaSharp.SKRect, Microsoft.Maui.ScrollOrientation)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LimitScrollBounds
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideViewport.cs
+    startLine: 51
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Lets the content limit how far the scroll may travel toward a desired offset when its backing
+
+    (e.g. a background plane cache) is not ready there yet. Return possibly-narrowed offset bounds; the
+
+    scroll applies its normal bounce/rubber-band against them, so the unready edge feels like a content
+
+    edge. Default: no limit. MUST keep the current offset inside the returned bounds (never yank back).
+  example: []
+  syntax:
+    content: SKRect LimitScrollBounds(float desiredX, float desiredY, SKRect contentOffsetBounds, ScrollOrientation orientation)
+    parameters:
+    - id: desiredX
+      type: System.Single
+    - id: desiredY
+      type: System.Single
+    - id: contentOffsetBounds
+      type: SkiaSharp.SKRect
+    - id: orientation
+      type: Microsoft.Maui.ScrollOrientation
+    return:
+      type: SkiaSharp.SKRect
+    content.vb: Function LimitScrollBounds(desiredX As Single, desiredY As Single, contentOffsetBounds As SKRect, orientation As ScrollOrientation) As SKRect
+  overload: DrawnUi.Draw.IInsideViewport.LimitScrollBounds*
+  nameWithType.vb: IInsideViewport.LimitScrollBounds(Single, Single, SKRect, ScrollOrientation)
+  fullName.vb: DrawnUi.Draw.IInsideViewport.LimitScrollBounds(Single, Single, SkiaSharp.SKRect, Microsoft.Maui.ScrollOrientation)
+  name.vb: LimitScrollBounds(Single, Single, SKRect, ScrollOrientation)
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -370,7 +465,7 @@ references:
     href: DrawnUi.Extensions.html
 - uid: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged*
   commentId: Overload:DrawnUi.Draw.IInsideViewport.OnViewportWasChanged
-  href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_
+  href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnViewportWasChanged_DrawnUi_Draw_ScaledRect_DrawnUi_Draw_ScaledPoint_
   name: OnViewportWasChanged
   nameWithType: IInsideViewport.OnViewportWasChanged
   fullName: DrawnUi.Draw.IInsideViewport.OnViewportWasChanged
@@ -381,6 +476,13 @@ references:
   name: ScaledRect
   nameWithType: ScaledRect
   fullName: DrawnUi.Draw.ScaledRect
+- uid: DrawnUi.Draw.ScaledPoint
+  commentId: T:DrawnUi.Draw.ScaledPoint
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ScaledPoint.html
+  name: ScaledPoint
+  nameWithType: ScaledPoint
+  fullName: DrawnUi.Draw.ScaledPoint
 - uid: DrawnUi.Draw.IInsideViewport.OnLoaded*
   commentId: Overload:DrawnUi.Draw.IInsideViewport.OnLoaded
   href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_OnLoaded
@@ -404,3 +506,77 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.LoadMoreDirection
+  commentId: T:DrawnUi.Draw.LoadMoreDirection
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.LoadMoreDirection.html
+  name: LoadMoreDirection
+  nameWithType: LoadMoreDirection
+  fullName: DrawnUi.Draw.LoadMoreDirection
+- uid: DrawnUi.Draw.IInsideViewport.LimitScrollBounds*
+  commentId: Overload:DrawnUi.Draw.IInsideViewport.LimitScrollBounds
+  href: DrawnUi.Draw.IInsideViewport.html#DrawnUi_Draw_IInsideViewport_LimitScrollBounds_System_Single_System_Single_SkiaSharp_SKRect_Microsoft_Maui_ScrollOrientation_
+  name: LimitScrollBounds
+  nameWithType: IInsideViewport.LimitScrollBounds
+  fullName: DrawnUi.Draw.IInsideViewport.LimitScrollBounds
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: SkiaSharp.SKRect
+  commentId: T:SkiaSharp.SKRect
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  name: SKRect
+  nameWithType: SKRect
+  fullName: SkiaSharp.SKRect
+- uid: Microsoft.Maui.ScrollOrientation
+  commentId: T:Microsoft.Maui.ScrollOrientation
+  parent: Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.scrollorientation
+  name: ScrollOrientation
+  nameWithType: ScrollOrientation
+  fullName: Microsoft.Maui.ScrollOrientation
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: Microsoft.Maui
+  commentId: N:Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Maui
+  nameWithType: Microsoft.Maui
+  fullName: Microsoft.Maui
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui

@@ -19,12 +19,12 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaEditorKeyboard
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1357
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1424
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -46,12 +46,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Default
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1359
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1426
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -72,12 +72,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numeric
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1360
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1427
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -98,12 +98,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Decimal
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1361
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1428
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -124,12 +124,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Phone
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1362
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1429
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -150,12 +150,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditor.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Email
-    path: ../src/Shared/EditText/SkiaEditor.cs
-    startLine: 1363
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1430
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
