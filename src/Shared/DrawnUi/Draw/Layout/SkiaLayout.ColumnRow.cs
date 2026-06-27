@@ -2230,11 +2230,6 @@ else
 
                         offsetOthers += cell.OffsetOthers;
 
-                        if (offsetOthers.Y != 0)
-                        {
-                            Debug.WriteLine($"Offset others: {offsetOthers.Y}");
-                        }
-
                         var insideViewport = cell.Drawn.IntersectsWith(visibilityArea.Pixels);
 
                         if (firstVisibleIndex >= 0 && !insideViewport)
@@ -2536,6 +2531,14 @@ else
                                     var diff = child.MeasuredSize.Pixels - reservedSlot;
                                     cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
 
+                                    // Durably shift the FOLLOWING cells' structure positions by this grow delta so
+                                    // the new layout persists (PASS 1 derives cell.Drawn from cell.Destination every
+                                    // frame). Without it the draw-time grow only patched the current frame via the
+                                    // OffsetOthers accumulator below, and the next cell overlapped until a staged
+                                    // restack landed a frame later — the visible "wrong Top" flicker while a bubble
+                                    // grows in realtime (streaming AI answer). Same call the smart-measure path uses.
+                                    OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+
                                     /*
                                     if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
                                     {
@@ -2646,6 +2649,15 @@ else
                             Debug.WriteLine($"INVISIBLE {child.ContextIndex}");
                         }
                     }
+
+                    // Shift the FOLLOWING cells THIS frame by this cell's draw-time remeasure delta. cell.Drawn
+                    // was computed in PASS 1 from the pre-grow structure, and PASS 1 does NOT apply OffsetOthers
+                    // to positions (it accumulates a dead local and resets cell.OffsetOthers). So without this, a
+                    // cell that remeasures TALLER while drawing (e.g. a streaming AI bubble growing word by word)
+                    // overlaps the next cell for one frame — until the structure restack lands next frame: the
+                    // visible "wrong Top" flicker. OffsetOthers is set only on the remeasure frame and cleared by
+                    // PASS 1 next frame, and the restack fixes positions from then on, so this never double-shifts.
+                    offsetOthers += cell.OffsetOthers;
                 }
 
                 OnAfterDrawingVisibleChildren(ctx, structure, visibleElements);
