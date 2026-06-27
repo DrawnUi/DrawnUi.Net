@@ -342,7 +342,13 @@ namespace DrawnUi.Draw
 
                 if (UsesGenericPool)
                 {
-                    FillPool(reserve, dataContexts);
+                    // Warm only a SMALL batch synchronously so the FIRST frame already has cells. The rest of
+                    // the prefill (up to ItemTemplatePoolSize for RecyclingTemplate.Disabled) is created on a
+                    // BACKGROUND thread AFTER the visible measured cells are painted — kicked from
+                    // DrawStackVisibleChildren's first-fresh-draw hook. Filling the whole prefill synchronously
+                    // here blocked the first draw -> long blank startup.
+                    var mult = _parent.Split > 0 ? _parent.Split : 1;
+                    FillPool(Math.Min(reserve, mult * 3), dataContexts);
                 }
 
                 if (kill != null)

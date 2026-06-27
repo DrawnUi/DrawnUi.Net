@@ -452,8 +452,6 @@ public partial class SkiaLayout
         Debug.WriteLine("[CancelBackgroundMeasurement] Background measurement cancelled");
     }
 
- 
- 
     /// <summary>
     /// Starts background measurement of items beyond the visible area
     /// </summary>
@@ -877,7 +875,14 @@ public partial class SkiaLayout
                     if (measuredCount < itemsCount)
                     {
                         var averageSize = stackHeight / measuredCount;
-                        stackHeight += averageSize;
+                        // MeasureVisible: estimate ALL remaining items, not just one. A start-anchored
+                        // inverted scroll derives its offset from the full content extent; a +1-avg
+                        // under-estimate misplaces the anchor so even the measured visible cells land
+                        // off-screen until background measurement completes the real extent.
+                        if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
+                            stackHeight += averageSize * (itemsCount - measuredCount);
+                        else
+                            stackHeight += averageSize;
                     }
                 }
                 else if (this.Type == LayoutType.Row)
@@ -885,7 +890,10 @@ public partial class SkiaLayout
                     if (measuredCount < itemsCount)
                     {
                         var averageSize = stackWidth / measuredCount;
-                        stackWidth += averageSize;
+                        if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
+                            stackWidth += averageSize * (itemsCount - measuredCount);
+                        else
+                            stackWidth += averageSize;
                     }
                 }
             }

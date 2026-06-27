@@ -2417,12 +2417,18 @@ else
                    //&& RecyclingTemplate != RecyclingTemplate.Disabled
                    )
                 {
-                    if (ReserveTemplates > 0)
+                    // First paint of a fresh ItemsSource just happened — the visible measured cells are now on
+                    // screen. ONLY NOW warm the rest of the pool, up to the prefill target (e.g.
+                    // ItemTemplatePoolSize for RecyclingTemplate.Disabled), on a BACKGROUND thread so later
+                    // scrolls into cold cells don't create them on the render thread. Deferred + off-thread so
+                    // it never competes with the visible-first paint.
+                    var warmTarget = Math.Max(visibleElements.Count + ReserveTemplates, GetTemplatesPoolPrefill());
+                    if (warmTarget > 0)
                     {
                         Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
                             () =>
                             {
-                                ChildrenFactory.FillPool(visibleElements.Count + ReserveTemplates);
+                                ChildrenFactory.FillPoolInBackgroundAsync(warmTarget);
                             });
                     }
                 }
