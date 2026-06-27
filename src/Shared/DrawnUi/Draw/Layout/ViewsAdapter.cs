@@ -494,6 +494,19 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Read-only: is a realized (in-use) view currently mapped to this item index? A background plane
+        /// renderer calls <see cref="GetViewForIndex"/> off the render thread and bails the whole draw if it
+        /// returns null (pool not yet realized after a grow/rekey). Checking this on the render thread before
+        /// dispatching an off-thread bake lets a self-caching layout fall back to a synchronous record for the
+        /// few frames until the views are realized — avoiding a baked-in empty band.
+        /// </summary>
+        public bool IsViewRealizedForIndex(int index)
+        {
+            lock (lockVisible)
+                return _cellsInUseViews.ContainsKey(index);
+        }
+
+        /// <summary>
         /// Updates binding context for a specific cached view
         /// </summary>
         /// <param name="index">Index of the view to update</param>
