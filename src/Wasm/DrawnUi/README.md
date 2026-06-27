@@ -1,5 +1,5 @@
 
-# DrawnUi.Web
+# DrawnUi.Wasm
 
 Pure .NET for WebAssembly, no Blazor deps.
 
@@ -12,8 +12,8 @@ GPU (WebGL) rendering.
 ## Quick start
 
 ```bash
-dotnet build src/Web/DrawnUi.Web.Sample/DrawnUi.Web.Sample.csproj -c Debug
-dotnet run   --project src/Web/DrawnUi.Web.Sample/DrawnUi.Web.Sample.csproj -c Debug
+dotnet build src/Web/DrawnUi.Wasm.Sample/DrawnUi.Wasm.Sample.csproj -c Debug
+dotnet run   --project src/Web/DrawnUi.Wasm.Sample/DrawnUi.Wasm.Sample.csproj -c Debug
 # → http://localhost:5000
 ```
 
@@ -77,7 +77,7 @@ mergeInto(LibraryManager.library, SkiaSharpInterop)
 `mergeInto` makes `InterceptBrowserObjects` a **native symbol** compiled into the wasm. Its body executes inside the Emscripten closure, so it can grab `GL`/`Module` and re-expose them on `globalThis` — the one legal escape hatch.
 
 #### How it's wired (three pieces)
-1. **Link it** — `--js-library=SkiaSharpInterop.js` via `EmccExtraLDFlags` (in `buildTransitive/DrawnUi.Web.props`). Requires `WasmBuildNative=true` so emcc relinks. This is exactly how SkiaSharp.Views.Blazor does it.
+1. **Link it** — `--js-library=SkiaSharpInterop.js` via `EmccExtraLDFlags` (in `buildTransitive/DrawnUi.Wasm.props`). Requires `WasmBuildNative=true` so emcc relinks. This is exactly how SkiaSharp.Views.Blazor does it.
 2. **Call it from C#** — `[DllImport("libSkiaSharp", EntryPoint="InterceptBrowserObjects", CallingConvention=Cdecl)]`, invoked once via `EnsureBrowserObjectsIntercepted()` before GL init. (Everything links into one wasm, so the symbol resolves even though it's JS-defined.)
 3. **Consume it** — `getGL()` in `drawnui-web.js` reads **only** `globalThis.SkiaSharpGL`. After the intercept call it's populated; before, it's null → raster fallback. Critically, `getGL()` must never probe `Module.GL` directly (that's the runtime-aborting path).
 
@@ -121,7 +121,7 @@ including tap synthesis. Wheel mirrors the Net `GestureRobot.WheelScroll` contra
 
 ## Distribution
 
-`buildTransitive/DrawnUi.Web.props` + `SkiaSharpInterop.js` are packed into the NuGet
+`buildTransitive/DrawnUi.Wasm.props` + `SkiaSharpInterop.js` are packed into the NuGet
 `buildTransitive/` folder, so **package consumers get the GPU js-library flag automatically** — no
 manual emcc flags. `ProjectReference` consumers do not auto-import `buildTransitive`, so the sample
 imports the props explicitly. Single source of truth — do not duplicate the flag.

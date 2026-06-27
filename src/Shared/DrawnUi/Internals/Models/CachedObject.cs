@@ -80,12 +80,6 @@ public class CachedObject : ISkiaDisposable
             {
                 canvas.DrawImage(Image, drawAt.X, drawAt.Y, paint);
                 LastDrawnAt = new(drawAt.X, drawAt.Y, Bounds.Width + drawAt.X, Bounds.Height + drawAt.Y);
-
-                //if (Surface != null && Surface.Context != null)
-                //{
-                //    //GPU
-                //    canvas.Flush();
-                //}
             }
         }
         catch (Exception e)

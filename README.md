@@ -12,9 +12,10 @@ Currently supported hosts:
 * `DrawnUi.Maui` - native apps on iOS, Android, MacCatalyst, and Windows.
 * `DrawnUi.Blazor.Wasm` - browser WebAssembly rendering .
 * `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
+* `DrawnUi.Wasm` - pure browser WebAssembly, no Blazor required.
 * `DrawnUi.OpenTk` - Windows and Linux desktops.
 
-[See example running in browser](https://drawnui.net/sandbox)
+[See example running in browser](https://drawnui.net/sandbox) · [Pong in pure WASM](https://pong.appomobi.com/)
 
 ## Features 
 

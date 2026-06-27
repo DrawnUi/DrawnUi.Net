@@ -1,4 +1,4 @@
-# DrawnUi.Web — pure WebAssembly (no Blazor)
+# DrawnUi.Wasm — pure WebAssembly (no Blazor)
 
 DrawnUI rendering for browser WASM via `[JSImport]`/`[JSExport]` only — no `IJSRuntime`,
 no `ElementReference`, no Razor. Builds on the **`DRAWNUI_NET`** path (SharedNet + Net shims,
@@ -9,8 +9,8 @@ same base as OpenTK), NOT the Blazor target. `WebSkiaView : ISkiaDrawable` is at
 ## Build / run
 
 ```bash
-dotnet build src/Web/DrawnUi.Web.Sample/DrawnUi.Web.Sample.csproj -c Debug
-dotnet run   --project src/Web/DrawnUi.Web.Sample/DrawnUi.Web.Sample.csproj -c Debug   # serves http://localhost:5000
+dotnet build src/Web/DrawnUi.Wasm.Sample/DrawnUi.Wasm.Sample.csproj -c Debug
+dotnet run   --project src/Web/DrawnUi.Wasm.Sample/DrawnUi.Wasm.Sample.csproj -c Debug   # serves http://localhost:5000
 ```
 
 Sample csproj is `Microsoft.NET.Sdk.BlazorWebAssembly` with `WasmBuildNative=true` (needed so
@@ -24,7 +24,7 @@ The GPU path silently fell back to raster for three independent reasons. All fix
 1. **Emscripten `GL` is not reachable from JS.** It is not in `EXPORTED_RUNTIME_METHODS`, and
    touching `Module.GL` / `getDotnetRuntime().Module.GL` from JS **aborts the .NET runtime**
    (`'GL' was not exported`). Solution mirrors SkiaSharp.Views.Blazor: ship `SkiaSharpInterop.js`
-   (an emcc `mergeInto` library), link it via `--js-library` (see `buildTransitive/DrawnUi.Web.props`),
+   (an emcc `mergeInto` library), link it via `--js-library` (see `buildTransitive/DrawnUi.Wasm.props`),
    and call the native `[DllImport("libSkiaSharp")] InterceptBrowserObjects()` once before GL init
    (`SkiaHtmlCanvasInterop.EnsureBrowserObjectsIntercepted`). It runs *inside* the module closure
    and stashes `GL`/`Module` on `globalThis.SkiaSharpGL` / `SkiaSharpModule`. `getGL()` in
@@ -60,7 +60,7 @@ when reading the console; it is not a failure.
 
 ## Distribution
 
-`buildTransitive/DrawnUi.Web.props` + `SkiaSharpInterop.js` are packed into the NuGet
+`buildTransitive/DrawnUi.Wasm.props` + `SkiaSharpInterop.js` are packed into the NuGet
 `buildTransitive/` folder, so package consumers get the GPU js-library flag automatically.
 `ProjectReference` consumers (the sample) do NOT auto-import buildTransitive — the sample
 `<Import>`s the props explicitly. Single source of truth; don't duplicate the flag.
