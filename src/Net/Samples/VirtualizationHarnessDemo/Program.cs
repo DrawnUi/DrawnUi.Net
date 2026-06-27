@@ -4,6 +4,9 @@ using DrawnUi.Testing;
 VirtualizationHarnessDemo.BlankJumpRepro.Run();
 VirtualizationHarnessDemo.LoadMoreSpinnerRepro.Run();
 VirtualizationHarnessDemo.JumpReleaseRepro.Run();
+VirtualizationHarnessDemo.CachedJumpRepro.Run();
+VirtualizationHarnessDemo.RealChatJumpRepro.Run();
+VirtualizationHarnessDemo.CachedScrollTrimRepro.Run();
 VirtualizationHarnessDemo.AssetResolveRepro.Run();
 return;
 

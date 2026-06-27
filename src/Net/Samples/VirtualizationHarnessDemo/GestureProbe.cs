@@ -3,7 +3,6 @@ using DrawnUi.Controls;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
 using DrawnUi.Views;
-using Color = DrawnUi.Color;
 
 namespace VirtualizationHarnessDemo;
 

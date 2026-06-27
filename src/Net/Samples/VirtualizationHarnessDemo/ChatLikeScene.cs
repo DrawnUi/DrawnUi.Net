@@ -4,7 +4,6 @@ using DrawnUi.Controls;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
 using DrawnUi.Views;
-using Color = DrawnUi.Color;
 
 namespace VirtualizationHarnessDemo;
 
@@ -25,6 +24,7 @@ public sealed class ChatLikeScene : IDisposable
         public string Text { get; set; } = string.Empty;
         public int Lines { get; set; } = 1;
         public bool Outgoing { get; set; }
+        public bool IsImage { get; set; }
     }
 
     public sealed class ChatRowCell : SkiaDynamicDrawnCell
@@ -62,13 +62,36 @@ public sealed class ChatLikeScene : IDisposable
             };
         }
 
+        // When true, "image" rows arrive EMPTY and upgrade their content+height asynchronously after bind
+        // (models the real cell's async GPU-image source upgrade posted to the main thread).
+        public static bool AsyncImageUpgrade = false;
+        private long _bindToken;
+
         protected override void SetContent(object ctx)
         {
             if (ctx is ChatRow row)
             {
-                _label.Text = row.Text;
+                long token = ++_bindToken; // invalidate any in-flight upgrade for a previous binding
                 _bubble.HorizontalOptions = row.Outgoing ? LayoutOptions.End : LayoutOptions.Start;
                 _bubble.BackgroundColor = row.Outgoing ? Color.FromArgb("#2B5278") : Color.FromArgb("#2A2A2A");
+
+                if (AsyncImageUpgrade && row.IsImage)
+                {
+                    // arrive blank/short, then upgrade LATE — after the cached band may have already recorded
+                    _label.Text = string.Empty;
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(70);
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            if (_bindToken == token) _label.Text = row.Text;
+                        });
+                    });
+                }
+                else
+                {
+                    _label.Text = row.Text;
+                }
             }
         }
     }
@@ -125,7 +148,7 @@ public sealed class ChatLikeScene : IDisposable
     public bool AtPresent => _window.AtPresent;
 
     public ChatLikeScene(int total = 1000, int width = 430, int height = 720,
-        int measurementCacheCapacity = 1000, int latencyMs = 10)
+        int measurementCacheCapacity = 1000, int latencyMs = 10, bool cachedPlanes = false)
     {
         var all = new List<ChatRow>(total);
         for (int i = 0; i < total; i++)
@@ -136,27 +159,27 @@ public sealed class ChatLikeScene : IDisposable
                 Index = i,
                 Lines = lines,
                 Outgoing = (i % 3) == 0,
+                IsImage = (i % 11) == 5,   // sparse "image" rows -> async content upgrade
                 Text = $"Message {i}" + string.Concat(Enumerable.Repeat("\nlorem ipsum dolor", lines - 1)),
             });
         }
 
+        ViewportHeight = height;
         Host = new HeadlessCanvasHost(width, height, scale: 1f, background: Colors.Black);
 
-        List = new PeekStack
-        {
-            Type = LayoutType.Column,
-            Spacing = 4,
-            Padding = new Thickness(0, 8),
-            ItemsSource = _window.Items,
-            ItemTemplateType = typeof(ChatRowCell),
-            RecyclingTemplate = RecyclingTemplate.Enabled,
-            MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
-            VirtualisationInflated = 100,
-            MeasurementCacheCapacity = measurementCacheCapacity,
-            UseCache = SkiaCacheType.None,
-            FastMeasurement = true,
-            HorizontalOptions = LayoutOptions.Fill,
-        };
+        List = cachedPlanes ? new DrawnChatList.AppMessagesStack() : new PeekStack();
+        List.Type = LayoutType.Column;
+        List.Spacing = 4;
+        List.Padding = new Thickness(0, 8);
+        List.ItemsSource = _window.Items;
+        List.ItemTemplateType = typeof(ChatRowCell);
+        List.RecyclingTemplate = RecyclingTemplate.Enabled;
+        List.MeasureItemsStrategy = MeasuringStrategy.MeasureVisible;
+        List.VirtualisationInflated = 100;
+        List.MeasurementCacheCapacity = measurementCacheCapacity;
+        List.UseCache = SkiaCacheType.None;
+        List.FastMeasurement = true;
+        List.HorizontalOptions = LayoutOptions.Fill;
 
         Scroll = new SkiaScroll
         {
@@ -202,9 +225,23 @@ public sealed class ChatLikeScene : IDisposable
 
     public void TriggerLoadOlder() => _window.LoadOlder();
     public void TriggerLoadNewer() => _window.LoadNewer();
-    public void JumpToIndex(int global) => _ = _window.ScrollToIndex(global, RelativePositionType.Center, false);
+    public void JumpToIndex(int global, bool animate = false) => _ = _window.ScrollToIndex(global, RelativePositionType.Center, animate);
 
-    public string DumpRows(int max = 60) => ((PeekStack)List).DumpRows(max);
+    public string DumpRows(int max = 60) => List is PeekStack p ? p.DumpRows(max) : "(real AppMessagesStack)";
+
+    public int ViewportHeight { get; }
+
+    /// <summary>Locate the cell bound to global row <paramref name="globalIndex"/> in the gesture RenderTree
+    /// and return its on-screen Y. (Global fill only proves non-blank; this proves the TARGET is present.)</summary>
+    public (bool found, float top, float bottom) TargetCell(int globalIndex)
+    {
+        var tree = List.RenderTree;
+        if (tree != null)
+            foreach (var t in tree)
+                if (t.FreezeBindingContext is ChatRow r && r.Index == globalIndex)
+                    return (true, t.HitRect.Top, t.HitRect.Bottom);
+        return (false, float.NaN, float.NaN);
+    }
 
     /// <summary>Pump frames until the async InitializeAsync has materialized the first window.</summary>
     public void WaitReady(int maxFrames = 240)

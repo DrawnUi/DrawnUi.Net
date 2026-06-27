@@ -1,5 +1,4 @@
 using DrawnUi.Testing;
-using Color = DrawnUi.Color;
 
 namespace VirtualizationHarnessDemo;
 

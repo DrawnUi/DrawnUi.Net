@@ -115,6 +115,61 @@ public sealed class HeadlessCanvasHost : IDisposable
         return total == 0 ? 0 : (double)differ / total;
     }
 
+    /// <summary>
+    /// Tallest fully-background horizontal strip (in px) that sits BETWEEN content rows — i.e. an empty
+    /// band/hole in the middle of rendered content (not the empty margins above/below). A row counts as
+    /// "background" when fewer than <paramref name="rowFillThreshold"/> of its pixels differ from the
+    /// background. Used to catch a stale cache plane blitting cells with a gap.
+    /// </summary>
+    public int MaxInteriorEmptyBandPx(DrawnUi.Color background, int tolerance = 8, double rowFillThreshold = 0.02)
+        => MaxInteriorEmptyBand(background, out _, out _, tolerance, rowFillThreshold);
+
+    /// <summary>As <see cref="MaxInteriorEmptyBandPx"/>, also returning the band's [bandTop..bandBottom] px.</summary>
+    public int MaxInteriorEmptyBand(DrawnUi.Color background, out int bandTop, out int bandBottom,
+        int tolerance = 8, double rowFillThreshold = 0.02)
+    {
+        bandTop = bandBottom = -1;
+        using var image = _surface.Snapshot();
+        using var bmp = SKBitmap.FromImage(image);
+
+        int br = (int)Math.Round(background.Red * 255);
+        int bgc = (int)Math.Round(background.Green * 255);
+        int bb = (int)Math.Round(background.Blue * 255);
+
+        // mark each row as content (true) or background (false)
+        var content = new bool[bmp.Height];
+        for (int y = 0; y < bmp.Height; y++)
+        {
+            int differ = 0;
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                var p = bmp.GetPixel(x, y);
+                if (Math.Abs(p.Red - br) > tolerance || Math.Abs(p.Green - bgc) > tolerance ||
+                    Math.Abs(p.Blue - bb) > tolerance)
+                    differ++;
+            }
+            content[y] = differ > bmp.Width * rowFillThreshold;
+        }
+
+        int firstContent = Array.IndexOf(content, true);
+        int lastContent = Array.LastIndexOf(content, true);
+        if (firstContent < 0 || lastContent <= firstContent)
+            return 0;
+
+        int maxRun = 0, run = 0, runStart = 0;
+        for (int y = firstContent; y <= lastContent; y++) // only BETWEEN content (ignore outer margins)
+        {
+            if (!content[y])
+            {
+                if (run == 0) runStart = y;
+                run++;
+                if (run > maxRun) { maxRun = run; bandTop = runStart; bandBottom = y; }
+            }
+            else run = 0;
+        }
+        return maxRun;
+    }
+
     /// <summary>Saves the current surface contents to a PNG file (useful for visual diffing).</summary>
     public void SavePng(string filePath)
     {
