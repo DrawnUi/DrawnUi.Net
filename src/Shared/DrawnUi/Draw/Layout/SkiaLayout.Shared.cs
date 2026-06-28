@@ -777,7 +777,7 @@ namespace DrawnUi.Draw
                         {
                             foreach (var cell in cellsToRelease)
                             {
-                                ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                                ChildrenFactory.ReleaseViewInUse(cell);
                             }
                         }
                     }

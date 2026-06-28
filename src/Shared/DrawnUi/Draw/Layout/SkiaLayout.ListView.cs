@@ -777,7 +777,7 @@ public partial class SkiaLayout
             {
                 foreach (var cell in cellsToRelease)
                 {
-                    ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                    ChildrenFactory.ReleaseViewInUse(cell);
                 }
             }
 
@@ -3319,7 +3319,7 @@ public partial class SkiaLayout
             {
                 foreach (var cell in cellsToRelease)
                 {
-                    ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                    ChildrenFactory.ReleaseViewInUse(cell);
                 }
             }
         }
@@ -3830,7 +3830,7 @@ public partial class SkiaLayout
             {
                 foreach (var cell in cellsToRelease)
                 {
-                    ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                    ChildrenFactory.ReleaseViewInUse(cell);
                 }
             }
         }

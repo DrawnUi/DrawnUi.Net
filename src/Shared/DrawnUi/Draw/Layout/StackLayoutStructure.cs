@@ -75,7 +75,7 @@ public abstract class StackLayoutStructure
             {
                 foreach (var view in cellsToRelease)
                 {
-                    _layout.ChildrenFactory.ReleaseViewInUse(view.ContextIndex, view);
+                    _layout.ChildrenFactory.ReleaseViewInUse(view);
                 }
             }
         }

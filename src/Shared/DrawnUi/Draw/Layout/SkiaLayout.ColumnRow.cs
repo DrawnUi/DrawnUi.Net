@@ -686,7 +686,7 @@ else
                     else if (IsTemplated)
                         foreach (var cell in cellsToRelease)
                         {
-                            ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                            ChildrenFactory.ReleaseViewInUse(cell);
                         }
                 }
 
@@ -1053,7 +1053,7 @@ else
                 {
                     foreach (var cell in cellsToRelease)
                     {
-                        ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                        ChildrenFactory.ReleaseViewInUse(cell);
                     }
                 }
             }
@@ -1330,7 +1330,7 @@ else
                 {
                     foreach (var cell in _tempCellsToRelease)
                     {
-                        ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                        ChildrenFactory.ReleaseViewInUse(cell);
                     }
                 }
             }
@@ -2673,7 +2673,7 @@ else
                 if (IsTemplated)
                     foreach (var cell in cellsToRelease)
                     {
-                        ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                        ChildrenFactory.ReleaseViewInUse(cell);
                     }
             }
 

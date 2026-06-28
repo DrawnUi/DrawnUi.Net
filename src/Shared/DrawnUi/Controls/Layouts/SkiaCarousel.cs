@@ -475,7 +475,7 @@ public class SkiaCarousel : SnappingLayout
                 if (IsTemplated)
                     foreach (var cell in cellsToRelease)
                     {
-                        ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                        ChildrenFactory.ReleaseViewInUseForIndex(cell.ContextIndex, cell);
                     }
             }
 
@@ -1246,7 +1246,7 @@ public class SkiaCarousel : SnappingLayout
             if (IsTemplated)
                 foreach (var cell in cellsToRelease)
                 {
-                    ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                    ChildrenFactory.ReleaseViewInUseForIndex(cell.ContextIndex, cell);
                 }
         }
 
@@ -1537,7 +1537,7 @@ public class SkiaCarousel : SnappingLayout
             }
 
             if (IsTemplated)
-                ChildrenFactory.ReleaseViewInUse(cell.ContextIndex, cell);
+                ChildrenFactory.ReleaseViewInUseForIndex(cell.ContextIndex, cell);
         }
     }
 

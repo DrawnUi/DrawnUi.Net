@@ -856,7 +856,16 @@ namespace DrawnUi.Draw
 
         #endregion
 
-        public void ReleaseViewInUse(int index, SkiaControl view)
+
+        public void ReleaseViewInUse(SkiaControl cell)
+        {
+            if (cell != null)
+            {
+                ReleaseViewInUseForIndex(cell.ContextIndex, cell);
+            }
+        }
+
+        public void ReleaseViewInUseForIndex(int index, SkiaControl view)
         {
             if (view == null)
                 return;
