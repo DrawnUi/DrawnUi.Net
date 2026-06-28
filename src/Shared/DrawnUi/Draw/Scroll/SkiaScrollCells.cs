@@ -12,6 +12,13 @@
         // Check if we need more items
         protected bool? CheckForIncrementalMeasurementTrigger()
         {
+            // DISABLED: incremental MeasureAdditionalItems is NOT epoch-guarded and shares no lock with the
+            // epoch-guarded full background pass (IntegrateMeasuredBatch). Running it corrupts the structure
+            // (two un-synchronized writers of StackStructureMeasured => cells-over-cells on scroll-up-at-
+            // startup, worse under Android's separate render thread). The full pass + draw-time measure cover
+            // measurement, so incremental is redundant. Proven safe by disabling it on plain CellsStack.
+            return null;
+
             if (_incrementalMeasurementInProgress)
                 return null;
 
@@ -19,6 +26,14 @@
                                              && layout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
                                              && layout.LastMeasuredIndex < layout.ItemsSource.Count)
             {
+                // The full background measurement pass (IntegrateMeasuredBatch) is epoch-guarded and writes
+                // StackStructureMeasured on its own thread. Incremental MeasureAdditionalItems is NOT guarded
+                // and shares no lock with it — running both concurrently makes two threads write the same
+                // structure => corruption (cells-over-cells on scroll-up-at-startup). The full pass already
+                // measures everything, so incremental is redundant while it runs: skip until it finishes.
+                if (layout.IsBackgroundMeasuring)
+                    return false;
+
                 var measuredEnd = layout.GetMeasuredContentEnd();
 
                 double currentOffset = Orientation == ScrollOrientation.Vertical

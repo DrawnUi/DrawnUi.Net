@@ -627,6 +627,49 @@ public partial class SkiaScroll
         if (width < 0)
             width = 0;
 
+        // CLAMP TRAVEL TO MEASURED (not extent) while the bg pass is still measuring. ptsContentHeight above
+        // is the full ESTIMATED extent — kept as-is so the scrollbar/anchor (TrackIndexPosition) stay stable.
+        // But the scroll must not TRAVEL past the cells that actually exist in the structure, or it lands on
+        // un-materialized space => blank. So narrow ONLY the offset bounds to the measured content; the unready
+        // edge becomes a temporary content edge (normal bounce applies) and grows as measurement progresses.
+        // Pure scroll-side, no structure writes => Android-safe and reproducible single-thread.
+        // CLAMP TRAVEL TO MEASURED (not extent) while the structure is incomplete. ptsContentHeight above is
+        // the full ESTIMATED extent — kept as-is so the scrollbar/anchor (TrackIndexPosition) stay stable. But
+        // the scroll must not TRAVEL past the cells that actually exist in the structure, or it lands on
+        // un-materialized space => blank. Narrow ONLY the offset bounds to the measured content; the unready
+        // edge becomes a temporary content edge (normal bounce + LoadMore apply) and grows as measurement
+        // progresses. Gate on LastMeasuredIndex < Count-1 (reliable "incomplete"), NOT IsBackgroundMeasuring
+        // (that flag is False during the blank window). Pure scroll-side, no structure writes => thread-safe.
+        if (Content is SkiaLayout mvLayout && mvLayout.IsTemplated
+            && mvLayout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+            && mvLayout.ItemsSource != null && mvLayout.ItemsSource.Count > 0
+            && mvLayout.LastMeasuredIndex < mvLayout.ItemsSource.Count - 1)
+        {
+            double measuredEndPts = mvLayout.GetMeasuredContentEnd(); // points, top of last measured cell
+            if (measuredEndPts > 0)
+            {
+                float scaleC = (float)RenderingScale; if (scaleC <= 0) scaleC = 1;
+                double oneCellPts = mvLayout.GetAverageItemHeightPixels(scaleC) / scaleC + mvLayout.Spacing;
+                // same extras the extent got, so the limit is in the same coordinate space as 'height'/'width'
+                double extras = (Orientation == ScrollOrientation.Vertical
+                                    ? HeaderSize.Units.Height + FooterSize.Units.Height
+                                    : HeaderSize.Units.Width + FooterSize.Units.Width) + (float)ContentOffset;
+                double measuredTravel = (measuredEndPts + oneCellPts + extras)
+                                        - (Orientation == ScrollOrientation.Vertical
+                                            ? MeasuredSize.Units.Height : MeasuredSize.Units.Width);
+                if (Orientation == ScrollOrientation.Vertical)
+                {
+                    if (measuredTravel >= 0 && measuredTravel < height)
+                        height = (float)measuredTravel; // narrows bounds.Top only; ptsContentHeight (extent) untouched
+                }
+                else
+                {
+                    if (measuredTravel >= 0 && measuredTravel < width)
+                        width = (float)measuredTravel;
+                }
+            }
+        }
+
         var rect = new SKRect(-width, -height, 0, 0);
 
         return rect;
