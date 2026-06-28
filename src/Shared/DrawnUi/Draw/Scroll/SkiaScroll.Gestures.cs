@@ -68,7 +68,7 @@ public partial class SkiaScroll
         return forChild;
     }
 
-    protected bool InContact;
+    public bool InContact { get; protected set; }
 
     protected bool LockGesturesUntilDown;
 
