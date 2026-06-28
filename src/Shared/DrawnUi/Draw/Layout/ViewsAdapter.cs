@@ -1457,6 +1457,14 @@ namespace DrawnUi.Draw
 
         #endregion
 
+        public int TotalCellsCount
+        {
+            get
+            {
+                return PoolSize + _cellsInUseViews.Count;
+            }
+        }
+
         public string GetDebugInfo()
         {
             if (_dataContexts == null)
@@ -1465,7 +1473,7 @@ namespace DrawnUi.Draw
             }
 
             return
-                $"Data:  {_dataContexts.Count}, cells {_cellsInUseViews.Count}/{PoolSize + _cellsInUseViews.Count}";
+                $"Data:  {_dataContexts.Count}, cells {_cellsInUseViews.Count}/{TotalCellsCount}";
         }
 
         public int GetChildrenCount()
