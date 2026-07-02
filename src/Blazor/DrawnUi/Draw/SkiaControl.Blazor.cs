@@ -72,13 +72,17 @@ namespace DrawnUi.Draw
             }
             else if (propertyName.IsEither(
                          nameof(Margin),
+                         nameof(AddMarginTop),
+                         nameof(AddMarginBottom),
+                         nameof(AddMarginLeft),
+                         nameof(AddMarginRight),
                          nameof(HeightRequest), nameof(WidthRequest),
                          nameof(MaximumWidthRequest), nameof(MinimumWidthRequest),
                          nameof(MaximumHeightRequest), nameof(MinimumHeightRequest)
                      ))
             {
                 InvalidateMeasure();
-                if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                //if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
                 {
                     UpdateSizeRequest();
                 }
