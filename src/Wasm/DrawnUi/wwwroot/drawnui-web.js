@@ -282,11 +282,16 @@ function reportCanvasSize() {
 
 function setupInputHandlers() {
     if (!canvas) return;
-    canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, e.clientX, e.clientY, e.button, e.buttons));
-    canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, e.clientX, e.clientY, e.buttons));
-    canvas.addEventListener('pointerup', e => onPointerUp?.(e.pointerId, e.clientX, e.clientY, e.button, e.buttons));
+    // Pointer coords must be canvas-relative: clientX/Y are viewport-relative, so subtract the
+    // canvas bounding rect. Required whenever the canvas is not at the viewport origin (e.g. an
+    // aspect-locked / centered / letterboxed canvas); harmless when it is at 0,0.
+    const relX = e => e.clientX - canvas.getBoundingClientRect().left;
+    const relY = e => e.clientY - canvas.getBoundingClientRect().top;
+    canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, relX(e), relY(e), e.button, e.buttons));
+    canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, relX(e), relY(e), e.buttons));
+    canvas.addEventListener('pointerup', e => onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons));
     canvas.addEventListener('pointercancel', e => onPointerCancel?.(e.pointerId));
-    canvas.addEventListener('wheel', e => { e.preventDefault(); moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, e.clientX, e.clientY); }, { passive: false });
+    canvas.addEventListener('wheel', e => { e.preventDefault(); moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); }, { passive: false });
     window.addEventListener('resize', reportCanvasSize);
 }
 

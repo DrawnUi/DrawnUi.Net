@@ -31,7 +31,8 @@ public static partial class WebInput
     [JSExport]
     public static void OnPointerDown(int pointerId, double x, double y, int button, int buttons)
     {
-        var location = new PointF((float)x, (float)y);
+        var scale = Math.Max(0.1f, RenderingScale);
+        var location = new PointF((float)x * scale, (float)y * scale);
         var args = MakeTouchArgs(pointerId, TouchActionType.Pressed, location);
 
         ActiveTouchIds.Add(pointerId);
@@ -53,7 +54,8 @@ public static partial class WebInput
     [JSExport]
     public static void OnPointerMove(int pointerId, double x, double y, int buttons)
     {
-        var location = new PointF((float)x, (float)y);
+        var scale = Math.Max(0.1f, RenderingScale);
+        var location = new PointF((float)x * scale, (float)y * scale);
         var isDragging = buttons != 0;
         var actionType = isDragging ? TouchActionType.Moved : TouchActionType.Pointer;
         var args = MakeTouchArgs(pointerId, actionType, location);
@@ -95,7 +97,8 @@ public static partial class WebInput
     [JSExport]
     public static void OnPointerUp(int pointerId, double x, double y, int button, int buttons)
     {
-        var location = new PointF((float)x, (float)y);
+        var scale = Math.Max(0.1f, RenderingScale);
+        var location = new PointF((float)x * scale, (float)y * scale);
         var args = MakeTouchArgs(pointerId, TouchActionType.Released, location);
 
         ActiveTouchIds.Remove(pointerId);
@@ -169,7 +172,8 @@ public static partial class WebInput
         };
         var dominant = Math.Abs(deltaY) >= Math.Abs(deltaX) ? deltaY : deltaX;
 
-        var location = new PointF((float)x, (float)y);
+        var scale = Math.Max(0.1f, RenderingScale);
+        var location = new PointF((float)x * scale, (float)y * scale);
         var args = MakeTouchArgs(0, TouchActionType.Wheel, location);
         args.NumberOfTouches = Math.Max(1, ActiveTouchIds.Count);
         args.Wheel = new WheelEventArgs
