@@ -8049,6 +8049,20 @@ namespace DrawnUi.Draw
             //CalculateMargins();
             //CalculateSizeRequest();
 
+            if (UsingCacheType == SkiaCacheType.ImageDoubleBuffered)
+            {
+                // Do NOT destroy the cache on a remeasure REQUEST: DestroyRenderingObject nulls the front AND
+                // poisons the previous (RenderObjectPreviousNeedsUpdate), leaving NOTHING drawable until the
+                // async rebake lands = visible blank blink (e.g. a chat cell blinking empty right after its
+                // image loaded and triggered InvalidateMeasure with an identical resulting size). Keep the
+                // front drawable — same context, pixels stay valid — and flag a rebake; if the size actually
+                // changes, the size-mismatch guard in UseRenderingObject re-records at the new size.
+                NeedUpdateFrontCache = true;
+                NeedMeasure = true;
+                InvalidateParent();
+                return;
+            }
+
             DestroyRenderingObject();
             NeedMeasure = true; //instead of previously InvalidateWithChildren();
             InvalidateParent();

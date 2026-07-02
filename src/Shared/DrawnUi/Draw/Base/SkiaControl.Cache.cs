@@ -755,6 +755,28 @@ public partial class SkiaControl
         }
     }
 
+    // True while an offscreen bake for THIS control is pending or painting (double-buffered path). Guards the
+    // sync resize-rebuild below from painting the same control concurrently with the background bake.
+    private volatile bool _offscreenBakeBusy;
+
+    /// <summary>
+    /// The control RESIZED while holding a cache: the cached pixels are valid but at a stale size, and the
+    /// double-buffered path would otherwise draw a blank placeholder until the async rebake lands (a visible
+    /// blink). Re-record synchronously at the new size instead — one render-thread paint, happening only on
+    /// an actual resize of an already-cached control, never per-frame and never for cold (never-cached)
+    /// controls, so scrolling smoothness is unaffected. Skipped while a background bake is painting us.
+    /// </summary>
+    bool TrySyncRebuildStaleSize(DrawingContext context, SKRect recordArea)
+    {
+        if (_offscreenBakeBusy)
+            return false; // background bake owns painting this control right now — do not race it
+
+        CreateRenderingObjectAndPaint(context, recordArea,
+            (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
+
+        return RenderObject != null;
+    }
+
     protected virtual bool UseRenderingObject(DrawingContext context, SKRect recordArea)
     {
         lock (LockDraw) //prevent conflicts with erasing cache after we decided to use it
@@ -820,6 +842,13 @@ public partial class SkiaControl
                         }
                         else
                         {
+                            // stale-size front (control resized): sync re-record beats a blank frame
+                            if (TrySyncRebuildStaleSize(context, recordArea))
+                            {
+                                NeedUpdateFrontCache = false;
+                                return true;
+                            }
+
                             if (!ExistingCacheWasRendered)
                                 DrawPlaceholder(context);
                         }
@@ -856,6 +885,13 @@ public partial class SkiaControl
                         }
                         else
                         {
+                            // stale-size previous (control resized): sync re-record beats a blank frame
+                            if (TrySyncRebuildStaleSize(context, recordArea))
+                            {
+                                NeedUpdateFrontCache = false;
+                                return true;
+                            }
+
                             if (!ExistingCacheWasRendered)
                                 DrawPlaceholder(context);
                         }
@@ -879,17 +915,26 @@ public partial class SkiaControl
                 if (needBuild)
                 {
                     var clone = AddPaintArguments(context);
+                    _offscreenBakeBusy = true;
                     PushToOffscreenRendering(() =>
                     {
-                        //will be executed on background thread in parallel
-                        var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing, UsingCacheType,
-                            (ctx) => { PaintWithEffects(ctx); });
-
-                        RenderObjectPreparing = prepared;
-                        if (prepared != null)
+                        try
                         {
-                            RenderObject = prepared;
-                            _renderObjectPreparing = null;
+                            //will be executed on background thread in parallel
+                            var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing,
+                                UsingCacheType,
+                                (ctx) => { PaintWithEffects(ctx); });
+
+                            RenderObjectPreparing = prepared;
+                            if (prepared != null)
+                            {
+                                RenderObject = prepared;
+                                _renderObjectPreparing = null;
+                            }
+                        }
+                        finally
+                        {
+                            _offscreenBakeBusy = false;
                         }
 
                         if (Parent != null && Parent.UpdateLocks < 1)
@@ -1201,20 +1246,29 @@ public partial class SkiaControl
                     DrawPlaceholder(clone);
 
                 //use cloned struct in another thread
+                _offscreenBakeBusy = true;
                 PushToOffscreenRendering(() =>
                 {
-                    //will be executed on background thread in parallel
-                    var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing, UsingCacheType,
-                        (ctx) =>
-                        {
-                            PaintWithEffects(ctx);
-                        });
-
-                    RenderObjectPreparing = prepared;
-                    if (prepared != null)
+                    try
                     {
-                        RenderObject = prepared;
-                        _renderObjectPreparing = null;
+                        //will be executed on background thread in parallel
+                        var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing,
+                            UsingCacheType,
+                            (ctx) =>
+                            {
+                                PaintWithEffects(ctx);
+                            });
+
+                        RenderObjectPreparing = prepared;
+                        if (prepared != null)
+                        {
+                            RenderObject = prepared;
+                            _renderObjectPreparing = null;
+                        }
+                    }
+                    finally
+                    {
+                        _offscreenBakeBusy = false;
                     }
 
                     if (Parent != null && Parent.UpdateLocks < 1)
