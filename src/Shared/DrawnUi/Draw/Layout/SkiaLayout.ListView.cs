@@ -2872,8 +2872,8 @@ public partial class SkiaLayout
             // This prevents the "huge empty space" issue when scrolling fast
             var currentHeight = MeasuredSize.Pixels.Height;
 
-            if (SkiaLayout.DebugAssertStructure)
-                Super.Log($"[CONTENTSIZE] total={totalItems} measured={measuredCount} progress={progress:0.000} visCnt={visibleItemsCount} measH={actualMeasuredHeight:0} new={newContentHeight:0} cur={currentHeight:0} structLen={StackStructure.Length}");
+            //if (SkiaLayout.DebugAssertStructure)
+            //    Super.Log($"[CONTENTSIZE] total={totalItems} measured={measuredCount} progress={progress:0.000} visCnt={visibleItemsCount} measH={actualMeasuredHeight:0} new={newContentHeight:0} cur={currentHeight:0} structLen={StackStructure.Length}");
 
             if (Math.Abs(newContentHeight - currentHeight) > 1f)
             {
