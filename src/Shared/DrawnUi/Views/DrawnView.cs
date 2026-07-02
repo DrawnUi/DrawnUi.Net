@@ -1705,7 +1705,6 @@ namespace DrawnUi.Views
         #region BACKGROUND RENDERING
 
         protected object LockStartOffscreenQueue = new();
-        private bool _processingOffscrenRendering = false;
 
         // Holds the incoming commands without blocking
         private readonly ConcurrentQueue<OffscreenCommand> _incomingCommands = new ConcurrentQueue<OffscreenCommand>();
@@ -1721,14 +1720,21 @@ namespace DrawnUi.Views
         /// </summary>
         public void KickOffscreenCacheRendering()
         {
-            lock (LockStartOffscreenQueue)
+            if (OperatingSystem.IsBrowser())
             {
-                if (!_processingOffscrenRendering)
-                {
-                    _processingOffscrenRendering = true;
-                    Task.Run(async () => { await ProcessOffscreenCacheRenderingAsync(); }).ConfigureAwait(false);
-                }
+                // Single-threaded WASM: there is no background thread — Task.Run work items execute
+                // on the main thread between frames and can starve indefinitely under continuous
+                // requestAnimationFrame load, silently dropping queued cache builds. Same total
+                // main-thread cost either way, so process synchronously — guaranteed execution.
+                ProcessOffscreenCacheRenderingAsync().ConfigureAwait(false);
+                return;
             }
+
+            // Always kick: semaphoreOffscreenProcess serializes concurrent pumps and an empty queue
+            // exits fast. A one-shot "is running" gate proved fatal in the per-control variant of
+            // this pump: if its single queued task is lost, the gate stays latched forever and all
+            // subsequent builds are silently dropped.
+            Task.Run(async () => { await ProcessOffscreenCacheRenderingAsync(); }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -1775,8 +1781,6 @@ namespace DrawnUi.Views
                     _offscreenCommands.Clear(); // We clear after processing to avoid memory growth
                 }
 
-                _processingOffscrenRendering = true;
-
                 foreach (var command in toProcess)
                 {
                     try
@@ -1800,7 +1804,6 @@ namespace DrawnUi.Views
             }
             finally
             {
-                _processingOffscrenRendering = false;
                 semaphoreOffscreenProcess.Release();
             }
         }

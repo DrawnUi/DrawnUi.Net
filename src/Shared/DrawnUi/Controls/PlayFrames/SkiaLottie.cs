@@ -22,6 +22,21 @@ public class SkiaLottie : AnimatedFramesRenderer
         UseCache = SkiaCacheType.ImageDoubleBuffered;
     }
 
+ 
+    protected override void OnLayoutChanged()
+    {
+        base.OnLayoutChanged();
+
+        if (needSeek)
+        {
+            needSeek = false;
+            if (!IsPlaying)
+            {
+                SeekToDefaultFrame();
+            }
+        }
+    }
+
     /// <summary>
     ///     To avoid reloading same files multiple times..
     /// </summary>
@@ -84,20 +99,6 @@ public class SkiaLottie : AnimatedFramesRenderer
     }
 
     private bool needSeek;
-
-    protected override void OnLayoutChanged()
-    {
-        base.OnLayoutChanged();
-
-        if (needSeek)
-        {
-            needSeek = false;
-            if (!IsPlaying)
-            {
-                SeekToDefaultFrame();
-            }
-        }
-    }
 
 
     protected override void OnAnimatorSeeking(double frame)
@@ -547,8 +548,6 @@ public class SkiaLottie : AnimatedFramesRenderer
 
             Animation = animation;
 
-            //Debug.WriteLine($"[SkiaLottie] Loaded animation: Version:{Animation.Version} Duration:{Animation.Duration} Fps:{Animation.Fps} InPoint:{Animation.InPoint} OutPoint:{Animation.OutPoint}");
-
             InitializeAnimator(); //autoplay applied inside
 
             if (IsOn)
@@ -570,7 +569,6 @@ public class SkiaLottie : AnimatedFramesRenderer
             Monitor.PulseAll(_lockSource);
         }
     }
-
 
     private void Free(Animation skottieAnimation)
     {

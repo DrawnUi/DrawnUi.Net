@@ -763,6 +763,7 @@ public partial class SkiaControl
             var cacheOffscreen = RenderObjectPrevious;
             var needBuild = false;
 
+
             if (IsCacheComposite)
             {
                 if (RenderObjectPreviousNeedsUpdate)
@@ -940,16 +941,47 @@ public partial class SkiaControl
         else
         {
             _offscreenCacheRenderingQueue.Push(action);
-            if (!_processingOffscrenRendering)
+
+            if (OperatingSystem.IsBrowser())
             {
-                _processingOffscrenRendering = true;
+                // Single-threaded WASM: there is no background thread — Task.Run work items execute
+                // on the main thread between frames and can starve INDEFINITELY under continuous
+                // requestAnimationFrame load (observed: with two lotties building every frame, the
+                // first-queued control's pump never ran once, leaving it an empty box forever).
+                // Total main-thread cost is identical either way, so drain synchronously instead —
+                // guaranteed execution, no scheduler involved.
+                DrainOffscreenQueueInline();
+            }
+            else
+            {
+                // Always kick the pump: semaphoreOffsecreenProcess serializes concurrent pumps and
+                // an empty queue exits fast. A one-shot "is running" gate here proved fatal: if the
+                // single queued task is lost, the gate stays latched forever and every subsequent
+                // double-buffered cache build is silently dropped.
                 Task.Run(async () => { await ProcessOffscreenCacheRenderingAsync(); }, cancel).ConfigureAwait(false);
             }
         }
     }
 
+    void DrainOffscreenQueueInline()
+    {
+        var action = _offscreenCacheRenderingQueue.Pop();
+        while (!IsDisposed && !IsDisposing && action != null)
+        {
+            try
+            {
+                action.Invoke();
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
 
-    private bool _processingOffscrenRendering = false;
+            action = _offscreenCacheRenderingQueue.Pop();
+        }
+    }
+
+
     protected SemaphoreSlim semaphoreOffsecreenProcess = new(1);
 
     public async Task ProcessOffscreenCacheRenderingAsync()
@@ -981,7 +1013,6 @@ public partial class SkiaControl
         }
         finally
         {
-            _processingOffscrenRendering = false;
             semaphoreOffsecreenProcess.Release();
         }
     }
@@ -1163,13 +1194,13 @@ public partial class SkiaControl
     {
         if (!UseRenderingObject(clone, recordArea))
         {
-            //record to cache and paint 
+            //record to cache and paint
             if (UsesCacheDoubleBuffering)
             {
                 if (!ExistingCacheWasRendered)
                     DrawPlaceholder(clone);
 
-                //use cloned struct in another thread 
+                //use cloned struct in another thread
                 PushToOffscreenRendering(() =>
                 {
                     //will be executed on background thread in parallel
