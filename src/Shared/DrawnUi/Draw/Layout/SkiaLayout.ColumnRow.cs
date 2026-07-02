@@ -2429,6 +2429,7 @@ else
                             () =>
                             {
                                 ChildrenFactory.FillPoolInBackgroundAsync(warmTarget);
+                                OnPropertyChanged(nameof(DebugString));
                             });
                     }
                 }
