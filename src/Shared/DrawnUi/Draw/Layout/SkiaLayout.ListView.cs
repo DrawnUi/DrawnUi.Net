@@ -1790,8 +1790,6 @@ public partial class SkiaLayout
 
         try
         {
-            template = ChildrenFactory.GetTemplateInstance();
-
             var columnsCount = (Split > 0) ? Split : 1;
             var columnWidth = ComputeColumnWidth(columnsCount);
 
@@ -1812,10 +1810,6 @@ public partial class SkiaLayout
 
             for (int i = 0; i < items.Count; i++)
             {
-                template.ContextIndex = i;
-                template.BindingContext = items[i];
-                template.NeedMeasure = true;
-
                 var rectForChild = new SKRect(
                     currentX,
                     currentY,
@@ -1830,7 +1824,33 @@ public partial class SkiaLayout
                     Destination = rectForChild
                 };
 
-                var measured = MeasureAndArrangeCell(rectForChild, cell, template, constraints, scale);
+                ScaledSize measured;
+
+                // Memo fast path, mirroring the background batch (see MeasureBatchInBackground): a LoadNewer
+                // head insert re-materializes items that were resident before the opposite-end trim, so their
+                // sizes are usually already memoized. Skipping the template bind+measure here is what lets the
+                // commit land before the fling reaches the uncommitted edge. Template is acquired lazily —
+                // an all-hit batch never touches a view at all.
+                if (TryGetMemoSize(items[i], availableWidth, out var cachedSize))
+                {
+                    measured = cachedSize;
+                    cell.Measured = measured;
+                    cell.WasMeasured = true;
+                    // Mirror MeasureAndArrangeCell: Area = full slot, Destination = slot topped at currentY
+                    // sized by the measured height (CommitPendingHeadInsert reads Destination.Top + height).
+                    cell.Area = rectForChild;
+                    cell.Destination = new SKRect(currentX, currentY,
+                        currentX + availableWidth, currentY + measured.Pixels.Height);
+                }
+                else
+                {
+                    template ??= ChildrenFactory.GetTemplateInstance();
+                    template.ContextIndex = i;
+                    template.BindingContext = items[i];
+                    template.NeedMeasure = true;
+
+                    measured = MeasureAndArrangeCell(rectForChild, cell, template, constraints, scale);
+                }
 
                 if (measured.Pixels.Height > rowHeight)
                     rowHeight = measured.Pixels.Height;
