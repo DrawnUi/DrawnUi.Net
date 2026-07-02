@@ -4303,6 +4303,7 @@ namespace DrawnUi.Draw
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual bool HitIsInside(float x, float y)
         {
+
             var hitbox = HitBoxAuto;
 
             //if (UsingCacheType != SkiaCacheType.None && RenderObject != null)
@@ -5638,9 +5639,16 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void UpdateSizeRequest()
         {
+            var oldMargins = Margins;
+            var oldSizeRequest = SizeRequest;
+
             CalculateMargins();
             CalculateSizeRequest();
-            NeedMeasure = true;
+
+            if (Margins != oldMargins || SizeRequest != oldSizeRequest)
+            {
+                NeedMeasure = true;
+            }
         }
 
         /// <summary>
@@ -7141,6 +7149,26 @@ namespace DrawnUi.Draw
             }
         }
 
+        public static long CombineToLong(Guid guid, int value)
+        {
+            Span<byte> guidBytes = stackalloc byte[16];
+            guid.TryWriteBytes(guidBytes);
+
+            // Take first 8 bytes of Guid to be fast
+            long guidPart = BitConverter.ToInt64(guidBytes.Slice(0, 8));
+
+            long intPart = (long)value;
+
+            // Mix them
+            long result = guidPart ^ intPart;
+            result = (result ^ (result << 13)) ^ (result >> 7); 
+
+            return result;
+        }
+
+        public const int ChildrenFactoryInitialize = 1;
+        public const int ChildrenFactoryInitializeSoft = 2;
+
         /// <summary>
         /// Will be executed after canvas has finished drawing current frame. Useful when you need to account for all calculations and drawings to be finished.
         /// </summary>
@@ -8562,6 +8590,7 @@ namespace DrawnUi.Draw
                     continue;
 
                 RemoveSubView(child);
+                DisposeObject(child);
             }
 
             Views.Clear();
