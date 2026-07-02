@@ -2577,6 +2577,19 @@ public partial class SkiaLayout
     /// </summary>
     private void ApplySingleItemUpdateChange(StructureChange change)
     {
+        // A shift (head insert/remove) landed after this was measured: StartIndex now points at a DIFFERENT
+        // item — applying would resize the wrong cell and shift everything below it from a wrong anchor
+        // (transient overlap at the shift seam). Re-resolve the item's current index and remeasure fresh.
+        if (change.Epoch != _itemsShiftEpoch)
+        {
+            var staleItem = change.Items?.Count == 1 ? change.Items[0] : null;
+            int currentIndex = staleItem != null && ItemsSource != null ? ItemsSource.IndexOf(staleItem) : -1;
+            Debug.WriteLine($"[StackStructure] Stale single-item update (epoch {change.Epoch} != {_itemsShiftEpoch}), re-queued for current index {currentIndex}");
+            if (currentIndex >= 0)
+                RemeasureSingleItemInBackground(currentIndex);
+            return;
+        }
+
         if (change.MeasuredItems?.Count == 1 && change.StartIndex >= 0)
         {
             var newMeasurement = change.MeasuredItems[0];
@@ -3111,6 +3124,13 @@ public partial class SkiaLayout
             if (template == null)
                 return;
 
+            // The index is only valid for the current shift epoch. A head insert/remove landing between
+            // this measure and the render-thread apply shifts all indices — applying then would resize the
+            // WRONG cell and OffsetSubsequentCells from it (transient seam overlap a plane bake can freeze).
+            // Capture epoch + the data item so the apply can detect staleness and re-resolve.
+            var epoch = _itemsShiftEpoch;
+            var dataItem = GetItemForMemo(itemIndex);
+
             try
             {
                 // Bind the standalone instance to this index for measuring (isolated from visible cells)
@@ -3153,7 +3173,9 @@ public partial class SkiaLayout
                         {
                             StartIndex = itemIndex,
                             Count = 1,
-                            MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
+                            MeasuredItems = new List<MeasuredItemInfo> { measuredItem },
+                            Epoch = epoch,
+                            Items = dataItem != null ? new List<object> { dataItem } : null
                         });
                     }
 
