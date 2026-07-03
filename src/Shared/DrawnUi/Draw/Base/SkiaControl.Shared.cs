@@ -5,7 +5,6 @@ using SKBlendMode = SkiaSharp.SKBlendMode;
 using SKCanvas = SkiaSharp.SKCanvas;
 using SKClipOperation = SkiaSharp.SKClipOperation;
 using SKColor = SkiaSharp.SKColor;
-using SKFilterQuality = SkiaSharp.SKFilterQuality;
 using SKMatrix = SkiaSharp.SKMatrix;
 using SKPaint = SkiaSharp.SKPaint;
 using SKPaintStyle = SkiaSharp.SKPaintStyle;
@@ -357,7 +356,7 @@ namespace DrawnUi.Draw
             return state;
         }
 
-        public virtual bool OnFocusChanged(bool focus)
+        public virtual bool SetFrameworkFocus(bool focus)
         {
             return false;
         }
@@ -6902,7 +6901,6 @@ namespace DrawnUi.Draw
         private SKColor _paintWithOpacityColor;
         private bool _paintWithOpacityIsAntialias;
         private bool _paintWithOpacityIsDither;
-        private SKFilterQuality _paintWithOpacityFilterQuality;
         SKPath _preparedClipBounds = null;
         private IAnimatorsManager _lastAnimatorManager;
         private Func<List<SkiaControl>> _createChildren;
@@ -6965,8 +6963,7 @@ namespace DrawnUi.Draw
                 _paintWithOpacity ??= new SKPaint
                 {
                     IsAntialias = IsDistorted,
-                    IsDither = IsDistorted,
-                    FilterQuality = IsDistorted ? SKFilterQuality.Medium : SKFilterQuality.None
+                    IsDither = IsDistorted
                 };
 
                 _paintWithOpacity.GuardColor(ref _paintWithOpacityColor, SKColors.White.WithAlpha((byte)(0xFF * Opacity)));
@@ -7206,7 +7203,7 @@ namespace DrawnUi.Draw
             {
                 if (_shadowLayerPaint == null)
                 {
-                    _shadowLayerPaint = new SKPaint() { IsAntialias = true, FilterQuality = SKFilterQuality.Medium };
+                    _shadowLayerPaint = new SKPaint() { IsAntialias = true };
                     SetupShadow(_shadowLayerPaint, PlatformShadow, RenderingScale);
                 }
                 var saved = ctx.Context.Canvas.SaveLayer(_shadowLayerPaint);
@@ -7246,7 +7243,7 @@ namespace DrawnUi.Draw
                 {
                     if (_paintWithEffects == null)
                     {
-                        _paintWithEffects = new() { IsAntialias = true, FilterQuality = SKFilterQuality.Medium };
+                        _paintWithEffects = new() { IsAntialias = true };
                     }
 
                     if (effectImage != null)
@@ -7306,10 +7303,8 @@ namespace DrawnUi.Draw
         /// <param name="scale"></param>
         protected virtual void Paint(DrawingContext ctx)
         {
-            if (ctx.Destination.Width == 0 || ctx.Destination.Height == 0 || IsDisposing || IsDisposed)
+            if (IsDisposing || IsDisposed)
                 return;
-
-            PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
 
             if (ExecuteOnPaint.Count > 0)
             {
@@ -7318,6 +7313,11 @@ namespace DrawnUi.Draw
                     action?.Invoke(this, ctx);
                 }
             }
+
+            if (ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
+                return;
+
+            PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
 
             WasDrawn = true;
         }
@@ -7437,12 +7437,11 @@ namespace DrawnUi.Draw
                 _paintWithOpacity.GuardColor(ref _paintWithOpacityColor, SKColors.White);
                 _paintWithOpacity.GuardIsAntialias(ref _paintWithOpacityIsAntialias, true);
                 _paintWithOpacity.GuardIsDither(ref _paintWithOpacityIsDither, IsDistorted);
-                //todo check this for operations, lines etc
-                _paintWithOpacity.GuardFilterQuality(ref _paintWithOpacityFilterQuality, IsDistorted ? SKFilterQuality.Medium : SKFilterQuality.None);
 
                 if (EffectPostRenderers.Count == 0)
                 {
-                    cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity);
+                    cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity,
+                        IsDistorted ? CachedObject.SamplingLinear : CachedObject.SamplingNearest);
                 }
 
                 // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader

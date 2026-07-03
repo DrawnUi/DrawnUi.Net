@@ -254,15 +254,15 @@ namespace DrawnUi.Draw
             }
 
             var fontSize = FontSize > 0 ? FontSize : 20;
-            using (var paint = new SKPaint())
+            using (var font = new SKFont())
             {
                 var typeface = SkiaFontManager.Instance.GetFont(FontFamily, FontWeight);
                 if (typeface != null)
-                    paint.Typeface = typeface;
+                    font.Typeface = typeface;
 
-                paint.TextSize = (float)(fontSize * scale);
+                font.Size = (float)(fontSize * scale);
 
-                var metrics = paint.FontMetrics;
+                var metrics = font.Metrics;
                 var measuredPixels = Math.Round((-metrics.Ascent + metrics.Descent) * Math.Max(LineHeight, 1.0));
                 if (measuredPixels > 0)
                     return Math.Ceiling(measuredPixels / scale);
@@ -541,21 +541,11 @@ namespace DrawnUi.Draw
             }
         }
 
-        public override bool OnFocusChanged(bool focus)
+        public override bool SetFrameworkFocus(bool focus)
         {
             //base.OnFocusChanged(focus);
 
-            if (focus)
-            {
-                SetFocus(true);
-            }
-            else
-            {
-                SetFocus(false);
-            }
-
-            FocusChanged?.Invoke(this, focus);
-            CommandOnFocusChanged?.Execute(focus);
+            IsFocused = focus;
 
             return true;
         }
@@ -673,24 +663,11 @@ namespace DrawnUi.Draw
 
             case TouchActionResult.Down:
 
-            Debug.WriteLine($"[EditorDown] StartXY=({args.Event.StartingLocation.X:F0},{args.Event.StartingLocation.Y:F0}) HitBox={HitBoxAuto} HitIsInside={HitIsInside(args.Event.StartingLocation.X, args.Event.StartingLocation.Y)} IsFocused={IsFocused}");
-
-            if (!HitIsInside(args.Event.StartingLocation.X, args.Event.StartingLocation.Y))
-            {
-                // Block spurious platform Down events (e.g. WinUI pointer after keystroke)
-                // that arrive immediately after text input while the editor is still focused.
-                if (IsFocused && Environment.TickCount64 < _spuriousDownBlockUntilMs)
-                    return this;
-
-                // tap outside bounds while focused — unfocus; let tap propagate
-                SetFocus(false);
-                return null;
-            }
-
             var thisOffset = TranslateInputCoords(apply.ChildOffset);
+            var x = args.Event.Location.X + thisOffset.X;
+            var y = args.Event.Location.Y + thisOffset.Y;
 
-            var x = args.Event.StartingLocation.X + thisOffset.X;
-            var y = args.Event.StartingLocation.Y + thisOffset.Y;
+            Debug.WriteLine($"[EditorDown] StartXY=({args.Event.StartingLocation.X:F0},{args.Event.StartingLocation.Y:F0}) HitBox={HitBoxAuto} HitIsInside={HitIsInside(args.Event.StartingLocation.X, args.Event.StartingLocation.Y)} IsFocused={IsFocused}");
 
             // account for scroll offset so hit-testing is in content space
             if (_scroll != null)
@@ -734,12 +711,25 @@ namespace DrawnUi.Draw
             var pos = GetCursorPosition(x, y);
             Debug.WriteLine($"[EditorDown] x={x:F0} y={y:F0} pos={pos} Text.Length={Text?.Length ?? 0}");
             CursorPosition = pos;
-            SelectionLength = 0;
 
-            // Re-focus native keyboard sink — WinUI shifts keyboard focus on canvas tap
-            // even when IsFocused is already true, so BindableProperty callback never fires.
-            SetFocusInternal(true);
-            Superview.FocusedChild = this;
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                SelectionLength = 0;
+                if (IsFocused)
+                {
+                    // Already logically focused: the IsFocused BindableProperty callback won't fire
+                    // again, but the native sink may have lost the IME meanwhile (Android BACK
+                    // dismisses the keyboard without unfocusing; WinUI shifts keyboard focus to the
+                    // canvas on tap) — force the native focus + keyboard re-show path directly.
+                    SetFocusInternal(true);
+                }
+                else
+                {
+                    IsFocused = true;
+                }
+                Superview.FocusedChild = this;
+            });
+
             return this;
             break;
 
@@ -781,10 +771,17 @@ namespace DrawnUi.Draw
 
         protected void SetFocusInternal(bool value)
         {
+            Debug.WriteLine($"[Editor] SetFocusInternal {value}");
+            if (!value)
+            {
+                SelectionLength = 0;
+                _selectionDragMode = SelectionDragMode.None;
+            }
+
 #if BROWSER
             var focusDelayMs = 50;
 #else
-            var focusDelayMs = 100;
+        var focusDelayMs = 100;
 #endif
 
             // 100 ms: on Android/iOS the IME needs time to connect before ShowSoftInput +
@@ -799,6 +796,13 @@ namespace DrawnUi.Draw
                     MoveInternalCursor();
                 });
             });
+
+            SyncSuperviewFocus(value);
+
+            FocusChanged?.Invoke(this, value);
+            CommandOnFocusChanged?.Execute(value);
+
+            UpdateLabel();
         }
 
 
@@ -1147,25 +1151,6 @@ namespace DrawnUi.Draw
             return lineNum;
         }
 
-        public void SetFocus(bool focus)
-        {
-            if (focus)
-            {
-                IsFocused = true;
-            }
-            else
-            {
-                SelectionLength = 0;
-                _selectionDragMode = SelectionDragMode.None;
-                IsFocused = false;
-                // Release native control immediately so it stops capturing keystrokes
-                // while the next editor's focus delay (16–100 ms) elapses.
-                // Does NOT close the keyboard — another editor will inherit it.
-                PlatformClearFocusNow();
-            }
-
-            UpdateLabel();
-        }
 
         // Implemented per platform: release the native control from input focus without
         // closing the soft keyboard (another editor will steal input).
@@ -1572,7 +1557,6 @@ namespace DrawnUi.Draw
             if (bindable is SkiaEditor control)
             {
                 control.SetFocusInternal((bool)newvalue);
-                control.SyncSuperviewFocus((bool)newvalue);
             }
         }
 
@@ -1632,10 +1616,13 @@ namespace DrawnUi.Draw
         {
             if (bindable is SkiaEditor control)
             {
-                control.TextChanged?.Invoke(control, (string)newvalue);
-                control.CommandOnTextChanged?.Execute((string)newvalue);
-                control.SyncNativeText();
-                OnNeedUpdateText(bindable, oldvalue, newvalue);
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    control.TextChanged?.Invoke(control, (string)newvalue);
+                    control.CommandOnTextChanged?.Execute((string)newvalue);
+                    control.SyncNativeText();
+                    OnNeedUpdateText(bindable, oldvalue, newvalue);
+                });
             }
         }
 

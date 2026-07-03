@@ -463,7 +463,7 @@ namespace DrawnUi.Draw
             else
             {
                 // Tab left — hide cursor, release native input.
-                SetFocus(false);
+                SetFrameworkFocus(false);
             }
         }
     }

@@ -113,7 +113,7 @@ namespace DrawnUi.Draw
                 return null;
             }
 
-            public bool OnFocusChanged(bool focus)
+            public bool SetFrameworkFocus(bool focus)
             {
                 return false;
             }

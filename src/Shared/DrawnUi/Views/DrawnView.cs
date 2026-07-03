@@ -2525,51 +2525,54 @@ namespace DrawnUi.Views
         /// Internal call by control, after reporting will affect FocusedChild but will not get FocusedItemChanged as it was its own call
         /// </summary>
         /// <param name="listener"></param>
+        private bool _reportingFocus;
+
         public void ReportFocus(ISkiaGestureListener value, ISkiaGestureListener setter = null)
         {
-            if (value == _focusedChild)
+            if (value == _focusedChild || _reportingFocus || FocusLocked)
                 return;
 
             System.Diagnostics.Debug.WriteLine($"[Canvas] ReportFocus {value} from {setter}");
 
-            if (_focusedChild != value && !FocusLocked)
+            _reportingFocus = true;
+            try
             {
+                // Ask the new target FIRST: focus MOVES only to a control that accepts it. A tap on a
+                // non-focusable control (send button, shape) must not disturb the current focus —
+                // unfocusing the editor before asking would close the keyboard on every button tap.
+                // Explicit null = clear focus (tap on empty space, programmatic unfocus) — proceeds.
+                if (value != null)
+                {
+                    var accept = value == setter || value.SetFrameworkFocus(true);
+                    if (!accept)
+                        return; // consumer doesn't take focus -> current focus stays put
+                }
+
                 if (_focusedChild != null)
                 {
                     Debug.WriteLine($"[UNFOCUSED] DrawnView ReportFocus to {_focusedChild} will go to {value}");
-                    if (_focusedChild != value || setter == null)
-                        _focusedChild.OnFocusChanged(false);
-
+                    _focusedChild.SetFrameworkFocus(false);
                     FocusedItemChanged?.Invoke(this, new(_focusedChild as SkiaControl, false));
-                }
-                
-                if (value != null)
-                {
-                    if (value != setter || setter == null)
-                    {
-                        var accept = value.OnFocusChanged(true);
-                        if (!accept)
-                        {
-                            value = null;
-                        }
-                    }
-
-                    FocusedItemChanged?.Invoke(this, new(value as SkiaControl, true));
                 }
 
                 _focusedChild = value;
-                Debug.WriteLine($"[FOCUSED] 1 DrawnView ReportFocus to {_focusedChild}");
+                Debug.WriteLine($"[FOCUSED] DrawnView ReportFocus to {_focusedChild}");
 
-                if (_focusedChild == null)
+                if (value != null)
                 {
-                    Debug.WriteLine($"[FOCUSED] 2 DrawnView ReportFocus to {_focusedChild}");
-
-                    //with delay maybe some other control will focus itsself in that time
+                    FocusedItemChanged?.Invoke(this, new(value as SkiaControl, true));
+                }
+                else
+                {
+                    //with delay maybe some other control will focus itself in that time
                     ResetFocusWithDelay(150);
                 }
 
-
                 OnPropertyChanged(nameof(FocusedChild));
+            }
+            finally
+            {
+                _reportingFocus = false;
             }
         }
 

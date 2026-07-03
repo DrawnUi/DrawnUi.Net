@@ -6,6 +6,7 @@ using Android.Widget;
 using DrawnUi.Draw;
 using Java.Lang;
 using System.Diagnostics;
+using Exception = System.Exception;
 
 namespace DrawnUi.Draw
 {
@@ -46,13 +47,6 @@ namespace DrawnUi.Draw
             }
 
             Control.InputType = inputType;
-        }
-
-        partial void PlatformClearFocusNow()
-        {
-            // Remove input capture from this EditText without closing the keyboard.
-            // The keyboard stays visible; the next focused editor inherits it.
-            Control?.ClearFocus();
         }
 
         public void DisposePlatform()
@@ -243,6 +237,8 @@ namespace DrawnUi.Draw
                     CreateNativeControl();
                 }
 
+                if (Control == null) return;
+
                 if (focus)
                 {
                     _updatingText = true;
@@ -268,24 +264,31 @@ namespace DrawnUi.Draw
                     // Defer IME show and cursor to after the view layout pass so:
                     // 1. ShowSoftInput fires after the view is properly focused (no toggle needed)
                     // 2. SetSelection fires after IME connects (prevents IME from resetting cursor to 0)
-                    Control.Post(() =>
+                    // Flags NONE (explicit request): this path runs from a user tap or a programmatic
+                    // SetFocus — an IMPLICIT request is ignorable by the IME and reliably fails to
+                    // re-show the keyboard after a BACK dismiss (the hidden EditText never lost native
+                    // focus — ClearFocus() re-focuses the only focusable view — so RequestFocus has no
+                    // transition for the implicit show to piggyback on).
+                    InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
+                    imm.ShowSoftInput(Control, (ShowFlags)0); // 0 = explicit request (binding has no ShowFlags.None)
+                    var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
+                    try
                     {
-                        if (Control == null) return;
-                        InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
-                        imm.ShowSoftInput(Control, ShowFlags.Implicit);
-                        var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
-                        try
-                        {
-                            if (SelectionLength > 0)
-                                Control.SetSelection(pos, System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
-                            else
-                                Control.SetSelection(pos);
-                        }
-                        catch { }
-                    });
+                        if (SelectionLength > 0)
+                            Control.SetSelection(pos,
+                                System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
+                        else
+                            Control.SetSelection(pos);
+                    }
+                    catch (Exception e)
+                    {
+                        Super.Log(e);
+                    }
                 }
                 else
                 {
+                    PlatformClearFocusNow();
+
                     Control.ClearFocus();
                     if (closeKeyboard)
                         CloseKeyboard();
