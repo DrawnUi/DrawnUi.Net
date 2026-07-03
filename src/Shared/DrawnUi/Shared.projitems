@@ -97,7 +97,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Gestures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Virtual.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScroll.Scrolling.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScrollCells.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\SkiaScrollLooped.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Scroll\VirtualScroll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\SkiaShape.Bevel.cs" />
@@ -155,6 +154,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\DrawImageAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\DrawTextAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\FontWeight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\FilterQuality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\GradientType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\GridLengthType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\HardwareAccelerationMode.cs" />
