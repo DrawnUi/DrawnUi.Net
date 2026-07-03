@@ -199,7 +199,7 @@ namespace DrawnUi.Draw
         #region PROPERTIES
 
 
-        public virtual bool OnFocusChanged(bool focus)
+        public virtual bool SetFrameworkFocus(bool focus)
         {
             return false;
         }
