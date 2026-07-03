@@ -36,7 +36,7 @@ public interface ISkiaGestureListener
     /// </summary>
     /// <param name="focus"></param>
     /// <returns></returns>
-    public bool OnFocusChanged(bool focus);
+    public bool SetFrameworkFocus(bool focus);
 
     public bool HitIsInside(float x, float y);
 
