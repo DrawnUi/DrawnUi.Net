@@ -8,6 +8,9 @@ public partial class Canvas
 
     public Dictionary<Guid, ISkiaGestureListener> HadInput { get; } = new();
 
+    // FocusedChild as of the last Down — detects focus claimed during the current gesture.
+    private ISkiaGestureListener _focusedChildAtDown;
+
     public event EventHandler? Tapped;
 
     protected bool IsSavedGesture(TouchActionResult type)
@@ -30,9 +33,16 @@ public partial class Canvas
     {
         lock (LockIterateListeners)
         {
-            if (args.Type == TouchActionResult.Down && HadInput.Count > 0)
+            if (args.Type == TouchActionResult.Down)
             {
-                HadInput.Clear();
+                if (HadInput.Count > 0)
+                {
+                    HadInput.Clear();
+                }
+                // Focus state at gesture start: if a control claims focus DURING this gesture (editor
+                // self-focusing on Down -> keyboard spacer relayout shifts the layout), the completed
+                // Tapped must not override that fresh claim.
+                _focusedChildAtDown = FocusedChild;
             }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
@@ -135,9 +145,25 @@ public partial class Canvas
                 HadInput.Clear();
             }
 
-            if (args.Type != TouchActionResult.Pointer && (args.Type == TouchActionResult.Up || FocusedChild != null))
+            if (args.Type != TouchActionResult.Pointer)
             {
-                if (manageChildFocus || (args.Type != TouchActionResult.Up && FocusedChild != null && consumed != FocusedChild && !FocusedChild.LockFocus))
+                // FOCUS RULES. Controls CLAIM focus themselves (editor self-focuses on its Down); the
+                // canvas only decides on the COMPLETED tap. Down/Panning/Up never change focus here —
+                // clearing focus on Down closed the keyboard mid-gesture, the spacer relayout moved the
+                // send button away from under the pointer and its Tapped never fired (text not sent).
+                // On Tapped: move focus to the consumer (ReportFocus keeps the current focus when the
+                // consumer does not accept it — tapping a button must not steal the editor's keyboard),
+                // or clear it on a tap over nothing = the outside-tap keyboard dismiss. Skip both when
+                // focus was claimed during THIS gesture (FocusedChild changed since Down): the claim is
+                // fresher than the tap's landing spot, which a keyboard relayout may have invalidated.
+                if (manageChildFocus)
+                {
+                    FocusedChild = consumed;
+                }
+                else if (args.Type == TouchActionResult.Tapped
+                         && FocusedChild != null && consumed != FocusedChild
+                         && !FocusedChild.LockFocus
+                         && FocusedChild == _focusedChildAtDown)
                 {
                     FocusedChild = consumed;
                 }
