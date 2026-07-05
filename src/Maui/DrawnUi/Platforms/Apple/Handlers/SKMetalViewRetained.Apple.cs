@@ -273,7 +273,6 @@ namespace DrawnUi.Views
                 using var renderTarget = new GRBackendRenderTarget(
                     (int)_canvasSize.Width,
                     (int)_canvasSize.Height,
-                    1, // Sample count must be 1 for render targets
                     metalInfo);
 #else
                 var metalInfo = new GRMtlTextureInfo(textureToUse.Handle);
@@ -470,7 +469,7 @@ namespace DrawnUi.Views
 
                 if (softSurface != null)
                 {
-                    Console.WriteLine($"[SKMetalView] TryCpuPreRendering - CPU pre-rendering ({_canvasSize.Width}x{_canvasSize.Height})");
+                    Debug.WriteLine($"[SKMetalView] TryCpuPreRendering - CPU pre-rendering ({_canvasSize.Width}x{_canvasSize.Height})");
 
                     using (new CanvasRestoreScope(softSurface.Canvas))
                     {
@@ -478,11 +477,9 @@ namespace DrawnUi.Views
                         // Use a fake Metal texture info
                         var dummyMtlInfo = new GRMtlTextureInfo(IntPtr.Zero);
 
-#if NET9
                         using var dummyRenderTarget = new GRBackendRenderTarget(
                             (int)_canvasSize.Width,
                             (int)_canvasSize.Height,
-                            1,
                             dummyMtlInfo);
 
                             var e = new SKPaintMetalSurfaceEventArgs(
@@ -493,14 +490,6 @@ namespace DrawnUi.Views
                         );
 
                         OnPaintSurface(e);
-#else
-
-                        // ???
-        
-#endif
-
-
-
                     }
 
                     // Capture pre-rendered result for fast first Metal frame
