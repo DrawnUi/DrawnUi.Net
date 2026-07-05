@@ -63,7 +63,20 @@ public class CachedObject : ISkiaDisposable
     /// <param name="canvas"></param>
     /// <param name="destination"></param>
     /// <param name="paint"></param>
-    public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint)
+    public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint, FilterQuality quality)
+    {
+        Draw(canvas, destination, paint, SkiaSamplingOptions.GetSamplingOptions(quality, false));
+    }
+
+    /// <summary>
+    /// This will draw with destination corrected by offset that it had when was recorded.
+    /// Sampling applies to image-backed caches only; pass SkiaSamplingOptions.LinearNoMip when the canvas has scale/rotation transforms.
+    /// </summary>
+    /// <param name="canvas"></param>
+    /// <param name="destination"></param>
+    /// <param name="paint"></param>
+    /// <param name="sampling"></param>
+    public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint, in SKSamplingOptions sampling)
     {
         LastDestination = destination;
         var drawAt = CalculateDrawingOffset(destination);
@@ -78,7 +91,7 @@ public class CachedObject : ISkiaDisposable
             else
             if (Image != null)
             {
-                canvas.DrawImage(Image, drawAt.X, drawAt.Y, paint);
+                canvas.DrawImage(Image, drawAt.X, drawAt.Y, sampling, paint);
                 LastDrawnAt = new(drawAt.X, drawAt.Y, Bounds.Width + drawAt.X, Bounds.Height + drawAt.Y);
             }
         }
@@ -105,7 +118,21 @@ public class CachedObject : ISkiaDisposable
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="paint"></param>
-    public void Draw(SKCanvas canvas, float x, float y, SKPaint paint)
+    public void Draw(SKCanvas canvas, float x, float y, SKPaint paint, FilterQuality quality)
+    {
+        Draw(canvas, x, y, paint, SkiaSamplingOptions.GetSamplingOptions(quality, false));
+    }
+
+    /// <summary>
+    /// Will draw at exact x,y coordinated without any adjustments.
+    /// Sampling applies to image-backed caches only; pass SkiaSamplingOptions.LinearNoMip when the canvas has scale/rotation transforms.
+    /// </summary>
+    /// <param name="canvas"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="paint"></param>
+    /// <param name="sampling"></param>
+    public void Draw(SKCanvas canvas, float x, float y, SKPaint paint, in SKSamplingOptions sampling)
     {
         try
         {
@@ -117,7 +144,7 @@ public class CachedObject : ISkiaDisposable
             else
             if (Image != null)
             {
-                canvas.DrawImage(Image, x, y, paint);
+                canvas.DrawImage(Image, x, y, sampling, paint);
                 LastDrawnAt = new(x, y, Bounds.Width + x, Bounds.Height + y);
 
 
@@ -149,6 +176,18 @@ public class CachedObject : ISkiaDisposable
         Bounds = bounds;
         RecordingArea = recordingArea;
         Image = surface.Snapshot();
+    }
+
+    /// <summary>
+    /// Image-only cache (no surface, no picture) — e.g. a plane rasterized OFF-thread into a worker-owned
+    /// reusable surface whose snapshot is handed over; the object owns and disposes the image.
+    /// </summary>
+    public CachedObject(SkiaCacheType type, SKImage image, SKRect bounds, SKRect recordingArea)
+    {
+        Type = type;
+        Image = image;
+        Bounds = bounds;
+        RecordingArea = recordingArea;
     }
 
     public Guid Id = Guid.NewGuid();
