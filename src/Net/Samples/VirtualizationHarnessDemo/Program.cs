@@ -23,6 +23,9 @@ VirtualizationHarnessDemo.JumpReleaseRepro.Run();
 VirtualizationHarnessDemo.CachedJumpRepro.Run();
 VirtualizationHarnessDemo.RealChatJumpRepro.Run();
 VirtualizationHarnessDemo.CachedScrollTrimRepro.Run();
+// Device-reported empty-bubbles-at-rest with RecyclingTemplates=true. Runs LAST — inserting it before
+// StoConsecutiveJump broke that repro (dispatcher pump is owned by the first host; order matters).
+VirtualizationHarnessDemo.RecyclingRestSkeletonRepro.Run();
 VirtualizationHarnessDemo.AssetResolveRepro.Run();
 return;
 

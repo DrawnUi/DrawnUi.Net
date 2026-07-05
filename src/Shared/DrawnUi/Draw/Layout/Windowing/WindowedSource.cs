@@ -423,10 +423,19 @@ public class WindowedSource<T>
 
     // ----- deferred trims (run after the stack measures the just-added batch) ----
 
+    // BOTH trim hooks: stay ARMED until the window is actually over the cap. MeasurementApplied fires for
+    // EVERY applied background-measure chunk — with a measure backlog (large batches chewed in chunks) a
+    // chunk of the PREVIOUS batch lands between arming and the new batch's own apply. Disarming on that
+    // first early fire (the old behavior) made the trim a no-op (count not over yet) and left the REAL
+    // batch apply unhooked — cap silently dead, window grew to the whole history.
+
     private void LimitNewestAfterOlder()
     {
         if (!_limitMemory)
             return;
+
+        if (Items.Count - _maxInMemory <= 0)
+            return; // early fire from a previous batch's chunk — keep the hook armed
 
         MainThread.BeginInvokeOnMainThread(() =>
         {
@@ -447,6 +456,9 @@ public class WindowedSource<T>
     {
         if (!_limitMemory)
             return;
+
+        if (Items.Count - _maxInMemory <= 0)
+            return; // early fire from a previous batch's chunk — keep the hook armed
 
         MainThread.BeginInvokeOnMainThread(() =>
         {

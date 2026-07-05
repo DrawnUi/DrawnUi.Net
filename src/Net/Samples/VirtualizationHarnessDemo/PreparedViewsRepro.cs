@@ -30,7 +30,7 @@ public static class PreparedViewsRepro
 
         if (!page.ChatStack.UsePreparedViews)
         {
-            Console.WriteLine("=> FAIL (ChatPage does not enable UsePreparedViews — repro void)");
+            Console.WriteLine("=> SKIP (UsePreparedViews disabled on ChatPage — prepared-views assertions not applicable)");
             return;
         }
 

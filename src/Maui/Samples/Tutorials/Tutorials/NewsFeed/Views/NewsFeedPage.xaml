@@ -70,7 +70,7 @@
                         ItemsSource="{Binding NewsItems}"
                         RecyclingTemplate="Enabled"
                         MeasureItemsStrategy="MeasureVisible"
-                        ReserveTemplates="10"
+                        ReserveTemplates="15"
                         VirtualisationInflated="200"
                         Spacing="0"
                         ItemTemplateType="{x:Type newsFeed:NewsCell}"
