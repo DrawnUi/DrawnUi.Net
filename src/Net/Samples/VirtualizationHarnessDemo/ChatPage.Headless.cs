@@ -8,7 +8,11 @@ public sealed partial class ChatPage : BindableObject, IChatCellActions
     public float KeyboardSize { get; set; }
 
     // Probe accessors into the private windowed source (same class -> can read it).
-    public int ProbeWindowStart => _window.WindowStart;
-    public int ProbeWindowEnd => _window.WindowEnd;
-    public int ProbeResident => _window.Items.Count;
+    public int ProbeWindowStart => _limitedSource.WindowStart;
+    public int ProbeWindowEnd => _limitedSource.WindowEnd;
+    public int ProbeResident => _limitedSource.Items.Count;
+
+    // Drive the app's private jump helpers from the harness (exact same code path as the UI buttons).
+    public void ProbeScrollToOldest(bool animate) => ScrollToOldest(animate);
+    public void ProbeScrollToNewest(bool animate) => ScrollToNewest(animate);
 }

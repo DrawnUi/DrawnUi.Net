@@ -1,5 +1,19 @@
 using DrawnUi.Testing;
 
+// The device-build switches (auto-test driver / motion tracer) are compile-time statics on ChatPage.
+// They MUST be off in the harness: the auto-test suite would drive jumps on the SAME pages the repros
+// are driving (two drivers, phantom windows, no-op deletes) — repro results become garbage.
+DrawnChatList.ChatPage.AutoTestEnabled = false;
+DrawnChatList.ChatPage.MotionTraceEnabled = false;
+
+
+// Repro for the reported "consecutive ScrollToOldest jumps but never scrolls to top" bug. Runs first.
+VirtualizationHarnessDemo.StoConsecutiveJumpRepro.Run();
+VirtualizationHarnessDemo.PlaneImageStartupRepro.Run();
+VirtualizationHarnessDemo.DeleteJumpCycleRepro.Run();
+VirtualizationHarnessDemo.DeleteGapRepro.Run();
+VirtualizationHarnessDemo.PreparedViewsRepro.Run();
+
 // Repro for the reported blank-screen-after-second-jump bug (memo on vs off). Runs first, then returns.
 VirtualizationHarnessDemo.BlankJumpRepro.Run();
 VirtualizationHarnessDemo.LoadMoreSpinnerRepro.Run();
