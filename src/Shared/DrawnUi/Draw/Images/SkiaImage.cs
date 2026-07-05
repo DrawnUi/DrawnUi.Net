@@ -1,4 +1,5 @@
 ﻿using DrawnUi.Infrastructure.Xaml;
+ 
 
 namespace DrawnUi.Draw;
 
@@ -292,17 +293,17 @@ public class SkiaImage : SkiaControl
 
     public static readonly BindableProperty RescalingQualityProperty = BindableProperty.Create(
         nameof(RescalingQuality),
-        typeof(SKFilterQuality),
+        typeof(FilterQuality),
         typeof(SkiaImage),
-        SKFilterQuality.Low,
+        FilterQuality.Low,
         propertyChanged: NeedDraw);
 
     /// <summary>
     /// Default value is Low.
     /// </summary>
-    public SKFilterQuality RescalingQuality
+    public FilterQuality RescalingQuality
     {
-        get { return (SKFilterQuality)GetValue(RescalingQualityProperty); }
+        get { return (FilterQuality)GetValue(RescalingQualityProperty); }
         set { SetValue(RescalingQualityProperty, value); }
     }
 
@@ -1407,7 +1408,7 @@ public class SkiaImage : SkiaControl
             }
         }
 
-        public SKFilterQuality Quality { get; set; }
+        public FilterQuality Quality { get; set; }
 
         public Guid Source { get; set; }
 
@@ -1419,36 +1420,11 @@ public class SkiaImage : SkiaControl
     }
 
 
-    /// <summary>
-    /// Gets sampling options based on quality level
-    /// </summary>
-    /// <param name="quality">Quality level from user selection</param>
-    /// <param name="isUpscaling">Whether the operation is upscaling</param>
-    /// <returns>Appropriate SKSamplingOptions</returns>
-    public static SKSamplingOptions GetSamplingOptions(SKFilterQuality quality, bool isUpscaling)
+    protected virtual void DrawSourceBitmap(DrawingContext ctx, SKBitmap bitmap, SKRect display, SKPaint paint, FilterQuality quality = FilterQuality.None)
     {
-        return quality switch
+        if (quality != FilterQuality.None)
         {
-            SKFilterQuality.None => new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None),
-
-            SKFilterQuality.Low => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear),
-
-            SKFilterQuality.Medium => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Nearest),
-
-            SKFilterQuality.High => isUpscaling
-                ? new SKSamplingOptions(SKCubicResampler.Mitchell) // Bicubic for upscaling
-                : new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear), // Better for downscaling
-
-            _ => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.None)
-        };
-    }
-
-    protected virtual void DrawSourceBitmap(DrawingContext ctx, SKBitmap bitmap, SKRect display, SKPaint paint, SKFilterQuality quality = SKFilterQuality.None)
-    {
-        if (quality != SKFilterQuality.None)
-        {
-            paint.FilterQuality = quality;
-            ctx.Context.Canvas.DrawBitmap(bitmap, display, paint);
+            ctx.Context.Canvas.DrawBitmap(bitmap, display, SkiaSamplingOptions.GetSamplingOptions(quality, false), paint);
         }
         else
         {
@@ -1456,11 +1432,11 @@ public class SkiaImage : SkiaControl
         }
     }
 
-    protected virtual void DrawSourceImage(DrawingContext ctx, SKImage image, SKRect display, SKPaint paint, SKFilterQuality quality = SKFilterQuality.None)
+    protected virtual void DrawSourceImage(DrawingContext ctx, SKImage image, SKRect display, SKPaint paint, FilterQuality quality = FilterQuality.None)
     {
-        if (quality != SKFilterQuality.None)
+        if (quality != FilterQuality.None)
         {
-            ctx.Context.Canvas.DrawImage(image, display, GetSamplingOptions(quality, false), paint);
+            ctx.Context.Canvas.DrawImage(image, display, SkiaSamplingOptions.GetSamplingOptions(quality, false), paint);
         }
         else
         {
@@ -1515,7 +1491,7 @@ public class SkiaImage : SkiaControl
                 }
             }
 
-            if (this.RescalingQuality != SKFilterQuality.None && CacheRescaledSource)
+            if (this.RescalingQuality != FilterQuality.None && CacheRescaledSource)
             {
                 var targetWidth = (int)Math.Round(display.Width);
                 var targetHeight = (int)Math.Round(display.Height);
@@ -1554,7 +1530,7 @@ public class SkiaImage : SkiaControl
                         bool isUpscaling = targetWidth > source.Width || targetHeight > source.Height;
 
                         SKBitmap resizedBmp = bitmapToResize.Resize(targetSize,
-                            GetSamplingOptions(RescalingQuality, isUpscaling));
+                            SkiaSamplingOptions.GetSamplingOptions(RescalingQuality, isUpscaling));
 
                         var kill = ScaledSource;
 

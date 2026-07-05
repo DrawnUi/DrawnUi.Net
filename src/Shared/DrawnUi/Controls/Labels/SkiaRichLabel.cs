@@ -31,7 +31,7 @@ public partial class SkiaRichLabel : SkiaLabel
     private Dictionary<RichWordKey, float>? _richProbeCache;
 
     protected override (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(
-        SKPaint paint, string text, bool needsShaping, float scale)
+        SKPaint paint, SKFont font, string text, bool needsShaping, float scale)
     {
         if (needsShaping || charMonoWidthPixels > 0 || Spans.Count == 0 ||
             CharacterSpacing != 1f ||
@@ -39,17 +39,17 @@ public partial class SkiaRichLabel : SkiaLabel
             HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull ||
             HorizontalTextAlignment == DrawTextAlignment.FillWords ||
             HorizontalTextAlignment == DrawTextAlignment.FillCharacters)
-            return base.MeasureLineGlyphsProbe(paint, text, needsShaping, scale);
+            return base.MeasureLineGlyphsProbe(paint, font, text, needsShaping, scale);
 
         if (string.IsNullOrEmpty(text))
             return (0f, null);
 
         _richProbeCache ??= new Dictionary<RichWordKey, float>();
 
-        var typeface = paint.Typeface ?? SkiaFontManager.DefaultTypeface;
+        var typeface = font.Typeface ?? SkiaFontManager.DefaultTypeface;
         var style = typeface.FontStyle;
         var family = typeface.FamilyName;
-        var textSize = paint.TextSize;
+        var textSize = font.Size;
 
         float total = 0f;
         int start = 0;
@@ -65,7 +65,7 @@ public partial class SkiaRichLabel : SkiaLabel
                 var key = new RichWordKey(family, style.Weight, style.Width, style.Slant, textSize, word);
                 if (!_richProbeCache.TryGetValue(key, out var w))
                 {
-                    w = base.MeasureLineGlyphs(paint, word, false, scale).Width;
+                    w = base.MeasureLineGlyphs(paint, font, word, false, scale).Width;
                     _richProbeCache[key] = w;
                 }
                 total += w;
@@ -77,7 +77,7 @@ public partial class SkiaRichLabel : SkiaLabel
                 var spaceKey = new RichWordKey(family, style.Weight, style.Width, style.Slant, textSize, " ");
                 if (!_richProbeCache.TryGetValue(spaceKey, out var sw))
                 {
-                    sw = base.MeasureLineGlyphs(paint, " ", false, scale).Width;
+                    sw = base.MeasureLineGlyphs(paint, font, " ", false, scale).Width;
                     _richProbeCache[spaceKey] = sw;
                 }
                 total += sw;
@@ -85,8 +85,8 @@ public partial class SkiaRichLabel : SkiaLabel
             start = spaceIdx + 1;
         }
 
-        if (paint.TextSkewX != 0)
-            total += Math.Abs(paint.TextSkewX) * textSize;
+        if (font.SkewX != 0)
+            total += Math.Abs(font.SkewX) * textSize;
 
         return (total, null);
     }

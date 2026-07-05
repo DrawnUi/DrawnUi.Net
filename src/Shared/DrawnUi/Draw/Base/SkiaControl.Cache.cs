@@ -999,11 +999,81 @@ public partial class SkiaControl
             }
             else
             {
-                // Always kick the pump: semaphoreOffsecreenProcess serializes concurrent pumps and
-                // an empty queue exits fast. A one-shot "is running" gate here proved fatal: if the
-                // single queued task is lost, the gate stays latched forever and every subsequent
-                // double-buffered cache build is silently dropped.
-                Task.Run(async () => { await ProcessOffscreenCacheRenderingAsync(); }, cancel).ConfigureAwait(false);
+                // DEDICATED workers, not Task.Run: offscreen bakes are latency-critical render work.
+                // On the shared threadpool they queue behind everything else the app schedules at the
+                // same moment (startup fetch/measure tasks), and the pool grows by ~1 thread/500ms —
+                // cold cells then materialize ONE BY ONE over seconds (observed on-device, Release).
+                // The per-control semaphore still serializes pumps of the same control.
+                OffscreenRenderingService.Enqueue(this);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Dedicated worker threads draining controls' offscreen cache queues
+    /// (<see cref="ProcessOffscreenCacheRenderingAsync"/>). Offscreen bakes must not compete with
+    /// ordinary Task.Run work: threadpool injection latency serialized cold-cell first-bakes at
+    /// app startup (cells appearing one after another). Bakes raster to CPU surfaces, no GRContext
+    /// affinity, so plain background threads are safe.
+    /// </summary>
+    /// <summary>
+    /// Set while a CellPreparationService worker is measuring this (templated cell) view off-thread.
+    /// The render thread treats a flagged cell as not-yet-prepared (draws its placeholder instead of
+    /// touching half-measured state). Volatile: written by the prep worker, read by the render thread.
+    /// </summary>
+    internal volatile bool IsPreparingOffthread;
+
+    internal static class OffscreenRenderingService
+    {
+        private static readonly System.Collections.Concurrent.BlockingCollection<SkiaControl> Work = new();
+        private static int _started;
+
+        public static void Enqueue(SkiaControl control)
+        {
+            EnsureWorkers();
+            try
+            {
+                Work.Add(control);
+            }
+            catch (InvalidOperationException)
+            {
+                // completed adding (shutdown) — nothing to do
+            }
+        }
+
+        static void EnsureWorkers()
+        {
+            if (Interlocked.Exchange(ref _started, 1) == 1)
+                return;
+
+            int workers = Math.Clamp(Environment.ProcessorCount / 2, 2, 4);
+            for (int i = 0; i < workers; i++)
+            {
+                var thread = new Thread(WorkerLoop)
+                {
+                    IsBackground = true, Name = $"DrawnUi-OffscreenBake-{i}", Priority = ThreadPriority.AboveNormal,
+                };
+                thread.Start();
+            }
+        }
+
+        static void WorkerLoop()
+        {
+            foreach (var control in Work.GetConsumingEnumerable())
+            {
+                try
+                {
+                    if (control.IsDisposed || control.IsDisposing)
+                        continue;
+
+                    // drains the control's own action queue; per-control semaphore keeps this safe
+                    // against a concurrent pump for the same control on another worker
+                    control.ProcessOffscreenCacheRenderingAsync().GetAwaiter().GetResult();
+                }
+                catch (Exception e)
+                {
+                    Super.Log(e);
+                }
             }
         }
     }
@@ -1231,55 +1301,67 @@ public partial class SkiaControl
         return willDraw;
     }
 
+
+    public void PrepareOffscreenCache(DrawingContext clone, SKRect recordArea)
+    {
+        //use cloned struct in another thread
+        _offscreenBakeBusy = true;
+        PushToOffscreenRendering(() =>
+        {
+            try
+            {
+                //will be executed on background thread in parallel
+                var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing,
+                    UsingCacheType,
+                    (ctx) =>
+                    {
+                        PaintWithEffects(ctx);
+                    });
+
+                RenderObjectPreparing = prepared;
+                if (prepared != null)
+                {
+                    RenderObject = prepared;
+                    _renderObjectPreparing = null;
+                }
+            }
+            finally
+            {
+                _offscreenBakeBusy = false;
+            }
+
+            if (Parent != null && Parent.UpdateLocks < 1)
+            {
+                // The offscreen bake changed this control's PIXELS without going through Update():
+                // a parent that caches OVER us (composite/plane) must be told, or it keeps serving
+                // its old snapshot with our placeholder/stale content until an unrelated
+                // invalidation. Bare Repaint() only scheduled a frame — the parent's cache stayed
+                // valid, so the frame blitted the same stale plane (visible as gaps/stale cells
+                // while scrolling a plane-cached list).
+                Parent.UpdateByChild(this);
+            }
+        });
+    }
+
     /// <summary>
     /// Returns true if existing cache was rendered, without creating new one and painting it.
     /// </summary>
     /// <returns></returns>
-    public virtual bool TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext clone, SKRect recordArea)
+    public virtual bool TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext ctx, SKRect recordArea)
     {
-        if (!UseRenderingObject(clone, recordArea))
+        if (!UseRenderingObject(ctx, recordArea))
         {
             //record to cache and paint
             if (UsesCacheDoubleBuffering)
             {
                 if (!ExistingCacheWasRendered)
-                    DrawPlaceholder(clone);
+                    DrawPlaceholder(ctx);
 
-                //use cloned struct in another thread
-                _offscreenBakeBusy = true;
-                PushToOffscreenRendering(() =>
-                {
-                    try
-                    {
-                        //will be executed on background thread in parallel
-                        var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing,
-                            UsingCacheType,
-                            (ctx) =>
-                            {
-                                PaintWithEffects(ctx);
-                            });
-
-                        RenderObjectPreparing = prepared;
-                        if (prepared != null)
-                        {
-                            RenderObject = prepared;
-                            _renderObjectPreparing = null;
-                        }
-                    }
-                    finally
-                    {
-                        _offscreenBakeBusy = false;
-                    }
-
-                    if (Parent != null && Parent.UpdateLocks < 1)
-                    {
-                        Repaint();
-                    }
-                });
+                PrepareOffscreenCache(ctx, recordArea);
             }
             else
             {
-                CreateRenderingObjectAndPaint(clone, recordArea,
+                CreateRenderingObjectAndPaint(ctx, recordArea,
                     (ctx) =>
                     {
                         PaintWithEffects(ctx.WithDestination(DrawingRect));

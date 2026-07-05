@@ -1,6 +1,7 @@
 using SKBitmap = SkiaSharp.SKBitmap;
 using SKData = SkiaSharp.SKData;
 using SKMemoryStream = SkiaSharp.SKMemoryStream;
+ 
 
 namespace DrawnUi.Draw;
 
@@ -193,7 +194,7 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
             {
                 var rect = new SKRect(0, 0, (int)outRect.Width, (int)outRect.Height);
                 //resize source to apply higher quality and have it antialised
-                using var bmp = LoadedPrimaryBitmap.Resize(new SKSizeI((int)rect.Width, (int)rect.Height), SKFilterQuality.High);
+                using var bmp = LoadedPrimaryBitmap.Resize(new SKSizeI((int)rect.Width, (int)rect.Height), SkiaSamplingOptions.GetSamplingOptions(FilterQuality.Ultra, true));
 
                 canvas.DrawBitmap(bmp, rect);
                 canvas.Flush();
@@ -365,7 +366,7 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
             using (var canvas = new SKCanvas(resizedBitmap))
             {
                 var rect = new SKRect(0, 0, (int)outRect.Width, (int)outRect.Height);
-                using var bmp = LoadedSecondaryBitmap.Resize(new SKSizeI((int)rect.Width, (int)rect.Height), SKFilterQuality.High);
+                using var bmp = LoadedSecondaryBitmap.Resize(new SKSizeI((int)rect.Width, (int)rect.Height), SkiaSamplingOptions.GetSamplingOptions(FilterQuality.Ultra, true));
 
                 canvas.DrawBitmap(bmp, rect);
                 canvas.Flush();

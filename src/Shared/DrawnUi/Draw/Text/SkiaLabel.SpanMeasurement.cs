@@ -13,9 +13,9 @@ namespace DrawnUi.Draw
             /// Measures text width using ReadOnlySpan without converting to string
             /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static float MeasureTextWidthWithAdvanceSpan(SKPaint paint, ReadOnlySpan<char> textSpan)
+            public static float MeasureTextWidthWithAdvanceSpan(SKFont font, SKPaint paint, ReadOnlySpan<char> textSpan)
             {
-                return paint.MeasureText(textSpan);
+                return font.MeasureText(textSpan, paint);
             }
 
             /// <summary>
@@ -66,13 +66,13 @@ namespace DrawnUi.Draw
             /// Measures partial text width using span-based operations where possible
             /// Falls back to string conversion only for cache compatibility
             /// </summary>
-            public static float MeasurePartialTextWidthSpan(SKPaint paint, ReadOnlySpan<char> textSpan,
+            public static float MeasurePartialTextWidthSpan(SKFont font, SKPaint paint, ReadOnlySpan<char> textSpan,
                 bool needsShaping, float scale, SKTypeface paintTypeface)
             {
                 // For simple cases, measure directly with span
                 if (!needsShaping && textSpan.Length <= 32) // Small text threshold
                 {
-                    return MeasureTextWidthWithAdvanceSpan(paint, textSpan);
+                    return MeasureTextWidthWithAdvanceSpan(font, paint, textSpan);
                 }
 
                 // For complex cases or cache lookup, we need string conversion
@@ -87,7 +87,7 @@ namespace DrawnUi.Draw
 
                 // For cache miss, we need to fall back to string-based measurement
                 // This maintains exact compatibility with existing cache behavior
-                return MeasureTextWidthWithAdvanceSpan(paint, textSpan);
+                return MeasureTextWidthWithAdvanceSpan(font, paint, textSpan);
             }
 
             /// <summary>

@@ -115,7 +115,7 @@ public partial class TextSpan : Element //we subclassed Element only to be able 
     /// <summary>
     /// Update the paint with current format properties
     /// </summary>
-    public SKPaint SetupPaint(double scale, SKPaint defaultPaint)
+    public SKPaint SetupPaint(double scale, SKPaint defaultPaint, SKFont defaultFont)
     {
         RenderingScale = (float)scale;
 
@@ -125,24 +125,31 @@ public partial class TextSpan : Element //we subclassed Element only to be able 
             {
                 IsAntialias = true,
                 IsDither = true,
-                Typeface = SkiaFontManager.DefaultTypeface
             };
         };
 
-        if (HasSetFont || AutoFindFont || defaultPaint == null)
+        if (Font == null)
+        {
+            Font = new()
+            {
+                Typeface = SkiaFontManager.DefaultTypeface
+            };
+        }
+
+        if (HasSetFont || AutoFindFont || defaultFont == null)
         {
             if (TypeFace != null)
             {
-                Paint.Typeface = TypeFace;
+                Font.Typeface = TypeFace;
             }
         }
         else
         {
-            if (defaultPaint.Typeface != null)
-                Paint.Typeface = defaultPaint.Typeface;
+            if (defaultFont.Typeface != null)
+                Font.Typeface = defaultFont.Typeface;
         }
 
-        if (defaultPaint != null && defaultPaint.Typeface != null)
+        if (defaultFont != null && defaultFont.Typeface != null)
         {
             if (HasSetColor)
             {
@@ -158,27 +165,19 @@ public partial class TextSpan : Element //we subclassed Element only to be able 
 
             if (HasSetSize)
             {
-                Paint.TextSize = (float)Math.Round(FontSize * scale);
+                Font.Size = (float)Math.Round(FontSize * scale);
                 Paint.StrokeWidth = 0;
             }
             else
             {
-                //Paint.Typeface = defaultPaint.Typeface;
-                Paint.TextSize = defaultPaint.TextSize;
+                Font.Size = defaultFont.Size;
                 Paint.StrokeWidth = defaultPaint.StrokeWidth;
             }
         }
 
         //always use our own attributes
-        Paint.FakeBoldText = IsBold;
-        if (this.IsItalic)
-        {
-            Paint.TextSkewX = -0.25f;
-        }
-        else
-        {
-            Paint.TextSkewX = 0;
-        }
+        Font.Embolden = IsBold;
+        Font.SkewX = this.IsItalic ? -0.25f : 0;
 
         //todo stroke and gradient for spans..
         if (defaultPaint.Shader != null)
@@ -233,6 +232,10 @@ public partial class TextSpan : Element //we subclassed Element only to be able 
         Paint = new()
         {
             IsAntialias = true,
+        };
+
+        Font = new()
+        {
             Typeface = _typeFace
         };
     }

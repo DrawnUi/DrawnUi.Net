@@ -1,3 +1,5 @@
+ 
+
 namespace DrawnUi.Controls
 {
     public partial class SkiaSprite
@@ -191,9 +193,9 @@ namespace DrawnUi.Controls
                 }
                 else if (source.Image != null)
                 {
-                    if (RescalingQuality != SKFilterQuality.None)
+                    if (RescalingQuality != FilterQuality.None)
                     {
-                        ctx.Context.Canvas.DrawImage(source.Image, srcRect, display, GetSamplingOptions(RescalingQuality, false), activePaint);
+                        ctx.Context.Canvas.DrawImage(source.Image, srcRect, display, SkiaSamplingOptions.GetSamplingOptions(RescalingQuality, false), activePaint);
                     }
                     else
                     {

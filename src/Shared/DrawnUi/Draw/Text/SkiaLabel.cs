@@ -350,7 +350,7 @@ namespace DrawnUi.Draw
                 }
 
                 if (Lines != null)
-                    DrawLines(ctx.WithDestination(rectForChildren), PaintDefault, SKPoint.Empty, Lines);
+                    DrawLines(ctx.WithDestination(rectForChildren), PaintDefault, FontDefault, SKPoint.Empty, Lines);
             }
         }
 
@@ -364,65 +364,50 @@ namespace DrawnUi.Draw
                 };
             }
 
+            if (FontDefault == null)
+            {
+                FontDefault = new SKFont();
+                _fontDefaultSize = -1f;
+                _fontDefaultTypeface = null;
+                _fontDefaultEmbolden = false;
+                _fontDefaultSkewX = float.NaN;
+                _fontDefaultEdging = (SKFontEdging)(-1);
+                _fontDefaultSubpixel = null;
+            }
+
             PaintDefault.GuardStrokeWidth(ref _paintDefaultStrokeWidth, 0);
-            //todo refactor obsolete
-            PaintDefault.GuardTextSize(ref _paintDefaultTextSize, (float)Math.Round(FontSize * scale));
-            PaintDefault.GuardTypeface(ref _paintDefaultTypeface, this.TypeFace ?? SkiaFontManager.DefaultTypeface);
+
+            FontDefault.GuardFontSize(ref _fontDefaultSize, (float)Math.Round(FontSize * scale));
+            FontDefault.GuardFontTypeface(ref _fontDefaultTypeface, this.TypeFace ?? SkiaFontManager.DefaultTypeface);
             var fakeBold = (this.FontAttributes & FontAttributes.Bold) != 0;
             var textSkewX = (this.FontAttributes & FontAttributes.Italic) != 0 ? -0.25f : 0f;
-            if (_paintDefaultFakeBold != fakeBold)
-            {
-                _paintDefaultFakeBold = fakeBold;
-                PaintDefault.FakeBoldText = fakeBold;
-            }
+            FontDefault.GuardFontEmbolden(ref _fontDefaultEmbolden, fakeBold);
+            FontDefault.GuardFontSkewX(ref _fontDefaultSkewX, textSkewX);
 
-            if (_paintDefaultTextSkewX != textSkewX)
-            {
-                _paintDefaultTextSkewX = textSkewX;
-                PaintDefault.TextSkewX = textSkewX;
-            }
-
-            DisposeObject(FontDefault);
-
-            FontDefault = PaintDefault.ToFont();
-            FontDefault.Edging = Super.FontSubPixelRendering ? SKFontEdging.SubpixelAntialias : SKFontEdging.Antialias;
-            FontDefault.Subpixel = Super.FontSubPixelRendering;
-            //todo instead of setting in skpaint upper
-            //font.Embolden = (this.FontAttributes & FontAttributes.Bold) != 0;
+            FontDefault.GuardFontEdging(ref _fontDefaultEdging,
+                Super.FontSubPixelRendering ? SKFontEdging.SubpixelAntialias : SKFontEdging.Antialias);
+            FontDefault.GuardFontSubpixel(ref _fontDefaultSubpixel, Super.FontSubPixelRendering);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void DrawTextInternal(SKCanvas canvas, string text, float x, float y, SKPaint paint, float scale)
+        void DrawTextInternal(SKCanvas canvas, string text, float x, float y, SKPaint paint, SKFont font, float scale)
         {
-            //canvas.DrawText(characters, x, y, paint);
-            DrawTextInternal(canvas, text.AsSpan(), x, y, paint, scale);
+            if (Super.FontSubPixelRendering)
+            {
+                canvas.DrawText(text, x, y, font, paint);
+            }
+            else
+            {
+                canvas.DrawText(text, (int)Math.Round(x), (int)Math.Round(y), font, paint);
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void DrawTextInternal(SKCanvas canvas, ReadOnlySpan<char> characters, float x, float y, SKPaint paint,
-            float scale)
+            SKFont font, float scale)
         {
-            var text = new string(characters);
-
-            //using (var blob = SKTextBlob.Create(characters, FontDefault))
-            {
-                //if (blob != null)
-                {
-                    if (Super.FontSubPixelRendering)
-                    {
-                        canvas.DrawText(text, x,y, paint);
-                        //canvas.DrawText(blob, (x), (y), paint);
-                    }
-                    else
-                    {
-                        canvas.DrawText(text, (int)Math.Round(x), (int)Math.Round(y), paint);
-                        //canvas.DrawText(blob, (float)Math.Round(x), (float)Math.Round(y), paint);
-                    }
-                }
-            }
-
-            //was
-            //canvas.DrawText(text, (int)Math.Round(x), (int)Math.Round(y), paint);
+            //SKCanvas.DrawText has no span overload, string is unavoidable here
+            DrawTextInternal(canvas, new string(characters), x, y, paint, font, scale);
         }
 
 
@@ -444,19 +429,20 @@ namespace DrawnUi.Draw
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual void DrawCharacter(SKCanvas canvas,
             int lineIndex, int letterIndex,
-            ReadOnlySpan<char> characters, float x, float y, SKPaint paint, SKPaint paintStroke,
-            SKPaint paintDropShadow, SKRect destination, float scale)
+            ReadOnlySpan<char> characters, float x, float y, SKPaint paint, SKFont font, SKPaint paintStroke, SKFont fontStroke,
+            SKPaint paintDropShadow, SKFont fontDropShadow, SKRect destination, float scale)
         {
             DrawText(canvas,
                 x, y,
                 characters,
-                paint, paintStroke, paintDropShadow, scale);
+                paint, font, paintStroke, fontStroke, paintDropShadow, fontDropShadow, scale);
         }
 
 
         public virtual void DrawLines(
             DrawingContext ctx,
             SKPaint paintDefault,
+            SKFont fontDefault,
             SKPoint startOffset,
             IEnumerable<TextLine> lines)
         {
@@ -475,33 +461,51 @@ namespace DrawnUi.Draw
 
                 var canvas = ctx.Context.Canvas;
                 SKPaint paintStroke = null;
+                SKFont fontStroke = null;
 
                 if (StrokeColor.Alpha != 0 && StrokeWidth > 0)
                 {
-                    PaintStroke.TextSkewX = (this.FontAttributes & FontAttributes.Italic) != 0 ? -0.25f : 0;
-                    PaintStroke.TextSize = paintDefault.TextSize * _scaleResampleText;
+                    if (FontStroke == null)
+                    {
+                        FontStroke = new SKFont();
+                        _fontStrokeSize = -1f;
+                        _fontStrokeTypeface = null;
+                        _fontStrokeSkewX = float.NaN;
+                    }
+                    FontStroke.GuardFontSkewX(ref _fontStrokeSkewX, (this.FontAttributes & FontAttributes.Italic) != 0 ? -0.25f : 0);
+                    FontStroke.GuardFontSize(ref _fontStrokeSize, fontDefault.Size * _scaleResampleText);
                     PaintStroke.Color = StrokeColor.ToSKColor();
                     PaintStroke.StrokeWidth = (float)(StrokeWidth * 2 * scale);
                     PaintStroke.IsStroke = true;
                     PaintStroke.IsAntialias = paintDefault.IsAntialias;
-                    PaintStroke.Typeface = paintDefault.Typeface;
+                    FontStroke.GuardFontTypeface(ref _fontStrokeTypeface, fontDefault.Typeface);
 
                     paintStroke = PaintStroke;
+                    fontStroke = FontStroke;
                 }
 
                 SKPaint paintDropShadow = null;
+                SKFont fontDropShadow = null;
 
                 if (DropShadowColor.Alpha != 0)
                 {
-                    PaintShadow.TextSkewX = (this.FontAttributes & FontAttributes.Italic) != 0 ? -0.25f : 0;
-                    PaintShadow.TextSize = paintDefault.TextSize * _scaleResampleText;
+                    if (FontShadow == null)
+                    {
+                        FontShadow = new SKFont();
+                        _fontShadowSize = -1f;
+                        _fontShadowTypeface = null;
+                        _fontShadowSkewX = float.NaN;
+                    }
+                    FontShadow.GuardFontSkewX(ref _fontShadowSkewX, (this.FontAttributes & FontAttributes.Italic) != 0 ? -0.25f : 0);
+                    FontShadow.GuardFontSize(ref _fontShadowSize, fontDefault.Size * _scaleResampleText);
                     PaintShadow.Color = DropShadowColor.ToSKColor();
                     PaintShadow.StrokeWidth = (float)(DropShadowSize * 2 * scale);
                     PaintShadow.IsStroke = true;
                     PaintShadow.IsAntialias = paintDefault.IsAntialias;
-                    PaintShadow.Typeface = paintDefault.Typeface;
+                    FontShadow.GuardFontTypeface(ref _fontShadowTypeface, fontDefault.Typeface);
 
                     paintDropShadow = PaintShadow;
+                    fontDropShadow = FontShadow;
                 }
 
                 if (!GradientByLines)
@@ -679,12 +683,14 @@ namespace DrawnUi.Draw
                     {
                         var lineSpan = line.Spans[spanIndex];
                         var paint = paintDefault;
+                        var font = fontDefault;
                         SKRect rectPrecalculatedSpanBounds = SKRect.Empty;
 
                         //special span deco, might come from SkiaRichLabel
                         if (lineSpan.Span != null)
                         {
-                            paint = lineSpan.Span.SetupPaint(scale, paintDefault);
+                            paint = lineSpan.Span.SetupPaint(scale, paintDefault, fontDefault);
+                            font = lineSpan.Span.Font;
 
                             //first span can initiate painting line background
                             if (spanIndex == 0 && lineSpan.Span.ParagraphColor != Colors.Transparent)
@@ -733,7 +739,7 @@ namespace DrawnUi.Draw
                                 lineSpan.Text,
                                 (float)Math.Round(alignedLineDrawingStartX + offsetX),
                                 (float)Math.Round(baselineY),
-                                paint);
+                                paint, font);
                         }
                         else if (lineSpan.Glyphs != null)
                         {
@@ -802,9 +808,9 @@ namespace DrawnUi.Draw
                                     glyph.GetGlyphText(),
                                     posX,
                                     baselineY,
-                                    paint,
-                                    paintStroke,
-                                    paintDropShadow,
+                                    paint, font,
+                                    paintStroke, fontStroke,
+                                    paintDropShadow, fontDropShadow,
                                     line.Bounds,
                                     (float)scale);
                             }
@@ -815,9 +821,9 @@ namespace DrawnUi.Draw
                                 alignedLineDrawingStartX + offsetX,
                                 baselineY,
                                 line.Value,
-                                paintDefault,
-                                paintStroke,
-                                paintDropShadow,
+                                paintDefault, fontDefault,
+                                paintStroke, fontStroke,
+                                paintDropShadow, fontDropShadow,
                                 (float)scale);
                         }
 
@@ -864,35 +870,36 @@ namespace DrawnUi.Draw
         /// <param name="scale"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawText(SKCanvas canvas, float x, float y, string text,
-            SKPaint textPaint,
-            SKPaint strokePaint,
-            SKPaint paintDropShadow,
-            float scale)
-        {
-            DrawText(canvas, x, y, text.AsSpan(), textPaint, strokePaint, paintDropShadow, scale);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawText(SKCanvas canvas, float x, float y,
-            ReadOnlySpan<char> characters,
-            SKPaint textPaint,
-            SKPaint strokePaint,
-            SKPaint paintDropShadow,
+            SKPaint textPaint, SKFont textFont,
+            SKPaint strokePaint, SKFont strokeFont,
+            SKPaint paintDropShadow, SKFont fontDropShadow,
             float scale)
         {
             if (paintDropShadow != null)
             {
                 var offsetX = (int)(scale * DropShadowOffsetX);
                 var offsetY = (int)(scale * DropShadowOffsetY);
-                DrawTextInternal(canvas, characters, x + offsetX, y + offsetY, paintDropShadow, scale);
+                DrawTextInternal(canvas, text, x + offsetX, y + offsetY, paintDropShadow, fontDropShadow, scale);
             }
 
             if (strokePaint != null)
             {
-                DrawTextInternal(canvas, characters, x, y, strokePaint, scale);
+                DrawTextInternal(canvas, text, x, y, strokePaint, strokeFont, scale);
             }
 
-            DrawTextInternal(canvas, characters, x, y, textPaint, scale);
+            DrawTextInternal(canvas, text, x, y, textPaint, textFont, scale);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawText(SKCanvas canvas, float x, float y,
+            ReadOnlySpan<char> characters,
+            SKPaint textPaint, SKFont textFont,
+            SKPaint strokePaint, SKFont strokeFont,
+            SKPaint paintDropShadow, SKFont fontDropShadow,
+            float scale)
+        {
+            //SKCanvas.DrawText has no span overload, convert once for up to 3 passes
+            DrawText(canvas, x, y, new string(characters), textPaint, textFont, strokePaint, strokeFont, paintDropShadow, fontDropShadow, scale);
         }
 
         protected virtual void SpanPostDraw(
@@ -928,7 +935,7 @@ namespace DrawnUi.Draw
             PaintDeco.Color = span.TextColor.ToSKColor();
             if (span.Underline)
             {
-                var moveY = span.Paint.FontMetrics.UnderlinePosition.GetValueOrDefault();
+                var moveY = span.Font.Metrics.UnderlinePosition.GetValueOrDefault();
                 if (moveY == 0)
                 {
                     moveY = span.RenderingScale;
@@ -947,10 +954,10 @@ namespace DrawnUi.Draw
 
             if (span.Strikeout)
             {
-                var moveY = span.Paint.FontMetrics.StrikeoutPosition.GetValueOrDefault();
+                var moveY = span.Font.Metrics.StrikeoutPosition.GetValueOrDefault();
                 if (moveY == 0)
                 {
-                    moveY = -span.Paint.FontMetrics.XHeight / 2f;
+                    moveY = -span.Font.Metrics.XHeight / 2f;
                 }
 
                 var yLevel = (float)Math.Round(y + moveY);
@@ -966,13 +973,14 @@ namespace DrawnUi.Draw
             string text,
             float x,
             float y,
-            SKPaint paint)
+            SKPaint paint,
+            SKFont font)
         {
-            if (string.IsNullOrEmpty(text) || Shaper == null || paint == null || paint.Typeface == null)
+            if (string.IsNullOrEmpty(text) || Shaper == null || paint == null || font == null || font.Typeface == null)
                 return;
 
-            SetupShaper(paint.Typeface);
-            DrawShapedText(canvas, Shaper, text, x, y, paint);
+            SetupShaper(font.Typeface);
+            DrawShapedText(canvas, Shaper, text, x, y, paint, font);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -982,23 +990,19 @@ namespace DrawnUi.Draw
             string text,
             float x,
             float y,
-            SKPaint paint)
+            SKPaint paint,
+            SKFont font)
         {
-            if (string.IsNullOrEmpty(text) || shaper == null || paint == null || paint.Typeface == null)
+            if (string.IsNullOrEmpty(text) || shaper == null || paint == null || font == null || font.Typeface == null)
                 return;
 
-            using var font = paint.ToFont();
-            font.Edging = Super.FontSubPixelRendering ? SKFontEdging.SubpixelAntialias : SKFontEdging.Antialias;
-            font.Subpixel = Super.FontSubPixelRendering;
-            font.Typeface = shaper.Typeface;
-
-            SKShaper.Result result = shaper.Shape(text, x, y, paint);
+            SKShaper.Result result = shaper.Shape(text, x, y, font);
             using (SKTextBlobBuilder skTextBlobBuilder = new SKTextBlobBuilder())
             {
                 SKPositionedRunBuffer positionedRunBuffer =
                     skTextBlobBuilder.AllocatePositionedRun(font, result.Codepoints.Length);
-                Span<ushort> glyphSpan = positionedRunBuffer.GetGlyphSpan();
-                Span<SKPoint> positionSpan = positionedRunBuffer.GetPositionSpan();
+                Span<ushort> glyphSpan = positionedRunBuffer.Glyphs;
+                Span<SKPoint> positionSpan = positionedRunBuffer.Positions;
                 for (int index = 0; index < result.Codepoints.Length; ++index)
                 {
                     glyphSpan[index] = (ushort)result.Codepoints[index];
@@ -1108,7 +1112,7 @@ namespace DrawnUi.Draw
                     float textWidthPixels = 0f;
                     float textHeightPixels = 0f;
 
-                    UpdateFontMetrics(PaintDefault);
+                    UpdateFontMetrics(PaintDefault, FontDefault);
 
                     if (Spans.Count == 0)
                     {
@@ -1117,7 +1121,7 @@ namespace DrawnUi.Draw
 
                         if (GliphsInvalidated)
                         {
-                            Glyphs = GetGlyphs(TextInternal, PaintDefault.Typeface);
+                            Glyphs = GetGlyphs(TextInternal, FontDefault.Typeface);
                         }
 
                         if (AutoFont && Glyphs != null && Glyphs.Count > 0)
@@ -1135,7 +1139,8 @@ namespace DrawnUi.Draw
                             {
                                 needsShaping = SkiaLabel.UnicodeNeedsShaping(first);
                                 TypeFace = matchedFace;
-                                PaintDefault.Typeface = matchedFace;
+                                FontDefault.Typeface = matchedFace;
+                                _fontDefaultTypeface = matchedFace;
                             }
 
                             text = TextInternal;
@@ -1167,6 +1172,7 @@ namespace DrawnUi.Draw
 
                         Lines = SplitLines(text,
                             PaintDefault,
+                            FontDefault,
                             SKPoint.Empty,
                             (float)constraints.Content.Width,
                             (float)constraints.Content.Height,
@@ -1191,7 +1197,8 @@ namespace DrawnUi.Draw
                                 continue;
 
                             span.DrawingOffset = offset;
-                            var paint = span.SetupPaint(scale, PaintDefault);
+                            var paint = span.SetupPaint(scale, PaintDefault, FontDefault);
+                            var font = span.Font;
 
                             if (!(span is IDrawnTextSpan))
                             {
@@ -1201,6 +1208,7 @@ namespace DrawnUi.Draw
 
                             var lines = SplitLines(span.TextFiltered,
                                 paint,
+                                font,
                                 offset,
                                 constraints.Content.Width,
                                 constraints.Content.Height,
@@ -1385,21 +1393,21 @@ namespace DrawnUi.Draw
 
         // Probe: width-only, glyphs discarded. Overrides the O(n²) accumulating-string loop with
         // per-word caching. Committed-line calls go to MeasureLineGlyphs (accurate glyphs, full kern).
-        protected virtual (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(SKPaint paint, string text, bool needsShaping,
+        protected virtual (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(SKPaint paint, SKFont font, string text, bool needsShaping,
             float scale)
         {
             if (needsShaping || charMonoWidthPixels > 0 || IsComplexMeasuring)
-                return MeasureLineGlyphs(paint, text, needsShaping, scale);
+                return MeasureLineGlyphs(paint, font, text, needsShaping, scale);
 
             if (string.IsNullOrEmpty(text))
                 return (0f, null);
 
             _wordCache ??= new Dictionary<WordKey, float>();
 
-            var typeface = paint.Typeface ?? SkiaFontManager.DefaultTypeface;
+            var typeface = font.Typeface ?? SkiaFontManager.DefaultTypeface;
             var style = typeface.FontStyle;
             var family = typeface.FamilyName;
-            var textSize = paint.TextSize;
+            var textSize = font.Size;
 
             float total = 0f;
             int start = 0;
@@ -1414,7 +1422,7 @@ namespace DrawnUi.Draw
                     var key = new WordKey(family, style.Weight, style.Width, style.Slant, textSize, text.Substring(start, end - start));
                     if (!_wordCache.TryGetValue(key, out var w))
                     {
-                        w = MeasureTextWidthWithAdvance(paint, text.AsSpan(start, end - start));
+                        w = MeasureTextWidthWithAdvance(paint, font, text.AsSpan(start, end - start));
                         _wordCache[key] = w;
                     }
                     total += w;
@@ -1426,7 +1434,7 @@ namespace DrawnUi.Draw
                     var spaceKey = new WordKey(family, style.Weight, style.Width, style.Slant, textSize, " ");
                     if (!_wordCache.TryGetValue(spaceKey, out var sw))
                     {
-                        sw = MeasureTextWidthWithAdvance(paint, " ");
+                        sw = MeasureTextWidthWithAdvance(paint, font, " ");
                         _wordCache[spaceKey] = sw;
                     }
                     total += sw;
@@ -1434,19 +1442,19 @@ namespace DrawnUi.Draw
                 start = spaceIdx + 1;
             }
 
-            if (paint.TextSkewX != 0)
-                total += Math.Abs(paint.TextSkewX) * textSize;
+            if (font.SkewX != 0)
+                total += Math.Abs(font.SkewX) * textSize;
 
             return (total, null);
         }
 
-        protected virtual (float Width, LineGlyph[] Glyphs) MeasureLineGlyphs(SKPaint paint, string text, bool needsShaping,
+        protected virtual (float Width, LineGlyph[] Glyphs) MeasureLineGlyphs(SKPaint paint, SKFont font, string text, bool needsShaping,
             float scale)
         {
             if (string.IsNullOrEmpty(text))
                 return (0.0f, null);
 
-            var paintTypeface = paint.Typeface ?? SkiaFontManager.DefaultTypeface;
+            var paintTypeface = font.Typeface ?? SkiaFontManager.DefaultTypeface;
 
             if (GlyphMeasurementCache.TryGetValue(paintTypeface, needsShaping, text, out var cachedResult))
             {
@@ -1466,7 +1474,7 @@ namespace DrawnUi.Draw
             if (needsShaping)
             {
                 SetupShaper(paintTypeface);
-                var result = GetShapedText(Shaper, text, 0, 0, paint);
+                var result = GetShapedText(Shaper, text, 0, 0, paint, font);
                 if (result == null)
                 {
                     GlyphMeasurementCache.Add(paintTypeface, needsShaping, text, 0f, null);
@@ -1491,7 +1499,7 @@ namespace DrawnUi.Draw
 
                     var print = g.GetGlyphText();
                     var mono = g.IsNumber();
-                    var thisWidth = MeasureTextWidthWithAdvance(paint, print);
+                    var thisWidth = MeasureTextWidthWithAdvance(paint, font, print);
                     var centerOffset = 0f;
 
                     if (mono)
@@ -1535,7 +1543,7 @@ namespace DrawnUi.Draw
                 var pos = 0;
                 var addAtIndex = -1;
 
-                if (paint.TextSkewX != 0)
+                if (font.SkewX != 0)
                 {
                     addAtIndex = LastNonSpaceIndexOptimized(text.AsSpan());
                 }
@@ -1550,10 +1558,10 @@ namespace DrawnUi.Draw
                         continue;
                     }
 
-                    var thisWidth = SpanMeasurement.MeasureTextWidthWithAdvanceSpan(paint, g.GetGlyphText());
+                    var thisWidth = SpanMeasurement.MeasureTextWidthWithAdvanceSpan(font, paint, g.GetGlyphText());
                     if (pos == addAtIndex)
                     {
-                        var additionalWidth = (int)Math.Round(Math.Abs(paint.TextSkewX) * paint.TextSize / 2f);
+                        var additionalWidth = (int)Math.Round(Math.Abs(font.SkewX) * font.Size / 2f);
                         thisWidth += additionalWidth;
                     }
 
@@ -1570,10 +1578,10 @@ namespace DrawnUi.Draw
                 return (finalWidth, arr2);
             }
 
-            var simpleValue = MeasureTextWidthWithAdvance(paint, text);
-            if (paint.TextSkewX != 0)
+            var simpleValue = MeasureTextWidthWithAdvance(paint, font, text);
+            if (font.SkewX != 0)
             {
-                float additionalWidth = Math.Abs(paint.TextSkewX) * paint.TextSize;
+                float additionalWidth = Math.Abs(font.SkewX) * font.Size;
                 simpleValue += additionalWidth;
             }
 
@@ -1581,7 +1589,7 @@ namespace DrawnUi.Draw
             return (simpleValue, null);
         }
 
-        protected virtual DecomposedText DecomposeText(string text, SKPaint paint,
+        protected virtual DecomposedText DecomposeText(string text, SKPaint paint, SKFont font,
             SKPoint firstLineOffset,
             float maxWidth,
             float maxHeight, //-1
@@ -1718,7 +1726,7 @@ namespace DrawnUi.Draw
                                 if (LineBreakMode == LineBreakMode.TailTruncation)
                                 {
                                     var maybeTrail = full + Trail;
-                                    var limitText = CutLineToFit(paint, maybeTrail, limitWidth);
+                                    var limitText = CutLineToFit(paint, font, maybeTrail, limitWidth);
                                     if (limitText.Limit > 0)
                                     {
                                         adding = maybeTrail.Left(limitText.Limit).TrimEnd() + Trail;
@@ -1735,17 +1743,17 @@ namespace DrawnUi.Draw
                             }
                         }
 
-                        var smartMeasure = MeasureLineGlyphs(paint, adding, needsShaping, scale);
+                        var smartMeasure = MeasureLineGlyphs(paint, font, adding, needsShaping, scale);
 
                         var widthBlock = (float)Math.Round(smartMeasure.Width);
-                        var spanMetrics = paint.FontMetrics;
+                        var spanMetrics = font.Metrics;
                         var spanLineHeight =
-                            (float)Math.Round((GetCorrectedAscent(paint) + spanMetrics.Descent) * LineHeight);
+                            (float)Math.Round((GetCorrectedAscent(font, paint) + spanMetrics.Descent) * LineHeight);
                         var heightBlock = spanLineHeight > LineHeightPixels ? spanLineHeight : LineHeightPixels;
 
-                        if (paint.TextSkewX != 0)
+                        if (font.SkewX != 0)
                         {
-                            float additionalWidth = Math.Abs(paint.TextSkewX) * paint.TextSize;
+                            float additionalWidth = Math.Abs(font.SkewX) * font.Size;
                             widthBlock += additionalWidth; //notice passed by ref struct will be modified
                         }
 
@@ -1864,7 +1872,7 @@ namespace DrawnUi.Draw
                         severalWords = true;
                     }
 
-                    var textWidth = MeasureLineGlyphsProbe(paint, textLine, needsShaping, scale).Width;
+                    var textWidth = MeasureLineGlyphsProbe(paint, font, textLine, needsShaping, scale).Width;
 
                     //apply
 
@@ -1922,7 +1930,7 @@ namespace DrawnUi.Draw
                         {
                             lenInsideWord++;
                             cycle = textLine.Substring(posInsideWord, lenInsideWord);
-                            MeasureText(paint, cycle, ref bounds);
+                            MeasureText(paint, font, cycle, ref bounds);
 
                             if (Math.Round(bounds.Width) > limitWidth)
                             {
@@ -1935,7 +1943,7 @@ namespace DrawnUi.Draw
                                     break;
                                 }
 
-                                width = MeasureLineGlyphsProbe(paint, chunk, needsShaping, scale).Width;
+                                width = MeasureLineGlyphsProbe(paint, font, chunk, needsShaping, scale).Width;
 
                                 var pass = textLine;
                                 if (paragraphs.Length > 1)
@@ -2073,6 +2081,7 @@ namespace DrawnUi.Draw
 
         protected virtual TextLine[] SplitLines(string text,
             SKPaint paint,
+            SKFont font,
             SKPoint firstLineOffset,
             float maxWidth,
             float maxHeight,
@@ -2080,7 +2089,7 @@ namespace DrawnUi.Draw
             bool needsShaping,
             TextSpan span, float scale)
         {
-            if (string.IsNullOrEmpty(text) || paint.Typeface == null)
+            if (string.IsNullOrEmpty(text) || font.Typeface == null)
             {
                 return null;
             }
@@ -2098,8 +2107,8 @@ namespace DrawnUi.Draw
             if (UsingFontSize > 0 &&
                 (AutoSize == AutoSizeType.FitFillHorizontal || AutoSize == AutoSizeType.FitFillVertical))
             {
-                paint.TextSize = (float)UsingFontSize; //use from last time
-                UpdateFontMetrics(paint);
+                font.Size = (float)UsingFontSize; //use from last time
+                UpdateFontMetrics(paint, font);
             }
 
             bool calculatingMask = false;
@@ -2113,7 +2122,7 @@ namespace DrawnUi.Draw
 
             while (needCalc)
             {
-                decomposedText = DecomposeText(measureText, paint, firstLineOffset, maxWidth, maxHeight, maxLines,
+                decomposedText = DecomposeText(measureText, paint, font, firstLineOffset, maxWidth, maxHeight, maxLines,
                     needsShaping, span, scale);
 
                 if (autosize != AutoSizeType.None && maxWidth > 0 && maxHeight > 0)
@@ -2145,24 +2154,24 @@ namespace DrawnUi.Draw
 
                     if (autosize == AutoSizeType.FitVertical || autosize == AutoSizeType.FitHorizontal)
                     {
-                        if (paint.TextSize == 0)
+                        if (font.Size == 0)
                         {
                             //wtf just happened
                             Trace.WriteLine(
                                 $"[SkiaLabel] Error couldn't fit text '{this.Text}' inside label width {this.Width}");
                             if (Debugger.IsAttached)
                                 Debugger.Break();
-                            paint.TextSize = 12;
+                            font.Size = 12;
                             needCalc = false;
                         }
 
-                        paint.TextSize -= autoSizeFontStep;
-                        UpdateFontMetrics(PaintDefault);
+                        font.Size -= autoSizeFontStep;
+                        UpdateFontMetrics(PaintDefault, FontDefault);
                     }
                     else if (autosize == AutoSizeType.FillVertical || autosize == AutoSizeType.FillHorizontal)
                     {
-                        paint.TextSize += autoSizeFontStep;
-                        UpdateFontMetrics(PaintDefault);
+                        font.Size += autoSizeFontStep;
+                        UpdateFontMetrics(PaintDefault, FontDefault);
                     }
                 }
                 else
@@ -2172,7 +2181,7 @@ namespace DrawnUi.Draw
                     {
                         calculatingMask = false;
                         measureText = text;
-                        decomposedText = DecomposeText(measureText, paint, firstLineOffset, maxWidth, maxHeight,
+                        decomposedText = DecomposeText(measureText, paint, font, firstLineOffset, maxWidth, maxHeight,
                             maxLines, needsShaping, span, scale);
                     }
                 }
@@ -2195,7 +2204,7 @@ namespace DrawnUi.Draw
             }
 
             IsCut = decomposedText.WasCut;
-            UsingFontSize = paint.TextSize;
+            UsingFontSize = font.Size;
 
             return decomposedText.Lines;
         }
@@ -2267,6 +2276,7 @@ namespace DrawnUi.Draw
 
         public virtual (int Limit, float Width) CutLineToFit(
             SKPaint paint,
+            SKFont font,
             string textIn, float maxWidth)
         {
             SKRect bounds = new SKRect();
@@ -2280,14 +2290,14 @@ namespace DrawnUi.Draw
 
             textIn += tail;
 
-            MeasureText(paint, textIn, ref bounds);
+            MeasureText(paint, font, textIn, ref bounds);
 
             if (bounds.Width > maxWidth && !string.IsNullOrEmpty(textIn))
             {
                 for (int pos = 0; pos < textIn.Length; pos++)
                 {
                     cycle = textIn.Left(pos + 1).TrimEnd() + tail;
-                    MeasureText(paint, cycle, ref bounds);
+                    MeasureText(paint, font, cycle, ref bounds);
                     if (bounds.Width > maxWidth)
                         break;
                     resultWidth = bounds.Width;
@@ -2300,16 +2310,16 @@ namespace DrawnUi.Draw
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float MeasureTextWidthWithAdvance(SKPaint paint, string text)
+        public static float MeasureTextWidthWithAdvance(SKPaint paint, SKFont font, string text)
         {
-            var bounds = paint.MeasureText(text);
+            var bounds = font.MeasureText(text, paint);
             return bounds;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float MeasureTextWidthWithAdvance(SKPaint paint, ReadOnlySpan<char> textSpan)
+        public static float MeasureTextWidthWithAdvance(SKPaint paint, SKFont font, ReadOnlySpan<char> textSpan)
         {
-            var bounds = paint.MeasureText(textSpan);
+            var bounds = font.MeasureText(textSpan, paint);
 
             return bounds;
         }
@@ -2318,16 +2328,17 @@ namespace DrawnUi.Draw
         /// Returns text taken size in pixels. Accounts paint transforms like skew etc.
         /// </summary>
         /// <param name="paint"></param>
+        /// <param name="font"></param>
         /// <param name="text"></param>
         /// <param name="bounds"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void MeasureText(SKPaint paint, string text, ref SKRect bounds)
+        public void MeasureText(SKPaint paint, SKFont font, string text, ref SKRect bounds)
         {
-            paint.MeasureText(text, ref bounds);
+            font.MeasureText(text.AsSpan(), out bounds, paint);
 
-            if (paint.TextSkewX != 0)
+            if (font.SkewX != 0)
             {
-                float additionalWidth = Math.Abs(paint.TextSkewX) * paint.TextSize;
+                float additionalWidth = Math.Abs(font.SkewX) * font.Size;
                 bounds.Right += additionalWidth; //notice passed by ref struct will be modified
             }
 
@@ -2418,28 +2429,23 @@ namespace DrawnUi.Draw
             return new SKSize(result.Width, height);
         }
 
-        public static SKShaper.Result GetShapedText(SKShaper shaper, string text, float x, float y, SKPaint paint)
+        public static SKShaper.Result GetShapedText(SKShaper shaper, string text, float x, float y, SKPaint paint, SKFont font)
         {
             if (string.IsNullOrEmpty(text))
                 return null;
 
             if (shaper == null)
                 throw new ArgumentNullException(nameof(shaper));
-            if (paint == null)
-                throw new ArgumentNullException(nameof(paint));
+            if (font == null)
+                throw new ArgumentNullException(nameof(font));
 
-            var font = paint.ToFont();
+            if (shaper.Typeface == null)
+                return null;
 
-            if (font != null && shaper.Typeface != null)
-            {
-                font.Typeface = shaper.Typeface;
-                // shape the text
-                var result = shaper.Shape(text, x, y, paint);
+            // shape the text
+            var result = shaper.Shape(text, x, y, font);
 
-                return result;
-            }
-
-            return null;
+            return result;
         }
 
         public static List<UsedGlyph> GetGlyphs(string text, SKTypeface typeface)
@@ -2722,16 +2728,16 @@ namespace DrawnUi.Draw
         static readonly System.Collections.Concurrent.ConcurrentDictionary<(IntPtr, float), float> _correctedAscentCache
  = new();
 
-        static float GetCorrectedAscent(SKPaint paint)
+        static float GetCorrectedAscent(SKFont font, SKPaint paint)
         {
-            var key = (paint.Typeface?.Handle ?? IntPtr.Zero, paint.TextSize);
+            var key = (font.Typeface?.Handle ?? IntPtr.Zero, font.Size);
             return _correctedAscentCache.GetOrAdd(key, _ =>
             {
-                var rawAscent = -paint.FontMetrics.Ascent;
+                var rawAscent = -font.Metrics.Ascent;
 
                 var bounds = new SKRect();
-                paint.MeasureText("ÁÃǺẼỠ", ref bounds);
-                
+                font.MeasureText("ÁÃǺẼỠ".AsSpan(), out bounds, paint);
+
                 if (bounds.IsEmpty || bounds.Top >= 0)
                     return rawAscent;
 
@@ -2748,21 +2754,21 @@ namespace DrawnUi.Draw
         }
 #else
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static float GetCorrectedAscent(SKPaint paint) => -paint.FontMetrics.Ascent;
+        static float GetCorrectedAscent(SKFont font, SKPaint paint) => -font.Metrics.Ascent;
 #endif
 
 
-        void UpdateFontMetrics(SKPaint paint)
+        void UpdateFontMetrics(SKPaint paint, SKFont font)
         {
-            FontMetrics = paint.FontMetrics;
+            FontMetrics = font.Metrics;
             LineHeightPixels =
-                (float)Math.Round((GetCorrectedAscent(paint) + FontMetrics.Descent) *
+                (float)Math.Round((GetCorrectedAscent(font, paint) + FontMetrics.Descent) *
                                   LineHeight); //PaintText.FontSpacing;
             fontUnderline = FontMetrics.UnderlinePosition.GetValueOrDefault();
 
             if (!string.IsNullOrEmpty(this.MonoForDigits))
             {
-                charMonoWidthPixels = MeasureTextWidthWithAdvance(paint, this.MonoForDigits);
+                charMonoWidthPixels = MeasureTextWidthWithAdvance(paint, font, this.MonoForDigits);
             }
             else
             {
@@ -2888,33 +2894,49 @@ namespace DrawnUi.Draw
         {
             if (PaintDefault != null)
             {
-                PaintDefault.Typeface = null;
                 PaintDefault.Dispose();
                 PaintDefault = null;
             }
 
             FontDefault?.Dispose();
+            FontDefault = null;
 
             PaintStroke?.Dispose();
             PaintStroke = null;
+            FontStroke?.Dispose();
+            FontStroke = null;
+
             PaintShadow?.Dispose();
             PaintShadow = null;
+            FontShadow?.Dispose();
+            FontShadow = null;
+
             PaintDeco?.Dispose();
             PaintDeco = null;
             Shaper?.Dispose();
             Shaper = null;
         }
-        public SKFont FontDefault = new SKFont();
+        public SKFont FontDefault;
         public SKPaint PaintDefault = new SKPaint { IsAntialias = true, IsDither = true };
         private float _paintDefaultStrokeWidth = -1f;
-        private float _paintDefaultTextSize = -1f;
-        private SKTypeface _paintDefaultTypeface;
-        private bool _paintDefaultFakeBold;
-        private float _paintDefaultTextSkewX = float.NaN;
+        private float _fontDefaultSize = -1f;
+        private SKTypeface _fontDefaultTypeface;
+        private bool _fontDefaultEmbolden;
+        private float _fontDefaultSkewX = float.NaN;
+        private SKFontEdging _fontDefaultEdging = (SKFontEdging)(-1);
+        private bool? _fontDefaultSubpixel;
 
         public SKPaint PaintStroke = new SKPaint { IsAntialias = true, IsDither = true };
+        public SKFont FontStroke;
+        private float _fontStrokeSize = -1f;
+        private SKTypeface _fontStrokeTypeface;
+        private float _fontStrokeSkewX = float.NaN;
 
         public SKPaint PaintShadow = new SKPaint { IsAntialias = true, IsDither = true };
+        public SKFont FontShadow;
+        private float _fontShadowSize = -1f;
+        private SKTypeface _fontShadowTypeface;
+        private float _fontShadowSkewX = float.NaN;
 
         public SKPaint PaintDeco = new SKPaint { };
 
@@ -3803,7 +3825,7 @@ namespace DrawnUi.Draw
             return this;
         }
 
-        public new virtual bool OnFocusChanged(bool focus)
+        public new virtual bool SetFrameworkFocus(bool focus)
         {
             return false;
         }

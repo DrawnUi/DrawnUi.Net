@@ -185,7 +185,7 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
                         var offsetY = CacheSource.DrawingRect.Top - this.DrawingRect.Top;
                         destination.Offset(offsetX, offsetY);
 
-                        cache.Draw(ctx.Context.Surface.Canvas, destination, ImagePaint);
+                        cache.Draw(ctx.Context.Surface.Canvas, destination, ImagePaint, FilterQuality.None);
                     }
                 }
                 else

@@ -5,6 +5,7 @@ using DrawnUi.Features.Images;
 using Microsoft.Maui.Storage;
 #endif
 using System.Collections.Concurrent;
+ 
 
 namespace DrawnUi.Controls;
 
@@ -58,7 +59,7 @@ public partial class SkiaSprite : AnimatedFramesRenderer
             UseCache = SkiaCacheType.None,
             //BackgroundColor = Colors.Yellow, //for debugging frame bounds
             Aspect = TransformAspect.AspectFit,
-            RescalingQuality = SKFilterQuality.None,
+            RescalingQuality = FilterQuality.None,
             LoadSourceOnFirstDraw = false,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,

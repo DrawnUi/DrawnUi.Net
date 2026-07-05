@@ -36,12 +36,6 @@ public static class SKPaintExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void GuardTextSize(this SKPaint paint, ref float cache, float value)
-    {
-        if (cache != value) { cache = value; paint.TextSize = value; }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void GuardStrokeWidth(this SKPaint paint, ref float cache, float value)
     {
         if (cache != value) { cache = value; paint.StrokeWidth = value; }
@@ -54,15 +48,39 @@ public static class SKPaintExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void GuardTypeface(this SKPaint paint, ref SKTypeface cache, SKTypeface value)
+    public static void GuardFontSize(this SKFont font, ref float cache, float value)
     {
-        if (!ReferenceEquals(cache, value)) { cache = value; paint.Typeface = value; }
+        if (cache != value) { cache = value; font.Size = value; }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void GuardFilterQuality(this SKPaint paint, ref SKFilterQuality cache, SKFilterQuality value)
+    public static void GuardFontTypeface(this SKFont font, ref SKTypeface cache, SKTypeface value)
     {
-        if (cache != value) { cache = value; paint.FilterQuality = value; }
+        if (!ReferenceEquals(cache, value)) { cache = value; font.Typeface = value; }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void GuardFontSkewX(this SKFont font, ref float cache, float value)
+    {
+        if (cache != value) { cache = value; font.SkewX = value; }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void GuardFontEmbolden(this SKFont font, ref bool cache, bool value)
+    {
+        if (cache != value) { cache = value; font.Embolden = value; }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void GuardFontEdging(this SKFont font, ref SKFontEdging cache, SKFontEdging value)
+    {
+        if (cache != value) { cache = value; font.Edging = value; }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void GuardFontSubpixel(this SKFont font, ref bool? cache, bool value)
+    {
+        if (cache != value) { cache = value; font.Subpixel = value; }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

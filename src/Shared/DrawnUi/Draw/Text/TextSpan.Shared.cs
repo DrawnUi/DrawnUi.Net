@@ -109,6 +109,8 @@ public partial class TextSpan : IDisposable
 
     public SKPaint Paint { get; set; }
 
+    public SKFont Font { get; set; }
+
     public SKTypeface TypeFace
     {
         get => _typeFace;
@@ -250,6 +252,7 @@ public partial class TextSpan : IDisposable
     public virtual void Dispose()
     {
         Paint?.Dispose();
+        Font?.Dispose();
 
         CommandTapped = null;
         Tapped = null;
