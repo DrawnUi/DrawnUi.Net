@@ -74,6 +74,15 @@ public static class CachedScrollTrimRepro
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         host.AdvanceFrames(8, 16);
 
+        if (page.ChatStack?.RenderTree == null)
+        {
+            // PRE-EXISTING cross-repro artifact: a page created this late in the process sometimes never
+            // renders (dispatcher pump owned by the first host) — tree stays null. Skip instead of crashing
+            // the remaining repros.
+            Console.WriteLine("  SKIPPED (page never rendered — known cross-repro dispatcher artifact)");
+            return;
+        }
+
         // bottom-most visible Text cell = newest in the inverted layout (what the AI mock grows)
         ChatMessage target = null; float bottomMost = float.MinValue;
         foreach (var t in page.ChatStack.RenderTree)
@@ -171,11 +180,11 @@ public static class CachedScrollTrimRepro
                           $"visibleCells={CountTree(page.ChatStack)}");
     }
 
-    private static int CountTree(CellsStack s) { int c = 0; foreach (var _ in s.RenderTree) c++; return c; }
+    private static int CountTree(DrawnUi.Draw.SkiaLayout s) { int c = 0; foreach (var _ in s.RenderTree) c++; return c; }
 
     private static void RunInner()
     {
-        Console.WriteLine($"UseDoubleBuffering={typeof(CellsStackCached).GetField("UseDoubleBuffering", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null)}");
+        Console.WriteLine($"UseDoubleBuffering={typeof(CellsStackCached).GetField("UseDoubleBuffering", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null) ?? "n/a (field removed)"}");
 
         var grep = new GrepListener();
         System.Diagnostics.Trace.Listeners.Add(grep);
@@ -250,7 +259,7 @@ public static class CachedScrollTrimRepro
                 Console.WriteLine($"  BAND flick{flick,2} band={flickBand}px win=[{page.ProbeWindowStart}..{page.ProbeWindowEnd}) " +
                                   $"resident={page.ProbeResident} offY={page.MainScroll.ViewportOffsetY,7:0} -> band-f{flick}.png");
 
-                var cs = (CellsStack)page.ChatStack;
+                var cs = (DrawnUi.Draw.SkiaLayout)page.ChatStack;
                 Console.WriteLine($"      BAND screenY=[{bandTop}..{bandBot}] ({bandBot - bandTop}px)");
                 // which LIVE cells straddle the band Y? (live has them; the plane is missing them)
                 foreach (var t in cs.RenderTree)
