@@ -68,6 +68,11 @@ public class SkiaCachedStack : SkiaStack
     // trim keeps count stable with stable indices, so a count check can't see it; the collection event can.
     protected volatile bool _contentChanged = true;
 
+    // Set by OnContentTranslatedVertically, consumed by the next draw: marks the ONE frame where cells are
+    // translated but the parent scroll compensates only next frame — the only frame where a live draw shows
+    // desynced content and the re-anchored previous plane must serve instead.
+    private bool _translatedThisFrame;
+
     /// <summary>Mutation hook (LoadMore/trim/add/remove on the same collection) — invalidate the plane.</summary>
     protected override void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
@@ -129,15 +134,19 @@ public class SkiaCachedStack : SkiaStack
         // Consume a plane the off-thread bake just finished (no-op in single-plane mode).
         UpdatePlanes();
 
-        // DRAIN pending structure changes HERE: blit/stale-plane frames never reach the live Paint (the
-        // usual drain site), so staged batches would sit pending forever — HasPendingStructureChanges then
-        // re-arms _contentChanged every frame = an endless record/bake loop at rest (livelock found on
-        // device). Same call, same thread as the live Paint's drain.
-        if (HasPendingStructureChanges)
+        // Blit frames never reach the live DrawStack, whose "start background measurement if needed" check
+        // is the ONLY restart site — once frames go fully-blit the measurement frontier stalls and the
+        // content extent stops growing: the scroll walls at the frontier and LoadMore never re-arms
+        // (device: stuck at "measured 150, Data: 200"). Kick it here every frame — a cheap no-op while
+        // measurement runs or everything is measured.
+        if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
         {
-            ApplyStructureChanges();
-            _contentChanged = true;
+            KickBackgroundMeasurement();
         }
+
+        var hadPending = HasPendingStructureChanges;
+        if (hadPending)
+            _contentChanged = true;
         bool dirty = !DirtyChildrenTracker.IsEmpty;
 
         // ordered ScrollToIndex (jump-to-message) must live-paint each frame to track cells toward the target.
@@ -181,7 +190,11 @@ public class SkiaCachedStack : SkiaStack
         // the flags set, so we fall through and retry next frame.
         if (!orderedScroll)
         {
-            if (!_bakeInFlight)
+            // Never record over an UNDRAINED structure: the gates would validate (and the kick would clear
+            // _contentChanged for) a structure that still mutates when the pending batches integrate — and
+            // since blit frames don't drain, that loops record-per-frame forever. Let the LIVE frame below
+            // drain first; the next frame records clean.
+            if (!_bakeInFlight && !hadPending)
             {
                 CreateCache(context, drawingRect); // sync-records, or hands the record to the async worker
             }
@@ -193,16 +206,22 @@ public class SkiaCachedStack : SkiaStack
                 return;
             }
 
-            // Gates rejected or the record went async: the previous plane was RE-ANCHORED for any trim
-            // commit (OnContentTranslatedVertically), so it is still pixel-stable — serve it while it
-            // covers instead of a live frame (a trim-commit live frame paints desynced content, up to a
-            // fully EMPTY frame). At most one mutation stale, never blank; a fresh record follows.
-            if (hadValidPlane && PlaneCoversViewport(destination, vpH))
+            // TRIM-COMMIT DESYNC FRAME ONLY: cells were just translated and the scroll compensation lands
+            // next frame — a live draw NOW paints desynced content (up to a fully EMPTY frame). The previous
+            // plane was RE-ANCHORED for exactly this commit, so it is still pixel-stable: serve it for this
+            // one frame. Any OTHER invalidated frame must fall through to a LIVE draw — the live pipeline is
+            // what integrates staged batches, restacks, and grows the content extent (serving a stale plane
+            // there starved LoadMore re-arming: the "wall at message 176" bug). In prepared mode that live
+            // frame is pure cache blits — one record-priced frame per content change, not a scroll spike.
+            if (_translatedThisFrame && hadValidPlane && PlaneCoversViewport(destination, vpH))
             {
+                _translatedThisFrame = false;
                 IsCaching = true;
                 DrawCache(context, destination);
                 return;
             }
+
+            _translatedThisFrame = false;
         }
 
         // Need LIVE cells this frame. An async bake may be painting the SAME views on the worker right
@@ -814,6 +833,7 @@ public class SkiaCachedStack : SkiaStack
         ReanchorPlane(ForegroundPlane, deltaPixels);
         ReanchorPlane(_preparedPlane, deltaPixels); // a bake published in the pre-shift frame
         IncrementStructureGen(); // a bake NOT yet published can't be re-anchored — orphan it (discards at publish/consume)
+        _translatedThisFrame = true; // next draw: serve the re-anchored plane, not a desynced live frame
         _recordOffsetY += deltaPixels; // keep band-drift origin in the post-shift frame
 
         // cells moved -deltaPixels in content space, so the planes' covered content ranges move with them

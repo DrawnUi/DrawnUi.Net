@@ -2561,7 +2561,18 @@ else
                         // CellPreparationService measures it off-thread and Repaints when ready.
                         // IsPreparingOffthread also shields against reading half-measured state while the
                         // worker is measuring the live instance.
-                        if (preparedMode && (child.NeedMeasure || child.IsPreparingOffthread))
+                        //
+                        // STALE-SERVE exception: a cell that ALREADY OWNS PIXELS (front or previous cache)
+                        // and merely self-invalidated (delivery tick, image loaded, streaming text) must
+                        // NOT flash a skeleton — draw its existing cache at the reserved slot via the
+                        // normal child pipeline (measure-free: DrawChild only schedules invalidation) while
+                        // the worker re-measures; the reconcile branch adopts the new size afterwards.
+                        var stalePixels = preparedMode
+                                          && (child.NeedMeasure || child.IsPreparingOffthread)
+                                          && (child.RenderObject != null || child.RenderObjectPrevious != null)
+                                          && !cell.Measured.Pixels.IsEmpty;
+
+                        if (preparedMode && !stalePixels && (child.NeedMeasure || child.IsPreparingOffthread))
                         {
                             var slot = cell.Measured.Pixels;
                             if (child.IsVisible && slot.Width >= 1 && slot.Height >= 1)
@@ -2595,7 +2606,24 @@ else
 
                         if (child.NeedMeasure)
                         {
-                            if (!IsTemplated
+                            if (stalePixels)
+                            {
+                                // STALE-SERVE (prepared mode): arrange the cell to its reserved slot and let
+                                // the normal draw below blit its existing cache — at most one update stale,
+                                // never a skeleton flash, never a render-thread measure. Prioritize the
+                                // off-thread re-measure; the prepared-reconcile branch adopts the fresh size
+                                // on a following frame.
+                                if (child.IsVisible)
+                                {
+                                    LayoutCell(cell.Measured, cell, child, cell.Area, ctx.Scale);
+                                }
+
+                                if (!bakePass)
+                                {
+                                    _prepVisibleUnprepared.Add(cell.ControlIndex);
+                                }
+                            }
+                            else if (!IsTemplated
                                 || MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
                                 || (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && !child.WasMeasured)
                                 || GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels)

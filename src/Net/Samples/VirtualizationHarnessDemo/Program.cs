@@ -10,6 +10,8 @@ DrawnChatList.ChatPage.MotionTraceEnabled = false;
 // Repro for the reported "consecutive ScrollToOldest jumps but never scrolls to top" bug. Runs first.
 VirtualizationHarnessDemo.StoConsecutiveJumpRepro.Run();
 VirtualizationHarnessDemo.PlaneImageStartupRepro.Run();
+VirtualizationHarnessDemo.ScrollToTopWallRepro.Run();
+VirtualizationHarnessDemo.PlaceholderFlashRepro.Run();
 VirtualizationHarnessDemo.DeleteJumpCycleRepro.Run();
 VirtualizationHarnessDemo.DeleteGapRepro.Run();
 VirtualizationHarnessDemo.PreparedViewsRepro.Run();
