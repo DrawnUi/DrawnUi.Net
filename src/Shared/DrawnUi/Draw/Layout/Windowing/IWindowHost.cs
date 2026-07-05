@@ -11,6 +11,10 @@ public interface IWindowHost
     /// <summary>Resident (windowed) item count = the bound ItemsSource length.</summary>
     int VisibleCount { get; }
 
+    /// <summary>Highest LOCAL (resident) index currently visible. Used to detect arrival at the oldest end
+    /// (LastVisibleIndex == VisibleCount-1) so a jump can release its LoadMore suppression only once landed.</summary>
+    int LastVisibleIndex { get; }
+
     /// <summary>An ordered ScrollToIndex is still settling (target not yet measured/landed).</summary>
     bool OrderedScrollInProgress { get; }
 
@@ -25,4 +29,8 @@ public interface IWindowHost
 
     /// <summary>Instant snap to content start (offset 0) — newest in an inverted list.</summary>
     void SnapToStart();
+
+    /// <summary>Stop any in-flight fling/bounce/scroll animation. Called before a programmatic jump/rebase so
+    /// an active fling can't keep scrolling (and triggering LoadMore) into the window swap.</summary>
+    void StopAnimations();
 }

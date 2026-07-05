@@ -26,6 +26,39 @@ namespace DrawnUi.Draw
             return spacing;
         }
 
+        /// <summary>
+        /// TRUE on a thread that is currently recording a band-plane bake (SkiaCachedStack async record):
+        /// the paint pass must be a PURE READ — no draining of pending structure changes, no render-tree
+        /// swap, no dirty-tracker clears, no background-measure kicks, no preparation posts, no Update().
+        /// The old app-level async plane let its bake run all of those from the worker thread — consuming
+        /// staged batches into a frozen snapshot (lost updates) and clobbering the gesture tree: the
+        /// historical structure-corruption class. Thread-static so only the baking thread sees it.
+        /// </summary>
+        [ThreadStatic] internal static bool IsPlaneBakePass;
+
+        /// <summary>
+        /// When set (thread-static), DrawStackVisibleChildren records the min/max canvas Y actually painted
+        /// (cells and skeletons) into PaintedBoundsTop/Bottom — the band-plane record uses it to clamp its
+        /// coverage claim to what was REALLY painted (prepared-views realizes cells far beyond the painted
+        /// window, so "recordable" alone over-claims).
+        /// </summary>
+        [ThreadStatic] internal static bool CollectPaintedBounds;
+
+        [ThreadStatic] internal static float PaintedBoundsTop;
+        [ThreadStatic] internal static float PaintedBoundsBottom;
+
+        internal static void ResetPaintedBounds()
+        {
+            PaintedBoundsTop = float.MaxValue;
+            PaintedBoundsBottom = float.MinValue;
+        }
+
+        internal static void TrackPaintedBounds(float top, float bottom)
+        {
+            if (top < PaintedBoundsTop) PaintedBoundsTop = top;
+            if (bottom > PaintedBoundsBottom) PaintedBoundsBottom = bottom;
+        }
+
         public int GetSizeKey(SKSize size)
         {
             int hKey = 0;
@@ -2071,8 +2104,8 @@ else
                 if (cell == null) continue;
                 paint.Color = DebugBatchColor(cell.DebugMeasureBatch);
                 float l = cell.Drawn.Left, t = cell.Drawn.Top, r = cell.Drawn.Right, b = cell.Drawn.Bottom;
-                canvas.DrawRect(l, t, 6f, b - t, paint);      // left-edge stripe = this cell's batch
-                canvas.DrawRect(l, t, r - l, 2f, paint);      // top seam line = batch boundary visible across width
+                canvas.DrawRect(l, t, 6f, b - t, paint); // left-edge stripe = this cell's batch
+                canvas.DrawRect(l, t, r - l, 2f, paint); // top seam line = batch boundary visible across width
             }
         }
 
@@ -2080,7 +2113,7 @@ else
         {
             if (batch <= 0)
                 return new SKColor(0x99, 0x99, 0x99, 0xCC); // gray = initial / foreground measure
-            var hue = (batch * 67) % 360;                    // distinct hue per background batch
+            var hue = (batch * 67) % 360; // distinct hue per background batch
             return SKColor.FromHsv(hue, 90, 100).WithAlpha(0xCC);
         }
 
@@ -2120,11 +2153,13 @@ else
             {
                 if (cell == null || !cell.WasLastDrawn || cell.IsCollapsed || cell.Drawn.Height <= 0)
                     continue;
-                var r = new SKRect(cell.Drawn.Left, cell.Drawn.Top, cell.Drawn.Left + cell.Drawn.Width, cell.Drawn.Bottom);
+                var r = new SKRect(cell.Drawn.Left, cell.Drawn.Top, cell.Drawn.Left + cell.Drawn.Width,
+                    cell.Drawn.Bottom);
                 if (!r.IntersectsWith(visiblePixels))
                     continue;
                 painted.Add(cell);
             }
+
             painted.Sort((a, b) => a.Drawn.Top.CompareTo(b.Drawn.Top));
 
             for (int i = 1; i < painted.Count; i++)
@@ -2133,9 +2168,11 @@ else
                 var cell = painted[i];
                 var delta = cell.Drawn.Top - prev.Drawn.Bottom; // expected ~= spacingPx
                 if (delta < spacingPx - 2f)
-                    Super.Log($"[DRAWN-BAD overlap] idx{cell.ControlIndex} top={cell.Drawn.Top:0} < prev idx{prev.ControlIndex} bottom={prev.Drawn.Bottom:0} (overlap {prev.Drawn.Bottom - cell.Drawn.Top:0}) prevH={prev.Drawn.Height:0} thisH={cell.Drawn.Height:0} prevBatch{prev.DebugMeasureBatch} batch{cell.DebugMeasureBatch}");
+                    Super.Log(
+                        $"[DRAWN-BAD overlap] idx{cell.ControlIndex} top={cell.Drawn.Top:0} < prev idx{prev.ControlIndex} bottom={prev.Drawn.Bottom:0} (overlap {prev.Drawn.Bottom - cell.Drawn.Top:0}) prevH={prev.Drawn.Height:0} thisH={cell.Drawn.Height:0} prevBatch{prev.DebugMeasureBatch} batch{cell.DebugMeasureBatch}");
                 else if (delta > spacingPx + 2f)
-                    Super.Log($"[DRAWN-BAD gap] idx{cell.ControlIndex} top={cell.Drawn.Top:0} > prev idx{prev.ControlIndex} bottom={prev.Drawn.Bottom:0} (gap {delta - spacingPx:0}) prevH={prev.Drawn.Height:0} thisH={cell.Drawn.Height:0} prevBatch{prev.DebugMeasureBatch} batch{cell.DebugMeasureBatch}");
+                    Super.Log(
+                        $"[DRAWN-BAD gap] idx{cell.ControlIndex} top={cell.Drawn.Top:0} > prev idx{prev.ControlIndex} bottom={prev.Drawn.Bottom:0} (gap {delta - spacingPx:0}) prevH={prev.Drawn.Height:0} thisH={cell.Drawn.Height:0} prevBatch{prev.DebugMeasureBatch} batch{cell.DebugMeasureBatch}");
             }
         }
 
@@ -2332,7 +2369,8 @@ else
                 }
 
                 // Start background measurement if needed
-                if (IsTemplated && structure != null &&
+                if (!IsPlaneBakePass &&
+                    IsTemplated && structure != null &&
                     MeasureItemsStrategy == MeasuringStrategy.MeasureVisible &&
                     ItemsSource != null &&
                     lastVisibleIndex < ItemsSource.Count - 1 && // More items to measure
@@ -2356,14 +2394,31 @@ else
                     }
                 }
 
-                ClearDirtyChildren();
+                if (!IsPlaneBakePass)
+                {
+                    ClearDirtyChildren();
+                }
 
                 //PASS 2 DRAW VISIBLE
                 drawn = DrawStackVisibleChildren(ctx, structure, visibleElements, usesExpandedViewport,
                     visibilityAreaReal, tree, ref updateInternal);
 
+                // PREPARED VIEWS: post the priority want-list (visible skeletons first, then ahead of the
+                // scroll direction) to the preparation worker, once per draw pass.
+                if (!IsPlaneBakePass && UsePreparedViewsActive)
+                {
+                    PostCellPreparationWants();
+                }
+
                 if (DebugDrawMeasureBatches)
                     DrawMeasureBatchOverlay(ctx, visibleElements);
+            }
+
+            // A plane-bake pass is a PURE READ: it must not publish a render tree (gestures belong to the
+            // live frame), track viewport indices, request updates or advance frame counters.
+            if (IsPlaneBakePass)
+            {
+                return drawn;
             }
 
             if (needrebuild && visibleElements.Count > 0)
@@ -2411,10 +2466,17 @@ else
             int countRendered = 0;
             Vector2 offsetOthers = Vector2.Zero;
 
+            var preparedMode = UsePreparedViewsActive;
+            var bakePass = IsPlaneBakePass; // pure-read pass: no live-state mutation (see the flag's doc)
+            if (preparedMode && !bakePass)
+            {
+                _prepVisibleUnprepared.Clear();
+            }
+
             try
             {
-                if (WillDrawFromFreshItemssSource == 0 && IsTemplated
-                   //&& RecyclingTemplate != RecyclingTemplate.Disabled
+                if (!bakePass && WillDrawFromFreshItemssSource == 0 && IsTemplated
+                    //&& RecyclingTemplate != RecyclingTemplate.Disabled
                    )
                 {
                     // First paint of a fresh ItemsSource just happened — the visible measured cells are now on
@@ -2461,7 +2523,12 @@ else
                             GetSizeKey(cell.Measured.Pixels));
                         if (child == null)
                         {
-                            return countRendered;
+                            // A view can be unavailable transiently (adapter contexts mid-swap during a
+                            // window trim/rebase, pool not yet realized after a grow/rekey). Returning here
+                            // aborted the WHOLE remaining paint — one null view on the first cell produced a
+                            // fully EMPTY frame (caught by the scroll+trim band repro). Skip just this cell:
+                            // its slot heals next frame, every other cell still paints.
+                            continue;
                         }
 
                         cellsToRelease.Add(child);
@@ -2488,29 +2555,66 @@ else
                         // recycled cell paints short and leaves a gap (and vice-versa overlaps).
                         //bool forcePlaneMeasure = PlaneOverrideStructure != null;
 
-                   
+                        // PREPARED VIEWS: the render thread NEVER measures a cell (a single Debug cell
+                        // measure exceeds a frame). An unprepared cell draws its placeholder skeleton at
+                        // the structure's reserved slot and gets top priority in the preparation want-list;
+                        // CellPreparationService measures it off-thread and Repaints when ready.
+                        // IsPreparingOffthread also shields against reading half-measured state while the
+                        // worker is measuring the live instance.
+                        if (preparedMode && (child.NeedMeasure || child.IsPreparingOffthread))
+                        {
+                            var slot = cell.Measured.Pixels;
+                            if (child.IsVisible && slot.Width >= 1 && slot.Height >= 1)
+                            {
+                                var placeholderRect = new SKRect(x, y, x + slot.Width, y + slot.Height);
+                                child.DrawPlaceholder(ctx.WithDestination(placeholderRect));
+
+                                if (CollectPaintedBounds)
+                                    TrackPaintedBounds(placeholderRect.Top, placeholderRect.Bottom);
+
+                                // Enter the render tree at the reserved slot: the skeleton occupies real layout
+                                // space, so gestures land on the (already bound) cell and integrity watchers see
+                                // a contiguous sequence instead of a fake hole. CreateHitRect() would return a
+                                // stale DrawingRect here (never arranged) — use the slot rect for both.
+                                tree.Add(new SkiaControlWithRect(child,
+                                    placeholderRect,
+                                    placeholderRect,
+                                    index,
+                                    child.ContextIndex,
+                                    child.BindingContext));
+                            }
+
+                            if (!bakePass)
+                            {
+                                _prepVisibleUnprepared.Add(cell.ControlIndex);
+                            }
+
+                            cell.WasLastDrawn = false;
+                            continue;
+                        }
 
                         if (child.NeedMeasure)
                         {
                             if (!IsTemplated
-                              || MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
-                              || (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && !child.WasMeasured)
-                              || GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels)
-                              || InvalidatedChildrenInternal.Contains(child)
-                              )
+                                || MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                                || (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && !child.WasMeasured)
+                                || GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels)
+                                || InvalidatedChildrenInternal.Contains(child)
+                               )
                             {
-                                var oldSize = child.MeasuredSize.Pixels;
-
                                 // DETECTOR(B): the slot the structure RESERVED for this index, captured before
                                 // cell.Measured is overwritten. The OffsetOthers delta below is computed from
                                 // oldSize (the recycled view's PREVIOUS item size), not from this reserved slot
                                 // -> followers in the same batch can be shifted by the wrong magnitude.
                                 var reservedSlot = cell.Measured.Pixels;
 
+                                if (IsTemplated && !bakePass)
+                                {
+                                    CountRenderThreadCellMeasures++;
+                                }
+
                                 var measured = child.Measure((float)cell.Area.Width, (float)cell.Area.Height,
                                     ctx.Scale);
-
-                                //Debug.WriteLine($"[DrawStack] measured while drawing {child.ContextIndex}");
 
                                 cell.Measured = measured;
                                 cell.WasMeasured = true;
@@ -2520,20 +2624,8 @@ else
                                     LayoutCell(measured, cell, child, cell.Area, ctx.Scale);
                                 }
 
-
-                                /*
-                                  Bug fixed: when a recycled view re-measures during draw, the code shifted all following cells by diff = newMeasuredHeight −
-                                    oldSize, where oldSize was the recycled view's previous item content (e.g. it last showed a 698px message). So a cell
-                                    whose real size exactly matched its slot (130→130, zero change) still shoved every follower by 130 − 698 = −568px →
-                                    overlap at wrong Top. Confirmed by trace: oldView=698 reservedSlot=130 newReal=130 diffApplied=−568 correctDelta=0.
-
-                                    Fix: compute the follower shift against the slot the structure reserved for that index, not the recycled view's prior
-                                    size:
-                                 */
-
-                                // was: var diff = child.MeasuredSize.Pixels - oldSize;   // oldSize = recycled view's PREVIOUS item
-
-                                if (reservedSlot != SKSize.Empty && !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
+                                if (reservedSlot != SKSize.Empty &&
+                                    !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
                                 {
                                     var diff = child.MeasuredSize.Pixels - reservedSlot;
                                     cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
@@ -2545,34 +2637,47 @@ else
                                     // restack landed a frame later — the visible "wrong Top" flicker while a bubble
                                     // grows in realtime (streaming AI answer). Same call the smart-measure path uses.
                                     OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
-
-                                    /*
-                                    if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
-                                    {
-                                        //Debug.WriteLine($"[DrawStack] OffsetOthers {cell.OffsetOthers}");
-
-                                        var measuredItem = new MeasuredItemInfo
-                                        {
-                                            Cell = cell, LastAccessed = DateTime.UtcNow, IsInViewport = true,
-                                        };
-                                        _pendingStructureChanges.Add(
-                                            new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
-                                            {
-                                                OffsetOthers = cell.OffsetOthers,
-                                                StartIndex = child.ContextIndex,
-                                                Count = 1,
-                                                MeasuredItems = new List<MeasuredItemInfo> { measuredItem }
-                                            });
-
-                                        cell.OffsetOthers = Vector2.Zero;
-                                    }
-                                    */
-                                }
-                                else
-                                {
-                                    var diff = child.MeasuredSize.Pixels - oldSize;   // oldSize = recycled view's PREVIOUS item
                                 }
                             }
+                        }
+
+                        // PREPARED VIEWS RECONCILE (arithmetic only, no measure): a cell re-measured OFF-thread
+                        // (self-invalidated growing bubble, image loaded) arrives here with a fresh MeasuredSize
+                        // that differs from the structure's reserved slot. The view is per-context (Disabled
+                        // recycling) so ITS size is the truth — adopt it and durably shift the followers, exactly
+                        // what the sync-measure branch above does after measuring, minus the measure.
+                        else if (preparedMode && !cell.Measured.IsEmpty
+                                 && child.MeasuredSize.Pixels.Width >= 1 && child.MeasuredSize.Pixels.Height >= 1
+                                 && !CompareSize(cell.Measured.Pixels, child.MeasuredSize.Pixels, 1f))
+                        {
+                            var reservedSlot = cell.Measured.Pixels;
+                            var adopted = child.MeasuredSize;
+
+                            cell.Measured = adopted;
+                            cell.WasMeasured = true;
+
+                            if (child.IsVisible)
+                            {
+                                LayoutCell(adopted, cell, child, cell.Area, ctx.Scale);
+                            }
+
+                            var diff = adopted.Pixels - reservedSlot;
+                            cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
+                            OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+                        }
+
+                        // RECYCLED STALE SIZE (light, no remeasure): a pooled view can still carry its PREVIOUS
+                        // index's height when its cache is valid (NeedMeasure == false) — it would paint at the stale
+                        // height and overrun the next cell (the transient overlap during fast recycling / a send
+                        // rebind). Instead of a costly draw-time REMEASURE (which janks the scroll), just ARRANGE it
+                        // to the KNOWN reserved slot (cell.Measured) so it draws at the correct height NOW; the
+                        // ImageDoubleBuffered content repaints to the new size in the background a frame later. Arrange
+                        // only = cheap. Coarse size-key gate so only real (cross-bucket) mismatches trigger — normal
+                        // same-height recycling never enters here, keeping the scroll smooth and allocation-free.
+                        else if (IsTemplated && !cell.Measured.IsEmpty
+                                 && GetSizeKey(control.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels))
+                        {
+                            LayoutCell(cell.Measured, cell, control, cell.Area, ctx.Scale);
                         }
 
                         if (child.IsVisible)
@@ -2586,7 +2691,9 @@ else
                                 //SkiaLayout.TraceIdx(cell.ControlIndex, "DRAW-paint",
                                 //    $"ctx={child.ContextIndex} paintTop={destinationRect.Top:0} paintBottom={destinationRect.Bottom:0} paintH={destinationRect.Height:0} viewMeasuredH={child.MeasuredSize.Pixels.Height:0} cellDrawnTop={cell.Drawn.Top:0} cellDrawnH={cell.Drawn.Height:0}");
 
-                                if (IsRenderingWithComposition)
+                                // A bake pass must paint EVERY visible cell (a composition pass paints only
+                                // dirty ones — a plane recorded from it would have holes).
+                                if (IsRenderingWithComposition && !bakePass)
                                 {
                                     if (child.PostAnimators.Count > 0)
                                     {
@@ -2635,6 +2742,9 @@ else
                                         countRendered++;
                                     }
                                 }
+
+                                if (willDraw && CollectPaintedBounds)
+                                    TrackPaintedBounds(destinationRect.Top, destinationRect.Bottom);
 
                                 cell.WasLastDrawn = willDraw;
 

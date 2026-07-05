@@ -861,6 +861,27 @@ public partial class SkiaScroll
     /// </summary>
     protected ScrollToIndexOrder OrderedScrollToIndex;
 
+    // Homing state for a pending OrderedScrollToIndex: the order is held until ARRIVAL (so the
+    // LoadMore gate stays closed for the whole animated travel and the retry can re-aim if content
+    // resizes mid-flight). Tracks the offset actually issued plus a stall watchdog for scrolls that
+    // clamp short of the computed target.
+    private SKPoint _orderedIssuedTarget;
+    private bool _orderedIssuedTargetValid;
+    private SKPoint _orderedWatchdogOffset;
+    private int _orderedStalledFrames;
+    private int _orderedReissues;
+
+    /// <summary>
+    /// Clears a pending ScrollToIndex order and its homing/watchdog state.
+    /// </summary>
+    protected void ClearOrderedScrollToIndex()
+    {
+        OrderedScrollToIndex = ScrollToIndexOrder.Default;
+        _orderedIssuedTargetValid = false;
+        _orderedStalledFrames = 0;
+        _orderedReissues = 0;
+    }
+
     public bool OrderedScrollToIndexIsSet
     {
         get
@@ -927,6 +948,9 @@ public partial class SkiaScroll
             Index = index,
             Clamp = clamp
         };
+        _orderedIssuedTargetValid = false; // fresh order: previous homing state is void
+        _orderedStalledFrames = 0;
+        _orderedReissues = 0;
 
         ExecuteScrollToIndexOrder();
     }
@@ -952,11 +976,27 @@ public partial class SkiaScroll
                 if (layout.HasPendingStructureChanges)
                     return false;
 
-                // Target still in BACKGROUND measurement (e.g. right after a window rebase the oldest item
-                // isn't really measured yet): its Destination.Top AND the content bounds are estimates, so the
-                // offset is wrong and gets clamped to a stale-short max. Wait for real measurement, then retry.
-                if (layout.IsBackgroundMeasuring && layout.BackgroundMeasurementProgress < OrderedScrollToIndex.Index)
-                    return false;
+                // MeasureVisible: the target's geometry is REAL only once measurement has passed it
+                // (LastMeasuredIndex); before that its Destination and the content bounds are estimates.
+                // The old gate ("IsBackgroundMeasuring && progress < index") had a hole: background idle +
+                // target unmeasured passed through, the offset was computed from estimates, fired and
+                // self-cleared — a window jump (ScrollToOldest) landed short and never corrected. Hold the
+                // order until the target is really measured; if measurement is idle, KICK it toward the
+                // target (the draw-side restart alone starves behind pending changes). Repaint keeps retry
+                // frames coming while we hold. Bounded: measured progress is monotonic per kick; if a kick
+                // is impossible (no constraints yet), fall through and resolve with estimates once instead
+                // of deadlocking.
+                if (layout.IsTemplated && layout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                    && layout.ItemsSource != null
+                    && OrderedScrollToIndex.Index < layout.ItemsSource.Count
+                    && layout.LastMeasuredIndex < OrderedScrollToIndex.Index)
+                {
+                    if (layout.IsBackgroundMeasuring || layout.KickBackgroundMeasurement())
+                    {
+                        Repaint();
+                        return false;
+                    }
+                }
             }
 
             //saving to use upon creating control if this was called before its internal structure was really created
@@ -968,23 +1008,69 @@ public partial class SkiaScroll
                 if (AreEqual((float)InternalViewportOffset.Units.X, offset.X, 0.5)
                     && AreEqual((float)InternalViewportOffset.Units.Y, offset.Y, 0.5))
                 {
-                    OrderedScrollToIndex = ScrollToIndexOrder.Default;
+                    ClearOrderedScrollToIndex();
                     return true;
+                }
+
+                // The order stays PENDING until we actually arrive (checked above), not just until the
+                // scroll is issued. Clearing on issue opened the LoadMore gate for the whole animated
+                // travel: an inverted-chat jump to the oldest starts its animation at the newest edge —
+                // exactly the LoadNewer trigger zone — so LoadMore fired one frame into the flight, grew
+                // the content mid-travel and the jump landed mid-list. Held, the gate stays closed and
+                // the per-frame retry re-aims automatically if content resizes during the flight.
+                var alreadyHoming = _orderedIssuedTargetValid
+                                    && AreEqual(_orderedIssuedTarget.X, offset.X, 1f)
+                                    && AreEqual(_orderedIssuedTarget.Y, offset.Y, 1f);
+
+                if (alreadyHoming)
+                {
+                    // Watchdog: the issued animation can be cut short (a competing animator/stop) or
+                    // clamp short of the computed target — then "arrived" never trips. If the viewport
+                    // stops moving while the order is still pending: RE-ISSUE the scroll (bounded), and
+                    // only after retries are exhausted accept the landing, so a genuinely clamped target
+                    // can't gate LoadMore forever.
+                    var currentX = (float)InternalViewportOffset.Units.X;
+                    var currentY = (float)InternalViewportOffset.Units.Y;
+                    if (AreEqual(currentX, _orderedWatchdogOffset.X, 0.05f)
+                        && AreEqual(currentY, _orderedWatchdogOffset.Y, 0.05f))
+                    {
+                        if (++_orderedStalledFrames > 10)
+                        {
+                            if (_orderedReissues < 2)
+                            {
+                                _orderedReissues++;
+                                _orderedIssuedTargetValid = false; // force a fresh ScrollTo on the next retry
+                                _orderedStalledFrames = 0;
+                            }
+                            else
+                            {
+                                ClearOrderedScrollToIndex();
+                                return true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _orderedStalledFrames = 0;
+                        _orderedWatchdogOffset = new SKPoint(currentX, currentY);
+                    }
+
+                    Repaint(); // keep retry frames coming until arrival
+                    return false;
                 }
 
                 var time = 0f;
                 if (OrderedScrollToIndex.Animated)
                     time = SystemAnimationTimeSecs;
 
-                //Debug.WriteLine($"[STI] idx={OrderedScrollToIndex.Index} contentH={ptsContentHeight:0} " +
-                //                $"bgMeasuring={(Content as SkiaLayout)?.IsBackgroundMeasuring} " +
-                //                $"bgProgress={(Content as SkiaLayout)?.BackgroundMeasurementProgress} " +
-                //                $"totalMeasured={(Content as SkiaLayout)?.TotalMeasuredItems} " +
-                //                $"count={(Content as SkiaLayout)?.ItemsSource?.Count}");
-
                 ScrollTo(offset.X, offset.Y, time, OrderedScrollToIndex.Clamp);
-                OrderedScrollToIndex = ScrollToIndexOrder.Default;
-                return true;
+                _orderedIssuedTarget = offset;
+                _orderedIssuedTargetValid = true;
+                _orderedStalledFrames = 0;
+                _orderedWatchdogOffset = new SKPoint((float)InternalViewportOffset.Units.X,
+                    (float)InternalViewportOffset.Units.Y);
+                Repaint();
+                return false;
             }
         }
 

@@ -133,9 +133,11 @@ namespace DrawnUi.Draw
         #region INITIALIZE
 
         /// <summary>
-        /// Builds an immutable snapshot (fixed array) of the live collection. Called on the mutating
-        /// (UI) thread. Cost: one shallow copy of item references per collection change - cheap for bulk
-        /// updates (ObservableRangeCollection), O(n) per single-item op for a plain ObservableCollection.
+        /// Builds an immutable snapshot (fixed array) of the live collection. MUST be called on the mutating
+        /// (UI) thread, serialized with the collection change: `new object[Count]` + `CopyTo` is NOT atomic, so
+        /// a concurrent mutation between the two (the Android render-thread/main-thread split) tears the copy —
+        /// ArgumentOutOfRangeException or a torn array binding cells to wrong/-1 indices (overlapping cells).
+        /// Cost: one shallow copy of item references per change - cheap.
         /// </summary>
         private static IList CreateDataContextsSnapshot(IList source)
         {
@@ -146,6 +148,15 @@ namespace DrawnUi.Draw
             source.CopyTo(snapshot, 0);
             return snapshot;
         }
+
+        /// <summary>
+        /// Public capture point for the immutable data-contexts snapshot. Call on the MUTATING (UI) thread,
+        /// synchronously inside the CollectionChanged handler, then hand the returned array to the deferred /
+        /// render-thread init (InitializeSoft / ApplyInsertShift / ApplyRemoveShift) via their preCaptured
+        /// parameter so those never re-read the live collection off-thread. Fixes the Android tear where the
+        /// render thread snapshotted ItemsSource while the main thread mutated it.
+        /// </summary>
+        public IList CaptureContextsSnapshot(IList source) => CreateDataContextsSnapshot(source);
 
         /// <summary>
         /// Returns the data context currently held at the given index in the render snapshot, or null.
@@ -164,10 +175,14 @@ namespace DrawnUi.Draw
         /// per-thread iterators so they stop pointing at the previous snapshot. Must run on the mutating
         /// (UI) thread, serialized with the collection mutation that triggered it.
         /// </summary>
-        private void RefreshDataContexts(IList source)
+        private void RefreshDataContexts(IList source, IList preCaptured = null)
         {
             _dataContextsSource = source;
-            _dataContexts = CreateDataContextsSnapshot(source);
+            // preCaptured: an immutable snapshot already taken on the mutating thread (serialized with the
+            // change). Use it verbatim instead of copying the live source here — this method can run on the
+            // render thread (deferred InitializeSoft / ApplyInsertShift), where reading live source races the
+            // main-thread mutation. Falls back to a live copy only for same-thread callers that pass none.
+            _dataContexts = preCaptured ?? CreateDataContextsSnapshot(source);
 
             lock (_lockTemplates)
             {
@@ -274,7 +289,7 @@ namespace DrawnUi.Draw
             }
         }
 
-        public void InitializeSoft(bool layoutChanged, IList dataContexts, int poolSize)
+        public void InitializeSoft(bool layoutChanged, IList dataContexts, int poolSize, IList preCaptured = null)
         {
             if (LogEnabled)
                 Super.Log("[ViewsAdapter] InitializeSoft");
@@ -299,9 +314,10 @@ namespace DrawnUi.Draw
             // Refresh the data-contexts snapshot from the (mutated) source. Without this a structure-preserving
             // Add/Remove (e.g. LoadMore append) updates the pool size but leaves _dataContexts at the old count,
             // so GetViewForIndex returns null for the new indices -> blank cells/planes. Runs on the mutating
-            // (UI) thread, serialized with the collection change that triggered it.
+            // (UI) thread, serialized with the collection change that triggered it. When preCaptured is supplied
+            // (deferred render-thread drain), publish that mutation-thread snapshot instead of copying live.
             if (dataContexts != null)
-                RefreshDataContexts(dataContexts);
+                RefreshDataContexts(dataContexts, preCaptured);
         }
 
         void SetTemplatesAvailable(IList dataContexts)
@@ -396,10 +412,10 @@ namespace DrawnUi.Draw
         /// Call from the render thread, atomically with the structure index shift, after the
         /// source mutation has completed.
         /// </summary>
-        public void ApplyInsertShift(IList source, int startIndex, int count)
+        public void ApplyInsertShift(IList source, int startIndex, int count, IList preCaptured = null)
         {
             ShiftCachedViewIndexes(startIndex, count);
-            RefreshDataContexts(source);
+            RefreshDataContexts(source, preCaptured);
         }
 
         /// <summary>
@@ -411,7 +427,7 @@ namespace DrawnUi.Draw
         /// Call from the render thread, atomically with the structure change, after the source
         /// mutation has completed.
         /// </summary>
-        public void ApplyRemoveShift(IList source, int startIndex, int count)
+        public void ApplyRemoveShift(IList source, int startIndex, int count, IList preCaptured = null)
         {
             lock (lockVisible)
             {
@@ -427,7 +443,7 @@ namespace DrawnUi.Draw
             }
 
             ShiftCachedViewIndexes(startIndex + count, -count);
-            RefreshDataContexts(source);
+            RefreshDataContexts(source, preCaptured);
         }
 
         /// <summary>
@@ -511,6 +527,108 @@ namespace DrawnUi.Draw
             lock (lockVisible)
                 return _cellsInUseViews.ContainsKey(index);
         }
+
+        /// <summary>
+        /// Read-only peek at the realized (in-use) view mapped to this item index, or null. Unlike
+        /// <see cref="GetViewForIndex"/> this never binds, rents or mutates pool state — safe for
+        /// render-thread gates that need to inspect a view's cache readiness (e.g. a self-caching
+        /// layout refusing to record a plane while an ImageDoubleBuffered cell hasn't baked yet).
+        /// </summary>
+        public SkiaControl PeekRealizedViewForIndex(int index)
+        {
+            lock (lockVisible)
+                return _cellsInUseViews.TryGetValue(index, out var view) ? view : null;
+        }
+
+        #region PREPARED VIEWS (see SkiaLayout.UsePreparedViews)
+
+        /// <summary>
+        /// True when the REAL view for this index is already bound to its current data context and measured
+        /// (either realized in-use or parked in the context-indexed pool), so drawing it will not trigger a
+        /// render-thread measure. Read-only — never rents or binds.
+        /// </summary>
+        public bool IsViewPrepared(int index)
+        {
+            var contexts = _dataContexts;
+            if (contexts == null || index < 0 || index >= contexts.Count)
+                return true; // out of range = nothing to prepare
+
+            var context = contexts[index];
+            if (context == null)
+                return true;
+
+            lock (lockVisible)
+            {
+                if (_cellsInUseViews.TryGetValue(index, out var inUse) && inUse != null)
+                {
+                    return !inUse.NeedMeasure && !inUse.IsPreparingOffthread
+                           && ReferenceEquals(inUse.BindingContext, context);
+                }
+            }
+
+            var pooled = _templatedViewsPool?.PeekContext(context);
+            if (pooled != null)
+                return !pooled.NeedMeasure && !pooled.IsPreparingOffthread;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Rents/resolves the REAL view for off-thread preparation. Returns the live in-use instance when it
+        /// is bound to the right context but still unmeasured (the render thread shows its placeholder
+        /// meanwhile — guarded by IsPreparingOffthread), otherwise rents from the pool (exact context match,
+        /// free spare, or a new instance) and binds it here on the worker thread — same pattern the
+        /// background structure measurement has always used for pool-owned (never drawn) cells.
+        /// Returns null when there is nothing to prepare. fromPool=true means the caller must return the
+        /// view via <see cref="ReleaseMeasuringView"/> after measuring.
+        /// </summary>
+        public SkiaControl GetViewForPreparation(int index, out bool fromPool)
+        {
+            fromPool = false;
+
+            if (IsDisposed || _templatedViewsPool == null)
+                return null;
+
+            var contexts = _dataContexts;
+            if (contexts == null || index < 0 || index >= contexts.Count)
+                return null;
+
+            var context = contexts[index];
+            if (context == null)
+                return null;
+
+            lock (lockVisible)
+            {
+                if (_cellsInUseViews.TryGetValue(index, out var inUse) && inUse != null)
+                {
+                    if (!inUse.IsDisposed && !inUse.IsDisposing
+                        && ReferenceEquals(inUse.BindingContext, context)
+                        && inUse.NeedMeasure && !inUse.IsPreparingOffthread)
+                    {
+                        return inUse; // measure the live instance in place
+                    }
+
+                    return null; // in use and already prepared / mid-prep / stale context (draw path owns rebinding)
+                }
+            }
+
+            var view = _templatedViewsPool.GetForPreparation(context);
+            if (view == null || view.IsDisposed || view.IsDisposing)
+                return null;
+
+            if (ReferenceEquals(view.BindingContext, context) && !view.NeedMeasure)
+            {
+                // already prepared — park it back
+                _templatedViewsPool.Return(view, 0);
+                return null;
+            }
+
+            fromPool = true;
+            AttachView(view, index, true);
+            return view;
+        }
+
+        #endregion
 
         /// <summary>
         /// Updates binding context for a specific cached view
@@ -1124,6 +1242,14 @@ namespace DrawnUi.Draw
         {
             get
             {
+                // Prepared-views pipeline REQUIRES the context-indexed generic reservoir: a cell that was
+                // bound+measured off-thread for a context must be reclaimable by that exact context at draw,
+                // which height buckets cannot do. This also turns RecyclingTemplate.Enabled into
+                // "recycling with context affinity": a small pool cycles cells, but a cell revisited while
+                // still tagged skips the rebind+remeasure entirely.
+                if (_parent != null && _parent.UsePreparedViews)
+                    return true;
+
                 if (_parent != null && _parent.RecyclingTemplate != RecyclingTemplate.Disabled)
                 {
                     if (
@@ -1141,7 +1267,7 @@ namespace DrawnUi.Draw
         int GetSizeKey(SkiaControl view)
         {
             int hKey = 0;
-            if (_parent.RecyclingTemplate != RecyclingTemplate.Disabled)
+            if (_parent.RecyclingTemplate != RecyclingTemplate.Disabled && !UsesGenericPool)
             {
                 if (_parent.Type == LayoutType.Column)
                 {

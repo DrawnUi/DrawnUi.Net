@@ -200,6 +200,14 @@ public partial class SkiaLayout
         public int OldCount { get; set; }
 
         public List<object> Items { get; set; } // For Add/Replace
+
+        /// <summary>
+        /// Immutable data-contexts snapshot captured on the MUTATING (UI) thread when this change was staged,
+        /// so the deferred render-thread apply (ApplyInsertShift/ApplyRemoveShift) publishes it instead of
+        /// re-reading the live ItemsSource off-thread (the Android tear -> overlapping cells / crash).
+        /// </summary>
+        public System.Collections.IList ContextsSnapshot { get; set; }
+
         public int TargetIndex { get; set; } // For Move
         public List<MeasuredItemInfo> MeasuredItems { get; set; } // For BackgroundMeasurement
         public int? InsertAtIndex { get; set; } // Where to insert in existing structure
@@ -433,6 +441,185 @@ public partial class SkiaLayout
 
     #endregion
 
+    #region PREPARED VIEWS PIPELINE
+
+    // Render thread never measures a templated cell in this mode: cells are bound+measured ahead of
+    // scrolling by CellPreparationService (dedicated worker), and an unprepared cell that still slips
+    // into the viewport draws its placeholder (skeleton) at the structure's reserved slot until the
+    // worker catches up. This kills the rhythmic fling spikes caused by first-appearing cells
+    // sync-measuring on the render thread (a single cell measure can exceed a frame on Debug).
+
+    /// <summary>
+    /// Opt-in: never measure templated cells on the render thread; prepare (bind+measure) the REAL cell
+    /// views on a background worker ahead of scrolling instead, drawing placeholder skeletons
+    /// (<see cref="SkiaControl.DrawPlaceholder"/>) for the frames a cell is not ready yet.
+    /// Effective with MeasureItemsStrategy=MeasureVisible. Works for both recycling modes: the pool
+    /// becomes a context-indexed reservoir (see ViewsAdapter.UsesGenericPool) — with
+    /// RecyclingTemplate.Disabled every context keeps its own prepared cell; with recycling enabled a
+    /// small pool cycles cells with context affinity, the preparation worker rebinding evicted cells to
+    /// upcoming contexts ahead of the scroll.
+    /// </summary>
+    public bool UsePreparedViews { get; set; }
+
+    internal bool UsePreparedViewsActive =>
+        UsePreparedViews && IsTemplated
+                         && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible;
+
+    /// <summary>
+    /// Diagnostics: how many times DrawStack measured a templated cell synchronously on the render
+    /// thread. With <see cref="UsePreparedViews"/> active this must stay flat during scrolling —
+    /// harness repros assert on it.
+    /// </summary>
+    public long CountRenderThreadCellMeasures;
+
+    // Visible cells found unprepared during the current draw pass (render thread only) — they get
+    // top priority in the want-list so their skeletons materialize first.
+    private readonly List<int> _prepVisibleUnprepared = new();
+    private int _prepPrevFirstVisible;
+    private bool _prepPostedNonEmpty;
+
+    /// <summary>
+    /// Called by CellPreparationService on its worker thread: bind (pool-owned cells only — never a
+    /// live drawn instance) and measure the REAL view for this index, feeding the item-keyed size memo
+    /// so the background structure pass memo-hits instead of re-measuring. Same constraints as the
+    /// background structure measurement so sizes agree.
+    /// </summary>
+    internal void PrepareCellOffthread(int index)
+    {
+        if (IsDisposed || IsDisposing || !UsePreparedViewsActive)
+            return;
+
+        var source = ItemsSource;
+        if (source == null || index < 0 || index >= source.Count)
+            return;
+
+        var adapter = ChildrenFactory;
+        if (adapter == null || adapter.IsDisposed || !adapter.TemplatesAvailable)
+            return;
+
+        var view = adapter.GetViewForPreparation(index, out var fromPool);
+        if (view == null)
+            return;
+
+        var columnsCount = (Split > 0) ? Split : 1;
+        var columnWidth = ComputeColumnWidth(columnsCount);
+        float w = columnWidth, h = float.PositiveInfinity;
+        if (Type == LayoutType.Row)
+        {
+            w = float.PositiveInfinity;
+            h = columnWidth;
+        }
+
+        if (w <= 0 && h <= 0)
+        {
+            if (fromPool)
+                adapter.ReleaseMeasuringView(view);
+            return;
+        }
+
+        ScaledSize measured = null;
+        view.IsPreparingOffthread = true;
+        try
+        {
+            measured = MeasureChild(view, w, h, RenderingScale);
+        }
+        catch (Exception e)
+        {
+            Super.Log(e);
+        }
+        finally
+        {
+            view.IsPreparingOffthread = false;
+        }
+
+        if (measured != null && !measured.IsEmpty)
+        {
+            var item = GetItemForMemo(index);
+            if (item != null && ReferenceEquals(view.BindingContext, item))
+                StoreMemoSize(item, w, measured);
+        }
+
+        if (fromPool)
+            adapter.ReleaseMeasuringView(view); // parks it bound+measured in the context-indexed pool
+
+        Repaint();
+    }
+
+    /// <summary>
+    /// Render thread, once per draw pass: builds the priority want-list (visible unprepared first, then
+    /// ahead of the scroll direction, then behind) and posts it to CellPreparationService. Posts nothing
+    /// while everything nearby is prepared (steady state = zero allocations here).
+    /// </summary>
+    private void PostCellPreparationWants()
+    {
+        var first = FirstVisibleIndex;
+        var last = LastVisibleIndex;
+        var count = ItemsSource?.Count ?? 0;
+
+        if (first < 0 || last < 0 || count == 0)
+        {
+            if (_prepPostedNonEmpty)
+            {
+                CellPreparationService.Post(this, null);
+                _prepPostedNonEmpty = false;
+            }
+
+            return;
+        }
+
+        var visibleCount = Math.Max(1, last - first + 1);
+        var forward = first >= _prepPrevFirstVisible; // scrolling toward higher indices
+        _prepPrevFirstVisible = first;
+
+        // The prep horizon must FIT the pool: demanding more prepared cells than the pool can hold
+        // makes every preparation evict another wanted context's cell — musical-chairs churn where
+        // cells constantly rebind/rebake and nothing ever stays prepared (visible as jaggy scroll).
+        // Budget = pool ceiling minus what the viewport itself consumes, minus a small reserve for
+        // transient double-realizations.
+        var poolBudget = ChildrenFactory.PoolMaxSize - visibleCount - 4;
+        if (poolBudget < 0) poolBudget = 0;
+        var ahead = Math.Min(visibleCount * 2, (poolBudget * 2) / 3);
+        var behind = Math.Min(visibleCount, poolBudget - ahead);
+
+        List<int> want = null;
+
+        void AddIfUnprepared(int i)
+        {
+            if (i < 0 || i >= count || ChildrenFactory.IsViewPrepared(i))
+                return;
+            (want ??= new List<int>()).Add(i);
+        }
+
+        foreach (var i in _prepVisibleUnprepared)
+        {
+            (want ??= new List<int>()).Add(i);
+        }
+
+        if (forward)
+        {
+            for (int i = last + 1; i <= last + ahead; i++) AddIfUnprepared(i);
+            for (int i = first - 1; i >= first - behind; i--) AddIfUnprepared(i);
+        }
+        else
+        {
+            for (int i = first - 1; i >= first - ahead; i--) AddIfUnprepared(i);
+            for (int i = last + 1; i <= last + behind; i++) AddIfUnprepared(i);
+        }
+
+        if (want != null)
+        {
+            CellPreparationService.Post(this, want);
+            _prepPostedNonEmpty = true;
+        }
+        else if (_prepPostedNonEmpty)
+        {
+            CellPreparationService.Post(this, null);
+            _prepPostedNonEmpty = false;
+        }
+    }
+
+    #endregion
+
     /// <summary>
     /// Cancels any ongoing background measurement
     /// </summary>
@@ -484,13 +671,15 @@ public partial class SkiaLayout
         // Cancel any existing background measurement
         CancelBackgroundMeasurement();
 
+        CancellationTokenSource myCts;
         lock (_measurementLock)
         {
-            _backgroundMeasurementCts = new CancellationTokenSource();
+            myCts = new CancellationTokenSource();
+            _backgroundMeasurementCts = myCts;
             _isBackgroundMeasuring = true;
         }
 
-        var cancellationToken = _backgroundMeasurementCts.Token;
+        var cancellationToken = myCts.Token;
 
         Tasks.StartDelayed(TimeSpan.FromMilliseconds(50), () =>
         {
@@ -512,11 +701,52 @@ public partial class SkiaLayout
                 {
                     lock (_measurementLock)
                     {
-                        _isBackgroundMeasuring = false;
+                        // Only the CURRENT pass may clear the flag. A cancelled stale task finishing late
+                        // used to clobber it to false while a newer pass was running — every observer then
+                        // saw "idle", cancelled the live pass and restarted it, which could livelock
+                        // measurement entirely (each restart killed within its own 50ms start delay).
+                        if (ReferenceEquals(_backgroundMeasurementCts, myCts))
+                        {
+                            _isBackgroundMeasuring = false;
+                        }
                     }
                 }
             });
         });
+    }
+
+    /// <summary>
+    /// Restarts background measurement from the first really-unmeasured index if it is idle.
+    /// Used by the ordered-scroll gate: after a window jump the draw-side restart can starve behind
+    /// pending structure changes, leaving the scroll target's geometry an estimate forever. Returns
+    /// true when measurement is running or was started, false when there is nothing to measure or
+    /// measurement cannot start yet (caller then falls back instead of waiting).
+    /// </summary>
+    public bool KickBackgroundMeasurement()
+    {
+        if (!IsTemplated || MeasureItemsStrategy != MeasuringStrategy.MeasureVisible
+            || ItemsSource == null || ItemsSource.Count == 0)
+            return false;
+
+        if (_isBackgroundMeasuring)
+            return true;
+
+        if (HasPendingStructureChanges)
+            return false; // apply first; the next draw's retry will kick again
+
+        if (_lastMeasuredForWidth <= 0 && _lastMeasuredForHeight <= 0)
+            return false; // never measured yet, no constraints to measure against
+
+        var next = Math.Max(0, LastMeasuredIndex + 1);
+        while (next < ItemsSource.Count && _measuredItems.ContainsKey(next))
+            next++;
+
+        if (next >= ItemsSource.Count)
+            return false; // everything is in the memo already
+
+        var constraints = new SKRect(0, 0, _lastMeasuredForWidth, _lastMeasuredForHeight);
+        StartBackgroundMeasurement(constraints, RenderingScale, next);
+        return true;
     }
 
     /// <summary>
@@ -1630,7 +1860,7 @@ public partial class SkiaLayout
                     // parent SkiaScroll calls BEFORE computing its frame offset.
                     // The adapter MUST shift in the same frame: rekey in-use views + fresh snapshot,
                     // otherwise this frame draws pre-insert contexts at the shifted indices.
-                    ChildrenFactory.ApplyInsertShift(ItemsSource, change.StartIndex, change.Count);
+                    ChildrenFactory.ApplyInsertShift(ItemsSource, change.StartIndex, change.Count, change.ContextsSnapshot);
                     ShiftMeasurementIndices(change.StartIndex, change.Count);
                     StartHeadInsertMeasurement(change.Items, change.Count, change.Stamp);
                     return;
@@ -2086,7 +2316,7 @@ public partial class SkiaLayout
 
             // adapter must rekey in the same frame as the structure indices shift (released
             // views for removed items, survivors rekeyed, fresh snapshot) — see ApplyInsertShift
-            ChildrenFactory.ApplyRemoveShift(ItemsSource, 0, change.Count);
+            ChildrenFactory.ApplyRemoveShift(ItemsSource, 0, change.Count, change.ContextsSnapshot);
 
             for (int i = 0; i < change.Count; i++)
             {
@@ -2123,7 +2353,7 @@ public partial class SkiaLayout
     {
         lock (LockMeasure)
         {
-            ChildrenFactory.ApplyRemoveShift(ItemsSource, change.StartIndex, change.Count);
+            ChildrenFactory.ApplyRemoveShift(ItemsSource, change.StartIndex, change.Count, change.ContextsSnapshot);
 
             for (int i = change.StartIndex; i < change.StartIndex + change.Count; i++)
             {
@@ -2297,19 +2527,95 @@ public partial class SkiaLayout
                 }
             }
 
-            // Remove items from measurement cache and shift indices
+            // Mid-window removal (e.g. "delete message"): REALLY remove the cells and close the gap.
+            // The old stub only marked the removed cells ControlIndex=-1 — the dead slot kept its
+            // pixels (permanent empty space on screen), followers kept their PRE-remove indices
+            // (binding one item off) and the adapter was never rekeyed.
+            //
+            // Order matters: capture the removed structure cells BEFORE ShiftMeasurementIndices —
+            // afterwards ALL index reindexing belongs to that shift (memo keys + structure cells,
+            // shared instances renamed once). Re-decrementing here double-shifted shared instances
+            // (duplicate indices -> two cells in one slot: the "delete first-of-day -> overlap" bug).
+            List<ControlInStack> removedCells = null;
+            if (StackStructure != null)
+            {
+                removedCells = StackStructure.GetChildren()
+                    .Where(c => c != null &&
+                                c.ControlIndex >= change.StartIndex &&
+                                c.ControlIndex < change.StartIndex + change.Count)
+                    .ToList();
+            }
+
+            // Remove items from measurement cache
             for (int i = change.StartIndex; i < change.StartIndex + change.Count; i++)
             {
                 _measuredItems.TryRemove(i, out _);
             }
 
-            // Shift remaining measurements
+            // Shift remaining measurements + ALL structure cell indices (keys, LastMeasuredIndex, epoch)
             ShiftMeasurementIndices(change.StartIndex + change.Count, -change.Count);
 
-            // Remove corresponding rows from StackStructure
             if (StackStructure != null)
             {
-                RemoveItemsFromStackStructure(change.StartIndex, change.Count);
+                lock (LockMeasure)
+                {
+                    float delta = 0;
+                    if (removedCells is { Count: > 0 })
+                    {
+                        var top = removedCells.Min(c => c.Destination.Top);
+                        var bottom = removedCells.Max(c => c.Destination.Bottom);
+                        var spacingPx = (float)(Spacing * RenderingScale);
+                        delta = (bottom - top) + spacingPx;
+                    }
+
+                    var removedSet = removedCells is { Count: > 0 }
+                        ? new HashSet<ControlInStack>(removedCells)
+                        : null;
+
+                    var translated = new HashSet<ControlInStack>();
+
+                    void Translate(ControlInStack cell)
+                    {
+                        if (cell == null || delta == 0 || !translated.Add(cell))
+                            return;
+                        cell.Destination = new SKRect(cell.Destination.Left, cell.Destination.Top - delta,
+                            cell.Destination.Right, cell.Destination.Bottom - delta);
+                        cell.Area = new SKRect(cell.Area.Left, cell.Area.Top - delta,
+                            cell.Area.Right, cell.Area.Bottom - delta);
+                    }
+
+                    // survivors = everything except the removed instances; followers (post-shift index
+                    // >= StartIndex) slide up by the removed block height to close the gap
+                    var survivors = new List<ControlInStack>();
+                    foreach (var cell in StackStructure.GetChildren())
+                    {
+                        if (cell == null || cell.ControlIndex < 0)
+                            continue;
+                        if (removedSet != null && removedSet.Contains(cell))
+                            continue;
+
+                        if (cell.ControlIndex >= change.StartIndex)
+                            Translate(cell);
+
+                        survivors.Add(cell);
+                    }
+
+                    survivors.Sort((a, b) => a.ControlIndex.CompareTo(b.ControlIndex));
+
+                    // memo can hold DISTINCT cell instances: keep their positions in sync too
+                    foreach (var kvp in _measuredItems)
+                    {
+                        if (kvp.Key >= change.StartIndex)
+                            Translate(kvp.Value?.Cell);
+                    }
+
+                    RebuildStructureFromCells(survivors);
+                }
+
+                // release removed views + rekey survivors + fresh contexts snapshot, atomically with
+                // the structure shift (same contract as the trim paths)
+                ChildrenFactory.ApplyRemoveShift(ItemsSource, change.StartIndex, change.Count,
+                    change.ContextsSnapshot);
             }
 
             //Debug.WriteLine($"[StackStructure] Removed {change.Count} items and shifted measurements");
@@ -2674,12 +2980,21 @@ public partial class SkiaLayout
         // (cancellation is cooperative, a straggler batch can still try to land).
         _itemsShiftEpoch++;
 
-        var affectedCount = _measuredItems.Keys.Count(k => k >= startIndex);
+        // ONE walk of the concurrent dictionary: snapshot affected entries here and hand them to the
+        // shifter. Separate `.Keys.Count(...)` + LINQ `Where/OrderBy/ToList` walks measured 41+7ms
+        // for 150 entries on-device (ConcurrentDictionary enumeration is expensive per-MoveNext) —
+        // the bulk of every LoadMore trim frame.
+        var affected = new List<KeyValuePair<int, MeasuredItemInfo>>();
+        foreach (var kvp in _measuredItems)
+        {
+            if (kvp.Key >= startIndex)
+                affected.Add(kvp);
+        }
 
-        if (affectedCount <= DIRECT_SHIFT_THRESHOLD)
+        if (affected.Count <= DIRECT_SHIFT_THRESHOLD)
         {
             // Small collection - direct shifting (simple & fast)
-            DirectShiftMeasurements(startIndex, offset);
+            DirectShiftMeasurements(startIndex, offset, affected);
         }
         else
         {
@@ -2704,18 +3019,36 @@ public partial class SkiaLayout
         }
 
         Debug.WriteLine(
-            $"[ShiftMeasurementIndices] Shifted {affectedCount} items from index {startIndex} by {offset}. LastMeasuredIndex: {LastMeasuredIndex}");
+            $"[ShiftMeasurementIndices] Shifted {affected.Count} items from index {startIndex} by {offset}. LastMeasuredIndex: {LastMeasuredIndex}");
     }
 
     /// <summary>
     /// Direct shifting for small collections
     /// </summary>
-    private void DirectShiftMeasurements(int startIndex, int offset)
+    private void DirectShiftMeasurements(int startIndex, int offset,
+        List<KeyValuePair<int, MeasuredItemInfo>> itemsToShift = null)
     {
-        var itemsToShift = _measuredItems
-            .Where(kvp => kvp.Key >= startIndex)
-            .OrderBy(kvp => offset > 0 ? -kvp.Key : kvp.Key) // Avoid conflicts during shifting
-            .ToList();
+        // caller usually supplies the affected snapshot (one dictionary walk total); fall back to
+        // collecting here for other call sites
+        if (itemsToShift == null)
+        {
+            itemsToShift = new List<KeyValuePair<int, MeasuredItemInfo>>();
+            foreach (var kvp in _measuredItems)
+            {
+                if (kvp.Key >= startIndex)
+                    itemsToShift.Add(kvp);
+            }
+        }
+
+        // ascending for removals, descending for insertions — avoids key conflicts during rekeying
+        if (offset > 0)
+            itemsToShift.Sort((a, b) => b.Key.CompareTo(a.Key));
+        else
+            itemsToShift.Sort((a, b) => a.Key.CompareTo(b.Key));
+
+        // Track instances renamed here so the structure pass below doesn't shift them AGAIN
+        // (memo and structure usually share the same ControlInStack instances).
+        var renamed = new HashSet<ControlInStack>();
 
         foreach (var (oldIndex, item) in itemsToShift)
         {
@@ -2727,13 +3060,31 @@ public partial class SkiaLayout
                     SkiaLayout.TraceIdx(SkiaLayout.IsTraced(newIndex) ? newIndex : oldIndex, "SHIFT",
                         $"old={oldIndex} -> new={newIndex} (offset {offset}) measuredH={item.Cell?.Measured.Pixels.Height:0} startIndex={startIndex}");
 
-                item.Cell.ControlIndex = newIndex;
-                _measuredItems[newIndex] = item;
-
-                // Update StackStructure indices
-                if (StackStructure != null)
+                if (item.Cell != null)
                 {
-                    UpdateStackStructureIndex(oldIndex, newIndex);
+                    item.Cell.ControlIndex = newIndex;
+                    renamed.Add(item.Cell);
+                }
+
+                _measuredItems[newIndex] = item;
+            }
+        }
+
+        // Single O(n) pass for structure cells NOT covered by memo instances. The old per-item
+        // UpdateStackStructureIndex was O(n^2) AND dead for shared instances: the instance was
+        // renamed via item.Cell BEFORE the scan, so the scan never matched and always walked the
+        // whole structure — measured 60ms of a 90ms trim frame on-device.
+        if (StackStructure != null)
+        {
+            foreach (var cell in StackStructure.GetChildren())
+            {
+                if (cell == null || renamed.Contains(cell))
+                    continue;
+                if (cell.ControlIndex >= startIndex)
+                {
+                    var newIndex = cell.ControlIndex + offset;
+                    if (newIndex >= 0)
+                        cell.ControlIndex = newIndex;
                 }
             }
         }
@@ -3026,7 +3377,23 @@ public partial class SkiaLayout
         {
             lock (_structureChangesLock)
             {
-                if (_pendingStructureChanges.Count > 0)
+                // Stop only for REAL structure mutations (their apply shifts positions this loop's
+                // batches were computed from; epoch guards then drop stale batches on apply). Our OWN
+                // staged BackgroundMeasurement batches queue here every iteration — breaking on them
+                // starved measurement to one batch per draw-side restart (plus its 50ms start delay):
+                // scroll jank from draw-time sync measures and ordered scrolls resolving against
+                // estimates.
+                var mustStop = false;
+                foreach (var pending in _pendingStructureChanges)
+                {
+                    if (pending.Type != StructureChangeType.BackgroundMeasurement)
+                    {
+                        mustStop = true;
+                        break;
+                    }
+                }
+
+                if (mustStop)
                 {
                     break;
                 }
@@ -3083,6 +3450,11 @@ public partial class SkiaLayout
 
             // Move to next batch
             currentBatchStart = batchEnd;
+
+            // Let the render thread drain+apply this batch now instead of after the whole pass:
+            // keeps cell positions fresh ahead of the viewport and keeps the ordered-scroll retry
+            // (which only runs on draw) alive while it waits for the target to be measured.
+            Repaint();
 
             // Small delay to prevent overwhelming the system (DEBUG-tunable to simulate slow devices)
             if (DebugBackgroundMeasureDelayMs>0)

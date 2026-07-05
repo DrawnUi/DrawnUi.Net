@@ -252,6 +252,11 @@ public partial class SkiaScroll
 
         if (args.Type == TouchActionResult.Down && RespondsToGestures)
         {
+            // User touch takes over: cancel a pending ordered scroll-to-index. The order can now be
+            // HELD across frames waiting for the target to be really measured (MeasureVisible gate in
+            // ExecuteScrollToIndexOrder) — without this it would resolve later and yank the viewport
+            // out from under the finger.
+            ClearOrderedScrollToIndex();
             ResetPan();
         }
 

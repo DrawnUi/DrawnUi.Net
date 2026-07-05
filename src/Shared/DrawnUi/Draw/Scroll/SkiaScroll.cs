@@ -1796,6 +1796,10 @@ namespace DrawnUi.Draw
             typeof(SkiaScroll),
             null);
 
+        /// <summary>
+        /// Command executed when scrolling near the bottom edge (within LoadMoreOffset distance).
+        /// Used for pagination or infinite scroll loading.
+        /// </summary>
         public ICommand LoadMoreCommand
         {
             get { return (ICommand)GetValue(LoadMoreCommandProperty); }
@@ -1808,6 +1812,10 @@ namespace DrawnUi.Draw
             typeof(SkiaScroll),
             null);
 
+        /// <summary>
+        /// Command executed when scrolling near the top edge (within LoadMoreTopOffset distance).
+        /// Used for bidirectional pagination in inverted or infinite scroll lists.
+        /// </summary>
         public ICommand LoadMoreTopCommand
         {
             get { return (ICommand)GetValue(LoadMoreTopCommandProperty); }
@@ -1819,6 +1827,10 @@ namespace DrawnUi.Draw
             typeof(SkiaScroll),
             0.0f, propertyChanged: OnTrackingChanged);
 
+        /// <summary>
+        /// Distance in points from the bottom edge where LoadMoreCommand is triggered. Default is 0.0f.
+        /// Set to positive value (e.g., 100) to trigger loading before reaching absolute bottom.
+        /// </summary>
         public float LoadMoreOffset
         {
             get { return (float)GetValue(LoadMoreOffsetProperty); }
@@ -1832,6 +1844,10 @@ namespace DrawnUi.Draw
             0.0f,
             propertyChanged: OnTrackingChanged);
 
+        /// <summary>
+        /// Distance in points from the top edge where LoadMoreTopCommand is triggered. Default is 0.0f.
+        /// Set to positive value (e.g., 100) for bidirectional loading in inverted or chat-like lists.
+        /// </summary>
         public float LoadMoreTopOffset
         {
             get { return (float)GetValue(LoadMoreTopOffsetProperty); }
@@ -2363,7 +2379,8 @@ namespace DrawnUi.Draw
             {
                 if (_loadMoreBottomTriggeredAt != 0
                     && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreBottomTriggeredAt) > (LoadMoreOffset + 100) * scale
-                    && (DateTime.Now - _loadMoreBottomTriggeredTime).TotalSeconds > 3)
+                    && (DateTime.Now - _loadMoreBottomTriggeredTime).TotalSeconds > 2
+                    )
                 //we have scrolled out of the triggered loadMore by 100pts
                 {
                     _loadMoreBottomTriggeredAt = 0; //so can track loadMore again
@@ -2426,7 +2443,8 @@ namespace DrawnUi.Draw
             {
                 if (_loadMoreTopTriggeredAt != 0
                     && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreTopTriggeredAt) > (LoadMoreTopOffset + 100) * scale
-                    && (DateTime.Now - _loadMoreTopTriggeredTime).TotalSeconds > 3)
+                    && (DateTime.Now - _loadMoreTopTriggeredTime).TotalSeconds > 2
+                    )
                 {
                     _loadMoreTopTriggeredAt = 0;
                 }
@@ -2564,8 +2582,8 @@ namespace DrawnUi.Draw
             }
         }
 
-        float _loadMoreBottomTriggeredAt;
-        float _loadMoreTopTriggeredAt;
+        float _loadMoreBottomTriggeredAt = 0;
+        float _loadMoreTopTriggeredAt = 0;
 
         protected virtual void HideRefreshIndicator()
         {
@@ -2579,14 +2597,8 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void OnScrolled()
         {
-            //if (RefreshIndicator is { IsVisible: true } && OverScrolled)
-            //{
-            //    ApplyScrollPositionToRefreshViewUnsafe();
-            //}
-            if (!UseVirtual)
-            {
-                CheckForIncrementalMeasurementTrigger();
-            }
+
+
         }
 
         public event EventHandler<ScaledPoint> ScrollingEnded;
@@ -2835,6 +2847,8 @@ namespace DrawnUi.Draw
             // target offset against the stale previous-frame content height and land mid-list.
             if (OrderedScrollToIndex.IsSet)
             {
+                // While held (MeasureVisible target not really measured yet) it kicks background
+                // measurement itself and Repaints, so retry frames keep coming until it resolves.
                 ExecuteScrollToIndexOrder();
             }
 
@@ -3526,9 +3540,16 @@ namespace DrawnUi.Draw
             try
             {
                 if (AdaptToKeyboardFor == null || AdaptToKeyboardSize == 0 || !this.LayoutReady)
+                {
                     return;
+                }
 
                 StopScrolling();
+
+                if (AdaptToKeyboardFor.VisualLayer == null || VisualLayer == null)
+                {
+                    return;
+                }
 
                 var myPos = AdaptToKeyboardFor.VisualLayer.HitBoxWithTransforms.Units.Location;
                 var scrollPos =

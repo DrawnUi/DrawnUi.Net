@@ -1059,15 +1059,26 @@ namespace DrawnUi.Draw
             if (ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
                 return;
 
-            LockUpdate(true);
+            // A plane-bake pass (SkiaCachedStack async record, worker thread) is a PURE READ: draining
+            // pending structure changes here would consume them into the bake's frozen snapshot (the live
+            // structure never receives them = lost updates, the historical corruption class), and the
+            // update-lock/composition setup belong to the live frame.
+            var bakePass = IsPlaneBakePass;
+
+            if (!bakePass)
+            {
+                LockUpdate(true);
+            }
 
             try
             {
+                if (!bakePass)
+                {
+                    // Apply all pending structure changes to StackStructure
+                    ApplyStructureChanges();
 
-                // Apply all pending structure changes to StackStructure
-                ApplyStructureChanges();
-
-                SetupRenderingWithComposition(ctx);
+                    SetupRenderingWithComposition(ctx);
+                }
 
                 base.Paint(ctx);
 
@@ -1107,12 +1118,15 @@ namespace DrawnUi.Draw
                         drawnChildrenCount = DrawViews(ctx.WithDestination(rectForChildren));
                     }
 
-                ApplyIsEmpty(drawnChildrenCount == 0);
-
-                if (!_trackWasDrawn && LayoutReady)
+                if (!bakePass)
                 {
-                    _trackWasDrawn = true;
-                    OnAppeared();
+                    ApplyIsEmpty(drawnChildrenCount == 0);
+
+                    if (!_trackWasDrawn && LayoutReady)
+                    {
+                        _trackWasDrawn = true;
+                        OnAppeared();
+                    }
                 }
             }
             catch (Exception e)
@@ -1121,7 +1135,10 @@ namespace DrawnUi.Draw
             }
             finally
             {
-                LockUpdate(false);
+                if (!bakePass)
+                {
+                    LockUpdate(false);
+                }
             }
         }
 
@@ -1644,12 +1661,18 @@ ExistingLogic:
             // Cancel any ongoing background measurement to avoid conflicts
             CancelBackgroundMeasurement();
 
+            // Capture the data-contexts snapshot NOW, on the mutating (UI) thread, serialized with the change.
+            // The apply below (staged change) and the InitializeSoft closure both run on the render thread, where
+            // reading live ItemsSource races the next main-thread mutation (Android) -> torn indices/overlap/crash.
+            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(ItemsSource);
+
             // Stage the Add change for rendering pipeline
             StageStructureChange(new StructureChange(StructureChangeType.Add, MeasureStamp)
             {
                 StartIndex = args.NewStartingIndex,
                 Count = args.NewItems?.Count ?? 0,
-                Items = args.NewItems?.Cast<object>().ToList()
+                Items = args.NewItems?.Cast<object>().ToList(),
+                ContextsSnapshot = contextsSnapshot
             });
 
             lock (LockMeasure)
@@ -1658,7 +1681,7 @@ ExistingLogic:
                 {
                     // PRESERVE STRUCTURE: Use InitializeSoft which preserves existing structure
                     // This updates pool size and data contexts without destroying measurements
-                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit());
+                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
 
                     if (ViewsAdapter.LogEnabled)
                     {
@@ -1684,6 +1707,10 @@ ExistingLogic:
             // Cancel any ongoing background measurement to avoid conflicts
             CancelBackgroundMeasurement();
 
+            // Capture the snapshot on the mutating (UI) thread (see HandleStructurePreservingAdd) before the
+            // render-thread apply/InitializeSoft re-read the live collection off-thread.
+            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(ItemsSource);
+
             // Stage the Remove change for rendering pipeline. Tail removal is detected HERE,
             // synchronously with the mutation: at apply time the live count may already include
             // a subsequent same-frame prepend (window trim before backward LoadMore).
@@ -1691,7 +1718,8 @@ ExistingLogic:
             {
                 StartIndex = args.OldStartingIndex,
                 Count = args.OldItems?.Count ?? 0,
-                TailRemoval = args.OldStartingIndex == (ItemsSource?.Count ?? -1)
+                TailRemoval = args.OldStartingIndex == (ItemsSource?.Count ?? -1),
+                ContextsSnapshot = contextsSnapshot
             });
 
             lock (LockMeasure)
@@ -1699,7 +1727,7 @@ ExistingLogic:
                 SafeAction(() =>
                 {
                     // Use InitializeSoft to preserve structure while updating templates
-                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit());
+                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
 
                     if (ViewsAdapter.LogEnabled)
                     {
@@ -1727,13 +1755,18 @@ ExistingLogic:
             // Cancel any ongoing background measurement to avoid conflicts
             CancelBackgroundMeasurement();
 
+            // Capture the snapshot on the mutating (UI) thread (see HandleStructurePreservingAdd) before the
+            // render-thread apply/InitializeSoft re-read the live collection off-thread.
+            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(ItemsSource);
+
             // Stage the Replace change for rendering pipeline
             StageStructureChange(new StructureChange(StructureChangeType.Replace, MeasureStamp)
             {
                 StartIndex = args.NewStartingIndex,
                 Count = args.NewItems?.Count ?? 0,
                 OldCount = args.OldItems?.Count ?? 0,
-                Items = args.NewItems?.Cast<object>().ToList()
+                Items = args.NewItems?.Cast<object>().ToList(),
+                ContextsSnapshot = contextsSnapshot
             });
 
             lock (LockMeasure)
@@ -1741,7 +1774,7 @@ ExistingLogic:
                 SafeAction(() =>
                 {
                     // Use InitializeSoft to preserve structure while updating templates
-                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit());
+                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
 
                     if (ViewsAdapter.LogEnabled)
                     {

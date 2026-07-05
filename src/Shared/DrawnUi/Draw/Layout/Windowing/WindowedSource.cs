@@ -16,10 +16,44 @@ namespace DrawnUi.Draw;
 /// Every data access — initial seed, LoadOlder, LoadNewer, and the "long jump" window-replace — is async
 /// and toggles a loading flag so a single spinner can be shown (and repositioned) per operation.
 /// </summary>
-public sealed class WindowedSource<T>
+public class WindowedSource<T>
 {
-    private readonly int _batch;
-    private readonly int _maxInMemory;
+    private int _batch;
+    private int _maxInMemory;
+
+    /// <summary>
+    /// Removes ONE resident item keeping the window bookkeeping consistent. A bare Items.Remove()
+    /// desyncs the inverted mapping (Items[i] == All[WindowEnd-1-i]) and the totals: every later
+    /// LoadOlder/LoadNewer then pages shifted ranges — cells bind wrong messages and leave gaps
+    /// (observed: "..270, 288, GAP, 273.." after a delete + scroll). Deleting global index g:
+    /// newer residents (locals above) shift down one global slot, older keep theirs — exactly what
+    /// decrementing WindowEnd (and the total count) preserves. Call on the UI thread.
+    /// </summary>
+    public bool RemoveResident(T item)
+    {
+        var local = Items.IndexOf(item);
+        if (local < 0)
+            return false;
+
+        Items.RemoveAt(local);
+        _count = Math.Max(0, _count - 1);
+        WindowEnd = Math.Max(WindowStart, WindowEnd - 1);
+        return true;
+    }
+
+    /// <summary>
+    /// Retunes the paging geometry at runtime — lets the host derive batch/cap from the ACTUAL
+    /// viewport (a phone screen fits ~15 messages, a desktop window can fit 50+; fixed constants
+    /// can't serve both). Takes effect from the next load/trim; the resident window is not
+    /// reshaped retroactively. Call from the UI thread (same thread that mutates Items).
+    /// </summary>
+    public void Reconfigure(int batch, int maxInMemory)
+    {
+        if (batch < 1 || maxInMemory < batch)
+            return;
+        _batch = batch;
+        _maxInMemory = maxInMemory;
+    }
     private readonly bool _limitMemory;
 
     private IWindowDataSource<T> _source;
@@ -164,24 +198,33 @@ public sealed class WindowedSource<T>
 
         if (AtPresent)
         {
+            _host.StopAnimations(); // kill an active fling so it doesn't fight the scroll-to-newest
             _host.ScrollToLocal(0, RelativePositionType.Start, animate);
             return;
         }
 
+        // Block auto-LoadMore for the WHOLE detached jump (fetch + window replace). Without this, an active
+        // fling keeps scrolling during the async fetch, fires LoadOlder/LoadNewer, and that mutation collides
+        // with the ReplaceRange below — the window bookkeeping tears (blank/overlap, resident count collapse).
+        // Mirrors ScrollToOldest. Also stop the fling up front so it stops moving/triggering immediately.
+        _host.SuppressLoadMore = true;
+        _host.StopAnimations();
         SetLoading(jump: true);
         WindowEnd = _count;
         WindowStart = Math.Max(0, WindowEnd - _batch);
 
         IReadOnlyList<T> asc;
         try { asc = await _source.GetRangeAsync(WindowStart, WindowEnd - WindowStart); }
-        catch { SetLoading(jump: false); return; }
+        catch { _host.SuppressLoadMore = false; SetLoading(jump: false); return; }
 
         var slice = Reverse(asc);
         await MainThread.InvokeOnMainThreadAsync(() =>
         {
+            _host.StopAnimations(); // fling may have re-armed during the await; stop it before the swap
             OnSliceLoaded?.Invoke(slice);
             Items.ReplaceRange(slice);
             _host.SnapToStart(); // offset 0 = newest, instant (always valid even mid re-measure)
+            _host.SuppressLoadMore = false;
             SetLoading(jump: false);
         });
     }
@@ -193,13 +236,16 @@ public sealed class WindowedSource<T>
         if (_host == null || _source == null || _count == 0)
             return;
 
+
         if (AtOldest && Items.Count > 0)
         {
+            _host.StopAnimations(); // an active fling would fight the ordered scroll -> lands short of the top
             _host.ScrollToLocal(Items.Count - 1, RelativePositionType.Start, animate);
             return;
         }
 
         _host.SuppressLoadMore = true; // fetch-only; ordered-scroll gate takes over after the scroll is issued
+        _host.StopAnimations();        // stop any in-flight fling so it can't fight the post-jump ordered scroll
         SetLoading(jump: true);
 
         WindowStart = 0;
@@ -218,6 +264,7 @@ public sealed class WindowedSource<T>
         int local = slice.Count - 1;
         await MainThread.InvokeOnMainThreadAsync(() =>
         {
+            _host.StopAnimations(); // fling may have re-armed during the await; stop it before the ordered scroll
             OnSliceLoaded?.Invoke(slice);
             Items.ReplaceRange(slice);
             _host.ScrollToLocal(local, RelativePositionType.Start, animate); // ordered -> gate blocks LoadMore until done

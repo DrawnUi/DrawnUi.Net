@@ -22,6 +22,7 @@ public sealed class SkiaScrollWindowHost : IWindowHost
     }
 
     public int VisibleCount => _layout.ItemsSource?.Count ?? 0;
+    public int LastVisibleIndex => _layout.LastVisibleIndex;
     public bool OrderedScrollInProgress => _scroll.OrderedScrollToIndexIsSet;
     public bool SuppressLoadMore { get => _layout.SuppressLoadMore; set => _layout.SuppressLoadMore = value; }
     public Action OnMeasured { get => _onMeasured; set => _onMeasured = value; }
@@ -30,4 +31,6 @@ public sealed class SkiaScrollWindowHost : IWindowHost
         => _scroll.ScrollToIndex(local, animate, align, true);
 
     public void SnapToStart() => _scroll.ScrollTo(0, 0, 0, false);
+
+    public void StopAnimations() => _scroll.StopScrolling();
 }

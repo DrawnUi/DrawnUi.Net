@@ -414,6 +414,57 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// Read-only peek at the pooled cell tagged with this exact BindingContext, or null. Does not
+        /// remove it from the pool — used by the prepared-views pipeline to check cell readiness without
+        /// renting (see <see cref="SkiaLayout.UsePreparedViews"/>).
+        /// </summary>
+        public SkiaControl PeekContext(object bindingContext)
+        {
+            if (bindingContext == null)
+                return null;
+
+            lock (_syncLock)
+            {
+                return _byContext.TryGetValue(bindingContext, out var view) ? view : null;
+            }
+        }
+
+        /// <summary>
+        /// Rents a cell for OFF-THREAD preparation (bind+measure ahead of scrolling): the exact cell tagged
+        /// with this context, else a free spare, else a new instance while under MaxSize, else (pool full,
+        /// every cell tagged) evicts a tagged cell — same starvation policy as <see cref="Get"/>'s
+        /// GenericPopAny, without it the pool fills with cells tagged by contexts that left the window
+        /// (a LoadMore trim) and preparation deadlocks into permanent skeletons.
+        /// </summary>
+        public SkiaControl GetForPreparation(object bindingContext)
+        {
+            if (bindingContext == null)
+                return null;
+
+            lock (_syncLock)
+            {
+                if (IsDisposing)
+                    return null;
+
+                var match = GenericTryPopContext(bindingContext);
+                if (match != null && !match.IsDisposed)
+                    return match;
+
+                while (_freeSpares.Count > 0)
+                {
+                    var v = _freeSpares.Pop();
+                    if (v != null && !v.IsDisposed)
+                        return v;
+                }
+
+                if (Size < MaxSize)
+                    return CreateFromTemplate();
+
+                return GenericPopAny();
+            }
+        }
+
         public void Return(SkiaControl viewModel, int hKey)
         {
             if (viewModel == null)
