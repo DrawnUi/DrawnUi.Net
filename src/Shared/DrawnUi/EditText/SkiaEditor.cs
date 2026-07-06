@@ -15,6 +15,7 @@ namespace DrawnUi.Draw
         public SkiaEditor()
         {
             UseCache = SkiaCacheType.Operations;
+            CanBeFocused = true; // SetFrameworkFocus is overridden below and always accepts anyway
         }
 
         protected override void CreateDefaultContent()

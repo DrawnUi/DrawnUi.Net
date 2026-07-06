@@ -358,7 +358,7 @@ namespace DrawnUi.Draw
 
         public virtual bool SetFrameworkFocus(bool focus)
         {
-            return false;
+            return CanBeFocused;
         }
 
         public static readonly BindableProperty IsHoveredProperty = BindableProperty.Create(nameof(IsHovered),
@@ -3554,6 +3554,23 @@ namespace DrawnUi.Draw
         {
             get { return (bool)GetValue(LockFocusProperty); }
             set { SetValue(LockFocusProperty, value); }
+        }
+
+        public static readonly BindableProperty CanBeFocusedProperty = BindableProperty.Create(
+            nameof(CanBeFocused),
+            typeof(bool), typeof(SkiaControl), false);
+
+        /// <summary>
+        /// Default false: a plain control declines framework focus (SetFrameworkFocus returns false),
+        /// so tapping it never disturbs whatever else is currently focused (e.g. an editor's keyboard).
+        /// Set true to make this control a focus sink: tapping it becomes FocusedChild via the
+        /// canvas's generic Tapped->FocusedChild transfer, and whatever was focused before gets
+        /// SetFrameworkFocus(false) automatically. No subclass/override needed.
+        /// </summary>
+        public bool CanBeFocused
+        {
+            get { return (bool)GetValue(CanBeFocusedProperty); }
+            set { SetValue(CanBeFocusedProperty, value); }
         }
 
         public static readonly BindableProperty IsClippedToBoundsProperty = BindableProperty.Create(
