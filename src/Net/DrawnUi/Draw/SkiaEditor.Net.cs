@@ -14,7 +14,7 @@ public partial class SkiaEditor
         var token = _deferCts.Token;
         try
         {
-            await Task.Delay(50, token);
+            await Task.Delay(32, token);
             _suppressImmediateCursorMove = false;
             MoveInternalCursor();
         }
