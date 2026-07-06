@@ -463,11 +463,21 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Rents a cell for OFF-THREAD preparation (bind+measure ahead of scrolling): the exact cell tagged
         /// with this context, else a free spare, else a new instance while under MaxSize, else (pool full,
-        /// every cell tagged) evicts a tagged cell — same starvation policy as <see cref="Get"/>'s
-        /// GenericPopAny, without it the pool fills with cells tagged by contexts that left the window
-        /// (a LoadMore trim) and preparation deadlocks into permanent skeletons.
+        /// every cell tagged) evicts a tagged cell whose context is DEAD per <paramref name="isTagEvictable"/> —
+        /// typically a context that left a windowed source on a LoadMore trim; without reclaiming those the
+        /// pool fills with dead-tagged cells and preparation deadlocks into permanent skeletons.
+        /// Cells tagged by LIVE contexts are never evicted here: speculative (ahead/behind) preparation
+        /// stealing another wanted context's prepared cell made that index unprepared again, which re-wanted
+        /// it next pass and evicted a third — a self-sustaining eviction carousel that kept the preparation
+        /// worker (and its Repaint per prep) running at ~400 preps/sec while the list sat IDLE.
+        /// Returns null when nothing is safely available — the caller must then skip (no measure, no repaint).
         /// </summary>
-        public SkiaControl GetForPreparation(object bindingContext)
+        /// <param name="bindingContext">Data context the cell will be prepared for.</param>
+        /// <param name="isTagEvictable">
+        /// Judges a TAGGED cell's context: true = dead (safe to evict), false = still live (protected).
+        /// Null = never evict tagged cells.
+        /// </param>
+        public SkiaControl GetForPreparation(object bindingContext, Func<object, bool> isTagEvictable = null)
         {
             if (bindingContext == null)
                 return null;
@@ -491,7 +501,19 @@ namespace DrawnUi.Draw
                 if (CreatedCount < MaxSize)
                     return CreateFromTemplate();
 
-                return GenericPopAny();
+                if (isTagEvictable != null)
+                {
+                    foreach (var kvp in _byContext)
+                    {
+                        if (isTagEvictable(kvp.Key))
+                        {
+                            _byContext.Remove(kvp.Key);
+                            return kvp.Value;
+                        }
+                    }
+                }
+
+                return null;
             }
         }
 

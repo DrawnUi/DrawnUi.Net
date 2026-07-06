@@ -33,11 +33,9 @@ public class SkiaCachedStack : SkiaStack
         UseCache = SkiaCacheType.None; // we own DrawDirectInternal + our own plane cache
         FastMeasurement = true; //one layout pass, not accounting for deeper in the tree Fill inside Auto size scenarios.
 
-        // Prepared-views pipeline: cells are bound+measured off-thread ahead of
-        // scrolling; the render thread NEVER measures a cell (kills fling spikes),
-        // unprepared cells show their skeleton for a frame or two instead.
-        UsePreparedViews = true;
-
+        // MeasureVisible activates the prepared-views pipeline (SkiaLayout.UsePreparedViews): cells are
+        // bound+measured off-thread ahead of scrolling; the render thread NEVER measures a cell (kills
+        // fling spikes), unprepared cells show their skeleton for a frame or two instead.
         MeasureItemsStrategy = MeasuringStrategy.MeasureVisible;
 
         // Overscan: record ± one viewport so the plane can be REUSED (blitted, not re-recorded) while
@@ -890,8 +888,14 @@ public class SkiaCachedStack : SkiaStack
         var cache = ForegroundPlane;
         if (cache != null)
         {
+            // RenderTree is null until the first LIVE frame builds one — a plane can be served before
+            // that (startup blit) and gestures have nothing to hit yet anyway.
+            var tree = this.RenderTree;
+            if (tree != null)
+            {
+                tree.Offset = CalculateCacheOffset(cache, dest);
+            }
 
-            this.RenderTree.Offset = CalculateCacheOffset(cache, dest);
             cache.Draw(context.Context.Canvas, dest, null, FilterQuality.None);
         }
     }

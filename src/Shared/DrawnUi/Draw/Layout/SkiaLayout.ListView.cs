@@ -450,16 +450,17 @@ public partial class SkiaLayout
     // sync-measuring on the render thread (a single cell measure can exceed a frame on Debug).
 
     /// <summary>
-    /// Opt-in: never measure templated cells on the render thread; prepare (bind+measure) the REAL cell
-    /// views on a background worker ahead of scrolling instead, drawing placeholder skeletons
-    /// (<see cref="SkiaControl.DrawPlaceholder"/>) for the frames a cell is not ready yet.
-    /// Effective with MeasureItemsStrategy=MeasureVisible. Works for both recycling modes: the pool
-    /// becomes a context-indexed reservoir (see ViewsAdapter.UsesGenericPool) — with
+    /// Prepared-views pipeline: never measure templated cells on the render thread; prepare
+    /// (bind+measure) the REAL cell views on a background worker ahead of scrolling instead, drawing
+    /// placeholder skeletons (<see cref="SkiaControl.DrawPlaceholder"/>) for the frames a cell is not
+    /// ready yet. Built-in for MeasureItemsStrategy=MeasureVisible — a subclass that must fall back to
+    /// legacy render-thread cell measuring can override this to return false. Works for both recycling
+    /// modes: the pool becomes a context-indexed reservoir (see ViewsAdapter.UsesGenericPool) — with
     /// RecyclingTemplate.Disabled every context keeps its own prepared cell; with recycling enabled a
     /// small pool cycles cells with context affinity, the preparation worker rebinding evicted cells to
     /// upcoming contexts ahead of the scroll.
     /// </summary>
-    public bool UsePreparedViews { get; set; }
+    public virtual bool UsePreparedViews => MeasureItemsStrategy == MeasuringStrategy.MeasureVisible;
 
     internal bool UsePreparedViewsActive =>
         UsePreparedViews && IsTemplated

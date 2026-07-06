@@ -47,6 +47,23 @@ public class NewsViewModel : BaseViewModel
         }
     }
 
+    private bool _IsLoadingMore;
+    /// <summary>
+    /// True while a LoadMore fetch is in flight — drives the bottom spinner overlay.
+    /// </summary>
+    public bool IsLoadingMore
+    {
+        get { return _IsLoadingMore; }
+        set
+        {
+            if (_IsLoadingMore != value)
+            {
+                _IsLoadingMore = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
     private async Task RefreshFeed(int msDelay)
     {
         if (IsBusy) return;
@@ -92,12 +109,16 @@ public class NewsViewModel : BaseViewModel
     private async Task LoadMore()
     {
         if (IsBusy) return;
-        
+
         IsBusy = true;
-        
+        IsLoadingMore = true;
+
         try
         {
             Debug.WriteLine("Loading more items !!!");
+
+            await Task.Delay(800); // simulate network latency, like RefreshFeed does
+
             var newItems = _dataProvider.GetNewsFeed(DataChunkSize/2);
             
             // Add new items to the end of the collection
@@ -112,6 +133,7 @@ public class NewsViewModel : BaseViewModel
         }
         finally
         {
+            IsLoadingMore = false;
             IsBusy = false;
         }
     }

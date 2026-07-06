@@ -64,19 +64,47 @@
 
                     </draw:SkiaScroll.Footer>
 
-                    <tutorials:DiDiStack
+                    <draw:SkiaStack
                         x:Name="NewsStack"
                         ItemsSource="{Binding NewsItems}"
                         RecyclingTemplate="Enabled"
-                        UsePreparedViews="True"
                         MeasureItemsStrategy="MeasureVisible"
                         ReserveTemplates="10"
                         VirtualisationInflated="200"
+                        BackgroundMeasurementBatchSize="3"
                         Spacing="0"
                         ItemTemplateType="{x:Type newsFeed:NewsCell}"
                         HorizontalOptions="Fill" />
 
                 </newsFeed:AppScroll>
+
+                <!-- LOADMORE SPINNER: shown while LoadMoreCommand fetch is in flight
+                     (chat-style: circle + lottie, driven from code-behind) -->
+                <draw:SkiaShape
+                    x:Name="LoadMoreSpinner"
+                    Type="Circle"
+                    IsVisible="False"
+                    WidthRequest="40"
+                    LockRatio="1"
+                    BackgroundColor="#F2FFFFFF"
+                    Padding="6"
+                    HorizontalOptions="Center"
+                    VerticalOptions="End"
+                    Margin="0,0,0,64"
+                    InputTransparent="True"
+                    ZIndex="90">
+
+                    <draw:SkiaLottie
+                        x:Name="LoadMoreLoader"
+                        AutoPlay="False"
+                        Repeat="-1"
+                        Source="Lottie/iosloader.json"
+                        ColorTint="{StaticResource ColorPrimary}"
+                        LockRatio="1"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+
+                </draw:SkiaShape>
 
                 <!-- uncomment for debug info -->
 

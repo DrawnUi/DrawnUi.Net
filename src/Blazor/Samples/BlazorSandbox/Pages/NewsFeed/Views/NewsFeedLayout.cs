@@ -83,14 +83,15 @@ namespace BlazorSandbox.Pages.NewsFeed.Views
                 {
                     Tag = "NewsStack",
                     Type = LayoutType.Column,
+                    HorizontalOptions = LayoutOptions.Fill,
                     ItemsSource = _viewModel.NewsItems,
                     RecyclingTemplate = RecyclingTemplate.Enabled,
                     MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
                     ReserveTemplates = 10,
+                    BackgroundMeasurementBatchSize = 5,
                     VirtualisationInflated = 200,
                     Spacing = 0,
                     ItemTemplateType = typeof(NewsCell),
-                    HorizontalOptions = LayoutOptions.Fill,
                 }
             };
 

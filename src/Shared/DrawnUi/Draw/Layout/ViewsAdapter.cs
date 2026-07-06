@@ -684,7 +684,7 @@ namespace DrawnUi.Draw
                 }
             }
 
-            var view = _templatedViewsPool.GetForPreparation(context);
+            var view = _templatedViewsPool.GetForPreparation(context, _isTagEvictable ??= IsTagEvictable);
             if (view == null || view.IsDisposed || view.IsDisposing)
                 return null;
 
@@ -698,6 +698,30 @@ namespace DrawnUi.Draw
             fromPool = true;
             AttachView(view, index, true);
             return view;
+        }
+
+        private Func<object, bool> _isTagEvictable;
+
+        /// <summary>
+        /// Eviction judge for <see cref="TemplatedViewsPool.GetForPreparation"/>: a pool cell tagged by a
+        /// context that is NO LONGER in the current data window (trimmed out by a windowed source) is dead
+        /// weight and may be reclaimed for speculative preparation. A cell tagged by a LIVE context is
+        /// protected — evicting it un-prepares that index and feeds the eviction-carousel repaint loop
+        /// (see GetForPreparation doc). Reference scan: data items are matched by instance, never Equals.
+        /// </summary>
+        private bool IsTagEvictable(object taggedContext)
+        {
+            var contexts = _dataContexts;
+            if (contexts == null)
+                return true;
+
+            for (int i = 0; i < contexts.Count; i++)
+            {
+                if (ReferenceEquals(contexts[i], taggedContext))
+                    return false;
+            }
+
+            return true;
         }
 
         #endregion
