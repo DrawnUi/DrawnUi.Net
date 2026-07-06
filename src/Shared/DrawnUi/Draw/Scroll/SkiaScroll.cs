@@ -3020,9 +3020,6 @@ namespace DrawnUi.Draw
                     SetScrollOffset(DrawingRect, posX, posY, zoomedScale, context.Scale, false);
                 }
 
-                //var clone = AddPaintArguments(context).WithDestination(DrawingRect);
-                //DrawWithClipAndTransforms(clone, DrawingRect, true, true, (ctx) => { PaintWithEffects(ctx); });
-
                 if (UsingCacheType != SkiaCacheType.None)
                 {
                     var destination = DrawingRect;
@@ -3035,7 +3032,6 @@ namespace DrawnUi.Draw
 
                     //paint from cache
                     var clone = AddPaintArguments(context).WithDestination(destination);
-
                     if (TryUseExistingRenderingObjectOrCreateNewAndPaint(clone, recordArea))
                     {
                         ExistingCacheWasRendered = true;
@@ -3044,10 +3040,9 @@ namespace DrawnUi.Draw
                 else
                 {
                     var clone = AddPaintArguments(context).WithDestination(DrawingRect);
-                    DrawWithClipAndTransforms(clone, DrawingRect, true, true, (ctx) => {
-                        PaintWithEffects(ctx);
-                    });
+                    DrawWithClipAndTransforms(clone, DrawingRect, true, true, (ctx) => { PaintWithEffects(ctx); });
                 }
+             
             }
 
             FinalizeDrawingWithRenderObject(context);

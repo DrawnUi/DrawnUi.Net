@@ -68,8 +68,20 @@ namespace DrawnUi.Draw
             if (size <= 0)
                 return;
 
+            // The pool cap may have been baked BEFORE the first layout pass (viewport-derived ceiling
+            // computed with unknown visible indices). This fill runs AFTER the first paint — recompute
+            // from live state so the warm target actually fits; otherwise the loop exits at the stale
+            // tiny cap and ReserveTemplates silently under-fills (same recompute the draw path does when
+            // the pool refuses a rent).
+            if (_parent != null)
+            {
+                var limit = _parent.GetTemplatesPoolLimitPublic();
+                if (limit > _templatedViewsPool.MaxSize)
+                    _templatedViewsPool.MaxSize = limit;
+            }
+
             while (_templatedViewsPool.Size < size &&
-                   _templatedViewsPool.Size < _templatedViewsPool.MaxSize &&
+                   _templatedViewsPool.CreatedCount < _templatedViewsPool.MaxSize &&
                    !IsDisposed &&
                    !_templatedViewsPool.IsDisposing)
             {
@@ -120,7 +132,7 @@ namespace DrawnUi.Draw
             if (size > 0)
             {
                 while (_templatedViewsPool.Size < size &&
-                       _templatedViewsPool.Size < _templatedViewsPool.MaxSize &&
+                       _templatedViewsPool.CreatedCount < _templatedViewsPool.MaxSize &&
                        !cancellationToken.IsCancellationRequested)
                 {
                     _templatedViewsPool.Reserve();
@@ -183,6 +195,17 @@ namespace DrawnUi.Draw
             // render thread (deferred InitializeSoft / ApplyInsertShift), where reading live source races the
             // main-thread mutation. Falls back to a live copy only for same-thread callers that pass none.
             _dataContexts = preCaptured ?? CreateDataContextsSnapshot(source);
+
+            // LIVE CEILING: when ItemTemplatePoolSize is not set manually the pool cap follows the CURRENT
+            // window size (GetTemplatesPoolLimit falls back to ItemsSource.Count + headroom). A windowed
+            // source that trims therefore lets the pool SHRINK (overflow returns are disposed) instead of
+            // keeping a cell alive for every context ever scrolled ("pool grows like fuck" to whole history).
+            if (_templatedViewsPool != null && _parent != null && _dataContexts != null)
+            {
+                var limit = _parent.GetTemplatesPoolLimitPublic();
+                if (limit > 0)
+                    _templatedViewsPool.MaxSize = limit;
+            }
 
             lock (_lockTemplates)
             {
@@ -547,6 +570,55 @@ namespace DrawnUi.Draw
         /// (either realized in-use or parked in the context-indexed pool), so drawing it will not trigger a
         /// render-thread measure. Read-only — never rents or binds.
         /// </summary>
+        /// <summary>
+        /// True when ANY index in [first..last] is not prepared (see <see cref="IsViewPrepared"/>).
+        /// Single-lock range variant for per-frame checks on the plane blit path — do not call
+        /// IsViewPrepared in a loop there (one lock acquisition per index).
+        /// </summary>
+        internal bool AnyUnpreparedInRange(int first, int last)
+        {
+            var contexts = _dataContexts;
+            if (contexts == null)
+                return false;
+
+            // Pass 1 under lockVisible: in-use views. Pool peeks happen OUTSIDE it (PeekContext takes the
+            // pool's own lock — never nest the two, same discipline as IsViewPrepared).
+            List<object> poolChecks = null;
+            lock (lockVisible)
+            {
+                for (int index = first; index <= last; index++)
+                {
+                    if (index < 0 || index >= contexts.Count)
+                        continue;
+                    var context = contexts[index];
+                    if (context == null)
+                        continue;
+
+                    if (_cellsInUseViews.TryGetValue(index, out var inUse) && inUse != null)
+                    {
+                        if (inUse.NeedMeasure || inUse.IsPreparingOffthread
+                            || !ReferenceEquals(inUse.BindingContext, context))
+                            return true;
+                        continue;
+                    }
+
+                    (poolChecks ??= new List<object>()).Add(context);
+                }
+            }
+
+            if (poolChecks != null)
+            {
+                foreach (var context in poolChecks)
+                {
+                    var pooled = _templatedViewsPool?.PeekContext(context);
+                    if (pooled == null || pooled.NeedMeasure || pooled.IsPreparingOffthread)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool IsViewPrepared(int index)
         {
             var contexts = _dataContexts;
@@ -1112,7 +1184,19 @@ namespace DrawnUi.Draw
 
                                 if (view == null)
                                 {
-                                    return null; //maybe pool is full, anyway unexpected
+                                    // Pool refused (cap reached). The viewport-derived recycling ceiling is
+                                    // computed from visible indexes that may have been unknown at the last
+                                    // contexts swap (startup fallback) — recompute from LIVE state and retry
+                                    // once, so real realized demand always fits and never draws a hole.
+                                    var limit = _parent.GetTemplatesPoolLimitPublic();
+                                    if (limit > _templatedViewsPool.MaxSize)
+                                    {
+                                        _templatedViewsPool.MaxSize = limit;
+                                        view = GetOrCreateViewForIndexInternal(index, height, template, isMeasuring);
+                                    }
+
+                                    if (view == null)
+                                        return null; //pool full at the honest ceiling
                                 }
 
                                 AttachView(view, index, isMeasuring);
@@ -1387,6 +1471,12 @@ namespace DrawnUi.Draw
                                 if (ctx != context)
                                 {
                                     view.NeedMeasure = true;
+                                    // caches still hold the previous context's pixels — stale-serve must
+                                    // not blit them at the new slot (cleared on next fresh RenderObject)
+                                    if (ctx != null)
+                                    {
+                                        view.PixelsForeign = true;
+                                    }
                                 }
 
                                 if (!isMeasuring)
@@ -1561,7 +1651,7 @@ namespace DrawnUi.Draw
 
             if (size > 0)
             {
-                while (_templatedViewsPool.Size < size && _templatedViewsPool.Size < _templatedViewsPool.MaxSize)
+                while (_templatedViewsPool.Size < size && _templatedViewsPool.CreatedCount < _templatedViewsPool.MaxSize)
                 {
                     _templatedViewsPool.Reserve();
                 }

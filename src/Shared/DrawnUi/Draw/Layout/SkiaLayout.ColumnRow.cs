@@ -57,10 +57,19 @@ namespace DrawnUi.Draw
         /// </summary>
         [ThreadStatic] internal static List<SkiaControlWithRect> CollectedBakeTree;
 
+        /// <summary>
+        /// Set (under <see cref="CollectPaintedBounds"/>) when the pass painted at least one SKELETON
+        /// placeholder instead of real content. A band-plane record reads it to know whether the plane
+        /// it just recorded contains skeletons at all — prep-completion re-records are pointless (and
+        /// pure CPU waste on weak devices) for a plane that is already fully real content.
+        /// </summary>
+        [ThreadStatic] internal static bool PaintedSkeleton;
+
         internal static void ResetPaintedBounds()
         {
             PaintedBoundsTop = float.MaxValue;
             PaintedBoundsBottom = float.MinValue;
+            PaintedSkeleton = false;
         }
 
         internal static void TrackPaintedBounds(float top, float bottom)
@@ -2580,12 +2589,33 @@ else
                         // NOT flash a skeleton — draw its existing cache at the reserved slot via the
                         // normal child pipeline (measure-free: DrawChild only schedules invalidation) while
                         // the worker re-measures; the reconcile branch adopts the new size afterwards.
+                        // CONTEXT GUARD: the pixels must belong to THIS index's data item. A recycled view
+                        // rebound to a new context (PixelsForeign) or caught mid-eviction-rebind still
+                        // carries the PREVIOUS context's RenderObject — serving it would paint the WRONG
+                        // message at this slot. Those cells go to the gap-rescue measure below instead.
                         var stalePixels = preparedMode
                                           && (child.NeedMeasure || child.IsPreparingOffthread)
                                           && (child.RenderObject != null || child.RenderObjectPrevious != null)
-                                          && !cell.Measured.Pixels.IsEmpty;
+                                          && !child.PixelsForeign
+                                          && !cell.Measured.Pixels.IsEmpty
+                                          && ReferenceEquals(child.BindingContext, GetItemForMemo(cell.ControlIndex));
 
-                        if (preparedMode && !stalePixels && (child.NeedMeasure || child.IsPreparingOffthread))
+                        // Skeleton is the LAST resort, not the default for unprepared cells: only when
+                        // the render thread genuinely cannot produce content this frame — the prep worker
+                        // holds the live instance (concurrent measure = corruption), this is the pure-read
+                        // bake pass (a bake must never bind/measure; its gates reject unprepared cells
+                        // anyway), or the atomic measure claim was lost to the worker mid-frame.
+                        // An idle unprepared cell falls through to the GAP-RESCUE inline measure below and
+                        // draws REAL content — same cost the plain direct-draw path pays for every appearing
+                        // cell, paid here only when the worker lost the race (fast fling, jump landing).
+                        var needsRescue = preparedMode && !stalePixels && !bakePass
+                                          && child.NeedMeasure && !child.IsPreparingOffthread;
+                        var rescueClaimed = needsRescue &&
+                                            Interlocked.CompareExchange(ref child.MeasureClaim, 1, 0) == 0;
+
+                        if (preparedMode && !stalePixels &&
+                            (child.IsPreparingOffthread || (bakePass && child.NeedMeasure) ||
+                             (needsRescue && !rescueClaimed)))
                         {
                             var slot = cell.Measured.Pixels;
                             if (child.IsVisible && slot.Width >= 1 && slot.Height >= 1)
@@ -2594,7 +2624,10 @@ else
                                 child.DrawPlaceholder(ctx.WithDestination(placeholderRect));
 
                                 if (CollectPaintedBounds)
+                                {
                                     TrackPaintedBounds(placeholderRect.Top, placeholderRect.Bottom);
+                                    PaintedSkeleton = true;
+                                }
 
                                 // Enter the render tree at the reserved slot: the skeleton occupies real layout
                                 // space, so gestures land on the (already bound) cell and integrity watchers see
@@ -2651,11 +2684,25 @@ else
 
                                 if (IsTemplated && !bakePass)
                                 {
-                                    CountRenderThreadCellMeasures++;
+                                    // prepared mode reaches here only via GAP-RESCUE (worker lost the race):
+                                    // tracked separately — the prepared pipeline itself stays measure-free.
+                                    if (preparedMode)
+                                        CountGapRescueMeasures++;
+                                    else
+                                        CountRenderThreadCellMeasures++;
                                 }
 
-                                var measured = child.Measure((float)cell.Area.Width, (float)cell.Area.Height,
-                                    ctx.Scale);
+                                ScaledSize measured;
+                                try
+                                {
+                                    measured = child.Measure((float)cell.Area.Width, (float)cell.Area.Height,
+                                        ctx.Scale);
+                                }
+                                finally
+                                {
+                                    if (rescueClaimed)
+                                        Interlocked.Exchange(ref child.MeasureClaim, 0);
+                                }
 
                                 cell.Measured = measured;
                                 cell.WasMeasured = true;

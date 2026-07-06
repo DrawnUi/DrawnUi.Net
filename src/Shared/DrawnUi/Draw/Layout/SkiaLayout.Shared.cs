@@ -630,6 +630,25 @@ namespace DrawnUi.Draw
             if (Split > 0)
                 mult = Split;
 
+            if (IsTemplated && RecyclingTemplate != RecyclingTemplate.Disabled)
+            {
+                // TRUE recycling default: a small rotating set derived from the viewport, NEVER the whole
+                // source (1000 items must not mean 1000 cells). Floor = what the layout actually REALIZES
+                // at once — the expanded viewport (VirtualisationInflated overscan) holds ~3 viewports of
+                // cells and a cap below realized demand returns null views (holes). +1 viewport of slack
+                // for in-flight returns/preparation. Override explicitly via ItemTemplatePoolSize.
+                // Pre-first-layout both indices are the -1 sentinel: (-1)-(-1)+1 computes to a BOGUS 1
+                // (not caught by a "< 1" check), capping the pool at ~6 and starving the ReserveTemplates
+                // prefill ("Reserve 10 -> 5 cells"). Unknown viewport = use the fallback estimate.
+                var visible = LastVisibleIndex - FirstVisibleIndex + 1;
+                if (FirstVisibleIndex < 0 || LastVisibleIndex < FirstVisibleIndex)
+                    visible = 8; // viewport unknown before first layout, corrected on the next contexts swap
+                // An EXPLICIT ReserveTemplates must fit the cap, or the background warm-up can never reach
+                // its target no matter how correct the viewport estimate is.
+                var floor = Math.Max(visible * 4, visible + ReserveTemplates);
+                return Math.Min(ItemsSource.Count + mult * 2, floor + mult * 2);
+            }
+
             return ItemsSource.Count + mult * 2;
         }
 
@@ -1811,6 +1830,14 @@ ExistingLogic:
                 });
             }
         }
+
+
+        /// <summary>
+        /// Adapter-facing accessor for <see cref="GetTemplatesPoolLimit"/>: the ViewsAdapter re-applies the
+        /// pool ceiling on every data-contexts swap so an UNSET <see cref="ItemTemplatePoolSize"/> tracks the
+        /// live ItemsSource count (windowed sources shrink the pool after trims instead of hoarding).
+        /// </summary>
+        internal int GetTemplatesPoolLimitPublic() => GetTemplatesPoolLimit();
 
         /// <summary>
         /// Handles Reset collection changes while preserving existing structure

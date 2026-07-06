@@ -472,6 +472,46 @@ public partial class SkiaLayout
     /// </summary>
     public long CountRenderThreadCellMeasures;
 
+    /// <summary>
+    /// Called on the CellPreparationService worker thread each time a cell finishes off-thread
+    /// preparation (bound + measured, ready to draw real content). Default no-op. A plane-caching
+    /// subclass overrides this to mark its recorded plane STALE: the plane may have that cell baked
+    /// in as a skeleton, and without a re-record it keeps blitting the skeleton long after the cell
+    /// is ready (visible as placeholders while scrolling at moderate speed).
+    /// </summary>
+    protected virtual void OnCellPreparedOffthread()
+    {
+    }
+
+    /// <summary>
+    /// True when any currently visible templated cell is not prepared (unmeasured, mid-preparation,
+    /// or bound to a stale context). Used by the plane blit path at REST to detect skeletons frozen
+    /// into the plane (cells that entered the viewport during pure-blit deceleration frames never met
+    /// a live DrawStack) so it can force one live frame to heal them. Cheap: single-lock range scan.
+    /// </summary>
+    internal bool AnyVisibleCellUnprepared()
+    {
+        if (!UsePreparedViewsActive)
+            return false;
+
+        var first = FirstVisibleIndex;
+        var last = LastVisibleIndex;
+        if (first < 0 || last < first)
+            return false;
+
+        return ChildrenFactory.AnyUnpreparedInRange(first, last);
+    }
+
+    /// <summary>
+    /// Diagnostics: GAP-RESCUE inline measures. With <see cref="UsePreparedViews"/> active, a visible cell
+    /// the preparation worker has NOT prepared in time (fast fling, jump landing, recycling rebind) is
+    /// bound+measured synchronously on the render thread instead of showing a skeleton/hole — the same
+    /// cost the non-prepared direct-draw path pays for EVERY appearing cell, paid here only when the
+    /// worker lost the race. Counted separately so harness repros can still assert the prepared pipeline
+    /// itself stays measure-free during warm scrolling.
+    /// </summary>
+    public long CountGapRescueMeasures;
+
     // Visible cells found unprepared during the current draw pass (render thread only) — they get
     // top priority in the want-list so their skeletons materialize first.
     private readonly List<int> _prepVisibleUnprepared = new();
@@ -517,6 +557,15 @@ public partial class SkiaLayout
             return;
         }
 
+        // Mutual exclusion with the render thread's GAP-RESCUE inline measure: exactly one side may
+        // measure this instance. Loser skips — the index stays wanted and is re-posted next pass.
+        if (Interlocked.CompareExchange(ref view.MeasureClaim, 1, 0) != 0)
+        {
+            if (fromPool)
+                adapter.ReleaseMeasuringView(view);
+            return;
+        }
+
         ScaledSize measured = null;
         view.IsPreparingOffthread = true;
         try
@@ -530,6 +579,7 @@ public partial class SkiaLayout
         finally
         {
             view.IsPreparingOffthread = false;
+            Interlocked.Exchange(ref view.MeasureClaim, 0);
         }
 
         if (measured != null && !measured.IsEmpty)
@@ -537,6 +587,8 @@ public partial class SkiaLayout
             var item = GetItemForMemo(index);
             if (item != null && ReferenceEquals(view.BindingContext, item))
                 StoreMemoSize(item, w, measured);
+
+            OnCellPreparedOffthread();
         }
 
         if (fromPool)

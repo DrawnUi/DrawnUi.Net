@@ -21,3 +21,12 @@ public partial class NewsFeedPage : DrawnUiBasePage
     }
 
 }
+
+public class AppScroll : SkiaScroll
+{
+    public AppScroll()
+    {
+        AutoCache = true;
+        ScrollBar = new SkiaScrollBar();
+    }
+}
