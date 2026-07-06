@@ -1,6 +1,5 @@
 using DrawnUi;
 using DrawnUi.Draw;
-using DrawnUi.Internals.Enums;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;

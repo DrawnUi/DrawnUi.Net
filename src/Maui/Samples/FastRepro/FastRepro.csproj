@@ -111,6 +111,11 @@
 	</ItemGroup>
 
 
+  <ItemGroup>
+    <Compile Remove="SkiaTest\TestComputeFastBounds.cs" />
+  </ItemGroup>
+
+
 	<ItemGroup>
         <!--https://github.com/BretJohnson/hot-preview-->
         <!--<PackageReference Include="HotPreview.App.Maui" Version="0.12.6" />-->

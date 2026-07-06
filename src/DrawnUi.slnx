@@ -5,6 +5,7 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Addons/">
+    <Project Path="../../DrawnUi.Maui.Camera/src/Lib/DrawnUi.Maui.Camera.csproj" />
     <Project Path="Blazor/Addons/DrawnUi.Blazor.Game/DrawnUi.Blazor.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj" />
@@ -35,22 +36,11 @@
   </Folder>
   <Folder Name="/Samples/" />
   <Folder Name="/Samples/Blazor/">
-    <Project Path="../../BlockChampion/src/Common/BlockChampion.Common.csproj" />
-    <Project Path="../../BlockChampion/src/Shared/BlockChampion.Shared.shproj" />
-    <Project Path="../../BlockChampion/src/Web/BlockChampion.Web.csproj" />
     <Project Path="Blazor/Samples/BlazorSandbox/BlazorSandbox.csproj" />
     <Project Path="Blazor/Samples/BlazorSandboxServer/BlazorSandboxServer/BlazorSandboxServer.csproj" />
-    <Project Path="Blazor/Samples/LoadMoreRepro/LoadMoreRepro.csproj" />
   </Folder>
   <Folder Name="/Samples/MAUI/">
     <Project Path="../../AppoMobi.Maui.DrawnUi.Demo/src/AllDrawn/AppoMobi.Maui.DrawnUi.Demo.csproj">
-      <Deploy Solution="Debug|Any CPU" />
-    </Project>
-    <Project Path="../../DrawnUi.Maui.Camera/src/Lib/DrawnUi.Maui.Camera.csproj" />
-    <Project Path="../../DrawnUiReproIS/DrawnUiRepro.csproj">
-      <Deploy Solution="Debug|Any CPU" />
-    </Project>
-    <Project Path="../../ReproDrawnUiGestureTransforms/DrawnUiGestureRepro.csproj">
       <Deploy Solution="Debug|Any CPU" />
     </Project>
     <Project Path="Maui/Samples/FastRepro/FastRepro.csproj">
@@ -78,7 +68,6 @@
   </Folder>
   <Folder Name="/Samples/Wasm/">
     <Project Path="Wasm/Samples/PongWeb/PongWeb.csproj" />
-    <Project Path="Wasm/Samples/WasmSample/DrawnUi.Web.Sample.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="../.gitignore" />
