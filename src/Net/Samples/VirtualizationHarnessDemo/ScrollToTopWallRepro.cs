@@ -59,8 +59,7 @@ public static class ScrollToTopWallRepro
 
         Console.WriteLine($"pans={pans} win=[{page.ProbeWindowStart}..{page.ProbeWindowEnd}) " +
                           $"vis=[{page.ChatStack.FirstVisibleIndex}..{page.ChatStack.LastVisibleIndex}] " +
-                          $"offY={page.MainScroll.ViewportOffsetY:0} stalled={stalledPans} " +
-                          $"rescues={page.ChatStack.CountGapRescueMeasures} rtMeasures={page.ChatStack.CountRenderThreadCellMeasures}");
+                          $"offY={page.MainScroll.ViewportOffsetY:0} stalled={stalledPans}");
         Console.WriteLine(reachedTop
             ? "=> PASS (panned through the whole history to message 0 — no wall)"
             : "=> FAIL (scroll WALLED before reaching the oldest message)");

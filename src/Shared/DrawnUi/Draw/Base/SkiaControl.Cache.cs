@@ -361,10 +361,7 @@ public partial class SkiaControl
                     _renderObject = value;
 
                     if (value != null)
-                    {
-                        PixelsForeign = false; // fresh cache = pixels belong to the current BindingContext
                         OnCacheCreated();
-                    }
                     else
                         OnCacheDestroyed();
 
@@ -1025,22 +1022,6 @@ public partial class SkiaControl
     /// touching half-measured state). Volatile: written by the prep worker, read by the render thread.
     /// </summary>
     internal volatile bool IsPreparingOffthread;
-
-    /// <summary>
-    /// Set when a recycled templated cell is REBOUND to a different BindingContext (ViewsAdapter.AttachView):
-    /// the caches (<see cref="RenderObject"/>/<see cref="RenderObjectPrevious"/>) still hold the PREVIOUS
-    /// context's pixels. While set, the prepared-views stale-serve must NOT blit those caches (would paint
-    /// the wrong item's content at this slot). Cleared when a fresh <see cref="RenderObject"/> is created.
-    /// Volatile: written by prep worker / render thread, read by the render thread.
-    /// </summary>
-    internal volatile bool PixelsForeign;
-
-    /// <summary>
-    /// Atomic measure claim for templated cells: taken (0→1 via Interlocked) by whichever side measures
-    /// this instance — the CellPreparationService worker or the render thread's gap-rescue inline
-    /// measure — so the two can never measure the same view concurrently. Released back to 0 in finally.
-    /// </summary>
-    internal int MeasureClaim;
 
     internal static class OffscreenRenderingService
     {

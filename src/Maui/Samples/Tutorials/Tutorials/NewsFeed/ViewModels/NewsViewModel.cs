@@ -20,7 +20,7 @@ public class NewsViewModel : BaseViewModel
         LoadMoreCommand = new Command(async () => await LoadMore());
         
         // Load initial data
-        Tasks.StartDelayed(TimeSpan.FromMilliseconds(50), async () =>
+        Tasks.StartDelayed(TimeSpan.FromMilliseconds(100), async () =>
         {
             await RefreshFeed(10);
         });
@@ -64,11 +64,11 @@ public class NewsViewModel : BaseViewModel
 
             // Generate fresh content
             var newItems = _dataProvider.GetNewsFeed(DataChunkSize);
-            
+
             // Preload images in background (DrawnUI's SkiaImageManager)
-            //_preloadCancellation = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-            //_ = PreloadImages(newItems, _preloadCancellation.Token);
-            
+            _preloadCancellation = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            _ = PreloadImages(newItems, _preloadCancellation.Token);
+
             // Update UI - Replace all items for refresh
             MainThread.BeginInvokeOnMainThread(() =>
             {

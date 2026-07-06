@@ -9,7 +9,14 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\CellPreparationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaCachedStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\DataContextIterator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\ElementRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\IRenderObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\RenderLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\RenderObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\RenderTreeRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\TemplatedViewsPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\ViewsAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\ViewsIterator.cs" />
@@ -18,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.Maui.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\RefreshIndicator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Scroll\SkiaScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\SkiaSprite.SpriteFrameImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RecycledCells\SkiaDrawnCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RecycledCells\SkiaDynamicDrawnCell.cs" />
@@ -205,6 +213,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\IInsideWheelStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ILayoutInsideViewport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\IRefreshIndicator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\IScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Interfaces\ISkiaDisposable.cs" />

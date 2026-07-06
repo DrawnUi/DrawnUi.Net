@@ -11,7 +11,7 @@ namespace DrawnUi.Draw
         // New: track height-based pools
         // Key: Rounded integer height, Value: Stack of controls for that height
         private Dictionary<int, Stack<SkiaControl>> _heightPools = new();
-        private int _maxDistinctHeights = 24; 
+        private int _maxDistinctHeights = 24; // or configurable
 
         // Generic (size-key 0) reservoir — the ONLY pool used in RecyclingTemplate.Disabled (GetSizeKey is
         // always 0 there). Split in two so the hot path is allocation-free AND a returned cell can be retrieved
@@ -59,17 +59,6 @@ namespace DrawnUi.Draw
                 }
             }
         }
-
-        private int _createdCount;
-
-        /// <summary>
-        /// Total live cell instances created by this pool and not yet disposed by it — parked in the
-        /// reservoirs PLUS rented out (in use). This, not <see cref="Size"/> (parked only), is what
-        /// <see cref="MaxSize"/> really caps. Gating creation on Size let totals grow unbounded while
-        /// cells were rented ("cells 198/320" with a nominal cap of 200): every creation gate now uses
-        /// CreatedCount, and returns that would keep more instances alive than MaxSize are disposed.
-        /// </summary>
-        public int CreatedCount => Volatile.Read(ref _createdCount);
 
         public int MaxDistinctHeights
         {
@@ -212,7 +201,6 @@ namespace DrawnUi.Draw
                         DisposeStack(kvp.Value);
                     }
 
-                    Interlocked.Exchange(ref _createdCount, 0);
                     _disposed = true;
                 }
             }
@@ -264,8 +252,6 @@ namespace DrawnUi.Draw
                 if (ViewsAdapter.LogEnabled)
                     Super.Log("[ViewsAdapter] created new view !");
 
-                Interlocked.Increment(ref _createdCount);
-
                 if (create is SkiaControl element)
                 {
                     return element;
@@ -277,21 +263,6 @@ namespace DrawnUi.Draw
             }
 
             return null;
-        }
-
-        // Dispose a cell this pool created (deferred via the host's dispose action) keeping the created
-        // total honest. All pool-side disposals of counted cells must go through here.
-        private void DisposeCounted(SkiaControl view)
-        {
-            if (view == null)
-                return;
-
-            Interlocked.Decrement(ref _createdCount);
-            view.ContextIndex = -1;
-            if (_dispose != null)
-                _dispose.Invoke(view);
-            else
-                view.Dispose();
         }
 
         public void Reserve()
@@ -307,7 +278,7 @@ namespace DrawnUi.Draw
                 if (IsDisposing)
                     return;
 
-                if (CreatedCount < MaxSize)
+                if (GenericCount < MaxSize)
                 {
                     try
                     {
@@ -363,7 +334,6 @@ namespace DrawnUi.Draw
                     var ctrl = _standalonePool.Pop();
                     if (ctrl != null)
                     {
-                        Interlocked.Decrement(ref _createdCount);
                         ctrl.ContextIndex = -1;
                         ctrl.Dispose();
                     }
@@ -393,7 +363,7 @@ namespace DrawnUi.Draw
                     if (generic != null && !generic.IsDisposed)
                         return generic;
 
-                    if (CreatedCount < MaxSize)
+                    if (Size < MaxSize)
                         return CreateFromTemplate();
 
                     return null;
@@ -434,7 +404,7 @@ namespace DrawnUi.Draw
                     view = GenericPopAny();
 
                     //create new for size
-                    if (view == null && CreatedCount < MaxSize)
+                    if (view == null && Size < MaxSize)
                     {
                         view = CreateFromTemplate();
                     }
@@ -488,7 +458,7 @@ namespace DrawnUi.Draw
                         return v;
                 }
 
-                if (CreatedCount < MaxSize)
+                if (Size < MaxSize)
                     return CreateFromTemplate();
 
                 return GenericPopAny();
@@ -504,18 +474,7 @@ namespace DrawnUi.Draw
             {
                 if (IsDisposing)
                 {
-                    Interlocked.Decrement(ref _createdCount);
                     _dispose?.Invoke(viewModel);
-                    return;
-                }
-
-                // ENFORCE the cap on returns too: parking every returned cell let the pool keep more
-                // instances alive than MaxSize (a windowed source keeps returning cells of trimmed-out
-                // contexts). Overflow is disposed here instead of parked — after a window trim the pool
-                // SHRINKS back to the cap instead of hoarding a cell per context ever seen.
-                if (Volatile.Read(ref _createdCount) > MaxSize)
-                {
-                    DisposeCounted(viewModel);
                     return;
                 }
 

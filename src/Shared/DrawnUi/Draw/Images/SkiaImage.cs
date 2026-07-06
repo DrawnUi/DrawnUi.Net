@@ -19,6 +19,18 @@ public class SkiaImage : SkiaControl
     {
         CancelLoading?.Cancel();
         LoadSource = null;
+
+        // EraseChangedContent=false means "keep showing whatever I've got while the next source
+        // loads". If a decoded bitmap is already staged in ApplyNewSource but hasn't been swapped
+        // into LoadedSource yet (no Draw/SwapSources tick happened between the two SetImageSource
+        // calls - e.g. a cache-hit's synchronous OnSuccess immediately triggering another Source
+        // set), disposing it here kills the only picture we have before it ever painted a single
+        // frame, defeating the flag. Leave it staged so the next SwapSources() still promotes and
+        // shows it at least once; it gets disposed normally later (via SetImage/SwapSources) once
+        // superseded by the new source's own decoded bitmap.
+        if (!EraseChangedContent)
+            return;
+
         var kill = ApplyNewSource;
         ApplyNewSource = null;
         if (kill != null)

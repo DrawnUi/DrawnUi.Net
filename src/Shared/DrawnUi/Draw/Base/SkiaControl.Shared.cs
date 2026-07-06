@@ -3382,7 +3382,8 @@ namespace DrawnUi.Draw
             propertyChanged: NeedInvalidateMeasure);
 
         /// <summary>
-        /// When true, uses single-pass fast measurement. When false, uses 3-pass measurement with Fill handling.
+        /// When true, uses single-pass fast measurement.
+        /// When false, uses 3-pass measurement with Fill handling.
         /// </summary>
         public bool FastMeasurement
         {
@@ -7146,6 +7147,23 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// To execute ones per frame when called multiple times, and execute on rendering thread only.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="key"></param>
+        public void SyncUniqueAction(Action action, int key)
+        {
+            if (key < 0 || Superview==null || Superview.DrawingThreadId == Thread.CurrentThread.ManagedThreadId)
+            {
+                action?.Invoke();
+                return;
+            }
+
+            SafeAction(action, CombineToLong(Uid, key));
+            Repaint();
+        }
+
         public static long CombineToLong(Guid guid, int value)
         {
             Span<byte> guidBytes = stackalloc byte[16];
@@ -7303,7 +7321,7 @@ namespace DrawnUi.Draw
         /// <param name="scale"></param>
         protected virtual void Paint(DrawingContext ctx)
         {
-            if (IsDisposing || IsDisposed)
+            if (IsDisposing || IsDisposed || ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
                 return;
 
             if (ExecuteOnPaint.Count > 0)
@@ -7313,9 +7331,6 @@ namespace DrawnUi.Draw
                     action?.Invoke(this, ctx);
                 }
             }
-
-            if (ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
-                return;
 
             PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
 
@@ -7409,13 +7424,32 @@ namespace DrawnUi.Draw
         {
             get
             {
-                return
-                    LinkTransforms != null ||
-                    (Rotation != 0 && Rotation != 90 && Rotation != 180 && Rotation != 270 && Rotation != -90 && Rotation != -180 && Rotation != -270) ||
-                    ScaleY != 1f || ScaleX != 1f
-                    || Perspective1 != 0f || Perspective2 != 0f
-                    || SkewX != 0 || SkewY != 0 || TranslationZ != 0
-                    || RotationX != 0 || RotationY != 0 || RotationZ != 0;
+                if (LinkTransforms != null)
+                    return true;
+
+                const double Eps = 0.0001;
+
+                // Fast rotation check (multiples of 90°)
+                double rot = Rotation % 90.0;
+                if (rot < 0) rot = -rot;                    // absolute value
+
+                bool rotationIsDistorted = rot > Eps;
+
+                // Scale: 1.0 and -1.0 are both accepted
+                bool scaleXOk = Math.Abs(Math.Abs(ScaleX) - 1.0) <= Eps;
+                bool scaleYOk = Math.Abs(Math.Abs(ScaleY) - 1.0) <= Eps;
+
+                return rotationIsDistorted ||
+                       !scaleXOk ||
+                       !scaleYOk ||
+                       Math.Abs(Perspective1) > Eps ||
+                       Math.Abs(Perspective2) > Eps ||
+                       Math.Abs(SkewX) > Eps ||
+                       Math.Abs(SkewY) > Eps ||
+                       Math.Abs(TranslationZ) > Eps ||
+                       Math.Abs(RotationX) > Eps ||
+                       Math.Abs(RotationY) > Eps ||
+                       Math.Abs(RotationZ) > Eps;
             }
         }
 
@@ -7441,7 +7475,7 @@ namespace DrawnUi.Draw
                 if (EffectPostRenderers.Count == 0)
                 {
                     cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity,
-                        IsDistorted ? CachedObject.SamplingLinear : CachedObject.SamplingNearest);
+                        IsDistorted ? SkiaSamplingOptions.LinearLinear : SkiaSamplingOptions.NearestNoMip);
                 }
 
                 // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader
@@ -8595,7 +8629,45 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// Will properly remove all children, and dispose them
+        /// </summary>
         public virtual void ClearChildren()
+        {
+            ClearChildren(true);
+        }
+
+        /// <summary>
+        /// Will properly remove all children and OPTIONALLY dispose them
+        /// </summary>
+        /// <param name="dispose"></param>
+        public virtual void ClearChildren(bool dispose)
+        {
+            if (Views.Count > 0)
+            {
+                foreach (var child in Views.ToList())
+                {
+                    if (child == null)
+                        continue;
+
+                    RemoveSubView(child);
+                    DisposeObject(child);
+                }
+
+                Views.Clear();
+
+                Invalidate();
+            }
+            else
+            {
+                Repaint();
+            }
+        }
+
+        /// <summary>
+        /// Will properly remove all children and NOT dispose them
+        /// </summary>
+        public virtual void ClearChildrenDoNotDispose()
         {
             foreach (var child in Views.ToList())
             {
@@ -8603,7 +8675,6 @@ namespace DrawnUi.Draw
                     continue;
 
                 RemoveSubView(child);
-                DisposeObject(child);
             }
 
             Views.Clear();

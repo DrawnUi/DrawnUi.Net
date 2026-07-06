@@ -32,6 +32,11 @@ namespace DrawnUi.Draw
             Content?.Dispose();
             Header?.Dispose();
             Footer?.Dispose();
+
+            if (InternalScrollBar is SkiaControl scrollBar)
+            {
+                scrollBar.Dispose();
+            }
         }
 
         private ScrollInteractionState _intercationState;
@@ -244,6 +249,101 @@ namespace DrawnUi.Draw
                 newControl.ZIndex = 1000;
                 AddSubView(newControl);
             }
+        }
+
+        public static readonly BindableProperty ScrollBarProperty = BindableProperty.Create(
+            nameof(ScrollBar),
+            typeof(IScrollBar),
+            typeof(SkiaScroll),
+            null,
+            propertyChanged: OnNeedSetScrollBar);
+
+        /// <summary>
+        /// Optional scroll bar indicator drawn as overlay over the viewport.
+        /// Assign a SkiaScrollBar or any SkiaControl implementing IScrollBar.
+        /// The scroll pushes progress/thumb-size/overscroll state to it when scroll position changes.
+        /// Null by default: costs nothing when unused.
+        /// </summary>
+        public IScrollBar ScrollBar
+        {
+            get { return (IScrollBar)GetValue(ScrollBarProperty); }
+            set { SetValue(ScrollBarProperty, value); }
+        }
+
+        private static void OnNeedSetScrollBar(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            if (bindable is SkiaScroll control)
+            {
+                control.SetScrollBar(newvalue as IScrollBar);
+            }
+        }
+
+        protected IScrollBar InternalScrollBar { get; set; }
+
+        private void SetScrollBar(IScrollBar indicator)
+        {
+            //delete existing from Views and dispose
+            if (InternalScrollBar is SkiaControl control)
+            {
+                control.SetParent(null);
+                control.Dispose();
+            }
+
+            InternalScrollBar = indicator;
+            _scrollBarLastProgress = float.MinValue; //force push to the new indicator
+
+            if (indicator is SkiaControl newControl)
+            {
+                newControl.ZIndex = 1001;
+                AddSubView(newControl);
+            }
+        }
+
+        private float _scrollBarLastProgress = float.MinValue;
+        private float _scrollBarLastRatio;
+        private float _scrollBarLastOverscroll;
+        private bool _scrollBarLastScrolling;
+
+        /// <summary>
+        /// Pushes current scroll state to the attached ScrollBar indicator.
+        /// Called on every frame draw, no-op when nothing changed since last push.
+        /// </summary>
+        protected virtual void UpdateScrollBarIndicator()
+        {
+            if (InternalScrollBar == null)
+                return;
+
+            float progress, ratio, overscroll;
+
+            if (Orientation == ScrollOrientation.Horizontal)
+            {
+                progress = (float)ScrollProgressX;
+                ratio = ptsContentWidth > 0 ? Viewport.Units.Width / ptsContentWidth : 1f;
+                overscroll = OverscrollDistance.X;
+            }
+            else
+            {
+                progress = (float)ScrollProgressY;
+                ratio = ptsContentHeight > 0 ? Viewport.Units.Height / ptsContentHeight : 1f;
+                overscroll = OverscrollDistance.Y;
+            }
+
+            var isScrolling = IsScrolling || IsUserPanning;
+
+            if (progress == _scrollBarLastProgress
+                && ratio == _scrollBarLastRatio
+                && overscroll == _scrollBarLastOverscroll
+                && isScrolling == _scrollBarLastScrolling)
+            {
+                return;
+            }
+
+            _scrollBarLastProgress = progress;
+            _scrollBarLastRatio = ratio;
+            _scrollBarLastOverscroll = overscroll;
+            _scrollBarLastScrolling = isScrolling;
+
+            InternalScrollBar.SetScrollProgress(Orientation, progress, ratio, overscroll, isScrolling);
         }
 
         private static void NeedToScroll(BindableObject bindable, object oldvalue, object newvalue)
@@ -2920,8 +3020,34 @@ namespace DrawnUi.Draw
                     SetScrollOffset(DrawingRect, posX, posY, zoomedScale, context.Scale, false);
                 }
 
-                var clone = AddPaintArguments(context).WithDestination(DrawingRect);
-                DrawWithClipAndTransforms(clone, DrawingRect, true, true, (ctx) => { PaintWithEffects(ctx); });
+                //var clone = AddPaintArguments(context).WithDestination(DrawingRect);
+                //DrawWithClipAndTransforms(clone, DrawingRect, true, true, (ctx) => { PaintWithEffects(ctx); });
+
+                if (UsingCacheType != SkiaCacheType.None)
+                {
+                    var destination = DrawingRect;
+                    var recordArea = destination;
+                    if (UsingCacheType == SkiaCacheType.OperationsFull)
+                    {
+                        recordArea = context.Context.Canvas.LocalClipBounds;
+                        destination = recordArea;
+                    }
+
+                    //paint from cache
+                    var clone = AddPaintArguments(context).WithDestination(destination);
+
+                    if (TryUseExistingRenderingObjectOrCreateNewAndPaint(clone, recordArea))
+                    {
+                        ExistingCacheWasRendered = true;
+                    }
+                }
+                else
+                {
+                    var clone = AddPaintArguments(context).WithDestination(DrawingRect);
+                    DrawWithClipAndTransforms(clone, DrawingRect, true, true, (ctx) => {
+                        PaintWithEffects(ctx);
+                    });
+                }
             }
 
             FinalizeDrawingWithRenderObject(context);
@@ -3217,6 +3343,15 @@ namespace DrawnUi.Draw
                 }
             }
 
+            UpdateScrollBarIndicator();
+
+            if (InternalScrollBar is SkiaControl scrollBar && scrollBar.CanDraw)
+            {
+                //overlay pinned to the viewport, like sticky header above
+                scrollBar.Render(context.WithDestination(DrawingRect));
+                drawn++;
+            }
+
             return drawn;
         }
 
@@ -3241,6 +3376,7 @@ namespace DrawnUi.Draw
             AutoCache = true;
             UpdateFriction();
             SetRefreshIndicator(RefreshIndicator);
+            SetScrollBar(ScrollBar);
         }
 
         public override void SetChildren(IEnumerable<SkiaControl> views)

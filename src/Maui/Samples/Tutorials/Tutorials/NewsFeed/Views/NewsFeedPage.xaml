@@ -70,7 +70,7 @@
                         ItemsSource="{Binding NewsItems}"
                         RecyclingTemplate="Enabled"
                         MeasureItemsStrategy="MeasureVisible"
-                        ReserveTemplates="15"
+                        ReserveTemplates="10"
                         VirtualisationInflated="200"
                         Spacing="0"
                         ItemTemplateType="{x:Type newsFeed:NewsCell}"
@@ -80,7 +80,7 @@
 
                 <!-- uncomment for debug info -->
 
-                <!--<draw:SkiaLabel
+                <draw:SkiaLabel
                     UseCache="Operations"
                     Margin="8"
                     Padding="2"
@@ -91,7 +91,7 @@
                     Text="{Binding Source={x:Reference NewsStack}, Path=DebugString}"
                     TextColor="LawnGreen"
                     VerticalOptions="End"
-                    ZIndex="100" />-->
+                    ZIndex="100" />
 
                 <!-- uncomment for FPS info -->
 

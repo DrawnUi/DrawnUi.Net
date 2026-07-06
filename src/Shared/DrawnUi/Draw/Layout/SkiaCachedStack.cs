@@ -33,13 +33,6 @@ public class SkiaCachedStack : SkiaStack
         UseCache = SkiaCacheType.None; // we own DrawDirectInternal + our own plane cache
         FastMeasurement = true; //one layout pass, not accounting for deeper in the tree Fill inside Auto size scenarios.
 
-        // Prepared-views pipeline: cells are bound+measured off-thread ahead of
-        // scrolling; the render thread NEVER measures a cell (kills fling spikes),
-        // unprepared cells show their skeleton for a frame or two instead.
-        UsePreparedViews = true;
-
-        MeasureItemsStrategy = MeasuringStrategy.MeasureVisible;
-
         // Overscan: record ± one viewport so the plane can be REUSED (blitted, not re-recorded) while
         // scrolling within the margin = smooth. Without it the plane covers exactly the viewport and every
         // scroll frame re-records (jerky). The completeness gates + coverage clamp keep the wider records
@@ -74,32 +67,6 @@ public class SkiaCachedStack : SkiaStack
     // invalidate the picture whenever the windowed ItemsSource changes (LoadMore/trim shifts content) — a
     // trim keeps count stable with stable indices, so a count check can't see it; the collection event can.
     protected volatile bool _contentChanged = true;
-
-    // settled-frame probe for the skeleton heal (see DrawDirectInternal): same viewport offset for
-    // consecutive frames = the scroll is at rest and unprepared visible cells will never self-heal.
-    private float _settleProbeOffsetY = float.MinValue;
-    private int _settledFrames;
-
-    // The plane may hold cells baked as SKELETONS; set by the prep worker when a cell becomes ready.
-    // The blit path then re-records (async: kicks a bake and KEEPS blitting — no live frame, no wait)
-    // instead of serving the baked skeleton until the next half-viewport drift.
-    private volatile bool _planeStale;
-
-    // Did the CURRENT plane's record paint any skeletons? Captured at record/publish from the pass's
-    // thread-static. When false, prep-completion staleness is meaningless (nothing to heal) and the
-    // re-record is skipped — protects RecyclingTemplate.Disabled (frontier preps fire constantly but
-    // its planes are always real content) from useless background bakes on weak devices.
-    private volatile bool _planeHasSkeletons;
-
-    /// <summary>
-    /// Prep worker signal (see <see cref="SkiaLayout.OnCellPreparedOffthread"/>): a cell the current
-    /// plane may hold as a baked skeleton is now ready — mark the plane stale so the next blit frame
-    /// re-records the band with real content.
-    /// </summary>
-    protected override void OnCellPreparedOffthread()
-    {
-        _planeStale = true;
-    }
 
     // Set by OnContentTranslatedVertically, consumed by the next draw: marks the ONE frame where cells are
     // translated but the parent scroll compensates only next frame — the only frame where a live draw shows
@@ -193,26 +160,6 @@ public class SkiaCachedStack : SkiaStack
         // flag would block blitting for the whole tail-measure of every LoadMore batch (pacing jerk).
         bool covered = PlaneCoversViewport(destination, vpH);
 
-        // SETTLED-SKELETON HEAL (blit-starves-live #4): cells that enter the viewport during the final
-        // deceleration BLIT frames never meet a live DrawStack — no gap-rescue, no prep want-list post —
-        // and the plane then blits their skeletons/foreign caches FOREVER at rest (device: empty bubbles
-        // at 70fps). Gated to SETTLED frames only: during motion transient skeletons are legal and heal
-        // via drift re-records; checking mid-fling would force live frames and cost the blit pacing.
-        if (destination.Top == _settleProbeOffsetY)
-        {
-            if (_settledFrames < 3)
-                _settledFrames++;
-        }
-        else
-        {
-            _settledFrames = 0;
-            _settleProbeOffsetY = destination.Top;
-        }
-
-        if (_settledFrames >= 2 && !_contentChanged && AnyVisibleCellUnprepared())
-        {
-            _contentChanged = true; // live frame below: gap-rescue heals inline, next record re-bakes the band
-        }
 
         if (covered && !orderedScroll && _cacheValid && !dirty && !_contentChanged)
         {
@@ -220,20 +167,8 @@ public class SkiaCachedStack : SkiaStack
             // mid-scroll (async: kicks a background bake and keeps blitting; sync: one record here).
             // CreateCache commits _recordOffsetY/_contentChanged itself when the gates pass; a gate-reject
             // leaves them untouched so we retry next frame instead of waiting another 0.5vpH.
-            // _planeStale: the prep worker readied cells this plane holds as baked SKELETONS — re-record
-            // now (async keeps blitting the current plane meanwhile) instead of serving skeletons until
-            // the drift threshold (device: "placeholders while scrolling not so fast"). Honored ONLY when
-            // this plane actually painted skeletons — skeletonless planes ignore prep chatter (Disabled
-            // mode preps at the frontier constantly; re-baking clean planes is pure CPU waste).
-            if (_planeStale && !_planeHasSkeletons)
+            if (!_bakeInFlight && Math.Abs(destination.Top - _recordOffsetY) >= vpH * 0.5f)
             {
-                _planeStale = false;
-            }
-
-            if (!_bakeInFlight &&
-                (_planeStale || Math.Abs(destination.Top - _recordOffsetY) >= vpH * 0.5f))
-            {
-                _planeStale = false;
                 CreateCache(context, drawingRect);
             }
 
@@ -613,7 +548,6 @@ public class SkiaCachedStack : SkiaStack
 
         _foregroundCoveredTop = coveredTop; // verified (clamped) coverage of this record
         _foregroundCoveredBot = coveredBot;
-        _planeHasSkeletons = SkiaLayout.PaintedSkeleton; // prep-completion re-records only matter if true
         _cacheValid = true; // the blit branch accepts the plane (only ever set after a successful record)
 
     }
@@ -663,6 +597,15 @@ public class SkiaCachedStack : SkiaStack
     private CachedObject _preparedPlane;
     private volatile float _preparedCoveredTop, _preparedCoveredBot;
     private volatile int _preparedGen;
+
+    /// <summary>
+    /// Gesture render tree built by the bake over the frozen snapshot, paired with <see cref="_preparedPlane"/>.
+    /// Written by the worker BEFORE the plane publish (the Interlocked exchange fences it), installed via
+    /// SetRenderingTree on the RENDER thread when the plane is consumed. Keeps hit rects in the SAME
+    /// coordinate frame as the served plane — the invariant DrawCache's RenderTree.Offset patching relies
+    /// on; a tree from an older live frame maps taps to the wrong cells (harness: TapStaleTreeRepro).
+    /// </summary>
+    private List<SkiaControlWithRect> _preparedTree;
 
     // ---- frozen-structure snapshot for the bake -------------------------------------------------------
     // The bake runs Paint -> DrawStack on a worker while the render thread mutates the live structure
@@ -734,6 +677,9 @@ public class SkiaCachedStack : SkiaStack
         if (prepared == null)
             return;
 
+        var preparedTree = _preparedTree;
+        _preparedTree = null;
+
         if (_preparedGen != Volatile.Read(ref _structureGen))
         {
             DisposeObject(prepared);
@@ -748,6 +694,12 @@ public class SkiaCachedStack : SkiaStack
         _cacheValid = true;
         DisposeObject(old);
 
+        // Install the bake's gesture tree WITH its plane (render thread = safe to swap): hit rects now
+        // share the served plane's coordinate frame, so DrawCache's Offset patching maps taps correctly.
+        if (preparedTree != null)
+        {
+            SetRenderingTree(preparedTree);
+        }
     }
 
     /// <summary>
@@ -780,9 +732,11 @@ public class SkiaCachedStack : SkiaStack
                     return;
 
                 SKPicture picture;
+                List<SkiaControlWithRect> bakeTree;
                 SkiaLayout.ResetPaintedBounds();
                 SkiaLayout.CollectPaintedBounds = true;
                 SkiaLayout.IsPlaneBakePass = true;
+                SkiaLayout.CollectedBakeTree = null; // pooled worker thread: drop a previous bake's deposit
                 _bakeStructure = bakeSnapshot;
                 try
                 {
@@ -798,6 +752,8 @@ public class SkiaCachedStack : SkiaStack
                 }
                 finally
                 {
+                    bakeTree = SkiaLayout.CollectedBakeTree; // gesture tree in the plane's coordinate frame
+                    SkiaLayout.CollectedBakeTree = null;     // never pin cells via the pooled thread's static
                     _bakeStructure = null;
                     SkiaLayout.IsPlaneBakePass = false;
                     SkiaLayout.CollectPaintedBounds = false;
@@ -826,11 +782,12 @@ public class SkiaCachedStack : SkiaStack
                     if (paintedBotContent < coveredBot) coveredBot = Math.Max(paintedBotContent, bareBot);
                 }
 
-                // Publish: coverage set BEFORE the plane so the render thread consumes a consistent pair.
+                // Publish: coverage + gesture tree set BEFORE the plane so the render thread consumes a
+                // consistent set (the Interlocked exchange below fences the writes).
                 _preparedCoveredTop = coveredTop;
                 _preparedCoveredBot = coveredBot;
-                _planeHasSkeletons = SkiaLayout.PaintedSkeleton; // this bake's own thread-static
                 _preparedGen = gen;
+                _preparedTree = bakeTree;
                 var rendered = new CachedObject(SkiaCacheType.Operations, picture, context.Destination, recordArea);
                 var stale = Interlocked.Exchange(ref _preparedPlane, rendered);
                 if (stale != null)

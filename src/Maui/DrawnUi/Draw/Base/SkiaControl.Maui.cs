@@ -231,8 +231,12 @@ namespace DrawnUi.Draw
             }
             else if (propertyName == nameof(Padding))
             {
-                UsePadding = OnPaddingSet(this.Padding);
-                InvalidateMeasure();
+                SyncUniqueAction(() =>
+                {
+                    UsePadding = OnPaddingSet(this.Padding);
+                    InvalidateMeasure();
+                }, 3);
+
             }
             else if (propertyName.IsEither(
                          nameof(HorizontalOptions), nameof(VerticalOptions)))
@@ -250,15 +254,21 @@ namespace DrawnUi.Draw
                          nameof(MaximumHeightRequest), nameof(MinimumHeightRequest)
                      ))
             {
-                InvalidateMeasure();
-                //if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                SyncUniqueAction(() =>
                 {
-                    UpdateSizeRequest();
-                }
+                    InvalidateMeasure();
+                    //if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                    {
+                        UpdateSizeRequest();
+                    }
+                }, 1);
             }
             else if (propertyName.IsEither(nameof(IsVisible)))
             {
-                OnVisibilityChanged(IsVisible);
+                SyncUniqueAction(() =>
+                {
+                    OnVisibilityChanged(IsVisible);
+                }, 2);
             }
 
             #endregion

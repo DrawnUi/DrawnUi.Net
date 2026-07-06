@@ -27,11 +27,8 @@ public static class RealChatJumpRepro
         host.Canvas.Content = page.CreateCanvasContent(); // assigns MainScroll + ChatStack
         page.InitializeList();                             // wires WindowedSource + MockChatService + seeds
 
-        // wait for first window to materialize. LastVisibleIndex alone is NOT a readiness signal (it
-        // reads 0 on an empty structure): with RemoteLatencyMs=50 the seed lands ~6 frames in, the loop
-        // exited on frame 0 and the jump hit WindowedSource's _count==0 guard -> silent no-op -> FAIL.
-        // Wait for actual resident items + a rendered tree.
-        for (int i = 0; i < 400 && (page.ProbeWindowEnd == 0 || (page.ChatStack.RenderTree?.Count ?? 0) == 0); i++) { host.RenderFrame(16); Thread.Sleep(4); }
+        // wait for first window to materialize
+        for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         host.AdvanceFrames(12, 16);
         Report(page, host, "start (newest)");
 

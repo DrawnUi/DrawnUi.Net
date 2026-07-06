@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using DrawnUI.Tutorials.NewsFeed.Models;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
@@ -174,5 +175,13 @@ public partial class NewsCell : DrawnListCell
     {
         // Extract thumbnail from video URL or use placeholder
         return videoUrl; // For now, just use the same URL as it's from Picsum
+    }
+
+    private void NewsCell_OnTapped(object sender, ControlTappedEventArgs e)
+    {
+        if (BindingContext is NewsItem ctx)
+        {
+            Debug.WriteLine($"[TAPPED] cell {ctx.Id} {ctx.AuthorName}");
+        }
     }
 }

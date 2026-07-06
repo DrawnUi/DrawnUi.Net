@@ -630,29 +630,8 @@ namespace DrawnUi.Draw
             if (Split > 0)
                 mult = Split;
 
-            if (IsTemplated && RecyclingTemplate != RecyclingTemplate.Disabled)
-            {
-                // TRUE recycling default: a small rotating set derived from the viewport, NEVER the whole
-                // source (1000 items must not mean 1000 cells). Floor = what the layout actually REALIZES
-                // at once — the expanded viewport (VirtualisationInflated overscan) holds ~3 viewports of
-                // cells and a cap below realized demand returns null views (holes). +1 viewport of slack
-                // for in-flight returns/preparation. Override explicitly via ItemTemplatePoolSize.
-                var visible = LastVisibleIndex - FirstVisibleIndex + 1;
-                if (visible < 1)
-                    visible = 8; // pre-first-layout fallback, corrected on the next contexts swap
-                return Math.Min(ItemsSource.Count + mult * 2, visible * 4 + mult * 2);
-            }
-
-            // Disabled: a cell per resident item is the DESIGN (context-indexed reservoir, revisits free).
             return ItemsSource.Count + mult * 2;
         }
-
-        /// <summary>
-        /// Adapter-facing accessor for <see cref="GetTemplatesPoolLimit"/>: the ViewsAdapter re-applies the
-        /// pool ceiling on every data-contexts swap so an UNSET <see cref="ItemTemplatePoolSize"/> tracks the
-        /// live ItemsSource count (windowed sources shrink the pool after trims instead of hoarding).
-        /// </summary>
-        internal int GetTemplatesPoolLimitPublic() => GetTemplatesPoolLimit();
 
         public override void OnChildrenChanged()
         {
