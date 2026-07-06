@@ -167,7 +167,7 @@ public sealed class ChatLikeScene : IDisposable
         ViewportHeight = height;
         Host = new HeadlessCanvasHost(width, height, scale: 1f, background: Colors.Black);
 
-        List = cachedPlanes ? new DrawnChatList.AppMessagesStack() : new PeekStack();
+        List = cachedPlanes ? new DrawnChatList.ChatMessagesStack() : new PeekStack();
         List.Type = LayoutType.Column;
         List.Spacing = 4;
         List.Padding = new Thickness(0, 8);

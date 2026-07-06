@@ -3509,6 +3509,17 @@ public partial class SkiaLayout
             // (which only runs on draw) alive while it waits for the target to be measured.
             Repaint();
 
+#if BROWSER
+            // Single-threaded WASM has no real background: the awaited Task.Run above inlines on the ONE
+            // (render + input) thread, so without an explicit real-timer yield this whole pass hogs it —
+            // the "frozen page while measuring in background" at startup. Task.Delay(1) posts a browser
+            // timer, so the event loop pumps rAF + input between batches (Task.Yield / Task.Run do NOT
+            // reliably pump rAF under load — see the WASM Task.Run starvation lesson). Trickles the list
+            // in cooperatively; the pass still measures the WHOLE list (far past the viewport), just
+            // without freezing, which is exactly "measure more than visible at startup" minus the lock-up.
+            await Task.Delay(1, cancellationToken);
+#endif
+
             // Small delay to prevent overwhelming the system (DEBUG-tunable to simulate slow devices)
             if (DebugBackgroundMeasureDelayMs>0)
                 await Task.Delay(DebugBackgroundMeasureDelayMs, cancellationToken);
@@ -3522,6 +3533,41 @@ public partial class SkiaLayout
         //Debug.WriteLine($"[MeasureVisible] Completed background measurement up to index {_backgroundMeasurementProgress}");
 
         Repaint();
+    }
+
+    /// <summary>
+    /// Stages a <see cref="StructureChangeType.SingleItemUpdate"/> for a cell whose view ALREADY measured
+    /// itself during draw (self-growing content — e.g. a streaming AI bubble — served stale by the prepared
+    /// pipeline). No measure happens here: the fresh size exists on the view; this bridges it into the
+    /// structure through the same staged change <see cref="MeasureSingleItem"/> produces. Applied at the
+    /// next DrawStack start (<see cref="ApplySingleItemUpdateChange"/>): slot resize + follower shift via
+    /// OffsetSubsequentCells, BEFORE pass 1 — so positions, the gesture tree and any cached plane rebuild
+    /// from one consistent chain. The explicit delta is captured against the CURRENT slot so the apply
+    /// never depends on a background-measurement entry existing for this index.
+    /// </summary>
+    internal void StageSelfMeasuredCellUpdate(int itemIndex, ScaledSize freshMeasured, SKSize currentSlotPixels)
+    {
+        var cell = new ControlInStack
+        {
+            ControlIndex = itemIndex, Measured = freshMeasured, WasMeasured = true,
+        };
+
+        var info = new MeasuredItemInfo { Cell = cell, LastAccessed = DateTime.UtcNow, IsInViewport = true };
+        var dataItem = GetItemForMemo(itemIndex);
+        var delta = freshMeasured.Pixels - currentSlotPixels;
+
+        lock (_structureChangesLock)
+        {
+            _pendingStructureChanges.Add(new StructureChange(StructureChangeType.SingleItemUpdate, MeasureStamp)
+            {
+                StartIndex = itemIndex,
+                Count = 1,
+                MeasuredItems = new List<MeasuredItemInfo> { info },
+                OffsetOthers = new Vector2(delta.Width, delta.Height),
+                Epoch = _itemsShiftEpoch,
+                Items = dataItem != null ? new List<object> { dataItem } : null
+            });
+        }
     }
 
     /// <summary>

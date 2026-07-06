@@ -254,6 +254,19 @@ namespace DrawnUi.Draw
 
         SkiaControl CreateFromTemplate()
         {
+            var created = CreateFromTemplateUncounted();
+            if (created != null)
+            {
+                Interlocked.Increment(ref _createdCount);
+            }
+
+            return created;
+        }
+
+        // Instantiates a cell WITHOUT touching CreatedCount — used by the reserved-slot creation path
+        // (see TryReserveCreateSlot/CreateReserved) where the slot was already claimed up front.
+        SkiaControl CreateFromTemplateUncounted()
+        {
             if (IsDisposing)
                 return null;
 
@@ -263,8 +276,6 @@ namespace DrawnUi.Draw
             {
                 if (ViewsAdapter.LogEnabled)
                     Super.Log("[ViewsAdapter] created new view !");
-
-                Interlocked.Increment(ref _createdCount);
 
                 if (create is SkiaControl element)
                 {
@@ -277,6 +288,45 @@ namespace DrawnUi.Draw
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Atomically claims a creation slot against <see cref="MaxSize"/> WITHOUT holding _syncLock:
+        /// increment-then-check keeps the cap exact under concurrent claimers (warm-up fill, prep worker,
+        /// render thread). Pair with <see cref="CreateReserved"/>. This is what lets the EXPENSIVE cell
+        /// ctor run outside the pool lock: holding _syncLock through a ctor (10-1000ms on Debug) made the
+        /// render thread's per-frame Get()/Return() queue behind every background warm-up creation — the
+        /// multi-second "hard UI lock" right after the first paint of a list with a large prefill.
+        /// </summary>
+        private bool TryReserveCreateSlot()
+        {
+            if (Interlocked.Increment(ref _createdCount) > MaxSize)
+            {
+                Interlocked.Decrement(ref _createdCount);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Creates a cell for a slot claimed by <see cref="TryReserveCreateSlot"/>, OUTSIDE the pool lock.
+        /// Releases the slot when creation fails or throws.
+        /// </summary>
+        private SkiaControl CreateReserved()
+        {
+            SkiaControl view = null;
+            try
+            {
+                view = CreateFromTemplateUncounted();
+            }
+            finally
+            {
+                if (view == null)
+                    Interlocked.Decrement(ref _createdCount);
+            }
+
+            return view;
         }
 
         // Dispose a cell this pool created (deferred via the host's dispose action) keeping the created
@@ -299,26 +349,34 @@ namespace DrawnUi.Draw
             if (IsDisposing)
                 return;
 
-            // MUST lock: the reservoir is shared with Get/Return (which lock _syncLock). Adding here without the
-            // lock races their reads/removals on the background measure / tile-render threads and corrupts the
-            // structures. Pre-warming a larger pool makes this frequent.
+            if (!TryReserveCreateSlot())
+                return;
+
+            // Cell ctor runs OUTSIDE _syncLock (see TryReserveCreateSlot doc) — the reservoir lock is
+            // taken only for the microsecond push, so the render thread's Get/Return never wait a ctor.
+            SkiaControl view;
+            try
+            {
+                view = CreateReserved();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+                throw;
+            }
+
+            if (view == null)
+                return;
+
             lock (_syncLock)
             {
                 if (IsDisposing)
-                    return;
-
-                if (CreatedCount < MaxSize)
                 {
-                    try
-                    {
-                        GenericPush(CreateFromTemplate());
-                    }
-                    catch (Exception e)
-                    {
-                        Trace.WriteLine(e);
-                        throw;
-                    }
+                    DisposeCounted(view);
+                    return;
                 }
+
+                GenericPush(view);
             }
         }
 

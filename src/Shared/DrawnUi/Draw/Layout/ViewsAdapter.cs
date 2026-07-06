@@ -37,11 +37,11 @@ namespace DrawnUi.Draw
 
             var token = _backgroundFillCancellation.Token;
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 try
                 {
-                    FillPoolWithCancellation(size, token);
+                    await FillPoolWithCancellation(size, token);
                 }
                 catch (OperationCanceledException)
                 {
@@ -56,11 +56,14 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// Fills the pool with cancellation support
+        /// Fills the pool with cancellation support. On BROWSER (single-threaded WASM) it yields to the
+        /// browser event loop every few creations so the warm-up never freezes the render/input thread;
+        /// on other heads the loop completes synchronously (the returned Task is already done), so the
+        /// desktop warm-up behaviour is unchanged.
         /// </summary>
         /// <param name="size">Target pool size</param>
         /// <param name="cancellationToken">Token to cancel the operation</param>
-        private void FillPoolWithCancellation(int size, CancellationToken cancellationToken)
+        private async Task FillPoolWithCancellation(int size, CancellationToken cancellationToken)
         {
             if (IsDisposed || _templatedViewsPool == null)
                 return;
@@ -102,6 +105,14 @@ namespace DrawnUi.Draw
                 if (_templatedViewsPool.Size % 5 == 0)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
+
+#if BROWSER
+                    // WASM has no worker thread — this loop runs on the render/input thread. Yield to the
+                    // browser event loop (real timer) so rAF + input pump between cell ctors instead of the
+                    // ~225-cell warm-up locking the page. Non-BROWSER never compiles this: the method
+                    // completes synchronously, identical to the old void loop.
+                    await Task.Delay(1, cancellationToken);
+#endif
                 }
             }
         }

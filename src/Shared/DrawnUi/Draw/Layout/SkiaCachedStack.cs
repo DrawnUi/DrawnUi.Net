@@ -27,6 +27,18 @@ public class SkiaCachedStack : SkiaStack
     /// </summary>
     public bool UseDoubleBuffering = true;
 
+    public override bool UsePreparedViews
+    {
+        get
+        {
+#if BROWSER || WEB
+            return false;
+#else
+            return true;
+#endif
+        }
+    }
+
 
     public SkiaCachedStack()
     {

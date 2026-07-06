@@ -2853,6 +2853,30 @@ else
                         {
                             Debug.WriteLine($"INVISIBLE {child.ContextIndex}");
                         }
+
+                        // STREAMING-GROWTH BRIDGE: a stale-served self-invalidated cell measures ITSELF inside
+                        // DrawChild above (standard NeedMeasure self-measure) — the prep worker can never own
+                        // that re-measure (the self-measure races it for NeedMeasure and wins), and the
+                        // reconcile branch needs a live frame arriving with NeedMeasure ALREADY false, which
+                        // streaming never produces (every live frame IS an invalidation frame). Consume the
+                        // fresh size here by staging the EXISTING SingleItemUpdate change (same one
+                        // Remeasure/MeasureSingleItem stage): drained at the next DrawStack start it resizes
+                        // the slot and shifts followers BEFORE pass 1. No measure — the size already exists.
+                        if (stalePixels && !bakePass
+                            && child.MeasuredSize.Pixels.Height >= 1
+                            && !CompareSize(cell.Measured.Pixels, child.MeasuredSize.Pixels, 1f))
+                        {
+                            StageSelfMeasuredCellUpdate(cell.ControlIndex, child.MeasuredSize,
+                                cell.Measured.Pixels);
+
+                            // Shift the followers THIS frame too via the accumulator below (same pattern as
+                            // the sync-measure branch), otherwise the grown cell paints over the next cell
+                            // for the one frame until the staged change lands — the visible flicker.
+                            // PASS 1 clears OffsetOthers next frame and the applied structure change takes
+                            // over from then on, so this never double-shifts.
+                            var grow = child.MeasuredSize.Pixels - cell.Measured.Pixels;
+                            cell.OffsetOthers = new Vector2(grow.Width, grow.Height);
+                        }
                     }
 
                     // Shift the FOLLOWING cells THIS frame by this cell's draw-time remeasure delta. cell.Drawn
