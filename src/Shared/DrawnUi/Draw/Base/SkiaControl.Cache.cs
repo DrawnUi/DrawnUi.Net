@@ -641,7 +641,10 @@ public virtual CachedObject CreateRenderingObject(
                 action(recordingContext);
 
                 SKPicture skPicture = recorder.EndRecording();
-                renderObject = new(UsingCacheType, skPicture, context.Destination, cacheRecordingArea);
+                renderObject = new(UsingCacheType, skPicture, context.Destination, cacheRecordingArea)
+                {
+                    DataContext = this.ContextIndex
+                };
             }
         }
         else if (usingCacheType != SkiaCacheType.None)
@@ -708,7 +711,8 @@ public virtual CachedObject CreateRenderingObject(
 
             renderObject = new(usingCacheType, surface, recordArea, recordingArea)
             {
-                SurfaceIsRecycled = recordingContext.Context.IsRecycled
+                SurfaceIsRecycled = recordingContext.Context.IsRecycled,
+                DataContext = this.ContextIndex
             };
 
             if (Super.UseFrozenVisualLayers && VisualLayer != null)
