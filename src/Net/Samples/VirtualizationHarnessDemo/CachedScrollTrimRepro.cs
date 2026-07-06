@@ -184,7 +184,7 @@ public static class CachedScrollTrimRepro
 
     private static void RunInner()
     {
-        Console.WriteLine($"UseDoubleBuffering={typeof(CellsStackCached).GetField("UseDoubleBuffering", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null) ?? "n/a (field removed)"}");
+        Console.WriteLine($"UseDoubleBuffering={typeof(ChatMessagesStack).GetField("UseDoubleBuffering", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null) ?? "n/a (field removed)"}");
 
         var grep = new GrepListener();
         System.Diagnostics.Trace.Listeners.Add(grep);
