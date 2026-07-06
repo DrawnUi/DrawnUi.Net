@@ -2488,7 +2488,15 @@ namespace DrawnUi.Draw
                         if (CheckChildrenGesturesLocked(args.Type))
                             return consumedDefault;
 
-                        var point = TranslateInputOffsetToPixels(args.Event.Location, apply.ChildOffset);
+                        // No RenderTree to descend (a cached control blits without repainting its subtree,
+                        // so nested layouts never build their tree). Fall back to iterating live children —
+                        // but map the point the SAME way the tree path does: transformed MappedLocation plus
+                        // the cache-offset correction (TranslateInputCoords accountForCache), NOT the raw
+                        // event location. Using the raw location placed the tap in the wrong space inside a
+                        // cached/rotated cell so its children got nothing (the dead child-tap bug).
+                        var cacheOffset = TranslateInputCoords(apply.ChildOffset, true);
+                        var point = new SKPoint(apply.MappedLocation.X + cacheOffset.X,
+                            apply.MappedLocation.Y + cacheOffset.Y);
 
                         ISkiaGestureListener breakForChild = null;
 
