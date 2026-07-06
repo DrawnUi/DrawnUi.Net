@@ -4,6 +4,8 @@ namespace DrawnUi.Draw;
 
 public class CachedObject : ISkiaDisposable
 {
+    public int DataContext { get; set; }
+
     public SKPoint TranslateInputCoords(SKRect drawingRect)
     {
         // Use LastDestination (actual screen position where cache was drawn) if available
@@ -134,6 +136,9 @@ public class CachedObject : ISkiaDisposable
     /// <param name="sampling"></param>
     public void Draw(SKCanvas canvas, float x, float y, SKPaint paint, in SKSamplingOptions sampling)
     {
+        var destination = new SKRect(x, y, Bounds.Width + x, Bounds.Height + y);
+        LastDestination = destination;
+
         try
         {
             if (Picture != null)
