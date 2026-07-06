@@ -91,11 +91,12 @@
                     VerticalOptions="End"
                     Margin="0,0,0,64"
                     InputTransparent="True"
+                    IsVisible="False"
                     ZIndex="90">
 
                     <draw:SkiaLottie
                         x:Name="LoadMoreLoader"
-                        AutoPlay="True"
+                        AutoPlay="False"
                         Repeat="-1"
                         Source="Lottie/iosloader.json"
                         ColorTint="{StaticResource ColorPrimary}"
