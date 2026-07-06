@@ -95,7 +95,11 @@ public partial class SkiaScroll
                 return 0;
             }
 
-            return 1 - (ContentOffsetBounds.Height + InternalViewportOffset.Pixels.Y) / ContentOffsetBounds.Height;
+            // ContentOffsetBounds is in POINTS (GetContentOffsetBounds builds it from Units) — the offset
+            // must be POINTS too. Using Pixels here inflated progress by RenderingScale, pinning the
+            // scrollbar thumb at the end for the bottom (1 - 1/scale) of the range on any scale > 1
+            // ("thumb stuck at end after LoadMore" — content grew but progress stayed clamped at 1).
+            return 1 - (ContentOffsetBounds.Height + InternalViewportOffset.Units.Y) / ContentOffsetBounds.Height;
         }
     }
 
@@ -111,7 +115,8 @@ public partial class SkiaScroll
                 return 0;
             }
 
-            return 1 - (ContentOffsetBounds.Width + InternalViewportOffset.Pixels.X) / ContentOffsetBounds.Width;
+            // POINTS, not Pixels — see ScrollProgressY.
+            return 1 - (ContentOffsetBounds.Width + InternalViewportOffset.Units.X) / ContentOffsetBounds.Width;
         }
     }
 
