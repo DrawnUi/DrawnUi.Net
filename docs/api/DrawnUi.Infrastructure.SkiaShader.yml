@@ -46,11 +46,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShader
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -92,11 +92,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _compiled
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -119,11 +119,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufResolution
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -146,11 +146,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufImageResolution
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -173,11 +173,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufMouse
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 18
   assemblies:
   - DrawnUi.Maui
@@ -200,11 +200,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _bufOffset
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -227,11 +227,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Time
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 34
   assemblies:
   - DrawnUi.Maui
@@ -258,11 +258,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Mouse
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 39
   assemblies:
   - DrawnUi.Maui
@@ -289,11 +289,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MouseInitial
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -320,11 +320,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Offset
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -351,11 +351,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FilterMode
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 54
   assemblies:
   - DrawnUi.Maui
@@ -382,11 +382,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MipmapMode
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 59
   assemblies:
   - DrawnUi.Maui
@@ -413,11 +413,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TileMode
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 64
   assemblies:
   - DrawnUi.Maui
@@ -444,11 +444,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlendMode
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 69
   assemblies:
   - DrawnUi.Maui
@@ -475,11 +475,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsCompiled
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 74
   assemblies:
   - DrawnUi.Maui
@@ -506,11 +506,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Compiled
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -537,11 +537,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromResource
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -581,11 +581,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromCode
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 105
   assemblies:
   - DrawnUi.Maui
@@ -622,11 +622,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Code
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 117
   assemblies:
   - DrawnUi.Maui
@@ -653,11 +653,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileFromResource
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 130
   assemblies:
   - DrawnUi.Maui
@@ -691,11 +691,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileFromCode
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 141
   assemblies:
   - DrawnUi.Maui
@@ -731,11 +731,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeCompiled
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 149
   assemblies:
   - DrawnUi.Maui
@@ -757,11 +757,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyTo
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 179
   assemblies:
   - DrawnUi.Maui
@@ -806,11 +806,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyTo
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 196
   assemblies:
   - DrawnUi.Maui
@@ -846,11 +846,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawRect
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 212
   assemblies:
   - DrawnUi.Maui
@@ -881,11 +881,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawRect
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 237
   assemblies:
   - DrawnUi.Maui
@@ -914,11 +914,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DrawImage
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 264
   assemblies:
   - DrawnUi.Maui
@@ -959,11 +959,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateUniforms
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 300
   assemblies:
   - DrawnUi.Maui
@@ -1020,11 +1020,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateChildren
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 340
   assemblies:
   - DrawnUi.Maui
@@ -1070,11 +1070,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTextureShader
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 357
   assemblies:
   - DrawnUi.Maui
@@ -1112,11 +1112,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPaint
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 384
   assemblies:
   - DrawnUi.Maui
@@ -1140,11 +1140,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NormalizeLineEndings
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 394
   assemblies:
   - DrawnUi.Maui
@@ -1174,11 +1174,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SkiaShader.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Features/Shaders/SkiaShader.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
     startLine: 401
   assemblies:
   - DrawnUi.Maui

@@ -15,11 +15,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IInvokeProvider
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 62
   assemblies:
   - DrawnUi.Maui
@@ -72,11 +72,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Invoke
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 67
   assemblies:
   - DrawnUi.Maui

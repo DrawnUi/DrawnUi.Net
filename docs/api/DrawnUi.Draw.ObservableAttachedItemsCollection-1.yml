@@ -15,11 +15,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Base/ObservableAttachedItemsCollection.cs
+      path: src/Shared/DrawnUi/Draw/Base/ObservableAttachedItemsCollection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObservableAttachedItemsCollection
-    path: ../src/Shared/Draw/Base/ObservableAttachedItemsCollection.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/ObservableAttachedItemsCollection.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -96,11 +96,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/ObservableAttachedItemsCollection.cs
+      path: src/Shared/DrawnUi/Draw/Base/ObservableAttachedItemsCollection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearItems
-    path: ../src/Shared/Draw/Base/ObservableAttachedItemsCollection.cs
+    path: ../src/Shared/DrawnUi/Draw/Base/ObservableAttachedItemsCollection.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui

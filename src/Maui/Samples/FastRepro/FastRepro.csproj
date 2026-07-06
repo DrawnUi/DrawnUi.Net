@@ -111,6 +111,11 @@
 	</ItemGroup>
 
 
+  <ItemGroup>
+    <Compile Remove="SkiaTest\TestComputeFastBounds.cs" />
+  </ItemGroup>
+
+
 	<ItemGroup>
         <!--https://github.com/BretJohnson/hot-preview-->
         <!--<PackageReference Include="HotPreview.App.Maui" Version="0.12.6" />-->
@@ -149,6 +154,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\DrawnUi\DrawnUi.Maui.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Repro\MainPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
     </ItemGroup>
  
 

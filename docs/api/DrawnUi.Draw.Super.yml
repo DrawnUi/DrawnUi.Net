@@ -79,11 +79,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Super
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -445,11 +445,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UseFrozenVisualLayers
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -472,11 +472,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateHttpClient
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -505,11 +505,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SendTapsOnMainThread
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -534,11 +534,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Multithreaded
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -566,11 +566,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PreloadRegisteredFonts
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 33
   assemblies:
   - DrawnUi.Maui
@@ -593,11 +593,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OffscreenRenderingAtCanvasLevel
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 39
   assemblies:
   - DrawnUi.Maui
@@ -627,11 +627,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetupFrameLooper
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -653,11 +653,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxFps
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -691,11 +691,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CanUseHardwareAcceleration
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 74
   assemblies:
   - DrawnUi.Maui
@@ -720,11 +720,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsPrerenderingEnabled
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 81
   assemblies:
   - DrawnUi.Maui
@@ -754,11 +754,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Log
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 88
   assemblies:
   - DrawnUi.Maui
@@ -792,11 +792,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetLocale
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 110
   assemblies:
   - DrawnUi.Maui
@@ -824,11 +824,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Initialized
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 118
   assemblies:
   - DrawnUi.Maui
@@ -853,11 +853,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitShared
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 128
   assemblies:
   - DrawnUi.Maui
@@ -879,11 +879,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnableRendering
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 138
   assemblies:
   - DrawnUi.Maui
@@ -908,11 +908,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsRtl
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 153
   assemblies:
   - DrawnUi.Maui
@@ -939,11 +939,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FontSubPixelRendering
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 170
   assemblies:
   - DrawnUi.Maui
@@ -970,11 +970,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InsetsChanged
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 189
   assemblies:
   - DrawnUi.Maui
@@ -999,11 +999,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Screen
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 195
   assemblies:
   - DrawnUi.Maui
@@ -1028,11 +1028,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CapMicroSecs
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 208
   assemblies:
   - DrawnUi.Maui
@@ -1057,11 +1057,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCurrentTimeMs
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 210
   assemblies:
   - DrawnUi.Maui
@@ -1085,11 +1085,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetCurrentTimeNanos
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 217
   assemblies:
   - DrawnUi.Maui
@@ -1113,11 +1113,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NavBarHeight
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 227
   assemblies:
   - DrawnUi.Maui
@@ -1144,11 +1144,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StatusBarHeight
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 232
   assemblies:
   - DrawnUi.Maui
@@ -1175,11 +1175,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NavigationBarHeight
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 237
   assemblies:
   - DrawnUi.Maui
@@ -1206,11 +1206,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BottomTabsHeight
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 242
   assemblies:
   - DrawnUi.Maui
@@ -1237,11 +1237,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxFrameLengthMs
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 246
   assemblies:
   - DrawnUi.Maui
@@ -1266,11 +1266,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThermalState
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 248
   assemblies:
   - DrawnUi.Maui
@@ -1295,11 +1295,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThermalStateChanged
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 250
   assemblies:
   - DrawnUi.Maui
@@ -1322,11 +1322,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppCreated
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 266
   assemblies:
   - DrawnUi.Maui
@@ -1351,11 +1351,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppPaused
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 268
   assemblies:
   - DrawnUi.Maui
@@ -1378,11 +1378,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppResumed
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 270
   assemblies:
   - DrawnUi.Maui
@@ -1405,11 +1405,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnNativeAppDestroyed
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 272
   assemblies:
   - DrawnUi.Maui
@@ -1432,11 +1432,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitialWindowSize
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 274
   assemblies:
   - DrawnUi.Maui
@@ -1459,11 +1459,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCreated
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 280
   assemblies:
   - DrawnUi.Maui
@@ -1485,11 +1485,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWentBackground
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 287
   assemblies:
   - DrawnUi.Maui
@@ -1511,11 +1511,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnWentForeground
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 293
   assemblies:
   - DrawnUi.Maui
@@ -1537,11 +1537,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnMauiAppCreated
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 303
   assemblies:
   - DrawnUi.Maui
@@ -1566,11 +1566,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedGlobalRefresh
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 309
   assemblies:
   - DrawnUi.Maui
@@ -1595,11 +1595,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NeedGlobalUpdate
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 315
   assemblies:
   - DrawnUi.Maui
@@ -1623,11 +1623,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InBackground
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 326
   assemblies:
   - DrawnUi.Maui
@@ -1652,11 +1652,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StopRenderingInBackground
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 366
   assemblies:
   - DrawnUi.Maui
@@ -1681,11 +1681,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunOnMainThreadAndWait
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 389
   assemblies:
   - DrawnUi.Maui
@@ -1712,11 +1712,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RunOnMainThreadAndWaitAsync
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 413
   assemblies:
   - DrawnUi.Maui
@@ -1748,11 +1748,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CacheEnabled
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 451
   assemblies:
   - DrawnUi.Maui
@@ -1777,11 +1777,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GpuCacheEnabled
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 453
   assemblies:
   - DrawnUi.Maui
@@ -1806,11 +1806,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UserAgent
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 455
   assemblies:
   - DrawnUi.Maui
@@ -1835,11 +1835,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaGeneration
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 457
   assemblies:
   - DrawnUi.Maui
@@ -1862,11 +1862,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnqueueBackgroundTask
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 464
   assemblies:
   - DrawnUi.Maui
@@ -1894,11 +1894,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProcessBackgroundQueue
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 469
   assemblies:
   - DrawnUi.Maui
@@ -1922,11 +1922,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotationChanged
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 489
   assemblies:
   - DrawnUi.Maui
@@ -1949,11 +1949,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeviceRotation
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 494
   assemblies:
   - DrawnUi.Maui
@@ -1980,11 +1980,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OrientationChanged
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 507
   assemblies:
   - DrawnUi.Maui
@@ -2007,11 +2007,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeviceOrientation
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 509
   assemblies:
   - DrawnUi.Maui
@@ -2036,11 +2036,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Super.cs
+      path: src/Shared/DrawnUi/Super.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DeviceRotationSnap
-    path: ../src/Shared/Super.cs
+    path: ../src/Shared/DrawnUi/Super.cs
     startLine: 523
   assemblies:
   - DrawnUi.Maui

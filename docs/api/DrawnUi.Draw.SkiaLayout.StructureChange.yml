@@ -7,15 +7,19 @@ items:
   children:
   - DrawnUi.Draw.SkiaLayout.StructureChange.#ctor(DrawnUi.Draw.SkiaLayout.StructureChangeType,System.Int64)
   - DrawnUi.Draw.SkiaLayout.StructureChange.Count
+  - DrawnUi.Draw.SkiaLayout.StructureChange.Epoch
   - DrawnUi.Draw.SkiaLayout.StructureChange.InsertAtIndex
   - DrawnUi.Draw.SkiaLayout.StructureChange.IsInsertOperation
   - DrawnUi.Draw.SkiaLayout.StructureChange.IsVisible
   - DrawnUi.Draw.SkiaLayout.StructureChange.Items
   - DrawnUi.Draw.SkiaLayout.StructureChange.MeasuredItems
   - DrawnUi.Draw.SkiaLayout.StructureChange.OffsetOthers
+  - DrawnUi.Draw.SkiaLayout.StructureChange.OldCount
+  - DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath
   - DrawnUi.Draw.SkiaLayout.StructureChange.Stamp
   - DrawnUi.Draw.SkiaLayout.StructureChange.StartIndex
   - DrawnUi.Draw.SkiaLayout.StructureChange.StartingPosition
+  - DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval
   - DrawnUi.Draw.SkiaLayout.StructureChange.TargetIndex
   - DrawnUi.Draw.SkiaLayout.StructureChange.Type
   langs:
@@ -27,12 +31,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StructureChange
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 88
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -66,12 +70,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 91
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 174
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -100,12 +104,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stamp
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 97
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 180
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -116,6 +120,40 @@ items:
       type: System.Int64
     content.vb: Public Property Stamp As Long
   overload: DrawnUi.Draw.SkiaLayout.StructureChange.Stamp*
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.Epoch
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.Epoch
+  id: Epoch
+  parent: DrawnUi.Draw.SkiaLayout.StructureChange
+  langs:
+  - csharp
+  - vb
+  name: Epoch
+  nameWithType: SkiaLayout.StructureChange.Epoch
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.Epoch
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Epoch
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 186
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Value of _itemsShiftEpoch this change was computed under; background measurement
+
+    changes from an older epoch reference pre-shift indices/positions and must be dropped.
+  example: []
+  syntax:
+    content: public int Epoch { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Epoch As Integer
+  overload: DrawnUi.Draw.SkiaLayout.StructureChange.Epoch*
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.Type
   commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.Type
   id: Type
@@ -129,12 +167,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Type
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 98
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -158,12 +196,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OffsetOthers
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 99
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -187,12 +225,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartIndex
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 100
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -216,12 +254,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Count
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 101
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -232,6 +270,44 @@ items:
       type: System.Int32
     content.vb: Public Property Count As Integer
   overload: DrawnUi.Draw.SkiaLayout.StructureChange.Count*
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.OldCount
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.OldCount
+  id: OldCount
+  parent: DrawnUi.Draw.SkiaLayout.StructureChange
+  langs:
+  - csharp
+  - vb
+  name: OldCount
+  nameWithType: SkiaLayout.StructureChange.OldCount
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.OldCount
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OldCount
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 199
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    For Replace: number of OLD items being replaced. May differ from Count (new items)
+
+    when a range Replace shrinks or grows the collection (e.g. windowed list trim/jump).
+
+    ApplyReplaceChange removes OldCount entries then adds Count entries; reusing Count for
+
+    both halves leaves stale structure entries on a shrinking Replace.
+  example: []
+  syntax:
+    content: public int OldCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property OldCount As Integer
+  overload: DrawnUi.Draw.SkiaLayout.StructureChange.OldCount*
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.Items
   commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.Items
   id: Items
@@ -245,12 +321,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Items
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 102
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -274,12 +350,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TargetIndex
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 103
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 202
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -303,12 +379,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MeasuredItems
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 104
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -332,12 +408,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InsertAtIndex
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 105
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -361,12 +437,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsInsertOperation
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 106
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -390,12 +466,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsVisible
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 107
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -406,6 +482,82 @@ items:
       type: System.Boolean
     content.vb: Public Property IsVisible As Boolean
   overload: DrawnUi.Draw.SkiaLayout.StructureChange.IsVisible*
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval
+  id: TailRemoval
+  parent: DrawnUi.Draw.SkiaLayout.StructureChange
+  langs:
+  - csharp
+  - vb
+  name: TailRemoval
+  nameWithType: SkiaLayout.StructureChange.TailRemoval
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: TailRemoval
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 214
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Remove was at the collection tail at the moment it was raised (window trim).
+
+    Must be detected at staging time: by the time the change is applied the live
+
+    ItemsSource may already contain a subsequent prepend from the same frame,
+
+    making StartIndex == Count checks unreliable.
+  example: []
+  syntax:
+    content: public bool TailRemoval { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property TailRemoval As Boolean
+  overload: DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval*
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath
+  id: SkipTrimFastPath
+  parent: DrawnUi.Draw.SkiaLayout.StructureChange
+  langs:
+  - csharp
+  - vb
+  name: SkipTrimFastPath
+  nameWithType: SkiaLayout.StructureChange.SkipTrimFastPath
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SkipTrimFastPath
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 222
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Remove was emitted as the remove-half of a Replace, NOT a window head/tail trim.
+
+    The trim fast paths assume cells beyond the removed block are real survivors that keep
+
+    their positions; for a Replace that is false (the range is being swapped), so they must
+
+    be skipped or the structure keeps stale survivors and rebases content into empty space.
+  example: []
+  syntax:
+    content: public bool SkipTrimFastPath { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property SkipTrimFastPath As Boolean
+  overload: DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath*
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.StartingPosition
   commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.StartingPosition
   id: StartingPosition
@@ -419,12 +571,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ListView.cs
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartingPosition
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 110
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -834,6 +986,23 @@ references:
   name: Stamp
   nameWithType: SkiaLayout.StructureChange.Stamp
   fullName: DrawnUi.Draw.SkiaLayout.StructureChange.Stamp
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.Epoch*
+  commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.Epoch
+  href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_Epoch
+  name: Epoch
+  nameWithType: SkiaLayout.StructureChange.Epoch
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.Epoch
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.Type*
   commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.Type
   href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_Type
@@ -900,23 +1069,18 @@ references:
   name: StartIndex
   nameWithType: SkiaLayout.StructureChange.StartIndex
   fullName: DrawnUi.Draw.SkiaLayout.StructureChange.StartIndex
-- uid: System.Int32
-  commentId: T:System.Int32
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: int
-  nameWithType: int
-  fullName: int
-  nameWithType.vb: Integer
-  fullName.vb: Integer
-  name.vb: Integer
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.Count*
   commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.Count
   href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_Count
   name: Count
   nameWithType: SkiaLayout.StructureChange.Count
   fullName: DrawnUi.Draw.SkiaLayout.StructureChange.Count
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.OldCount*
+  commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.OldCount
+  href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_OldCount
+  name: OldCount
+  nameWithType: SkiaLayout.StructureChange.OldCount
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.OldCount
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.Items*
   commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.Items
   href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_Items
@@ -1128,6 +1292,18 @@ references:
   name: IsVisible
   nameWithType: SkiaLayout.StructureChange.IsVisible
   fullName: DrawnUi.Draw.SkiaLayout.StructureChange.IsVisible
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval*
+  commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval
+  href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_TailRemoval
+  name: TailRemoval
+  nameWithType: SkiaLayout.StructureChange.TailRemoval
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.TailRemoval
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath*
+  commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath
+  href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_SkipTrimFastPath
+  name: SkipTrimFastPath
+  nameWithType: SkiaLayout.StructureChange.SkipTrimFastPath
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.SkipTrimFastPath
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.StartingPosition*
   commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.StartingPosition
   href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_StartingPosition

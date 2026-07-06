@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -30,24 +30,24 @@
 
     <ItemGroup>
     
-      <PackageReference Include="AppoMobi.Blazor.Gestures" Version="3.10.4" />
+      <PackageReference Include="AppoMobi.Blazor.Gestures" Version="3.10.6" />
     
-      <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
+      <PackageReference Include="AppoMobi.Specials" Version="10.0.2" />
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
-        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="8.3.1.6-preview.2.1" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="14.2.0" />
 
-      <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-preview.2.1" />
+      <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.148.0" />
       <PackageReference Include="Svg.Skia" Version="4.9.0" />
     
       <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
 
-    <PackageReference Include="SkiaSharp.Views.Blazor" Version="4.147.0-preview.2.1" />
-        <PackageReference Include="SkiaSharp.Skottie" Version="4.147.0-preview.2.1" />
+    <PackageReference Include="SkiaSharp.Views.Blazor" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.Skottie" Version="4.148.0" />
 
   </ItemGroup>
 
  
-  <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
+  <Import Project="..\..\Shared\DrawnUi\Shared.projitems" Label="Shared" />
   <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
 
   <ItemGroup>

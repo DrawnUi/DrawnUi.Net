@@ -14,11 +14,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Effects/SkiaDoubleAttachedTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/SkiaDoubleAttachedTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaDoubleAttachedTexturesEffect
-    path: ../src/Shared/Features/Effects/SkiaDoubleAttachedTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaDoubleAttachedTexturesEffect.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -95,10 +95,12 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.TileMode
   - DrawnUi.Draw.SkiaShaderEffect.OnDisposing
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
   - DrawnUi.Draw.SkiaEffect.Update
+  - DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   - Microsoft.Maui.Controls.BindableObject.BindingContextProperty
   - Microsoft.Maui.Controls.BindableObject.ClearValue(Microsoft.Maui.Controls.BindableProperty)
@@ -1212,6 +1214,13 @@ references:
   name: Parent
   nameWithType: SkiaEffect.Parent
   fullName: DrawnUi.Draw.SkiaEffect.Parent
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
 - uid: DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.SkiaEffect
@@ -1293,6 +1302,37 @@ references:
     name: Update
     href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Update
   - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin(float)
+  nameWithType: SkiaEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin(float)
+  nameWithType.vb: SkiaEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)

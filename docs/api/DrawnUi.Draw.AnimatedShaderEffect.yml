@@ -24,11 +24,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimatedShaderEffect
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -115,10 +115,12 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.TileModeProperty
   - DrawnUi.Draw.SkiaShaderEffect.TileMode
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
   - DrawnUi.Draw.SkiaEffect.Update
+  - DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   - Microsoft.Maui.Controls.BindableObject.BindingContextProperty
   - Microsoft.Maui.Controls.BindableObject.ClearValue(Microsoft.Maui.Controls.BindableProperty)
@@ -163,11 +165,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Center
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -194,11 +196,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnCompleted
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -220,11 +222,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Completed
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -247,11 +249,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationMs
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -278,11 +280,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Progress
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -312,11 +314,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Animator
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -339,11 +341,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Play
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 47
   assemblies:
   - DrawnUi.Maui
@@ -370,11 +372,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Stop
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 88
   assemblies:
   - DrawnUi.Maui
@@ -398,11 +400,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateUniforms
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 93
   assemblies:
   - DrawnUi.Maui
@@ -432,11 +434,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/AnimatedShaderEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Shared/Features/Effects/AnimatedShaderEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 105
   assemblies:
   - DrawnUi.Maui
@@ -1482,6 +1484,13 @@ references:
   name: Parent
   nameWithType: SkiaEffect.Parent
   fullName: DrawnUi.Draw.SkiaEffect.Parent
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
 - uid: DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.SkiaEffect
@@ -1563,6 +1572,37 @@ references:
     name: Update
     href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Update
   - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin(float)
+  nameWithType: SkiaEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin(float)
+  nameWithType.vb: SkiaEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)

@@ -18,11 +18,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnderdampedSpringTimingVectorParameters
-    path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -55,11 +55,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -93,11 +93,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationSecs
-    path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -125,11 +125,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueAt
-    path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -162,11 +162,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AmplitudeAt
-    path: ../src/Shared/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/UnderdampedSpringTimingVectorParameters.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui

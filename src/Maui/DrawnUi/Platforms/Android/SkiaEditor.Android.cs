@@ -6,6 +6,7 @@ using Android.Widget;
 using DrawnUi.Draw;
 using Java.Lang;
 using System.Diagnostics;
+using Exception = System.Exception;
 
 namespace DrawnUi.Draw
 {
@@ -46,13 +47,6 @@ namespace DrawnUi.Draw
             }
 
             Control.InputType = inputType;
-        }
-
-        partial void PlatformClearFocusNow()
-        {
-            // Remove input capture from this EditText without closing the keyboard.
-            // The keyboard stays visible; the next focused editor inherits it.
-            Control?.ClearFocus();
         }
 
         public void DisposePlatform()
@@ -135,13 +129,32 @@ namespace DrawnUi.Draw
             }
         }
 
+        partial void SyncNativeText()
+        {
+            if (Control == null || _updatingText)
+                return;
+
+            var newText = Text ?? string.Empty;
+            if ((Control.Text ?? string.Empty) == newText)
+                return;
+
+            _updatingText = true;
+            try { Control.Text = newText; }
+            finally { _updatingText = false; }
+        }
+
         private void Control_EditorAction(object sender, TextView.EditorActionEventArgs e)
         {
             if (IsMultiline)
             {
-                // Let the native EditText insert the line break and advance selection.
-                e.Handled = false;
-                return;
+                // Hardware Shift+Enter keeps inserting a line break even with ReturnType.Send.
+                var shiftPressed = e.Event?.IsShiftPressed ?? false;
+                if (!ShouldSubmitOnEnter || shiftPressed)
+                {
+                    // Let the native EditText insert the line break and advance selection.
+                    e.Handled = false;
+                    return;
+                }
             }
 
             e.Handled = true;
@@ -224,6 +237,8 @@ namespace DrawnUi.Draw
                     CreateNativeControl();
                 }
 
+                if (Control == null) return;
+
                 if (focus)
                 {
                     _updatingText = true;
@@ -249,24 +264,31 @@ namespace DrawnUi.Draw
                     // Defer IME show and cursor to after the view layout pass so:
                     // 1. ShowSoftInput fires after the view is properly focused (no toggle needed)
                     // 2. SetSelection fires after IME connects (prevents IME from resetting cursor to 0)
-                    Control.Post(() =>
+                    // Flags NONE (explicit request): this path runs from a user tap or a programmatic
+                    // SetFocus — an IMPLICIT request is ignorable by the IME and reliably fails to
+                    // re-show the keyboard after a BACK dismiss (the hidden EditText never lost native
+                    // focus — ClearFocus() re-focuses the only focusable view — so RequestFocus has no
+                    // transition for the implicit show to piggyback on).
+                    InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
+                    imm.ShowSoftInput(Control, (ShowFlags)0); // 0 = explicit request (binding has no ShowFlags.None)
+                    var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
+                    try
                     {
-                        if (Control == null) return;
-                        InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
-                        imm.ShowSoftInput(Control, ShowFlags.Implicit);
-                        var pos = System.Math.Max(0, System.Math.Min(CursorPosition, Control.Text?.Length ?? 0));
-                        try
-                        {
-                            if (SelectionLength > 0)
-                                Control.SetSelection(pos, System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
-                            else
-                                Control.SetSelection(pos);
-                        }
-                        catch { }
-                    });
+                        if (SelectionLength > 0)
+                            Control.SetSelection(pos,
+                                System.Math.Min(pos + SelectionLength, Control.Text?.Length ?? 0));
+                        else
+                            Control.SetSelection(pos);
+                    }
+                    catch (Exception e)
+                    {
+                        Super.Log(e);
+                    }
                 }
                 else
                 {
+                    PlatformClearFocusNow();
+
                     Control.ClearFocus();
                     if (closeKeyboard)
                         CloseKeyboard();
@@ -302,6 +324,29 @@ namespace DrawnUi.Draw
             imm.HideSoftInputFromWindow(Control.WindowToken, HideSoftInputFlags.None);
         }
 
+        private CancellationTokenSource? _deferCts;
+
+        private async void DeferVisualCursorUpdate()
+        {
+            _deferCts?.Cancel();
+            _deferCts = new CancellationTokenSource();
+            var token = _deferCts.Token;
+            try
+            {
+                await Task.Delay(50, token);
+                _suppressImmediateCursorMove = false;
+                MoveInternalCursor();
+            }
+            catch (OperationCanceledException)
+            {
+                _suppressImmediateCursorMove = false;
+            }
+        }
+
+        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+
+        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
+
         public int GenerateUniqueId()
         {
             long currentTime = DateTime.Now.Ticks;
@@ -325,8 +370,20 @@ namespace DrawnUi.Draw
             Control.SetImeActionLabel(ActionNext, ImeAction.Next);
             break;
             case ReturnType.Send:
-            Control.SetSingleLine(true);
-            Control.ImeOptions = ImeAction.Send;
+            if (IsMultiline)
+            {
+                // Send action on a multiline field: keep TextView multiline behavior but
+                // report a non-multiline raw input type so the IME shows Send instead of Enter.
+                Control.SetSingleLine(false);
+                Control.ImeOptions = ImeAction.Send;
+                Control.SetRawInputType(Android.Text.InputTypes.ClassText |
+                                        Android.Text.InputTypes.TextFlagCapSentences);
+            }
+            else
+            {
+                Control.SetSingleLine(true);
+                Control.ImeOptions = ImeAction.Send;
+            }
             Control.SetImeActionLabel(ActionSend, ImeAction.Send);
             break;
             case ReturnType.Search:

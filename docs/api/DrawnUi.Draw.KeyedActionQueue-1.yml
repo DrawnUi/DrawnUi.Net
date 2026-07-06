@@ -22,11 +22,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyedActionQueue
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 46
   assemblies:
   - DrawnUi.Maui
@@ -64,11 +64,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 71
   assemblies:
   - DrawnUi.Maui
@@ -98,11 +98,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Enqueue
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -133,11 +133,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dequeue
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 112
   assemblies:
   - DrawnUi.Maui
@@ -165,11 +165,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Count
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 130
   assemblies:
   - DrawnUi.Maui
@@ -198,11 +198,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Clear
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 144
   assemblies:
   - DrawnUi.Maui
@@ -228,11 +228,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContainsKey
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 157
   assemblies:
   - DrawnUi.Maui
@@ -263,11 +263,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TryRemove
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 168
   assemblies:
   - DrawnUi.Maui
@@ -298,11 +298,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ExecuteAll
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 186
   assemblies:
   - DrawnUi.Maui

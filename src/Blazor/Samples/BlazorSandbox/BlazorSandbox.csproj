@@ -11,7 +11,7 @@
     <WasmBuildNative>true</WasmBuildNative>
 
     <!-- use nugets or ref drawnui source-->
-    <UseSource>false</UseSource>
+    <UseSource>true</UseSource>
 
 </PropertyGroup>
 
@@ -21,13 +21,16 @@
 </ItemGroup>
 
 <ItemGroup Condition="'$(UseSource)' != 'true'">
-    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.0.1-preview1.9" />
+    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.4.1" />
 </ItemGroup>
 
 <ItemGroup Condition="'$(UseSource)' == 'true'">
   <ProjectReference Include="..\..\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj" />
   <ProjectReference Include="..\..\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj" />
 </ItemGroup>
+
+  <!-- Shared Pong game code (PongGame, AI, sprites, RescalingCanvas) -->
+    <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />

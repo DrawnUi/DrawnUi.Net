@@ -8,6 +8,8 @@ items:
   - DrawnUi.Draw.ViewsAdapter.#ctor(DrawnUi.Draw.SkiaLayout)
   - DrawnUi.Draw.ViewsAdapter.AddMoreToPool(System.Int32)
   - DrawnUi.Draw.ViewsAdapter.AddedMore
+  - DrawnUi.Draw.ViewsAdapter.ApplyInsertShift(System.Collections.IList,System.Int32,System.Int32)
+  - DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift(System.Collections.IList,System.Int32,System.Int32)
   - DrawnUi.Draw.ViewsAdapter.AttachView(DrawnUi.Draw.SkiaControl,System.Int32,System.Boolean)
   - DrawnUi.Draw.ViewsAdapter.CancelBackgroundPoolFilling
   - DrawnUi.Draw.ViewsAdapter.Dispose
@@ -18,9 +20,11 @@ items:
   - DrawnUi.Draw.ViewsAdapter.FillPool(System.Int32,System.Collections.IList)
   - DrawnUi.Draw.ViewsAdapter.FillPool(System.Int32,System.Threading.CancellationToken)
   - DrawnUi.Draw.ViewsAdapter.FillPoolInBackgroundAsync(System.Int32)
+  - DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull(System.Int32)
   - DrawnUi.Draw.ViewsAdapter.GetChildrenCount
+  - DrawnUi.Draw.ViewsAdapter.GetContextAt(System.Int32)
   - DrawnUi.Draw.ViewsAdapter.GetDebugInfo
-  - DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl,System.Boolean)
   - DrawnUi.Draw.ViewsAdapter.GetTemplateInstance
   - DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
   - DrawnUi.Draw.ViewsAdapter.GetViewsIterator
@@ -28,15 +32,19 @@ items:
   - DrawnUi.Draw.ViewsAdapter.InitializeTemplates(System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.Func{System.Object},System.Collections.IList,System.Int32,System.Int32)
   - DrawnUi.Draw.ViewsAdapter.InvalidateAllPooledCells
   - DrawnUi.Draw.ViewsAdapter.IsDisposed
+  - DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex(System.Int32)
   - DrawnUi.Draw.ViewsAdapter.LogEnabled
   - DrawnUi.Draw.ViewsAdapter.MarkAllViewsAsHidden
   - DrawnUi.Draw.ViewsAdapter.MarkViewAsHidden(System.Int32)
   - DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   - DrawnUi.Draw.ViewsAdapter.PoolSize
   - DrawnUi.Draw.ViewsAdapter.PrintDebugVisible
+  - DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex(System.Int32)
+  - DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.ViewsAdapter.ReleaseTemplateInstance(DrawnUi.Draw.SkiaControl,System.Boolean)
   - DrawnUi.Draw.ViewsAdapter.ReleaseViewInUse(System.Int32,DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.ViewsAdapter.ReleaseViewToPool(DrawnUi.Draw.SkiaControl,System.Boolean)
+  - DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize(System.Int32)
   - DrawnUi.Draw.ViewsAdapter.TemplatesAvailable
   - DrawnUi.Draw.ViewsAdapter.TemplatesBusy
   - DrawnUi.Draw.ViewsAdapter.TemplatesInvalidated
@@ -54,12 +62,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViewsAdapter
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 12
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 7
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -95,12 +103,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LogEnabled
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 14
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 9
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -122,12 +130,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPoolInBackgroundAsync
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 27
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 22
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -160,12 +168,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CancelBackgroundPoolFilling
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 104
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 99
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -188,12 +196,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 119
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 114
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -216,6 +224,45 @@ items:
   nameWithType.vb: ViewsAdapter.FillPool(Integer, CancellationToken)
   fullName.vb: DrawnUi.Draw.ViewsAdapter.FillPool(Integer, System.Threading.CancellationToken)
   name.vb: FillPool(Integer, CancellationToken)
+- uid: DrawnUi.Draw.ViewsAdapter.GetContextAt(System.Int32)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.GetContextAt(System.Int32)
+  id: GetContextAt(System.Int32)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetContextAt(int)
+  nameWithType: ViewsAdapter.GetContextAt(int)
+  fullName: DrawnUi.Draw.ViewsAdapter.GetContextAt(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetContextAt
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 153
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Returns the data context currently held at the given index in the render snapshot, or null.
+
+    Used to capture a scroll anchor before a collection change refreshes the snapshot.
+  example: []
+  syntax:
+    content: public object GetContextAt(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Object
+    content.vb: Public Function GetContextAt(index As Integer) As Object
+  overload: DrawnUi.Draw.ViewsAdapter.GetContextAt*
+  nameWithType.vb: ViewsAdapter.GetContextAt(Integer)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.GetContextAt(Integer)
+  name.vb: GetContextAt(Integer)
 - uid: DrawnUi.Draw.ViewsAdapter.InitializeTemplates(System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.Func{System.Object},System.Collections.IList,System.Int32,System.Int32)
   commentId: M:DrawnUi.Draw.ViewsAdapter.InitializeTemplates(System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.Func{System.Object},System.Collections.IList,System.Int32,System.Int32)
   id: InitializeTemplates(System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.Func{System.Object},System.Collections.IList,System.Int32,System.Int32)
@@ -229,12 +276,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeTemplates
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 146
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 187
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -275,12 +322,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InitializeSoft
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 230
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 276
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -298,6 +345,157 @@ items:
   nameWithType.vb: ViewsAdapter.InitializeSoft(Boolean, IList, Integer)
   fullName.vb: DrawnUi.Draw.ViewsAdapter.InitializeSoft(Boolean, System.Collections.IList, Integer)
   name.vb: InitializeSoft(Boolean, IList, Integer)
+- uid: DrawnUi.Draw.ViewsAdapter.ApplyInsertShift(System.Collections.IList,System.Int32,System.Int32)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.ApplyInsertShift(System.Collections.IList,System.Int32,System.Int32)
+  id: ApplyInsertShift(System.Collections.IList,System.Int32,System.Int32)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: ApplyInsertShift(IList, int, int)
+  nameWithType: ViewsAdapter.ApplyInsertShift(IList, int, int)
+  fullName: DrawnUi.Draw.ViewsAdapter.ApplyInsertShift(System.Collections.IList, int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ApplyInsertShift
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 392
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Synchronously aligns the adapter with an index shift the layout structure is applying
+
+    right now (e.g. head insert for backward LoadMore): rekeys the views currently in use
+
+    (so a visible cell keeps its view and binding — rebinding becomes a no-op) and swaps in
+
+    a fresh data-contexts snapshot. Without this the structure indices move immediately on
+
+    the render thread while the adapter waits for a POSTED InitializeSoft — for one frame
+
+    visible indices resolve to pre-insert items: wrong contexts flash and their draw-time
+
+    remeasure poisons the structure with wrong heights.
+
+    Call from the render thread, atomically with the structure index shift, after the
+
+    source mutation has completed.
+  example: []
+  syntax:
+    content: public void ApplyInsertShift(IList source, int startIndex, int count)
+    parameters:
+    - id: source
+      type: System.Collections.IList
+    - id: startIndex
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    content.vb: Public Sub ApplyInsertShift(source As IList, startIndex As Integer, count As Integer)
+  overload: DrawnUi.Draw.ViewsAdapter.ApplyInsertShift*
+  nameWithType.vb: ViewsAdapter.ApplyInsertShift(IList, Integer, Integer)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.ApplyInsertShift(System.Collections.IList, Integer, Integer)
+  name.vb: ApplyInsertShift(IList, Integer, Integer)
+- uid: DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift(System.Collections.IList,System.Int32,System.Int32)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift(System.Collections.IList,System.Int32,System.Int32)
+  id: ApplyRemoveShift(System.Collections.IList,System.Int32,System.Int32)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: ApplyRemoveShift(IList, int, int)
+  nameWithType: ViewsAdapter.ApplyRemoveShift(IList, int, int)
+  fullName: DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift(System.Collections.IList, int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ApplyRemoveShift
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 407
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Synchronously aligns the adapter with a removal the layout structure is applying right
+
+    now (window trim for a bounded in-memory ItemsSource): releases views bound to removed
+
+    items, rekeys views after the removed range, and swaps in a fresh data-contexts snapshot.
+
+    ShiftCachedViewIndexes alone is wrong here — views INSIDE the removed range would be
+
+    shifted onto surviving indices instead of released.
+
+    Call from the render thread, atomically with the structure change, after the source
+
+    mutation has completed.
+  example: []
+  syntax:
+    content: public void ApplyRemoveShift(IList source, int startIndex, int count)
+    parameters:
+    - id: source
+      type: System.Collections.IList
+    - id: startIndex
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    content.vb: Public Sub ApplyRemoveShift(source As IList, startIndex As Integer, count As Integer)
+  overload: DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift*
+  nameWithType.vb: ViewsAdapter.ApplyRemoveShift(IList, Integer, Integer)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift(System.Collections.IList, Integer, Integer)
+  name.vb: ApplyRemoveShift(IList, Integer, Integer)
+- uid: DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex(System.Int32)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex(System.Int32)
+  id: IsViewRealizedForIndex(System.Int32)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: IsViewRealizedForIndex(int)
+  nameWithType: ViewsAdapter.IsViewRealizedForIndex(int)
+  fullName: DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IsViewRealizedForIndex
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 502
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Read-only: is a realized (in-use) view currently mapped to this item index? A background plane
+
+    renderer calls <xref href="DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32%2cDrawnUi.Draw.SkiaControl%2cSystem.Single%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref> off the render thread and bails the whole draw if it
+
+    returns null (pool not yet realized after a grow/rekey). Checking this on the render thread before
+
+    dispatching an off-thread bake lets a self-caching layout fall back to a synchronous record for the
+
+    few frames until the views are realized — avoiding a baked-in empty band.
+  example: []
+  syntax:
+    content: public bool IsViewRealizedForIndex(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsViewRealizedForIndex(index As Integer) As Boolean
+  overload: DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex*
+  nameWithType.vb: ViewsAdapter.IsViewRealizedForIndex(Integer)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex(Integer)
+  name.vb: IsViewRealizedForIndex(Integer)
 - uid: DrawnUi.Draw.ViewsAdapter._HandleSmartCollectionChange(System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.Collections.IList,System.Int32,System.Int32)
   commentId: M:DrawnUi.Draw.ViewsAdapter._HandleSmartCollectionChange(System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.Collections.IList,System.Int32,System.Int32)
   id: _HandleSmartCollectionChange(System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.Collections.IList,System.Int32,System.Int32)
@@ -311,12 +509,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _HandleSmartCollectionChange
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 408
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 535
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -353,12 +551,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReleaseViewInUse
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 724
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 852
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -374,6 +572,119 @@ items:
   nameWithType.vb: ViewsAdapter.ReleaseViewInUse(Integer, SkiaControl)
   fullName.vb: DrawnUi.Draw.ViewsAdapter.ReleaseViewInUse(Integer, DrawnUi.Draw.SkiaControl)
   name.vb: ReleaseViewInUse(Integer, SkiaControl)
+- uid: DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView(DrawnUi.Draw.SkiaControl)
+  id: ReleaseMeasuringView(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: ReleaseMeasuringView(SkiaControl)
+  nameWithType: ViewsAdapter.ReleaseMeasuringView(SkiaControl)
+  fullName: DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView(DrawnUi.Draw.SkiaControl)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ReleaseMeasuringView
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 888
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Releases a view realized transiently for on-demand gesture hit-testing (GetViewForIndex). Removes
+
+    it from the in-use map and returns it to the GENERIC pool (hKey 0) — symmetric with the height:0
+
+    gets the tiled-planes renderer uses, so gesture hit-testing never strands cells in a height bucket
+
+    and starves tile rendering.
+  example: []
+  syntax:
+    content: public void ReleaseMeasuringView(SkiaControl view)
+    parameters:
+    - id: view
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Sub ReleaseMeasuringView(view As SkiaControl)
+  overload: DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView*
+- uid: DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull(System.Int32)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull(System.Int32)
+  id: GetCellInUseOrNull(System.Int32)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetCellInUseOrNull(int)
+  nameWithType: ViewsAdapter.GetCellInUseOrNull(int)
+  fullName: DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetCellInUseOrNull
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 908
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Returns the live (in-use, bound, measured) cell currently realized for this index, or null. Does NOT
+
+    re-attach or measure — used by the tiled-planes renderer to keep resident-tile cells alive for gestures
+
+    and to release them only when no tile references the index anymore.
+  example: []
+  syntax:
+    content: public SkiaControl GetCellInUseOrNull(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Function GetCellInUseOrNull(index As Integer) As SkiaControl
+  overload: DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull*
+  nameWithType.vb: ViewsAdapter.GetCellInUseOrNull(Integer)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull(Integer)
+  name.vb: GetCellInUseOrNull(Integer)
+- uid: DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex(System.Int32)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex(System.Int32)
+  id: ReleaseCellByIndex(System.Int32)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: ReleaseCellByIndex(int)
+  nameWithType: ViewsAdapter.ReleaseCellByIndex(int)
+  fullName: DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ReleaseCellByIndex
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 918
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Releases an in-use cell by index back to the GENERIC pool (hKey 0), if one is realized.
+  example: []
+  syntax:
+    content: public void ReleaseCellByIndex(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    content.vb: Public Sub ReleaseCellByIndex(index As Integer)
+  overload: DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex*
+  nameWithType.vb: ViewsAdapter.ReleaseCellByIndex(Integer)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex(Integer)
+  name.vb: ReleaseCellByIndex(Integer)
 - uid: DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
   commentId: M:DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
   id: GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
@@ -387,12 +698,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetViewForIndex
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 745
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 941
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -426,30 +737,30 @@ items:
   nameWithType.vb: ViewsAdapter.GetViewForIndex(Integer, SkiaControl, Single, Boolean)
   fullName.vb: DrawnUi.Draw.ViewsAdapter.GetViewForIndex(Integer, DrawnUi.Draw.SkiaControl, Single, Boolean)
   name.vb: GetViewForIndex(Integer, SkiaControl, Single, Boolean)
-- uid: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl)
-  commentId: M:DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl)
-  id: GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl)
+- uid: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl,System.Boolean)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl,System.Boolean)
+  id: GetOrCreateViewForIndexInternal(System.Int32,System.Single,DrawnUi.Draw.SkiaControl,System.Boolean)
   parent: DrawnUi.Draw.ViewsAdapter
   langs:
   - csharp
   - vb
-  name: GetOrCreateViewForIndexInternal(int, float, SkiaControl)
-  nameWithType: ViewsAdapter.GetOrCreateViewForIndexInternal(int, float, SkiaControl)
-  fullName: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(int, float, DrawnUi.Draw.SkiaControl)
+  name: GetOrCreateViewForIndexInternal(int, float, SkiaControl, bool)
+  nameWithType: ViewsAdapter.GetOrCreateViewForIndexInternal(int, float, SkiaControl, bool)
+  fullName: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(int, float, DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetOrCreateViewForIndexInternal
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 826
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1030
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public SkiaControl GetOrCreateViewForIndexInternal(int index, float height = 0, SkiaControl template = null)
+    content: public SkiaControl GetOrCreateViewForIndexInternal(int index, float height = 0, SkiaControl template = null, bool isMeasuring = false)
     parameters:
     - id: index
       type: System.Int32
@@ -457,13 +768,15 @@ items:
       type: System.Single
     - id: template
       type: DrawnUi.Draw.SkiaControl
+    - id: isMeasuring
+      type: System.Boolean
     return:
       type: DrawnUi.Draw.SkiaControl
-    content.vb: Public Function GetOrCreateViewForIndexInternal(index As Integer, height As Single = 0, template As SkiaControl = Nothing) As SkiaControl
+    content.vb: Public Function GetOrCreateViewForIndexInternal(index As Integer, height As Single = 0, template As SkiaControl = Nothing, isMeasuring As Boolean = False) As SkiaControl
   overload: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal*
-  nameWithType.vb: ViewsAdapter.GetOrCreateViewForIndexInternal(Integer, Single, SkiaControl)
-  fullName.vb: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(Integer, Single, DrawnUi.Draw.SkiaControl)
-  name.vb: GetOrCreateViewForIndexInternal(Integer, Single, SkiaControl)
+  nameWithType.vb: ViewsAdapter.GetOrCreateViewForIndexInternal(Integer, Single, SkiaControl, Boolean)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal(Integer, Single, DrawnUi.Draw.SkiaControl, Boolean)
+  name.vb: GetOrCreateViewForIndexInternal(Integer, Single, SkiaControl, Boolean)
 - uid: DrawnUi.Draw.ViewsAdapter.ReleaseViewToPool(DrawnUi.Draw.SkiaControl,System.Boolean)
   commentId: M:DrawnUi.Draw.ViewsAdapter.ReleaseViewToPool(DrawnUi.Draw.SkiaControl,System.Boolean)
   id: ReleaseViewToPool(DrawnUi.Draw.SkiaControl,System.Boolean)
@@ -477,12 +790,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReleaseViewToPool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 867
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1089
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -515,12 +828,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 922
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -542,12 +855,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 925
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -574,12 +887,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 930
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1152
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -604,12 +917,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateVisibleViews
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 947
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -630,12 +943,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeVisibleViews
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 961
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -656,12 +969,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeViews
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 977
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1199
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -682,12 +995,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AttachView
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 986
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1208
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -705,6 +1018,45 @@ items:
   nameWithType.vb: ViewsAdapter.AttachView(SkiaControl, Integer, Boolean)
   fullName.vb: DrawnUi.Draw.ViewsAdapter.AttachView(DrawnUi.Draw.SkiaControl, Integer, Boolean)
   name.vb: AttachView(SkiaControl, Integer, Boolean)
+- uid: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize(System.Int32)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize(System.Int32)
+  id: SetPoolMaxSize(System.Int32)
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: SetPoolMaxSize(int)
+  nameWithType: ViewsAdapter.SetPoolMaxSize(int)
+  fullName: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SetPoolMaxSize
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1284
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Sets the recycling pool ceiling to exactly <code class="paramref">size</code> (may raise OR lower it, so the
+
+    tiled-planes auto-sizer can replace the default item-count cap with a geometry-based one). Lowering
+
+    just lets surplus returns dispose down over time. Used together with FillPool to pre-warm.
+  example: []
+  syntax:
+    content: public void SetPoolMaxSize(int size)
+    parameters:
+    - id: size
+      type: System.Int32
+    content.vb: Public Sub SetPoolMaxSize(size As Integer)
+  overload: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize*
+  nameWithType.vb: ViewsAdapter.SetPoolMaxSize(Integer)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize(Integer)
+  name.vb: SetPoolMaxSize(Integer)
 - uid: DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   commentId: P:DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   id: PoolMaxSize
@@ -718,12 +1070,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PoolMaxSize
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1055
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1292
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -747,12 +1099,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PoolSize
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1068
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1305
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -776,12 +1128,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MarkAllViewsAsHidden
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1087
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1324
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -802,12 +1154,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MarkViewAsHidden
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1099
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1336
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -834,12 +1186,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddedMore
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1127
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1364
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -863,12 +1215,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AddMoreToPool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1134
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1371
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -901,12 +1253,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1158
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1395
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -941,12 +1293,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillPool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1178
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1415
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -979,12 +1331,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateAllPooledCells
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1197
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1434
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1010,12 +1362,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetDebugInfo
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1215
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1453
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1038,12 +1390,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetChildrenCount
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1226
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1464
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1066,12 +1418,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _lockTemplates
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1250
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1503
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1093,12 +1445,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplesInvalidating
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1255
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1508
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1120,12 +1472,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatesInvalidated
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1259
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1512
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1149,12 +1501,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatesBusy
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1272
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1525
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1176,12 +1528,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateViews
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1278
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1531
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1208,12 +1560,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatesAvailable
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1290
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1543
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1239,12 +1591,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetViewsIterator
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1300
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1553
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1267,12 +1619,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeWrapper
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1347
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1600
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1293,12 +1645,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrintDebugVisible
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1359
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1612
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1319,12 +1671,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetTemplateInstance
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1373
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1626
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1347,12 +1699,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReleaseTemplateInstance
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1394
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1647
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1850,6 +2202,12 @@ references:
     name: Threading
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: DrawnUi.Draw.ViewsAdapter.GetContextAt*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.GetContextAt
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetContextAt_System_Int32_
+  name: GetContextAt
+  nameWithType: ViewsAdapter.GetContextAt
+  fullName: DrawnUi.Draw.ViewsAdapter.GetContextAt
 - uid: DrawnUi.Draw.ViewsAdapter.InitializeTemplates*
   commentId: Overload:DrawnUi.Draw.ViewsAdapter.InitializeTemplates
   href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_InitializeTemplates_System_Collections_Specialized_NotifyCollectionChangedEventArgs_System_Func_System_Object__System_Collections_IList_System_Int32_System_Int32_
@@ -2005,6 +2363,88 @@ references:
   name: InitializeSoft
   nameWithType: ViewsAdapter.InitializeSoft
   fullName: DrawnUi.Draw.ViewsAdapter.InitializeSoft
+- uid: DrawnUi.Draw.ViewsAdapter.ApplyInsertShift*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.ApplyInsertShift
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_ApplyInsertShift_System_Collections_IList_System_Int32_System_Int32_
+  name: ApplyInsertShift
+  nameWithType: ViewsAdapter.ApplyInsertShift
+  fullName: DrawnUi.Draw.ViewsAdapter.ApplyInsertShift
+- uid: DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_ApplyRemoveShift_System_Collections_IList_System_Int32_System_Int32_
+  name: ApplyRemoveShift
+  nameWithType: ViewsAdapter.ApplyRemoveShift
+  fullName: DrawnUi.Draw.ViewsAdapter.ApplyRemoveShift
+- uid: DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
+  commentId: M:DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetViewForIndex_System_Int32_DrawnUi_Draw_SkiaControl_System_Single_System_Boolean_
+  name: GetViewForIndex(int, SkiaControl, float, bool)
+  nameWithType: ViewsAdapter.GetViewForIndex(int, SkiaControl, float, bool)
+  fullName: DrawnUi.Draw.ViewsAdapter.GetViewForIndex(int, DrawnUi.Draw.SkiaControl, float, bool)
+  nameWithType.vb: ViewsAdapter.GetViewForIndex(Integer, SkiaControl, Single, Boolean)
+  fullName.vb: DrawnUi.Draw.ViewsAdapter.GetViewForIndex(Integer, DrawnUi.Draw.SkiaControl, Single, Boolean)
+  name.vb: GetViewForIndex(Integer, SkiaControl, Single, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
+    name: GetViewForIndex
+    href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetViewForIndex_System_Int32_DrawnUi_Draw_SkiaControl_System_Single_System_Boolean_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.ViewsAdapter.GetViewForIndex(System.Int32,DrawnUi.Draw.SkiaControl,System.Single,System.Boolean)
+    name: GetViewForIndex
+    href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetViewForIndex_System_Int32_DrawnUi_Draw_SkiaControl_System_Single_System_Boolean_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_IsViewRealizedForIndex_System_Int32_
+  name: IsViewRealizedForIndex
+  nameWithType: ViewsAdapter.IsViewRealizedForIndex
+  fullName: DrawnUi.Draw.ViewsAdapter.IsViewRealizedForIndex
 - uid: DrawnUi.Draw.ViewsAdapter._HandleSmartCollectionChange*
   commentId: Overload:DrawnUi.Draw.ViewsAdapter._HandleSmartCollectionChange
   href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter__HandleSmartCollectionChange_System_Collections_Specialized_NotifyCollectionChangedEventArgs_System_Collections_IList_System_Int32_System_Int32_
@@ -2024,6 +2464,24 @@ references:
   name: SkiaControl
   nameWithType: SkiaControl
   fullName: DrawnUi.Draw.SkiaControl
+- uid: DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_ReleaseMeasuringView_DrawnUi_Draw_SkiaControl_
+  name: ReleaseMeasuringView
+  nameWithType: ViewsAdapter.ReleaseMeasuringView
+  fullName: DrawnUi.Draw.ViewsAdapter.ReleaseMeasuringView
+- uid: DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetCellInUseOrNull_System_Int32_
+  name: GetCellInUseOrNull
+  nameWithType: ViewsAdapter.GetCellInUseOrNull
+  fullName: DrawnUi.Draw.ViewsAdapter.GetCellInUseOrNull
+- uid: DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_ReleaseCellByIndex_System_Int32_
+  name: ReleaseCellByIndex
+  nameWithType: ViewsAdapter.ReleaseCellByIndex
+  fullName: DrawnUi.Draw.ViewsAdapter.ReleaseCellByIndex
 - uid: DrawnUi.Draw.ViewsAdapter.GetViewForIndex*
   commentId: Overload:DrawnUi.Draw.ViewsAdapter.GetViewForIndex
   href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetViewForIndex_System_Int32_DrawnUi_Draw_SkiaControl_System_Single_System_Boolean_
@@ -2043,7 +2501,7 @@ references:
   name.vb: Single
 - uid: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal*
   commentId: Overload:DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal
-  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetOrCreateViewForIndexInternal_System_Int32_System_Single_DrawnUi_Draw_SkiaControl_
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_GetOrCreateViewForIndexInternal_System_Int32_System_Single_DrawnUi_Draw_SkiaControl_System_Boolean_
   name: GetOrCreateViewForIndexInternal
   nameWithType: ViewsAdapter.GetOrCreateViewForIndexInternal
   fullName: DrawnUi.Draw.ViewsAdapter.GetOrCreateViewForIndexInternal
@@ -2121,6 +2579,12 @@ references:
   name: AttachView
   nameWithType: ViewsAdapter.AttachView
   fullName: DrawnUi.Draw.ViewsAdapter.AttachView
+- uid: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_SetPoolMaxSize_System_Int32_
+  name: SetPoolMaxSize
+  nameWithType: ViewsAdapter.SetPoolMaxSize
+  fullName: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize
 - uid: DrawnUi.Draw.ViewsAdapter.PoolMaxSize*
   commentId: Overload:DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_PoolMaxSize

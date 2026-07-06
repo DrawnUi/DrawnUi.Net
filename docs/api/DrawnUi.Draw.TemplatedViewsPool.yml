@@ -29,12 +29,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TemplatedViewsPool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1585
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 2
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -68,12 +68,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTemplate
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1587
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 4
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -97,12 +97,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxSize
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1588
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 5
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -126,12 +126,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposing
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1589
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 6
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -153,12 +153,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1601
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 40
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -189,12 +189,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Size
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1609
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -218,12 +218,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MaxDistinctHeights
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1624
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 62
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -247,12 +247,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1691
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -279,12 +279,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1722
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 236
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -309,12 +309,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reserve
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1753
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 267
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -335,12 +335,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetStandalone
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1773
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 295
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -363,12 +363,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ReturnStandalone
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1791
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 313
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -392,12 +392,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearStandalonePool
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1805
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 327
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -418,12 +418,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Get
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1821
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 343
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -454,12 +454,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Return
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1914
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 416
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -488,12 +488,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InvalidateAll
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1961
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

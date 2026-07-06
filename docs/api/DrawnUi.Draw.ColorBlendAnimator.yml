@@ -22,11 +22,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorBlendAnimator
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -113,11 +113,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -145,11 +145,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnProgressChanged
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -179,11 +179,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -208,11 +208,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color1
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -237,11 +237,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color2
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -266,11 +266,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnColorChanged
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 27
   assemblies:
   - DrawnUi.Maui
@@ -295,11 +295,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetColor
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -333,11 +333,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ColorBlendAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AnimateAsync
-    path: ../src/Shared/Features/Animators/ColorBlendAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ColorBlendAnimator.cs
     startLine: 52
   assemblies:
   - DrawnUi.Maui

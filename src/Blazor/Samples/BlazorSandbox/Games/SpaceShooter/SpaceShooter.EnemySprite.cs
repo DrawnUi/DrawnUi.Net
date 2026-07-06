@@ -30,7 +30,7 @@ public partial class SpaceShooter
                 HeightRequest = 44,
                 AddEffect = SkiaImageEffect.Tint,
                 EffectBlendMode = SKBlendMode.SrcATop,
-                RescalingQuality = SKFilterQuality.High
+                RescalingQuality = FilterQuality.High
             };
 
             newEnemy.ResetAnimationState();

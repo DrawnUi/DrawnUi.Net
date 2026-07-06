@@ -10,6 +10,100 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
+<style>
+    .xaml-canvas {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .xaml-canvas:fullscreen,
+    .xaml-canvas:-webkit-full-screen {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: none !important;
+        max-height: none !important;
+    }
+
+    .xaml-canvas-fill {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 0;
+        align-self: stretch;
+    }
+
+    .xaml-canvas-fixed {
+        flex: 0 0 auto !important;
+    }
+
+    .xaml-canvas-auto {
+        display: inline-block;
+    }
+
+    .xaml-canvas-surface {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    .xaml-canvas-element {
+        position: relative;
+        flex: 0 0 auto;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .xaml-canvas-element > * {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .xaml-canvas-element canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .xaml-canvas-surface.centered {
+        display: flex;
+/*         align-items: center; */
+        justify-content: center;
+    }
+
+    .xaml-canvas-content {
+        position: absolute;
+        inset: 0;
+    }
+
+    .xaml-a11y-overlay {
+        position: absolute;
+    }
+
+    .xaml-a11y-element {
+        position: absolute;
+        background: transparent;
+        color: transparent;
+    }
+
+    .xaml-a11y-interactive {
+        font-size: 0px;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .xaml-a11y-interactive:focus-visible {
+        outline: 3px solid rgba(0, 103, 244, 0.85);
+        outline-offset: 1px;
+        border-radius: 3px;
+    }
+
+
+</style>
+
+
 @if (IsVisible)
 {
 
@@ -76,98 +170,6 @@
 
 }
 
-<style>
-    .xaml-canvas {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .xaml-canvas:fullscreen,
-    .xaml-canvas:-webkit-full-screen {
-        width: 100vw !important;
-        height: 100vh !important;
-        max-width: none !important;
-        max-height: none !important;
-    }
-
-    .xaml-canvas-fill {
-        flex: 1 1 auto;
-        min-width: 0;
-        min-height: 0;
-        align-self: stretch;
-    }
-
-    .xaml-canvas-fixed {
-        flex: 0 0 auto !important;
-    }
-
-    .xaml-canvas-auto {
-        display: inline-block;
-    }
-
-    .xaml-canvas-surface {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-    }
-
-    .xaml-canvas-element {
-        position: relative;
-        flex: 0 0 auto;
-        min-width: 0;
-        min-height: 0;
-        overflow: hidden;
-    }
-
-    .xaml-canvas-element > * {
-        display: block;
-        width: 100% !important;
-        height: 100% !important;
-    }
-
-    .xaml-canvas-element canvas {
-        display: block;
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100%;
-        max-height: 100%;
-    }
-
-    .xaml-canvas-surface.centered {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .xaml-canvas-content {
-        position: absolute;
-        inset: 0;
-    }
-
-    .xaml-a11y-overlay {
-        position: absolute;
-    }
-
-    .xaml-a11y-element {
-        position: absolute;
-        background: transparent;
-        color: transparent;
-    }
-
-    .xaml-a11y-interactive {
-        font-size: 0px;
-        user-select: none;
-        cursor: pointer;
-    }
-
-    .xaml-a11y-interactive:focus-visible {
-        outline: 3px solid rgba(0, 103, 244, 0.85);
-        outline-offset: 1px;
-        border-radius: 3px;
-    }
-
-
-</style>
 
 @code {
 
@@ -175,6 +177,8 @@
     private ElementReference _inputElement;
     private TouchEffect? _gestureEffect;
     private GesturesMode _attachedGesturesMode = GesturesMode.Disabled;
+    private ElementReference _attachedInputElement;
+    private bool _hasAttachedInputElement;
     private IJSObjectReference? _resizeModule;
     private DotNetObjectReference<Canvas>? _resizeCallbackRef;
     private float _measuredCanvasWidth;
@@ -276,16 +280,26 @@
         {
             _gestureEffect ??= new TouchEffect(JS);
             _gestureEffect.TouchMode = GestureTouchMode;
-            if (_attachedGesturesMode != Gestures)
+            var inputElementChanged = !_hasAttachedInputElement || !_attachedInputElement.Equals(_inputElement);
+            if (_attachedGesturesMode != Gestures || inputElementChanged)
             {
+                if (_hasAttachedInputElement)
+                {
+                    await _gestureEffect.DetachAsync();
+                }
+
                 await _gestureEffect.AttachAsync(_inputElement, this);
                 _attachedGesturesMode = Gestures;
+                _attachedInputElement = _inputElement;
+                _hasAttachedInputElement = true;
             }
         }
         else if (_gestureEffect != null)
         {
             await _gestureEffect.DetachAsync();
             _attachedGesturesMode = GesturesMode.Disabled;
+            _attachedInputElement = default;
+            _hasAttachedInputElement = false;
         }
 
     }

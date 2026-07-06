@@ -14,7 +14,7 @@
 </div>
 
 <Canvas Content="_canvasContent" 
-        BackgroundColor="#F7F3EA"
+        BackgroundColor="@Color.Parse("#F7F3EA")"
         Margin="0,8,0,0"
         Gestures="@GesturesMode.Lock"/>
 
@@ -58,10 +58,12 @@ button.Tapped += (_, _) => button.Text = "Saved";
             "Primary action",
             new Color(0.227f, 0.482f, 0.816f, 1f),
             new Color(0.165f, 0.416f, 0.718f, 1f));
+
         _materialButton = CreateScaleHoverButton(
             "Material style",
             new Color(0.129f, 0.588f, 0.953f, 1f),
             PrebuiltControlStyle.Material);
+
         _windowsButton = CreateGlowHoverButton(
             "Windows style",
             new Color(0.000f, 0.471f, 0.843f, 1f),
@@ -70,7 +72,6 @@ button.Tapped += (_, _) => button.Text = "Saved";
 
         _canvasContent = new SkiaLayout()
         {
-            Margin = new Thickness(16),
             WidthRequest = 328,
             HeightRequest = 296,
             Padding = new Thickness(18),
@@ -171,7 +172,8 @@ button.Tapped += (_, _) => button.Text = "Saved";
             TextColor = Colors.White,
             CornerRadius = 10,
             Padding = new Thickness(12, 6)
-        }.WithAccessibility("button", text, canInteract: true);
+        };
+        //.WithAccessibility("button", text, canInteract: true);
 
         if (style.HasValue)
         {

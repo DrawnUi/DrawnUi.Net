@@ -1,0 +1,54 @@
+﻿using SkiaSharp;
+
+namespace DrawnUi.Draw;
+
+public enum LoadMoreDirection
+{
+    Bottom,
+    Top
+}
+
+public interface IInsideViewport : IVisibilityAware, IDisposable
+{
+
+    /// <summary>
+    /// Will be called when viewport containing this view has changed
+    /// </summary>
+    /// <param name="viewport"></param>
+    /// <param name="e"></param>
+    public void OnViewportWasChanged(ScaledRect viewport, ScaledPoint e);
+
+    /// <summary>
+    /// IInsideViewport interface: loaded is called when the view is created, but not yet visible
+    /// </summary>
+    void OnLoaded();
+
+    /// <summary>
+    /// Determines whether LoadMore should be triggered based on viewport position and internal measurement state.
+    /// This allows the layout to make intelligent decisions about when to load more data.
+    /// </summary>
+    /// <param name="viewport">Current viewport rectangle</param>
+    /// <returns>True if LoadMore should be triggered, false otherwise</returns>
+    bool ShouldTriggerLoadMore(ScaledRect viewport);
+
+    /// <summary>
+    /// Determines whether LoadMore should be triggered for a specific edge direction.
+    /// Default behavior routes to the legacy bottom-only API for backward compatibility.
+    /// </summary>
+    /// <param name="viewport">Current viewport rectangle</param>
+    /// <param name="direction">Requested load direction</param>
+    /// <returns>True if LoadMore should be triggered for the given direction</returns>
+    bool ShouldTriggerLoadMore(ScaledRect viewport, LoadMoreDirection direction)
+    {
+        return direction == LoadMoreDirection.Bottom && ShouldTriggerLoadMore(viewport);
+    }
+
+    /// <summary>
+    /// Lets the content limit how far the scroll may travel toward a desired offset when its backing
+    /// (e.g. a background plane cache) is not ready there yet. Return possibly-narrowed offset bounds; the
+    /// scroll applies its normal bounce/rubber-band against them, so the unready edge feels like a content
+    /// edge. Default: no limit. MUST keep the current offset inside the returned bounds (never yank back).
+    /// </summary>
+    SKRect LimitScrollBounds(float desiredX, float desiredY, SKRect contentOffsetBounds, ScrollOrientation orientation)
+        => contentOffsetBounds;
+}

@@ -18,12 +18,12 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Cache.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CacheValidityType
-    path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 815
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 918
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -45,12 +45,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Cache.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Valid
-    path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 817
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 920
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -71,12 +71,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Cache.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Missing
-    path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 818
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 921
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -97,12 +97,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Cache.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SizeMismatch
-    path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 819
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 922
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -123,12 +123,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Cache.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GraphicContextMismatch
-    path: ../src/Shared/Draw/Base/SkiaControl.Cache.cs
-    startLine: 820
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 923
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

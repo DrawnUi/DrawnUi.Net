@@ -22,6 +22,7 @@ items:
   - DrawnUi.Draw.BindablePropertyExtension
   - DrawnUi.Draw.BlinkAnimator
   - DrawnUi.Draw.BlurEffect
+  - DrawnUi.Draw.CacheSharingType
   - DrawnUi.Draw.CachedGradient
   - DrawnUi.Draw.CachedObject
   - DrawnUi.Draw.CachedShader
@@ -50,12 +51,13 @@ items:
   - DrawnUi.Draw.CriticallyDampedSpringTimingParameters
   - DrawnUi.Draw.CriticallyDampedSpringTimingVectorParameters
   - DrawnUi.Draw.DataContextIterator
-  - DrawnUi.Draw.DebugImage
+  - DrawnUi.Draw.DebugSurfaceImage
   - DrawnUi.Draw.DecelerationTimingParameters
   - DrawnUi.Draw.DecelerationTimingVectorParameters
   - DrawnUi.Draw.DescendingZIndexGestureListenerComparer
   - DrawnUi.Draw.DeviceOrientation
   - DrawnUi.Draw.DirectionType
+  - DrawnUi.Draw.DomNode
   - DrawnUi.Draw.DrawImageAlignment
   - DrawnUi.Draw.DrawTextAlignment
   - DrawnUi.Draw.DrawingContext
@@ -121,6 +123,8 @@ items:
   - DrawnUi.Draw.ITimingParameters
   - DrawnUi.Draw.ITimingVectorParameters
   - DrawnUi.Draw.IVisibilityAware
+  - DrawnUi.Draw.IWindowDataSource`1
+  - DrawnUi.Draw.IWindowHost
   - DrawnUi.Draw.IWithContent
   - DrawnUi.Draw.InfiniteLayout
   - DrawnUi.Draw.InputKey
@@ -132,6 +136,7 @@ items:
   - DrawnUi.Draw.LineSpan
   - DrawnUi.Draw.LinearDirectionType
   - DrawnUi.Draw.LinearInterpolationTimingParameters
+  - DrawnUi.Draw.LoadMoreDirection
   - DrawnUi.Draw.LoadPriority
   - DrawnUi.Draw.LoadedImageSource
   - DrawnUi.Draw.LockTouch
@@ -152,9 +157,6 @@ items:
   - DrawnUi.Draw.PendulumAnimator
   - DrawnUi.Draw.PerpetualPendulumAnimator
   - DrawnUi.Draw.PingPongAnimator
-  - DrawnUi.Draw.Plane
-  - DrawnUi.Draw.PlanesScroll
-  - DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
   - DrawnUi.Draw.PointIsInsideResult
   - DrawnUi.Draw.PointedDirectionType
   - DrawnUi.Draw.PostRendererEffectUseBackgroud
@@ -175,6 +177,7 @@ items:
   - DrawnUi.Draw.RenderTreeRenderer
   - DrawnUi.Draw.RenderingAnimator
   - DrawnUi.Draw.RenderingModeType
+  - DrawnUi.Draw.RenderingSubTree
   - DrawnUi.Draw.RippleAnimator
   - DrawnUi.Draw.SKPaintExtensions
   - DrawnUi.Draw.SaturationEffect
@@ -262,6 +265,7 @@ items:
   - DrawnUi.Draw.SkiaRow
   - DrawnUi.Draw.SkiaScroll
   - DrawnUi.Draw.SkiaScrollLooped
+  - DrawnUi.Draw.SkiaScrollWindowHost
   - DrawnUi.Draw.SkiaSetter
   - DrawnUi.Draw.SkiaShaderEffect
   - DrawnUi.Draw.SkiaShadow
@@ -329,6 +333,7 @@ items:
   - DrawnUi.Draw.VisualLayer
   - DrawnUi.Draw.VisualTreeHandler
   - DrawnUi.Draw.WindowParameters
+  - DrawnUi.Draw.WindowedSource`1
   - DrawnUi.Draw.ZoomContent
   - DrawnUi.Draw.ZoomEventArgs
   langs:
@@ -830,12 +835,12 @@ references:
   name: SvgSpan
   nameWithType: SvgSpan
   fullName: DrawnUi.Draw.SvgSpan
-- uid: DrawnUi.Draw.DebugImage
-  commentId: T:DrawnUi.Draw.DebugImage
-  href: DrawnUi.Draw.DebugImage.html
-  name: DebugImage
-  nameWithType: DebugImage
-  fullName: DrawnUi.Draw.DebugImage
+- uid: DrawnUi.Draw.DebugSurfaceImage
+  commentId: T:DrawnUi.Draw.DebugSurfaceImage
+  href: DrawnUi.Draw.DebugSurfaceImage.html
+  name: DebugSurfaceImage
+  nameWithType: DebugSurfaceImage
+  fullName: DrawnUi.Draw.DebugSurfaceImage
 - uid: DrawnUi.Draw.UnicodeBlock
   commentId: T:DrawnUi.Draw.UnicodeBlock
   parent: DrawnUi.Draw
@@ -1018,6 +1023,40 @@ references:
   name: Super
   nameWithType: Super
   fullName: DrawnUi.Draw.Super
+- uid: DrawnUi.Draw.DataContextIterator
+  commentId: T:DrawnUi.Draw.DataContextIterator
+  href: DrawnUi.Draw.DataContextIterator.html
+  name: DataContextIterator
+  nameWithType: DataContextIterator
+  fullName: DrawnUi.Draw.DataContextIterator
+- uid: DrawnUi.Draw.TemplatedViewsPool
+  commentId: T:DrawnUi.Draw.TemplatedViewsPool
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.TemplatedViewsPool.html
+  name: TemplatedViewsPool
+  nameWithType: TemplatedViewsPool
+  fullName: DrawnUi.Draw.TemplatedViewsPool
+- uid: DrawnUi.Draw.ViewsAdapter
+  commentId: T:DrawnUi.Draw.ViewsAdapter
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ViewsAdapter.html
+  name: ViewsAdapter
+  nameWithType: ViewsAdapter
+  fullName: DrawnUi.Draw.ViewsAdapter
+- uid: DrawnUi.Draw.ViewsIterator
+  commentId: T:DrawnUi.Draw.ViewsIterator
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ViewsIterator.html
+  name: ViewsIterator
+  nameWithType: ViewsIterator
+  fullName: DrawnUi.Draw.ViewsIterator
+- uid: DrawnUi.Draw.RenderingSubTree
+  commentId: T:DrawnUi.Draw.RenderingSubTree
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.RenderingSubTree.html
+  name: RenderingSubTree
+  nameWithType: RenderingSubTree
+  fullName: DrawnUi.Draw.RenderingSubTree
 - uid: DrawnUi.Draw.IRawElementProviderSimple
   commentId: T:DrawnUi.Draw.IRawElementProviderSimple
   parent: DrawnUi.Draw
@@ -1428,6 +1467,69 @@ references:
   name: RenderLabel
   nameWithType: RenderLabel
   fullName: DrawnUi.Draw.RenderLabel
+- uid: DrawnUi.Draw.IWindowHost
+  commentId: T:DrawnUi.Draw.IWindowHost
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IWindowHost.html
+  name: IWindowHost
+  nameWithType: IWindowHost
+  fullName: DrawnUi.Draw.IWindowHost
+- uid: DrawnUi.Draw.IWindowDataSource`1
+  commentId: T:DrawnUi.Draw.IWindowDataSource`1
+  href: DrawnUi.Draw.IWindowDataSource-1.html
+  name: IWindowDataSource<T>
+  nameWithType: IWindowDataSource<T>
+  fullName: DrawnUi.Draw.IWindowDataSource<T>
+  nameWithType.vb: IWindowDataSource(Of T)
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T)
+  name.vb: IWindowDataSource(Of T)
+  spec.csharp:
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.WindowedSource`1
+  commentId: T:DrawnUi.Draw.WindowedSource`1
+  href: DrawnUi.Draw.WindowedSource-1.html
+  name: WindowedSource<T>
+  nameWithType: WindowedSource<T>
+  fullName: DrawnUi.Draw.WindowedSource<T>
+  nameWithType.vb: WindowedSource(Of T)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T)
+  name.vb: WindowedSource(Of T)
+  spec.csharp:
+  - uid: DrawnUi.Draw.WindowedSource`1
+    name: WindowedSource
+    href: DrawnUi.Draw.WindowedSource-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DrawnUi.Draw.WindowedSource`1
+    name: WindowedSource
+    href: DrawnUi.Draw.WindowedSource-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.SkiaScrollWindowHost
+  commentId: T:DrawnUi.Draw.SkiaScrollWindowHost
+  href: DrawnUi.Draw.SkiaScrollWindowHost.html
+  name: SkiaScrollWindowHost
+  nameWithType: SkiaScrollWindowHost
+  fullName: DrawnUi.Draw.SkiaScrollWindowHost
 - uid: DrawnUi.Draw.MeasuredListCell
   commentId: T:DrawnUi.Draw.MeasuredListCell
   href: DrawnUi.Draw.MeasuredListCell.html
@@ -1446,33 +1548,6 @@ references:
   name: CellWIthHeight
   nameWithType: CellWIthHeight
   fullName: DrawnUi.Draw.CellWIthHeight
-- uid: DrawnUi.Draw.ViewsAdapter
-  commentId: T:DrawnUi.Draw.ViewsAdapter
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ViewsAdapter.html
-  name: ViewsAdapter
-  nameWithType: ViewsAdapter
-  fullName: DrawnUi.Draw.ViewsAdapter
-- uid: DrawnUi.Draw.ViewsIterator
-  commentId: T:DrawnUi.Draw.ViewsIterator
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ViewsIterator.html
-  name: ViewsIterator
-  nameWithType: ViewsIterator
-  fullName: DrawnUi.Draw.ViewsIterator
-- uid: DrawnUi.Draw.DataContextIterator
-  commentId: T:DrawnUi.Draw.DataContextIterator
-  href: DrawnUi.Draw.DataContextIterator.html
-  name: DataContextIterator
-  nameWithType: DataContextIterator
-  fullName: DrawnUi.Draw.DataContextIterator
-- uid: DrawnUi.Draw.TemplatedViewsPool
-  commentId: T:DrawnUi.Draw.TemplatedViewsPool
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.TemplatedViewsPool.html
-  name: TemplatedViewsPool
-  nameWithType: TemplatedViewsPool
-  fullName: DrawnUi.Draw.TemplatedViewsPool
 - uid: DrawnUi.Draw.SnappingLayout
   commentId: T:DrawnUi.Draw.SnappingLayout
   parent: DrawnUi.Draw
@@ -1487,41 +1562,6 @@ references:
   name: StackLayoutStructure
   nameWithType: StackLayoutStructure
   fullName: DrawnUi.Draw.StackLayoutStructure
-- uid: DrawnUi.Draw.Plane
-  commentId: T:DrawnUi.Draw.Plane
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.Plane.html
-  name: Plane
-  nameWithType: Plane
-  fullName: DrawnUi.Draw.Plane
-- uid: DrawnUi.Draw.PlanesScroll
-  commentId: T:DrawnUi.Draw.PlanesScroll
-  href: DrawnUi.Draw.PlanesScroll.html
-  name: PlanesScroll
-  nameWithType: PlanesScroll
-  fullName: DrawnUi.Draw.PlanesScroll
-- uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-  commentId: T:DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-  href: DrawnUi.Draw.PlanesScroll.html
-  name: PlanesScroll.ViewLayoutInfo
-  nameWithType: PlanesScroll.ViewLayoutInfo
-  fullName: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-  spec.csharp:
-  - uid: DrawnUi.Draw.PlanesScroll
-    name: PlanesScroll
-    href: DrawnUi.Draw.PlanesScroll.html
-  - name: .
-  - uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-    name: ViewLayoutInfo
-    href: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo.html
-  spec.vb:
-  - uid: DrawnUi.Draw.PlanesScroll
-    name: PlanesScroll
-    href: DrawnUi.Draw.PlanesScroll.html
-  - name: .
-  - uid: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo
-    name: ViewLayoutInfo
-    href: DrawnUi.Draw.PlanesScroll.ViewLayoutInfo.html
 - uid: DrawnUi.Draw.SkiaScroll
   commentId: T:DrawnUi.Draw.SkiaScroll
   parent: DrawnUi.Draw
@@ -1755,6 +1795,13 @@ references:
   name: SkiaCacheType
   nameWithType: SkiaCacheType
   fullName: DrawnUi.Draw.SkiaCacheType
+- uid: DrawnUi.Draw.CacheSharingType
+  commentId: T:DrawnUi.Draw.CacheSharingType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.CacheSharingType.html
+  name: CacheSharingType
+  nameWithType: CacheSharingType
+  fullName: DrawnUi.Draw.CacheSharingType
 - uid: DrawnUi.Draw.ThermalState
   commentId: T:DrawnUi.Draw.ThermalState
   parent: DrawnUi.Draw
@@ -2020,6 +2067,13 @@ references:
   name: VirtualisationType
   nameWithType: VirtualisationType
   fullName: DrawnUi.Draw.VirtualisationType
+- uid: DrawnUi.Draw.DomNode
+  commentId: T:DrawnUi.Draw.DomNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.DomNode.html
+  name: DomNode
+  nameWithType: DomNode
+  fullName: DrawnUi.Draw.DomNode
 - uid: DrawnUi.Draw.Looper
   commentId: T:DrawnUi.Draw.Looper
   href: DrawnUi.Draw.Looper.html
@@ -2074,6 +2128,13 @@ references:
   name: IHasAfterEffects
   nameWithType: IHasAfterEffects
   fullName: DrawnUi.Draw.IHasAfterEffects
+- uid: DrawnUi.Draw.LoadMoreDirection
+  commentId: T:DrawnUi.Draw.LoadMoreDirection
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.LoadMoreDirection.html
+  name: LoadMoreDirection
+  nameWithType: LoadMoreDirection
+  fullName: DrawnUi.Draw.LoadMoreDirection
 - uid: DrawnUi.Draw.IInsideViewport
   commentId: T:DrawnUi.Draw.IInsideViewport
   parent: DrawnUi.Draw

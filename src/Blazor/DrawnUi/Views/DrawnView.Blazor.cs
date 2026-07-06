@@ -9,7 +9,6 @@ using System.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Color = DrawnUi.Color;
-using Grid = DrawnUi.Blazor.Views.Grid;
 
 namespace DrawnUi.Views
 {
@@ -47,7 +46,7 @@ namespace DrawnUi.Views
 
         protected void FixDensity()
         {
-            Console.WriteLine($"CANVAS {RenderingScale} FixDensity: {PhisicalWidth:0}x{PhisicalHeight:0}");
+            Debug.WriteLine($"CANVAS {RenderingScale} FixDensity: {PhisicalWidth:0}x{PhisicalHeight:0}");
 
             var canvasWidth = PhisicalWidth;
             var canvasHeight = PhisicalHeight;
@@ -279,7 +278,7 @@ namespace DrawnUi.Views
             PhisicalWidth = width;
             PhisicalHeight = height;
 
-            Console.WriteLine($"SyncExternalSize: {PhisicalWidth:0}x{PhisicalHeight:0}");
+            //Console.WriteLine($"SyncExternalSize: {PhisicalWidth:0}x{PhisicalHeight:0}");
 
             OnSizeChanged();
         }
@@ -545,7 +544,7 @@ namespace DrawnUi.Views
                         usingColor = usingColor.MakeLighter(gradient.Light * 100 - 100);
                     }
 
-                    var newAlpha = usingColor.A * gradient.Opacity;
+                    var newAlpha = usingColor.Alpha * gradient.Opacity;
                     usingColor = usingColor.WithAlpha(newAlpha);
                     colors.Add(usingColor.ToSKColor());
                 }
@@ -618,7 +617,7 @@ namespace DrawnUi.Views
 
         protected virtual void OnSizeChanged()
         {
-            Console.WriteLine($"OnSizeChanged");
+            //Console.WriteLine($"OnSizeChanged");
 
             Invalidate();
         }

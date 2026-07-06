@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using DrawnUi.Draw;
-using DrawnUi.Draw.ApplicationModel;
+using DrawnUi;
 using DrawnUi.Views;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;

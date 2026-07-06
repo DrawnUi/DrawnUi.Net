@@ -18,11 +18,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IRawElementProviderSimple
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -75,11 +75,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProviderOptions
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -104,11 +104,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPatternProvider
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -138,11 +138,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPropertyValue
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -172,11 +172,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: HostRawElementProvider
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui

@@ -4,17 +4,6 @@ using Color = DrawnUi.Color;
 
 namespace DrawnUi.Draw
 {
-    public class VisualDiagnostics
-    {
-        public static void OnChildRemoved(SkiaControl skiaControl, SkiaControl control, int index)
-        {
-        }
-
-        public static void OnChildAdded(SkiaControl skiaControl, SkiaControl child, int index)
-        {
-        }
-    }
-
     public partial class SkiaControl : View
     {
         private static void ReportHotreloadChildAdded(SkiaControl control)
@@ -40,6 +29,8 @@ namespace DrawnUi.Draw
             {
                 Super.Log($"[{propertyName}] {e}");
             }
+
+            TrackExplicitPropertyChange(propertyName);
 
             if (propertyName == nameof(ZIndex))
             {
@@ -83,13 +74,17 @@ namespace DrawnUi.Draw
             }
             else if (propertyName.IsEither(
                          nameof(Margin),
+                         nameof(AddMarginTop),
+                         nameof(AddMarginBottom),
+                         nameof(AddMarginLeft),
+                         nameof(AddMarginRight),
                          nameof(HeightRequest), nameof(WidthRequest),
                          nameof(MaximumWidthRequest), nameof(MinimumWidthRequest),
                          nameof(MaximumHeightRequest), nameof(MinimumHeightRequest)
                      ))
             {
                 InvalidateMeasure();
-                if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                //if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
                 {
                     UpdateSizeRequest();
                 }

@@ -11,7 +11,11 @@ items:
   - DrawnUi.Infrastructure.SkSl.CreateShader(SkiaSharp.SKRuntimeEffect,SkiaSharp.SKRuntimeEffectUniforms,System.Collections.Generic.Dictionary{System.String,SkiaSharp.SKShader})
   - DrawnUi.Infrastructure.SkSl.LoadFromResources(System.String)
   - DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
+  - DrawnUi.Infrastructure.SkSl.LoadedCache
   - DrawnUi.Infrastructure.SkSl.Precompile(System.String[])
+  - DrawnUi.Infrastructure.SkSl.Precompile(System.String[],System.Action{System.String})
+  - DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
+  - DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[],System.Action{System.String})
   - DrawnUi.Infrastructure.SkSl.ThrowCompilationError(System.String,System.String,System.String)
   langs:
   - csharp
@@ -22,12 +26,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkSl
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 5
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 6
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -57,11 +61,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadFromResourcesAsync
-    path: ../src/Shared/Features/Shaders/SKSL.cs
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
     startLine: 18
   assemblies:
   - DrawnUi.Maui
@@ -91,12 +95,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadFromResources
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 26
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -112,6 +116,40 @@ items:
   nameWithType.vb: SkSl.LoadFromResources(String)
   fullName.vb: DrawnUi.Infrastructure.SkSl.LoadFromResources(String)
   name.vb: LoadFromResources(String)
+- uid: DrawnUi.Infrastructure.SkSl.Precompile(System.String[],System.Action{System.String})
+  commentId: M:DrawnUi.Infrastructure.SkSl.Precompile(System.String[],System.Action{System.String})
+  id: Precompile(System.String[],System.Action{System.String})
+  parent: DrawnUi.Infrastructure.SkSl
+  langs:
+  - csharp
+  - vb
+  name: Precompile(string[], Action<string>)
+  nameWithType: SkSl.Precompile(string[], Action<string>)
+  fullName: DrawnUi.Infrastructure.SkSl.Precompile(string[], System.Action<string>)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Precompile
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 48
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  syntax:
+    content: public static void Precompile(string[] filenames, Action<string> onError = null)
+    parameters:
+    - id: filenames
+      type: System.String[]
+    - id: onError
+      type: System.Action{System.String}
+    content.vb: Public Shared Sub Precompile(filenames As String(), onError As Action(Of String) = Nothing)
+  overload: DrawnUi.Infrastructure.SkSl.Precompile*
+  nameWithType.vb: SkSl.Precompile(String(), Action(Of String))
+  fullName.vb: DrawnUi.Infrastructure.SkSl.Precompile(String(), System.Action(Of String))
+  name.vb: Precompile(String(), Action(Of String))
 - uid: DrawnUi.Infrastructure.SkSl.Precompile(System.String[])
   commentId: M:DrawnUi.Infrastructure.SkSl.Precompile(System.String[])
   id: Precompile(System.String[])
@@ -125,12 +163,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Precompile
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 38
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 60
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -144,6 +182,105 @@ items:
   nameWithType.vb: SkSl.Precompile(ParamArray String())
   fullName.vb: DrawnUi.Infrastructure.SkSl.Precompile(ParamArray String())
   name.vb: Precompile(ParamArray String())
+- uid: DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[],System.Action{System.String})
+  commentId: M:DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[],System.Action{System.String})
+  id: PrecompileAsync(System.String[],System.Action{System.String})
+  parent: DrawnUi.Infrastructure.SkSl
+  langs:
+  - csharp
+  - vb
+  name: PrecompileAsync(string[], Action<string>)
+  nameWithType: SkSl.PrecompileAsync(string[], Action<string>)
+  fullName: DrawnUi.Infrastructure.SkSl.PrecompileAsync(string[], System.Action<string>)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: PrecompileAsync
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 72
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  syntax:
+    content: public static Task<bool> PrecompileAsync(string[] filenames, Action<string> onError = null)
+    parameters:
+    - id: filenames
+      type: System.String[]
+    - id: onError
+      type: System.Action{System.String}
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Public Shared Function PrecompileAsync(filenames As String(), onError As Action(Of String) = Nothing) As Task(Of Boolean)
+  overload: DrawnUi.Infrastructure.SkSl.PrecompileAsync*
+  nameWithType.vb: SkSl.PrecompileAsync(String(), Action(Of String))
+  fullName.vb: DrawnUi.Infrastructure.SkSl.PrecompileAsync(String(), System.Action(Of String))
+  name.vb: PrecompileAsync(String(), Action(Of String))
+- uid: DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
+  commentId: M:DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
+  id: PrecompileAsync(System.String[])
+  parent: DrawnUi.Infrastructure.SkSl
+  langs:
+  - csharp
+  - vb
+  name: PrecompileAsync(params string[])
+  nameWithType: SkSl.PrecompileAsync(params string[])
+  fullName: DrawnUi.Infrastructure.SkSl.PrecompileAsync(params string[])
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: PrecompileAsync
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 90
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  syntax:
+    content: public static Task PrecompileAsync(params string[] filenames)
+    parameters:
+    - id: filenames
+      type: System.String[]
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function PrecompileAsync(ParamArray filenames As String()) As Task
+  overload: DrawnUi.Infrastructure.SkSl.PrecompileAsync*
+  nameWithType.vb: SkSl.PrecompileAsync(ParamArray String())
+  fullName.vb: DrawnUi.Infrastructure.SkSl.PrecompileAsync(ParamArray String())
+  name.vb: PrecompileAsync(ParamArray String())
+- uid: DrawnUi.Infrastructure.SkSl.LoadedCache
+  commentId: F:DrawnUi.Infrastructure.SkSl.LoadedCache
+  id: LoadedCache
+  parent: DrawnUi.Infrastructure.SkSl
+  langs:
+  - csharp
+  - vb
+  name: LoadedCache
+  nameWithType: SkSl.LoadedCache
+  fullName: DrawnUi.Infrastructure.SkSl.LoadedCache
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LoadedCache
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 105
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  summary: Sources from app resources
+  example: []
+  syntax:
+    content: public static ConcurrentDictionary<string, string> LoadedCache
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.String}
+    content.vb: Public Shared LoadedCache As ConcurrentDictionary(Of String, String)
 - uid: DrawnUi.Infrastructure.SkSl.CompiledCache
   commentId: F:DrawnUi.Infrastructure.SkSl.CompiledCache
   id: CompiledCache
@@ -157,12 +294,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompiledCache
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 56
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -190,12 +327,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Compile
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 63
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 120
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -228,12 +365,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Compile
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 75
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 132
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -276,12 +413,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ThrowCompilationError
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 119
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 181
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -312,12 +449,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Shaders/SKSL.cs
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateShader
-    path: ../src/Shared/Features/Shaders/SKSL.cs
-    startLine: 154
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -722,7 +859,7 @@ references:
   fullName: DrawnUi.Infrastructure.SkSl.LoadFromResources
 - uid: DrawnUi.Infrastructure.SkSl.Precompile*
   commentId: Overload:DrawnUi.Infrastructure.SkSl.Precompile
-  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_Precompile_System_String___
+  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_Precompile_System_String___System_Action_System_String__
   name: Precompile
   nameWithType: SkSl.Precompile
   fullName: DrawnUi.Infrastructure.SkSl.Precompile
@@ -749,17 +886,129 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: (
   - name: )
-- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,SkiaSharp.SKRuntimeEffect}
-  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,SkiaSharp.SKRuntimeEffect}
+- uid: System.Action{System.String}
+  commentId: T:System.Action{System.String}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<string>
+  nameWithType: Action<string>
+  fullName: System.Action<string>
+  nameWithType.vb: Action(Of String)
+  fullName.vb: System.Action(Of String)
+  name.vb: Action(Of String)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Infrastructure.SkSl.PrecompileAsync*
+  commentId: Overload:DrawnUi.Infrastructure.SkSl.PrecompileAsync
+  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_PrecompileAsync_System_String___System_Action_System_String__
+  name: PrecompileAsync
+  nameWithType: SkSl.PrecompileAsync
+  fullName: DrawnUi.Infrastructure.SkSl.PrecompileAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.String}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,System.String}
   parent: System.Collections.Concurrent
   definition: System.Collections.Concurrent.ConcurrentDictionary`2
   href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
-  name: ConcurrentDictionary<string, SKRuntimeEffect>
-  nameWithType: ConcurrentDictionary<string, SKRuntimeEffect>
-  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, SkiaSharp.SKRuntimeEffect>
-  nameWithType.vb: ConcurrentDictionary(Of String, SKRuntimeEffect)
-  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, SkiaSharp.SKRuntimeEffect)
-  name.vb: ConcurrentDictionary(Of String, SKRuntimeEffect)
+  name: ConcurrentDictionary<string, string>
+  nameWithType: ConcurrentDictionary<string, string>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, string>
+  nameWithType.vb: ConcurrentDictionary(Of String, String)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, String)
+  name.vb: ConcurrentDictionary(Of String, String)
   spec.csharp:
   - uid: System.Collections.Concurrent.ConcurrentDictionary`2
     name: ConcurrentDictionary
@@ -772,10 +1021,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
-  - uid: SkiaSharp.SKRuntimeEffect
-    name: SKRuntimeEffect
+  - uid: System.String
+    name: string
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skruntimeeffect
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: '>'
   spec.vb:
   - uid: System.Collections.Concurrent.ConcurrentDictionary`2
@@ -791,10 +1040,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
-  - uid: SkiaSharp.SKRuntimeEffect
-    name: SKRuntimeEffect
+  - uid: System.String
+    name: String
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/skiasharp.skruntimeeffect
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
 - uid: System.Collections.Concurrent.ConcurrentDictionary`2
   commentId: T:System.Collections.Concurrent.ConcurrentDictionary`2
@@ -867,6 +1116,53 @@ references:
     name: Concurrent
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,SkiaSharp.SKRuntimeEffect}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,SkiaSharp.SKRuntimeEffect}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<string, SKRuntimeEffect>
+  nameWithType: ConcurrentDictionary<string, SKRuntimeEffect>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, SkiaSharp.SKRuntimeEffect>
+  nameWithType.vb: ConcurrentDictionary(Of String, SKRuntimeEffect)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, SkiaSharp.SKRuntimeEffect)
+  name.vb: ConcurrentDictionary(Of String, SKRuntimeEffect)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRuntimeEffect
+    name: SKRuntimeEffect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skruntimeeffect
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRuntimeEffect
+    name: SKRuntimeEffect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skruntimeeffect
+  - name: )
 - uid: DrawnUi.Infrastructure.SkSl.Compile*
   commentId: Overload:DrawnUi.Infrastructure.SkSl.Compile
   href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_Compile_System_String_
@@ -899,69 +1195,6 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-- uid: System.Action{System.String}
-  commentId: T:System.Action{System.String}
-  parent: System
-  definition: System.Action`1
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<string>
-  nameWithType: Action<string>
-  fullName: System.Action<string>
-  nameWithType.vb: Action(Of String)
-  fullName.vb: System.Action(Of String)
-  name.vb: Action(Of String)
-  spec.csharp:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: System.Action`1
-  commentId: T:System.Action`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<T>
-  nameWithType: Action<T>
-  fullName: System.Action<T>
-  nameWithType.vb: Action(Of T)
-  fullName.vb: System.Action(Of T)
-  name.vb: Action(Of T)
-  spec.csharp:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
 - uid: DrawnUi.Infrastructure.SkSl.ThrowCompilationError*
   commentId: Overload:DrawnUi.Infrastructure.SkSl.ThrowCompilationError
   href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_ThrowCompilationError_System_String_System_String_System_String_

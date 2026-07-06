@@ -16,11 +16,11 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IconPositionType
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
     startLine: 893
   assemblies:
   - DrawnUi.Maui
@@ -45,11 +45,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Left
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
     startLine: 898
   assemblies:
   - DrawnUi.Maui
@@ -73,11 +73,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Right
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
     startLine: 903
   assemblies:
   - DrawnUi.Maui

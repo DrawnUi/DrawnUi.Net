@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 using DrawnUi.Maui.Navigation;
 using Microsoft.Extensions.Logging;
 
@@ -642,7 +640,7 @@ namespace DrawnUi.Controls
         SKColor GetAverageColor(SKImage image)
         {
             using var bitmap = SKBitmap.FromImage(image);
-            using var scaledBitmap = bitmap.Resize(new SKImageInfo(1, 1), SKFilterQuality.Medium);
+            using var scaledBitmap = bitmap.Resize(new SKImageInfo(1, 1), SkiaSamplingOptions.GetSamplingOptions(FilterQuality.Medium, false));
             SKColor color = scaledBitmap.GetPixel(0, 0);
             return color;
         }
@@ -676,7 +674,7 @@ namespace DrawnUi.Controls
                 EffectBlendMode = SKBlendMode.SrcATop,
                 //Darken = FrozenBackgroundDim,
                 Opacity = 0,
-                RescalingQuality = SKFilterQuality.None,
+                RescalingQuality = FilterQuality.None,
                 BackgroundColor = Colors.Black,
             };
 
@@ -2552,8 +2550,8 @@ namespace DrawnUi.Controls
 
         public virtual void OnLayoutInvalidated()
         {
-            TopInsets = Super.Screen.BottomInset;
-            ;
+            TopInsets = Super.Screen.BottomInset; //WTF is this???
+            
             BottomInsets = Super.Screen.BottomInset;
             StatusBarHeight = Super.StatusBarHeight;
 

@@ -42,11 +42,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShaderDoubleTexturesEffect
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -121,10 +121,12 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.TileModeProperty
   - DrawnUi.Draw.SkiaShaderEffect.TileMode
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
   - DrawnUi.Draw.SkiaEffect.Update
+  - DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   - Microsoft.Maui.Controls.BindableObject.BindingContextProperty
   - Microsoft.Maui.Controls.BindableObject.ClearValue(Microsoft.Maui.Controls.BindableProperty)
@@ -169,11 +171,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ParentReady
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -197,11 +199,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShouldDisposePreviousTexture
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -234,11 +236,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -262,11 +264,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TilingSecondaryTexture
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 45
   assemblies:
   - DrawnUi.Maui
@@ -289,11 +291,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CreateTexturesUniforms
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 47
   assemblies:
   - DrawnUi.Maui
@@ -327,11 +329,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetPrimaryTextureImage
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -370,11 +372,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlFromProperty
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 127
   assemblies:
   - DrawnUi.Maui
@@ -397,11 +399,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlFrom
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 133
   assemblies:
   - DrawnUi.Maui
@@ -426,11 +428,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrimarySourceProperty
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 145
   assemblies:
   - DrawnUi.Maui
@@ -453,11 +455,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrimarySource
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 152
   assemblies:
   - DrawnUi.Maui
@@ -482,11 +484,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizePrimaryLoadedBitmap
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 178
   assemblies:
   - DrawnUi.Maui
@@ -508,11 +510,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizedPrimaryImage
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 217
   assemblies:
   - DrawnUi.Maui
@@ -539,11 +541,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedPrimaryBitmap
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 218
   assemblies:
   - DrawnUi.Maui
@@ -568,11 +570,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadPrimarySource
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 227
   assemblies:
   - DrawnUi.Maui
@@ -606,11 +608,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetSecondaryTexture
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 271
   assemblies:
   - DrawnUi.Maui
@@ -634,11 +636,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondaryTexture
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 296
   assemblies:
   - DrawnUi.Maui
@@ -663,11 +665,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompileSecondaryTexture
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 298
   assemblies:
   - DrawnUi.Maui
@@ -692,11 +694,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadedSecondaryBitmap
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 317
   assemblies:
   - DrawnUi.Maui
@@ -719,11 +721,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondarySourceProperty
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 321
   assemblies:
   - DrawnUi.Maui
@@ -746,11 +748,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SecondarySource
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 328
   assemblies:
   - DrawnUi.Maui
@@ -775,11 +777,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ResizeSecondaryLoadedBitmapAndCompileTexture
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 355
   assemblies:
   - DrawnUi.Maui
@@ -801,11 +803,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LoadSecondarySource
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 385
   assemblies:
   - DrawnUi.Maui
@@ -839,11 +841,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DecodePackageBitmapAsync
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 420
   assemblies:
   - DrawnUi.Maui
@@ -873,11 +875,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AssignedControlTo
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 438
   assemblies:
   - DrawnUi.Maui
@@ -900,11 +902,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImportCacheTo
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 440
   assemblies:
   - DrawnUi.Maui
@@ -926,11 +928,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ApplyControlTo
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 455
   assemblies:
   - DrawnUi.Maui
@@ -955,11 +957,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlToProperty
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 486
   assemblies:
   - DrawnUi.Maui
@@ -982,11 +984,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+      path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlTo
-    path: ../src/Shared/Features/Effects/ShaderDoubleTexturesEffect.cs
+    path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
     startLine: 492
   assemblies:
   - DrawnUi.Maui
@@ -1945,6 +1947,13 @@ references:
   name: Parent
   nameWithType: SkiaEffect.Parent
   fullName: DrawnUi.Draw.SkiaEffect.Parent
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
 - uid: DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.SkiaEffect
@@ -2026,6 +2035,37 @@ references:
     name: Update
     href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Update
   - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin(float)
+  nameWithType: SkiaEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.SkiaEffect.GetEffectMargin(float)
+  nameWithType.vb: SkiaEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.SkiaEffect.NeedUpdate(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)

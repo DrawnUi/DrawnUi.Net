@@ -6,6 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.ScaledPoint.#ctor
+  - DrawnUi.Draw.ScaledPoint.Empty
   - DrawnUi.Draw.ScaledPoint.FromPixels(SkiaSharp.SKPoint,System.Single)
   - DrawnUi.Draw.ScaledPoint.FromPixels(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.ScaledPoint.FromUnits(System.Single,System.Single,System.Single,System.Boolean)
@@ -21,11 +22,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScaledPoint
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -55,11 +56,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -71,6 +72,35 @@ items:
   nameWithType.vb: ScaledPoint.New()
   fullName.vb: DrawnUi.Draw.ScaledPoint.New()
   name.vb: New()
+- uid: DrawnUi.Draw.ScaledPoint.Empty
+  commentId: P:DrawnUi.Draw.ScaledPoint.Empty
+  id: Empty
+  parent: DrawnUi.Draw.ScaledPoint
+  langs:
+  - csharp
+  - vb
+  name: Empty
+  nameWithType: ScaledPoint.Empty
+  fullName: DrawnUi.Draw.ScaledPoint.Empty
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Empty
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static ScaledPoint Empty { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.ScaledPoint
+    content.vb: Public Shared ReadOnly Property Empty As ScaledPoint
+  overload: DrawnUi.Draw.ScaledPoint.Empty*
 - uid: DrawnUi.Draw.ScaledPoint.Scale
   commentId: P:DrawnUi.Draw.ScaledPoint.Scale
   id: Scale
@@ -84,12 +114,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Scale
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
-    startLine: 10
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+    startLine: 12
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -113,12 +143,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Units
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
-    startLine: 11
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+    startLine: 13
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -142,12 +172,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Pixels
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
-    startLine: 12
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -171,12 +201,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromUnits
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
-    startLine: 14
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+    startLine: 16
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -211,12 +241,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPixels
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
-    startLine: 47
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+    startLine: 49
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -247,12 +277,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/ScaledPoint.cs
+      path: src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FromPixels
-    path: ../src/Shared/Internals/Models/ScaledPoint.cs
-    startLine: 52
+    path: ../src/Shared/DrawnUi/Internals/Models/ScaledPoint.cs
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -611,6 +641,19 @@ references:
   nameWithType.vb: ScaledPoint.New
   fullName.vb: DrawnUi.Draw.ScaledPoint.New
   name.vb: New
+- uid: DrawnUi.Draw.ScaledPoint.Empty*
+  commentId: Overload:DrawnUi.Draw.ScaledPoint.Empty
+  href: DrawnUi.Draw.ScaledPoint.html#DrawnUi_Draw_ScaledPoint_Empty
+  name: Empty
+  nameWithType: ScaledPoint.Empty
+  fullName: DrawnUi.Draw.ScaledPoint.Empty
+- uid: DrawnUi.Draw.ScaledPoint
+  commentId: T:DrawnUi.Draw.ScaledPoint
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ScaledPoint.html
+  name: ScaledPoint
+  nameWithType: ScaledPoint
+  fullName: DrawnUi.Draw.ScaledPoint
 - uid: DrawnUi.Draw.ScaledPoint.Scale*
   commentId: Overload:DrawnUi.Draw.ScaledPoint.Scale
   href: DrawnUi.Draw.ScaledPoint.html#DrawnUi_Draw_ScaledPoint_Scale
@@ -683,13 +726,6 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-- uid: DrawnUi.Draw.ScaledPoint
-  commentId: T:DrawnUi.Draw.ScaledPoint
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ScaledPoint.html
-  name: ScaledPoint
-  nameWithType: ScaledPoint
-  fullName: DrawnUi.Draw.ScaledPoint
 - uid: DrawnUi.Draw.ScaledPoint.FromPixels*
   commentId: Overload:DrawnUi.Draw.ScaledPoint.FromPixels
   href: DrawnUi.Draw.ScaledPoint.html#DrawnUi_Draw_ScaledPoint_FromPixels_SkiaSharp_SKPoint_System_Single_

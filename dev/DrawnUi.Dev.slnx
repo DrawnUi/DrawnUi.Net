@@ -1,0 +1,81 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Addons/">
+    <Project Path="../../DrawnUi.Maui.Camera/src/Lib/DrawnUi.Maui.Camera.csproj" />
+    <Project Path="../src/Blazor/Addons/DrawnUi.Blazor.Game/DrawnUi.Blazor.Game.csproj" />
+    <Project Path="../src/Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj" />
+    <Project Path="../src/Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj" />
+    <Project Path="../src/Maui/Addons/DrawnUi.MauiGraphics/DrawnUi.MauiGraphics.csproj" />
+    <Project Path="../src/OpenTk/Addons/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj" />
+    <Project Path="../src/SharedGame/SharedGame.shproj" />
+    <Project Path="../src/Wasm/Addons/DrawnUi.Wasm.Game/DrawnUi.Wasm.Game.csproj" />
+  </Folder>
+  <Folder Name="/Lib/" />
+  <Folder Name="/Lib/Blazor/">
+    <Project Path="../src/Blazor/DrawnUi.Server/DrawnUi.Blazor.Server.csproj" />
+    <Project Path="../src/Blazor/DrawnUi.Wasm/DrawnUi.Blazor.Wasm.csproj" />
+    <Project Path="../src/Blazor/DrawnUi/DrawnUi.Blazor.csproj" />
+  </Folder>
+  <Folder Name="/Lib/MAUI/">
+    <Project Path="../src/Maui/DrawnUi/DrawnUi.Maui.csproj" />
+  </Folder>
+  <Folder Name="/Lib/NET/">
+    <Project Path="../src/Net/DrawnUi/DrawnUi.Net.csproj" />
+    <Project Path="../src/Shared/DrawnUi/DrawnUi.Shared.shproj" />
+    <Project Path="../src/SharedNet/DrawnUi.SharedNet.shproj" />
+  </Folder>
+  <Folder Name="/Lib/OpenTK/">
+    <Project Path="../src/OpenTk/DrawnUi/DrawnUi.OpenTk.csproj" />
+  </Folder>
+  <Folder Name="/Lib/WASM/">
+    <Project Path="../src/Wasm/DrawnUi/DrawnUi.Wasm.csproj" />
+  </Folder>
+  <Folder Name="/Samples/" />
+  <Folder Name="/Samples/Blazor/">
+    <Project Path="../src/Blazor/Samples/BlazorSandbox/BlazorSandbox.csproj" />
+    <Project Path="../src/Blazor/Samples/BlazorSandboxServer/BlazorSandboxServer/BlazorSandboxServer.csproj" />
+  </Folder>
+  <Folder Name="/Samples/MAUI/">
+    <Project Path="../../AppoMobi.Maui.DrawnUi.Demo/src/AllDrawn/AppoMobi.Maui.DrawnUi.Demo.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+    <Project Path="../src/Maui/Samples/FastRepro/FastRepro.csproj">
+      <Deploy Solution="*|Any CPU" />
+    </Project>
+    <Project Path="../src/Maui/Samples/Sandbox/Sandbox.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+    <Project Path="../src/Maui/Samples/Tutorials/Tutorials.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+  </Folder>
+  <Folder Name="/Samples/NET/">
+    <Project Path="../src/Net/Samples/GestureHarnessDemo/GestureHarnessDemo.csproj" />
+    <Project Path="../src/Net/Samples/VirtualizationHarnessDemo/VirtualizationHarnessDemo.csproj" />
+    <Project Path="../src/Net/Tests/DrawnUi.Net.Tests/DrawnUi.Net.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Samples/OpenTK/">
+    <Project Path="../src/OpenTk/Samples/OpenTkGpuHost/OpenTkGpuHost.csproj" />
+    <Project Path="../src/OpenTk/Samples/OpenTkOverlay/OpenTkOverlay.csproj" />
+    <Project Path="../src/OpenTk/Samples/OpenTkPong/OpenTkPong.csproj" />
+  </Folder>
+  <Folder Name="/Samples/Shared/">
+    <Project Path="../src/Shared/Samples/Pong.Shared/Pong.Shared.shproj" />
+  </Folder>
+  <Folder Name="/Samples/Wasm/">
+    <Project Path="../src/Wasm/Samples/PongWeb/PongWeb.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../.gitignore" />
+    <File Path="../CLAUDE.md" />
+    <File Path="../nugets/DrawnUi.Maui.targets" />
+    <File Path="../README.md" />
+    <File Path="../src/Directory.Build.props" />
+    <File Path="../src/Directory.Build.targets" />
+    <File Path="../src/Maui/Directory.Build.props" />
+  </Folder>
+</Solution>

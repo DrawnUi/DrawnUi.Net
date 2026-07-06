@@ -1,0 +1,1933 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.WindowedSource`1
+  commentId: T:DrawnUi.Draw.WindowedSource`1
+  id: WindowedSource`1
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.WindowedSource`1.#ctor(System.Int32,System.Int32,System.Boolean)
+  - DrawnUi.Draw.WindowedSource`1.AtOldest
+  - DrawnUi.Draw.WindowedSource`1.AtPresent
+  - DrawnUi.Draw.WindowedSource`1.Count
+  - DrawnUi.Draw.WindowedSource`1.InitializeAsync(System.Threading.CancellationToken)
+  - DrawnUi.Draw.WindowedSource`1.InsertNewest(`0)
+  - DrawnUi.Draw.WindowedSource`1.IsLoadingJump
+  - DrawnUi.Draw.WindowedSource`1.IsLoadingNewer
+  - DrawnUi.Draw.WindowedSource`1.IsLoadingOlder
+  - DrawnUi.Draw.WindowedSource`1.Items
+  - DrawnUi.Draw.WindowedSource`1.LoadNewer
+  - DrawnUi.Draw.WindowedSource`1.LoadOlder
+  - DrawnUi.Draw.WindowedSource`1.LoadingChanged
+  - DrawnUi.Draw.WindowedSource`1.OnSliceLoaded
+  - DrawnUi.Draw.WindowedSource`1.RebaseToOldest
+  - DrawnUi.Draw.WindowedSource`1.RebaseToPresent(System.Boolean)
+  - DrawnUi.Draw.WindowedSource`1.ScrollToIndex(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  - DrawnUi.Draw.WindowedSource`1.ScrollToNewest(System.Boolean)
+  - DrawnUi.Draw.WindowedSource`1.ScrollToOldest(System.Boolean)
+  - DrawnUi.Draw.WindowedSource`1.SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+  - DrawnUi.Draw.WindowedSource`1.SetHost(DrawnUi.Draw.IWindowHost)
+  - DrawnUi.Draw.WindowedSource`1.ToGlobal(System.Int32)
+  - DrawnUi.Draw.WindowedSource`1.ToLocal(System.Int32)
+  - DrawnUi.Draw.WindowedSource`1.WindowEnd
+  - DrawnUi.Draw.WindowedSource`1.WindowStart
+  langs:
+  - csharp
+  - vb
+  name: WindowedSource<T>
+  nameWithType: WindowedSource<T>
+  fullName: DrawnUi.Draw.WindowedSource<T>
+  type: Class
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: WindowedSource
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 18
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    A sliding-window adapter over a remote/large data source for a virtualizing scroll. It keeps only a
+
+    bounded slice (<xref href="DrawnUi.Draw.WindowedSource%601.WindowStart" data-throw-if-not-resolved="false"></xref>..<xref href="DrawnUi.Draw.WindowedSource%601.WindowEnd" data-throw-if-not-resolved="false"></xref>) materialized in <xref href="DrawnUi.Draw.WindowedSource%601.Items" data-throw-if-not-resolved="false"></xref>
+
+    and pulls more from an <xref href="DrawnUi.Draw.IWindowDataSource%601" data-throw-if-not-resolved="false"></xref> in BOTH directions as the user scrolls,
+
+    capping memory by trimming the opposite end. It NEVER holds the full collection.
+
+
+    Built for the INVERTED chat model (Rotation=180): the window is exposed newest-first, i.e.
+
+    <code>Items[i]</code> maps to global <code>WindowEnd - 1 - i</code>. The data source returns ascending global
+
+    order; this class owns the inversion. Mapping lives in one place (<xref href="DrawnUi.Draw.WindowedSource%601.ToLocal(System.Int32)" data-throw-if-not-resolved="false"></xref>/<xref href="DrawnUi.Draw.WindowedSource%601.ToGlobal(System.Int32)" data-throw-if-not-resolved="false"></xref>).
+
+
+    Every data access — initial seed, LoadOlder, LoadNewer, and the "long jump" window-replace — is async
+
+    and toggles a loading flag so a single spinner can be shown (and repositioned) per operation.
+  example: []
+  syntax:
+    content: public sealed class WindowedSource<T>
+    typeParameters:
+    - id: T
+    content.vb: Public NotInheritable Class WindowedSource(Of T)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  nameWithType.vb: WindowedSource(Of T)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T)
+  name.vb: WindowedSource(Of T)
+- uid: DrawnUi.Draw.WindowedSource`1.#ctor(System.Int32,System.Int32,System.Boolean)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.#ctor(System.Int32,System.Int32,System.Boolean)
+  id: '#ctor(System.Int32,System.Int32,System.Boolean)'
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: WindowedSource(int, int, bool)
+  nameWithType: WindowedSource<T>.WindowedSource(int, int, bool)
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowedSource(int, int, bool)
+  type: Constructor
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 28
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public WindowedSource(int batch, int maxInMemory, bool limitMemory)
+    parameters:
+    - id: batch
+      type: System.Int32
+    - id: maxInMemory
+      type: System.Int32
+    - id: limitMemory
+      type: System.Boolean
+    content.vb: Public Sub New(batch As Integer, maxInMemory As Integer, limitMemory As Boolean)
+  overload: DrawnUi.Draw.WindowedSource`1.#ctor*
+  nameWithType.vb: WindowedSource(Of T).New(Integer, Integer, Boolean)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).New(Integer, Integer, Boolean)
+  name.vb: New(Integer, Integer, Boolean)
+- uid: DrawnUi.Draw.WindowedSource`1.Items
+  commentId: P:DrawnUi.Draw.WindowedSource`1.Items
+  id: Items
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: Items
+  nameWithType: WindowedSource<T>.Items
+  fullName: DrawnUi.Draw.WindowedSource<T>.Items
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Items
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 36
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The materialized window, newest-first. Bound to the stack's ItemsSource.
+  example: []
+  syntax:
+    content: public ObservableRangeCollection<T> Items { get; }
+    parameters: []
+    return:
+      type: AppoMobi.Specials.ObservableRangeCollection{{T}}
+    content.vb: Public ReadOnly Property Items As ObservableRangeCollection(Of T)
+  overload: DrawnUi.Draw.WindowedSource`1.Items*
+  nameWithType.vb: WindowedSource(Of T).Items
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).Items
+- uid: DrawnUi.Draw.WindowedSource`1.Count
+  commentId: P:DrawnUi.Draw.WindowedSource`1.Count
+  id: Count
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: WindowedSource<T>.Count
+  fullName: DrawnUi.Draw.WindowedSource<T>.Count
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Count
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 39
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Total items in the backing source (history length + local live inserts).
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: DrawnUi.Draw.WindowedSource`1.Count*
+  nameWithType.vb: WindowedSource(Of T).Count
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).Count
+- uid: DrawnUi.Draw.WindowedSource`1.WindowStart
+  commentId: P:DrawnUi.Draw.WindowedSource`1.WindowStart
+  id: WindowStart
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: WindowStart
+  nameWithType: WindowedSource<T>.WindowStart
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowStart
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: WindowStart
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 41
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public int WindowStart { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property WindowStart As Integer
+  overload: DrawnUi.Draw.WindowedSource`1.WindowStart*
+  nameWithType.vb: WindowedSource(Of T).WindowStart
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).WindowStart
+- uid: DrawnUi.Draw.WindowedSource`1.WindowEnd
+  commentId: P:DrawnUi.Draw.WindowedSource`1.WindowEnd
+  id: WindowEnd
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: WindowEnd
+  nameWithType: WindowedSource<T>.WindowEnd
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowEnd
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: WindowEnd
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 42
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public int WindowEnd { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property WindowEnd As Integer
+  overload: DrawnUi.Draw.WindowedSource`1.WindowEnd*
+  nameWithType.vb: WindowedSource(Of T).WindowEnd
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).WindowEnd
+- uid: DrawnUi.Draw.WindowedSource`1.AtPresent
+  commentId: P:DrawnUi.Draw.WindowedSource`1.AtPresent
+  id: AtPresent
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: AtPresent
+  nameWithType: WindowedSource<T>.AtPresent
+  fullName: DrawnUi.Draw.WindowedSource<T>.AtPresent
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AtPresent
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Window touches the newest end (no newer messages were trimmed away).
+  example: []
+  syntax:
+    content: public bool AtPresent { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property AtPresent As Boolean
+  overload: DrawnUi.Draw.WindowedSource`1.AtPresent*
+  nameWithType.vb: WindowedSource(Of T).AtPresent
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).AtPresent
+- uid: DrawnUi.Draw.WindowedSource`1.AtOldest
+  commentId: P:DrawnUi.Draw.WindowedSource`1.AtOldest
+  id: AtOldest
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: AtOldest
+  nameWithType: WindowedSource<T>.AtOldest
+  fullName: DrawnUi.Draw.WindowedSource<T>.AtOldest
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: AtOldest
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 48
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Window touches the oldest end (history start is resident).
+  example: []
+  syntax:
+    content: public bool AtOldest { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property AtOldest As Boolean
+  overload: DrawnUi.Draw.WindowedSource`1.AtOldest*
+  nameWithType.vb: WindowedSource(Of T).AtOldest
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).AtOldest
+- uid: DrawnUi.Draw.WindowedSource`1.OnSliceLoaded
+  commentId: P:DrawnUi.Draw.WindowedSource`1.OnSliceLoaded
+  id: OnSliceLoaded
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: OnSliceLoaded
+  nameWithType: WindowedSource<T>.OnSliceLoaded
+  fullName: DrawnUi.Draw.WindowedSource<T>.OnSliceLoaded
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: OnSliceLoaded
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 51
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Invoked with each freshly loaded slice (newest-first), e.g. to preload images. UI-thread.
+  example: []
+  syntax:
+    content: public Action<IReadOnlyList<T>> OnSliceLoaded { get; set; }
+    parameters: []
+    return:
+      type: System.Action{System.Collections.Generic.IReadOnlyList{{T}}}
+    content.vb: Public Property OnSliceLoaded As Action(Of IReadOnlyList(Of T))
+  overload: DrawnUi.Draw.WindowedSource`1.OnSliceLoaded*
+  nameWithType.vb: WindowedSource(Of T).OnSliceLoaded
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).OnSliceLoaded
+- uid: DrawnUi.Draw.WindowedSource`1.IsLoadingOlder
+  commentId: P:DrawnUi.Draw.WindowedSource`1.IsLoadingOlder
+  id: IsLoadingOlder
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: IsLoadingOlder
+  nameWithType: WindowedSource<T>.IsLoadingOlder
+  fullName: DrawnUi.Draw.WindowedSource<T>.IsLoadingOlder
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IsLoadingOlder
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 54
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: A LoadOlder (history) fetch is in flight. Spinner at the TOP edge.
+  example: []
+  syntax:
+    content: public bool IsLoadingOlder { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsLoadingOlder As Boolean
+  overload: DrawnUi.Draw.WindowedSource`1.IsLoadingOlder*
+  nameWithType.vb: WindowedSource(Of T).IsLoadingOlder
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).IsLoadingOlder
+- uid: DrawnUi.Draw.WindowedSource`1.IsLoadingNewer
+  commentId: P:DrawnUi.Draw.WindowedSource`1.IsLoadingNewer
+  id: IsLoadingNewer
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: IsLoadingNewer
+  nameWithType: WindowedSource<T>.IsLoadingNewer
+  fullName: DrawnUi.Draw.WindowedSource<T>.IsLoadingNewer
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IsLoadingNewer
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 57
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: A LoadNewer (head-insert) fetch is in flight. Spinner at the BOTTOM edge.
+  example: []
+  syntax:
+    content: public bool IsLoadingNewer { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsLoadingNewer As Boolean
+  overload: DrawnUi.Draw.WindowedSource`1.IsLoadingNewer*
+  nameWithType.vb: WindowedSource(Of T).IsLoadingNewer
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).IsLoadingNewer
+- uid: DrawnUi.Draw.WindowedSource`1.IsLoadingJump
+  commentId: P:DrawnUi.Draw.WindowedSource`1.IsLoadingJump
+  id: IsLoadingJump
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: IsLoadingJump
+  nameWithType: WindowedSource<T>.IsLoadingJump
+  fullName: DrawnUi.Draw.WindowedSource<T>.IsLoadingJump
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IsLoadingJump
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 60
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: A long-jump window-replace fetch is in flight. Spinner CENTERED.
+  example: []
+  syntax:
+    content: public bool IsLoadingJump { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsLoadingJump As Boolean
+  overload: DrawnUi.Draw.WindowedSource`1.IsLoadingJump*
+  nameWithType.vb: WindowedSource(Of T).IsLoadingJump
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).IsLoadingJump
+- uid: DrawnUi.Draw.WindowedSource`1.LoadingChanged
+  commentId: P:DrawnUi.Draw.WindowedSource`1.LoadingChanged
+  id: LoadingChanged
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: LoadingChanged
+  nameWithType: WindowedSource<T>.LoadingChanged
+  fullName: DrawnUi.Draw.WindowedSource<T>.LoadingChanged
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LoadingChanged
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 63
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Raised (UI thread) whenever any of the loading flags changes.
+  example: []
+  syntax:
+    content: public Action LoadingChanged { get; set; }
+    parameters: []
+    return:
+      type: System.Action
+    content.vb: Public Property LoadingChanged As Action
+  overload: DrawnUi.Draw.WindowedSource`1.LoadingChanged*
+  nameWithType.vb: WindowedSource(Of T).LoadingChanged
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).LoadingChanged
+- uid: DrawnUi.Draw.WindowedSource`1.SetHost(DrawnUi.Draw.IWindowHost)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.SetHost(DrawnUi.Draw.IWindowHost)
+  id: SetHost(DrawnUi.Draw.IWindowHost)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: SetHost(IWindowHost)
+  nameWithType: WindowedSource<T>.SetHost(IWindowHost)
+  fullName: DrawnUi.Draw.WindowedSource<T>.SetHost(DrawnUi.Draw.IWindowHost)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SetHost
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 65
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public void SetHost(IWindowHost host)
+    parameters:
+    - id: host
+      type: DrawnUi.Draw.IWindowHost
+    content.vb: Public Sub SetHost(host As IWindowHost)
+  overload: DrawnUi.Draw.WindowedSource`1.SetHost*
+  nameWithType.vb: WindowedSource(Of T).SetHost(IWindowHost)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).SetHost(DrawnUi.Draw.IWindowHost)
+- uid: DrawnUi.Draw.WindowedSource`1.SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+  commentId: M:DrawnUi.Draw.WindowedSource`1.SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+  id: SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: SetDataSource(IWindowDataSource<T>)
+  nameWithType: WindowedSource<T>.SetDataSource(IWindowDataSource<T>)
+  fullName: DrawnUi.Draw.WindowedSource<T>.SetDataSource(DrawnUi.Draw.IWindowDataSource<T>)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: SetDataSource
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 66
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public void SetDataSource(IWindowDataSource<T> source)
+    parameters:
+    - id: source
+      type: DrawnUi.Draw.IWindowDataSource{{T}}
+    content.vb: Public Sub SetDataSource(source As IWindowDataSource(Of T))
+  overload: DrawnUi.Draw.WindowedSource`1.SetDataSource*
+  nameWithType.vb: WindowedSource(Of T).SetDataSource(IWindowDataSource(Of T))
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).SetDataSource(DrawnUi.Draw.IWindowDataSource(Of T))
+  name.vb: SetDataSource(IWindowDataSource(Of T))
+- uid: DrawnUi.Draw.WindowedSource`1.ToLocal(System.Int32)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.ToLocal(System.Int32)
+  id: ToLocal(System.Int32)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: ToLocal(int)
+  nameWithType: WindowedSource<T>.ToLocal(int)
+  fullName: DrawnUi.Draw.WindowedSource<T>.ToLocal(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ToLocal
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 69
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public int ToLocal(int global)
+    parameters:
+    - id: global
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function ToLocal([global] As Integer) As Integer
+  overload: DrawnUi.Draw.WindowedSource`1.ToLocal*
+  nameWithType.vb: WindowedSource(Of T).ToLocal(Integer)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ToLocal(Integer)
+  name.vb: ToLocal(Integer)
+- uid: DrawnUi.Draw.WindowedSource`1.ToGlobal(System.Int32)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.ToGlobal(System.Int32)
+  id: ToGlobal(System.Int32)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: ToGlobal(int)
+  nameWithType: WindowedSource<T>.ToGlobal(int)
+  fullName: DrawnUi.Draw.WindowedSource<T>.ToGlobal(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ToGlobal
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 70
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public int ToGlobal(int local)
+    parameters:
+    - id: local
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function ToGlobal(local As Integer) As Integer
+  overload: DrawnUi.Draw.WindowedSource`1.ToGlobal*
+  nameWithType.vb: WindowedSource(Of T).ToGlobal(Integer)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ToGlobal(Integer)
+  name.vb: ToGlobal(Integer)
+- uid: DrawnUi.Draw.WindowedSource`1.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.InitializeAsync(System.Threading.CancellationToken)
+  id: InitializeAsync(System.Threading.CancellationToken)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(CancellationToken)
+  nameWithType: WindowedSource<T>.InitializeAsync(CancellationToken)
+  fullName: DrawnUi.Draw.WindowedSource<T>.InitializeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: InitializeAsync
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 76
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Fetch the total count and materialize the present (newest) window. Call once after
+        <xref href="DrawnUi.Draw.WindowedSource%601.SetDataSource(DrawnUi.Draw.IWindowDataSource%7b%600%7d)" data-throw-if-not-resolved="false"></xref> (and after the host is set).
+  example: []
+  syntax:
+    content: public Task InitializeAsync(CancellationToken cancel = default)
+    parameters:
+    - id: cancel
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function InitializeAsync(cancel As CancellationToken = Nothing) As Task
+  overload: DrawnUi.Draw.WindowedSource`1.InitializeAsync*
+  nameWithType.vb: WindowedSource(Of T).InitializeAsync(CancellationToken)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).InitializeAsync(System.Threading.CancellationToken)
+- uid: DrawnUi.Draw.WindowedSource`1.ScrollToIndex(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.ScrollToIndex(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  id: ScrollToIndex(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: ScrollToIndex(int, RelativePositionType, bool)
+  nameWithType: WindowedSource<T>.ScrollToIndex(int, RelativePositionType, bool)
+  fullName: DrawnUi.Draw.WindowedSource<T>.ScrollToIndex(int, DrawnUi.Draw.RelativePositionType, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ScrollToIndex
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 102
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Universal jump to a GLOBAL index. Resident target = a plain scroll (no fetch). Out-of-window =
+
+    rebase a window CENTERED on it (room on both sides), fetch that slice (centered spinner shows via
+
+    <xref href="DrawnUi.Draw.WindowedSource%601.IsLoadingJump" data-throw-if-not-resolved="false"></xref>), ReplaceRange, then ordered-scroll there. LoadMore is suppressed for
+
+    the settle and released in OnScrolled once the scroll lands.
+  example: []
+  syntax:
+    content: public Task ScrollToIndex(int global, RelativePositionType align, bool animate)
+    parameters:
+    - id: global
+      type: System.Int32
+    - id: align
+      type: DrawnUi.Draw.RelativePositionType
+    - id: animate
+      type: System.Boolean
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ScrollToIndex([global] As Integer, align As RelativePositionType, animate As Boolean) As Task
+  overload: DrawnUi.Draw.WindowedSource`1.ScrollToIndex*
+  nameWithType.vb: WindowedSource(Of T).ScrollToIndex(Integer, RelativePositionType, Boolean)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ScrollToIndex(Integer, DrawnUi.Draw.RelativePositionType, Boolean)
+  name.vb: ScrollToIndex(Integer, RelativePositionType, Boolean)
+- uid: DrawnUi.Draw.WindowedSource`1.ScrollToNewest(System.Boolean)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.ScrollToNewest(System.Boolean)
+  id: ScrollToNewest(System.Boolean)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: ScrollToNewest(bool)
+  nameWithType: WindowedSource<T>.ScrollToNewest(bool)
+  fullName: DrawnUi.Draw.WindowedSource<T>.ScrollToNewest(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ScrollToNewest
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 159
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Jump to the present (newest). Resident-present = plain scroll to index 0; detached = fetch
+        the present window, replace, and snap to content start (offset 0 = newest).
+  example: []
+  syntax:
+    content: public Task ScrollToNewest(bool animate)
+    parameters:
+    - id: animate
+      type: System.Boolean
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ScrollToNewest(animate As Boolean) As Task
+  overload: DrawnUi.Draw.WindowedSource`1.ScrollToNewest*
+  nameWithType.vb: WindowedSource(Of T).ScrollToNewest(Boolean)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ScrollToNewest(Boolean)
+  name.vb: ScrollToNewest(Boolean)
+- uid: DrawnUi.Draw.WindowedSource`1.ScrollToOldest(System.Boolean)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.ScrollToOldest(System.Boolean)
+  id: ScrollToOldest(System.Boolean)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: ScrollToOldest(bool)
+  nameWithType: WindowedSource<T>.ScrollToOldest(bool)
+  fullName: DrawnUi.Draw.WindowedSource<T>.ScrollToOldest(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: ScrollToOldest
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 190
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Jump to the oldest (history start): fetch the head window, replace, ordered-scroll to the
+        visual top (oldest = last resident in the inverted list). LoadMore suppressed for the settle.
+  example: []
+  syntax:
+    content: public Task ScrollToOldest(bool animate)
+    parameters:
+    - id: animate
+      type: System.Boolean
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ScrollToOldest(animate As Boolean) As Task
+  overload: DrawnUi.Draw.WindowedSource`1.ScrollToOldest*
+  nameWithType.vb: WindowedSource(Of T).ScrollToOldest(Boolean)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ScrollToOldest(Boolean)
+  name.vb: ScrollToOldest(Boolean)
+- uid: DrawnUi.Draw.WindowedSource`1.RebaseToPresent(System.Boolean)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.RebaseToPresent(System.Boolean)
+  id: RebaseToPresent(System.Boolean)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: RebaseToPresent(bool)
+  nameWithType: WindowedSource<T>.RebaseToPresent(bool)
+  fullName: DrawnUi.Draw.WindowedSource<T>.RebaseToPresent(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RebaseToPresent
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 233
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Rebase the window back to the present (newest). <code class="paramref">reset</code> uses
+        ReplaceRangeReset (snaps the inverted scroll to content start) vs a plain structure-preserving
+        ReplaceRange when the caller snaps the offset itself.
+  example: []
+  syntax:
+    content: public Task RebaseToPresent(bool reset)
+    parameters:
+    - id: reset
+      type: System.Boolean
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RebaseToPresent(reset As Boolean) As Task
+  overload: DrawnUi.Draw.WindowedSource`1.RebaseToPresent*
+  nameWithType.vb: WindowedSource(Of T).RebaseToPresent(Boolean)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).RebaseToPresent(Boolean)
+  name.vb: RebaseToPresent(Boolean)
+- uid: DrawnUi.Draw.WindowedSource`1.RebaseToOldest
+  commentId: M:DrawnUi.Draw.WindowedSource`1.RebaseToOldest
+  id: RebaseToOldest
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: RebaseToOldest()
+  nameWithType: WindowedSource<T>.RebaseToOldest()
+  fullName: DrawnUi.Draw.WindowedSource<T>.RebaseToOldest()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: RebaseToOldest
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 253
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Rebase to the oldest end (history start). No-op if already there.
+  example: []
+  syntax:
+    content: public Task RebaseToOldest()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RebaseToOldest() As Task
+  overload: DrawnUi.Draw.WindowedSource`1.RebaseToOldest*
+  nameWithType.vb: WindowedSource(Of T).RebaseToOldest()
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).RebaseToOldest()
+- uid: DrawnUi.Draw.WindowedSource`1.InsertNewest(`0)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.InsertNewest(`0)
+  id: InsertNewest(`0)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: InsertNewest(T)
+  nameWithType: WindowedSource<T>.InsertNewest(T)
+  fullName: DrawnUi.Draw.WindowedSource<T>.InsertNewest(T)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: InsertNewest
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 271
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Register a new newest item (already appended to the backing source by the caller) and, when
+        the window is at the present, head-insert it into the visible window. Returns false when detached
+        from the present (it lives only in the source until the user returns).
+  example: []
+  syntax:
+    content: public bool InsertNewest(T item)
+    parameters:
+    - id: item
+      type: '{T}'
+    return:
+      type: System.Boolean
+    content.vb: Public Function InsertNewest(item As T) As Boolean
+  overload: DrawnUi.Draw.WindowedSource`1.InsertNewest*
+  nameWithType.vb: WindowedSource(Of T).InsertNewest(T)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).InsertNewest(T)
+- uid: DrawnUi.Draw.WindowedSource`1.LoadOlder
+  commentId: M:DrawnUi.Draw.WindowedSource`1.LoadOlder
+  id: LoadOlder
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: LoadOlder()
+  nameWithType: WindowedSource<T>.LoadOlder()
+  fullName: DrawnUi.Draw.WindowedSource<T>.LoadOlder()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LoadOlder
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 291
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    History: older items APPENDED at the list end (top spinner). Memory cap trims newest first.
+        Re-entrant triggers during the fetch are ignored.
+  example: []
+  syntax:
+    content: public void LoadOlder()
+    content.vb: Public Sub LoadOlder()
+  overload: DrawnUi.Draw.WindowedSource`1.LoadOlder*
+  nameWithType.vb: WindowedSource(Of T).LoadOlder()
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).LoadOlder()
+- uid: DrawnUi.Draw.WindowedSource`1.LoadNewer
+  commentId: M:DrawnUi.Draw.WindowedSource`1.LoadNewer
+  id: LoadNewer
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: LoadNewer()
+  nameWithType: WindowedSource<T>.LoadNewer()
+  fullName: DrawnUi.Draw.WindowedSource<T>.LoadNewer()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: LoadNewer
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 328
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Back towards the present: newer items HEAD-INSERTED (bottom spinner). The oldest tail is
+        trimmed BEFORE the insert, same UI turn, to avoid a grow-then-shrink flash. Re-entrancy ignored.
+  example: []
+  syntax:
+    content: public void LoadNewer()
+    content.vb: Public Sub LoadNewer()
+  overload: DrawnUi.Draw.WindowedSource`1.LoadNewer*
+  nameWithType.vb: WindowedSource(Of T).LoadNewer()
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).LoadNewer()
+references:
+- uid: DrawnUi.Draw.WindowedSource`1.WindowStart
+  commentId: P:DrawnUi.Draw.WindowedSource`1.WindowStart
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_WindowStart
+  name: WindowStart
+  nameWithType: WindowedSource<T>.WindowStart
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowStart
+  nameWithType.vb: WindowedSource(Of T).WindowStart
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).WindowStart
+- uid: DrawnUi.Draw.WindowedSource`1.WindowEnd
+  commentId: P:DrawnUi.Draw.WindowedSource`1.WindowEnd
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_WindowEnd
+  name: WindowEnd
+  nameWithType: WindowedSource<T>.WindowEnd
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowEnd
+  nameWithType.vb: WindowedSource(Of T).WindowEnd
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).WindowEnd
+- uid: DrawnUi.Draw.WindowedSource`1.Items
+  commentId: P:DrawnUi.Draw.WindowedSource`1.Items
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_Items
+  name: Items
+  nameWithType: WindowedSource<T>.Items
+  fullName: DrawnUi.Draw.WindowedSource<T>.Items
+  nameWithType.vb: WindowedSource(Of T).Items
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).Items
+- uid: DrawnUi.Draw.IWindowDataSource`1
+  commentId: T:DrawnUi.Draw.IWindowDataSource`1
+  href: DrawnUi.Draw.IWindowDataSource-1.html
+  name: IWindowDataSource<T>
+  nameWithType: IWindowDataSource<T>
+  fullName: DrawnUi.Draw.IWindowDataSource<T>
+  nameWithType.vb: IWindowDataSource(Of T)
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T)
+  name.vb: IWindowDataSource(Of T)
+  spec.csharp:
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.WindowedSource`1.ToLocal(System.Int32)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.ToLocal(System.Int32)
+  isExternal: true
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToLocal_System_Int32_
+  name: ToLocal(int)
+  nameWithType: WindowedSource<T>.ToLocal(int)
+  fullName: DrawnUi.Draw.WindowedSource<T>.ToLocal(int)
+  nameWithType.vb: WindowedSource(Of T).ToLocal(Integer)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ToLocal(Integer)
+  name.vb: ToLocal(Integer)
+  spec.csharp:
+  - uid: DrawnUi.Draw.WindowedSource`1.ToLocal(System.Int32)
+    name: ToLocal
+    href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToLocal_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.WindowedSource`1.ToLocal(System.Int32)
+    name: ToLocal
+    href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToLocal_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: DrawnUi.Draw.WindowedSource`1.ToGlobal(System.Int32)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.ToGlobal(System.Int32)
+  isExternal: true
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToGlobal_System_Int32_
+  name: ToGlobal(int)
+  nameWithType: WindowedSource<T>.ToGlobal(int)
+  fullName: DrawnUi.Draw.WindowedSource<T>.ToGlobal(int)
+  nameWithType.vb: WindowedSource(Of T).ToGlobal(Integer)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ToGlobal(Integer)
+  name.vb: ToGlobal(Integer)
+  spec.csharp:
+  - uid: DrawnUi.Draw.WindowedSource`1.ToGlobal(System.Int32)
+    name: ToGlobal
+    href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToGlobal_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.WindowedSource`1.ToGlobal(System.Int32)
+    name: ToGlobal
+    href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToGlobal_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.WindowedSource`1.#ctor*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.#ctor
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1__ctor_System_Int32_System_Int32_System_Boolean_
+  name: WindowedSource
+  nameWithType: WindowedSource<T>.WindowedSource
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowedSource
+  nameWithType.vb: WindowedSource(Of T).New
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Draw.WindowedSource`1.Items*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.Items
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_Items
+  name: Items
+  nameWithType: WindowedSource<T>.Items
+  fullName: DrawnUi.Draw.WindowedSource<T>.Items
+  nameWithType.vb: WindowedSource(Of T).Items
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).Items
+- uid: AppoMobi.Specials.ObservableRangeCollection{{T}}
+  commentId: T:AppoMobi.Specials.ObservableRangeCollection{`0}
+  parent: AppoMobi.Specials
+  definition: AppoMobi.Specials.ObservableRangeCollection`1
+  name: ObservableRangeCollection<T>
+  nameWithType: ObservableRangeCollection<T>
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>
+  nameWithType.vb: ObservableRangeCollection(Of T)
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T)
+  name.vb: ObservableRangeCollection(Of T)
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection`1
+  commentId: T:AppoMobi.Specials.ObservableRangeCollection`1
+  isExternal: true
+  name: ObservableRangeCollection<T>
+  nameWithType: ObservableRangeCollection<T>
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>
+  nameWithType.vb: ObservableRangeCollection(Of T)
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T)
+  name.vb: ObservableRangeCollection(Of T)
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AppoMobi.Specials
+  commentId: N:AppoMobi.Specials
+  isExternal: true
+  name: AppoMobi.Specials
+  nameWithType: AppoMobi.Specials
+  fullName: AppoMobi.Specials
+  spec.csharp:
+  - uid: AppoMobi
+    name: AppoMobi
+    isExternal: true
+  - name: .
+  - uid: AppoMobi.Specials
+    name: Specials
+    isExternal: true
+  spec.vb:
+  - uid: AppoMobi
+    name: AppoMobi
+    isExternal: true
+  - name: .
+  - uid: AppoMobi.Specials
+    name: Specials
+    isExternal: true
+- uid: DrawnUi.Draw.WindowedSource`1.Count*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.Count
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_Count
+  name: Count
+  nameWithType: WindowedSource<T>.Count
+  fullName: DrawnUi.Draw.WindowedSource<T>.Count
+  nameWithType.vb: WindowedSource(Of T).Count
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).Count
+- uid: DrawnUi.Draw.WindowedSource`1.WindowStart*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.WindowStart
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_WindowStart
+  name: WindowStart
+  nameWithType: WindowedSource<T>.WindowStart
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowStart
+  nameWithType.vb: WindowedSource(Of T).WindowStart
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).WindowStart
+- uid: DrawnUi.Draw.WindowedSource`1.WindowEnd*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.WindowEnd
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_WindowEnd
+  name: WindowEnd
+  nameWithType: WindowedSource<T>.WindowEnd
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowEnd
+  nameWithType.vb: WindowedSource(Of T).WindowEnd
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).WindowEnd
+- uid: DrawnUi.Draw.WindowedSource`1.AtPresent*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.AtPresent
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_AtPresent
+  name: AtPresent
+  nameWithType: WindowedSource<T>.AtPresent
+  fullName: DrawnUi.Draw.WindowedSource<T>.AtPresent
+  nameWithType.vb: WindowedSource(Of T).AtPresent
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).AtPresent
+- uid: DrawnUi.Draw.WindowedSource`1.AtOldest*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.AtOldest
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_AtOldest
+  name: AtOldest
+  nameWithType: WindowedSource<T>.AtOldest
+  fullName: DrawnUi.Draw.WindowedSource<T>.AtOldest
+  nameWithType.vb: WindowedSource(Of T).AtOldest
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).AtOldest
+- uid: DrawnUi.Draw.WindowedSource`1.OnSliceLoaded*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.OnSliceLoaded
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_OnSliceLoaded
+  name: OnSliceLoaded
+  nameWithType: WindowedSource<T>.OnSliceLoaded
+  fullName: DrawnUi.Draw.WindowedSource<T>.OnSliceLoaded
+  nameWithType.vb: WindowedSource(Of T).OnSliceLoaded
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).OnSliceLoaded
+- uid: System.Action{System.Collections.Generic.IReadOnlyList{{T}}}
+  commentId: T:System.Action{System.Collections.Generic.IReadOnlyList{`0}}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<IReadOnlyList<T>>
+  nameWithType: Action<IReadOnlyList<T>>
+  fullName: System.Action<System.Collections.Generic.IReadOnlyList<T>>
+  nameWithType.vb: Action(Of IReadOnlyList(Of T))
+  fullName.vb: System.Action(Of System.Collections.Generic.IReadOnlyList(Of T))
+  name.vb: Action(Of IReadOnlyList(Of T))
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.WindowedSource`1.IsLoadingOlder*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.IsLoadingOlder
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_IsLoadingOlder
+  name: IsLoadingOlder
+  nameWithType: WindowedSource<T>.IsLoadingOlder
+  fullName: DrawnUi.Draw.WindowedSource<T>.IsLoadingOlder
+  nameWithType.vb: WindowedSource(Of T).IsLoadingOlder
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).IsLoadingOlder
+- uid: DrawnUi.Draw.WindowedSource`1.IsLoadingNewer*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.IsLoadingNewer
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_IsLoadingNewer
+  name: IsLoadingNewer
+  nameWithType: WindowedSource<T>.IsLoadingNewer
+  fullName: DrawnUi.Draw.WindowedSource<T>.IsLoadingNewer
+  nameWithType.vb: WindowedSource(Of T).IsLoadingNewer
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).IsLoadingNewer
+- uid: DrawnUi.Draw.WindowedSource`1.IsLoadingJump*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.IsLoadingJump
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_IsLoadingJump
+  name: IsLoadingJump
+  nameWithType: WindowedSource<T>.IsLoadingJump
+  fullName: DrawnUi.Draw.WindowedSource<T>.IsLoadingJump
+  nameWithType.vb: WindowedSource(Of T).IsLoadingJump
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).IsLoadingJump
+- uid: DrawnUi.Draw.WindowedSource`1.LoadingChanged*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.LoadingChanged
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_LoadingChanged
+  name: LoadingChanged
+  nameWithType: WindowedSource<T>.LoadingChanged
+  fullName: DrawnUi.Draw.WindowedSource<T>.LoadingChanged
+  nameWithType.vb: WindowedSource(Of T).LoadingChanged
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).LoadingChanged
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: DrawnUi.Draw.WindowedSource`1.SetHost*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.SetHost
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_SetHost_DrawnUi_Draw_IWindowHost_
+  name: SetHost
+  nameWithType: WindowedSource<T>.SetHost
+  fullName: DrawnUi.Draw.WindowedSource<T>.SetHost
+  nameWithType.vb: WindowedSource(Of T).SetHost
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).SetHost
+- uid: DrawnUi.Draw.IWindowHost
+  commentId: T:DrawnUi.Draw.IWindowHost
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IWindowHost.html
+  name: IWindowHost
+  nameWithType: IWindowHost
+  fullName: DrawnUi.Draw.IWindowHost
+- uid: DrawnUi.Draw.WindowedSource`1.SetDataSource*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.SetDataSource
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_SetDataSource_DrawnUi_Draw_IWindowDataSource__0__
+  name: SetDataSource
+  nameWithType: WindowedSource<T>.SetDataSource
+  fullName: DrawnUi.Draw.WindowedSource<T>.SetDataSource
+  nameWithType.vb: WindowedSource(Of T).SetDataSource
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).SetDataSource
+- uid: DrawnUi.Draw.IWindowDataSource{{T}}
+  commentId: T:DrawnUi.Draw.IWindowDataSource{`0}
+  parent: DrawnUi.Draw
+  definition: DrawnUi.Draw.IWindowDataSource`1
+  href: DrawnUi.Draw.IWindowDataSource-1.html
+  name: IWindowDataSource<T>
+  nameWithType: IWindowDataSource<T>
+  fullName: DrawnUi.Draw.IWindowDataSource<T>
+  nameWithType.vb: IWindowDataSource(Of T)
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T)
+  name.vb: IWindowDataSource(Of T)
+  spec.csharp:
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.WindowedSource`1.ToLocal*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.ToLocal
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToLocal_System_Int32_
+  name: ToLocal
+  nameWithType: WindowedSource<T>.ToLocal
+  fullName: DrawnUi.Draw.WindowedSource<T>.ToLocal
+  nameWithType.vb: WindowedSource(Of T).ToLocal
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ToLocal
+- uid: DrawnUi.Draw.WindowedSource`1.ToGlobal*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.ToGlobal
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ToGlobal_System_Int32_
+  name: ToGlobal
+  nameWithType: WindowedSource<T>.ToGlobal
+  fullName: DrawnUi.Draw.WindowedSource<T>.ToGlobal
+  nameWithType.vb: WindowedSource(Of T).ToGlobal
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ToGlobal
+- uid: DrawnUi.Draw.WindowedSource`1.SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+  commentId: M:DrawnUi.Draw.WindowedSource`1.SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_SetDataSource_DrawnUi_Draw_IWindowDataSource__0__
+  name: SetDataSource(IWindowDataSource<T>)
+  nameWithType: WindowedSource<T>.SetDataSource(IWindowDataSource<T>)
+  fullName: DrawnUi.Draw.WindowedSource<T>.SetDataSource(DrawnUi.Draw.IWindowDataSource<T>)
+  nameWithType.vb: WindowedSource(Of T).SetDataSource(IWindowDataSource(Of T))
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).SetDataSource(DrawnUi.Draw.IWindowDataSource(Of T))
+  name.vb: SetDataSource(IWindowDataSource(Of T))
+  spec.csharp:
+  - uid: DrawnUi.Draw.WindowedSource`1.SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+    name: SetDataSource
+    href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_SetDataSource_DrawnUi_Draw_IWindowDataSource__0__
+  - name: (
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.WindowedSource`1.SetDataSource(DrawnUi.Draw.IWindowDataSource{`0})
+    name: SetDataSource
+    href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_SetDataSource_DrawnUi_Draw_IWindowDataSource__0__
+  - name: (
+  - uid: DrawnUi.Draw.IWindowDataSource`1
+    name: IWindowDataSource
+    href: DrawnUi.Draw.IWindowDataSource-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.WindowedSource`1.InitializeAsync*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.InitializeAsync
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync
+  nameWithType: WindowedSource<T>.InitializeAsync
+  fullName: DrawnUi.Draw.WindowedSource<T>.InitializeAsync
+  nameWithType.vb: WindowedSource(Of T).InitializeAsync
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).InitializeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: DrawnUi.Draw.WindowedSource`1.IsLoadingJump
+  commentId: P:DrawnUi.Draw.WindowedSource`1.IsLoadingJump
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_IsLoadingJump
+  name: IsLoadingJump
+  nameWithType: WindowedSource<T>.IsLoadingJump
+  fullName: DrawnUi.Draw.WindowedSource<T>.IsLoadingJump
+  nameWithType.vb: WindowedSource(Of T).IsLoadingJump
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).IsLoadingJump
+- uid: DrawnUi.Draw.WindowedSource`1.ScrollToIndex*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.ScrollToIndex
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ScrollToIndex_System_Int32_DrawnUi_Draw_RelativePositionType_System_Boolean_
+  name: ScrollToIndex
+  nameWithType: WindowedSource<T>.ScrollToIndex
+  fullName: DrawnUi.Draw.WindowedSource<T>.ScrollToIndex
+  nameWithType.vb: WindowedSource(Of T).ScrollToIndex
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ScrollToIndex
+- uid: DrawnUi.Draw.RelativePositionType
+  commentId: T:DrawnUi.Draw.RelativePositionType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.RelativePositionType.html
+  name: RelativePositionType
+  nameWithType: RelativePositionType
+  fullName: DrawnUi.Draw.RelativePositionType
+- uid: DrawnUi.Draw.WindowedSource`1.ScrollToNewest*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.ScrollToNewest
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ScrollToNewest_System_Boolean_
+  name: ScrollToNewest
+  nameWithType: WindowedSource<T>.ScrollToNewest
+  fullName: DrawnUi.Draw.WindowedSource<T>.ScrollToNewest
+  nameWithType.vb: WindowedSource(Of T).ScrollToNewest
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ScrollToNewest
+- uid: DrawnUi.Draw.WindowedSource`1.ScrollToOldest*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.ScrollToOldest
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_ScrollToOldest_System_Boolean_
+  name: ScrollToOldest
+  nameWithType: WindowedSource<T>.ScrollToOldest
+  fullName: DrawnUi.Draw.WindowedSource<T>.ScrollToOldest
+  nameWithType.vb: WindowedSource(Of T).ScrollToOldest
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).ScrollToOldest
+- uid: DrawnUi.Draw.WindowedSource`1.RebaseToPresent*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.RebaseToPresent
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_RebaseToPresent_System_Boolean_
+  name: RebaseToPresent
+  nameWithType: WindowedSource<T>.RebaseToPresent
+  fullName: DrawnUi.Draw.WindowedSource<T>.RebaseToPresent
+  nameWithType.vb: WindowedSource(Of T).RebaseToPresent
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).RebaseToPresent
+- uid: DrawnUi.Draw.WindowedSource`1.RebaseToOldest*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.RebaseToOldest
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_RebaseToOldest
+  name: RebaseToOldest
+  nameWithType: WindowedSource<T>.RebaseToOldest
+  fullName: DrawnUi.Draw.WindowedSource<T>.RebaseToOldest
+  nameWithType.vb: WindowedSource(Of T).RebaseToOldest
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).RebaseToOldest
+- uid: DrawnUi.Draw.WindowedSource`1.InsertNewest*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.InsertNewest
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_InsertNewest__0_
+  name: InsertNewest
+  nameWithType: WindowedSource<T>.InsertNewest
+  fullName: DrawnUi.Draw.WindowedSource<T>.InsertNewest
+  nameWithType.vb: WindowedSource(Of T).InsertNewest
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).InsertNewest
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: DrawnUi.Draw.WindowedSource`1.LoadOlder*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.LoadOlder
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_LoadOlder
+  name: LoadOlder
+  nameWithType: WindowedSource<T>.LoadOlder
+  fullName: DrawnUi.Draw.WindowedSource<T>.LoadOlder
+  nameWithType.vb: WindowedSource(Of T).LoadOlder
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).LoadOlder
+- uid: DrawnUi.Draw.WindowedSource`1.LoadNewer*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.LoadNewer
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_LoadNewer
+  name: LoadNewer
+  nameWithType: WindowedSource<T>.LoadNewer
+  fullName: DrawnUi.Draw.WindowedSource<T>.LoadNewer
+  nameWithType.vb: WindowedSource(Of T).LoadNewer
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).LoadNewer

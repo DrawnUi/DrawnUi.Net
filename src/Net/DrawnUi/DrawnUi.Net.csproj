@@ -42,21 +42,27 @@
 
     <ItemGroup>
         <PackageReference Include="AppoMobi.Gestures" Version="3.10.4" />
-        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.147.0-preview.2.1" />
-        <PackageReference Include="SkiaSharp.Skottie" Version="4.147.0-preview.2.1" />
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.Skottie" Version="4.148.0" />
         <PackageReference Include="Svg.Skia" Version="4.9.0" />
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
-        <PackageReference Include="AppoMobi.Specials" Version="9.0.3" />
+        <PackageReference Include="AppoMobi.Specials" Version="10.0.2" />
         <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
         <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
     </ItemGroup>
 
-    <Import Project="..\..\Shared\Shared.projitems" Label="Shared" />
+    <Import Project="..\..\Shared\DrawnUi\Shared.projitems" Label="Shared" />
     <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
 
     <ItemGroup>
         <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
         <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\SharedNet\Internals\Core\FontCollection.cs" Link="FontCollection.cs" />
+      <Compile Include="..\..\SharedNet\Internals\Core\IStylesCollection.cs" Link="IStylesCollection.cs" />
+      <Compile Include="..\..\SharedNet\Internals\Core\StylesCollection.cs" Link="StylesCollection.cs" />
     </ItemGroup>
 
 </Project>

@@ -18,11 +18,11 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PresetType
-    path: ../src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
     startLine: 398
   assemblies:
   - DrawnUi.Maui
@@ -45,11 +45,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Default
-    path: ../src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
     startLine: 400
   assemblies:
   - DrawnUi.Maui
@@ -71,11 +71,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Scale
-    path: ../src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
     startLine: 401
   assemblies:
   - DrawnUi.Maui
@@ -97,11 +97,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Rotation
-    path: ../src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
     startLine: 402
   assemblies:
   - DrawnUi.Maui
@@ -123,11 +123,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Alpha
-    path: ../src/Shared/Features/Animators/VelocitySkiaAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/VelocitySkiaAnimator.cs
     startLine: 403
   assemblies:
   - DrawnUi.Maui

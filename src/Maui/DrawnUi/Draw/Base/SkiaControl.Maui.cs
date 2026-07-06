@@ -4,6 +4,7 @@ Normally other partial code definitions should be framework independent.
 */
 
 using System.Collections;
+using System.Collections.Concurrent;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.HotReload;
 using IContainer = Microsoft.Maui.IContainer;
@@ -173,10 +174,6 @@ namespace DrawnUi.Draw
         public static Color BlackColor = Colors.Black;
         public static Color RedColor = Colors.Red;
 
-
-
-    
-
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             try
@@ -234,8 +231,12 @@ namespace DrawnUi.Draw
             }
             else if (propertyName == nameof(Padding))
             {
-                UsePadding = OnPaddingSet(this.Padding);
-                InvalidateMeasure();
+                SyncUniqueAction(() =>
+                {
+                    UsePadding = OnPaddingSet(this.Padding);
+                    InvalidateMeasure();
+                }, 3);
+
             }
             else if (propertyName.IsEither(
                          nameof(HorizontalOptions), nameof(VerticalOptions)))
@@ -244,26 +245,34 @@ namespace DrawnUi.Draw
             }
             else if (propertyName.IsEither(
                          nameof(Margin),
+                         nameof(AddMarginTop),
+                         nameof(AddMarginBottom),
+                         nameof(AddMarginLeft),
+                         nameof(AddMarginRight),
                          nameof(HeightRequest), nameof(WidthRequest),
                          nameof(MaximumWidthRequest), nameof(MinimumWidthRequest),
                          nameof(MaximumHeightRequest), nameof(MinimumHeightRequest)
                      ))
             {
-                InvalidateMeasure();
-                if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                SyncUniqueAction(() =>
                 {
-                    UpdateSizeRequest();
-                }
+                    InvalidateMeasure();
+                    //if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                    {
+                        UpdateSizeRequest();
+                    }
+                }, 1);
             }
             else if (propertyName.IsEither(nameof(IsVisible)))
             {
-                OnVisibilityChanged(IsVisible);
+                SyncUniqueAction(() =>
+                {
+                    OnVisibilityChanged(IsVisible);
+                }, 2);
             }
 
             #endregion
         }
-
-      
 
         /*
         #region HotReload

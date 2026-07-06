@@ -5,6 +5,7 @@ items:
   id: SkiaCacheType
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.SkiaCacheType.Auto
   - DrawnUi.Draw.SkiaCacheType.GPU
   - DrawnUi.Draw.SkiaCacheType.Image
   - DrawnUi.Draw.SkiaCacheType.ImageComposite
@@ -22,11 +23,11 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaCacheType
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
     startLine: 3
   assemblies:
   - DrawnUi.Maui
@@ -49,11 +50,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: None
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -62,6 +63,34 @@ items:
   example: []
   syntax:
     content: None = 0
+    return:
+      type: DrawnUi.Draw.SkiaCacheType
+- uid: DrawnUi.Draw.SkiaCacheType.Auto
+  commentId: F:DrawnUi.Draw.SkiaCacheType.Auto
+  id: Auto
+  parent: DrawnUi.Draw.SkiaCacheType
+  langs:
+  - csharp
+  - vb
+  name: Auto
+  nameWithType: SkiaCacheType.Auto
+  fullName: DrawnUi.Draw.SkiaCacheType.Auto
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Auto
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Default cache type, will use the most appropriate strategy based on the control logic
+  example: []
+  syntax:
+    content: Auto = 1
     return:
       type: DrawnUi.Draw.SkiaCacheType
 - uid: DrawnUi.Draw.SkiaCacheType.Operations
@@ -77,12 +106,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Operations
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
-    startLine: 14
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 19
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -92,7 +121,7 @@ items:
     Do not use this when dropping shadows or with other effects, better use Bitmap.
   example: []
   syntax:
-    content: Operations = 1
+    content: Operations = 2
     return:
       type: DrawnUi.Draw.SkiaCacheType
 - uid: DrawnUi.Draw.SkiaCacheType.OperationsFull
@@ -108,12 +137,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OperationsFull
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
-    startLine: 22
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -127,7 +156,7 @@ items:
     Do not use this when dropping shadows or with other effects, better use Bitmap.
   example: []
   syntax:
-    content: OperationsFull = 2
+    content: OperationsFull = 3
     return:
       type: DrawnUi.Draw.SkiaCacheType
 - uid: DrawnUi.Draw.SkiaCacheType.Image
@@ -143,12 +172,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Image
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
-    startLine: 28
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 33
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -158,7 +187,7 @@ items:
     Slower but will work for sizes bigger than graphics memory if needed.
   example: []
   syntax:
-    content: Image = 3
+    content: Image = 4
     return:
       type: DrawnUi.Draw.SkiaCacheType
 - uid: DrawnUi.Draw.SkiaCacheType.ImageDoubleBuffered
@@ -174,19 +203,19 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageDoubleBuffered
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
-    startLine: 33
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 38
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Using `Image` cache type with double buffering. Will display a previous cache while rendering the new one in background, thus not slowing scrolling etc.
   example: []
   syntax:
-    content: ImageDoubleBuffered = 4
+    content: ImageDoubleBuffered = 5
     return:
       type: DrawnUi.Draw.SkiaCacheType
 - uid: DrawnUi.Draw.SkiaCacheType.ImageComposite
@@ -202,12 +231,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageComposite
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
-    startLine: 43
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 48
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -223,7 +252,7 @@ items:
     But will suffer from children that love to invalidate parent much!
   example: []
   syntax:
-    content: ImageComposite = 5
+    content: ImageComposite = 6
     return:
       type: DrawnUi.Draw.SkiaCacheType
 - uid: DrawnUi.Draw.SkiaCacheType.ImageCompositeGPU
@@ -239,12 +268,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ImageCompositeGPU
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
-    startLine: 53
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -262,7 +291,7 @@ items:
     But will suffer from children that love to invalidate parent much!
   example: []
   syntax:
-    content: ImageCompositeGPU = 6
+    content: ImageCompositeGPU = 7
     return:
       type: DrawnUi.Draw.SkiaCacheType
 - uid: DrawnUi.Draw.SkiaCacheType.GPU
@@ -278,12 +307,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Enums/SkiaCacheType.cs
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GPU
-    path: ../src/Shared/Internals/Enums/SkiaCacheType.cs
-    startLine: 60
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaCacheType.cs
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -295,7 +324,7 @@ items:
     Will fallback to simple Image cache type if hardware acceleration is not available.
   example: []
   syntax:
-    content: GPU = 7
+    content: GPU = 8
     return:
       type: DrawnUi.Draw.SkiaCacheType
 references:

@@ -45,7 +45,6 @@ public class DebugCanvas : Canvas
             using var paint = new SKPaint() //max quality
             {
                 IsAntialias = true,
-                FilterQuality = SKFilterQuality.High,
                 IsDither = true
             };
 

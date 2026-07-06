@@ -26,11 +26,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaAccessibilityManager
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 26
   assemblies:
   - DrawnUi.Maui
@@ -63,11 +63,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MinUpdateIntervalMs
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -94,11 +94,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Snapshot
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -123,11 +123,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Changed
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 40
   assemblies:
   - DrawnUi.Maui
@@ -150,11 +150,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusChanged
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 41
   assemblies:
   - DrawnUi.Maui
@@ -177,11 +177,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LiveRegionUpdated
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 47
   assemblies:
   - DrawnUi.Maui
@@ -209,11 +209,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FocusedNode
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -238,11 +238,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NotifyFocused
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -270,11 +270,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Register
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -299,11 +299,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NotifyUpdated
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 64
   assemblies:
   - DrawnUi.Maui
@@ -328,11 +328,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ForceRebuildOnNextFrame
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 73
   assemblies:
   - DrawnUi.Maui
@@ -354,11 +354,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Unregister
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -383,11 +383,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SkiaAccessibilityManager.cs
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UnregisterSubtree
-    path: ../src/Shared/Views/SkiaAccessibilityManager.cs
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
     startLine: 88
   assemblies:
   - DrawnUi.Maui

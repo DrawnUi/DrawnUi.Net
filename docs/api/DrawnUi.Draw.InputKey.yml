@@ -125,11 +125,11 @@ items:
   type: Enum
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InputKey
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -154,11 +154,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Unknown
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -180,11 +180,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Backspace
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -206,11 +206,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Tab
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -232,11 +232,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Enter
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -258,11 +258,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShiftLeft
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -284,11 +284,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShiftRight
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -310,11 +310,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlLeft
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -336,11 +336,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ControlRight
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -362,11 +362,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AltLeft
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -388,11 +388,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AltRight
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -414,11 +414,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Pause
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -440,11 +440,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CapsLock
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 18
   assemblies:
   - DrawnUi.Maui
@@ -466,11 +466,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Escape
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -492,11 +492,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Space
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -518,11 +518,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PageUp
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -544,11 +544,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PageDown
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui
@@ -570,11 +570,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: End
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -596,11 +596,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Home
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -622,11 +622,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IntBackslash
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -648,11 +648,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ArrowLeft
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 26
   assemblies:
   - DrawnUi.Maui
@@ -674,11 +674,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ArrowUp
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 27
   assemblies:
   - DrawnUi.Maui
@@ -700,11 +700,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ArrowRight
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -726,11 +726,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ArrowDown
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -752,11 +752,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PrintScreen
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -778,11 +778,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Insert
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -804,11 +804,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Delete
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 32
   assemblies:
   - DrawnUi.Maui
@@ -830,11 +830,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit0
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 33
   assemblies:
   - DrawnUi.Maui
@@ -856,11 +856,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit1
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 34
   assemblies:
   - DrawnUi.Maui
@@ -882,11 +882,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit2
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -908,11 +908,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit3
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -934,11 +934,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit4
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 37
   assemblies:
   - DrawnUi.Maui
@@ -960,11 +960,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit5
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -986,11 +986,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit6
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 39
   assemblies:
   - DrawnUi.Maui
@@ -1012,11 +1012,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit7
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 40
   assemblies:
   - DrawnUi.Maui
@@ -1038,11 +1038,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit8
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 41
   assemblies:
   - DrawnUi.Maui
@@ -1064,11 +1064,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Digit9
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui
@@ -1090,11 +1090,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyA
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -1116,11 +1116,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyB
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -1142,11 +1142,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyC
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 45
   assemblies:
   - DrawnUi.Maui
@@ -1168,11 +1168,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyD
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 46
   assemblies:
   - DrawnUi.Maui
@@ -1194,11 +1194,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyE
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 47
   assemblies:
   - DrawnUi.Maui
@@ -1220,11 +1220,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyF
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 48
   assemblies:
   - DrawnUi.Maui
@@ -1246,11 +1246,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyG
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -1272,11 +1272,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyH
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 50
   assemblies:
   - DrawnUi.Maui
@@ -1298,11 +1298,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyI
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -1324,11 +1324,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyJ
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 52
   assemblies:
   - DrawnUi.Maui
@@ -1350,11 +1350,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyK
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -1376,11 +1376,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyL
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 54
   assemblies:
   - DrawnUi.Maui
@@ -1402,11 +1402,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyM
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 55
   assemblies:
   - DrawnUi.Maui
@@ -1428,11 +1428,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyN
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -1454,11 +1454,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyO
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 57
   assemblies:
   - DrawnUi.Maui
@@ -1480,11 +1480,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyP
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -1506,11 +1506,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyQ
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 59
   assemblies:
   - DrawnUi.Maui
@@ -1532,11 +1532,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyR
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 60
   assemblies:
   - DrawnUi.Maui
@@ -1558,11 +1558,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyS
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 61
   assemblies:
   - DrawnUi.Maui
@@ -1584,11 +1584,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyT
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 62
   assemblies:
   - DrawnUi.Maui
@@ -1610,11 +1610,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyU
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 63
   assemblies:
   - DrawnUi.Maui
@@ -1636,11 +1636,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyV
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 64
   assemblies:
   - DrawnUi.Maui
@@ -1662,11 +1662,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyW
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 65
   assemblies:
   - DrawnUi.Maui
@@ -1688,11 +1688,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyX
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 66
   assemblies:
   - DrawnUi.Maui
@@ -1714,11 +1714,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyY
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 67
   assemblies:
   - DrawnUi.Maui
@@ -1740,11 +1740,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyZ
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 68
   assemblies:
   - DrawnUi.Maui
@@ -1766,11 +1766,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MetaLeft
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 69
   assemblies:
   - DrawnUi.Maui
@@ -1792,11 +1792,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MetaRight
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 70
   assemblies:
   - DrawnUi.Maui
@@ -1818,11 +1818,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ContextMenu
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 71
   assemblies:
   - DrawnUi.Maui
@@ -1844,11 +1844,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad0
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 72
   assemblies:
   - DrawnUi.Maui
@@ -1870,11 +1870,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad1
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 73
   assemblies:
   - DrawnUi.Maui
@@ -1896,11 +1896,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad2
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 74
   assemblies:
   - DrawnUi.Maui
@@ -1922,11 +1922,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad3
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 75
   assemblies:
   - DrawnUi.Maui
@@ -1948,11 +1948,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad4
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 76
   assemblies:
   - DrawnUi.Maui
@@ -1974,11 +1974,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad5
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 77
   assemblies:
   - DrawnUi.Maui
@@ -2000,11 +2000,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad6
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 78
   assemblies:
   - DrawnUi.Maui
@@ -2026,11 +2026,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad7
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 79
   assemblies:
   - DrawnUi.Maui
@@ -2052,11 +2052,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad8
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 80
   assemblies:
   - DrawnUi.Maui
@@ -2078,11 +2078,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Numpad9
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 81
   assemblies:
   - DrawnUi.Maui
@@ -2104,11 +2104,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NumpadMultiply
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 82
   assemblies:
   - DrawnUi.Maui
@@ -2130,11 +2130,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NumpadAdd
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 83
   assemblies:
   - DrawnUi.Maui
@@ -2156,11 +2156,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NumpadSubtract
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 84
   assemblies:
   - DrawnUi.Maui
@@ -2182,11 +2182,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NumpadDecimal
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 85
   assemblies:
   - DrawnUi.Maui
@@ -2208,11 +2208,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NumpadDivide
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 86
   assemblies:
   - DrawnUi.Maui
@@ -2234,11 +2234,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F1
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 87
   assemblies:
   - DrawnUi.Maui
@@ -2260,11 +2260,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F2
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 88
   assemblies:
   - DrawnUi.Maui
@@ -2286,11 +2286,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F3
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 89
   assemblies:
   - DrawnUi.Maui
@@ -2312,11 +2312,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F4
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 90
   assemblies:
   - DrawnUi.Maui
@@ -2338,11 +2338,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F5
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 91
   assemblies:
   - DrawnUi.Maui
@@ -2364,11 +2364,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F6
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -2390,11 +2390,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F7
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 93
   assemblies:
   - DrawnUi.Maui
@@ -2416,11 +2416,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F8
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 94
   assemblies:
   - DrawnUi.Maui
@@ -2442,11 +2442,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F9
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 95
   assemblies:
   - DrawnUi.Maui
@@ -2468,11 +2468,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F10
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 96
   assemblies:
   - DrawnUi.Maui
@@ -2494,11 +2494,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F11
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui
@@ -2520,11 +2520,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: F12
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 98
   assemblies:
   - DrawnUi.Maui
@@ -2546,11 +2546,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NumLock
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 99
   assemblies:
   - DrawnUi.Maui
@@ -2572,11 +2572,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ScrollLock
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -2598,11 +2598,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AudioVolumeMute
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 101
   assemblies:
   - DrawnUi.Maui
@@ -2624,11 +2624,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AudioVolumeDown
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
@@ -2650,11 +2650,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AudioVolumeUp
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 103
   assemblies:
   - DrawnUi.Maui
@@ -2676,11 +2676,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LaunchMediaPlayer
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 104
   assemblies:
   - DrawnUi.Maui
@@ -2702,11 +2702,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LaunchApplication1
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 105
   assemblies:
   - DrawnUi.Maui
@@ -2728,11 +2728,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LaunchApplication2
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 106
   assemblies:
   - DrawnUi.Maui
@@ -2754,11 +2754,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Semicolon
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 107
   assemblies:
   - DrawnUi.Maui
@@ -2780,11 +2780,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equal
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 108
   assemblies:
   - DrawnUi.Maui
@@ -2806,11 +2806,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Comma
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 109
   assemblies:
   - DrawnUi.Maui
@@ -2832,11 +2832,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Minus
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 110
   assemblies:
   - DrawnUi.Maui
@@ -2858,11 +2858,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Period
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 111
   assemblies:
   - DrawnUi.Maui
@@ -2884,11 +2884,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Slash
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 112
   assemblies:
   - DrawnUi.Maui
@@ -2910,11 +2910,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Backquote
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 113
   assemblies:
   - DrawnUi.Maui
@@ -2936,11 +2936,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BracketLeft
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 114
   assemblies:
   - DrawnUi.Maui
@@ -2962,11 +2962,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Backslash
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 115
   assemblies:
   - DrawnUi.Maui
@@ -2988,11 +2988,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BracketRight
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 116
   assemblies:
   - DrawnUi.Maui
@@ -3014,11 +3014,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Keyboard/MauiKeys.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Quote
-    path: ../src/Shared/Features/Keyboard/MauiKeys.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/MauiKeys.cs
     startLine: 117
   assemblies:
   - DrawnUi.Maui

@@ -16,11 +16,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/ITimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/ITimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ITimingVectorParameters
-    path: ../src/Shared/Features/Animations/Parameters/ITimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/ITimingVectorParameters.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -43,11 +43,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/ITimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/ITimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationSecs
-    path: ../src/Shared/Features/Animations/Parameters/ITimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/ITimingVectorParameters.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -72,11 +72,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/Parameters/ITimingVectorParameters.cs
+      path: src/Shared/DrawnUi/Features/Animations/Parameters/ITimingVectorParameters.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueAt
-    path: ../src/Shared/Features/Animations/Parameters/ITimingVectorParameters.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/Parameters/ITimingVectorParameters.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui

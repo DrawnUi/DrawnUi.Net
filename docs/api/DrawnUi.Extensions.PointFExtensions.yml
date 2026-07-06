@@ -14,11 +14,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Extensions/PointFExtensions.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/PointFExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PointFExtensions
-    path: ../src/Shared/Internals/Extensions/PointFExtensions.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/PointFExtensions.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui

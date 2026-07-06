@@ -18,11 +18,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Helpers/TrackedObject.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TrackedObject
-    path: ../src/Shared/Internals/Helpers/TrackedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -60,11 +60,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Helpers/TrackedObject.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Disposable
-    path: ../src/Shared/Internals/Helpers/TrackedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -91,11 +91,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Internals/Helpers/TrackedObject.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Internals/Helpers/TrackedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -123,11 +123,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/TrackedObject.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Finalize
-    path: ../src/Shared/Internals/Helpers/TrackedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -152,11 +152,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/TrackedObject.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Internals/Helpers/TrackedObject.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/TrackedObject.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui

@@ -20,7 +20,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         var token = _deferCts.Token;
         try
         {
-            await Task.Delay(50, token);
+            await Task.Delay(32, token);
             _suppressImmediateCursorMove = false;
             MoveInternalCursor();
         }
@@ -49,6 +49,9 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
 
     public void SetFocusNative(bool focus)
     {
+        // Guard against timer race: if the 50ms defocus task fires AFTER a refocus task
+        // has already run, IsFocused will be true while focus=false — skip the unsubscribe.
+        if (!focus && IsFocused) return;
         SubscribeToKeyboard(focus);
     }
 
@@ -86,7 +89,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
                 StubDelete();
                 break;
             case InputKey.Enter:
-                StubPressEnter(alt);
+                StubPressEnter(alt, shift);
                 break;
             case InputKey.ArrowLeft:
                 StubMoveCursor(-1, shift);
@@ -133,10 +136,16 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         ReplaceSelection(value);
     }
 
-    public void StubPressEnter(bool splitLine = false)
+    public void StubPressEnter(bool splitLine = false, bool shift = false)
     {
         if (IsMultiline)
         {
+            if (!splitLine && !shift && ShouldSubmitOnEnter)
+            {
+                ExecuteSubmit(clearFocus: false);
+                return;
+            }
+
             ReplaceSelection(GetEditorBreakText(splitLine));
             return;
         }

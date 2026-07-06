@@ -14,6 +14,11 @@
         ContentTemplate="{DataTemplate sandbox:TestRandom}"
         Route="MainPage" />-->
 
+    <ShellContent
+        Title="SkiaWheelScroll Test"
+        ContentTemplate="{DataTemplate sandbox:MainPageWheel}"
+        Route="MainPage" />
+
     <!--<ShellContent
         Title="DrawnUI for .NET MAUI"
         ContentTemplate="{DataTemplate sandbox:PlanesTest}"
@@ -34,10 +39,10 @@
         ContentTemplate="{DataTemplate sandbox:MainPageSpinner}"
         Route="MainPage" />-->
 
-    <ShellContent
+    <!--<ShellContent
         Title="DrawnUI for .NET MAUI"
         ContentTemplate="{DataTemplate sandbox:MainPageEditors}"
-        Route="MainPage" />
+        Route="MainPage" />-->
 
     <!--<ShellContent
     Title="DrawnUI for .NET MAUI"

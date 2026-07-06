@@ -1,0 +1,220 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.CacheSharingType
+  commentId: T:DrawnUi.Draw.CacheSharingType
+  id: CacheSharingType
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.CacheSharingType.Default
+  - DrawnUi.Draw.CacheSharingType.Shared
+  langs:
+  - csharp
+  - vb
+  name: CacheSharingType
+  nameWithType: CacheSharingType
+  fullName: DrawnUi.Draw.CacheSharingType
+  type: Enum
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/CacheSharingType.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: CacheSharingType
+    path: ../src/Shared/DrawnUi/Internals/Enums/CacheSharingType.cs
+    startLine: 6
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Controls whether a control shares its cache with other instances of the same type on the same Canvas.
+
+    Only effective when UseCache is Image or GPU.
+  example: []
+  syntax:
+    content: public enum CacheSharingType
+    content.vb: Public Enum CacheSharingType
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.CacheSharingType.Default
+  commentId: F:DrawnUi.Draw.CacheSharingType.Default
+  id: Default
+  parent: DrawnUi.Draw.CacheSharingType
+  langs:
+  - csharp
+  - vb
+  name: Default
+  nameWithType: CacheSharingType.Default
+  fullName: DrawnUi.Draw.CacheSharingType.Default
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/CacheSharingType.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Default
+    path: ../src/Shared/DrawnUi/Internals/Enums/CacheSharingType.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Each instance maintains its own independent cache (default).
+  example: []
+  syntax:
+    content: Default = 0
+    return:
+      type: DrawnUi.Draw.CacheSharingType
+- uid: DrawnUi.Draw.CacheSharingType.Shared
+  commentId: F:DrawnUi.Draw.CacheSharingType.Shared
+  id: Shared
+  parent: DrawnUi.Draw.CacheSharingType
+  langs:
+  - csharp
+  - vb
+  name: Shared
+  nameWithType: CacheSharingType.Shared
+  fullName: DrawnUi.Draw.CacheSharingType.Shared
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/CacheSharingType.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Shared
+    path: ../src/Shared/DrawnUi/Internals/Enums/CacheSharingType.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    All instances of the same control type on the same Canvas share a single CachedObject.
+
+    The first instance to render creates the cache; others reuse it directly.
+
+    Disposing an individual control does not release the shared cache.
+
+    Use SuperView.Cache.Free&lt;T&gt;() to release explicitly, or let the Canvas dispose it.
+  example: []
+  syntax:
+    content: Shared = 1
+    return:
+      type: DrawnUi.Draw.CacheSharingType
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.CacheSharingType
+  commentId: T:DrawnUi.Draw.CacheSharingType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.CacheSharingType.html
+  name: CacheSharingType
+  nameWithType: CacheSharingType
+  fullName: DrawnUi.Draw.CacheSharingType

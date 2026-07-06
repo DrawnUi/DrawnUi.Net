@@ -44,7 +44,10 @@ namespace DrawnUi.Draw
 
             public override bool ShouldChangeText(UITextView textView, NSRange range, string text)
             {
-                if (!_editor.IsMultiline && text == "\n")
+                // Multiline + ReturnType.Send: return key submits instead of inserting a break.
+                // Hardware Shift+Enter is not distinguishable here (no modifier info in this
+                // delegate); soft keyboards have no Shift+Enter, so Send wins for "\n".
+                if (text == "\n" && (!_editor.IsMultiline || _editor.ShouldSubmitOnEnter))
                 {
                     _editor.ExecuteSubmit(clearFocus: false);
                     return false;
@@ -123,6 +126,20 @@ namespace DrawnUi.Draw
             _layout.AddSubview(Control);
         }
 
+        partial void SyncNativeText()
+        {
+            if (Control == null || _updatingText)
+                return;
+
+            var newText = Text ?? string.Empty;
+            if ((Control.Text ?? string.Empty) == newText)
+                return;
+
+            _updatingText = true;
+            try { Control.Text = newText; }
+            finally { _updatingText = false; }
+        }
+
         public void SetFocusNative(bool focus)
         {
             try
@@ -194,6 +211,29 @@ namespace DrawnUi.Draw
                 default:                Control.ReturnKeyType = UIReturnKeyType.Done;   break;
             }
         }
+
+        private CancellationTokenSource? _deferCts;
+
+        private async void DeferVisualCursorUpdate()
+        {
+            _deferCts?.Cancel();
+            _deferCts = new CancellationTokenSource();
+            var token = _deferCts.Token;
+            try
+            {
+                await Task.Delay(50, token);
+                _suppressImmediateCursorMove = false;
+                MoveInternalCursor();
+            }
+            catch (OperationCanceledException)
+            {
+                _suppressImmediateCursorMove = false;
+            }
+        }
+
+        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+
+        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
 
         public int GenerateUniqueId()
         {

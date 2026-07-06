@@ -32,6 +32,11 @@ dotnet add package DrawnUi.Blazor.Wasm
 dotnet add package DrawnUi.Blazor.Server
 ```
 
+**For pure WebAssembly (standalone, no Blazor):**
+```bash
+dotnet add package DrawnUi.Wasm
+```
+
 **For OpenTK (Windows/Linux desktop games and tools):**
 ```bash
 dotnet add package DrawnUi.OpenTk
@@ -67,6 +72,7 @@ builder.UseDrawnUi();
 - **[Blazor Capabilities](blazor/capabilities.md)** - Runtime fit, validated strengths, and current boundaries
 - **[Blazor Migration](blazor/migration.md)** - Adoption strategy for existing Blazor apps
 - **[Blazor FAQ](blazor/faq.md)** - Package choice, migration path, and support boundaries
+- **[DrawnUi.Wasm](web/index.md)** - Pure WebAssembly host (no Blazor): standalone fully drawn web apps and games
 - **[DrawnUI for OpenTK](opentk/index.md)** - OpenTK `GameWindow` host: games, GPU tools, and desktop apps on Windows/Linux
 - **[DrawnUi.Net](net/index.md)** - Platform-agnostic rendering, harnesses, and headless workflows
 - **[Fluent Extensions](fluent-extensions.md)** - Code-behind UI creation patterns

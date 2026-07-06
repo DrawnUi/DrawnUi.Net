@@ -16,15 +16,7 @@
     - name: DrawnUi.Net Overview
       href: articles/net/index.md
 
-- name: OpenTK
-  href: articles/opentk/index.md
-  items:
-    - name: DrawnUI for OpenTK
-      href: articles/opentk/index.md
-    - name: OpenTK Samples
-      href: articles/opentk/samples.md
-      
-- name: .NET MAUI
+- name: MAUI
   href: articles/maui/index.md
   items:
     - name: Installation and Setup
@@ -44,6 +36,16 @@
     - name: Porting Native to Drawn
       href: articles/porting-maui.md
 
+- name: OpenTK
+  href: articles/opentk/index.md
+  items:
+    - name: DrawnUI for OpenTK
+      href: articles/opentk/index.md
+    - name: OpenTK Samples
+      href: articles/opentk/samples.md
+    - name: OpenTK Resources (Images, Lottie, Fonts)
+      href: articles/opentk/resources.md
+
 - name: Blazor
   href: articles/blazor/index.md
   items:
@@ -57,6 +59,8 @@
       href: articles/blazor/packages.md
     - name: Blazor WebAssembly
       href: articles/blazor/wasm.md
+    - name: Publishing (AOT & Compression)
+      href: articles/blazor/publishing.md
     - name: Blazor Server
       href: articles/blazor/server.md
     - name: Blazor Hybrid Web App
@@ -68,7 +72,13 @@
     - name: Blazor FAQ
       href: articles/blazor/faq.md
 
-
+- name: WebAssembly
+  href: articles/web/index.md
+  items:
+    - name: DrawnUi.Wasm Overview
+      href: articles/web/index.md
+    - name: Getting Started
+      href: articles/web/getting-started.md
 
 - name: Controls
   href: articles/controls/index.md
@@ -97,6 +107,8 @@
       href: articles/controls/native-integration.md
     - name: Shapes
       href: articles/controls/shapes.md
+    - name: Visual Effects
+      href: articles/controls/effects.md
     - name: Text and Labels
       href: articles/controls/text.md
     - name: Images

@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Windows.Input;
 using AppoMobi.Specials;
+using DrawnUi;
 using DrawnUi.Draw;
-using DrawnUi.Draw.ApplicationModel;
 using DrawnUI.Tutorials.NewsFeed.Models;
 using DrawnUI.Tutorials.NewsFeed.Services;
 

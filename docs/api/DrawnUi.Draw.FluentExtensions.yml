@@ -12,14 +12,23 @@ items:
   - DrawnUi.Draw.FluentExtensions.BindProperty``1(``0,Microsoft.Maui.Controls.BindableProperty,System.ComponentModel.INotifyPropertyChanged,System.String,Microsoft.Maui.Controls.BindingMode)
   - DrawnUi.Draw.FluentExtensions.BindProperty``1(``0,Microsoft.Maui.Controls.BindableProperty,System.String,Microsoft.Maui.Controls.BindingMode)
   - DrawnUi.Draw.FluentExtensions.BindProperty``2(``0,Microsoft.Maui.Controls.BindableProperty,System.String,Microsoft.Maui.Controls.IValueConverter,System.Object,Microsoft.Maui.Controls.BindingMode)
+  - DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
   - DrawnUi.Draw.FluentExtensions.CenterX``1(``0)
   - DrawnUi.Draw.FluentExtensions.CenterY``1(``0)
   - DrawnUi.Draw.FluentExtensions.Center``1(``0)
+  - DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
   - DrawnUi.Draw.FluentExtensions.EndX``1(``0)
   - DrawnUi.Draw.FluentExtensions.EndY``1(``0)
   - DrawnUi.Draw.FluentExtensions.FillX``1(``0)
   - DrawnUi.Draw.FluentExtensions.FillY``1(``0)
   - DrawnUi.Draw.FluentExtensions.Fill``1(``0)
+  - DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  - DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+  - DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+  - DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  - DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  - DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  - DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
   - DrawnUi.Draw.FluentExtensions.Initialize``1(``0,System.Action{``0})
   - DrawnUi.Draw.FluentExtensions.ObserveBindingContextOn``3(``0,``1,System.Action{``0,``1,``2,System.String},System.Boolean)
   - DrawnUi.Draw.FluentExtensions.ObserveBindingContext``2(``0,System.Action{``0,``1,System.String},System.Boolean)
@@ -118,12 +127,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FluentExtensions
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 12
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1015,7 +1024,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnLongPressing
     path: ../src/Maui/DrawnUi/Internals/Extensions/FluentExtensions.Maui.cs
-    startLine: 316
+    startLine: 315
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1054,7 +1063,7 @@ items:
       repo: https://github.com/taublast/DrawnUi.git
     id: OnToggled
     path: ../src/Maui/DrawnUi/Internals/Extensions/FluentExtensions.Maui.cs
-    startLine: 337
+    startLine: 336
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1094,11 +1103,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Assign
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -1139,11 +1148,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: AssignParent
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -1184,11 +1193,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Adapt
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -1229,11 +1238,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibility
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 72
   assemblies:
   - DrawnUi.Maui
@@ -1283,11 +1292,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibility
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 85
   assemblies:
   - DrawnUi.Maui
@@ -1326,11 +1335,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityButton
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 93
   assemblies:
   - DrawnUi.Maui
@@ -1367,11 +1376,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityButton
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -1404,11 +1413,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityButton
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 105
   assemblies:
   - DrawnUi.Maui
@@ -1443,11 +1452,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityLive
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 116
   assemblies:
   - DrawnUi.Maui
@@ -1489,11 +1498,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityText
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 122
   assemblies:
   - DrawnUi.Maui
@@ -1528,11 +1537,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityText
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 129
   assemblies:
   - DrawnUi.Maui
@@ -1565,11 +1574,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityPressed
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 137
   assemblies:
   - DrawnUi.Maui
@@ -1606,11 +1615,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAccessibilityToggle
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 147
   assemblies:
   - DrawnUi.Maui
@@ -1652,11 +1661,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithGestures
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 158
   assemblies:
   - DrawnUi.Maui
@@ -1691,11 +1700,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Initialize
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 176
   assemblies:
   - DrawnUi.Maui
@@ -1741,11 +1750,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WhenPaint
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 190
   assemblies:
   - DrawnUi.Maui
@@ -1789,11 +1798,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WhenBindingContextSet
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 205
   assemblies:
   - DrawnUi.Maui
@@ -1840,11 +1849,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WhenItemsSourceChangesApplied
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 233
   assemblies:
   - DrawnUi.Maui
@@ -1888,11 +1897,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveSelf
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 261
   assemblies:
   - DrawnUi.Maui
@@ -1931,11 +1940,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Observe
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 277
   assemblies:
   - DrawnUi.Maui
@@ -1987,11 +1996,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObservePropertiesOn
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 333
   assemblies:
   - DrawnUi.Maui
@@ -2055,11 +2064,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObservePropertyOn
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 374
   assemblies:
   - DrawnUi.Maui
@@ -2121,11 +2130,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveOn
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 416
   assemblies:
   - DrawnUi.Maui
@@ -2189,11 +2198,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveProperty
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 526
   assemblies:
   - DrawnUi.Maui
@@ -2245,11 +2254,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObservePropertyTwoWay
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 555
   assemblies:
   - DrawnUi.Maui
@@ -2311,11 +2320,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveProperty
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 629
   assemblies:
   - DrawnUi.Maui
@@ -2367,11 +2376,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveProperties
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 723
   assemblies:
   - DrawnUi.Maui
@@ -2424,11 +2433,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveProperties
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 749
   assemblies:
   - DrawnUi.Maui
@@ -2480,11 +2489,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Observe
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 842
   assemblies:
   - DrawnUi.Maui
@@ -2533,11 +2542,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Observe
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 937
   assemblies:
   - DrawnUi.Maui
@@ -2589,11 +2598,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Observe
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 959
   assemblies:
   - DrawnUi.Maui
@@ -2645,11 +2654,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveBindingContext
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 988
   assemblies:
   - DrawnUi.Maui
@@ -2709,11 +2718,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ObserveBindingContextOn
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1072
   assemblies:
   - DrawnUi.Maui
@@ -2770,11 +2779,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTapped
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1161
   assemblies:
   - DrawnUi.Maui
@@ -2815,11 +2824,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTextChanged
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1196
   assemblies:
   - DrawnUi.Maui
@@ -2863,11 +2872,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnFocusChanged
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1226
   assemblies:
   - DrawnUi.Maui
@@ -2908,11 +2917,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTapped
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1249
   assemblies:
   - DrawnUi.Maui
@@ -2947,11 +2956,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithChildren
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1284
   assemblies:
   - DrawnUi.Maui
@@ -2992,11 +3001,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithContent
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1301
   assemblies:
   - DrawnUi.Maui
@@ -3037,11 +3046,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithParent
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1314
   assemblies:
   - DrawnUi.Maui
@@ -3082,11 +3091,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CenterX
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1328
   assemblies:
   - DrawnUi.Maui
@@ -3124,11 +3133,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CenterY
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1340
   assemblies:
   - DrawnUi.Maui
@@ -3166,11 +3175,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Fill
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1352
   assemblies:
   - DrawnUi.Maui
@@ -3208,11 +3217,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillX
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1365
   assemblies:
   - DrawnUi.Maui
@@ -3250,11 +3259,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndX
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1371
   assemblies:
   - DrawnUi.Maui
@@ -3287,11 +3296,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EndY
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1377
   assemblies:
   - DrawnUi.Maui
@@ -3324,11 +3333,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartX
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1383
   assemblies:
   - DrawnUi.Maui
@@ -3361,11 +3370,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StartY
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1389
   assemblies:
   - DrawnUi.Maui
@@ -3398,11 +3407,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: FillY
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1402
   assemblies:
   - DrawnUi.Maui
@@ -3440,11 +3449,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Center
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1414
   assemblies:
   - DrawnUi.Maui
@@ -3482,11 +3491,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1430
   assemblies:
   - DrawnUi.Maui
@@ -3527,11 +3536,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1444
   assemblies:
   - DrawnUi.Maui
@@ -3575,11 +3584,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1460
   assemblies:
   - DrawnUi.Maui
@@ -3629,11 +3638,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithPadding
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1474
   assemblies:
   - DrawnUi.Maui
@@ -3674,11 +3683,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithPadding
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1488
   assemblies:
   - DrawnUi.Maui
@@ -3722,11 +3731,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithPadding
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1504
   assemblies:
   - DrawnUi.Maui
@@ -3776,11 +3785,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithTag
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1518
   assemblies:
   - DrawnUi.Maui
@@ -3821,11 +3830,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithCache
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1535
   assemblies:
   - DrawnUi.Maui
@@ -3866,11 +3875,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithBackgroundColor
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1548
   assemblies:
   - DrawnUi.Maui
@@ -3911,11 +3920,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithHorizontalOptions
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1561
   assemblies:
   - DrawnUi.Maui
@@ -3956,11 +3965,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithVerticalOptions
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1574
   assemblies:
   - DrawnUi.Maui
@@ -4001,11 +4010,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithHeight
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1587
   assemblies:
   - DrawnUi.Maui
@@ -4046,11 +4055,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithWidth
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1600
   assemblies:
   - DrawnUi.Maui
@@ -4091,11 +4100,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithMargin
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1613
   assemblies:
   - DrawnUi.Maui
@@ -4136,11 +4145,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithVisibility
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1619
   assemblies:
   - DrawnUi.Maui
@@ -4175,11 +4184,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithShapeType
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1636
   assemblies:
   - DrawnUi.Maui
@@ -4220,11 +4229,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Shape
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1649
   assemblies:
   - DrawnUi.Maui
@@ -4265,11 +4274,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithAspect
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1666
   assemblies:
   - DrawnUi.Maui
@@ -4310,11 +4319,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithFontSize
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1683
   assemblies:
   - DrawnUi.Maui
@@ -4355,11 +4364,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithTextColor
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1696
   assemblies:
   - DrawnUi.Maui
@@ -4400,11 +4409,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithHorizontalTextAlignment
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1709
   assemblies:
   - DrawnUi.Maui
@@ -4445,11 +4454,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnTextChanged
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1724
   assemblies:
   - DrawnUi.Maui
@@ -4487,11 +4496,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithText
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1741
   assemblies:
   - DrawnUi.Maui
@@ -4528,11 +4537,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithItemsSource
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1750
   assemblies:
   - DrawnUi.Maui
@@ -4569,11 +4578,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithEnabled
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1762
   assemblies:
   - DrawnUi.Maui
@@ -4610,11 +4619,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithOpacity
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1771
   assemblies:
   - DrawnUi.Maui
@@ -4651,11 +4660,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithRotation
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1780
   assemblies:
   - DrawnUi.Maui
@@ -4692,11 +4701,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithScale
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1789
   assemblies:
   - DrawnUi.Maui
@@ -4733,11 +4742,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithScale
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1798
   assemblies:
   - DrawnUi.Maui
@@ -4776,11 +4785,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithType
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1808
   assemblies:
   - DrawnUi.Maui
@@ -4817,11 +4826,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithSpacing
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1817
   assemblies:
   - DrawnUi.Maui
@@ -4858,11 +4867,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithColumnSpacing
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1826
   assemblies:
   - DrawnUi.Maui
@@ -4899,11 +4908,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+      path: src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: WithRowSpacing
-    path: ../src/Shared/Internals/Extensions/FluentExtensions.Shared.cs
+    path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
     startLine: 1835
   assemblies:
   - DrawnUi.Maui
@@ -4926,6 +4935,351 @@ items:
   nameWithType.vb: FluentExtensions.WithRowSpacing(Of T)(T, Double)
   fullName.vb: DrawnUi.Draw.FluentExtensions.WithRowSpacing(Of T)(T, Double)
   name.vb: WithRowSpacing(Of T)(T, Double)
+- uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  commentId: M:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  id: BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  nameWithType: FluentExtensions.BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: BuildDomFromRenderTree
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 88
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Builds a DOM tree from the render tree starting at this control
+
+    Uses the same transform logic as ProcessGestures() for accurate positioning
+  example: []
+  syntax:
+    content: public static DomNode? BuildDomFromRenderTree(this SkiaControl root, SKPoint? parentAbsoluteOffset = null)
+    parameters:
+    - id: root
+      type: DrawnUi.Draw.SkiaControl
+      description: The root control (typically Canvas.Content)
+    - id: parentAbsoluteOffset
+      type: System.Nullable{SkiaSharp.SKPoint}
+      description: Absolute offset of the root's parent (use SKPoint.Empty for Canvas root)
+    return:
+      type: DrawnUi.Draw.DomNode
+      description: Root DomNode with absolute coordinates, or null if no render tree
+    content.vb: Public Shared Function BuildDomFromRenderTree(root As SkiaControl, parentAbsoluteOffset As SKPoint? = Nothing) As DomNode
+  overload: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree*
+- uid: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  commentId: M:DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  id: GetDomTree(DrawnUi.Views.Canvas)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: GetDomTree(Canvas)
+  nameWithType: FluentExtensions.GetDomTree(Canvas)
+  fullName: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetDomTree
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 230
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Builds a DOM tree from Canvas.Content using RenderTree
+
+    Call this AFTER at least one render pass has occurred (so RenderTree is populated)
+  example: []
+  syntax:
+    content: public static DomNode? GetDomTree(this Canvas canvas)
+    parameters:
+    - id: canvas
+      type: DrawnUi.Views.Canvas
+    return:
+      type: DrawnUi.Draw.DomNode
+    content.vb: Public Shared Function GetDomTree(canvas As Canvas) As DomNode
+  overload: DrawnUi.Draw.FluentExtensions.GetDomTree*
+- uid: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  id: DumpDom(DrawnUi.Draw.DomNode)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: DumpDom(DomNode?)
+  nameWithType: FluentExtensions.DumpDom(DomNode?)
+  fullName: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: DumpDom
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 246
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Dumps the DOM tree as a human-readable string
+  example: []
+  syntax:
+    content: public static string DumpDom(this DomNode? root)
+    parameters:
+    - id: root
+      type: DrawnUi.Draw.DomNode
+    return:
+      type: System.String
+    content.vb: Public Shared Function DumpDom(root As DomNode) As String
+  overload: DrawnUi.Draw.FluentExtensions.DumpDom*
+  nameWithType.vb: FluentExtensions.DumpDom(DomNode)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.DumpDom(DrawnUi.Draw.DomNode)
+  name.vb: DumpDom(DomNode)
+- uid: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  id: FindNodes(DrawnUi.Draw.DomNode,System.Func{DrawnUi.Draw.DomNode,System.Boolean})
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: FindNodes(DomNode?, Func<DomNode, bool>)
+  nameWithType: FluentExtensions.FindNodes(DomNode?, Func<DomNode, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode?, System.Func<DrawnUi.Draw.DomNode, bool>)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FindNodes
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 257
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Finds all nodes matching a predicate
+  example: []
+  syntax:
+    content: public static List<DomNode> FindNodes(this DomNode? root, Func<DomNode, bool> predicate)
+    parameters:
+    - id: root
+      type: DrawnUi.Draw.DomNode
+    - id: predicate
+      type: System.Func{DrawnUi.Draw.DomNode,System.Boolean}
+    return:
+      type: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+    content.vb: Public Shared Function FindNodes(root As DomNode, predicate As Func(Of DomNode, Boolean)) As List(Of DomNode)
+  overload: DrawnUi.Draw.FluentExtensions.FindNodes*
+  nameWithType.vb: FluentExtensions.FindNodes(DomNode, Func(Of DomNode, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindNodes(DrawnUi.Draw.DomNode, System.Func(Of DrawnUi.Draw.DomNode, Boolean))
+  name.vb: FindNodes(DomNode, Func(Of DomNode, Boolean))
+- uid: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode,System.String)
+  id: FindByTag(DrawnUi.Draw.DomNode,System.String)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: FindByTag(DomNode?, string)
+  nameWithType: FluentExtensions.FindByTag(DomNode?, string)
+  fullName: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode?, string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FindByTag
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 277
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Finds nodes by Tag value
+  example: []
+  syntax:
+    content: public static List<DomNode> FindByTag(this DomNode? root, string tag)
+    parameters:
+    - id: root
+      type: DrawnUi.Draw.DomNode
+    - id: tag
+      type: System.String
+    return:
+      type: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+    content.vb: Public Shared Function FindByTag(root As DomNode, tag As String) As List(Of DomNode)
+  overload: DrawnUi.Draw.FluentExtensions.FindByTag*
+  nameWithType.vb: FluentExtensions.FindByTag(DomNode, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindByTag(DrawnUi.Draw.DomNode, String)
+  name.vb: FindByTag(DomNode, String)
+- uid: DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindByType``1(DrawnUi.Draw.DomNode)
+  id: FindByType``1(DrawnUi.Draw.DomNode)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: FindByType<T>(DomNode?)
+  nameWithType: FluentExtensions.FindByType<T>(DomNode?)
+  fullName: DrawnUi.Draw.FluentExtensions.FindByType<T>(DrawnUi.Draw.DomNode?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FindByType
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 285
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Finds nodes by control type name
+  example: []
+  syntax:
+    content: 'public static List<DomNode> FindByType<T>(this DomNode? root) where T : SkiaControl'
+    parameters:
+    - id: root
+      type: DrawnUi.Draw.DomNode
+    typeParameters:
+    - id: T
+    return:
+      type: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+    content.vb: Public Shared Function FindByType(Of T As SkiaControl)(root As DomNode) As List(Of DomNode)
+  overload: DrawnUi.Draw.FluentExtensions.FindByType*
+  nameWithType.vb: FluentExtensions.FindByType(Of T)(DomNode)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindByType(Of T)(DrawnUi.Draw.DomNode)
+  name.vb: FindByType(Of T)(DomNode)
+- uid: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  id: FindButtonByText(DrawnUi.Draw.DomNode,System.String,System.Boolean)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: FindButtonByText(DomNode?, string, bool)
+  nameWithType: FluentExtensions.FindButtonByText(DomNode?, string, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode?, string, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FindButtonByText
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 294
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Finds buttons by their text (case-insensitive contains)
+  example: []
+  syntax:
+    content: public static List<DomNode> FindButtonByText(this DomNode? root, string text, bool caseSensitive = false)
+    parameters:
+    - id: root
+      type: DrawnUi.Draw.DomNode
+    - id: text
+      type: System.String
+    - id: caseSensitive
+      type: System.Boolean
+    return:
+      type: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+    content.vb: Public Shared Function FindButtonByText(root As DomNode, text As String, caseSensitive As Boolean = False) As List(Of DomNode)
+  overload: DrawnUi.Draw.FluentExtensions.FindButtonByText*
+  nameWithType.vb: FluentExtensions.FindButtonByText(DomNode, String, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindButtonByText(DrawnUi.Draw.DomNode, String, Boolean)
+  name.vb: FindButtonByText(DomNode, String, Boolean)
+- uid: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  id: FindInteractive(DrawnUi.Draw.DomNode)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: FindInteractive(DomNode?)
+  nameWithType: FluentExtensions.FindInteractive(DomNode?)
+  fullName: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: FindInteractive
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 306
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Finds all clickable/interactive elements (AccessibilityCanInteract = true)
+  example: []
+  syntax:
+    content: public static List<DomNode> FindInteractive(this DomNode? root)
+    parameters:
+    - id: root
+      type: DrawnUi.Draw.DomNode
+    return:
+      type: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+    content.vb: Public Shared Function FindInteractive(root As DomNode) As List(Of DomNode)
+  overload: DrawnUi.Draw.FluentExtensions.FindInteractive*
+  nameWithType.vb: FluentExtensions.FindInteractive(DomNode)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.FindInteractive(DrawnUi.Draw.DomNode)
+  name.vb: FindInteractive(DomNode)
+- uid: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  commentId: M:DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  id: GetCenter(DrawnUi.Draw.DomNode)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.FluentExtensions
+  langs:
+  - csharp
+  - vb
+  name: GetCenter(DomNode)
+  nameWithType: FluentExtensions.GetCenter(DomNode)
+  fullName: DrawnUi.Draw.FluentExtensions.GetCenter(DrawnUi.Draw.DomNode)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetCenter
+    path: ../src/Shared/DrawnUi/Internals/Extensions/RenderTreeDomExtensions.cs
+    startLine: 314
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Gets the center point of a node's absolute rect (for synthetic gestures)
+  example: []
+  syntax:
+    content: public static SKPoint GetCenter(this DomNode node)
+    parameters:
+    - id: node
+      type: DrawnUi.Draw.DomNode
+    return:
+      type: SkiaSharp.SKPoint
+    content.vb: Public Shared Function GetCenter(node As DomNode) As SKPoint
+  overload: DrawnUi.Draw.FluentExtensions.GetCenter*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -7176,3 +7530,268 @@ references:
   name: WithRowSpacing
   nameWithType: FluentExtensions.WithRowSpacing
   fullName: DrawnUi.Draw.FluentExtensions.WithRowSpacing
+- uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  name: BuildDomFromRenderTree
+  nameWithType: FluentExtensions.BuildDomFromRenderTree
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree
+- uid: System.Nullable{SkiaSharp.SKPoint}
+  commentId: T:System.Nullable{SkiaSharp.SKPoint}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  name: SKPoint?
+  nameWithType: SKPoint?
+  fullName: SkiaSharp.SKPoint?
+  spec.csharp:
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  spec.vb:
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+- uid: DrawnUi.Draw.DomNode
+  commentId: T:DrawnUi.Draw.DomNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.DomNode.html
+  name: DomNode
+  nameWithType: DomNode
+  fullName: DrawnUi.Draw.DomNode
+- uid: DrawnUi.Draw.FluentExtensions.GetDomTree*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.GetDomTree
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetDomTree_DrawnUi_Views_Canvas_
+  name: GetDomTree
+  nameWithType: FluentExtensions.GetDomTree
+  fullName: DrawnUi.Draw.FluentExtensions.GetDomTree
+- uid: DrawnUi.Views.Canvas
+  commentId: T:DrawnUi.Views.Canvas
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.Canvas.html
+  name: Canvas
+  nameWithType: Canvas
+  fullName: DrawnUi.Views.Canvas
+- uid: DrawnUi.Views
+  commentId: N:DrawnUi.Views
+  href: DrawnUi.html
+  name: DrawnUi.Views
+  nameWithType: DrawnUi.Views
+  fullName: DrawnUi.Views
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
+- uid: DrawnUi.Draw.FluentExtensions.DumpDom*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.DumpDom
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_DumpDom_DrawnUi_Draw_DomNode_
+  name: DumpDom
+  nameWithType: FluentExtensions.DumpDom
+  fullName: DrawnUi.Draw.FluentExtensions.DumpDom
+- uid: DrawnUi.Draw.FluentExtensions.FindNodes*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.FindNodes
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindNodes_DrawnUi_Draw_DomNode_System_Func_DrawnUi_Draw_DomNode_System_Boolean__
+  name: FindNodes
+  nameWithType: FluentExtensions.FindNodes
+  fullName: DrawnUi.Draw.FluentExtensions.FindNodes
+- uid: System.Func{DrawnUi.Draw.DomNode,System.Boolean}
+  commentId: T:System.Func{DrawnUi.Draw.DomNode,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<DomNode, bool>
+  nameWithType: Func<DomNode, bool>
+  fullName: System.Func<DrawnUi.Draw.DomNode, bool>
+  nameWithType.vb: Func(Of DomNode, Boolean)
+  fullName.vb: System.Func(Of DrawnUi.Draw.DomNode, Boolean)
+  name.vb: Func(Of DomNode, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+  commentId: T:System.Collections.Generic.List{DrawnUi.Draw.DomNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<DomNode>
+  nameWithType: List<DomNode>
+  fullName: System.Collections.Generic.List<DrawnUi.Draw.DomNode>
+  nameWithType.vb: List(Of DomNode)
+  fullName.vb: System.Collections.Generic.List(Of DrawnUi.Draw.DomNode)
+  name.vb: List(Of DomNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DomNode
+    name: DomNode
+    href: DrawnUi.Draw.DomNode.html
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.FindByTag*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.FindByTag
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByTag_DrawnUi_Draw_DomNode_System_String_
+  name: FindByTag
+  nameWithType: FluentExtensions.FindByTag
+  fullName: DrawnUi.Draw.FluentExtensions.FindByTag
+- uid: DrawnUi.Draw.FluentExtensions.FindByType*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.FindByType
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindByType__1_DrawnUi_Draw_DomNode_
+  name: FindByType
+  nameWithType: FluentExtensions.FindByType
+  fullName: DrawnUi.Draw.FluentExtensions.FindByType
+- uid: DrawnUi.Draw.FluentExtensions.FindButtonByText*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.FindButtonByText
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindButtonByText_DrawnUi_Draw_DomNode_System_String_System_Boolean_
+  name: FindButtonByText
+  nameWithType: FluentExtensions.FindButtonByText
+  fullName: DrawnUi.Draw.FluentExtensions.FindButtonByText
+- uid: DrawnUi.Draw.FluentExtensions.FindInteractive*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.FindInteractive
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_FindInteractive_DrawnUi_Draw_DomNode_
+  name: FindInteractive
+  nameWithType: FluentExtensions.FindInteractive
+  fullName: DrawnUi.Draw.FluentExtensions.FindInteractive
+- uid: DrawnUi.Draw.FluentExtensions.GetCenter*
+  commentId: Overload:DrawnUi.Draw.FluentExtensions.GetCenter
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetCenter_DrawnUi_Draw_DomNode_
+  name: GetCenter
+  nameWithType: FluentExtensions.GetCenter
+  fullName: DrawnUi.Draw.FluentExtensions.GetCenter
+- uid: SkiaSharp.SKPoint
+  commentId: T:SkiaSharp.SKPoint
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  name: SKPoint
+  nameWithType: SKPoint
+  fullName: SkiaSharp.SKPoint
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp

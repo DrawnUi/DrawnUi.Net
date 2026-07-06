@@ -10,7 +10,7 @@ namespace DrawnUi.Draw;
 /// Control for displaying used Surface as a preview image, for debugging purposes.
 /// Do not use this in prod, this will be invalidated every frame, causing non-stop screen update.
 /// </summary>
-public partial class DebugImage : SkiaShape
+public partial class DebugSurfaceImage : SkiaShape
 {
     public SkiaImage Display { get; protected set; }
     public SkiaLabel Caption { get; protected set; }
@@ -43,7 +43,7 @@ public partial class DebugImage : SkiaShape
     public static readonly BindableProperty AttachToProperty = BindableProperty.Create(
         nameof(AttachTo),
         typeof(CachedObject),
-        typeof(DebugImage),
+        typeof(DebugSurfaceImage),
         null);
 
     public CachedObject AttachTo
@@ -55,7 +55,7 @@ public partial class DebugImage : SkiaShape
     public static readonly BindableProperty TextProperty = BindableProperty.Create(
         nameof(Text),
         typeof(string),
-        typeof(DebugImage),
+        typeof(DebugSurfaceImage),
         string.Empty);
 
     public string Text

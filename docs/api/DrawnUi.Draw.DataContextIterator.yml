@@ -19,12 +19,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DataContextIterator
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1469
+    path: ../src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
+    startLine: 4
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -60,12 +60,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1500
+    path: ../src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -94,12 +94,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Current
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1515
+    path: ../src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
+    startLine: 55
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -128,12 +128,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: MoveNext
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1519
+    path: ../src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
+    startLine: 59
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -165,12 +165,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Reset
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1559
+    path: ../src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
+    startLine: 105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -202,12 +202,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
+      path: src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Draw/Layout/SkiaLayout.ViewsAdapter.cs
-    startLine: 1576
+    path: ../src/Shared/DrawnUi/Draw/Layout/DataContextIterator.cs
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

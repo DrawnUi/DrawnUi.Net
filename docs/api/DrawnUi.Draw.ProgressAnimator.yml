@@ -17,11 +17,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animators/ProgressAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ProgressAnimator
-    path: ../src/Shared/Features/Animators/ProgressAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -110,11 +110,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animators/ProgressAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animators/ProgressAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -142,11 +142,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ProgressAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnProgressChanged
-    path: ../src/Shared/Features/Animators/ProgressAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -174,11 +174,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/ProgressAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TransformReportedValue
-    path: ../src/Shared/Features/Animators/ProgressAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/ProgressAnimator.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui

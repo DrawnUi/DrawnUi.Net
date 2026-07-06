@@ -251,7 +251,6 @@ items:
   - DrawnUi.Views.DrawnView.IsGhost
   - DrawnUi.Views.DrawnView.Clipping
   - DrawnUi.Views.DrawnView.CreateClip(System.Object,System.Boolean,SkiaSharp.SKPath)
-  - DrawnUi.Views.DrawnView.Tag
   - DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   - DrawnUi.Views.DrawnView.Arrange(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   - DrawnUi.Views.DrawnView.MeasuredSize
@@ -287,6 +286,7 @@ items:
   - DrawnUi.Views.DrawnView.ReturnSurface(SkiaSharp.SKSurface)
   - DrawnUi.Views.DrawnView.DisposeObject(System.IDisposable,System.String)
   - DrawnUi.Views.DrawnView.DisposeManager
+  - DrawnUi.Views.DrawnView.SharedCache
   - DrawnUi.Views.DrawnView.PostponeInvalidation(DrawnUi.Draw.SkiaControl,System.Action)
   - DrawnUi.Views.DrawnView.InvalidationActionsA
   - DrawnUi.Views.DrawnView.InvalidationActionsB
@@ -311,6 +311,8 @@ items:
   - DrawnUi.Views.DrawnView.CanRenderOffScreenProperty
   - DrawnUi.Views.DrawnView.CanRenderOffScreen
   - DrawnUi.Views.DrawnView.CanDraw
+  - DrawnUi.Views.DrawnView.TagProperty
+  - DrawnUi.Views.DrawnView.Tag
   - DrawnUi.Views.DrawnView.IsHiddenInViewTree
   - DrawnUi.Views.DrawnView.OnChangingtIsHiddenInViewTree(System.Boolean)
   - DrawnUi.Views.DrawnView.NeedCheckParentVisibility
@@ -551,6 +553,7 @@ items:
   - DrawnUi.Draw.IDrawnBase.DrawnUi.Draw.DrawnExtensions.GetVelocityRatioForChild(DrawnUi.Draw.ISkiaControl)
   - DrawnUi.Views.Canvas.DrawnUi.Draw.FluentExtensions.AssignNative``1(DrawnUi.Views.Canvas@)
   - DrawnUi.Views.Canvas.DrawnUi.Draw.FluentExtensions.Assign``1(DrawnUi.Views.Canvas@)
+  - DrawnUi.Views.Canvas.DrawnUi.Draw.FluentExtensions.GetDomTree
   - DrawnUi.Views.Canvas.DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   - Microsoft.Maui.Controls.Element.DrawnUi.Draw.StaticResourcesExtensions.FindParent``1
   - Microsoft.Maui.Controls.Element.DrawnUi.Extensions.InternalExtensions.FindMauiContext(System.Boolean)
@@ -4914,13 +4917,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpath
   - name: )
-- uid: DrawnUi.Views.DrawnView.Tag
-  commentId: P:DrawnUi.Views.DrawnView.Tag
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Tag
-  name: Tag
-  nameWithType: DrawnView.Tag
-  fullName: DrawnUi.Views.DrawnView.Tag
 - uid: DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   commentId: M:DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect,System.Double,System.Double,System.Double)
   parent: DrawnUi.Views.DrawnView
@@ -5574,6 +5570,13 @@ references:
   name: DisposeManager
   nameWithType: DrawnView.DisposeManager
   fullName: DrawnUi.Views.DrawnView.DisposeManager
+- uid: DrawnUi.Views.DrawnView.SharedCache
+  commentId: P:DrawnUi.Views.DrawnView.SharedCache
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SharedCache
+  name: SharedCache
+  nameWithType: DrawnView.SharedCache
+  fullName: DrawnUi.Views.DrawnView.SharedCache
 - uid: DrawnUi.Views.DrawnView.PostponeInvalidation(DrawnUi.Draw.SkiaControl,System.Action)
   commentId: M:DrawnUi.Views.DrawnView.PostponeInvalidation(DrawnUi.Draw.SkiaControl,System.Action)
   parent: DrawnUi.Views.DrawnView
@@ -5954,6 +5957,20 @@ references:
   name: CanDraw
   nameWithType: DrawnView.CanDraw
   fullName: DrawnUi.Views.DrawnView.CanDraw
+- uid: DrawnUi.Views.DrawnView.TagProperty
+  commentId: F:DrawnUi.Views.DrawnView.TagProperty
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_TagProperty
+  name: TagProperty
+  nameWithType: DrawnView.TagProperty
+  fullName: DrawnUi.Views.DrawnView.TagProperty
+- uid: DrawnUi.Views.DrawnView.Tag
+  commentId: P:DrawnUi.Views.DrawnView.Tag
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Tag
+  name: Tag
+  nameWithType: DrawnView.Tag
+  fullName: DrawnUi.Views.DrawnView.Tag
 - uid: DrawnUi.Views.DrawnView.IsHiddenInViewTree
   commentId: P:DrawnUi.Views.DrawnView.IsHiddenInViewTree
   parent: DrawnUi.Views.DrawnView
@@ -10017,6 +10034,32 @@ references:
     name: Canvas
     href: DrawnUi.Views.Canvas.html
   - name: )
+- uid: DrawnUi.Views.Canvas.DrawnUi.Draw.FluentExtensions.GetDomTree
+  commentId: M:DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetDomTree_DrawnUi_Views_Canvas_
+  name: GetDomTree(Canvas)
+  nameWithType: FluentExtensions.GetDomTree(Canvas)
+  fullName: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+    name: GetDomTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetDomTree_DrawnUi_Views_Canvas_
+  - name: (
+  - uid: DrawnUi.Views.Canvas
+    name: Canvas
+    href: DrawnUi.Views.Canvas.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+    name: GetDomTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetDomTree_DrawnUi_Views_Canvas_
+  - name: (
+  - uid: DrawnUi.Views.Canvas
+    name: Canvas
+    href: DrawnUi.Views.Canvas.html
+  - name: )
 - uid: DrawnUi.Views.Canvas.DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   parent: DrawnUi.Draw.ThemeBindings
@@ -10849,6 +10892,30 @@ references:
   - name: ','
   - name: " "
   - name: T
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  commentId: M:DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetDomTree_DrawnUi_Views_Canvas_
+  name: GetDomTree(Canvas)
+  nameWithType: FluentExtensions.GetDomTree(Canvas)
+  fullName: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+    name: GetDomTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetDomTree_DrawnUi_Views_Canvas_
+  - name: (
+  - uid: DrawnUi.Views.Canvas
+    name: Canvas
+    href: DrawnUi.Views.Canvas.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.GetDomTree(DrawnUi.Views.Canvas)
+    name: GetDomTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_GetDomTree_DrawnUi_Views_Canvas_
+  - name: (
+  - uid: DrawnUi.Views.Canvas
+    name: Canvas
+    href: DrawnUi.Views.Canvas.html
   - name: )
 - uid: DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)

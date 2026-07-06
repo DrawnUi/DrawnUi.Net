@@ -44,6 +44,18 @@ public class SkiaImageManager : IDisposable
             return new FileStream(fullFilename, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 
+        // Local asset (relative path, no URL scheme): on desktop heads (OpenTK/Net) raw assets live next to
+        // the executable, NOT on a server. Resolve to a file BEFORE falling back to HTTP — otherwise the
+        // relative path is handed to HttpClient and throws "invalid request URI / BaseAddress must be set"
+        // (the SkiaGif symptom). Mirrors LoadFromFile's File.Exists-then-HTTP order. Web keeps working: it
+        // has no local file, so it falls through to HTTP with BaseAddress set + wwwroot serving.
+        if (!IsAbsoluteUrl(source))
+        {
+            var local = ResolveLocalFile(source);
+            if (local != null)
+                return new FileStream(local, FileMode.Open, FileAccess.Read, FileShare.Read);
+        }
+
         var httpClient = Super.Services?.GetService<HttpClient>()
             ?? throw new InvalidOperationException("[SkiaImageManager] HttpClient service was not found.");
 
@@ -450,5 +462,20 @@ public class SkiaImageManager : IDisposable
         if (string.IsNullOrWhiteSpace(filename))
             return string.Empty;
         return filename.Replace('\\', '/');
+    }
+
+    // Only http/https count as "fetch over the network". A bare relative path or a local OS path is NOT.
+    private static bool IsAbsoluteUrl(string source) =>
+        Uri.TryCreate(source, UriKind.Absolute, out var uri) &&
+        (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+
+    // Resolve a local asset path: as-is (CWD-relative) or relative to the executable's directory (where
+    // Content/CopyToOutputDirectory assets land). Null when no local file exists (e.g. WASM, or a URL).
+    private static string ResolveLocalFile(string source)
+    {
+        if (File.Exists(source))
+            return source;
+        var combined = Path.Combine(AppContext.BaseDirectory, source);
+        return File.Exists(combined) ? combined : null;
     }
 }

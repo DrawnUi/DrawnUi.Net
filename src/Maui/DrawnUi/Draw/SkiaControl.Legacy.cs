@@ -4101,8 +4101,6 @@ namespace AppoMobi.Maui.DrawnUi.Draw
                 _paintWithOpacity ??= new SKPaint();
 
                 _paintWithOpacity.GuardIsAntialias(ref _paintWithOpacityIsAntialias, IsDistorted);
-                _paintWithOpacity.GuardFilterQuality(ref _paintWithOpacityFilterQuality,
-                    IsDistorted ? SKFilterQuality.Medium : SKFilterQuality.None);
 
                 if (applyOpacity || CustomizeLayerPaint != null)
                 {
@@ -4613,9 +4611,9 @@ namespace AppoMobi.Maui.DrawnUi.Draw
 
                     _paintWithOpacity.GuardColor(ref _paintWithOpacityColor, SKColors.White);
                     _paintWithOpacity.GuardIsAntialias(ref _paintWithOpacityIsAntialias, true);
-                    _paintWithOpacity.GuardFilterQuality(ref _paintWithOpacityFilterQuality, SKFilterQuality.Medium);
 
-                    cache.Draw(ctx.Canvas, destination, _paintWithOpacity);
+                    cache.Draw(ctx.Canvas, destination, _paintWithOpacity,
+                        IsDistorted ? SkiaSamplingOptions.LinearNoMip : SkiaSamplingOptions.NearestNoMip);
                 });
 
             }

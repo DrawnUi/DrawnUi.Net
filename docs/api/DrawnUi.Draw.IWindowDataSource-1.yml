@@ -1,0 +1,476 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.IWindowDataSource`1
+  commentId: T:DrawnUi.Draw.IWindowDataSource`1
+  id: IWindowDataSource`1
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.IWindowDataSource`1.GetCountAsync(System.Threading.CancellationToken)
+  - DrawnUi.Draw.IWindowDataSource`1.GetRangeAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IWindowDataSource<T>
+  nameWithType: IWindowDataSource<T>
+  fullName: DrawnUi.Draw.IWindowDataSource<T>
+  type: Interface
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowDataSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: IWindowDataSource
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowDataSource.cs
+    startLine: 10
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The data backing a <xref href="DrawnUi.Draw.WindowedSource%601" data-throw-if-not-resolved="false"></xref> — typically a remote API or a local DB. The
+
+    windowed source NEVER holds the full collection; it pulls bounded ranges from here on demand, in both
+
+    directions, and to jump. Implementations should be safe to call off the UI thread.
+
+
+    Ranges are requested and returned in NATURAL ascending GLOBAL order (index 0 = oldest); the windowed
+
+    source owns any inversion (newest-first) for display.
+  example: []
+  syntax:
+    content: public interface IWindowDataSource<T>
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IWindowDataSource(Of T)
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  nameWithType.vb: IWindowDataSource(Of T)
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T)
+  name.vb: IWindowDataSource(Of T)
+- uid: DrawnUi.Draw.IWindowDataSource`1.GetCountAsync(System.Threading.CancellationToken)
+  commentId: M:DrawnUi.Draw.IWindowDataSource`1.GetCountAsync(System.Threading.CancellationToken)
+  id: GetCountAsync(System.Threading.CancellationToken)
+  parent: DrawnUi.Draw.IWindowDataSource`1
+  langs:
+  - csharp
+  - vb
+  name: GetCountAsync(CancellationToken)
+  nameWithType: IWindowDataSource<T>.GetCountAsync(CancellationToken)
+  fullName: DrawnUi.Draw.IWindowDataSource<T>.GetCountAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowDataSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetCountAsync
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowDataSource.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Total item count (history length). Read once at init; live appends grow it locally.
+  example: []
+  syntax:
+    content: Task<int> GetCountAsync(CancellationToken cancel = default)
+    parameters:
+    - id: cancel
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function GetCountAsync(cancel As CancellationToken = Nothing) As Task(Of Integer)
+  overload: DrawnUi.Draw.IWindowDataSource`1.GetCountAsync*
+  nameWithType.vb: IWindowDataSource(Of T).GetCountAsync(CancellationToken)
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T).GetCountAsync(System.Threading.CancellationToken)
+- uid: DrawnUi.Draw.IWindowDataSource`1.GetRangeAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:DrawnUi.Draw.IWindowDataSource`1.GetRangeAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  id: GetRangeAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  parent: DrawnUi.Draw.IWindowDataSource`1
+  langs:
+  - csharp
+  - vb
+  name: GetRangeAsync(int, int, CancellationToken)
+  nameWithType: IWindowDataSource<T>.GetRangeAsync(int, int, CancellationToken)
+  fullName: DrawnUi.Draw.IWindowDataSource<T>.GetRangeAsync(int, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowDataSource.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: GetRangeAsync
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowDataSource.cs
+    startLine: 17
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Items for global indices [<code class="paramref">from</code>, <code class="paramref">from</code> + <code class="paramref">count</code>),
+        ascending. May simulate/incur latency — the windowed source shows a loading state while it awaits.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<T>> GetRangeAsync(int from, int count, CancellationToken cancel = default)
+    parameters:
+    - id: from
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    - id: cancel
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+    content.vb: Function GetRangeAsync(from As Integer, count As Integer, cancel As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of T))
+  overload: DrawnUi.Draw.IWindowDataSource`1.GetRangeAsync*
+  nameWithType.vb: IWindowDataSource(Of T).GetRangeAsync(Integer, Integer, CancellationToken)
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T).GetRangeAsync(Integer, Integer, System.Threading.CancellationToken)
+  name.vb: GetRangeAsync(Integer, Integer, CancellationToken)
+references:
+- uid: DrawnUi.Draw.WindowedSource`1
+  commentId: T:DrawnUi.Draw.WindowedSource`1
+  href: DrawnUi.Draw.WindowedSource-1.html
+  name: WindowedSource<T>
+  nameWithType: WindowedSource<T>
+  fullName: DrawnUi.Draw.WindowedSource<T>
+  nameWithType.vb: WindowedSource(Of T)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T)
+  name.vb: WindowedSource(Of T)
+  spec.csharp:
+  - uid: DrawnUi.Draw.WindowedSource`1
+    name: WindowedSource
+    href: DrawnUi.Draw.WindowedSource-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: DrawnUi.Draw.WindowedSource`1
+    name: WindowedSource
+    href: DrawnUi.Draw.WindowedSource-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.IWindowDataSource`1.GetCountAsync*
+  commentId: Overload:DrawnUi.Draw.IWindowDataSource`1.GetCountAsync
+  href: DrawnUi.Draw.IWindowDataSource-1.html#DrawnUi_Draw_IWindowDataSource_1_GetCountAsync_System_Threading_CancellationToken_
+  name: GetCountAsync
+  nameWithType: IWindowDataSource<T>.GetCountAsync
+  fullName: DrawnUi.Draw.IWindowDataSource<T>.GetCountAsync
+  nameWithType.vb: IWindowDataSource(Of T).GetCountAsync
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T).GetCountAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: DrawnUi.Draw.IWindowDataSource`1.GetRangeAsync*
+  commentId: Overload:DrawnUi.Draw.IWindowDataSource`1.GetRangeAsync
+  href: DrawnUi.Draw.IWindowDataSource-1.html#DrawnUi_Draw_IWindowDataSource_1_GetRangeAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: GetRangeAsync
+  nameWithType: IWindowDataSource<T>.GetRangeAsync
+  fullName: DrawnUi.Draw.IWindowDataSource<T>.GetRangeAsync
+  nameWithType.vb: IWindowDataSource(Of T).GetRangeAsync
+  fullName.vb: DrawnUi.Draw.IWindowDataSource(Of T).GetRangeAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{`0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<T>>
+  nameWithType: Task<IReadOnlyList<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<T>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of T))
+  name.vb: Task(Of IReadOnlyList(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

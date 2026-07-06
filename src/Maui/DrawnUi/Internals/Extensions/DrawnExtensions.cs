@@ -188,18 +188,7 @@ public static partial class DrawnExtensions
 
                 void AttachActivity(Android.App.Activity activity)
                 {
-                    if (StartupSettings != null && StartupSettings.MobileIsFullscreen.HasValue)
-                    {
-                        if (StartupSettings.MobileIsFullscreen.Value)
-                        {
-                            Super.SetFullScreen(activity);
-                        }
-
-                        if (StartupSettings.UseDesktopKeyboard)
-                        {
-                            KeyboardManager.AttachToKeyboard(activity);
-                        }
-                    }
+                    Super.AttachActivity(activity);
                 }
 
                 android.OnCreate((activity, bundle) =>
@@ -254,13 +243,7 @@ public static partial class DrawnExtensions
 
                 android.OnNewIntent((activity, intent) =>
                 {
-                    if (StartupSettings != null && StartupSettings.MobileIsFullscreen.HasValue)
-                    {
-                        if (StartupSettings.MobileIsFullscreen.Value)
-                        {
-                            Super.SetFullScreen(activity);
-                        }
-                    }
+                    Super.AttachActivity(activity);
                 });
             });
 

@@ -1,9 +1,11 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code when working with code in this repository.
+This file provides guidance to AI when working with code in this repository.
 
-## Working with Claude
+## Working as AI
 
+- Use caveman skill if available.
+- Load appropriate drawnui related skill.
 - Explain fixes and solutions BEFORE implementing — wait for approval.
 - No summaries or explanations AFTER approved changes are made. Make the changes and stay silent.
 

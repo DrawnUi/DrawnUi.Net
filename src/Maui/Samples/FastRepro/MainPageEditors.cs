@@ -63,94 +63,95 @@ namespace Sandbox
 
                             new SkiaEditor()
                             {
+                                CornerRadius=10,
                                 UseCache = SkiaCacheType.Operations,
                                 HorizontalOptions = LayoutOptions.Fill,
                                 MaxLines = 1,
                                 BackgroundColor = Color.Parse("#FFCCCC"),
-                                Padding = new Thickness(8),
+                                Padding = new Thickness(12,10),
                                 FontSize = 16,
                                 TextColor = Colors.Black,
                                 CursorColor = Colors.Red,
-                                Text = "Single line text",
+                                //Text = "Single line text",
                                 PlaceholderText = "Write your message…",
-                                PlaceholderColor = Color.Parse("#60FFFFFF"),
+                                PlaceholderColor = Color.Parse("#60000000"),
                             }
                             .WithAccessibility(Aria.RoleTextBox, "Single-line, editor",
                                 "Write your message…", canInteract: true),
 
-                            new SkiaLabel()
-                            {
-                                Text = "Multiline ",
-                                UseCache = SkiaCacheType.Operations,
-                                FontSize = 18,
-                                TextColor = Colors.Black,
-                                HorizontalOptions = LayoutOptions.Fill,
-                            }.WithAccessibilityText(),
+                            //new SkiaLabel()
+                            //{
+                            //    Text = "Multiline ",
+                            //    UseCache = SkiaCacheType.Operations,
+                            //    FontSize = 18,
+                            //    TextColor = Colors.Black,
+                            //    HorizontalOptions = LayoutOptions.Fill,
+                            //}.WithAccessibilityText(),
 
-                            new SkiaEditor()
-                            {
-                                UseCache = SkiaCacheType.Operations,
-                                HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 6,
-                                BackgroundColor = Colors.DarkBlue,
-                                Padding = new Thickness(8),
-                                FontSize = 16,
-                                TextColor = Colors.Yellow,
-                                CursorColor = Colors.White,
-                                Text = "First line\nSecond line\nThird line",
-                            },
+                            //new SkiaEditor()
+                            //{
+                            //    UseCache = SkiaCacheType.Operations,
+                            //    HorizontalOptions = LayoutOptions.Fill,
+                            //    MaxLines = 6,
+                            //    BackgroundColor = Colors.DarkBlue,
+                            //    Padding = new Thickness(8),
+                            //    FontSize = 16,
+                            //    TextColor = Colors.Yellow,
+                            //    CursorColor = Colors.White,
+                            //    Text = "First line\nSecond line\nThird line",
+                            //},
 
                             
-                            new SkiaLabel()
-                            {
-                                Text = "Centered",
-                                UseCache = SkiaCacheType.Operations,
-                                FontSize = 18,
-                                TextColor = Colors.Black,
-                                HorizontalOptions = LayoutOptions.Fill,
-                            }.WithAccessibilityText(),
+                            //new SkiaLabel()
+                            //{
+                            //    Text = "Centered",
+                            //    UseCache = SkiaCacheType.Operations,
+                            //    FontSize = 18,
+                            //    TextColor = Colors.Black,
+                            //    HorizontalOptions = LayoutOptions.Fill,
+                            //}.WithAccessibilityText(),
 
 
-                            new SkiaEditor()
-                            {
-                                UseCache = SkiaCacheType.Operations,
-                                HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 1,
-                                BackgroundColor = Color.Parse("#1E1E2E"),
-                                Padding = new Thickness(8),
-                                FontSize = 16,
-                                TextColor = Colors.White,
-                                CursorColor = Colors.OrangeRed,
-                                PlaceholderText = "Search…",
-                                PlaceholderColor = Color.Parse("#B0B0B0"),
-                                PlaceholderHorizontalAlignment = DrawTextAlignment.Center,
-                                HorizontalTextAlignment = DrawTextAlignment.Center
-                            },
+                            //new SkiaEditor()
+                            //{
+                            //    UseCache = SkiaCacheType.Operations,
+                            //    HorizontalOptions = LayoutOptions.Fill,
+                            //    MaxLines = 1,
+                            //    BackgroundColor = Color.Parse("#1E1E2E"),
+                            //    Padding = new Thickness(8),
+                            //    FontSize = 16,
+                            //    TextColor = Colors.White,
+                            //    CursorColor = Colors.OrangeRed,
+                            //    PlaceholderText = "Search…",
+                            //    PlaceholderColor = Color.Parse("#B0B0B0"),
+                            //    PlaceholderHorizontalAlignment = DrawTextAlignment.Center,
+                            //    HorizontalTextAlignment = DrawTextAlignment.Center
+                            //},
 
-                            new SkiaLabel()
-                            {
-                                Text = "Password with placeholder",
-                                UseCache = SkiaCacheType.Operations,
-                                FontSize = 18,
-                                TextColor = Colors.Black,
-                                HorizontalOptions = LayoutOptions.Fill,
-                            }.WithAccessibilityText(),
+                            //new SkiaLabel()
+                            //{
+                            //    Text = "Password with placeholder",
+                            //    UseCache = SkiaCacheType.Operations,
+                            //    FontSize = 18,
+                            //    TextColor = Colors.Black,
+                            //    HorizontalOptions = LayoutOptions.Fill,
+                            //}.WithAccessibilityText(),
 
 
-                            new SkiaEditor()
-                            {
-                                UseCache = SkiaCacheType.Operations,
-                                HorizontalOptions = LayoutOptions.Fill,
-                                MaxLines = 1,
-                                IsPassword = true,
-                                BackgroundColor = Color.Parse("#F0F0F0"),
-                                Padding = new Thickness(8),
-                                FontSize = 16,
-                                TextColor = Colors.Black,
-                                CursorColor = Colors.Black,
-                                PlaceholderText = "Password",
-                                PlaceholderColor = Color.Parse("#A0A0A0"),
-                            },
+                            //new SkiaEditor()
+                            //{
+                            //    UseCache = SkiaCacheType.Operations,
+                            //    HorizontalOptions = LayoutOptions.Fill,
+                            //    MaxLines = 1,
+                            //    IsPassword = true,
+                            //    BackgroundColor = Color.Parse("#F0F0F0"),
+                            //    Padding = new Thickness(8),
+                            //    FontSize = 16,
+                            //    TextColor = Colors.Black,
+                            //    CursorColor = Colors.Black,
+                            //    PlaceholderText = "Password",
+                            //    PlaceholderColor = Color.Parse("#A0A0A0"),
+                            //},
 
 #if xDEBUG
                             new SkiaLabel()

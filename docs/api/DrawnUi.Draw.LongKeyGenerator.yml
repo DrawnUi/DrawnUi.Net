@@ -17,11 +17,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LongKeyGenerator
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -54,11 +54,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Next
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -84,11 +84,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: NextThreadDistributed
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -114,11 +114,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Helpers/KeyedActionQueue.cs
+      path: src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EncodeSemantic
-    path: ../src/Shared/Internals/Helpers/KeyedActionQueue.cs
+    path: ../src/Shared/DrawnUi/Internals/Helpers/KeyedActionQueue.cs
     startLine: 27
   assemblies:
   - DrawnUi.Maui

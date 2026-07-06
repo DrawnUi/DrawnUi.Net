@@ -17,11 +17,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Shared/Draw/SkiaShape.Shared.cs
+      path: src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShapePaintArguments
-    path: ../src/Shared/Draw/SkiaShape.Shared.cs
+    path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
     startLine: 93
   assemblies:
   - DrawnUi.Maui
@@ -51,11 +51,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/SkiaShape.Shared.cs
+      path: src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrokeAwareSize
-    path: ../src/Shared/Draw/SkiaShape.Shared.cs
+    path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
     startLine: 95
   assemblies:
   - DrawnUi.Maui
@@ -80,11 +80,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/SkiaShape.Shared.cs
+      path: src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrokeAwareChildrenSize
-    path: ../src/Shared/Draw/SkiaShape.Shared.cs
+    path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
     startLine: 96
   assemblies:
   - DrawnUi.Maui
@@ -109,11 +109,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Draw/SkiaShape.Shared.cs
+      path: src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: StrokeAwareClipSize
-    path: ../src/Shared/Draw/SkiaShape.Shared.cs
+    path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui

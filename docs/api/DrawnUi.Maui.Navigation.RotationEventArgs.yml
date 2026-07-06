@@ -15,11 +15,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Models/RotationEventArgs.cs
+      path: src/Shared/DrawnUi/Internals/Models/RotationEventArgs.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RotationEventArgs
-    path: ../src/Shared/Internals/Models/RotationEventArgs.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/RotationEventArgs.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -54,11 +54,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/RotationEventArgs.cs
+      path: src/Shared/DrawnUi/Internals/Models/RotationEventArgs.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Orientation
-    path: ../src/Shared/Internals/Models/RotationEventArgs.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/RotationEventArgs.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui

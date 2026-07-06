@@ -14,11 +14,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Controls/Button/SkiaButton.cs
+      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ButtonElevationShadowEffect
-    path: ../src/Shared/Controls/Button/SkiaButton.cs
+    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
     startLine: 310
   assemblies:
   - DrawnUi.Maui
@@ -50,10 +50,12 @@ items:
   - DrawnUi.Draw.DropShadowEffect.Y
   - DrawnUi.Draw.DropShadowEffect.CreateFilter(SkiaSharp.SKRect)
   - DrawnUi.Draw.DropShadowEffect.NeedApply
+  - DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
   - DrawnUi.Draw.BaseImageFilterEffect.Filter
   - DrawnUi.Draw.BaseImageFilterEffect.Update
   - DrawnUi.Draw.BaseImageFilterEffect.OnDisposing
   - DrawnUi.Draw.SkiaEffect.Parent
+  - DrawnUi.Draw.SkiaEffect.Tag
   - DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaEffect.Dettach
   - DrawnUi.Draw.SkiaEffect.Dispose
@@ -288,6 +290,37 @@ references:
   name: NeedApply
   nameWithType: DropShadowEffect.NeedApply
   fullName: DrawnUi.Draw.DropShadowEffect.NeedApply
+- uid: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
+  commentId: M:DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
+  parent: DrawnUi.Draw.DropShadowEffect
+  isExternal: true
+  href: DrawnUi.Draw.DropShadowEffect.html#DrawnUi_Draw_DropShadowEffect_GetEffectMargin_System_Single_
+  name: GetEffectMargin(float)
+  nameWithType: DropShadowEffect.GetEffectMargin(float)
+  fullName: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(float)
+  nameWithType.vb: DropShadowEffect.GetEffectMargin(Single)
+  fullName.vb: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(Single)
+  name.vb: GetEffectMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.DropShadowEffect.html#DrawnUi_Draw_DropShadowEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.DropShadowEffect.GetEffectMargin(System.Single)
+    name: GetEffectMargin
+    href: DrawnUi.Draw.DropShadowEffect.html#DrawnUi_Draw_DropShadowEffect_GetEffectMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
 - uid: DrawnUi.Draw.BaseImageFilterEffect.Filter
   commentId: P:DrawnUi.Draw.BaseImageFilterEffect.Filter
   parent: DrawnUi.Draw.BaseImageFilterEffect
@@ -340,6 +373,13 @@ references:
   name: Parent
   nameWithType: SkiaEffect.Parent
   fullName: DrawnUi.Draw.SkiaEffect.Parent
+- uid: DrawnUi.Draw.SkiaEffect.Tag
+  commentId: P:DrawnUi.Draw.SkiaEffect.Tag
+  parent: DrawnUi.Draw.SkiaEffect
+  href: DrawnUi.Draw.SkiaEffect.html#DrawnUi_Draw_SkiaEffect_Tag
+  name: Tag
+  nameWithType: SkiaEffect.Tag
+  fullName: DrawnUi.Draw.SkiaEffect.Tag
 - uid: DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.SkiaEffect.Attach(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.SkiaEffect

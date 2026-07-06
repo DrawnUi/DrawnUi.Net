@@ -8,6 +8,7 @@
     xmlns:models="clr-namespace:DrawnUI.Tutorials.NewsFeed.Models"
     xmlns:newsFeed="clr-namespace:DrawnUI.Tutorials.NewsFeed"
     HorizontalOptions="Fill"
+    Tapped="NewsCell_OnTapped"
     x:DataType="models:NewsItem"
     UseCache="ImageDoubleBuffered">
 

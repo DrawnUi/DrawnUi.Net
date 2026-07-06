@@ -51,6 +51,7 @@ items:
   - System.IDisposable
   - DrawnUi.Draw.IDrawnTextSpan
   inheritedMembers:
+  - DrawnUi.Draw.TextSpan.Tag
   - DrawnUi.Draw.TextSpan.TextProperty
   - DrawnUi.Draw.TextSpan.Text
   - DrawnUi.Draw.TextSpan.TextColorProperty
@@ -85,7 +86,6 @@ items:
   - DrawnUi.Draw.TextSpan.HitIsInside(System.Single,System.Single)
   - DrawnUi.Draw.TextSpan.FireTap
   - DrawnUi.Draw.TextSpan.DrawingOffset
-  - DrawnUi.Draw.TextSpan.Tag
   - DrawnUi.Draw.TextSpan.Rects
   - DrawnUi.Draw.TextSpan.CommandTapped
   - DrawnUi.Draw.TextSpan.Tapped
@@ -558,6 +558,13 @@ references:
   name: IDrawnTextSpan
   nameWithType: IDrawnTextSpan
   fullName: DrawnUi.Draw.IDrawnTextSpan
+- uid: DrawnUi.Draw.TextSpan.Tag
+  commentId: P:DrawnUi.Draw.TextSpan.Tag
+  parent: DrawnUi.Draw.TextSpan
+  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_Tag
+  name: Tag
+  nameWithType: TextSpan.Tag
+  fullName: DrawnUi.Draw.TextSpan.Tag
 - uid: DrawnUi.Draw.TextSpan.TextProperty
   commentId: F:DrawnUi.Draw.TextSpan.TextProperty
   parent: DrawnUi.Draw.TextSpan
@@ -916,13 +923,6 @@ references:
   name: DrawingOffset
   nameWithType: TextSpan.DrawingOffset
   fullName: DrawnUi.Draw.TextSpan.DrawingOffset
-- uid: DrawnUi.Draw.TextSpan.Tag
-  commentId: P:DrawnUi.Draw.TextSpan.Tag
-  parent: DrawnUi.Draw.TextSpan
-  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_Tag
-  name: Tag
-  nameWithType: TextSpan.Tag
-  fullName: DrawnUi.Draw.TextSpan.Tag
 - uid: DrawnUi.Draw.TextSpan.Rects
   commentId: F:DrawnUi.Draw.TextSpan.Rects
   parent: DrawnUi.Draw.TextSpan

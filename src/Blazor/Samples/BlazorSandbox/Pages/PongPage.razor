@@ -1,4 +1,5 @@
 @page "/pong"
+@using DrawnUi
 @using DrawnUi.Draw
 @using DrawnUi.Views
 
@@ -29,7 +30,7 @@
         LogicalHeight="@ViewportHeight"
         HorizontalOptions="LayoutOptions.Fill"
         VerticalOptions="LayoutOptions.Fill"
-        BackgroundColor="#0A0F1E"
+        BackgroundColor="@Color.Parse("#0A0F1E")"
         UpdateMode="@UpdateModeType.Constant"
         RenderingMode="@RenderingModeType.Accelerated"
         Gestures="@GesturesMode.Enabled"

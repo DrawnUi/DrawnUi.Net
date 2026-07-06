@@ -20,11 +20,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RangeAnimator
-    path: ../src/Shared/Features/Animators/RangeAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -110,11 +110,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: _callback
-    path: ../src/Shared/Features/Animators/RangeAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -137,11 +137,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animators/RangeAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -169,11 +169,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Start
-    path: ../src/Shared/Features/Animators/RangeAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -211,12 +211,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Distance
-    path: ../src/Shared/Features/Animators/RangeAnimator.cs
-    startLine: 44
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
+    startLine: 42
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -240,12 +240,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: UpdateValue
-    path: ../src/Shared/Features/Animators/RangeAnimator.cs
-    startLine: 47
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
+    startLine: 45
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -284,12 +284,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: TransformReportedValue
-    path: ../src/Shared/Features/Animators/RangeAnimator.cs
-    startLine: 98
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
+    startLine: 96
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

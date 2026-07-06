@@ -14,14 +14,14 @@
 
 <Canvas
     Content="_canvasContent"
-    BackgroundColor="#F7F3EA"
+    BackgroundColor="@Color.Parse("#F7F3EA")"
     Margin="0,16,0,16"
     Gestures="@GesturesMode.Enabled"/>
 
 @code {
 
     private const string CanvasSnippet = """
-                                         <Canvas Content="_canvasContent" BackgroundColor="#F7F3EA"
+                                         <Canvas Content="_canvasContent" BackgroundColor="@Color.Parse("#F7F3EA")"
                                              Margin="0,16,0,16"
                                              Gestures="@GesturesMode.Enabled"
                                              Content="@_autoButton" />

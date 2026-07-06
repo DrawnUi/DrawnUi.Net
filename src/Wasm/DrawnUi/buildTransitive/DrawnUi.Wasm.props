@@ -1,0 +1,13 @@
+<Project>
+
+    <!--
+      Links the Emscripten JS library that exposes the GL/Module objects on globalThis,
+      enabling the GPU (WebGL) rendering path for pure-WASM DrawnUI consumers.
+      Imported automatically by any project referencing the DrawnUi.Web NuGet package,
+      and applied during native (WasmBuildNative) linking. Mirrors SkiaSharp.Views.Blazor.props.
+    -->
+    <PropertyGroup>
+        <EmccExtraLDFlags>$(EmccExtraLDFlags) --js-library=&quot;$(MSBuildThisFileDirectory)SkiaSharpInterop.js&quot;</EmccExtraLDFlags>
+    </PropertyGroup>
+
+</Project>

@@ -23,11 +23,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardManager
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -60,11 +60,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyDown
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -87,11 +87,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyUp
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -114,11 +114,11 @@ items:
   type: Event
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyChar
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -141,11 +141,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardChar
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -173,11 +173,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardPressed
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -202,11 +202,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: KeyboardReleased
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -231,11 +231,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsShiftPressed
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -260,11 +260,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsAltPressed
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 43
   assemblies:
   - DrawnUi.Maui
@@ -289,11 +289,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsControlPressed
-    path: ../src/Shared/Features/Keyboard/KeyboardManager.cs
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui

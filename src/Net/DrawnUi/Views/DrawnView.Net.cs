@@ -30,23 +30,38 @@ namespace DrawnUi.Views
 
         protected void FixDensity()
         {
+            var canvasWidth = PhisicalWidth;
+            var canvasHeight = PhisicalHeight;
+
+            var widthScale = WidthRequest > 0.1 && canvasWidth > 0
+                ? (float)(canvasWidth / WidthRequest)
+                : 0f;
+            var heightScale = HeightRequest > 0.1 && canvasHeight > 0
+                ? (float)(canvasHeight / HeightRequest)
+                : 0f;
+
+            var scale = widthScale > 0.0f
+                ? widthScale
+                : heightScale;
+
+            if (scale <= 0.0f)
+            {
+                scale = (float)GetDensity();
+            }
+
+            if (scale <= 0.0f)
+            {
+                scale = _renderingScale > 0.0f ? _renderingScale : 1.0f;
+            }
+
+            if (Math.Abs(RenderingScale - scale) > 0.01f)
+            {
+                RenderingScale = scale;
+            }
+
             var measured = OnMeasure(WidthRequest, HeightRequest);
             Width = measured.Width;
             Height = measured.Height;
-
-            //Width = CanvasView.CanvasSize.Width;
-            //Height = CanvasView.CanvasSize.Height;
-
-            if (_renderingScale <= 0.0)
-            {
-                var scale = (float)GetDensity();
-                if (scale <= 0.0)
-                {
-                    scale = (float)(CanvasView.CanvasSize.Width / this.Width);
-                }
-
-                RenderingScale = scale;
-            }
 
             NeedMeasure = false;
         }
@@ -207,13 +222,16 @@ namespace DrawnUi.Views
             }
         }
 
+        protected double PhisicalWidth = -1;
+        protected double PhisicalHeight = -1;
+
         public void SyncExternalSize(double width, double height)
         {
-            if (Math.Abs(Width - width) < 0.5 && Math.Abs(Height - height) < 0.5)
+            if (Math.Abs(PhisicalWidth - width) < 0.5 && Math.Abs(PhisicalHeight - height) < 0.5)
                 return;
 
-            Width = width;
-            Height = height;
+            PhisicalWidth = width;
+            PhisicalHeight = height;
             OnSizeChanged();
         }
 
@@ -333,17 +351,17 @@ namespace DrawnUi.Views
 
         protected int CanvasViewVersion { get; private set; }
 
-        public static readonly BindableProperty UpdateLockedProperty = BindableProperty.Create(
-            nameof(UpdateLocked),
-            typeof(bool),
-            typeof(DrawnView),
-            false);
+        //public static readonly BindableProperty UpdateLockedProperty = BindableProperty.Create(
+        //    nameof(UpdateLocked),
+        //    typeof(bool),
+        //    typeof(DrawnView),
+        //    false);
 
-        public bool UpdateLocked
-        {
-            get { return (bool)GetValue(UpdateLockedProperty); }
-            set { SetValue(UpdateLockedProperty, value); }
-        }
+        //public bool UpdateLocked
+        //{
+        //    get { return (bool)GetValue(UpdateLockedProperty); }
+        //    set { SetValue(UpdateLockedProperty, value); }
+        //}
 
         bool rendererSet;
 
@@ -425,7 +443,7 @@ namespace DrawnUi.Views
                         usingColor = usingColor.MakeLighter(gradient.Light * 100 - 100);
                     }
 
-                    var newAlpha = usingColor.A * gradient.Opacity;
+                    var newAlpha = usingColor.Alpha * gradient.Opacity;
                     usingColor = usingColor.WithAlpha(newAlpha);
                     colors.Add(usingColor.ToSKColor());
                 }

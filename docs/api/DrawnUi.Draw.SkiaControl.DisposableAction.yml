@@ -16,12 +16,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Shared.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposableAction
-    path: ../src/Shared/Draw/Base/SkiaControl.Shared.cs
-    startLine: 6250
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
+    startLine: 6355
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -55,12 +55,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Shared.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Draw/Base/SkiaControl.Shared.cs
-    startLine: 6254
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
+    startLine: 6359
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -87,12 +87,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Base/SkiaControl.Shared.cs
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Draw/Base/SkiaControl.Shared.cs
-    startLine: 6258
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
+    startLine: 6363
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

@@ -13,6 +13,17 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
   [See it live in browser!](https://drawnui.net/sandbox/)
 
 
+- **[Pong (DrawnUi.Wasm)](https://github.com/taublast/DrawnUi/tree/main/src/Wasm/Samples/PongWeb)** 🕹️ - A full game running as **pure WebAssembly** (no Blazor) with:
+  - `DrawnUi.Wasm` standalone host (`RunAsync`)
+  - GPU (WebGL) rendering with raster fallback
+  - HTTP-loaded fonts, `GesturesMode.Lock` with iOS swipe guard
+  - OG/Twitter SEO metadata
+
+  [Play it live!](https://pong.appomobi.com/)
+
+  A minimal "Hello DrawnUI on Web" starter also lives at **[DrawnUi.Wasm.Sample](https://github.com/taublast/DrawnUi/tree/main/src/Wasm/DrawnUi.Wasm.Sample)**.
+
+
 - **[MAUI Demo](https://github.com/taublast/AppoMobi.Maui.DrawnUi.Demo)** 🤩 - A comprehensive totally drawn app demo featuring:
   - Navigation on the canvas with SkiaShell
   - Recycled cells and virtualization

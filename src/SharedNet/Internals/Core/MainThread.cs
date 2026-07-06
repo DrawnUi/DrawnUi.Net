@@ -6,7 +6,7 @@ using DrawnUi.Draw;
 using DrawnUi.Views;
 using SkiaSharp;
 
-namespace DrawnUi.Draw.ApplicationModel
+namespace DrawnUi
 {
     public static class MainThread
     {

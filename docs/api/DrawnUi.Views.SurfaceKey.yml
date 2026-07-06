@@ -20,11 +20,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SurfaceKey
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 136
   assemblies:
   - DrawnUi.Maui
@@ -54,11 +54,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Width
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 138
   assemblies:
   - DrawnUi.Maui
@@ -81,11 +81,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Height
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 139
   assemblies:
   - DrawnUi.Maui
@@ -108,11 +108,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 141
   assemblies:
   - DrawnUi.Maui
@@ -142,11 +142,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 147
   assemblies:
   - DrawnUi.Maui
@@ -179,11 +179,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 152
   assemblies:
   - DrawnUi.Maui
@@ -218,11 +218,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/SurfaceCacheManager.cs
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
-    path: ../src/Shared/Views/SurfaceCacheManager.cs
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
     startLine: 157
   assemblies:
   - DrawnUi.Maui

@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 
 namespace DrawnUi.Draw
@@ -15,11 +17,7 @@ namespace DrawnUi.Draw
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = "")
@@ -27,6 +25,11 @@ namespace DrawnUi.Draw
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
         #endregion
+
+        public virtual void SetPropertyValue(BindableProperty property, object value)
+        {
+            this.SetValue(property, value);
+        }
 
         public object BindingContext
         {
@@ -50,18 +53,31 @@ namespace DrawnUi.Draw
         {
         }
 
+        // _values is read by the off-thread plane bake (Draw -> GetValue) WHILE the render/main thread writes
+        // it (SetValue, or GetValue's own store-on-miss). A plain Dictionary corrupts under concurrent
+        // read+write -> "concurrent operations" crash. Guard every structural access with this lock. Callbacks
+        // (PropertyChanged / OnPropertyChanged) run OUTSIDE the lock to avoid reentrant/cross-control deadlock.
+        // Uncontended (single render thread, e.g. plain CellsStack) the lock is ~20ns -> no measurable cost.
+        private readonly object _valuesLock = new();
+
         public object GetValue(BindableProperty property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            if (_values.TryGetValue(property, out var value))
-                return value;
+            lock (_valuesLock)
+            {
+                if (_values.TryGetValue(property, out var value))
+                    return value;
+            }
 
             var defaultValue = property.GetDefaultValue(this);
             if (defaultValue != null || property.HasExplicitDefaultValue)
             {
-                _values[property] = defaultValue;
+                lock (_valuesLock)
+                {
+                    _values[property] = defaultValue;
+                }
             }
 
             return defaultValue;
@@ -77,7 +93,12 @@ namespace DrawnUi.Draw
 
             value = property.Coerce(this, value);
 
-            var hadExistingValue = _values.TryGetValue(property, out var oldValue);
+            bool hadExistingValue;
+            object oldValue;
+            lock (_valuesLock)
+            {
+                hadExistingValue = _values.TryGetValue(property, out oldValue);
+            }
             if (!hadExistingValue)
             {
                 oldValue = property.GetDefaultValue(this);
@@ -87,7 +108,10 @@ namespace DrawnUi.Draw
                 return;
 
             OnPropertyChanging(property.PropertyName);
-            _values[property] = value;
+            lock (_valuesLock)
+            {
+                _values[property] = value;
+            }
             property.PropertyChanged?.Invoke(this, oldValue, value);
             OnPropertyChanged(property.PropertyName);
         }
@@ -99,6 +123,11 @@ namespace DrawnUi.Draw
                 bindable.BindingContext = value;
             }
         }
+
+
+#if !BROWSER
+        public string Tag { get; set; }
+#endif
     }
 
     public sealed class BindableProperty

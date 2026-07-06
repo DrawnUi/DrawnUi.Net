@@ -7,6 +7,7 @@
     xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"
     xmlns:newsFeed="clr-namespace:DrawnUI.Tutorials.NewsFeed"
     xmlns:viewModels="clr-namespace:DrawnUI.Tutorials.NewsFeed.ViewModels"
+    xmlns:tutorials="clr-namespace:DrawnUI.Tutorials"
     x:DataType="viewModels:NewsViewModel"
     Title="Recycled Cells Scroller"
     x:Name="ThisPage">
@@ -26,7 +27,7 @@
                 Tag="Wrapper"
                 VerticalOptions="Fill">
 
-                <draw:SkiaScroll
+                <newsFeed:AppScroll
                     x:Name="NewsScroll"
                     Orientation="Vertical"
                     FrictionScrolled="0.5"
@@ -63,23 +64,51 @@
 
                     </draw:SkiaScroll.Footer>
 
-                    <draw:SkiaLayout
+                    <draw:SkiaStack
                         x:Name="NewsStack"
-                        Type="Column"
                         ItemsSource="{Binding NewsItems}"
                         RecyclingTemplate="Enabled"
                         MeasureItemsStrategy="MeasureVisible"
                         ReserveTemplates="10"
                         VirtualisationInflated="200"
+                        BackgroundMeasurementBatchSize="3"
                         Spacing="0"
                         ItemTemplateType="{x:Type newsFeed:NewsCell}"
                         HorizontalOptions="Fill" />
 
-                </draw:SkiaScroll>
+                </newsFeed:AppScroll>
+
+                <!-- LOADMORE SPINNER: shown while LoadMoreCommand fetch is in flight
+                     (chat-style: circle + lottie, driven from code-behind) -->
+                <draw:SkiaShape
+                    x:Name="LoadMoreSpinner"
+                    Type="Circle"
+                    WidthRequest="40"
+                    LockRatio="1"
+                    BackgroundColor="#F2FFFFFF"
+                    Padding="6"
+                    HorizontalOptions="Center"
+                    VerticalOptions="End"
+                    Margin="0,0,0,64"
+                    InputTransparent="True"
+                    IsVisible="False"
+                    ZIndex="90">
+
+                    <draw:SkiaLottie
+                        x:Name="LoadMoreLoader"
+                        AutoPlay="False"
+                        Repeat="-1"
+                        Source="Lottie/iosloader.json"
+                        ColorTint="{StaticResource ColorPrimary}"
+                        LockRatio="1"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+
+                </draw:SkiaShape>
 
                 <!-- uncomment for debug info -->
 
-                <!--<draw:SkiaLabel
+                <draw:SkiaLabel
                     UseCache="Operations"
                     Margin="8"
                     Padding="2"
@@ -90,7 +119,7 @@
                     Text="{Binding Source={x:Reference NewsStack}, Path=DebugString}"
                     TextColor="LawnGreen"
                     VerticalOptions="End"
-                    ZIndex="100" />-->
+                    ZIndex="100" />
 
                 <!-- uncomment for FPS info -->
 

@@ -15,11 +15,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/IInsideWheelStack.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideWheelStack.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IInsideWheelStack
-    path: ../src/Shared/Internals/Interfaces/IInsideWheelStack.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideWheelStack.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -42,11 +42,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Interfaces/IInsideWheelStack.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/IInsideWheelStack.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnPositionChanged
-    path: ../src/Shared/Internals/Interfaces/IInsideWheelStack.cs
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IInsideWheelStack.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui

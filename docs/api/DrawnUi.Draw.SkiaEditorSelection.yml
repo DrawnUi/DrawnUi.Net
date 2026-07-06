@@ -23,11 +23,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaEditorSelection
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -91,7 +91,13 @@ items:
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
   - DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
+  - DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
+  - DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  - DrawnUi.Draw.SkiaControl.CacheSharing
   - DrawnUi.Draw.SkiaControl.AutoCacheProperty
   - DrawnUi.Draw.SkiaControl.AutoCache
   - DrawnUi.Draw.SkiaControl.UseCacheProperty
@@ -131,11 +137,15 @@ items:
   - DrawnUi.Draw.SkiaControl.GetCacheRecordingArea(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.GetCacheArea(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.DrawUsingRenderObject(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.DrawDirectInternal(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.CreateRenderingObjectAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Action{DrawnUi.Draw.DrawingContext})
   - DrawnUi.Draw.SkiaControl.AttachEffects
   - DrawnUi.Draw.SkiaControl.OnVisualEffectsChanged
+  - DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  - DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  - DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
   - DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
   - DrawnUi.Draw.SkiaControl.EffectsState
   - DrawnUi.Draw.SkiaControl.EffectRenderers
@@ -200,6 +210,8 @@ items:
   - DrawnUi.Draw.SkiaControl.Virtualisation
   - DrawnUi.Draw.SkiaControl.VirtualisationInflatedProperty
   - DrawnUi.Draw.SkiaControl.VirtualisationInflated
+  - DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  - DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
   - DrawnUi.Draw.SkiaControl.DefaultBlendMode
   - DrawnUi.Draw.SkiaControl.IsVisibleInViewTree
   - DrawnUi.Draw.SkiaControl.GetPositionOnCanvasInPoints
@@ -281,6 +293,7 @@ items:
   - DrawnUi.Draw.SkiaControl.IsGestureInside(DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.OnGestures
   - DrawnUi.Draw.SkiaControl.Tapped
+  - DrawnUi.Draw.SkiaControl.LongPressing
   - DrawnUi.Draw.SkiaControl.ConsumeGestures
   - DrawnUi.Draw.SkiaControl.OnChildTapped(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.GetGesturePositionInsideChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -492,7 +505,7 @@ items:
   - DrawnUi.Draw.SkiaControl.ApplyBindingContext
   - DrawnUi.Draw.SkiaControl.ApplyingBindingContext
   - DrawnUi.Draw.SkiaControl.BindingContextWasSet
-  - DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+  - DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
   - DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   - DrawnUi.Draw.SkiaControl.MeasureInternal(DrawnUi.Draw.MeasureRequest)
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
@@ -886,6 +899,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.AnimateExtensions.Translate(System.Numerics.Vector2,System.Single,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.DrawnExtensions.AnimateRangeAsync(System.Action{System.Double},System.Double,System.Double,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.DrawnExtensions.BackgroundColorToAsync(Microsoft.Maui.Graphics.Color,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationTokenSource)
+  - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(System.Nullable{SkiaSharp.SKPoint})
   - DrawnUi.Draw.SkiaControl.DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.Adapt``1(System.Action{DrawnUi.Draw.SkiaEditorSelection})
   - DrawnUi.Draw.SkiaEditorSelection.DrawnUi.Draw.FluentExtensions.AssignNative``1(DrawnUi.Draw.SkiaEditorSelection@)
@@ -976,11 +990,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SourceLabel
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -1005,11 +1019,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetLineGlyphsOverride
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -1036,11 +1050,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionStart
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -1065,11 +1079,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionLength
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -1094,11 +1108,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SelectionColor
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -1123,11 +1137,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LeftHandleCenter
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -1152,11 +1166,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: RightHandleCenter
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -1181,11 +1195,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Paint
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui
@@ -1219,11 +1233,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/EditText/SkiaEditorSelection.cs
+      path: src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OnDisposing
-    path: ../src/Shared/EditText/SkiaEditorSelection.cs
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditorSelection.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
@@ -2050,6 +2064,96 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  commentId: P:DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OffscreenRenderToken
+  name: OffscreenRenderToken
+  nameWithType: SkiaControl.OffscreenRenderToken
+  fullName: DrawnUi.Draw.SkiaControl.OffscreenRenderToken
+- uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  commentId: M:DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  name: RenewOffscreenRenderToken(out long)
+  nameWithType: SkiaControl.RenewOffscreenRenderToken(out long)
+  fullName: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(out long)
+  nameWithType.vb: SkiaControl.RenewOffscreenRenderToken(Long)
+  fullName.vb: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(Long)
+  name.vb: RenewOffscreenRenderToken(Long)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+    name: RenewOffscreenRenderToken
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
+    name: RenewOffscreenRenderToken
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenewOffscreenRenderToken_System_Int64__
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  commentId: M:DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  name: IsOffscreenRenderSuperseded(long)
+  nameWithType: SkiaControl.IsOffscreenRenderSuperseded(long)
+  fullName: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(long)
+  nameWithType.vb: SkiaControl.IsOffscreenRenderSuperseded(Long)
+  fullName.vb: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(Long)
+  name.vb: IsOffscreenRenderSuperseded(Long)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+    name: IsOffscreenRenderSuperseded
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
+    name: IsOffscreenRenderSuperseded
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsOffscreenRenderSuperseded_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  commentId: M:DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  name: CancelOffscreenRendering()
+  nameWithType: SkiaControl.CancelOffscreenRendering()
+  fullName: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+    name: CancelOffscreenRendering
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+    name: CancelOffscreenRendering
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -2075,6 +2179,20 @@ references:
     name: DrawingContext
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.CacheSharingProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CacheSharingProperty
+  name: CacheSharingProperty
+  nameWithType: SkiaControl.CacheSharingProperty
+  fullName: DrawnUi.Draw.SkiaControl.CacheSharingProperty
+- uid: DrawnUi.Draw.SkiaControl.CacheSharing
+  commentId: P:DrawnUi.Draw.SkiaControl.CacheSharing
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CacheSharing
+  name: CacheSharing
+  nameWithType: SkiaControl.CacheSharing
+  fullName: DrawnUi.Draw.SkiaControl.CacheSharing
 - uid: DrawnUi.Draw.SkiaControl.AutoCacheProperty
   commentId: F:DrawnUi.Draw.SkiaControl.AutoCacheProperty
   parent: DrawnUi.Draw.SkiaControl
@@ -2969,6 +3087,44 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  name: TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext, SKRect)
+  nameWithType: SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawingContext, SKRect)
+  fullName: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+    name: TryUseExistingRenderingObjectOrCreateNewAndPaint
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.TryUseExistingRenderingObjectOrCreateNewAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
+    name: TryUseExistingRenderingObjectOrCreateNewAndPaint
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryUseExistingRenderingObjectOrCreateNewAndPaint_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   commentId: M:DrawnUi.Draw.SkiaControl.PrepareNode(DrawnUi.Draw.DrawingContext,System.Single,System.Single)
   parent: DrawnUi.Draw.SkiaControl
@@ -3161,6 +3317,63 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.OnVisualEffectsChanged
     name: OnVisualEffectsChanged
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnVisualEffectsChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  commentId: P:DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_EffectsMarginPixels
+  name: EffectsMarginPixels
+  nameWithType: SkiaControl.EffectsMarginPixels
+  fullName: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
+- uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  name: ComputeEffectsMargin(float)
+  nameWithType: SkiaControl.ComputeEffectsMargin(float)
+  fullName: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(float)
+  nameWithType.vb: SkiaControl.ComputeEffectsMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(Single)
+  name.vb: ComputeEffectsMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+  commentId: M:DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
+  name: GetRenderingExpandPixels()
+  nameWithType: SkiaControl.GetRenderingExpandPixels()
+  fullName: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+    name: GetRenderingExpandPixels
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
+    name: GetRenderingExpandPixels
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetRenderingExpandPixels
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
@@ -4085,6 +4298,20 @@ references:
   name: VirtualisationInflated
   nameWithType: SkiaControl.VirtualisationInflated
   fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflated
+- uid: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_VirtualisationInflatedRatioProperty
+  name: VirtualisationInflatedRatioProperty
+  nameWithType: SkiaControl.VirtualisationInflatedRatioProperty
+  fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatioProperty
+- uid: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
+  commentId: P:DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_VirtualisationInflatedRatio
+  name: VirtualisationInflatedRatio
+  nameWithType: SkiaControl.VirtualisationInflatedRatio
+  fullName: DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio
 - uid: DrawnUi.Draw.SkiaControl.DefaultBlendMode
   commentId: F:DrawnUi.Draw.SkiaControl.DefaultBlendMode
   parent: DrawnUi.Draw.SkiaControl
@@ -6778,6 +7005,13 @@ references:
   name: Tapped
   nameWithType: SkiaControl.Tapped
   fullName: DrawnUi.Draw.SkiaControl.Tapped
+- uid: DrawnUi.Draw.SkiaControl.LongPressing
+  commentId: E:DrawnUi.Draw.SkiaControl.LongPressing
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LongPressing
+  name: LongPressing
+  nameWithType: SkiaControl.LongPressing
+  fullName: DrawnUi.Draw.SkiaControl.LongPressing
 - uid: DrawnUi.Draw.SkiaControl.ConsumeGestures
   commentId: E:DrawnUi.Draw.SkiaControl.ConsumeGestures
   parent: DrawnUi.Draw.SkiaControl
@@ -10436,13 +10670,13 @@ references:
   name: BindingContextWasSet
   nameWithType: SkiaControl.BindingContextWasSet
   fullName: DrawnUi.Draw.SkiaControl.BindingContextWasSet
-- uid: DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
-  commentId: P:DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+- uid: DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
+  commentId: P:DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BindingsContextCacheWasRendered
-  name: BindingsContextCacheWasRendered
-  nameWithType: SkiaControl.BindingsContextCacheWasRendered
-  fullName: DrawnUi.Draw.SkiaControl.BindingsContextCacheWasRendered
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExistingCacheWasRendered
+  name: ExistingCacheWasRendered
+  nameWithType: SkiaControl.ExistingCacheWasRendered
+  fullName: DrawnUi.Draw.SkiaControl.ExistingCacheWasRendered
 - uid: DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   commentId: M:DrawnUi.Draw.SkiaControl.OnBindingContextChanged
   parent: DrawnUi.Draw.SkiaControl
@@ -19377,6 +19611,46 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtokensource
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(System.Nullable{SkiaSharp.SKPoint})
+  commentId: M:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  name: BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  nameWithType: FluentExtensions.BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1
   commentId: M:DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   parent: DrawnUi.Draw.StaticResourcesExtensions
@@ -25299,6 +25573,52 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtokensource
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  commentId: M:DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  name: BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  nameWithType: FluentExtensions.BuildDomFromRenderTree(SkiaControl, SKPoint?)
+  fullName: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.BuildDomFromRenderTree(DrawnUi.Draw.SkiaControl,System.Nullable{SkiaSharp.SKPoint})
+    name: BuildDomFromRenderTree
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_BuildDomFromRenderTree_DrawnUi_Draw_SkiaControl_System_Nullable_SkiaSharp_SKPoint__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: '?'
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions
+  commentId: T:DrawnUi.Draw.FluentExtensions
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FluentExtensions.html
+  name: FluentExtensions
+  nameWithType: FluentExtensions
+  fullName: DrawnUi.Draw.FluentExtensions
 - uid: DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.StaticResourcesExtensions.FindParentByType``1(DrawnUi.Draw.SkiaControl)
   href: DrawnUi.Draw.StaticResourcesExtensions.html#DrawnUi_Draw_StaticResourcesExtensions_FindParentByType__1_DrawnUi_Draw_SkiaControl_
@@ -25393,13 +25713,6 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions
-  commentId: T:DrawnUi.Draw.FluentExtensions
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.FluentExtensions.html
-  name: FluentExtensions
-  nameWithType: FluentExtensions
-  fullName: DrawnUi.Draw.FluentExtensions
 - uid: DrawnUi.Draw.FluentExtensions.AssignNative``1(``0,``0@)
   commentId: M:DrawnUi.Draw.FluentExtensions.AssignNative``1(``0,``0@)
   href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_AssignNative__1___0___0__

@@ -21,11 +21,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposableManager
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -62,11 +62,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 45
   assemblies:
   - DrawnUi.Maui
@@ -97,11 +97,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: EnqueueDisposable
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 59
   assemblies:
   - DrawnUi.Maui
@@ -135,11 +135,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Count
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 68
   assemblies:
   - DrawnUi.Maui
@@ -164,11 +164,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DisposeDisposables
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 75
   assemblies:
   - DrawnUi.Maui
@@ -202,11 +202,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dispose
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 111
   assemblies:
   - DrawnUi.Maui
@@ -232,11 +232,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: PendingDisposalCount
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 146
   assemblies:
   - DrawnUi.Maui
@@ -263,11 +263,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Views/DisposableManager.cs
+      path: src/Shared/DrawnUi/Views/DisposableManager.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IsDisposed
-    path: ../src/Shared/Views/DisposableManager.cs
+    path: ../src/Shared/DrawnUi/Views/DisposableManager.cs
     startLine: 148
   assemblies:
   - DrawnUi.Maui

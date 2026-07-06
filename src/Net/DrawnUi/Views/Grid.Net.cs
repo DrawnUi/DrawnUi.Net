@@ -1,6 +1,4 @@
-using DrawnUi.Draw;
-
-namespace DrawnUi.Blazor.Views
+namespace DrawnUi.Draw
 {
     public class Grid
     {

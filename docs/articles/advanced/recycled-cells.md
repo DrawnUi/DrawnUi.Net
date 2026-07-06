@@ -149,8 +149,19 @@ Use `ReserveTemplates` to pre-allocate cell instances for smoother scrolling:
 ## Performance Best Practices
 
 ### 1. Use Appropriate Caching
+
+Pick the cell root cache from the measuring strategy:
+
 ```xml
-<!-- For cells with varying heights -->
+<!-- MeasureVisible: plain Image is enough — measurement runs in background,
+     so the latency ImageDoubleBuffered hides is not on the hot path,
+     and you save the second surface per cell -->
+<draw:SkiaDynamicDrawnCell UseCache="Image">
+
+<!-- MeasureFirst / MeasureAll, even-height rows with large cells -->
+<draw:SkiaDynamicDrawnCell UseCache="GPU">
+
+<!-- MeasureFirst / MeasureAll, other cases (varying heights etc.) -->
 <draw:SkiaDynamicDrawnCell UseCache="ImageDoubleBuffered">
 
 <!-- For complex layouts within cells -->
@@ -208,6 +219,46 @@ protected override void SetContent(object ctx)
     }
 }
 ```
+
+## Windowed ItemsSource: Infinite Lists With Bounded Memory
+
+With `MeasureVisible`, a list can present a virtually unlimited dataset while keeping only a window of items in memory. The app holds `[windowStart, windowStart + count)` of the full dataset and moves that window as the user scrolls:
+
+- **Forward load** (`SkiaScroll.LoadMoreCommand`): append the next batch at the window end.
+- **Backward load** (`SkiaScroll.LoadMoreTopCommand`): prepend the previous batch — the layout measures the block in background and keeps the viewport visually pinned while content appears above.
+- **Memory cap**: before loading, trim the same amount from the opposite end of the window. The layout removes the block structure-preservingly — no reset, no remeasure, no visual jump.
+- **Jump anywhere**: rebase the window to the target index and raise a Reset — the target renders at the top instantly, without loading anything between the old and new window.
+
+The ItemsSource must raise a **single truthful collection event per batch**, carrying the items and the exact index: `ObservableRangeCollection<T>` from AppoMobi.Specials (10.0.2+) provides `AddRange`, `InsertRange(index, items)`, `RemoveRange(index, count)` and `ReplaceRangeReset`. Plain `ObservableCollection` per-item loops or range collections that degrade batches to Reset will force full rebuilds instead.
+
+```csharp
+// trim BEFORE loading, at the opposite end
+void LoadMoreForward()
+{
+    int over = _items.Count + batchSize - MaxItemsInMemory;
+    if (over > 0) { _items.RemoveRange(0, over); _windowStart += over; }
+    _items.AddRange(BuildBatch(_windowStart + _items.Count, batchSize));
+}
+
+void LoadMoreBackward()
+{
+    int over = _items.Count + batchSize - MaxItemsInMemory;
+    if (over > 0) _items.RemoveRange(_items.Count - over, over);
+    _windowStart -= batchSize;
+    _items.InsertRange(0, BuildBatch(_windowStart, batchSize));
+}
+```
+
+Trim ordering matters: forward load trims the head, backward load trims the tail, and the trim happens before the load so it cannot race the prepend measurement. Keep `MaxItemsInMemory × rowHeight` well above `2 × LoadMoreOffset` so a trim never touches rows near the viewport. A full working sample: `LoadMoreRepro` (Blazor samples).
+
+### ViewsAdapter.ApplyRemoveShift
+
+When item indices shift because of a collection change, the recycled views currently on screen are keyed by their old indices. The adapter must be realigned **synchronously with the structure change, in the same frame** — otherwise visible cells resolve to wrong items for a frame, and their remeasure poisons cached heights. Two public `ViewsAdapter` methods do this:
+
+- `ApplyInsertShift(source, startIndex, count)` — for insertions: rekeys in-use views at and after the insert point and swaps in a fresh data-contexts snapshot.
+- `ApplyRemoveShift(source, startIndex, count)` — for removals: **releases** views bound to the removed range back to the pool, rekeys the views after it, and refreshes the snapshot. Plain index shifting is wrong for removals — views inside the removed range would land on surviving indices and show stale content.
+
+The framework calls these internally for the windowed LoadMore paths; custom layout code mutating a recycled-cells structure must follow the same rule: adapter realignment and structure index shift happen together, on the render thread, never split across frames.
 
 ## Common Pitfalls and Solutions
 

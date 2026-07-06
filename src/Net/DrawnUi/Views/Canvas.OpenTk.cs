@@ -7,6 +7,7 @@ public partial class Canvas
 {
     private TouchActionEventArgs? _desktopPointerDownArgs;
     private TouchActionEventArgs? _desktopPreviousArgs;
+    private System.Threading.CancellationTokenSource? _desktopLongPressCts;
     private const long DesktopPointerId = 1;
 
     public void ConnectDesktopDrawable(ISkiaDrawable drawable)
@@ -23,6 +24,7 @@ public partial class Canvas
         args.Distance = new TouchActionEventArgs.DistanceInfo();
         _desktopPointerDownArgs = args;
         _desktopPreviousArgs = args;
+        ScheduleDesktopLongPress(args);
         OnGestureEvent(TouchActionType.Pressed, args, TouchActionResult.Down);
     }
 
@@ -42,13 +44,21 @@ public partial class Canvas
         }
 
         if (args.Distance.Delta.X != 0 || args.Distance.Delta.Y != 0)
+        {
             OnGestureEvent(actionType, args, TouchActionResult.Panning);
+
+            var moveThreshold = TouchEffect.TappedCancelMoveThresholdPoints * Math.Max(0.1f, TouchEffect.Density);
+            if (Math.Abs(args.Distance.Total.X) >= moveThreshold || Math.Abs(args.Distance.Total.Y) >= moveThreshold)
+                CancelDesktopLongPress();
+        }
 
         _desktopPreviousArgs = args;
     }
 
     public void HandleDesktopPointerUp(float x, float y, float clientW, float clientH)
     {
+        CancelDesktopLongPress();
+
         if (_desktopPointerDownArgs == null)
             return;
 
@@ -68,6 +78,26 @@ public partial class Canvas
         _desktopPreviousArgs = null;
     }
 
+    private void ScheduleDesktopLongPress(TouchActionEventArgs downArgs)
+    {
+        CancelDesktopLongPress();
+        var cts = new System.Threading.CancellationTokenSource();
+        _desktopLongPressCts = cts;
+        _ = System.Threading.Tasks.Task.Delay(TouchEffect.LongPressTimeMsDefault, cts.Token).ContinueWith(t =>
+        {
+            if (t.IsCanceled || _desktopPointerDownArgs == null)
+                return;
+            OnGestureEvent(TouchActionType.Pressing, downArgs, TouchActionResult.LongPressing);
+        }, System.Threading.Tasks.TaskContinuationOptions.NotOnCanceled);
+    }
+
+    private void CancelDesktopLongPress()
+    {
+        _desktopLongPressCts?.Cancel();
+        _desktopLongPressCts?.Dispose();
+        _desktopLongPressCts = null;
+    }
+
     public void HandleDesktopTextInput(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -82,7 +112,7 @@ public partial class Canvas
 
     public void DesktopEditorBackspace() => EditorAction(e => e.StubBackspace());
     public void DesktopEditorDelete() => EditorAction(e => e.StubDelete());
-    public void DesktopEditorEnter() => EditorAction(e => e.StubPressEnter());
+    public void DesktopEditorEnter(bool splitLine = false, bool shift = false) => EditorAction(e => e.StubPressEnter(splitLine, shift));
     public void DesktopEditorMoveCursor(int delta, bool select) => EditorAction(e => e.StubMoveCursor(delta, select));
     public void DesktopEditorMoveToStart(bool select) => EditorAction(e => e.StubMoveCursor(-e.CursorPosition, select));
     public void DesktopEditorMoveToEnd(bool select) => EditorAction(e => e.StubMoveCursor((e.Text?.Length ?? 0) - e.CursorPosition, select));

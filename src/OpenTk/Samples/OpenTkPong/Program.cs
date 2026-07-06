@@ -1,16 +1,10 @@
 using System.Runtime.Versioning;
-using DrawnUi;
-using DrawnUi.Controls;
 using DrawnUi.Draw;
-using DrawnUi.Gaming;
-using DrawnUi.Infrastructure.Enums;
 using DrawnUi.OpenTk;
 using DrawnUi.Views;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using OpenTkPong;
 using Pong.Game;
 using SkiaSharp;
 using Color = DrawnUi.Color;
@@ -61,7 +55,7 @@ OpenTK.Windowing.Common.Input.WindowIcon? LoadWindowIcon()
         if (bitmap == null) return null;
 
         var resized = bitmap.Width != 32 || bitmap.Height != 32
-            ? bitmap.Resize(new SKImageInfo(32, 32), SKFilterQuality.High)
+            ? bitmap.Resize(new SKImageInfo(32, 32), SkiaSamplingOptions.GetSamplingOptions(FilterQuality.Ultra, true))
             : bitmap;
 
         var pixels = resized.Bytes;

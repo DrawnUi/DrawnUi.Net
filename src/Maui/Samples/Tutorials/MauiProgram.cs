@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DrawnUI.Tutorials;
 
+ 
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()

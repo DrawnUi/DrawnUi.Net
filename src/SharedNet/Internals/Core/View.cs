@@ -310,7 +310,8 @@ namespace DrawnUi.Draw
             set { SetValue(HorizontalOptionsProperty, value); }
         }
 
-        public static readonly BindableProperty BackgroundColorProperty = BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(SkiaControl),
+        public static readonly BindableProperty BackgroundColorProperty = BindableProperty.Create(nameof(BackgroundColor),
+            typeof(Color), typeof(SkiaControl),
             Colors.Transparent);
 
         public Color BackgroundColor

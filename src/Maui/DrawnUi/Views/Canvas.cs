@@ -537,6 +537,9 @@ public class Canvas : DrawnView, IGestureListener
     private bool _hadHover;
     private bool _checkHover;
 
+    // FocusedChild as of the last Down — detects focus claimed during the current gesture.
+    private ISkiaGestureListener _focusedChildAtDown;
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void AddHadInput(ISkiaGestureListener consumed, SkiaGesturesParameters args)
@@ -553,9 +556,16 @@ public class Canvas : DrawnView, IGestureListener
         lock (LockIterateListeners)
         {
             //clear HadInput on new gesture sequence start
-            if (args.Type == TouchActionResult.Down && HadInput.Count > 0)
+            if (args.Type == TouchActionResult.Down)
             {
-                HadInput.Clear();
+                if (HadInput.Count > 0)
+                {
+                    HadInput.Clear();
+                }
+                // Focus state at gesture start: if a control claims focus DURING this gesture (editor
+                // self-focusing on Down -> keyboard spacer relayout shifts the layout), the completed
+                // Tapped must not override that fresh claim.
+                _focusedChildAtDown = FocusedChild;
             }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
@@ -689,12 +699,28 @@ public class Canvas : DrawnView, IGestureListener
             }
 
             //manage focus changes
-            if (args.Type != TouchActionResult.Pointer && (args.Type == TouchActionResult.Up || FocusedChild != null))
+            if (args.Type != TouchActionResult.Pointer)
             {
-                if (manageChildFocus || (args.Type != TouchActionResult.Up && FocusedChild != null && consumed != FocusedChild && !FocusedChild.LockFocus))
+                // FOCUS RULES. Controls CLAIM focus themselves (editor self-focuses on its Down); the
+                // canvas only decides on the COMPLETED tap. Down/Panning/Up never change focus here —
+                // clearing focus on Down closed the keyboard mid-gesture, the spacer relayout moved the
+                // send button away from under the pointer and its Tapped never fired (text not sent).
+                // On Tapped: move focus to the consumer (ReportFocus keeps the current focus when the
+                // consumer does not accept it — tapping a button must not steal the editor's keyboard),
+                // or clear it on a tap over nothing = the outside-tap keyboard dismiss. Skip both when
+                // focus was claimed during THIS gesture (FocusedChild changed since Down): the claim is
+                // fresher than the tap's landing spot, which a keyboard relayout may have invalidated.
+                if (manageChildFocus)
+                {
+                    FocusedChild = consumed;
+                }
+                else if (args.Type == TouchActionResult.Tapped
+                         && FocusedChild != null && consumed != FocusedChild
+                         && !FocusedChild.LockFocus
+                         && FocusedChild == _focusedChildAtDown)
                 {
                     System.Diagnostics.Debug.WriteLine(
-                        $"[Canvas] set FocusedChild to '{consumed}' we had '{FocusedChild}' and consumed was '{consumed}'");
+                        $"[Canvas] set FocusedChild to '{consumed}' we had '{FocusedChild}'");
                     FocusedChild = consumed;
                 }
             }
@@ -1189,7 +1215,7 @@ public class Canvas : DrawnView, IGestureListener
         // Use RenderTree if available as it contains the most accurate layout/hit-test information
         if (current.RenderTree != null)
         {
-            var asSpan = CollectionsMarshal.AsSpan(current.RenderTree);
+            var asSpan = current.RenderTree.AsSpans();
             for (int i = 0; i < asSpan.Length; i++)
             {
                 var node = asSpan[i];

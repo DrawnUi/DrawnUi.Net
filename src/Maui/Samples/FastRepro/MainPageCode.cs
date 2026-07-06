@@ -90,9 +90,9 @@ namespace Sandbox
                         HorizontalOptions = LayoutOptions.Fill,
                         Children =
                         {
-                            //new RenderSceneOptimized(),
+                            new RenderSceneOptimized(),
 
-                            new TestComputeFastBounds(),
+
 
                          /*new FinalStack()
                         {

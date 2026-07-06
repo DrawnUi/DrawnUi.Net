@@ -15,11 +15,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
+      path: src/Shared/DrawnUi/Features/Animations/ToDo/ViscousFluidInterpolator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ViscousFluidInterpolator
-    path: ../src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/ToDo/ViscousFluidInterpolator.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -56,11 +56,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
+      path: src/Shared/DrawnUi/Features/Animations/ToDo/ViscousFluidInterpolator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetInterpolation
-    path: ../src/Shared/Features/Animations/ToDo/ViscousFluidInterpolator.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/ToDo/ViscousFluidInterpolator.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui

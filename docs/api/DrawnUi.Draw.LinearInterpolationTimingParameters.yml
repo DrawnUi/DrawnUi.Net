@@ -17,11 +17,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeVectorAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: LinearInterpolationTimingParameters
-    path: ../src/Shared/Features/Animators/RangeVectorAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -53,11 +53,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeVectorAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: .ctor
-    path: ../src/Shared/Features/Animators/RangeVectorAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -91,11 +91,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeVectorAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: DurationSecs
-    path: ../src/Shared/Features/Animators/RangeVectorAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -123,11 +123,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animators/RangeVectorAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ValueAt
-    path: ../src/Shared/Features/Animators/RangeVectorAnimator.cs
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeVectorAnimator.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui

@@ -197,6 +197,41 @@ public virtual bool DrawUsingRenderObject(DrawingContext context,
 }
 ```
 
+##### Cache Sharing
+
+When many instances of the same control type appear on one Canvas (e.g. divider lines, repeated icons) each would normally allocate its own `CachedObject`. `CacheSharing` eliminates that — all instances share one object stored in `Canvas.Cache`.
+
+**Eligible cache types:** `Operations`, `Image`, `GPU` (`OperationsFull` and composite types are excluded).
+
+```csharp
+public class DividerLine : SkiaShape
+{
+    public DividerLine()
+    {
+        Type = ShapeType.Rectangle;
+        HeightRequest = 1;
+        HorizontalOptions = LayoutOptions.Fill;
+        BackgroundColor = Colors.Gray;
+        UseCache = SkiaCacheType.Image;
+        CacheSharing = CacheSharingType.Shared; // one CachedObject for all instances
+    }
+}
+```
+
+First instance to render creates the `CachedObject` and stores it in `SuperView.Cache`. Every subsequent instance of the same type fetches and reuses it without re-rendering.
+
+**Invalidation in shared mode:** per-instance `InvalidateCache()` is bypassed — the shared object is valid for all peers. To force a full re-render for all instances of a type:
+
+```csharp
+myCanvas.Cache.Free<DividerLine>();       // by generic type
+myCanvas.Cache.Free(typeof(DividerLine)); // by type reference
+myCanvas.Cache.Free();                    // clear entire shared cache
+```
+
+Individual instance disposal does **not** clear the shared entry — it lives until the Canvas is disposed or you call `Cache.Free(...)` explicitly.
+
+> **When to use:** Controls that are visually identical across all instances and change infrequently. Avoid for controls whose appearance differs per instance — they would all render as a clone of the first.
+
 ##### Cache Validation
 
 Render objects are invalidated when:

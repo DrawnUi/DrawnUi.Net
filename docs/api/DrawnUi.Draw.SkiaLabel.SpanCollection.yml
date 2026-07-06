@@ -17,12 +17,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Draw/Text/SkiaLabel.cs
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SpanCollection
-    path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 304
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -46,10 +46,13 @@ items:
   - System.Collections.Specialized.INotifyCollectionChanged
   - System.ComponentModel.INotifyPropertyChanged
   inheritedMembers:
-  - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
-  - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Int32,System.Int32)
+  - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
   - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.Replace(DrawnUi.Draw.TextSpan)
   - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.ReplaceRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  - AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.ReplaceRangeReset(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
   - System.Collections.ObjectModel.ObservableCollection{DrawnUi.Draw.TextSpan}.BlockReentrancy
   - System.Collections.ObjectModel.ObservableCollection{DrawnUi.Draw.TextSpan}.CheckReentrancy
   - System.Collections.ObjectModel.ObservableCollection{DrawnUi.Draw.TextSpan}.Move(System.Int32,System.Int32)
@@ -93,12 +96,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Text/SkiaLabel.cs
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: InsertItem
-    path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 306
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 309
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -132,12 +135,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Text/SkiaLabel.cs
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SetItem
-    path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 309
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 312
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -171,12 +174,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Draw/Text/SkiaLabel.cs
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ClearItems
-    path: ../src/Shared/Draw/Text/SkiaLabel.cs
-    startLine: 312
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 315
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -523,19 +526,19 @@ references:
   name: INotifyPropertyChanged
   nameWithType: INotifyPropertyChanged
   fullName: System.ComponentModel.INotifyPropertyChanged
-- uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
-  commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
+- uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
   parent: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}
-  definition: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+  definition: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: AddRange(IEnumerable<TextSpan>, NotifyCollectionChangedAction)
-  nameWithType: ObservableRangeCollection<TextSpan>.AddRange(IEnumerable<TextSpan>, NotifyCollectionChangedAction)
-  fullName: AppoMobi.Specials.ObservableRangeCollection<DrawnUi.Draw.TextSpan>.AddRange(System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextSpan>, System.Collections.Specialized.NotifyCollectionChangedAction)
-  nameWithType.vb: ObservableRangeCollection(Of TextSpan).AddRange(IEnumerable(Of TextSpan), NotifyCollectionChangedAction)
-  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of DrawnUi.Draw.TextSpan).AddRange(System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.TextSpan), System.Collections.Specialized.NotifyCollectionChangedAction)
-  name.vb: AddRange(IEnumerable(Of TextSpan), NotifyCollectionChangedAction)
+  name: AddRange(IEnumerable<TextSpan>)
+  nameWithType: ObservableRangeCollection<TextSpan>.AddRange(IEnumerable<TextSpan>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<DrawnUi.Draw.TextSpan>.AddRange(System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextSpan>)
+  nameWithType.vb: ObservableRangeCollection(Of TextSpan).AddRange(IEnumerable(Of TextSpan))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of DrawnUi.Draw.TextSpan).AddRange(System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.TextSpan))
+  name.vb: AddRange(IEnumerable(Of TextSpan))
   spec.csharp:
-  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
     name: AddRange
     isExternal: true
   - name: (
@@ -548,15 +551,9 @@ references:
     name: TextSpan
     href: DrawnUi.Draw.TextSpan.html
   - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
   - name: )
   spec.vb:
-  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.AddRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
     name: AddRange
     isExternal: true
   - name: (
@@ -571,26 +568,20 @@ references:
     name: TextSpan
     href: DrawnUi.Draw.TextSpan.html
   - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
   - name: )
-- uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
-  commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
+- uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
   parent: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}
-  definition: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+  definition: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: RemoveRange(IEnumerable<TextSpan>, NotifyCollectionChangedAction)
-  nameWithType: ObservableRangeCollection<TextSpan>.RemoveRange(IEnumerable<TextSpan>, NotifyCollectionChangedAction)
-  fullName: AppoMobi.Specials.ObservableRangeCollection<DrawnUi.Draw.TextSpan>.RemoveRange(System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextSpan>, System.Collections.Specialized.NotifyCollectionChangedAction)
-  nameWithType.vb: ObservableRangeCollection(Of TextSpan).RemoveRange(IEnumerable(Of TextSpan), NotifyCollectionChangedAction)
-  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of DrawnUi.Draw.TextSpan).RemoveRange(System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.TextSpan), System.Collections.Specialized.NotifyCollectionChangedAction)
-  name.vb: RemoveRange(IEnumerable(Of TextSpan), NotifyCollectionChangedAction)
+  name: RemoveRange(IEnumerable<TextSpan>)
+  nameWithType: ObservableRangeCollection<TextSpan>.RemoveRange(IEnumerable<TextSpan>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<DrawnUi.Draw.TextSpan>.RemoveRange(System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextSpan>)
+  nameWithType.vb: ObservableRangeCollection(Of TextSpan).RemoveRange(IEnumerable(Of TextSpan))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of DrawnUi.Draw.TextSpan).RemoveRange(System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.TextSpan))
+  name.vb: RemoveRange(IEnumerable(Of TextSpan))
   spec.csharp:
-  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
     name: RemoveRange
     isExternal: true
   - name: (
@@ -603,15 +594,9 @@ references:
     name: TextSpan
     href: DrawnUi.Draw.TextSpan.html
   - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
   - name: )
   spec.vb:
-  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
     name: RemoveRange
     isExternal: true
   - name: (
@@ -626,12 +611,104 @@ references:
     name: TextSpan
     href: DrawnUi.Draw.TextSpan.html
   - name: )
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Int32,System.Int32)
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Int32,System.Int32)
+  parent: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}
+  definition: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Int32,System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: RemoveRange(int, int)
+  nameWithType: ObservableRangeCollection<TextSpan>.RemoveRange(int, int)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<DrawnUi.Draw.TextSpan>.RemoveRange(int, int)
+  nameWithType.vb: ObservableRangeCollection(Of TextSpan).RemoveRange(Integer, Integer)
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of DrawnUi.Draw.TextSpan).RemoveRange(Integer, Integer)
+  name.vb: RemoveRange(Integer, Integer)
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Int32,System.Int32)
+    name: RemoveRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: ','
   - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
+  - uid: System.Int32
+    name: int
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.RemoveRange(System.Int32,System.Int32)
+    name: RemoveRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  parent: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}
+  definition: AppoMobi.Specials.ObservableRangeCollection`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: InsertRange(int, IEnumerable<TextSpan>)
+  nameWithType: ObservableRangeCollection<TextSpan>.InsertRange(int, IEnumerable<TextSpan>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<DrawnUi.Draw.TextSpan>.InsertRange(int, System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextSpan>)
+  nameWithType.vb: ObservableRangeCollection(Of TextSpan).InsertRange(Integer, IEnumerable(Of TextSpan))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of DrawnUi.Draw.TextSpan).InsertRange(Integer, System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.TextSpan))
+  name.vb: InsertRange(Integer, IEnumerable(Of TextSpan))
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+    name: InsertRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: DrawnUi.Draw.TextSpan
+    name: TextSpan
+    href: DrawnUi.Draw.TextSpan.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+    name: InsertRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.TextSpan
+    name: TextSpan
+    href: DrawnUi.Draw.TextSpan.html
+  - name: )
   - name: )
 - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.Replace(DrawnUi.Draw.TextSpan)
   commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.Replace(DrawnUi.Draw.TextSpan)
@@ -690,6 +767,49 @@ references:
   spec.vb:
   - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.ReplaceRange(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
     name: ReplaceRange
+    isExternal: true
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.TextSpan
+    name: TextSpan
+    href: DrawnUi.Draw.TextSpan.html
+  - name: )
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.ReplaceRangeReset(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.ReplaceRangeReset(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+  parent: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}
+  definition: AppoMobi.Specials.ObservableRangeCollection`1.ReplaceRangeReset(System.Collections.Generic.IEnumerable{`0})
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: ReplaceRangeReset(IEnumerable<TextSpan>)
+  nameWithType: ObservableRangeCollection<TextSpan>.ReplaceRangeReset(IEnumerable<TextSpan>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<DrawnUi.Draw.TextSpan>.ReplaceRangeReset(System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextSpan>)
+  nameWithType.vb: ObservableRangeCollection(Of TextSpan).ReplaceRangeReset(IEnumerable(Of TextSpan))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of DrawnUi.Draw.TextSpan).ReplaceRangeReset(System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.TextSpan))
+  name.vb: ReplaceRangeReset(IEnumerable(Of TextSpan))
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.ReplaceRangeReset(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+    name: ReplaceRangeReset
+    isExternal: true
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: DrawnUi.Draw.TextSpan
+    name: TextSpan
+    href: DrawnUi.Draw.TextSpan.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection{DrawnUi.Draw.TextSpan}.ReplaceRangeReset(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
+    name: ReplaceRangeReset
     isExternal: true
   - name: (
   - uid: System.Collections.Generic.IEnumerable`1
@@ -1965,18 +2085,18 @@ references:
     name: ComponentModel
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.componentmodel
-- uid: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
-  commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+- uid: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: AddRange(IEnumerable<T>, NotifyCollectionChangedAction)
-  nameWithType: ObservableRangeCollection<T>.AddRange(IEnumerable<T>, NotifyCollectionChangedAction)
-  fullName: AppoMobi.Specials.ObservableRangeCollection<T>.AddRange(System.Collections.Generic.IEnumerable<T>, System.Collections.Specialized.NotifyCollectionChangedAction)
-  nameWithType.vb: ObservableRangeCollection(Of T).AddRange(IEnumerable(Of T), NotifyCollectionChangedAction)
-  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T).AddRange(System.Collections.Generic.IEnumerable(Of T), System.Collections.Specialized.NotifyCollectionChangedAction)
-  name.vb: AddRange(IEnumerable(Of T), NotifyCollectionChangedAction)
+  name: AddRange(IEnumerable<T>)
+  nameWithType: ObservableRangeCollection<T>.AddRange(IEnumerable<T>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>.AddRange(System.Collections.Generic.IEnumerable<T>)
+  nameWithType.vb: ObservableRangeCollection(Of T).AddRange(IEnumerable(Of T))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T).AddRange(System.Collections.Generic.IEnumerable(Of T))
+  name.vb: AddRange(IEnumerable(Of T))
   spec.csharp:
-  - uid: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
     name: AddRange
     isExternal: true
   - name: (
@@ -1987,15 +2107,9 @@ references:
   - name: <
   - name: T
   - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
   - name: )
   spec.vb:
-  - uid: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})
     name: AddRange
     isExternal: true
   - name: (
@@ -2008,25 +2122,19 @@ references:
   - name: " "
   - name: T
   - name: )
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
   - name: )
-- uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
-  commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+- uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: RemoveRange(IEnumerable<T>, NotifyCollectionChangedAction)
-  nameWithType: ObservableRangeCollection<T>.RemoveRange(IEnumerable<T>, NotifyCollectionChangedAction)
-  fullName: AppoMobi.Specials.ObservableRangeCollection<T>.RemoveRange(System.Collections.Generic.IEnumerable<T>, System.Collections.Specialized.NotifyCollectionChangedAction)
-  nameWithType.vb: ObservableRangeCollection(Of T).RemoveRange(IEnumerable(Of T), NotifyCollectionChangedAction)
-  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T).RemoveRange(System.Collections.Generic.IEnumerable(Of T), System.Collections.Specialized.NotifyCollectionChangedAction)
-  name.vb: RemoveRange(IEnumerable(Of T), NotifyCollectionChangedAction)
+  name: RemoveRange(IEnumerable<T>)
+  nameWithType: ObservableRangeCollection<T>.RemoveRange(IEnumerable<T>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>.RemoveRange(System.Collections.Generic.IEnumerable<T>)
+  nameWithType.vb: ObservableRangeCollection(Of T).RemoveRange(IEnumerable(Of T))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T).RemoveRange(System.Collections.Generic.IEnumerable(Of T))
+  name.vb: RemoveRange(IEnumerable(Of T))
   spec.csharp:
-  - uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})
     name: RemoveRange
     isExternal: true
   - name: (
@@ -2037,15 +2145,9 @@ references:
   - name: <
   - name: T
   - name: '>'
-  - name: ','
-  - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
   - name: )
   spec.vb:
-  - uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0},System.Collections.Specialized.NotifyCollectionChangedAction)
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})
     name: RemoveRange
     isExternal: true
   - name: (
@@ -2058,12 +2160,98 @@ references:
   - name: " "
   - name: T
   - name: )
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Int32,System.Int32)
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Int32,System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: RemoveRange(int, int)
+  nameWithType: ObservableRangeCollection<T>.RemoveRange(int, int)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>.RemoveRange(int, int)
+  nameWithType.vb: ObservableRangeCollection(Of T).RemoveRange(Integer, Integer)
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T).RemoveRange(Integer, Integer)
+  name.vb: RemoveRange(Integer, Integer)
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Int32,System.Int32)
+    name: RemoveRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: ','
   - name: " "
-  - uid: System.Collections.Specialized.NotifyCollectionChangedAction
-    name: NotifyCollectionChangedAction
+  - uid: System.Int32
+    name: int
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.specialized.notifycollectionchangedaction
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.RemoveRange(System.Int32,System.Int32)
+    name: RemoveRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: InsertRange(int, IEnumerable<T>)
+  nameWithType: ObservableRangeCollection<T>.InsertRange(int, IEnumerable<T>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>.InsertRange(int, System.Collections.Generic.IEnumerable<T>)
+  nameWithType.vb: ObservableRangeCollection(Of T).InsertRange(Integer, IEnumerable(Of T))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T).InsertRange(Integer, System.Collections.Generic.IEnumerable(Of T))
+  name.vb: InsertRange(Integer, IEnumerable(Of T))
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+    name: InsertRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+    name: InsertRange
+    isExternal: true
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
   - name: )
 - uid: AppoMobi.Specials.ObservableRangeCollection`1.Replace(`0)
   commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.Replace(`0)
@@ -2113,6 +2301,44 @@ references:
   spec.vb:
   - uid: AppoMobi.Specials.ObservableRangeCollection`1.ReplaceRange(System.Collections.Generic.IEnumerable{`0})
     name: ReplaceRange
+    isExternal: true
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection`1.ReplaceRangeReset(System.Collections.Generic.IEnumerable{`0})
+  commentId: M:AppoMobi.Specials.ObservableRangeCollection`1.ReplaceRangeReset(System.Collections.Generic.IEnumerable{`0})
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: ReplaceRangeReset(IEnumerable<T>)
+  nameWithType: ObservableRangeCollection<T>.ReplaceRangeReset(IEnumerable<T>)
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>.ReplaceRangeReset(System.Collections.Generic.IEnumerable<T>)
+  nameWithType.vb: ObservableRangeCollection(Of T).ReplaceRangeReset(IEnumerable(Of T))
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T).ReplaceRangeReset(System.Collections.Generic.IEnumerable(Of T))
+  name.vb: ReplaceRangeReset(IEnumerable(Of T))
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.ReplaceRangeReset(System.Collections.Generic.IEnumerable{`0})
+    name: ReplaceRangeReset
+    isExternal: true
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1.ReplaceRangeReset(System.Collections.Generic.IEnumerable{`0})
+    name: ReplaceRangeReset
     isExternal: true
   - name: (
   - uid: System.Collections.Generic.IEnumerable`1

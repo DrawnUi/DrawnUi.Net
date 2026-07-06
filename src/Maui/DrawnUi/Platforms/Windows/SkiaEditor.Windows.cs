@@ -64,6 +64,8 @@ namespace DrawnUi.Draw
                     _hiddenTextBox.GotFocus -= HiddenTextBox_GotFocus;
                     _hiddenTextBox.PreviewKeyDown -= HiddenTextBox_PreviewKeyDown;
                     _hiddenTextBox.KeyDown -= HiddenTextBox_KeyDown;
+                    _hiddenTextBox.Loaded -= HiddenTextBox_Loaded;
+                    _hiddenTextBox.LostFocus -= HiddenTextBox_LostFocus;
 
                     var layout = (Panel)Superview?.Handler?.PlatformView;
                     if (layout != null)
@@ -85,11 +87,28 @@ namespace DrawnUi.Draw
         partial void PlatformClearFocusNow()
         {
             if (_hiddenTextBox != null)
+            {
                 _hiddenTextBox.IsReadOnly = true;
+                // SetFocusNative restores IsReadOnly=false before Focus(Programmatic)
+            }
         }
 
         // TextBox is an off-screen keyboard sink — size and position are fixed.
         public void UpdateNativePosition() { }
+
+        partial void SyncNativeText()
+        {
+            if (_hiddenTextBox == null || _updatingText)
+                return;
+
+            var newText = Text ?? string.Empty;
+            if (_hiddenTextBox.Text == newText)
+                return;
+
+            _updatingText = true;
+            try { _hiddenTextBox.Text = newText; }
+            finally { _updatingText = false; }
+        }
 
         private void EnsureTextBox()
         {
@@ -125,6 +144,8 @@ namespace DrawnUi.Draw
             _hiddenTextBox.GotFocus += HiddenTextBox_GotFocus;
             _hiddenTextBox.PreviewKeyDown += HiddenTextBox_PreviewKeyDown;
             _hiddenTextBox.KeyDown += HiddenTextBox_KeyDown;
+            _hiddenTextBox.Loaded += HiddenTextBox_Loaded;
+            _hiddenTextBox.LostFocus += HiddenTextBox_LostFocus;
 
             layout.Children.Add(_hiddenTextBox);
 
@@ -159,7 +180,7 @@ namespace DrawnUi.Draw
 
         public void SetFocusNative(bool focus)
         {
-            Debug.WriteLine($"[SkiaEditor] SetFocusNative focus={focus} textBox={_hiddenTextBox != null}");
+            Debug.WriteLine($"[SetFocusNative] focus={focus} IsFocused={IsFocused} textBox={_hiddenTextBox != null} CursorPosition={CursorPosition}");
             try
             {
                 if (focus)
@@ -168,6 +189,10 @@ namespace DrawnUi.Draw
 
                     if (_hiddenTextBox == null)
                         return;
+
+                    // Suppress SelectionChanged during the whole focus sequence so text sync
+                    // and selection-reset from Focus() don't race back into CursorPosition.
+                    _suppressSelectionChanged = true;
 
                     // always sync text before focusing — TextBox may be stale if Text changed while unfocused
                     if (!_updatingText)
@@ -189,19 +214,38 @@ namespace DrawnUi.Draw
                     // Detect this case up-front so we can handle selection manually.
                     bool alreadyFocused = _hiddenTextBox.FocusState != FocusState.Unfocused;
 
-                    _suppressSelectionChanged = true;
-                    _hiddenTextBox.Focus(FocusState.Programmatic);
+                    // Skip Focus() when TextBox already has WinUI focus. Calling Focus(Programmatic)
+                    // twice in rapid succession causes WinUI to flash LostFocus, leaving the TextBox
+                    // Unfocused by the time the async GotFocus handler fires — killing keyboard input.
+                    bool focused = alreadyFocused || _hiddenTextBox.Focus(FocusState.Programmatic);
+                    Debug.WriteLine($"[SetFocusNative] alreadyFocused={alreadyFocused} Focus()={focused} FocusState={_hiddenTextBox.FocusState}");
 
-                    if (alreadyFocused)
+                    if (alreadyFocused || !focused)
                     {
-                        // GotFocus won't fire — manually position selection and clear flag.
-                        var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
-                        var len = SelectionLength > 0
-                            ? Math.Min(SelectionLength, (_hiddenTextBox.Text?.Length ?? 0) - pos)
-                            : 0;
-                        _hiddenTextBox.SelectionStart = pos;
-                        _hiddenTextBox.SelectionLength = len;
-                        _suppressSelectionChanged = false;
+                        if (!focused)
+                        {
+                            Debug.WriteLine($"[SkiaEditor] Focus() returned false — scheduling retry");
+                            // Retry once after a frame; GotFocus won't fire so clear flag now.
+                            _suppressSelectionChanged = false;
+                            Tasks.StartDelayed(TimeSpan.FromMilliseconds(32), () =>
+                                MainThread.BeginInvokeOnMainThread(() =>
+                                {
+                                    if (_hiddenTextBox != null && IsFocused)
+                                        _hiddenTextBox.Focus(FocusState.Programmatic);
+                                }));
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"[SkiaEditor] AlreadyFocused");
+                            // GotFocus won't fire — manually position selection and clear flag.
+                            var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
+                            var len = SelectionLength > 0
+                                ? Math.Min(SelectionLength, (_hiddenTextBox.Text?.Length ?? 0) - pos)
+                                : 0;
+                            _hiddenTextBox.SelectionStart = pos;
+                            _hiddenTextBox.SelectionLength = len;
+                            _suppressSelectionChanged = false;
+                        }
                     }
                     // else: GotFocus fires synchronously during Focus() and clears the flag.
                 }
@@ -214,6 +258,37 @@ namespace DrawnUi.Draw
             }
         }
 
+        // Focus(FocusState.Programmatic) returns false while the TextBox is not yet loaded
+        // into the visual tree (programmatic IsFocused before first layout). Retry on load.
+        private void HiddenTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (IsFocused && _hiddenTextBox != null && _hiddenTextBox.FocusState == FocusState.Unfocused)
+                _hiddenTextBox.Focus(FocusState.Programmatic);
+        }
+
+        // WinUI hands pointer focus to the canvas on tap/press-release even while a drawn
+        // editor is logically focused (e.g. focus set programmatically during an ongoing
+        // press — the UP lands on canvas AFTER our Focus(Programmatic) and silently steals
+        // WinUI focus; keyboard goes dead with the cursor still blinking). While IsFocused
+        // is true, take focus back. Posted via dispatcher: calling Focus() inside a
+        // LostFocus handler is re-entrant in WinUI. When the editor is logically unfocused
+        // (IsFocused=false set by ReportFocus before any rival native focus), this no-ops.
+        private void HiddenTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine($"[LostFocus] IsFocused={IsFocused} FocusState={_hiddenTextBox?.FocusState}");
+            if (!IsFocused || _hiddenTextBox == null)
+                return;
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (IsFocused && _hiddenTextBox != null && _hiddenTextBox.FocusState == FocusState.Unfocused)
+                {
+                    var got = _hiddenTextBox.Focus(FocusState.Programmatic);
+                    Debug.WriteLine($"[LostFocus] re-steal Focus()={got}");
+                }
+            });
+        }
+
         private void HiddenTextBox_TextChanged(object sender, TextChangedEventArgs textChangedEventArgs)
         {
             //Debug.WriteLine($"[SkiaEditor] TextChanged updatingText={_updatingText} newText='{_hiddenTextBox?.Text}'");
@@ -222,6 +297,10 @@ namespace DrawnUi.Draw
                 _updatingText = true;
                 // normalize Windows line endings
                 Text = _hiddenTextBox.Text?.Replace("\r\n", "\n").Replace("\r", "\n");
+                Debug.WriteLine($"[SkiaEditor] TextChanged '{Text}'");
+                // WinUI can fire a spurious pointer event immediately after keyboard input.
+                // Block out-of-bounds Down processing for 250 ms to prevent focus theft.
+                _spuriousDownBlockUntilMs = Environment.TickCount64 + 250;
                 _updatingText = false;
             }
         }
@@ -242,14 +321,31 @@ namespace DrawnUi.Draw
                 return;
             }
 
-            // Must block Enter for single-line here, before TextBox processes it.
+            // Must block Enter here, before TextBox processes it.
             // KeyDown fires after TextBox inserts the character; AcceptsReturn=true
             // means a \n would already be in the text by the time KeyDown runs.
-            if (!IsMultiline && e.Key == Windows.System.VirtualKey.Enter)
+            if (e.Key == Windows.System.VirtualKey.Enter)
             {
-                e.Handled = true;
-                ExecuteSubmit(clearFocus: false);
-                return;
+                if (!IsMultiline)
+                {
+                    e.Handled = true;
+                    ExecuteSubmit(clearFocus: false);
+                    return;
+                }
+
+                if (ShouldSubmitOnEnter)
+                {
+                    bool shiftDown = Microsoft.UI.Input.InputKeyboardSource
+                        .GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift)
+                        .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
+                    if (!shiftDown)
+                    {
+                        e.Handled = true;
+                        ExecuteSubmit(clearFocus: false);
+                        return;
+                    }
+                    // Shift+Enter falls through: native TextBox inserts the line break.
+                }
             }
 
             if (IsMultiline && (e.Key == Windows.System.VirtualKey.Up || e.Key == Windows.System.VirtualKey.Down))
@@ -303,7 +399,7 @@ namespace DrawnUi.Draw
 
         private void HiddenTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine($"[SkiaEditor] GotFocus CursorPosition={CursorPosition} textLen={_hiddenTextBox?.Text?.Length ?? -1}");
+            Debug.WriteLine($"[GotFocus] fired CursorPosition={CursorPosition} textLen={_hiddenTextBox?.Text?.Length ?? -1} FocusState={_hiddenTextBox?.FocusState}");
             if (_hiddenTextBox == null) return;
             var pos = Math.Max(0, Math.Min(CursorPosition, _hiddenTextBox.Text?.Length ?? 0));
             var len = SelectionLength > 0
@@ -313,6 +409,31 @@ namespace DrawnUi.Draw
             _hiddenTextBox.SelectionLength = len;
             _suppressSelectionChanged = false;
         }
+
+        private CancellationTokenSource? _deferCts;
+
+        // Label.Lines is populated during the render pass, which happens after property-change
+        // events. Suppress the immediate MoveInternalCursor() and defer until after the next render.
+        private async void DeferVisualCursorUpdate()
+        {
+            _deferCts?.Cancel();
+            _deferCts = new CancellationTokenSource();
+            var token = _deferCts.Token;
+            try
+            {
+                await Task.Delay(50, token);
+                _suppressImmediateCursorMove = false;
+                MoveInternalCursor();
+            }
+            catch (OperationCanceledException)
+            {
+                _suppressImmediateCursorMove = false;
+            }
+        }
+
+        //partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
+
+        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
 
         public int GenerateUniqueId()
         {
@@ -342,7 +463,7 @@ namespace DrawnUi.Draw
             else
             {
                 // Tab left — hide cursor, release native input.
-                SetFocus(false);
+                SetFrameworkFocus(false);
             }
         }
     }

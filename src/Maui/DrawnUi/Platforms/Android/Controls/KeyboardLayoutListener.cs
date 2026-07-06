@@ -27,7 +27,6 @@ public class KeyboardLayoutListener : GlobalLayoutListener<DrawnUiBasePage>
 
     private double KeyboardSize(global::Android.Views.View rootView)
     {
-        
         try
         {
             if (rootView == null)
@@ -41,9 +40,8 @@ public class KeyboardLayoutListener : GlobalLayoutListener<DrawnUiBasePage>
             {
                 DisplayMetrics dm = rootView.Resources.DisplayMetrics;
                 var heightDiff = rootView.Bottom - rectangle.Bottom;
-                ret = heightDiff / dm.Density;
+                ret = (float)(heightDiff / dm.Density - Super.Screen.BottomInset);
             }
-
             return ret;
         }
         catch

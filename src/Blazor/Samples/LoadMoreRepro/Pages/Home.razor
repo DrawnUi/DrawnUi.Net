@@ -1,0 +1,188 @@
+﻿@page "/"
+@using AppoMobi.Specials
+@using DrawnUi
+@using DrawnUi.Controls
+@using DrawnUi.Draw
+@using DrawnUi.Views
+
+<PageTitle>LoadMore Repro</PageTitle>
+
+<div style="padding: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+	<button @onclick="() => JumpToGlobal(0)">Top</button>
+	<span style="opacity: 0.75;">items: @_items.Count</span>
+</div>
+
+<Canvas Content="_root"
+		Gestures="@GesturesMode.Enabled"
+		WidthRequest="430"
+		HeightRequest="640"
+		BackgroundColor="Black" />
+
+@code {
+	public sealed class Row : BindableObject
+	{
+		public string Text { get; set; } = string.Empty;
+		public int Taps { get; set; }
+		public Color Color { get; set; } = Colors.White;
+	}
+
+	private sealed class RowCell : SkiaDynamicDrawnCell
+	{
+		private readonly SkiaLabel _label;
+		private readonly SkiaShape _shape;
+		private readonly TextSpan _textSpan;
+			private readonly TextSpan _linkSpan;
+			private string _currentText = string.Empty;
+			private bool _tapped;
+
+		public RowCell()
+		{
+			HorizontalOptions = LayoutOptions.Fill;
+
+			_label = new SkiaLabel
+			{
+				TextColor = Colors.White,
+				FontSize = 15,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Center,
+			};
+
+			Children = new List<SkiaControl>
+			{
+				new SkiaShape
+				{
+					Type = ShapeType.Rectangle,
+					CornerRadius = 8,
+					Padding = new Thickness(12, 8),
+					Margin = new Thickness(8, 0),
+					BackgroundColor = Color.FromArgb("#2A2A2A"),
+					HorizontalOptions = LayoutOptions.Fill,
+					Children =
+					{
+						_label
+					}
+				}.Assign(out _shape)
+			};
+
+			_textSpan = new TextSpan { TextColor = Colors.White };
+				_linkSpan = new TextSpan { Text = "  Open link", TextColor = Colors.DeepSkyBlue, Underline = true };
+				// Clickable span (a link) inside the label — verifies span gestures land inside a plane.
+				_linkSpan.Tapped += (s, e) => Console.WriteLine($"[LINK] {_currentText}");
+				_label.Spans.Add(_textSpan);
+				_label.Spans.Add(_linkSpan);
+
+				this.OnTapped(me =>
+			{
+				var row = me.BindingContext as Row; if (row != null) row.Taps++;
+				Console.WriteLine($"[TAP] {row?.Text} taps={row?.Taps}");
+				// Transparent: plain Update() like any non-virtualized list. The engine routes this cell's
+				// invalidation to its tile (SkiaLayout.UpdateByChild -> SkiaScroll.InvalidateVirtualCell).
+				this.Update();
+			});
+		}
+
+		protected override void SetContent(object ctx)
+		{
+			if (ctx is Row row)
+			{
+				_currentText = row.Text;
+					_textSpan.Text = row.Taps > 0 ? $"{row.Text}  (taps {row.Taps})" : row.Text;
+				// reset visual toggle for recycled instance
+				_tapped = false;
+				_shape.BackgroundColor = Color.FromArgb("#2A2A2A");
+			}
+		}
+	}
+
+	private readonly ObservableRangeCollection<Row> _items = new();
+	private readonly SkiaScroll _scroll;
+	private readonly SkiaLayout _list;
+	private readonly SkiaControl _root;
+
+	private int _loaded;
+	private bool _rendered;
+	private const int TotalItems = 1000;
+	private const int LoadBatch = 100; // bigger batch = more runway per load vs the scroll's load cooldown
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		base.OnAfterRender(firstRender);
+		_rendered = true;
+	}
+
+	private sealed class RelayCommand : System.Windows.Input.ICommand
+	{
+		private readonly Action _execute;
+		public RelayCommand(Action execute) => _execute = execute;
+		public event EventHandler? CanExecuteChanged;
+		public bool CanExecute(object? parameter) => true;
+		public void Execute(object? parameter) => _execute();
+	}
+
+	private void LoadMore()
+	{
+		if (_loaded >= TotalItems)
+			return;
+
+		int n = Math.Min(LoadBatch, TotalItems - _loaded);
+		var batch = new List<Row>(n);
+		for (int i = 0; i < n; i++)
+			batch.Add(new Row { Text = $"Message {_loaded + i}" });
+
+		_loaded += n;
+		_items.AddRange(batch); // one notification for the whole batch
+		if (_rendered)
+			InvokeAsync(StateHasChanged); // refresh the "items: N" counter (not during ctor seed)
+	}
+
+	public Home()
+	{
+		LoadMore(); // seed the first batch instead of materializing all 1000
+
+		_list = new SkiaLayout
+		{
+			Type = LayoutType.Column,
+			Spacing = 2,
+			Padding = new Thickness(0, 8),
+			ItemsSource = _items,
+			ItemTemplateType = typeof(RowCell),
+			Virtualisation = VirtualisationType.Managed,
+			ItemTemplatePoolSize = 0, // 0 = engine auto-sizes the pool from band geometry
+			RecyclingTemplate = RecyclingTemplate.Enabled,
+			MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
+			HorizontalOptions = LayoutOptions.Fill,
+		};
+
+		_scroll = new SkiaScroll
+		{
+			Orientation = ScrollOrientation.Vertical,
+			Virtualisation = VirtualisationType.Managed,
+			ResetScrollPositionOnContentSizeChanged = false,
+			LoadMoreCommand = new RelayCommand(LoadMore),
+			LoadMoreOffset = 800, // trigger well before the bottom so the next batch lands ahead of the view
+			HorizontalOptions = LayoutOptions.Fill,
+			VerticalOptions = LayoutOptions.Fill,
+			Content = _list,
+		};
+
+		_root = new SkiaLayout
+		{
+			Type = LayoutType.Absolute,
+			HorizontalOptions = LayoutOptions.Fill,
+			VerticalOptions = LayoutOptions.Fill,
+			Children =
+			{
+				_scroll
+			}
+		};
+	}
+
+	private void JumpToGlobal(int target)
+	{
+		if (_items.Count == 0)
+			return;
+
+		target = Math.Clamp(target, 0, _items.Count - 1);
+		_scroll.ScrollToIndex(target, false);
+	}
+}

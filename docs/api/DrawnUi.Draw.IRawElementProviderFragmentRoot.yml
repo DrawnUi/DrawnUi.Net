@@ -16,11 +16,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IRawElementProviderFragmentRoot
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 48
   assemblies:
   - DrawnUi.Maui
@@ -73,11 +73,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ElementProviderFromPoint
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -109,11 +109,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetFocus
-    path: ../src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui

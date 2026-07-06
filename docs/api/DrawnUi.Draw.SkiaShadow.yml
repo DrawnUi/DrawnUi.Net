@@ -37,11 +37,11 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: SkiaShadow
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -101,11 +101,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Parent
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -117,6 +117,35 @@ items:
       type: DrawnUi.Draw.ICanBeUpdatedWithContext
     content.vb: Public Property Parent As ICanBeUpdatedWithContext
   overload: DrawnUi.Draw.SkiaShadow.Parent*
+- uid: DrawnUi.Draw.SkiaShadow.Tag
+  commentId: P:DrawnUi.Draw.SkiaShadow.Tag
+  id: Tag
+  parent: DrawnUi.Draw.SkiaShadow
+  langs:
+  - csharp
+  - vb
+  name: Tag
+  nameWithType: SkiaShadow.Tag
+  fullName: DrawnUi.Draw.SkiaShadow.Tag
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+      branch: OpenTk
+      repo: https://github.com/taublast/DrawnUi.git
+    id: Tag
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    startLine: 7
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string Tag { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Tag As String
+  overload: DrawnUi.Draw.SkiaShadow.Tag*
 - uid: DrawnUi.Draw.SkiaShadow.Attach(DrawnUi.Draw.ICanBeUpdatedWithContext)
   commentId: M:DrawnUi.Draw.SkiaShadow.Attach(DrawnUi.Draw.ICanBeUpdatedWithContext)
   id: Attach(DrawnUi.Draw.ICanBeUpdatedWithContext)
@@ -130,12 +159,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Attach
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
-    startLine: 7
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    startLine: 9
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -159,12 +188,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Dettach
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
-    startLine: 13
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    startLine: 15
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -172,35 +201,6 @@ items:
     content: public void Dettach()
     content.vb: Public Sub Dettach()
   overload: DrawnUi.Draw.SkiaShadow.Dettach*
-- uid: DrawnUi.Draw.SkiaShadow.Tag
-  commentId: P:DrawnUi.Draw.SkiaShadow.Tag
-  id: Tag
-  parent: DrawnUi.Draw.SkiaShadow
-  langs:
-  - csharp
-  - vb
-  name: Tag
-  nameWithType: SkiaShadow.Tag
-  fullName: DrawnUi.Draw.SkiaShadow.Tag
-  type: Property
-  source:
-    remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
-    id: Tag
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
-    startLine: 19
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public string Tag { get; set; }
-    parameters: []
-    return:
-      type: System.String
-    content.vb: Public Property Tag As String
-  overload: DrawnUi.Draw.SkiaShadow.Tag*
 - uid: DrawnUi.Draw.SkiaShadow.CompareTo(System.Object)
   commentId: M:DrawnUi.Draw.SkiaShadow.CompareTo(System.Object)
   id: CompareTo(System.Object)
@@ -214,11 +214,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -261,11 +261,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: CompareTo
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -301,11 +301,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 81
   assemblies:
   - DrawnUi.Maui
@@ -338,11 +338,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Equals
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 86
   assemblies:
   - DrawnUi.Maui
@@ -377,11 +377,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetHashCode
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 91
   assemblies:
   - DrawnUi.Maui
@@ -409,11 +409,11 @@ items:
   type: Operator
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Equality
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 96
   assemblies:
   - DrawnUi.Maui
@@ -445,11 +445,11 @@ items:
   type: Operator
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: op_Inequality
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 101
   assemblies:
   - DrawnUi.Maui
@@ -481,11 +481,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: OpacityProperty
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 152
   assemblies:
   - DrawnUi.Maui
@@ -508,11 +508,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Opacity
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 159
   assemblies:
   - DrawnUi.Maui
@@ -537,11 +537,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ColorProperty
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 166
   assemblies:
   - DrawnUi.Maui
@@ -564,11 +564,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Color
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 169
   assemblies:
   - DrawnUi.Maui
@@ -593,11 +593,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: XProperty
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 175
   assemblies:
   - DrawnUi.Maui
@@ -620,11 +620,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: X
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 178
   assemblies:
   - DrawnUi.Maui
@@ -649,11 +649,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: YProperty
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 184
   assemblies:
   - DrawnUi.Maui
@@ -676,11 +676,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Y
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 187
   assemblies:
   - DrawnUi.Maui
@@ -705,11 +705,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: BlurProperty
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 193
   assemblies:
   - DrawnUi.Maui
@@ -732,11 +732,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: Blur
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 196
   assemblies:
   - DrawnUi.Maui
@@ -761,11 +761,11 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowOnlyProperty
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 202
   assemblies:
   - DrawnUi.Maui
@@ -788,11 +788,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/Internals/Models/SkiaShadow.cs
+      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: ShadowOnly
-    path: ../src/Shared/Internals/Models/SkiaShadow.cs
+    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
     startLine: 205
   assemblies:
   - DrawnUi.Maui
@@ -2117,18 +2117,6 @@ references:
   name: ICanBeUpdatedWithContext
   nameWithType: ICanBeUpdatedWithContext
   fullName: DrawnUi.Draw.ICanBeUpdatedWithContext
-- uid: DrawnUi.Draw.SkiaShadow.Attach*
-  commentId: Overload:DrawnUi.Draw.SkiaShadow.Attach
-  href: DrawnUi.Draw.SkiaShadow.html#DrawnUi_Draw_SkiaShadow_Attach_DrawnUi_Draw_ICanBeUpdatedWithContext_
-  name: Attach
-  nameWithType: SkiaShadow.Attach
-  fullName: DrawnUi.Draw.SkiaShadow.Attach
-- uid: DrawnUi.Draw.SkiaShadow.Dettach*
-  commentId: Overload:DrawnUi.Draw.SkiaShadow.Dettach
-  href: DrawnUi.Draw.SkiaShadow.html#DrawnUi_Draw_SkiaShadow_Dettach
-  name: Dettach
-  nameWithType: SkiaShadow.Dettach
-  fullName: DrawnUi.Draw.SkiaShadow.Dettach
 - uid: DrawnUi.Draw.SkiaShadow.Tag*
   commentId: Overload:DrawnUi.Draw.SkiaShadow.Tag
   href: DrawnUi.Draw.SkiaShadow.html#DrawnUi_Draw_SkiaShadow_Tag
@@ -2146,6 +2134,18 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: DrawnUi.Draw.SkiaShadow.Attach*
+  commentId: Overload:DrawnUi.Draw.SkiaShadow.Attach
+  href: DrawnUi.Draw.SkiaShadow.html#DrawnUi_Draw_SkiaShadow_Attach_DrawnUi_Draw_ICanBeUpdatedWithContext_
+  name: Attach
+  nameWithType: SkiaShadow.Attach
+  fullName: DrawnUi.Draw.SkiaShadow.Attach
+- uid: DrawnUi.Draw.SkiaShadow.Dettach*
+  commentId: Overload:DrawnUi.Draw.SkiaShadow.Dettach
+  href: DrawnUi.Draw.SkiaShadow.html#DrawnUi_Draw_SkiaShadow_Dettach
+  name: Dettach
+  nameWithType: SkiaShadow.Dettach
+  fullName: DrawnUi.Draw.SkiaShadow.Dettach
 - uid: System.ArgumentException
   commentId: T:System.ArgumentException
   isExternal: true

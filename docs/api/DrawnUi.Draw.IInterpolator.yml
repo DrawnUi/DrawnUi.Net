@@ -15,11 +15,11 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/Features/Animations/ToDo/IInterpolator.cs
+      path: src/Shared/DrawnUi/Features/Animations/ToDo/IInterpolator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: IInterpolator
-    path: ../src/Shared/Features/Animations/ToDo/IInterpolator.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/ToDo/IInterpolator.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -42,11 +42,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/Features/Animations/ToDo/IInterpolator.cs
+      path: src/Shared/DrawnUi/Features/Animations/ToDo/IInterpolator.cs
       branch: OpenTk
       repo: https://github.com/taublast/DrawnUi.git
     id: GetInterpolation
-    path: ../src/Shared/Features/Animations/ToDo/IInterpolator.cs
+    path: ../src/Shared/DrawnUi/Features/Animations/ToDo/IInterpolator.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
