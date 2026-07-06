@@ -1910,6 +1910,30 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// If LongPressing handler was defined, activates it and returns true, or false if it wasn't defined.
+        /// Mirrors SendTapped for the LongPressing gesture (no tap animation applies here).
+        /// </summary>
+        protected bool SendLongPressing(object listener, SkiaGesturesParameters args, GestureEventProcessingInfo apply,
+            bool useMainThread)
+        {
+            if (LongPressing != null)
+            {
+                if (useMainThread)
+                {
+                    MainThread.BeginInvokeOnMainThread(() => { LongPressing?.Invoke(this, new(listener, args, apply)); });
+                }
+                else
+                {
+                    LongPressing?.Invoke(this, new(listener, args, apply));
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// WIll be called if a child implements ISkiaGestureListener and was Tapped. If this is set then the Tapped gesture will be consumed by this control after passing it to child.
         /// </summary>
         public event EventHandler<ControlTappedEventArgs> ChildTapped;
@@ -2556,6 +2580,14 @@ namespace DrawnUi.Draw
                 if (SendTapped(meAsListener, args, apply, Super.SendTapsOnMainThread))
                 {
                     return meAsListener;
+                }
+            }
+
+            if (args.Type == TouchActionResult.LongPressing && this is ISkiaGestureListener meAsLongPressListener && consumed == null)
+            {
+                if (SendLongPressing(meAsLongPressListener, args, apply, Super.SendTapsOnMainThread))
+                {
+                    return meAsLongPressListener;
                 }
             }
 

@@ -4,6 +4,7 @@ public partial class TouchEffect
 {
     public static bool LogEnabled { get; set; }
     public static float TappedCancelMoveThresholdPoints = 16f;
+    public static int LongPressTimeMsDefault = 1500;
     private static float _density = 1f;
 
     public static float Density
