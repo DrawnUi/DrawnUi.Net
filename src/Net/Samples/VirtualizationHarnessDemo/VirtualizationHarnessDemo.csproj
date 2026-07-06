@@ -8,10 +8,6 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\DrawnUi\DrawnUi.Net.csproj" />
-    </ItemGroup>
-
     <!-- Reference ALL real shared chat code (no port). The harness provides ChatPage's head partial stub. -->
     <Import Project="..\..\..\..\..\DrawnChatList\src\Shared\DrawnChatList.Shared.projitems" Label="Shared" />
 
