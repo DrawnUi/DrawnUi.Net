@@ -42,6 +42,17 @@ Currently supported hosts:
 * .NET MAUI only: `DrawnUi.DrawnUi.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
 
 [Docs and Samples](https://drawnui.net) 👈
+
+
+### Breaking Changes
+
+SkiaSharp v4 is out, some public API changes due to that:
+
+1. `SKFilterQuality` removed (SkiaSharp), DrawnUi's own `FilterQuality` enum replaces it.
+
+2. `SKPaint.FilterQuality` removed. Quality moves to SKSamplingOptions: Fix via existing `DrawnUi.Draw.SkiaSamplingOptions.GetSamplingOptions(FilterQuality)` helper.
+
+
 ---
 MIT | Free to use and customize
 
