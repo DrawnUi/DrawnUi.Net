@@ -22,6 +22,11 @@ namespace DrawnUi.Draw
     /// </remarks>
     public partial class SkiaShape : SkiaLayout
     {
+        public SkiaShape()
+        {
+            UseCache = SkiaCacheType.Operations;
+        }
+
         public override void ApplyBindingContext()
         {
             if (Shadows != null)
