@@ -17,9 +17,10 @@ Not all methods are listed here, as extensions are evolving.
 5. [Common Patterns](#common-patterns)
 6. [Layout Extensions](#layout-extensions)
 7. [Gesture Handling](#gesture-handling)
-8. [Control Helpers](#control-helpers)
-9. [Best Practices](#best-practices)
-10. [Troubleshooting](#troubleshooting)
+8. [Animation](#animation)
+9. [Control Helpers](#control-helpers)
+10. [Best Practices](#best-practices)
+11. [Troubleshooting](#troubleshooting)
 
 ## Core Philosophy
 
@@ -814,6 +815,77 @@ layout.WithGestures((me, args, apply) => {
     return null; //will send this gesture to other controls
 });
 ```
+
+## Animation
+
+### `.Animate(seconds, callback, ...)` - Frame-rate independent animation
+
+Runs a looping animation driven by the framework animator (which ticks off the real
+frame time), so it plays at the **same visual speed on any device regardless of FPS** —
+no manual delta-time bookkeeping. It cooperates with the animator lifecycle (pause,
+visibility) and **auto-unregisters when the control is disposed**.
+
+```csharp
+new SkiaShape { Type = ShapeType.Circle, /* ... */ }
+    .Animate(
+        seconds: 1.6,                       // duration of one cycle
+        onFrame: (me, animator, value, deltaSeconds) =>
+        {
+            me.Rotation = value * 360;      // value is eased 0..1 progress of the cycle
+        },
+        repeat: -1);                        // -1 = loop forever, N = N extra cycles, 0 = once
+```
+
+The callback receives, every frame:
+
+| Arg | Meaning |
+|---|---|
+| `me` | the control |
+| `animator` | the running animator — call `animator.Stop()` to end it early |
+| `value` | eased progress of the current cycle, `0..1` |
+| `deltaSeconds` | seconds elapsed since the previous frame (for physics/accumulation) |
+
+Full signature:
+
+```csharp
+.Animate(double seconds,
+         Action<T, SkiaValueAnimator, double, double> onFrame,
+         int repeat = 0,
+         Easing easing = null,          // null = linear
+         bool pingPong = false,         // true = value bounces 0→1→0 each cycle
+         double delaySeconds = 0)
+```
+
+Stop from inside the callback:
+
+```csharp
+.Animate(2.0, (me, animator, value, dt) =>
+{
+    me.Opacity = value;
+    if (SomeCondition)
+        animator.Stop();
+}, repeat: -1);
+```
+
+> The animation only starts once the control is laid out (in the visual tree); `.Animate`
+> defers the start internally, so it is safe to chain during construction.
+
+### Typed shortcuts
+
+One-liners for the common properties — all start with `Animate` and share the same
+`(from, to, seconds, repeat, easing, pingPong, delaySeconds)` parameters:
+
+```csharp
+.AnimateRotation(0, 360, seconds: 1.6, repeat: -1)                       // endless spinner
+.AnimateScale(1.0, 1.15, seconds: 0.8, repeat: -1, pingPong: true)       // heartbeat pulse
+.AnimateOpacity(0.3, 1.0, seconds: 1.0, repeat: -1, pingPong: true)      // breathing fade
+.AnimateTranslationX(-20, 20, seconds: 0.5, repeat: 3, pingPong: true)   // shake
+.AnimateTranslationY(0, 100, seconds: 0.6, easing: Easing.BounceOut)     // drop
+```
+
+Each maps its property linearly by the `0..1` value, so a `0→360` rotation loops
+seamlessly. For anything custom (multiple properties, non-linear mapping, delta-time
+physics) use the general `.Animate(...)` above.
 
 ## Control Helpers
 
