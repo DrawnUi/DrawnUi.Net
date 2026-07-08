@@ -25,6 +25,7 @@ public class SkiaDrawnCell : SkiaLayout, ISkiaCell
         base.OnParentChanged(newvalue, oldvalue);
     }
 
+    /*
     /// <summary>
     /// In tiled-planes virtualization a realized cell stays bound to the SAME model object across its life
     /// (it is not recycled while resident), so a model PROPERTY change never re-runs SetContent — the visual
@@ -40,13 +41,20 @@ public class SkiaDrawnCell : SkiaLayout, ISkiaCell
             if (_residentInPlanes == true && BindingContext != null)
             {
                 _refreshingContent = true;
-                try { SetContent(BindingContext); }
-                finally { _refreshingContent = false; }
+                try
+                {
+                    SetContent(BindingContext);
+                }
+                finally
+                {
+                    _refreshingContent = false;
+                }
             }
         }
 
         base.Update();
     }
+    */
 
     public virtual void OnScrolled()
     {

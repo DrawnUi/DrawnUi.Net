@@ -1505,7 +1505,10 @@ namespace DrawnUi.Draw
                                 view.BindingContext = context; // ← where crashes could happen
                                 if (ctx != context)
                                 {
-                                    view.NeedMeasure = true;
+                                    if (_parent.MeasureItemsStrategy != MeasuringStrategy.MeasureFirst)
+                                    {
+                                        view.NeedMeasure = true;
+                                    }
                                     // caches still hold the previous context's pixels — stale-serve must
                                     // not blit them at the new slot (cleared on next fresh RenderObject)
                                     if (ctx != null)

@@ -646,7 +646,13 @@ namespace DrawnUi.Draw
                 // An EXPLICIT ReserveTemplates must fit the cap, or the background warm-up can never reach
                 // its target no matter how correct the viewport estimate is.
                 var floor = Math.Max(visible * 4, visible + ReserveTemplates);
-                return Math.Min(ItemsSource.Count + mult * 2, floor + mult * 2);
+                // Cache-all ceiling: lists at/under this keep EVERY cell baked (re-scroll never rebakes = smooth);
+                // above it, cap to the viewport-realized floor for memory ("1000 items != 1000 cells").
+                // 256 is the tunable memory/smoothness line — raise for smoother huge lists, lower to save RAM.
+                const int cacheAllLimit = 256;
+                if (ItemsSource.Count <= Math.Max(floor + mult * 2, cacheAllLimit))
+                    return ItemsSource.Count + mult * 2;
+                return floor + mult * 2;
             }
 
             return ItemsSource.Count + mult * 2;

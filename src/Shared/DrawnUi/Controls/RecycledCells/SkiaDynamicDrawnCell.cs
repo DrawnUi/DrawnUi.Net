@@ -43,6 +43,10 @@ public class SkiaDynamicDrawnCell : SkiaDrawnCell
 
     protected override void AttachContext(object ctx)
     {
+
+        if (Context != null)
+            Context.PropertyChanged -= ContextPropertyChanged;
+
         base.AttachContext(ctx);
 
         if (Context != null)

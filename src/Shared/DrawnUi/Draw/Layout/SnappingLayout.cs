@@ -312,8 +312,6 @@ public class SnappingLayout : SkiaLayout
 
         UpdateReportedPosition();
 
-
-
         SendScrolled();
     }
 
