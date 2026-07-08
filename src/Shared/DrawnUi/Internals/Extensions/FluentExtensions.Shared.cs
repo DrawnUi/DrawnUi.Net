@@ -298,7 +298,36 @@ namespace DrawnUi.Draw
             int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
             => control.Animate(seconds, (me, _, v, _) => me.TranslationY = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
 
+        /// <summary>
+        /// Keeps the control's surface repainting every frame forever, without changing any
+        /// property. Needed for visuals that advance on their own each frame from outside the
+        /// property system — e.g. a time-driven <c>SkiaShaderEffect</c> (reads <c>iTime</c>) or a
+        /// clock drawn in <c>WhenPaint</c>. Without it the control draws once and freezes, since
+        /// nothing invalidates it. Implemented as an infinite no-op animator: a running animator
+        /// keeps the render loop alive, so the shader/paint re-runs with a fresh frame time.
+        /// Auto-stops when the control is disposed. Use only for genuinely animated visuals —
+        /// it holds the canvas at full frame rate.
+        /// </summary>
+        public static T UpdateNonStop<T>(this T control) where T : SkiaControl
+            => control.Animate(1.0, (_, _, _, _) => { }, repeat: -1);
+
         #endregion
+
+        /// <summary>
+        /// Fluent subscription to <see cref="SkiaShaderEffect.OnCompilationError"/>: the callback
+        /// receives the effect and the SkSL compiler error text whenever <c>ShaderCode</c> /
+        /// <c>ShaderSource</c> fails to compile. Without any handler a failed compile throws
+        /// (swallowed into a log) — with this wired you can surface the error in your UI or console.
+        /// Chainable.
+        /// </summary>
+        public static T OnShaderError<T>(this T effect, Action<T, string> callback) where T : SkiaShaderEffect
+        {
+            if (callback != null)
+            {
+                effect.OnCompilationError += (s, error) => callback((T)s, error);
+            }
+            return effect;
+        }
 
         /// <summary>
         /// Registers a callback to be executed when the control's BindingContext was set/changed.
@@ -1523,6 +1552,36 @@ namespace DrawnUi.Draw
             view.HorizontalOptions = LayoutOptions.Center;
             view.VerticalOptions = LayoutOptions.Center;
             return view;
+        }
+
+        /// <summary>
+        /// Centers the label's TEXT horizontally (<see cref="SkiaLabel.HorizontalTextAlignment"/> = Center).
+        /// Alignment of text inside the label, not of the label inside its parent — for that use <see cref="CenterX{T}"/>.
+        /// </summary>
+        public static T CenterTextX<T>(this T label) where T : SkiaLabel
+        {
+            label.HorizontalTextAlignment = DrawTextAlignment.Center;
+            return label;
+        }
+
+        /// <summary>
+        /// Centers the label's TEXT vertically (<see cref="SkiaLabel.VerticalTextAlignment"/> = Center).
+        /// Alignment of text inside the label, not of the label inside its parent — for that use <see cref="CenterY{T}"/>.
+        /// </summary>
+        public static T CenterTextY<T>(this T label) where T : SkiaLabel
+        {
+            label.VerticalTextAlignment = TextAlignment.Center;
+            return label;
+        }
+
+        /// <summary>
+        /// Centers the label's TEXT in both directions. See <see cref="CenterTextX{T}"/> / <see cref="CenterTextY{T}"/>.
+        /// </summary>
+        public static T CenterText<T>(this T label) where T : SkiaLabel
+        {
+            label.HorizontalTextAlignment = DrawTextAlignment.Center;
+            label.VerticalTextAlignment = TextAlignment.Center;
+            return label;
         }
 
         #endregion

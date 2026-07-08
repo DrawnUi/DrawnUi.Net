@@ -417,8 +417,9 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         SKRect destination = ctx.Destination;
         SKImage sourceToDispose = null;
 
-        // Step 1: Ensure shader is compiled
-        if (!engine.IsCompiled || _hasNewShader)
+        // Step 1: Ensure shader is compiled. A failed compile sets _compileFailed so we
+        // don't retry (and re-report the error) every frame — only new code retries.
+        if ((!engine.IsCompiled && !_compileFailed) || _hasNewShader)
         {
             try
             {
@@ -434,10 +435,13 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
             catch (Exception e)
             {
                 Super.Log($"[SkiaShaderEffect] Failed to compile shader {e}");
+                _hasNewShader = false;
+                _compileFailed = true;
                 return null;
             }
 
             _hasNewShader = false;
+            _compileFailed = !engine.IsCompiled;
         }
 
         if (!engine.IsCompiled)
@@ -505,12 +509,68 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
     public PointF MouseInitial { get; set; }
 
     /// <summary>
-    /// Creates standard uniforms via engine. Override to add custom uniforms.
+    /// Custom shader uniforms set by name (e.g. a slider-driven <c>uniform float uIntensity;</c>),
+    /// merged on top of the standard ones every frame. Each value is a float array whose length
+    /// matches the SkSL type: 1 = float, 2 = float2, 3 = float3, 4 = float4. Prefer the
+    /// <see cref="SetUniform(string,float)"/> overloads over touching this directly.
+    /// The uniform MUST be declared in the shader, otherwise it is silently skipped.
+    /// </summary>
+    public Dictionary<string, float[]> Uniforms { get; } = new();
+
+    /// <summary>Sets a scalar custom uniform (<c>uniform float name;</c>). Chainable.</summary>
+    public SkiaShaderEffect SetUniform(string name, float value)
+        => SetUniform(name, new[] { value });
+
+    /// <summary>Sets a <c>float2</c> custom uniform. Chainable.</summary>
+    public SkiaShaderEffect SetUniform(string name, float x, float y)
+        => SetUniform(name, new[] { x, y });
+
+    /// <summary>Sets a <c>float3</c> custom uniform. Chainable.</summary>
+    public SkiaShaderEffect SetUniform(string name, float x, float y, float z)
+        => SetUniform(name, new[] { x, y, z });
+
+    /// <summary>Sets a <c>float4</c> custom uniform. Chainable.</summary>
+    public SkiaShaderEffect SetUniform(string name, float x, float y, float z, float w)
+        => SetUniform(name, new[] { x, y, z, w });
+
+    /// <summary>Sets a custom uniform from a raw float array and requests a redraw. Chainable.</summary>
+    public SkiaShaderEffect SetUniform(string name, float[] values)
+    {
+        if (!string.IsNullOrEmpty(name) && values != null)
+        {
+            Uniforms[name] = values;
+            Update();
+        }
+        return this;
+    }
+
+    /// <summary>
+    /// Creates standard uniforms via engine, then merges any <see cref="Uniforms"/> on top.
+    /// Override to add custom uniforms in code instead.
     /// </summary>
     protected virtual SKRuntimeEffectUniforms CreateUniforms(SKRect destination)
     {
         var engine = GetEngine();
-        return engine.CreateUniforms(destination.Width, destination.Height, destination.Width, destination.Height);
+        var uniforms = engine.CreateUniforms(destination.Width, destination.Height, destination.Width, destination.Height);
+
+        if (Uniforms.Count > 0)
+        {
+            foreach (var kv in Uniforms)
+            {
+                // Skip uniforms the shader doesn't declare (indexer throws for unknown names).
+                // Scalars must be written as float — SkiaSharp rejects float[1] for a 'float' uniform.
+                try
+                {
+                    if (kv.Value.Length == 1)
+                        uniforms[kv.Key] = kv.Value[0];
+                    else
+                        uniforms[kv.Key] = kv.Value;
+                }
+                catch (Exception e) { Super.Log($"[SkiaShaderEffect] SetUniform '{kv.Key}' failed: {e.Message}"); }
+            }
+        }
+
+        return uniforms;
     }
 
     /// <summary>
@@ -525,6 +585,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
     // ─── Compilation ────────────────────────────────────────────────────────
 
     private bool _hasNewShader;
+    private bool _compileFailed;
     private string _customCode;
     private string _lastSource;
     protected string _template = null;
