@@ -698,6 +698,17 @@ new SkiaLabel("Hello")
     .WithMargin(16, 8, 16, 8); // Left, top, right, bottom
 ```
 
+### Text Alignment (SkiaLabel)
+
+Aligns the TEXT inside the label — not the label inside its parent (that's `Center()`/`CenterX()`/`CenterY()` above):
+
+```csharp
+new SkiaLabel("Hello")
+    .CenterText()       // Centers text both ways
+    .CenterTextX()      // HorizontalTextAlignment = Center
+    .CenterTextY()      // VerticalTextAlignment = Center
+```
+
 ### Layout-Specific Extensions
 
 ```csharp
@@ -886,6 +897,27 @@ One-liners for the common properties — all start with `Animate` and share the 
 Each maps its property linearly by the `0..1` value, so a `0→360` rotation loops
 seamlessly. For anything custom (multiple properties, non-linear mapping, delta-time
 physics) use the general `.Animate(...)` above.
+
+### Shader compilation errors
+
+`SkiaShaderEffect.OnCompilationError` fires when `ShaderCode`/`ShaderSource` fails to
+compile; without any handler the failure throws and is swallowed into a log. The fluent
+`.OnShaderError(...)` subscribes chainably so you can surface the SkSL compiler message:
+
+```csharp
+new SkiaShaderEffect
+{
+    ShaderCode = mySksl,
+}
+.SetUniform("uIntensity", 0.7f)
+.OnShaderError((me, error) => Console.WriteLine($"[SkSL] {error}"))
+```
+
+`SetUniform` passes custom uniforms to the shader (float / float2 / float3 / float4 overloads);
+call it again anytime — e.g. from a slider — it requests a redraw itself. Standard uniforms
+(`iTime`, `iResolution`, `iImage1`, `iImageResolution`, `iOffset`, `iMouse`) are fed by the
+engine automatically each frame. A failed compile reports once (not per frame); fixing
+`ShaderCode` recompiles automatically.
 
 ## Control Helpers
 
