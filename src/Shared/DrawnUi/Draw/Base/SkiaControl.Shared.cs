@@ -5620,10 +5620,6 @@ namespace DrawnUi.Draw
 
             try
             {
-                //InvalidateCacheWithPrevious();
-
-                //InvalidateViewsList(); //we might get different ZIndex which is bindable..
-
                 ApplyBindingContext();
 
                 //will apply to maui props like styles, triggers etc
@@ -7381,6 +7377,21 @@ namespace DrawnUi.Draw
             if (IsDisposing || IsDisposed || ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
                 return;
 
+            ExecuteOnPaintCallbacks(ctx);
+
+            PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
+
+            WasDrawn = true;
+        }
+
+        /// <summary>
+        /// Invokes any callbacks registered via <c>WhenPaint(...)</c> for this frame.
+        /// Overrides of <see cref="Paint"/> that do NOT call <c>base.Paint</c> (e.g.
+        /// <c>SkiaShape</c>) must call this themselves, otherwise <c>WhenPaint</c> hooks
+        /// silently never fire. Guarded by count, so it's free when unused.
+        /// </summary>
+        protected void ExecuteOnPaintCallbacks(DrawingContext ctx)
+        {
             if (ExecuteOnPaint.Count > 0)
             {
                 foreach (var action in ExecuteOnPaint.Values)
@@ -7388,10 +7399,6 @@ namespace DrawnUi.Draw
                     action?.Invoke(this, ctx);
                 }
             }
-
-            PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
-
-            WasDrawn = true;
         }
 
         private bool _wasDrawn;

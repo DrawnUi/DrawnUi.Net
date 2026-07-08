@@ -194,6 +194,112 @@ namespace DrawnUi.Draw
             return view;
         }
 
+        #region ANIMATION
+
+        /// <summary>
+        /// Starts a frame-rate independent animation driven by the framework animator
+        /// (which ticks off FrameTimeNanos), so it runs at the same visual speed on any
+        /// device regardless of FPS. Every frame the callback receives: the control, the
+        /// animator (call <c>animator.Stop()</c> to end it early), the eased progress of
+        /// the current cycle (0..1) and the seconds elapsed since the previous frame
+        /// (delta time). The animator auto-unregisters when the control is disposed.
+        /// </summary>
+        /// <typeparam name="T">Type of SkiaControl.</typeparam>
+        /// <param name="control">Control to animate.</param>
+        /// <param name="seconds">Duration of one cycle, in seconds.</param>
+        /// <param name="onFrame">(control, animator, value 0..1, deltaSeconds) — invoked each frame.</param>
+        /// <param name="repeat">-1 = loop forever, N = N extra cycles, 0 = play once.</param>
+        /// <param name="easing">Value curve; null = linear.</param>
+        /// <param name="pingPong">If true the value bounces 0→1→0 each cycle instead of restarting at 0.</param>
+        /// <param name="delaySeconds">Initial delay before starting, in seconds.</param>
+        /// <returns>The control for chaining.</returns>
+        public static T Animate<T>(this T control,
+            double seconds,
+            Action<T, SkiaValueAnimator, double, double> onFrame,
+            int repeat = 0,
+            Easing easing = null,
+            bool pingPong = false,
+            double delaySeconds = 0) where T : SkiaControl
+        {
+            if (onFrame == null)
+                return control;
+
+            RangeAnimator animator = pingPong ? new PingPongAnimator(control) : new RangeAnimator(control);
+            animator.Repeat = repeat;
+
+            long previousNanos = 0;
+
+            void Report(double value)
+            {
+                // LastFrameTimeNanos is already advanced to the current frame before this
+                // callback fires, so the delta is (now - previous). Clamped to swallow
+                // stalls and the one-frame blip at a loop boundary.
+                var nowNanos = animator.LastFrameTimeNanos;
+                double delta = 0;
+                if (previousNanos != 0 && nowNanos > previousNanos)
+                {
+                    delta = (nowNanos - previousNanos) / 1_000_000_000.0;
+                    if (delta > 0.1) delta = 0.1;
+                }
+                previousNanos = nowNanos;
+                onFrame(control, animator, value, delta);
+            }
+
+            void StartNow()
+            {
+                previousNanos = 0;
+                animator.Start(Report, 0, 1, (uint)(seconds * 1000), easing, (int)(delaySeconds * 1000));
+            }
+
+            if (control.IsLayoutReady)
+            {
+                StartNow();
+            }
+            else
+            {
+                // An animator can only tick once the control is in the visual tree, so
+                // defer the start until the control has laid out.
+                void OnReady(object sender, EventArgs e)
+                {
+                    control.LayoutIsReady -= OnReady;
+                    control.ExecuteUponDisposal.Remove($"Animate_{animator.Uid}");
+                    StartNow();
+                }
+                control.LayoutIsReady += OnReady;
+                // Drop the handler if the control is disposed before it ever lays out.
+                control.ExecuteUponDisposal[$"Animate_{animator.Uid}"] = () => control.LayoutIsReady -= OnReady;
+            }
+
+            return control;
+        }
+
+        /// <summary>Animates <see cref="SkiaControl.Rotation"/> from <paramref name="from"/> to <paramref name="to"/> degrees. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateRotation<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.Rotation = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates uniform <see cref="SkiaControl.Scale"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateScale<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.Scale = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates <see cref="SkiaControl.Opacity"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateOpacity<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.Opacity = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates <see cref="SkiaControl.TranslationX"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateTranslationX<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.TranslationX = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates <see cref="SkiaControl.TranslationY"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateTranslationY<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.TranslationY = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        #endregion
+
         /// <summary>
         /// Registers a callback to be executed when the control's BindingContext was set/changed.
         /// Called inside base.ApplyBindingContext().

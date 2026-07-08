@@ -509,6 +509,10 @@ namespace DrawnUi.Draw
 
         protected override void Paint(DrawingContext ctx)
         {
+            // SkiaShape fully overrides Paint and never calls base.Paint, so run the
+            // WhenPaint(...) callbacks here — otherwise they silently never fire on shapes.
+            ExecuteOnPaintCallbacks(ctx);
+
             var scale = ctx.Scale;
             var strokeAwareSize = MeasuredStrokeAwareSize;
             var strokeAwareChildrenSize = MeasuredStrokeAwareChildrenSize;
