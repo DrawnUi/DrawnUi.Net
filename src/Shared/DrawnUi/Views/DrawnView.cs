@@ -2039,7 +2039,7 @@ namespace DrawnUi.Views
                 _renderingScale = value;
                 try
                 {
-                    Console.WriteLine($"RenderingScale set: {value:F1}");
+                    Debug.WriteLine($"RenderingScale set: {value:F1}");
 
                     SetValue(RenderingScaleProperty, value);
                 }
