@@ -1,6 +1,18 @@
 namespace DrawnUi.Draw;
 
 /// <summary>
+/// Which axis a SkiaScroll shows a scroll bar for. Matched against the scroll's own Orientation:
+/// a Horizontal scroll shows a bar when Horizontal is set, any other scroll when Vertical is set.
+/// </summary>
+[Flags]
+public enum ScrollBarVisibility
+{
+    None = 0,
+    Vertical = 1,
+    Horizontal = 2,
+}
+
+/// <summary>
 /// Implement to be used as a scroll bar indicator overlay for SkiaScroll, set via the ScrollBar property.
 /// The scroll owner pushes state here whenever scroll position, content size or scrolling state change.
 /// </summary>

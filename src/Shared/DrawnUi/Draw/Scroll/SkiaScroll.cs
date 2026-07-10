@@ -37,6 +37,11 @@ namespace DrawnUi.Draw
             {
                 scrollBar.Dispose();
             }
+
+            if (InternalScrollBarHorizontal is SkiaControl scrollBarHorizontal)
+            {
+                scrollBarHorizontal.Dispose();
+            }
         }
 
         private ScrollInteractionState _intercationState;
@@ -274,11 +279,137 @@ namespace DrawnUi.Draw
         {
             if (bindable is SkiaScroll control)
             {
+                control._scrollBarAutoCreated = false; // explicit assignment, ours to keep as-is
                 control.SetScrollBar(newvalue as IScrollBar);
             }
         }
 
+        public static readonly BindableProperty ScrollBarHorizontalProperty = BindableProperty.Create(
+            nameof(ScrollBarHorizontal),
+            typeof(IScrollBar),
+            typeof(SkiaScroll),
+            null,
+            propertyChanged: OnNeedSetScrollBarHorizontal);
+
+        /// <summary>
+        /// Same as ScrollBar but for the horizontal axis, used together with ScrollBar for a scroll
+        /// with Orientation="Both" that needs both bars shown at once.
+        /// </summary>
+        public IScrollBar ScrollBarHorizontal
+        {
+            get { return (IScrollBar)GetValue(ScrollBarHorizontalProperty); }
+            set { SetValue(ScrollBarHorizontalProperty, value); }
+        }
+
+        private static void OnNeedSetScrollBarHorizontal(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            if (bindable is SkiaScroll control)
+            {
+                control._scrollBarHorizontalAutoCreated = false;
+                control.SetScrollBarHorizontal(newvalue as IScrollBar);
+            }
+        }
+
+        public static readonly BindableProperty ScrollBarsVisibilityProperty = BindableProperty.Create(
+            nameof(ScrollBarsVisibility),
+            typeof(ScrollBarVisibility),
+            typeof(SkiaScroll),
+            ScrollBarVisibility.None,
+            propertyChanged: (b, o, n) => (b as SkiaScroll)?.ApplyScrollBarsVisibility());
+
+        /// <summary>
+        /// Enables the scroll bar overlay(s) without writing code: set Vertical and/or Horizontal
+        /// (it's [Flags], both can be set at once e.g. for Orientation="Both") and a default
+        /// SkiaScrollBar is created for each axis flagged. Assign ScrollBar / ScrollBarHorizontal
+        /// yourself for a custom bar; visibility flags then just show/hide it. Default None (no bars).
+        /// </summary>
+        public ScrollBarVisibility ScrollBarsVisibility
+        {
+            get { return (ScrollBarVisibility)GetValue(ScrollBarsVisibilityProperty); }
+            set { SetValue(ScrollBarsVisibilityProperty, value); }
+        }
+
+        private bool _scrollBarAutoCreated;
+        private bool _scrollBarHorizontalAutoCreated;
+
+        protected virtual void ApplyScrollBarsVisibility()
+        {
+            var wantVertical = ScrollBarsVisibility.HasFlag(ScrollBarVisibility.Vertical);
+            if (wantVertical && ScrollBar == null)
+            {
+                ScrollBar = new SkiaScrollBar();
+                _scrollBarAutoCreated = true; // ScrollBarProperty's changed handler runs first and would reset this, so set after
+            }
+            else if (!wantVertical && _scrollBarAutoCreated)
+            {
+                ScrollBar = null;
+                _scrollBarAutoCreated = false;
+            }
+
+            var wantHorizontal = ScrollBarsVisibility.HasFlag(ScrollBarVisibility.Horizontal);
+            if (wantHorizontal && ScrollBarHorizontal == null)
+            {
+                ScrollBarHorizontal = new SkiaScrollBar();
+                _scrollBarHorizontalAutoCreated = true;
+            }
+            else if (!wantHorizontal && _scrollBarHorizontalAutoCreated)
+            {
+                ScrollBarHorizontal = null;
+                _scrollBarHorizontalAutoCreated = false;
+            }
+        }
+
+        public static readonly BindableProperty ScrollBarThumbColorProperty = BindableProperty.Create(
+            nameof(ScrollBarThumbColor),
+            typeof(Color),
+            typeof(SkiaScroll),
+            Color.FromArgb("#66888888"),
+            propertyChanged: (b, o, n) => (b as SkiaScroll)?.ApplyScrollBarColors());
+
+        /// <summary>
+        /// Thumb color pushed to ScrollBar / ScrollBarHorizontal when they are SkiaScrollBar instances
+        /// (auto-created or user-assigned). Ignored by custom IScrollBar types.
+        /// </summary>
+        public Color ScrollBarThumbColor
+        {
+            get { return (Color)GetValue(ScrollBarThumbColorProperty); }
+            set { SetValue(ScrollBarThumbColorProperty, value); }
+        }
+
+        public static readonly BindableProperty ScrollBarTrackColorProperty = BindableProperty.Create(
+            nameof(ScrollBarTrackColor),
+            typeof(Color),
+            typeof(SkiaScroll),
+            Colors.Transparent,
+            propertyChanged: (b, o, n) => (b as SkiaScroll)?.ApplyScrollBarColors());
+
+        /// <summary>
+        /// Track color pushed to ScrollBar / ScrollBarHorizontal when they are SkiaScrollBar instances
+        /// (auto-created or user-assigned).
+        /// </summary>
+        public Color ScrollBarTrackColor
+        {
+            get { return (Color)GetValue(ScrollBarTrackColorProperty); }
+            set { SetValue(ScrollBarTrackColorProperty, value); }
+        }
+
+        protected virtual void ApplyScrollBarColors()
+        {
+            if (InternalScrollBar is SkiaScrollBar bar)
+            {
+                bar.ThumbColor = ScrollBarThumbColor;
+                bar.TrackColor = ScrollBarTrackColor;
+            }
+
+            if (InternalScrollBarHorizontal is SkiaScrollBar barHorizontal)
+            {
+                barHorizontal.ThumbColor = ScrollBarThumbColor;
+                barHorizontal.TrackColor = ScrollBarTrackColor;
+            }
+        }
+
         protected IScrollBar InternalScrollBar { get; set; }
+        protected IScrollBar InternalScrollBarHorizontal { get; set; }
 
         private void SetScrollBar(IScrollBar indicator)
         {
@@ -297,6 +428,28 @@ namespace DrawnUi.Draw
                 newControl.ZIndex = 1001;
                 AddSubView(newControl);
             }
+
+            ApplyScrollBarColors();
+        }
+
+        private void SetScrollBarHorizontal(IScrollBar indicator)
+        {
+            if (InternalScrollBarHorizontal is SkiaControl control)
+            {
+                control.SetParent(null);
+                control.Dispose();
+            }
+
+            InternalScrollBarHorizontal = indicator;
+            _scrollBarHLastProgress = float.MinValue;
+
+            if (indicator is SkiaControl newControl)
+            {
+                newControl.ZIndex = 1001;
+                AddSubView(newControl);
+            }
+
+            ApplyScrollBarColors();
         }
 
         private float _scrollBarLastProgress = float.MinValue;
@@ -304,46 +457,58 @@ namespace DrawnUi.Draw
         private float _scrollBarLastOverscroll;
         private bool _scrollBarLastScrolling;
 
+        private float _scrollBarHLastProgress = float.MinValue;
+        private float _scrollBarHLastRatio;
+        private float _scrollBarHLastOverscroll;
+        private bool _scrollBarHLastScrolling;
+
         /// <summary>
-        /// Pushes current scroll state to the attached ScrollBar indicator.
-        /// Called on every frame draw, no-op when nothing changed since last push.
+        /// Pushes current scroll state to the attached ScrollBar/ScrollBarHorizontal indicators.
+        /// Called on every frame draw, no-op per bar when nothing changed since its last push.
         /// </summary>
         protected virtual void UpdateScrollBarIndicator()
         {
-            if (InternalScrollBar == null)
-                return;
-
-            float progress, ratio, overscroll;
-
-            if (Orientation == ScrollOrientation.Horizontal)
-            {
-                progress = (float)ScrollProgressX;
-                ratio = ptsContentWidth > 0 ? Viewport.Units.Width / ptsContentWidth : 1f;
-                overscroll = OverscrollDistance.X;
-            }
-            else
-            {
-                progress = (float)ScrollProgressY;
-                ratio = ptsContentHeight > 0 ? Viewport.Units.Height / ptsContentHeight : 1f;
-                overscroll = OverscrollDistance.Y;
-            }
-
             var isScrolling = IsScrolling || IsUserPanning;
 
-            if (progress == _scrollBarLastProgress
-                && ratio == _scrollBarLastRatio
-                && overscroll == _scrollBarLastOverscroll
-                && isScrolling == _scrollBarLastScrolling)
+            if (InternalScrollBar != null)
             {
-                return;
+                var progress = (float)ScrollProgressY;
+                var ratio = ptsContentHeight > 0 ? Viewport.Units.Height / ptsContentHeight : 1f;
+                var overscroll = OverscrollDistance.Y;
+
+                if (progress != _scrollBarLastProgress
+                    || ratio != _scrollBarLastRatio
+                    || overscroll != _scrollBarLastOverscroll
+                    || isScrolling != _scrollBarLastScrolling)
+                {
+                    _scrollBarLastProgress = progress;
+                    _scrollBarLastRatio = ratio;
+                    _scrollBarLastOverscroll = overscroll;
+                    _scrollBarLastScrolling = isScrolling;
+                    InternalScrollBar.SetScrollProgress(ScrollOrientation.Vertical, progress, ratio, overscroll,
+                        isScrolling);
+                }
             }
 
-            _scrollBarLastProgress = progress;
-            _scrollBarLastRatio = ratio;
-            _scrollBarLastOverscroll = overscroll;
-            _scrollBarLastScrolling = isScrolling;
+            if (InternalScrollBarHorizontal != null)
+            {
+                var progress = (float)ScrollProgressX;
+                var ratio = ptsContentWidth > 0 ? Viewport.Units.Width / ptsContentWidth : 1f;
+                var overscroll = OverscrollDistance.X;
 
-            InternalScrollBar.SetScrollProgress(Orientation, progress, ratio, overscroll, isScrolling);
+                if (progress != _scrollBarHLastProgress
+                    || ratio != _scrollBarHLastRatio
+                    || overscroll != _scrollBarHLastOverscroll
+                    || isScrolling != _scrollBarHLastScrolling)
+                {
+                    _scrollBarHLastProgress = progress;
+                    _scrollBarHLastRatio = ratio;
+                    _scrollBarHLastOverscroll = overscroll;
+                    _scrollBarHLastScrolling = isScrolling;
+                    InternalScrollBarHorizontal.SetScrollProgress(ScrollOrientation.Horizontal, progress, ratio,
+                        overscroll, isScrolling);
+                }
+            }
         }
 
         private static void NeedToScroll(BindableObject bindable, object oldvalue, object newvalue)
@@ -2918,6 +3083,34 @@ namespace DrawnUi.Draw
                     virtualCountChanged = true;
                 }
 
+                // GetContentOffsetBounds clamps travel to the MEASURED end while background measurement
+                // is incomplete — but bounds are only recomputed on a ContentSize change. When the
+                // progressive estimate reaches the full extent EARLY (uniform cells / SkiaCachedStack),
+                // ContentSize stops changing while the frontier still advances: the travel clamp freezes
+                // at a stale frontier and the scroll WALLS there forever (window slides starve too, since
+                // the margin is never reached). A windowed slide (append batch + head trim) is even
+                // NET-ZERO in both ContentSize and LastMeasuredIndexLocal, so track the measured END
+                // POSITION — the actual input of the travel clamp — and refresh bounds when it moves.
+                bool measuredTravelChanged = false;
+                // MeasureVisible: frontier moves without ContentSize change. Windowed (ANY strategy,
+                // incl. MeasureFirst): slides are net-zero in size AND count — only the measured end
+                // shifts; without this refresh the stale bounds strand the viewport at the edge
+                // (harness EDGE LOADMORE vis=-1).
+                if (this.Content is SkiaLayout mvContent && mvContent.IsTemplated
+                    && (mvContent.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                        || mvContent.ItemsWindow != null))
+                {
+                    var measuredEnd = mvContent.GetMeasuredContentEnd();
+                    if (Math.Abs(measuredEnd - _lastMeasuredTravelEnd) > 0.5)
+                    {
+                        _lastMeasuredTravelEnd = measuredEnd;
+                        // must FORCE ApplyContentSize: its size-compare guard sees the unchanged
+                        // ContentSize and would skip InitializeViewport, leaving the stale clamp
+                        contentSizeChanged = true;
+                        measuredTravelChanged = true;
+                    }
+                }
+
                 //content size changed, we need to initialize scroller again at least
                 if (contentSizeChanged)
                 {
@@ -2935,7 +3128,8 @@ namespace DrawnUi.Draw
                         // DON'T change, so ApplyContentSize's size-compare guard would skip re-initializing
                         // the viewport -> scroll stays clamped to the old count (can't scroll past it). The
                         // real extent comes from ItemsSource.Count (GetContentOffsetBounds), so force it.
-                        ApplyContentSize(virtualCountChanged);
+                        // Same for a measured-frontier move with unchanged ContentSize (windowed slide).
+                        ApplyContentSize(virtualCountChanged || measuredTravelChanged);
                     }
                 }
             }
@@ -3011,6 +3205,25 @@ namespace DrawnUi.Draw
                         var overscrollPoints = CalculateOverscrollDistance(posX/scale, posY/scale);
                         posX -= overscrollPoints.X * scale;
                         posY -= overscrollPoints.Y * scale;
+
+                        // Write the clamp BACK through the anchor-shift plumbing: adjusting only the
+                        // local pos (or only ViewportOffsetY) left the PAN BASELINE holding the
+                        // out-of-bounds value — an active pan restored the ghost on its next move and
+                        // the viewport stayed stranded past content forever (windowed source reaching
+                        // its true end after virtual-extent travel: vis=-1). OffsetVisibleAnchorY
+                        // shifts the offset, the pan baseline and any running animators together.
+                        if (overscrollPoints.Y != 0)
+                        {
+                            OffsetVisibleAnchorY(-overscrollPoints.Y);
+                            posY = (float)(ViewportOffsetY * zoomedScale);
+                        }
+
+                        if (overscrollPoints.X != 0)
+                        {
+                            ViewportOffsetX -= overscrollPoints.X;
+                            _panningCurrentOffsetPts.X -= overscrollPoints.X;
+                            posX = (float)(ViewportOffsetX * zoomedScale);
+                        }
                     }
                 }
 
@@ -3347,6 +3560,12 @@ namespace DrawnUi.Draw
                 drawn++;
             }
 
+            if (InternalScrollBarHorizontal is SkiaControl scrollBarHorizontal && scrollBarHorizontal.CanDraw)
+            {
+                scrollBarHorizontal.Render(context.WithDestination(DrawingRect));
+                drawn++;
+            }
+
             return drawn;
         }
 
@@ -3372,6 +3591,7 @@ namespace DrawnUi.Draw
             UpdateFriction();
             SetRefreshIndicator(RefreshIndicator);
             SetScrollBar(ScrollBar);
+            SetScrollBarHorizontal(ScrollBarHorizontal);
         }
 
         public override void SetChildren(IEnumerable<SkiaControl> views)
@@ -3744,6 +3964,7 @@ namespace DrawnUi.Draw
         private SKRect _destination;
         private ScaledSize _lastContentSize;
         private int _lastVirtualItemsCount = -1;
+        private double _lastMeasuredTravelEnd = -1;
         private float _velocityKY;
         private float _velocityKX;
         private float _zoomedScale = 1;
