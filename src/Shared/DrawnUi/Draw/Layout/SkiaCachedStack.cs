@@ -32,7 +32,7 @@ public class SkiaCachedStack : SkiaStack
         get
         {
 #if BROWSER || WEB
-            return false;
+            return true;
 #else
             return true;
 #endif
@@ -299,11 +299,11 @@ public class SkiaCachedStack : SkiaStack
             _translatedThisFrame = false;
         }
 
-        // Need LIVE cells this frame. An async bake may be painting the SAME views on the worker right
-        // now — never race it: briefly wait for it to drain, it may hand us a covering plane.
+        // Need LIVE cells this frame. An async bake may still be running — give it a moment to hand us
+        // a covering plane (one frame budget, not more: waiting longer IS the jank).
         if (_bakeInFlight)
         {
-            _bakeDone.Wait(50);
+            _bakeDone.Wait(16);
             UpdatePlanes();
 
             if (_cacheValid && PlaneCoversViewport(destination, vpH))
@@ -313,14 +313,18 @@ public class SkiaCachedStack : SkiaStack
                 return;
             }
 
-            if (_bakeInFlight && ForegroundPlane != null)
+            if (_bakeInFlight && ForegroundPlane != null && PlaneCoversViewport(destination, vpH))
             {
-                // bake still running after the wait (rare) — do NOT race it: blit what we have, covered
-                // or not; blitting never touches the live views.
+                // bake still running after the wait (rare) — the current plane still covers: blit it.
                 IsCaching = true;
                 DrawCache(context, destination);
                 return;
             }
+
+            // Bake still running AND the plane does NOT cover the viewport: blitting it paints an EMPTY
+            // BAND (device: visible gap on fast backward flings that outrun the bake). Fall through to
+            // DIRECT DRAW — always current, no hole. Safe alongside the bake: the bake is a pure-read
+            // pass over a deep-frozen geometry snapshot, it does not touch the live draw state.
         }
 
         // DIRECT DRAW live cells — fills the gap, always current (no blank).
@@ -654,7 +658,16 @@ public class SkiaCachedStack : SkiaStack
     /// <summary>Second background-prepared plane is allowed: flag on, and either the head is
     /// thread-safe for live-view bakes or the prepared-views pipeline guarantees the bake is a pure
     /// cache-blit pass (no binds, no measures).</summary>
+#if BROWSER
+    // Single-threaded WASM: the offscreen pump is Task.Run on the ONE thread, so a kicked bake can only
+    // execute when the render frame yields — while the render thread's _bakeDone.Wait(16) blocks that very
+    // thread. Result: 16ms burned EVERY frame with the bake never progressing (scroll hard-stop whenever
+    // content is being measured/invalidated). Sync record is the correct mode here: an Operations plane is
+    // an SKPicture record (no raster) — one predictable record-priced frame instead of a stall.
+    private bool AsyncPlaneAllowed => false;
+#else
     private bool AsyncPlaneAllowed => UseDoubleBuffering && (AsyncBakeSafe || UsePreparedViewsActive);
+#endif
 
     // Bumped by the render thread on every structural rebase the bake's coordinates depend on: structure
     // rebuilds, batch integrations, collection changes and content translates. A bake frozen under an older

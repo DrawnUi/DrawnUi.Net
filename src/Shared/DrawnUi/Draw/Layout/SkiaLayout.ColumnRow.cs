@@ -1025,7 +1025,7 @@ else
                             {
                                 cell.Measured = ScaledSize.Default;
                                 cell.WasMeasured = true;
-                                LastMeasuredIndex = cell.ControlIndex;
+                                LastMeasuredIndexLocal = cell.ControlIndex;
                             }
 
                             continue;
@@ -1078,7 +1078,7 @@ else
                         }
 
                         cell.WasMeasured = true;
-                        LastMeasuredIndex = cell.ControlIndex;
+                        LastMeasuredIndexLocal = cell.ControlIndex;
                     }
 
                     // Inline UpdateStackSize with pre-calculated spacing
@@ -2366,33 +2366,33 @@ else
                             if (e.ControlIndex > maxControlIndex) maxControlIndex = e.ControlIndex;
                         }
 
-                        //FirstMeasuredIndex = visibleElements[0].ControlIndex;
-                        //LastVisibleIndex = visibleElements[visibleElements.Count - 1].ControlIndex;
-                        FirstVisibleIndex = minControlIndex;
-                        LastVisibleIndex = maxControlIndex;
+                        //FirstMeasuredIndexLocal = visibleElements[0].ControlIndex;
+                        //LastVisibleIndexLocal = visibleElements[visibleElements.Count - 1].ControlIndex;
+                        FirstVisibleIndexLocal = minControlIndex;
+                        LastVisibleIndexLocal = maxControlIndex;
                     }
                     else
                     {
                         //visibleElements.Sort((a, b) => a.ZIndex.CompareTo(b.ZIndex));
 
-                        FirstMeasuredIndex = firstVisibleIndex;
-                        FirstVisibleIndex = firstVisibleIndex;
-                        LastVisibleIndex = lastVisibleIndex;
+                        FirstMeasuredIndexLocal = firstVisibleIndex;
+                        FirstVisibleIndexLocal = firstVisibleIndex;
+                        LastVisibleIndexLocal = lastVisibleIndex;
                     }
                 }
                 else
                 {
-                    FirstVisibleIndex = -1;
-                    FirstMeasuredIndex = -1;
-                    LastVisibleIndex = -1;
+                    FirstVisibleIndexLocal = -1;
+                    FirstMeasuredIndexLocal = -1;
+                    LastVisibleIndexLocal = -1;
                 }
 
                 // Start background measurement if needed
                 if (!IsPlaneBakePass &&
                     IsTemplated && structure != null &&
                     MeasureItemsStrategy == MeasuringStrategy.MeasureVisible &&
-                    ItemsSource != null &&
-                    lastVisibleIndex < ItemsSource.Count - 1 && // More items to measure
+                    EffectiveItemsSource != null &&
+                    lastVisibleIndex < EffectiveItemsSource.Count - 1 && // More items to measure
                     !IsBackgroundMeasuring && _pendingStructureChanges.Count == 0 &&
                     !HeadInsertInFlight && // tail measuring would integrate positions made stale by the head commit
                     !HeadRemoveInFlight) // same: staged positions would miss the pending head-trim translation
@@ -2401,13 +2401,13 @@ else
                     var nextUnmeasuredIndex = lastVisibleIndex + 1;
 
                     // Check if we already have measurements cached
-                    while (nextUnmeasuredIndex < ItemsSource.Count &&
+                    while (nextUnmeasuredIndex < EffectiveItemsSource.Count &&
                            _measuredItems.ContainsKey(nextUnmeasuredIndex))
                     {
                         nextUnmeasuredIndex++;
                     }
 
-                    if (nextUnmeasuredIndex < ItemsSource.Count)
+                    if (nextUnmeasuredIndex < EffectiveItemsSource.Count)
                     {
                         StartBackgroundMeasurement(ctx.Destination, ctx.Scale, nextUnmeasuredIndex);
                     }

@@ -46,47 +46,81 @@ internal static class CellPreparationService
         if (Interlocked.Exchange(ref _started, 1) == 1)
             return;
 
+#if BROWSER || WEB
+        // Single-threaded WASM: Thread.Start is unsupported, and Task.Run work items starve
+        // indefinitely under continuous requestAnimationFrame load (see SkiaControl.Cache.cs inline
+        // drain note). Drain the want-lists INLINE on the frame loop instead, budgeted per frame so
+        // preparation never eats the frame itself.
+        Super.OnFrame += (_, _) => DrainBudgeted(4.0);
+#else
         var thread = new Thread(WorkerLoop)
         {
             IsBackground = true, Name = "DrawnUi-CellPrep", Priority = ThreadPriority.AboveNormal,
         };
         thread.Start();
+#endif
     }
 
-    private static void WorkerLoop()
+#if BROWSER || WEB
+    private static void DrainBudgeted(double budgetMs)
     {
-        var deadLayouts = new List<SkiaLayout>();
-
-        while (true)
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        while (sw.Elapsed.TotalMilliseconds < budgetMs)
         {
-            SkiaLayout layout = null;
-            var index = -1;
+            if (!TryDequeue(out var layout, out var index))
+                return;
 
-            lock (Lock)
+            try
             {
-                foreach (var kvp in Work)
-                {
-                    if (kvp.Key.IsDisposed || kvp.Key.IsDisposing || kvp.Value.Count == 0)
-                    {
-                        deadLayouts.Add(kvp.Key);
-                        continue;
-                    }
+                layout.PrepareCellOffthread(index);
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+        }
+    }
+#endif
 
-                    layout = kvp.Key;
-                    index = kvp.Value[0];
-                    kvp.Value.RemoveAt(0);
-                    break;
+    private static bool TryDequeue(out SkiaLayout layout, out int index)
+    {
+        layout = null;
+        index = -1;
+        List<SkiaLayout> deadLayouts = null;
+
+        lock (Lock)
+        {
+            foreach (var kvp in Work)
+            {
+                if (kvp.Key.IsDisposed || kvp.Key.IsDisposing || kvp.Value.Count == 0)
+                {
+                    (deadLayouts ??= new()).Add(kvp.Key);
+                    continue;
                 }
 
+                layout = kvp.Key;
+                index = kvp.Value[0];
+                kvp.Value.RemoveAt(0);
+                break;
+            }
+
+            if (deadLayouts != null)
+            {
                 foreach (var dead in deadLayouts)
                 {
                     Work.Remove(dead);
                 }
-
-                deadLayouts.Clear();
             }
+        }
 
-            if (layout == null)
+        return layout != null;
+    }
+
+    private static void WorkerLoop()
+    {
+        while (true)
+        {
+            if (!TryDequeue(out var layout, out var index))
             {
                 Signal.WaitOne();
                 continue;

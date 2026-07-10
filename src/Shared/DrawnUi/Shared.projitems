@@ -88,6 +88,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\IWindowHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\IWindowDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\WindowedSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\ItemsSourceWindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\SkiaScrollWindowHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.BuildWrapLayout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.ColumnRow.cs" />

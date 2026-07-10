@@ -207,16 +207,11 @@ namespace DrawnUi.Draw
             // main-thread mutation. Falls back to a live copy only for same-thread callers that pass none.
             _dataContexts = preCaptured ?? CreateDataContextsSnapshot(source);
 
-            // LIVE CEILING: when ItemTemplatePoolSize is not set manually the pool cap follows the CURRENT
-            // window size (GetTemplatesPoolLimit falls back to ItemsSource.Count + headroom). A windowed
-            // source that trims therefore lets the pool SHRINK (overflow returns are disposed) instead of
-            // keeping a cell alive for every context ever scrolled ("pool grows like fuck" to whole history).
-            if (_templatedViewsPool != null && _parent != null && _dataContexts != null)
-            {
-                var limit = _parent.GetTemplatesPoolLimitPublic();
-                if (limit > 0)
-                    _templatedViewsPool.MaxSize = limit;
-            }
+            // Pool MaxSize is CALIBRATED ONCE (full InitializeTemplates) and never re-derived here:
+            // re-setting it per snapshot swap made the ceiling churn with every windowed slide
+            // (trim/add pairs re-sizing the pool each refresh = disposal/creation spikes). Demand-driven
+            // growth still exists: GetViewForIndex recomputes the honest ceiling and retries once when
+            // the pool refuses a realized cell. Tradeoff: a trimmed window keeps its high-water pool.
 
             lock (_lockTemplates)
             {

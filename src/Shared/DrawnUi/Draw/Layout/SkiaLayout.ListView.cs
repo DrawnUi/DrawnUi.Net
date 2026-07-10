@@ -12,7 +12,7 @@ public partial class SkiaLayout
         //RenderingViewport = new(viewport.Pixels);
         if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
         {
-            if (WillDrawFromFreshItemssSource == 0 && ContentSize.IsEmpty && ItemsSource.Count > 0)
+            if (WillDrawFromFreshItemssSource == 0 && ContentSize.IsEmpty && EffectiveItemsSource.Count > 0)
             {
                 InvalidateMeasure();
             }
@@ -20,8 +20,73 @@ public partial class SkiaLayout
 
         ParentViewport = viewport;
 
+        // built-in source window: derive batch/cap from the real viewport once visible range is known,
+        // and drive internal slides from the visible range (independent of the scroll's LoadMoreCommand)
+        if (_itemsWindow != null)
+        {
+            // NEVER feed the draw-updated Visible*Local fields here: plane-blit frames (SkiaCachedStack)
+            // skip the live DrawStack that refreshes them — riding a covered plane they freeze at the
+            // last live frame, the slide margin is never detected and the window never slides: the
+            // scroll walls DEAD at the window edge (WASM wheel repro: m pinned at window end, offset
+            // clamped forever). The structure + this event's offset are always current — recompute.
+            int firstVis = FirstVisibleIndexLocal, lastVis = LastVisibleIndexLocal;
+            if (ComputeVisibleRangeFromStructure(offset, viewport, out var f, out var l))
+            {
+                firstVis = f;
+                lastVis = l;
+            }
+
+            _itemsWindow.AutoTune(firstVis, lastVis);
+            _itemsWindow.CheckSlide(firstVis, lastVis);
+        }
+
         //cells will get OnScrolled
         ViewportWasChanged = true;
+    }
+
+    /// <summary>
+    /// Visible LOCAL index range computed fresh from the measured structure and the current scroll
+    /// offset (content space: viewport top = -offset). Independent of the draw pipeline, so it stays
+    /// correct on frames that never run the live DrawStack (plane blits). Linear scan bounded by the
+    /// window cap. False when the structure is empty or nothing measured intersects the viewport.
+    /// </summary>
+    bool ComputeVisibleRangeFromStructure(ScaledPoint offset, ScaledRect viewport, out int first, out int last)
+    {
+        first = -1;
+        last = -1;
+
+        var structure = GetStackStructure();
+        if (structure == null)
+            return false;
+
+        float vpTop = -offset.Pixels.Y;
+        float vpBottom = vpTop + viewport.Pixels.Height;
+
+        int lastMeasured = -1;
+        foreach (var cell in structure.GetChildren())
+        {
+            if (cell == null || !cell.WasMeasured)
+                continue;
+            lastMeasured = cell.ControlIndex;
+            if (cell.Destination.Bottom <= vpTop)
+                continue;
+            if (cell.Destination.Top >= vpBottom)
+                break; // index-ordered: nothing below can intersect
+
+            if (first < 0)
+                first = cell.ControlIndex;
+            last = cell.ControlIndex;
+        }
+
+        // Viewport rode PAST the materialized content (virtual-extent travel over a windowed source):
+        // nothing intersects, but the slide logic must still see "we are at the end" to keep chasing.
+        if (last < 0 && lastMeasured >= 0 && vpTop > 0)
+        {
+            first = lastMeasured;
+            last = lastMeasured;
+        }
+
+        return last >= 0;
     }
 
     /// <summary>
@@ -74,7 +139,7 @@ public partial class SkiaLayout
             return false;
 
         // No items source or not templated - can't load more
-        if (!IsTemplated || ItemsSource == null || ItemsSource.Count == 0 || _isBackgroundMeasuring || UpdateLocks>0)
+        if (!IsTemplated || EffectiveItemsSource == null || EffectiveItemsSource.Count == 0 || _isBackgroundMeasuring || UpdateLocks>0)
             return false;
 
         // Tiled-planes virtualization: bottom/top detection comes from the ESTIMATE (plane) content bounds
@@ -88,27 +153,47 @@ public partial class SkiaLayout
         // rebase/jump the tail may still be measuring in background while the user is already
         // at the start of the window asking for items above it.
         if (direction == LoadMoreDirection.Top)
-            return IsViewportAtStartOfMeasuredContent(viewport);
+        {
+            if (!IsViewportAtStartOfMeasuredContent(viewport))
+                return false;
+
+            // Built-in source window: page in already-available older items INTERNALLY;
+            // the app's LoadMoreTopCommand fires only when the window sits at the source head.
+            if (_itemsWindow != null && _itemsWindow.CanSlideBackward)
+            {
+                _itemsWindow.RequestSlideBackward();
+                return false;
+            }
+
+            return true;
+        }
 
         // Still measuring existing items in background - don't load more yet
-        if (_isBackgroundMeasuring && _backgroundMeasurementProgress < ItemsSource.Count - 1)
+        if (_isBackgroundMeasuring && _backgroundMeasurementProgress < EffectiveItemsSource.Count - 1)
         {
-            Debug.WriteLine($"[ShouldTriggerLoadMore] Still measuring items (progress: {_backgroundMeasurementProgress}/{ItemsSource.Count}), not triggering LoadMore");
+            Debug.WriteLine($"[ShouldTriggerLoadMore] Still measuring items (progress: {_backgroundMeasurementProgress}/{EffectiveItemsSource.Count}), not triggering LoadMore");
             return false;
         }
 
         // Haven't finished measuring all existing items - don't load more yet
-        if (LastMeasuredIndex < ItemsSource.Count - 1)
+        if (LastMeasuredIndexLocal < EffectiveItemsSource.Count - 1)
         {
-            //Debug.WriteLine($"[ShouldTriggerLoadMore] Haven't measured all items yet (LastMeasuredIndex: {LastMeasuredIndex}/{ItemsSource.Count}), not triggering LoadMore");
+            //Debug.WriteLine($"[ShouldTriggerLoadMore] Haven't measured all items yet (LastMeasuredIndexLocal: {LastMeasuredIndexLocal}/{ItemsSource.Count}), not triggering LoadMore");
             return false;
         }
 
-        return direction switch
+        if (!IsViewportAtEndOfMeasuredContent(viewport))
+            return false;
+
+        // Built-in source window: page in already-available newer items INTERNALLY;
+        // the app's LoadMoreCommand fires only when the window sits at the source tail.
+        if (_itemsWindow != null && _itemsWindow.CanSlideForward)
         {
-            LoadMoreDirection.Top => IsViewportAtStartOfMeasuredContent(viewport),
-            _ => IsViewportAtEndOfMeasuredContent(viewport)
-        };
+            _itemsWindow.RequestSlideForward();
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -121,7 +206,7 @@ public partial class SkiaLayout
 
         if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
         {
-            return LastMeasuredIndex == ItemsSource.Count - 1;
+            return LastMeasuredIndexLocal == EffectiveItemsSource.Count - 1;
         }
 
         return true;
@@ -150,21 +235,41 @@ public partial class SkiaLayout
     public int BackgroundMeasurementProgress => _backgroundMeasurementProgress;
     public int TotalMeasuredItems => _measuredItems.Count;
 
-    public int FirstMeasuredIndex { get; protected set; }
+    // *Local = window/pipeline space (indices into EffectiveItemsSource). Without the built-in
+    // window these equal the public values; the pipeline always works in this space.
+    public int FirstMeasuredIndexLocal { get; protected set; }
 
-    public int LastMeasuredIndex
+    public int LastMeasuredIndexLocal
     {
         get;
         protected set;
     }
-    public int FirstVisibleIndex { get; protected set; }
-    public int LastVisibleIndex { get; protected set; }
+    public int FirstVisibleIndexLocal { get; protected set; }
+    public int LastVisibleIndexLocal { get; protected set; }
+
+    // PUBLIC API speaks ItemsSource (global) space: when the built-in window (ItemsWindow) is
+    // engaged, local indices are offset by WindowStart; -1 sentinels pass through unmapped.
+    /// <summary>Index of the first visible item, in ItemsSource space.</summary>
+    public int FirstVisibleIndex =>
+        FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+
+    /// <summary>Index of the last visible item, in ItemsSource space.</summary>
+    public int LastVisibleIndex =>
+        LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+
+    /// <summary>Highest measured index, in ItemsSource space.</summary>
+    public int LastMeasuredIndex =>
+        LastMeasuredIndexLocal < 0 ? LastMeasuredIndexLocal : LastMeasuredIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+
+    /// <summary>Lowest measured index, in ItemsSource space.</summary>
+    public int FirstMeasuredIndex =>
+        FirstMeasuredIndexLocal < 0 ? FirstMeasuredIndexLocal : FirstMeasuredIndexLocal + (_itemsWindow?.WindowStart ?? 0);
 
     /// <summary>
     /// Percentage of items that have been measured (0.0 to 1.0)
     /// </summary>
     protected float MeasuredItemsPercentage =>
-        ItemsSource?.Count > 0 ? (float)(LastMeasuredIndex + 1) / ItemsSource.Count : 0f;
+        EffectiveItemsSource?.Count > 0 ? (float)(LastMeasuredIndexLocal + 1) / EffectiveItemsSource.Count : 0f;
 
     /// <summary>
     /// Represents a pending structure change to be applied during rendering
@@ -426,7 +531,7 @@ public partial class SkiaLayout
     // mutate concurrently; a stale/out-of-range read just misses the memo (epoch guard drops stale batches).
     private object GetItemForMemo(int index)
     {
-        var source = ItemsSource;
+        var source = EffectiveItemsSource;
         if (source == null || index < 0 || index >= source.Count)
             return null;
         try
@@ -495,8 +600,8 @@ public partial class SkiaLayout
         if (!UsePreparedViewsActive)
             return false;
 
-        var first = FirstVisibleIndex;
-        var last = LastVisibleIndex;
+        var first = FirstVisibleIndexLocal;
+        var last = LastVisibleIndexLocal;
         if (first < 0 || last < first)
             return false;
 
@@ -530,7 +635,7 @@ public partial class SkiaLayout
         if (IsDisposed || IsDisposing || !UsePreparedViewsActive)
             return;
 
-        var source = ItemsSource;
+        var source = EffectiveItemsSource;
         if (source == null || index < 0 || index >= source.Count)
             return;
 
@@ -605,9 +710,9 @@ public partial class SkiaLayout
     /// </summary>
     private void PostCellPreparationWants()
     {
-        var first = FirstVisibleIndex;
-        var last = LastVisibleIndex;
-        var count = ItemsSource?.Count ?? 0;
+        var first = FirstVisibleIndexLocal;
+        var last = LastVisibleIndexLocal;
+        var count = EffectiveItemsSource?.Count ?? 0;
 
         if (first < 0 || last < 0 || count == 0)
         {
@@ -698,7 +803,7 @@ public partial class SkiaLayout
     private void StartBackgroundMeasurement(SKRect constraints, float scale, int startFromIndex,
         BackgroundMeasurementContext context = null)
     {
-        if (!IsTemplated || ItemsSource == null || ItemsSource.Count <= startFromIndex)
+        if (!IsTemplated || EffectiveItemsSource == null || EffectiveItemsSource.Count <= startFromIndex)
             return;
 
         // Check if we're already measuring this range or beyond to prevent duplicates
@@ -736,36 +841,51 @@ public partial class SkiaLayout
 
         Tasks.StartDelayed(TimeSpan.FromMilliseconds(50), () =>
         {
+#if BROWSER
+            // ST WASM: never launch the pass via Task.Run — the queued item can starve indefinitely
+            // under continuous rAF + input load, freezing the measurement frontier mid-scroll (the
+            // timer callback that got us here fires reliably; a threadpool item does not). Run the
+            // async pass directly: the first batch executes inline here, subsequent batches yield
+            // via the pass's own Task.Delay(1) timers.
+            _backgroundMeasurementTask = RunBackgroundMeasurementPass(constraints, scale, startFromIndex, cancellationToken, context, myCts);
+#else
             _backgroundMeasurementTask = Task.Run(async () =>
             {
-                try
-                {
-                    await BackgroundMeasureItems(constraints, scale, startFromIndex, cancellationToken, context);
-                }
-                catch (OperationCanceledException)
-                {
-                    Debug.WriteLine("[StartBackgroundMeasurement] Background measurement was cancelled");
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"[StartBackgroundMeasurement] Background measurement error: {ex.Message}");
-                }
-                finally
-                {
-                    lock (_measurementLock)
-                    {
-                        // Only the CURRENT pass may clear the flag. A cancelled stale task finishing late
-                        // used to clobber it to false while a newer pass was running — every observer then
-                        // saw "idle", cancelled the live pass and restarted it, which could livelock
-                        // measurement entirely (each restart killed within its own 50ms start delay).
-                        if (ReferenceEquals(_backgroundMeasurementCts, myCts))
-                        {
-                            _isBackgroundMeasuring = false;
-                        }
-                    }
-                }
+                await RunBackgroundMeasurementPass(constraints, scale, startFromIndex, cancellationToken, context, myCts);
             });
+#endif
         });
+    }
+
+    async Task RunBackgroundMeasurementPass(SKRect constraints, float scale, int startFromIndex,
+        CancellationToken cancellationToken, BackgroundMeasurementContext context, CancellationTokenSource myCts)
+    {
+        try
+        {
+            await BackgroundMeasureItems(constraints, scale, startFromIndex, cancellationToken, context);
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.WriteLine("[StartBackgroundMeasurement] Background measurement was cancelled");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[StartBackgroundMeasurement] Background measurement error: {ex.Message}");
+        }
+        finally
+        {
+            lock (_measurementLock)
+            {
+                // Only the CURRENT pass may clear the flag. A cancelled stale task finishing late
+                // used to clobber it to false while a newer pass was running — every observer then
+                // saw "idle", cancelled the live pass and restarted it, which could livelock
+                // measurement entirely (each restart killed within its own 50ms start delay).
+                if (ReferenceEquals(_backgroundMeasurementCts, myCts))
+                {
+                    _isBackgroundMeasuring = false;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -778,7 +898,7 @@ public partial class SkiaLayout
     public bool KickBackgroundMeasurement()
     {
         if (!IsTemplated || MeasureItemsStrategy != MeasuringStrategy.MeasureVisible
-            || ItemsSource == null || ItemsSource.Count == 0)
+            || EffectiveItemsSource == null || EffectiveItemsSource.Count == 0)
             return false;
 
         if (_isBackgroundMeasuring)
@@ -790,11 +910,11 @@ public partial class SkiaLayout
         if (_lastMeasuredForWidth <= 0 && _lastMeasuredForHeight <= 0)
             return false; // never measured yet, no constraints to measure against
 
-        var next = Math.Max(0, LastMeasuredIndex + 1);
-        while (next < ItemsSource.Count && _measuredItems.ContainsKey(next))
+        var next = Math.Max(0, LastMeasuredIndexLocal + 1);
+        while (next < EffectiveItemsSource.Count && _measuredItems.ContainsKey(next))
             next++;
 
-        if (next >= ItemsSource.Count)
+        if (next >= EffectiveItemsSource.Count)
             return false; // everything is in the memo already
 
         var constraints = new SKRect(0, 0, _lastMeasuredForWidth, _lastMeasuredForHeight);
@@ -807,10 +927,10 @@ public partial class SkiaLayout
     /// </summary>
     public void RemeasureSingleItemInBackground(int itemIndex)
     {
-        if (!IsTemplated || ItemsSource == null || itemIndex < 0 || itemIndex >= ItemsSource.Count)
+        if (!IsTemplated || EffectiveItemsSource == null || itemIndex < 0 || itemIndex >= EffectiveItemsSource.Count)
         {
             Debug.WriteLine(
-                $"[RemeasureSingleItemInBackground] Invalid parameters: IsTemplated={IsTemplated}, ItemsSource={ItemsSource?.Count}, itemIndex={itemIndex}");
+                $"[RemeasureSingleItemInBackground] Invalid parameters: IsTemplated={IsTemplated}, EffectiveItemsSource={EffectiveItemsSource?.Count}, itemIndex={itemIndex}");
             return;
         }
 
@@ -848,10 +968,10 @@ public partial class SkiaLayout
 
         MeasureStamp++;
 
-        if (IsTemplated && ItemsSource.Count > 0)
+        if (IsTemplated && EffectiveItemsSource.Count > 0)
         {
             int measuredCount = 0;
-            var itemsCount = ItemsSource.Count;
+            var itemsCount = EffectiveItemsSource.Count;
             ScaledSize measured = ScaledSize.Default;
             SKRect rectForChild = rectForChildrenPixels;
 
@@ -1146,10 +1266,10 @@ public partial class SkiaLayout
             var structure = new LayoutStructure(rows);
             StackStructureMeasured = structure;
 
-            FirstVisibleIndex = -1;
-            FirstMeasuredIndex = 0;
-            LastVisibleIndex = -1;
-            LastMeasuredIndex = measuredCount - 1;
+            FirstVisibleIndexLocal = -1;
+            FirstMeasuredIndexLocal = 0;
+            LastVisibleIndexLocal = -1;
+            LastMeasuredIndexLocal = measuredCount - 1;
 
             if (measuredCount > 0)
             {
@@ -1413,9 +1533,12 @@ public partial class SkiaLayout
             // Recalculate estimated content size
             //UpdateEstimatedContentSize(scale);
 
-            //Debug.WriteLine($"[IntegrateMeasuredBatch] Integrated {measuredBatch.Count} items, total measured: {_measuredItems.Count}, last index: {LastMeasuredIndex}");
+            //Debug.WriteLine($"[IntegrateMeasuredBatch] Integrated {measuredBatch.Count} items, total measured: {_measuredItems.Count}, last index: {LastMeasuredIndexLocal}");
         }
     }
+
+    // guards the stale-stamp adapter resync post (one in flight is enough — it reads live state)
+    private volatile bool _adapterResyncPosted;
 
     /// <summary>
     /// Applies all pending structure changes to StackStructure - called from rendering pipeline
@@ -1441,6 +1564,28 @@ public partial class SkiaLayout
         {
             if (change.Stamp != MeasureStamp)
             {
+                // The stage handlers defer the adapter refresh for Remove/head-Add to THIS apply
+                // (see HandleStructurePreservingRemove) — a dropped change must still sync the adapter
+                // or its snapshot stays stale forever. NEVER reuse change.ContextsSnapshot here: it is
+                // frozen at stage time, and re-applying an ancient one flips the adapter BACK to an old
+                // window size (browser: Data oscillating 48/64/128 + pool churn spikes). Resync from
+                // the CURRENT collection with a snapshot captured on the mutating (UI) thread.
+                if (change.ContextsSnapshot != null &&
+                    change.Type is StructureChangeType.Remove or StructureChangeType.Add &&
+                    !_adapterResyncPosted)
+                {
+                    _adapterResyncPosted = true;
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        _adapterResyncPosted = false;
+                        var source = EffectiveItemsSource;
+                        if (source == null || ChildrenFactory == null)
+                            return;
+                        var fresh = ChildrenFactory.CaptureContextsSnapshot(source);
+                        ChildrenFactory.InitializeSoft(false, source, GetTemplatesPoolLimit(), fresh);
+                    });
+                }
+
                 continue; //fixes fast remeasuring artifacts
             }
 
@@ -1524,7 +1669,7 @@ public partial class SkiaLayout
 
     /// <summary>
     /// Applies background measurement changes to StackStructure
-    /// FIXED: Now applies structure modifications atomically with LastMeasuredIndex updates
+    /// FIXED: Now applies structure modifications atomically with LastMeasuredIndexLocal updates
     /// </summary>
     protected virtual void ApplyBackgroundMeasurementChange(StructureChange change)
     {
@@ -1587,16 +1732,16 @@ public partial class SkiaLayout
                         }
                     }
 
-                    // Update LastMeasuredIndex atomically with structure changes
+                    // Update LastMeasuredIndexLocal atomically with structure changes
                     var maxIndex = change.MeasuredItems.Max(x => x.Cell.ControlIndex);
-                    if (maxIndex > LastMeasuredIndex)
+                    if (maxIndex > LastMeasuredIndexLocal)
                     {
-                        LastMeasuredIndex = maxIndex;
+                        LastMeasuredIndexLocal = maxIndex;
                     }
 
                     UpdateProgressiveContentSize();
 
-                    //Debug.WriteLine($"[StackStructure] Applied {allRows.Count} rows atomically, LastMeasuredIndex: {LastMeasuredIndex}");
+                    //Debug.WriteLine($"[StackStructure] Applied {allRows.Count} rows atomically, LastMeasuredIndexLocal: {LastMeasuredIndexLocal}");
                 }
             }
 
@@ -1854,7 +1999,7 @@ public partial class SkiaLayout
     /// </summary>
     private void TriggerInsertAwareBackgroundMeasurement(int insertAtIndex, int insertCount)
     {
-        if (!IsTemplated || ItemsSource == null)
+        if (!IsTemplated || EffectiveItemsSource == null)
             return;
 
         // Create context for insert operation
@@ -1882,19 +2027,24 @@ public partial class SkiaLayout
     {
         Debug.WriteLine($"[StackStructure] Adding {change.Count} items at index {change.StartIndex}");
 
-        if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
-        {
-            if (change.StartIndex > LastMeasuredIndex)
-            {
-                return;
-            }
-        }
+        // Head inserts and ALL MeasureFirst adds defer the adapter refresh to this apply — whichever
+        // branch runs must sync exactly once, in stage order: branches calling ApplyInsertShift set
+        // this; fallthroughs sync in finally with this change's own snapshot. MeasureVisible non-head
+        // adds are stage-owned (see HandleStructurePreservingAdd) and excluded here.
+        bool deferredSync = change.ContextsSnapshot != null &&
+                            (change.StartIndex == 0 || MeasureItemsStrategy == MeasuringStrategy.MeasureFirst);
+        bool adapterSynced = false;
 
         try
         {
             if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
             {
-                if (change.StartIndex == 0 && LastMeasuredIndex >= 0
+                if (change.StartIndex > LastMeasuredIndexLocal)
+                {
+                    return;
+                }
+
+                if (change.StartIndex == 0 && LastMeasuredIndexLocal >= 0
                     && !_headInsertMeasuring && _pendingHeadInsert == null)
                 {
                     if (_pendingHeadRemove != null)
@@ -1913,13 +2063,14 @@ public partial class SkiaLayout
                     // parent SkiaScroll calls BEFORE computing its frame offset.
                     // The adapter MUST shift in the same frame: rekey in-use views + fresh snapshot,
                     // otherwise this frame draws pre-insert contexts at the shifted indices.
-                    ChildrenFactory.ApplyInsertShift(ItemsSource, change.StartIndex, change.Count, change.ContextsSnapshot);
+                    ChildrenFactory.ApplyInsertShift(EffectiveItemsSource, change.StartIndex, change.Count, change.ContextsSnapshot);
+                    adapterSynced = true;
                     ShiftMeasurementIndices(change.StartIndex, change.Count);
                     StartHeadInsertMeasurement(change.Items, change.Count, change.Stamp);
                     return;
                 }
 
-                if (change.StartIndex <= LastMeasuredIndex)
+                if (change.StartIndex <= LastMeasuredIndexLocal)
                 {
                     // Insert in middle of measured items - shift existing measurements
                     ShiftMeasurementIndices(change.StartIndex, change.Count);
@@ -1931,20 +2082,28 @@ public partial class SkiaLayout
                 }
                 else
                 {
-                    // Adding at end - background measurement should continue from LastMeasuredIndex + 1
+                    // Adding at end - background measurement should continue from LastMeasuredIndexLocal + 1
                     // This handles LoadMore scenario where items are added at the end but background measurement
                     // should continue sequentially from where it left off
-                    Debug.WriteLine($"[StackStructure] MeasureVisible strategy - LoadMore add at end (index {change.StartIndex}), background measurement continues from {LastMeasuredIndex + 1}");
+                    Debug.WriteLine($"[StackStructure] MeasureVisible strategy - LoadMore add at end (index {change.StartIndex}), background measurement continues from {LastMeasuredIndexLocal + 1}");
 
                     // No need to shift measurements, background measurement will handle the gap naturally
-                    // by continuing from LastMeasuredIndex + 1 and eventually reaching the newly added items
+                    // by continuing from LastMeasuredIndexLocal + 1 and eventually reaching the newly added items
                     return;
                 }
             }
             else
             {
+                // MeasureFirst = uniform rows: the whole change is ARITHMETIC (no rebuild/binds/measures)
+                if (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
+                    && TryApplyUniformAddMeasureFirst(change))
+                {
+                    adapterSynced = true; // helper ran ApplyInsertShift
+                    return;
+                }
+
                 // For sync strategies: Need to shift existing measurements and measure new items
-                if (change.StartIndex <= LastMeasuredIndex)
+                if (change.StartIndex <= LastMeasuredIndexLocal)
                 {
                     // Adding in middle of measured items - shift existing measurements
                     ShiftMeasurementIndices(change.StartIndex, change.Count);
@@ -1955,11 +2114,131 @@ public partial class SkiaLayout
 
             UpdateProgressiveContentSize();
         }
-        finally 
+        finally
         {
+            // fallthrough for a deferred head insert (degenerate overlap, unmeasured head, helper
+            // rejection): the stage handler skipped the refresh, no branch ran ApplyInsertShift —
+            // sync the adapter to the mutated collection now or it serves a stale snapshot forever
+            if (deferredSync && !adapterSynced)
+            {
+                ChildrenFactory.InitializeSoft(false, EffectiveItemsSource, GetTemplatesPoolLimit(),
+                    change.ContextsSnapshot);
+            }
+
             OnStructureChanged();
         }
-       
+
+    }
+
+    /// <summary>
+    /// MeasureFirst (uniform rows) Add fast path: every row is the first item's size + spacing, so an
+    /// insert/append is pure arithmetic — followers slide down by count*stride, new cells are placed by
+    /// multiplication. No template binds, no measures, no full structure-build loop (the freeze at window
+    /// slides). Single-column stacks only; returns false to fall back to the generic path.
+    /// </summary>
+    private bool TryApplyUniformAddMeasureFirst(StructureChange change)
+    {
+        if (Type != LayoutType.Column || Split > 1 || change.Count <= 0)
+            return false;
+
+        lock (LockMeasure)
+        {
+            var cells = StackStructure?.GetChildren()
+                .Where(c => c != null && c.ControlIndex >= 0)
+                .OrderBy(c => c.ControlIndex).ToList();
+            if (cells == null || cells.Count == 0)
+                return false;
+
+            var proto = cells[cells.Count - 1];
+            if (!proto.WasMeasured || change.StartIndex > proto.ControlIndex + 1)
+                return false; // no measured prototype / append beyond a gap — let the generic path handle it
+
+            var spacingPixels = (float)Math.Round(Spacing * RenderingScale);
+            float stride = proto.Destination.Height + spacingPixels;
+            float blockShift = change.Count * stride;
+
+            bool headInsert = change.StartIndex == 0;
+            if (headInsert && _pendingHeadRemove != null)
+                return false; // degenerate overlap with an uncommitted trim — let the generic path rebuild
+
+            float insertTop;
+            if (headInsert)
+            {
+                // HEAD INSERT (backward slide into trimmed space): new cells go ABOVE the current
+                // content (negative space), survivors keep their absolute positions — painted pixels
+                // identical this frame. Next frame CommitPendingHeadRemove translates everything down
+                // by blockShift and compensates the scroll offset in the same frame (negative Shift).
+                insertTop = cells[0].Destination.Top - blockShift;
+                foreach (var cell in cells)
+                {
+                    cell.ControlIndex += change.Count; // memo empty: rekey directly, positions untouched
+                }
+            }
+            else
+            {
+                // middle/tail: the new block takes the first follower's slot, followers slide DOWN
+                var follower = cells.FirstOrDefault(c => c.ControlIndex == change.StartIndex);
+                insertTop = follower?.Destination.Top ?? (proto.Destination.Bottom + spacingPixels);
+
+                foreach (var cell in cells)
+                {
+                    if (cell.ControlIndex >= change.StartIndex)
+                    {
+                        cell.ControlIndex += change.Count;
+                        cell.Destination = new SKRect(cell.Destination.Left, cell.Destination.Top + blockShift,
+                            cell.Destination.Right, cell.Destination.Bottom + blockShift);
+                        cell.Area = new SKRect(cell.Area.Left, cell.Area.Top + blockShift,
+                            cell.Area.Right, cell.Area.Bottom + blockShift);
+                    }
+                }
+            }
+
+            for (int i = 0; i < change.Count; i++)
+            {
+                float dy = (insertTop + i * stride) - proto.Destination.Top;
+                var dest = proto.Destination;
+                dest.Offset(0, dy);
+                var area = proto.Area;
+                area.Offset(0, dy);
+
+                cells.Add(new ControlInStack
+                {
+                    ControlIndex = change.StartIndex + i,
+                    Destination = dest,
+                    Area = area,
+                    Measured = proto.Measured,
+                    WasMeasured = true,
+                });
+            }
+
+            if (headInsert)
+            {
+                // negative Shift: commit translates cells DOWN by blockShift and moves the scroll
+                // anchor by -blockShift/scale — same rebase mechanism as the head trim, mirrored
+                _pendingHeadRemove = new HeadRemoveRebase
+                {
+                    Shift = -blockShift, Stamp = MeasureStamp, Epoch = _itemsShiftEpoch, Scale = RenderingScale
+                };
+            }
+
+            cells.Sort((a, b) => a.ControlIndex.CompareTo(b.ControlIndex));
+            RebuildStructureFromCells(cells);
+
+            if (LastMeasuredIndexLocal < cells[^1].ControlIndex)
+            {
+                LastMeasuredIndexLocal = cells[^1].ControlIndex;
+            }
+
+            // rekey in-use views + fresh contexts snapshot, same frame as the structure shift
+            ChildrenFactory.ApplyInsertShift(EffectiveItemsSource, change.StartIndex, change.Count,
+                change.ContextsSnapshot);
+
+            UpdateProgressiveContentSize();
+        }
+
+        Debug.WriteLine(
+            $"[StackStructure] MeasureFirst uniform add: {change.Count} @ {change.StartIndex}, no rebuild");
+        return true;
     }
 
     #region HEAD INSERT (backward LoadMore over a windowed ItemsSource)
@@ -2369,7 +2648,7 @@ public partial class SkiaLayout
 
             // adapter must rekey in the same frame as the structure indices shift (released
             // views for removed items, survivors rekeyed, fresh snapshot) — see ApplyInsertShift
-            ChildrenFactory.ApplyRemoveShift(ItemsSource, 0, change.Count, change.ContextsSnapshot);
+            ChildrenFactory.ApplyRemoveShift(EffectiveItemsSource, 0, change.Count, change.ContextsSnapshot);
 
             for (int i = 0; i < change.Count; i++)
             {
@@ -2377,7 +2656,9 @@ public partial class SkiaLayout
             }
 
             // rekeys _measuredItems and structure-cell indices, bumps the shift epoch
-            // (drops in-flight background batches), clamps LastMeasuredIndex
+            // (drops in-flight background batches), clamps LastMeasuredIndexLocal.
+            // NOTE: this renames STRUCTURE cells too (walks StackStructure), not just the memo —
+            // valid for ALL strategies, do not rekey survivors again here.
             ShiftMeasurementIndices(change.Count, -change.Count);
 
             // structure keeps only survivors, positions untouched this frame
@@ -2406,7 +2687,7 @@ public partial class SkiaLayout
     {
         lock (LockMeasure)
         {
-            ChildrenFactory.ApplyRemoveShift(ItemsSource, change.StartIndex, change.Count, change.ContextsSnapshot);
+            ChildrenFactory.ApplyRemoveShift(EffectiveItemsSource, change.StartIndex, change.Count, change.ContextsSnapshot);
 
             for (int i = change.StartIndex; i < change.StartIndex + change.Count; i++)
             {
@@ -2417,9 +2698,9 @@ public partial class SkiaLayout
             // background batches may still target the removed range — invalidate them
             _itemsShiftEpoch++;
 
-            if (LastMeasuredIndex >= change.StartIndex)
+            if (LastMeasuredIndexLocal >= change.StartIndex)
             {
-                LastMeasuredIndex = change.StartIndex - 1;
+                LastMeasuredIndexLocal = change.StartIndex - 1;
             }
 
             var survivors = StackStructure.GetChildren()
@@ -2559,24 +2840,36 @@ public partial class SkiaLayout
     /// </summary>
     private void ApplyRemoveChange(StructureChange change)
     {
+        // the stage handler DEFERRED the adapter refresh to this apply (HandleStructurePreservingRemove):
+        // every branch below ends in ApplyRemoveShift EXCEPT the no-structure fallthrough — net it
+        bool adapterSynced = false;
+
         try
         {
             //Debug.WriteLine($"[StackStructure] Removing {change.Count} items at index {change.StartIndex}");
 
-            if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+            if (MeasureItemsStrategy is MeasuringStrategy.MeasureVisible or MeasuringStrategy.MeasureFirst
                 && StackStructure != null && StackStructure.GetCount() > 0
                 && !HeadInsertInFlight && _pendingHeadRemove == null)
             {
                 // Window-trim fast paths for a bounded in-memory ItemsSource (LoadMore both
                 // directions with a capped window): structure-preserving, no remeasure, no reset.
+                // MeasureFirst qualifies too: every cell is arithmetically measured, so the first
+                // survivor is always "measured in place" as the head-remove commit requires.
                 // Skipped for a Replace-remove: that is not a trim and has no real survivors.
                 if (!change.SkipTrimFastPath)
                 {
-                    if (change.StartIndex == 0 && LastMeasuredIndex >= 0 && ApplyHeadRemoveChange(change))
+                    if (change.StartIndex == 0 && LastMeasuredIndexLocal >= 0 && ApplyHeadRemoveChange(change))
+                    {
+                        adapterSynced = true; // fast path ran ApplyRemoveShift
                         return;
+                    }
 
                     if (change.TailRemoval && ApplyTailRemoveChange(change))
+                    {
+                        adapterSynced = true; // fast path ran ApplyRemoveShift
                         return;
+                    }
                 }
             }
 
@@ -2605,7 +2898,7 @@ public partial class SkiaLayout
                 _measuredItems.TryRemove(i, out _);
             }
 
-            // Shift remaining measurements + ALL structure cell indices (keys, LastMeasuredIndex, epoch)
+            // Shift remaining measurements + ALL structure cell indices (keys, LastMeasuredIndexLocal, epoch)
             ShiftMeasurementIndices(change.StartIndex + change.Count, -change.Count);
 
             if (StackStructure != null)
@@ -2667,8 +2960,9 @@ public partial class SkiaLayout
 
                 // release removed views + rekey survivors + fresh contexts snapshot, atomically with
                 // the structure shift (same contract as the trim paths)
-                ChildrenFactory.ApplyRemoveShift(ItemsSource, change.StartIndex, change.Count,
+                ChildrenFactory.ApplyRemoveShift(EffectiveItemsSource, change.StartIndex, change.Count,
                     change.ContextsSnapshot);
+                adapterSynced = true;
             }
 
             //Debug.WriteLine($"[StackStructure] Removed {change.Count} items and shifted measurements");
@@ -2676,9 +2970,17 @@ public partial class SkiaLayout
         }
         finally
         {
+            // no-structure fallthrough: no branch ran ApplyRemoveShift — the deferred refresh must
+            // still land or the adapter serves a stale (pre-remove) snapshot forever
+            if (!adapterSynced && change.ContextsSnapshot != null)
+            {
+                ChildrenFactory.InitializeSoft(false, EffectiveItemsSource, GetTemplatesPoolLimit(),
+                    change.ContextsSnapshot);
+            }
+
             OnStructureChanged();
         }
-        
+
     }
 
     /// <summary>
@@ -2693,7 +2995,7 @@ public partial class SkiaLayout
 
         // Full-collection swap (windowed list jump: ReplaceRange clears + re-adds everything).
         // Remove+Add with index shifting would mis-attribute the old window's stale measurements to the
-        // new items and can leave a stale LastMeasuredIndex, so the scheduler thinks the new cells are
+        // new items and can leave a stale LastMeasuredIndexLocal, so the scheduler thinks the new cells are
         // already measured and never lays them out -> scroll into empty space. Instead invalidate the
         // measurement state and let the next MeasureVisible pass rebuild + measure the new items.
         // Templates/pool are preserved (InitializeSoft already ran in HandleStructurePreservingReplace),
@@ -2761,8 +3063,8 @@ public partial class SkiaLayout
         _measuredItems.Clear();
         _indexOffsets.Clear();
         _removedIndices.Clear();
-        LastMeasuredIndex = -1;
-        FirstMeasuredIndex = -1;
+        LastMeasuredIndexLocal = -1;
+        FirstMeasuredIndexLocal = -1;
         ChildrenFactory.TemplatesInvalidated = true;
         UpdateProgressiveContentSize();
 
@@ -2774,7 +3076,7 @@ public partial class SkiaLayout
     /// WITHOUT invalidating templates. The adapter pool stays intact (InitializeSoft already ran),
     /// so no InitializeTemplates rebuild; the next MeasureVisible pass rebuilds the structure and
     /// measures the new items. Used instead of Remove+Add to avoid carrying the old window's stale
-    /// measurements and LastMeasuredIndex onto the new items (which renders into empty space).
+    /// measurements and LastMeasuredIndexLocal onto the new items (which renders into empty space).
     /// </summary>
     protected void ResetMeasurementForReplace()
     {
@@ -2789,8 +3091,8 @@ public partial class SkiaLayout
         _measuredItems.Clear();
         _indexOffsets.Clear();
         _removedIndices.Clear();
-        LastMeasuredIndex = -1;
-        FirstMeasuredIndex = -1;
+        LastMeasuredIndexLocal = -1;
+        FirstMeasuredIndexLocal = -1;
         _itemsShiftEpoch++; // drop any in-flight background measurement batches from the old window
         UpdateProgressiveContentSize();
 
@@ -2942,7 +3244,7 @@ public partial class SkiaLayout
         if (change.Epoch != _itemsShiftEpoch)
         {
             var staleItem = change.Items?.Count == 1 ? change.Items[0] : null;
-            int currentIndex = staleItem != null && ItemsSource != null ? ItemsSource.IndexOf(staleItem) : -1;
+            int currentIndex = staleItem != null && EffectiveItemsSource != null ? EffectiveItemsSource.IndexOf(staleItem) : -1;
             Debug.WriteLine($"[StackStructure] Stale single-item update (epoch {change.Epoch} != {_itemsShiftEpoch}), re-queued for current index {currentIndex}");
             if (currentIndex >= 0)
                 RemeasureSingleItemInBackground(currentIndex);
@@ -3058,21 +3360,21 @@ public partial class SkiaLayout
         // Update measurement indices
         if (offset < 0) // Removal
         {
-            if (LastMeasuredIndex >= startIndex)
+            if (LastMeasuredIndexLocal >= startIndex)
             {
-                LastMeasuredIndex = Math.Max(startIndex - 1, LastMeasuredIndex + offset);
+                LastMeasuredIndexLocal = Math.Max(startIndex - 1, LastMeasuredIndexLocal + offset);
             }
         }
         else // Addition
         {
-            if (LastMeasuredIndex >= startIndex)
+            if (LastMeasuredIndexLocal >= startIndex)
             {
-                LastMeasuredIndex += offset;
+                LastMeasuredIndexLocal += offset;
             }
         }
 
         Debug.WriteLine(
-            $"[ShiftMeasurementIndices] Shifted {affected.Count} items from index {startIndex} by {offset}. LastMeasuredIndex: {LastMeasuredIndex}");
+            $"[ShiftMeasurementIndices] Shifted {affected.Count} items from index {startIndex} by {offset}. LastMeasuredIndexLocal: {LastMeasuredIndexLocal}");
     }
 
     /// <summary>
@@ -3232,11 +3534,11 @@ public partial class SkiaLayout
     /// </summary>
     private void UpdateProgressiveContentSize()
     {
-        if (StackStructure == null || ItemsSource?.Count == 0)
+        if (StackStructure == null || EffectiveItemsSource?.Count == 0)
             return;
 
-        var totalItems = ItemsSource.Count;
-        var measuredCount = LastMeasuredIndex + 1;
+        var totalItems = EffectiveItemsSource.Count;
+        var measuredCount = LastMeasuredIndexLocal + 1;
         var progress = MeasuredItemsPercentage;
 
         if (Type == LayoutType.Column)
@@ -3418,7 +3720,7 @@ public partial class SkiaLayout
             return;
         }
 
-        var totalItems = ItemsSource.Count;
+        var totalItems = EffectiveItemsSource.Count;
         var currentBatchStart = startIndex;
         var maxIterations = Math.Max(1, (totalItems / BackgroundMeasurementBatchSize) + 10); // Safety limit
         var iterationCount = 0;
@@ -3482,10 +3784,21 @@ public partial class SkiaLayout
             // (e.g. head insert) lands while this batch measures, the batch must be dropped.
             var epoch = _itemsShiftEpoch;
 
+#if BROWSER
+            // ST WASM: a Task.Run item can STARVE INDEFINITELY under continuous rAF + input load (wheel
+            // scroll + blits). Observed live: measurement frontier frozen for 13s mid-scroll — content
+            // never grows, the scroll walls at the frontier ("scrolling stops on every measure"). The
+            // pass already runs on the one thread anyway; call the batch inline, the Task.Delay(1)
+            // below is the cooperative yield between batches.
+            var measuredBatch = MeasureBatchInBackground(
+                constraints, scale, currentBatchStart, itemsToMeasure, startX, startY, startRow, startCol,
+                cancellationToken);
+#else
             // Measure batch on background thread
             var measuredBatch = await Task.Run(() => MeasureBatchInBackground(
                 constraints, scale, currentBatchStart, itemsToMeasure, startX, startY, startRow, startCol,
                 cancellationToken), cancellationToken);
+#endif
 
             if (cancellationToken.IsCancellationRequested)
             {
@@ -3837,8 +4150,8 @@ public partial class SkiaLayout
             }
         }
 
-        FirstVisibleIndex = visibleIndex;
-        LastVisibleIndex = visibleIndexEnd;
+        FirstVisibleIndexLocal = visibleIndex;
+        LastVisibleIndexLocal = visibleIndexEnd;
 
         if (needrebuild && countRendered > 0)
         {
@@ -3858,7 +4171,8 @@ public partial class SkiaLayout
 
     private MeasuredListCells _measuredCells;
 
-    public int EstimatedTotalItems => ItemsSource?.Count ?? 0;
+    /// <summary>Total items in ItemsSource space (the full source when the built-in window is engaged).</summary>
+    public int EstimatedTotalItems => _itemsWindow?.Source?.Count ?? EffectiveItemsSource?.Count ?? 0;
 
     private double _lastMeasuredContentEnd = double.PositiveInfinity;
 
@@ -3935,11 +4249,11 @@ public partial class SkiaLayout
     /// </summary>
     public ScaledSize GetEstimatedContentSize(float scale)
     {
-        if (!IsTemplated || ItemsSource == null || ItemsSource.Count == 0)
+        if (!IsTemplated || EffectiveItemsSource == null || EffectiveItemsSource.Count == 0)
             return MeasuredSize;
 
-        var itemsCount = ItemsSource.Count;
-        var measuredCount = LastMeasuredIndex + 1;
+        var itemsCount = EffectiveItemsSource.Count;
+        var measuredCount = LastMeasuredIndexLocal + 1;
 
         if (measuredCount >= itemsCount)
             return MeasuredSize; // All items measured, use actual size
@@ -4161,11 +4475,11 @@ public partial class SkiaLayout
 
     public int MeasureAdditionalItems(int batchSize, int aheadCount, float scale)
     {
-        if (ItemsSource == null || ItemsSource.Count == 0)
+        if (EffectiveItemsSource == null || EffectiveItemsSource.Count == 0)
             return 0;
 
-        int startIndex = LastMeasuredIndex + 1;
-        int endIndex = Math.Min(startIndex + batchSize + aheadCount, ItemsSource.Count);
+        int startIndex = LastMeasuredIndexLocal + 1;
+        int endIndex = Math.Min(startIndex + batchSize + aheadCount, EffectiveItemsSource.Count);
 
         Debug.WriteLine(
             $"[MeasureAdditionalItems] INCREMENTAL: Measuring items {startIndex}-{endIndex - 1} (batch: {batchSize}, ahead: {aheadCount})");
@@ -4286,7 +4600,7 @@ public partial class SkiaLayout
             structure.Append(rows);
             StackStructureMeasured = structure;
 
-            LastMeasuredIndex = startIndex + countToMeasure - 1;
+            LastMeasuredIndexLocal = startIndex + countToMeasure - 1;
 
             SKSize newSizePixels;
             var existingHeight = MeasuredSize.Pixels.Height;
@@ -4310,7 +4624,7 @@ public partial class SkiaLayout
                         stackHeight += 1500 * scale;
                     }
 
-                    if (endIndex == ItemsSource.Count)
+                    if (endIndex == EffectiveItemsSource.Count)
                     {
                         stackHeight -= 1500 * scale;
                     }
@@ -4329,7 +4643,7 @@ public partial class SkiaLayout
             _listAdditionalMeasurements++;
 
             Debug.WriteLine(
-                $"[MeasureAdditionalItems] COMPLETED: Measured {countToMeasure} additional items, now measured up to index {LastMeasuredIndex} of {ItemsSource.Count} total");
+                $"[MeasureAdditionalItems] COMPLETED: Measured {countToMeasure} additional items, now measured up to index {LastMeasuredIndexLocal} of {EffectiveItemsSource.Count} total");
 
             return countToMeasure;
         }
@@ -4451,7 +4765,7 @@ public partial class SkiaLayout
         {
             var rows = new List<List<ControlInStack>>();
 
-            if (!IsTemplated || ItemsSource == null || ItemsSource.Count == 0)
+            if (!IsTemplated || EffectiveItemsSource == null || EffectiveItemsSource.Count == 0)
                 return new LayoutStructure(rows);
 
             // Use the realized data-contexts snapshot count, not the live ItemsSource.Count: a cell built
