@@ -698,6 +698,7 @@ public partial class SkiaScroll
         // Headroom advances as slides land, so sustained scrolling still traverses the whole source.
         // Backward needs no extension: head inserts land at local 0 with offset compensation, and
         // backward slides fire at the local-top margin before the clamp is ever reached.
+        _windowTravelExtension = 0;
         if (Content is SkiaLayout wLayout && wLayout.ItemsWindow != null && wLayout.ItemsSource != null)
         {
             int below = wLayout.ItemsSource.Count - wLayout.ItemsWindow.WindowEnd;
@@ -709,6 +710,7 @@ public partial class SkiaScroll
                 double headroomPts = 2 * (Orientation == ScrollOrientation.Vertical
                     ? MeasuredSize.Units.Height : MeasuredSize.Units.Width);
                 double extension = Math.Min(below * cellPts, headroomPts);
+                _windowTravelExtension = (float)extension;
                 if (Orientation == ScrollOrientation.Vertical)
                     height += (float)extension;
                 else
@@ -949,6 +951,29 @@ public partial class SkiaScroll
     /// </summary>
     /// <param name="offset"></param>
     /// <param name="animate"></param>
+    /// <summary>
+    /// Forward chase-headroom (points) currently included in ContentOffsetBounds for a windowed
+    /// source (see the virtual-extent block in GetContentOffsetBounds). Zero when no window or the
+    /// window reached the source end. INCREMENTAL user travel (wheel/pan/fling) may use it — slides
+    /// chase the offset; ABSOLUTE programmatic targets (ScrollToIndex) must NOT aim into it: a jump
+    /// clamped against the extended bounds landed the viewport in the VOID past the last item
+    /// (empty screen, vis=-1) until user interaction pulled it back.
+    /// </summary>
+    protected float _windowTravelExtension;
+
+    /// <summary>ContentOffsetBounds with the window chase-headroom removed: the REAL content travel.</summary>
+    protected SKRect GetHardContentOffsetBounds()
+    {
+        var b = ContentOffsetBounds;
+        if (_windowTravelExtension > 0)
+        {
+            if (Orientation == ScrollOrientation.Vertical)
+                return new SKRect(b.Left, b.Top + _windowTravelExtension, b.Right, b.Bottom);
+            return new SKRect(b.Left + _windowTravelExtension, b.Top, b.Right, b.Bottom);
+        }
+        return b;
+    }
+
     protected void ScrollToOffset(Vector2 targetOffset, float maxTimeSecs)
     {
         StopScrolling();
@@ -1070,6 +1095,14 @@ public partial class SkiaScroll
 
             if (PointIsValid(offset))
             {
+                // A jump target must land INSIDE real content: clamp against the HARD bounds
+                // (chase-headroom removed) — a target clamped by the downstream ScrollToY against
+                // the EXTENDED bounds landed the viewport in the void past the last item.
+                var hard = GetHardContentOffsetBounds();
+                offset = new SKPoint(
+                    Math.Clamp(offset.X, hard.Left, hard.Right),
+                    Math.Clamp(offset.Y, hard.Top, hard.Bottom));
+
                 if (AreEqual((float)InternalViewportOffset.Units.X, offset.X, 0.5)
                     && AreEqual((float)InternalViewportOffset.Units.Y, offset.Y, 0.5))
                 {

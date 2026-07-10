@@ -3101,9 +3101,16 @@ namespace DrawnUi.Draw
                         || mvContent.ItemsWindow != null))
                 {
                     var measuredEnd = mvContent.GetMeasuredContentEnd();
-                    if (Math.Abs(measuredEnd - _lastMeasuredTravelEnd) > 0.5)
+                    // ALSO key on the window position: a rebase/slide over UNIFORM cells keeps the
+                    // measured end value IDENTICAL (same local extent) while WindowEnd moved — the
+                    // travel extension then stays stale (still extended at the true source end:
+                    // a fling after jump-to-last landed the viewport in the void past the content).
+                    var windowEnd = mvContent.ItemsWindow?.WindowEnd ?? -1;
+                    if (Math.Abs(measuredEnd - _lastMeasuredTravelEnd) > 0.5
+                        || windowEnd != _lastWindowTravelEnd)
                     {
                         _lastMeasuredTravelEnd = measuredEnd;
+                        _lastWindowTravelEnd = windowEnd;
                         // must FORCE ApplyContentSize: its size-compare guard sees the unchanged
                         // ContentSize and would skip InitializeViewport, leaving the stale clamp
                         contentSizeChanged = true;
@@ -3965,6 +3972,7 @@ namespace DrawnUi.Draw
         private ScaledSize _lastContentSize;
         private int _lastVirtualItemsCount = -1;
         private double _lastMeasuredTravelEnd = -1;
+        private int _lastWindowTravelEnd = -1;
         private float _velocityKY;
         private float _velocityKX;
         private float _zoomedScale = 1;
