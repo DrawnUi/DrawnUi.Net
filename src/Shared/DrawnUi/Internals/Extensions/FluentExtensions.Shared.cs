@@ -313,6 +313,41 @@ namespace DrawnUi.Draw
 
         #endregion
 
+        #region KEYBOARD
+
+        /// <summary>
+        /// Subscribes to global keyboard key-down while this control is alive. The handler
+        /// receives (control, key). Auto-unsubscribes when the control is disposed, so it is
+        /// safe to chain at construction. Keyboard events flow whenever the DrawnUI canvas has
+        /// focus (Blazor/Wasm/OpenTK). Handy for keyboard-driven games and shortcuts.
+        /// </summary>
+        public static T OnKeyDown<T>(this T control, Action<T, InputKey> action) where T : SkiaControl
+        {
+            if (action == null)
+                return control;
+
+            void Handler(object sender, InputKey key) => action(control, key);
+            KeyboardManager.KeyDown += Handler;
+            control.ExecuteUponDisposal[$"OnKeyDown_{Guid.NewGuid()}"] = () => KeyboardManager.KeyDown -= Handler;
+            return control;
+        }
+
+        /// <summary>
+        /// Subscribes to global keyboard key-up while this control is alive. See <see cref="OnKeyDown{T}"/>.
+        /// </summary>
+        public static T OnKeyUp<T>(this T control, Action<T, InputKey> action) where T : SkiaControl
+        {
+            if (action == null)
+                return control;
+
+            void Handler(object sender, InputKey key) => action(control, key);
+            KeyboardManager.KeyUp += Handler;
+            control.ExecuteUponDisposal[$"OnKeyUp_{Guid.NewGuid()}"] = () => KeyboardManager.KeyUp -= Handler;
+            return control;
+        }
+
+        #endregion
+
         /// <summary>
         /// Fluent subscription to <see cref="SkiaShaderEffect.OnCompilationError"/>: the callback
         /// receives the effect and the SkSL compiler error text whenever <c>ShaderCode</c> /
@@ -674,6 +709,46 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Extracts the property name from a member access expression (e.g. <c>x => x.Foo</c>).
+        /// Tree inspection only, never compiles the expression — safe under iOS/NativeAOT.
+        /// </summary>
+        private static string GetMemberName<TSource, TProp>(Expression<Func<TSource, TProp>> expression)
+        {
+            var body = expression.Body;
+            if (body is UnaryExpression unary)
+                body = unary.Operand;
+
+            if (body is MemberExpression member)
+                return member.Member.Name;
+
+            throw new ArgumentException($"Expression '{expression}' must be a property access (e.g. x => x.Foo).");
+        }
+
+        /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperty{T, TSource}(T, TSource, string, Action{T})"/>:
+        /// pass the property as a lambda instead of a string, rename-safe.
+        /// Will unsubscribe upon control disposal.
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source object being observed</typeparam>
+        /// <typeparam name="TProp">Type of the observed property</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="property">Lambda selecting the source property, e.g. <c>x => x.Foo</c></param>
+        /// <param name="callback">Callback executed when the property changes</param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperty<T, TSource, TProp>(
+            this T control,
+            TSource target,
+            Expression<Func<TSource, TProp>> property,
+            Action<T> callback)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperty(target, GetMemberName(property), callback);
+        }
+
+        /// <summary>
         /// Subscribes to one specific property changes on a source and a target control, executing callbacks in both
         /// directions while guarding against re-entrant loops.
         /// Use this to simulate MAUI XAML two-way property binding semantics in fluent C# code.
@@ -749,6 +824,40 @@ namespace DrawnUi.Draw
             };
 
             return control;
+        }
+
+        /// <summary>
+        /// Compiled-property-name overload of <see cref="ObservePropertyTwoWay{T, TSource}"/>:
+        /// pass both properties as lambdas instead of strings, rename-safe.
+        /// Will unsubscribe upon control disposal.
+        /// </summary>
+        /// <typeparam name="T">Type of the target control (the one being extended)</typeparam>
+        /// <typeparam name="TSource">Type of the source object being observed</typeparam>
+        /// <typeparam name="TTargetProp">Type of the observed source property</typeparam>
+        /// <typeparam name="TControlProp">Type of the observed control property</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="targetProperty">Lambda selecting the source property, e.g. <c>vm => vm.Foo</c></param>
+        /// <param name="targetChanged">Callback executed when the source property changes</param>
+        /// <param name="controlProperty">Lambda selecting the control property, e.g. <c>me => me.Bar</c></param>
+        /// <param name="controlChanged">Callback executed when the control property changes</param>
+        /// <returns>The target control for chaining</returns>
+        public static T ObservePropertyTwoWay<T, TSource, TTargetProp, TControlProp>(
+            this T control,
+            TSource target,
+            Expression<Func<TSource, TTargetProp>> targetProperty,
+            Action<T> targetChanged,
+            Expression<Func<T, TControlProp>> controlProperty,
+            Action<TSource, T> controlChanged)
+            where T : SkiaControl, INotifyPropertyChanged
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObservePropertyTwoWay(
+                target,
+                GetMemberName(targetProperty),
+                targetChanged,
+                GetMemberName(controlProperty),
+                controlChanged);
         }
 
         /// <summary>

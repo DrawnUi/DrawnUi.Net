@@ -266,6 +266,34 @@ scroll = new SkiaScroll()
 - the fluent C# version should behave like XAML
 - the control changes the property internally and the ViewModel must stay in sync
 
+### Compiled property names (lambda instead of string/`nameof`)
+
+`ObserveProperty` and `ObservePropertyTwoWay` both have overloads that take a lambda selecting the property instead of a string — rename-safe, resolved at compile time:
+
+```csharp
+new SkiaLabel()
+.ObserveProperty(Model, x => x.Title, me =>
+{
+    me.Text = Model.Title;
+})
+```
+
+```csharp
+scroll = new SkiaScroll()
+{
+    RefreshEnabled = true,
+    RefreshCommand = ViewModel.RefreshCommand,
+}
+.ObservePropertyTwoWay(
+    ViewModel,
+    vm => vm.IsRefreshing,
+    me => { me.IsRefreshing = ViewModel.IsRefreshing; },
+    me => me.IsRefreshing,
+    (vm, me) => { vm.IsRefreshing = me.IsRefreshing; });
+```
+
+Implemented via `Expression<Func<...>>` tree inspection (reads `Member.Name`, never calls `.Compile()`), so it's safe under iOS/NativeAOT — no JIT dependency. Both string and lambda overloads coexist; pick whichever reads better.
+
 **Typical example:**
 - `SkiaScroll.IsRefreshing` for pull-to-refresh, where the control can enter refresh state by gesture and the ViewModel must also receive that new value
 
