@@ -10,6 +10,8 @@ image: /images/scroller.jpg
 When .NET MAUI CollectionView is not enough.. Think Drawn!  
 We will be building a news feed scroller with mixed content: text posts, images, videos, articles, ads: an infinite scroll of **recycled cells** with LoadMore mechanics. 
 
+> **Which list setup fits YOUR content?** This tutorial uses the uneven-rows/medium-cells recipe (`MeasureVisible` + recycling). For uniform rows, small cells, or static lists the optimal knobs differ — see [Scrolling Lists](controls/lists.md).
+
 > **Host support**
 >
 > This article is written as a **.NET MAUI tutorial** and its code samples use MAUI XAML. The virtualization, recycled-cell, caching, and scrolling patterns are still relevant to **Blazor**.

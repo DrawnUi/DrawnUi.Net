@@ -422,6 +422,89 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
 </DrawUi:SkiaScroll>
 ```
 
+## Scroll Bar Indicator
+
+SkiaScroll can show a scroll bar overlay indicating position and content size, same customization principle as `RefreshIndicator`: implement `IScrollBar` for a fully custom look, or use the built-in `SkiaScrollBar`.
+
+### Declarative (no code)
+
+Set `ScrollBarsVisibility` to auto-create a default `SkiaScrollBar` per axis. Default is `None` (no bar, zero cost).
+
+```xml
+<DrawUi:SkiaScroll ScrollBarsVisibility="Vertical" Orientation="Vertical">
+    <!-- content -->
+</DrawUi:SkiaScroll>
+```
+
+`ScrollBarsVisibility` is `[Flags]`: `None`, `Vertical`, `Horizontal` — set both for `Orientation="Both"` to get one bar per axis (vertical bar docked right, horizontal bar docked bottom):
+
+```xml
+<DrawUi:SkiaScroll Orientation="Both" ScrollBarsVisibility="Vertical,Horizontal">
+    <!-- content -->
+</DrawUi:SkiaScroll>
+```
+
+Tint auto-created bars without instantiating your own via `ScrollBarThumbColor` / `ScrollBarTrackColor` on `SkiaScroll` — pushed to both `ScrollBar` and `ScrollBarHorizontal` whenever they are `SkiaScrollBar` instances (auto-created or assigned). Defaults match `SkiaScrollBar`'s own defaults (`#66888888` thumb, transparent track):
+
+```xml
+<DrawUi:SkiaScroll
+    Orientation="Both"
+    ScrollBarsVisibility="Vertical,Horizontal"
+    ScrollBarThumbColor="#99FF6600"
+    ScrollBarTrackColor="#22000000">
+    <!-- content -->
+</DrawUi:SkiaScroll>
+```
+
+### Custom bar instance
+
+Assign `ScrollBar` (vertical axis) and/or `ScrollBarHorizontal` directly (code-behind) for full control over appearance — an explicit assignment always shows regardless of `ScrollBarsVisibility`:
+
+```csharp
+new SkiaScroll
+{
+    Orientation = ScrollOrientation.Vertical,
+    ScrollBar = new SkiaScrollBar
+    {
+        ThumbColor = Color.FromArgb("#99FF6600"),
+        Thickness = 6,
+        HideDelaySecs = 2,
+    },
+    Content = new SkiaLayout { Type = LayoutType.Column, /* items */ },
+}
+```
+
+`SkiaScrollBar` properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `Dock` | `ScrollBarDock` | `End` (default, right/bottom) or `Start` (left/top) — use `Start` for RTL or a 180-rotated (inverted chat) scroll |
+| `ThumbColor` | `Color` | Moving thumb color |
+| `TrackColor` | `Color` | Static track color, transparent by default |
+| `Thickness` | `double` | Bar thickness in points |
+| `EdgeMargin` | `double` | Distance from the docked edge |
+| `MinThumbSize` | `double` | Minimum thumb length for very long content |
+| `AutoHide` | `bool` | Fades out after scrolling stops, default true |
+| `HideDelaySecs` | `double` | Delay before fade-out |
+
+### Fully custom indicator
+
+Implement `IScrollBar` directly (any `SkiaControl`) for a non-default look — a minimap, an animated thumb, etc:
+
+```csharp
+public class MyScrollBar : SkiaLayout, IScrollBar
+{
+    public void SetScrollProgress(ScrollOrientation orientation, float progress,
+        float thumbSizeRatio, float overscrollPts, bool isScrolling)
+    {
+        // progress: 0-1 position along the axis
+        // thumbSizeRatio: viewport/content size, >=1 means nothing to scroll
+        // overscrollPts: current overscroll distance
+        // isScrolling: user panning or animation running
+    }
+}
+```
+
 ## Performance Considerations
 
 ### Virtualization

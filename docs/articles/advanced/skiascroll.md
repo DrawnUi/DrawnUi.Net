@@ -99,6 +99,20 @@ private async void OnRefreshing(object sender, EventArgs e)
 }
 ```
 
+## Scroll Bar Indicator
+
+```xml
+<draw:SkiaScroll ScrollBarsVisibility="Vertical" Orientation="Vertical">
+    <!-- Content -->
+</draw:SkiaScroll>
+```
+
+`ScrollBarsVisibility` (`[Flags]`: `None`, `Vertical`, `Horizontal`) auto-creates a default `SkiaScrollBar` per axis flagged — one bar slot per axis (`ScrollBar` for vertical, `ScrollBarHorizontal` for horizontal), so `Orientation="Both"` can show both at once with `ScrollBarsVisibility="Vertical,Horizontal"`. Default `None`, zero cost when unused.
+
+`SkiaScroll.ScrollBarThumbColor` / `ScrollBarTrackColor` tint auto-created (or assigned) `SkiaScrollBar` instances on both axes without writing code; defaults match `SkiaScrollBar`'s own.
+
+For a custom bar, assign `ScrollBar` / `ScrollBarHorizontal` directly (shows regardless of the flag) — set `SkiaScrollBar.Dock="Start"` for RTL or a 180-rotated (inverted chat) scroll — or implement `IScrollBar` on any `SkiaControl` for a fully custom indicator. See [Scroll Controls](../controls/scroll.md#scroll-bar-indicator) for the full property table and `IScrollBar` example.
+
 ## Infinite and Looped Scrolling
 
 Use SkiaScrollLooped for banners, carousels, or infinite galleries:
