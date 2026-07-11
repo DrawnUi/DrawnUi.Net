@@ -904,7 +904,17 @@ public partial class SkiaControl
                     else
                     {
                         if (!ExistingCacheWasRendered)
+                        {
                             DrawPlaceholder(context);
+
+                            // INVARIANT: painting a placeholder with NO cache and NO bake in flight
+                            // means the rebuild signal was LOST (e.g. a recycle cancelled the offscreen
+                            // bake after NeedUpdate was already consumed — cell frozen as a silhouette
+                            // forever at idle, nothing left to trigger a redraw). Re-arm the build here:
+                            // a placeholder frame must always have a bake scheduled behind it.
+                            if (!_offscreenBakeBusy)
+                                needBuild = true;
+                        }
                     }
 
                     Monitor.PulseAll(LockDraw);
@@ -942,10 +952,12 @@ public partial class SkiaControl
                             _offscreenBakeBusy = false;
                         }
 
-                        if (Parent != null && Parent.UpdateLocks < 1)
-                        {
-                            Repaint();
-                        }
+                        // UNCONDITIONAL wakeup: gating this on Parent.UpdateLocks lost the present
+                        // when the bake completed DURING the very frame that queued it (parent holds
+                        // LockUpdate while painting) — cache READY but no frame ever requested: static
+                        // content stayed a placeholder until user interaction (Sandbox car image).
+                        // A locked parent defers via _neededUpdate and LockUpdate(false) replays it.
+                        Repaint();
                     });
                 }
 
@@ -959,11 +971,24 @@ public partial class SkiaControl
     /// <summary>
     /// Called by ImageDoubleBuffered cache rendering when no cache is ready yet.
     /// Other controls might use this too to draw placeholders when result is not ready yet.
+    /// Default paints the control's own BackgroundColor (a cell keeps its silhouette), falling back
+    /// to a faint translucent gray — never nothing: an empty default painted invisible HOLES where a
+    /// cell's cache was still being prepared (or its rebuild was lost). Override for custom skeletons.
     /// </summary>
     /// <param name="context"></param>
     public virtual void DrawPlaceholder(DrawingContext context)
     {
+        var color = BackgroundColor;
+        if (color == null || color.Alpha <= 0.01)
+        {
+            color = PlaceholderFallbackColor;
+        }
+
+        using var paint = new SKPaint { Color = color.ToSKColor(), Style = SKPaintStyle.Fill };
+        context.Context.Canvas.DrawRect(context.Destination, paint);
     }
+
+    private static readonly Color PlaceholderFallbackColor = Color.FromRgba(128, 128, 128, 32);
 
     public CacheValidityType CacheValidity { get; protected set; }
 
@@ -1347,16 +1372,16 @@ public partial class SkiaControl
                 _offscreenBakeBusy = false;
             }
 
-            if (Parent != null && Parent.UpdateLocks < 1)
-            {
-                // The offscreen bake changed this control's PIXELS without going through Update():
-                // a parent that caches OVER us (composite/plane) must be told, or it keeps serving
-                // its old snapshot with our placeholder/stale content until an unrelated
-                // invalidation. Bare Repaint() only scheduled a frame — the parent's cache stayed
-                // valid, so the frame blitted the same stale plane (visible as gaps/stale cells
-                // while scrolling a plane-cached list).
-                Parent.UpdateByChild(this);
-            }
+            // The offscreen bake changed this control's PIXELS without going through Update():
+            // a parent that caches OVER us (composite/plane) must be told, or it keeps serving
+            // its old snapshot with our placeholder/stale content until an unrelated
+            // invalidation. Bare Repaint() only scheduled a frame — the parent's cache stayed
+            // valid, so the frame blitted the same stale plane (visible as gaps/stale cells
+            // while scrolling a plane-cached list).
+            // UNCONDITIONAL: gating on Parent.UpdateLocks lost the wakeup when the bake finished
+            // during the queuing frame (parent locked mid-paint) — placeholder frozen until user
+            // interaction. A locked parent defers via _neededUpdate; LockUpdate(false) replays.
+            Parent?.UpdateByChild(this);
         });
     }
 
