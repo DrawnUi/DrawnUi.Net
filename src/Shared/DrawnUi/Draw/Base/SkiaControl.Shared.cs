@@ -643,7 +643,13 @@ namespace DrawnUi.Draw
         /// <returns></returns>
         public virtual SKPoint GetSelfDrawingPosition()
         {
-            var position = BuildSelfDrawingPosition(LastDrawnAt.Location, this, true);
+            // LastDrawnAt is the layout rect; Left/Top are a paint-time blit offset of the cache
+            // (see DrawRenderObjectInternal) that never touches LastDrawnAt. Overlay post-animators
+            // (ripple/shimmer) draw on the outer context, so fold this control's own Left/Top in here,
+            // otherwise the effect lands at the layout slot instead of the visible position.
+            var start = LastDrawnAt.Location;
+            start.Offset((float)(Left * RenderingScale), (float)(Top * RenderingScale));
+            var position = BuildSelfDrawingPosition(start, this, true);
 
             return new(position.X, position.Y);
         }
@@ -1837,6 +1843,21 @@ namespace DrawnUi.Draw
             set { SetValue(AnimationTappedProperty, value); }
         }
 
+        public static readonly BindableProperty AnimationTappedSpeedProperty = BindableProperty.Create(
+            nameof(AnimationTappedSpeed),
+            typeof(double),
+            typeof(SkiaControl), 0.0);
+
+        /// <summary>
+        /// Duration in milliseconds of the <see cref="AnimationTapped"/> effect (currently Ripple).
+        /// 0 = use the effect's built-in default (Ripple: 500ms).
+        /// </summary>
+        public double AnimationTappedSpeed
+        {
+            get { return (double)GetValue(AnimationTappedSpeedProperty); }
+            set { SetValue(AnimationTappedSpeedProperty, value); }
+        }
+
         public static readonly BindableProperty TransformViewProperty = BindableProperty.Create(nameof(TransformView),
             typeof(object),
             typeof(SkiaControl), null);
@@ -1885,7 +1906,7 @@ namespace DrawnUi.Draw
                     if (AnimationTapped == SkiaTouchAnimation.Ripple)
                     {
                         var ptsInsideControl = GetOffsetInsideControlInPoints(args.Event.Location, apply.ChildOffset);
-                        control.PlayRippleAnimation(TouchEffectColor, ptsInsideControl.X, ptsInsideControl.Y);
+                        control.PlayRippleAnimation(TouchEffectColor, ptsInsideControl.X, ptsInsideControl.Y, speedMs: AnimationTappedSpeed);
                     }
                     else if (AnimationTapped == SkiaTouchAnimation.Shimmer)
                     {
@@ -4782,6 +4803,21 @@ namespace DrawnUi.Draw
         protected virtual void OnLayoutReady()
         {
             IsLayoutReady = true;
+
+            // Notify state effects the moment layout becomes ready. UpdateState normally runs in
+            // OnBeforeDrawing (start of a render), but IsLayoutReady only flips LATER in the same
+            // render (during Arrange). Without this, an IStateEffect that gates on IsLayoutReady would
+            // stay uninitialized until some *later* render happens to re-run OnBeforeDrawing — which
+            // never comes for a control that isn't re-rendered after its first layout (e.g. a cached
+            // child of a SkiaShape). Notifying here makes readiness deterministic in every container.
+            if (EffectsState != null)
+            {
+                foreach (var stateEffect in EffectsState)
+                {
+                    stateEffect?.UpdateState();
+                }
+            }
+
             LayoutIsReady?.Invoke(this, null);
             if (IsAccessibilityElement)
             {
@@ -8480,7 +8516,7 @@ namespace DrawnUi.Draw
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="removePrevious"></param>
-        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true)
+        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true, double speedMs = 0)
         {
             if (removePrevious)
             {
@@ -8489,6 +8525,8 @@ namespace DrawnUi.Draw
 
             //Debug.WriteLine($"[RIPPLE] start play for '{Tag}'");
             var animation = new RippleAnimator(this) { Color = color.ToSKColor(), X = x, Y = y };
+            if (speedMs > 0)
+                animation.Speed = speedMs; // 0 = keep RippleAnimator default (500ms)
             animation.Start();
         }
 

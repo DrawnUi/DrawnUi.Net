@@ -44,7 +44,11 @@ public class ShimmerAnimator : RenderingAnimator
                 selfDrawingLocation.X + control.DrawingRect.Width,
                 selfDrawingLocation.Y + control.DrawingRect.Height);
 
-            var maxSide = Math.Max(originalRect.Width, originalRect.Height);
+            // Use the diagonal (not the longer side): the fill square is rotated by ShimmerAngle
+            // about its center and clipped to the control. A side-sized square rotated 45° leaves the
+            // cell's corner triangles unlit ("smaller than cell"); the diagonal covers them at any angle.
+            var maxSide = (float)Math.Sqrt(originalRect.Width * originalRect.Width +
+                                           originalRect.Height * originalRect.Height);
             var centerX = originalRect.MidX;
             var centerY = originalRect.MidY;
 

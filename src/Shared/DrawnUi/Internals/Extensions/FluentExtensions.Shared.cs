@@ -455,12 +455,13 @@ namespace DrawnUi.Draw
         {
             // Create a unique key for this subscription
             string subscriptionKey = $"Subscribe_{target.GetHashCode()}_{Guid.NewGuid()}";
+            var filterSet = propertyFilter != null ? new HashSet<string>(propertyFilter) : null;
 
             // Create the handler
             PropertyChangedEventHandler handler = (sender, args) =>
             {
                 // If a filter is specified, only proceed if the property is in the filter
-                if (propertyFilter != null && !propertyFilter.Contains(args.PropertyName))
+                if (filterSet != null && !filterSet.Contains(args.PropertyName))
                     return;
 
                 try
@@ -599,6 +600,7 @@ namespace DrawnUi.Draw
             string mainKey = $"ObserveDynamic_{parentPropertyName}_{Guid.NewGuid()}";
             TTarget currentTarget = null;
             PropertyChangedEventHandler currentTargetHandler = null;
+            var filterSet = propertyFilter != null ? new HashSet<string>(propertyFilter) : null;
 
             // Helper to clean up current target subscription
             void CleanupCurrentTarget()
@@ -623,7 +625,7 @@ namespace DrawnUi.Draw
                 currentTargetHandler = (sender, args) =>
                 {
                     // If a filter is specified, only proceed if the property is in the filter
-                    if (propertyFilter != null && !propertyFilter.Contains(args.PropertyName))
+                    if (filterSet != null && !filterSet.Contains(args.PropertyName))
                         return;
 
                     try
@@ -954,6 +956,29 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperty{T, TSource}(T, Func{TSource}, string, Action{T})"/>:
+        /// pass the property as a lambda instead of a string, rename-safe.
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source control being observed</typeparam>
+        /// <typeparam name="TProp">Type of the observed property</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="targetSelector">Lambda expression that returns the target control (e.g., () => Model)</param>
+        /// <param name="property">Lambda selecting the source property, e.g. <c>x => x.Foo</c></param>
+        /// <param name="callback">Callback to execute when the property changes</param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperty<T, TSource, TProp>(
+            this T control,
+            Func<TSource> targetSelector,
+            Expression<Func<TSource, TProp>> property,
+            Action<T> callback)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperty(targetSelector, GetMemberName(property), callback);
+        }
+
+        /// <summary>
         /// Subscribes to specific properties changes on a source control and executes a callback when they occur.
         /// 
         /// Will unsubscribe upon control disposal.
@@ -981,6 +1006,29 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperties{T, TSource}(T, TSource, IEnumerable{string}, Action{T})"/>:
+        /// pass properties as lambdas instead of strings, rename-safe. Note: callback comes before the property
+        /// lambdas here (params must be the last parameter).
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source control being observed</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="callback">Callback to execute when any of the properties change</param>
+        /// <param name="properties">Lambdas selecting the source properties, e.g. <c>x => x.Foo, x => x.Bar</c></param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperties<T, TSource>(
+            this T control,
+            TSource target,
+            Action<T> callback,
+            params Expression<Func<TSource, object>>[] properties)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperties(target, properties.Select(GetMemberName), callback);
+        }
+
+        /// <summary>
         /// Subscribes to specific properties changes on a source control obtained via lambda expression and executes a callback when they occur.
         /// Will unsubscribe upon control disposal.
         /// </summary>
@@ -1005,7 +1053,7 @@ namespace DrawnUi.Draw
                 string mainKey = $"ObserveProperties_{Guid.NewGuid()}";
                 TSource currentTarget = default(TSource);
                 PropertyChangedEventHandler currentTargetHandler = null;
-                var props = propertyNames.Concat(new[] { nameof(BindableObject.BindingContext) }).ToArray();
+                var props = new HashSet<string>(propertyNames.Concat(new[] { nameof(BindableObject.BindingContext) }));
 
                 // Helper to clean up current target subscription
                 void CleanupCurrentTarget()
@@ -1075,6 +1123,29 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperties{T, TSource}(T, Func{TSource}, IEnumerable{string}, Action{T})"/>:
+        /// pass properties as lambdas instead of strings, rename-safe. Note: callback comes before the property
+        /// lambdas here (params must be the last parameter).
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source control being observed</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="targetSelector">Lambda expression that returns the target control (e.g., () => Model)</param>
+        /// <param name="callback">Callback to execute when any of the properties change</param>
+        /// <param name="properties">Lambdas selecting the source properties, e.g. <c>x => x.Foo, x => x.Bar</c></param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperties<T, TSource>(
+            this T control,
+            Func<TSource> targetSelector,
+            Action<T> callback,
+            params Expression<Func<TSource, object>>[] properties)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperties(targetSelector, properties.Select(GetMemberName), callback);
+        }
+
+        /// <summary>
         /// Observes a control that will be assigned later in the initialization process.
         /// </summary>
         /// <typeparam name="T">Type of the target control (the one being extended)</typeparam>
@@ -1098,6 +1169,7 @@ namespace DrawnUi.Draw
                 string mainKey = $"Observe_{Guid.NewGuid()}";
                 TSource currentSource = null;
                 PropertyChangedEventHandler currentSourceHandler = null;
+                var filterSet = propertyFilter != null ? new HashSet<string>(propertyFilter) : null;
 
                 // Helper to clean up current source subscription
                 void CleanupCurrentSource()
@@ -1122,7 +1194,7 @@ namespace DrawnUi.Draw
                     currentSourceHandler = (sender, args) =>
                     {
                         // If a filter is specified, only proceed if the property is in the filter
-                        if (propertyFilter != null && !propertyFilter.Contains(args.PropertyName))
+                        if (filterSet != null && !filterSet.Contains(args.PropertyName))
                             return;
 
                         try
