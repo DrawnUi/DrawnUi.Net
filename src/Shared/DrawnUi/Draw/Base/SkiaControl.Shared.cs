@@ -1911,7 +1911,7 @@ namespace DrawnUi.Draw
                     else if (AnimationTapped == SkiaTouchAnimation.Shimmer)
                     {
                         var color = TouchEffectColor;
-                        control.PlayShimmerAnimation(color, 150, 33, 300);
+                        control.PlayShimmerAnimation(color, 150, 33, (int)AnimationTappedSpeed);
                     }
                 }
 
