@@ -136,6 +136,26 @@ Place font files under `wwwroot/fonts/` and register them with a **relative** pa
 
 At startup DrawnUI fetches each registered font over HTTP and parses it with SkiaSharp. Do **not** use `WasmFilesToBundle` — it is a no-op in the .NET WASM SDK, and the font would never load.
 
+### Built-in symbol & emoji fonts (mind the payload)
+
+DrawnUI ships subset fonts for glyph blocks most text fonts lack. On WASM these download at startup over HTTP, so their size is part of your transfer budget — and on a host without brotli/gzip (e.g. GitHub Pages) they ship **uncompressed**:
+
+| Call | Registers | Aliases | Size (uncompressed) |
+|------|-----------|---------|---------------------|
+| `fonts.AddSymbols()` | Noto Sans Math Symbols + Noto Sans Symbols 2 subsets | `FontSymbols`, `FontSymbols2` | ~285 KB (152 + 133) |
+| `fonts.AddEmoji()` | Noto Color Emoji subset | `FontEmoji` | ~920 KB |
+
+```csharp
+.ConfigureFonts(fonts =>
+{
+    fonts.AddFont("fonts/OpenSans-Regular.ttf", "FontText");
+    fonts.AddSymbols();   // ↑ → ✓ ● math/arrows/dingbats — ~285 KB
+    // fonts.AddEmoji(); // color emoji — ~920 KB, add only if you render emoji
+})
+```
+
+`AddSymbols()` fills arrows/math/dingbats (e.g. `↑ → ✓`) that OpenSans and similar text fonts don't carry. `AddEmoji()` is the heavy one (~0.9 MB) — include it only if you actually render emoji glyphs. To trim further, subset these to just the codepoints you use (see the font-slimming workflow).
+
 ## Run
 
 ```bash
