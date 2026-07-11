@@ -29,15 +29,15 @@ public partial class SkiaLayout
             // last live frame, the slide margin is never detected and the window never slides: the
             // scroll walls DEAD at the window edge (WASM wheel repro: m pinned at window end, offset
             // clamped forever). The structure + this event's offset are always current — recompute.
-            int firstVis = FirstVisibleIndexLocal, lastVis = LastVisibleIndexLocal;
+            // NO slide decisions on stale or catch-up data: if the measured structure does not reach
+            // the viewport (mid engage-reset / rebase re-measure), the computed range is the measure
+            // FRONTIER, not the viewport — feeding it to CheckSlide fired spurious backward slides
+            // that walked the window and offset away right after an engage-on-grow.
             if (ComputeVisibleRangeFromStructure(offset, viewport, out var f, out var l))
             {
-                firstVis = f;
-                lastVis = l;
+                _itemsWindow.AutoTune(f, l);
+                _itemsWindow.CheckSlide(f, l);
             }
-
-            _itemsWindow.AutoTune(firstVis, lastVis);
-            _itemsWindow.CheckSlide(firstVis, lastVis);
         }
 
         //cells will get OnScrolled
@@ -80,7 +80,11 @@ public partial class SkiaLayout
 
         // Viewport rode PAST the materialized content (virtual-extent travel over a windowed source):
         // nothing intersects, but the slide logic must still see "we are at the end" to keep chasing.
-        if (last < 0 && lastMeasured >= 0 && vpTop > 0)
+        // ONLY when the structure is COMPLETE: during a re-measure catch-up (engage-on-grow reset,
+        // rebase) "past the structure" means the FRONTIER hasn't reached the viewport yet — reporting
+        // the frontier as visible fired spurious backward slides (frontier index reads as "at head").
+        if (last < 0 && lastMeasured >= 0 && vpTop > 0
+            && lastMeasured >= (EffectiveItemsSource?.Count ?? 0) - 1)
         {
             first = lastMeasured;
             last = lastMeasured;

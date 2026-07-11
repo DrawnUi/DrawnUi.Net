@@ -24,6 +24,9 @@ public class ItemsSourceWindow
     private const int DefaultCap = 128;
     private const int MinBatch = 16;
 
+    /// <summary>Seed window size before AutoTune — engage-on-grow centers this on the viewport.</summary>
+    public const int SeedCap = DefaultCap;
+
     private readonly SkiaLayout _layout;
     private IList _source;
     private int _batch = DefaultBatch;
@@ -50,15 +53,15 @@ public class ItemsSourceWindow
     // rebuild synchronously, so trims run in the same turn and the slide latch releases immediately.
     private bool DeferredTrims => _layout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible;
 
-    public ItemsSourceWindow(SkiaLayout layout, IList source)
+    public ItemsSourceWindow(SkiaLayout layout, IList source, int startAt = 0)
     {
         _layout = layout;
         _source = source;
 
-        WindowStart = 0;
-        WindowEnd = Math.Min(_cap, source.Count);
-        var seed = new List<object>(WindowEnd);
-        for (int i = 0; i < WindowEnd; i++)
+        WindowStart = Math.Clamp(startAt, 0, Math.Max(0, source.Count - _cap));
+        WindowEnd = Math.Min(WindowStart + _cap, source.Count);
+        var seed = new List<object>(WindowEnd - WindowStart);
+        for (int i = WindowStart; i < WindowEnd; i++)
         {
             seed.Add(source[i]);
         }
@@ -186,9 +189,25 @@ public class ItemsSourceWindow
 
     // ----- internal LoadMore (slides), called from ShouldTriggerLoadMore on the render thread -----
 
+    /// <summary>
+    /// The resident structure is fully measured. While a re-measure is catching up (engage-on-grow
+    /// reset, jump rebase) every geometry-derived signal (visible range, viewport edges, clamped
+    /// offsets) reads TRANSIENT state — sliding off it walked the window and the offset away right
+    /// after an engage. No slides until the frontier reaches the resident tail.
+    /// </summary>
+    private bool StructureSettled => _layout.LastMeasuredIndexLocal >= Items.Count - 1;
+
+    // Hard freeze across an engage-on-grow: the full reset re-measures the slice from scratch and
+    // EVERY geometry signal is transient (incl. a STALE pre-reset LastMeasuredIndexLocal in the gap
+    // before the re-measure starts — StructureSettled alone let a spurious slide through there).
+    // Released by OnMeasurementApplied once the frontier reaches the resident tail.
+    private volatile bool _engageFreeze;
+
+    internal void FreezeUntilMeasured() => _engageFreeze = true;
+
     public void RequestSlideForward()
     {
-        if (_sliding || _layout.HasPendingStructureChanges || !CanSlideForward)
+        if (_sliding || _engageFreeze || _layout.HasPendingStructureChanges || !CanSlideForward || !StructureSettled)
             return;
 
         _sliding = true;
@@ -197,7 +216,7 @@ public class ItemsSourceWindow
 
     public void RequestSlideBackward()
     {
-        if (_sliding || _layout.HasPendingStructureChanges || !CanSlideBackward)
+        if (_sliding || _engageFreeze || _layout.HasPendingStructureChanges || !CanSlideBackward || !StructureSettled)
             return;
 
         _sliding = true;
@@ -305,6 +324,13 @@ public class ItemsSourceWindow
 
     private void OnMeasurementApplied()
     {
+        // engage-on-grow freeze: release once the re-measure caught up with the resident slice
+        if (_engageFreeze && StructureSettled)
+        {
+            _engageFreeze = false;
+            Debug.WriteLine("[ItemsWindow] engage freeze released (structure settled)");
+        }
+
         if (_trimArmed)
         {
             // stay armed until actually over cap: MeasurementApplied fires for EVERY applied
@@ -360,8 +386,24 @@ public class ItemsSourceWindow
                     Items.InsertRange(index - WindowStart, list);
                     WindowEnd += count;
                 }
+                else if (index == WindowEnd && Items.Count < _cap)
+                {
+                    // append AT the window tail while under cap: materialize what fits (a forced
+                    // window engages on an EMPTY source — the async seed lands exactly here; ignoring
+                    // it left the list blank until a slide that could never trigger). The remainder
+                    // beyond cap stays unmaterialized for forward slides.
+                    int take = Math.Min(_cap - Items.Count, count);
+                    var list = new List<object>(take);
+                    for (int i = 0; i < take; i++)
+                    {
+                        list.Add(args.NewItems[i]);
+                    }
 
-                // index >= WindowEnd (incl. tail append): not materialized, forward slides pick it up
+                    Items.AddRange(list);
+                    WindowEnd += take;
+                }
+
+                // other index >= WindowEnd: not materialized, forward slides pick it up
                 break;
             }
 

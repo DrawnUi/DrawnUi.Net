@@ -119,6 +119,15 @@ public class SkiaCachedStack : SkiaStack
     /// <summary>Mutation hook (LoadMore/trim/add/remove on the same collection) — invalidate the plane.</summary>
     protected override void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
+        // JUMP transition: a full-collection Replace (windowed rebase) rebuilds the whole slice —
+        // freeze the last presented plane before base processes it (see the hold in DrawDirectInternal)
+        if (ForegroundPlane != null && IsFullCollectionReplace(args))
+        {
+            _transitionHold = true;
+            _holdFrames = 0;
+            _holdScreenTop = _lastPresentedTop;
+        }
+
         IncrementStructureGen();
         _contentChanged = true; // invalidate the static blit so collection changes (insert/add/remove) apply
 
@@ -166,6 +175,19 @@ public class SkiaCachedStack : SkiaStack
         Repaint();
     }
 
+    // ---- JUMP TRANSITION HOLD ("previous + spinner") -------------------------------------------------
+    // A windowed JUMP (rebase = full-collection Replace + ordered scroll in flight) rebuilds the whole
+    // slice: live frames during the re-measure paint MIXED GENERATIONS (stale pooled cells over freshly
+    // estimated ones) — "cells over cells" corruption. The jump is EXPLICIT (no heuristics): on the
+    // full-replace we freeze the LAST PRESENTED plane and overdraw every frame with it, SCREEN-PINNED,
+    // while the live pipeline keeps draining/measuring underneath. Released when the ordered scroll has
+    // landed AND the viewport band passes the coherence gates (tiled, realized) — one-frame swap.
+    private bool _transitionHold;
+    private float _holdScreenTop;   // context.Destination.Top of the last presented frame (screen-pin)
+    private int _holdFrames;        // safety cap
+    private const int MaxHoldFrames = 240;
+    private float _lastPresentedTop;
+
     public override void DrawDirectInternal(DrawingContext context, SKRect drawingRect)
     {
         if (drawingRect.Height == 0 || drawingRect.Width == 0 || IsDisposed || IsDisposing)
@@ -174,6 +196,64 @@ public class SkiaCachedStack : SkiaStack
         var destination = context.Destination;
         float vpH = (float)ParentViewport.Pixels.Height;
 
+        _lastPresentedTop = destination.Top;
+
+        if (_transitionHold)
+        {
+            // run the normal pipeline UNDERNEATH with an EMPTY CLIP: all logic executes (drains
+            // structure changes, advances measurement — the exit condition depends on that progress)
+            // but paints ZERO pixels (the frozen plane has transparent gaps between cells, a plain
+            // overdraw would leak the transient through them).
+            var canvas = context.Context.Canvas;
+            int save = canvas.Save();
+            canvas.ClipRect(SKRect.Empty);
+            try
+            {
+                DrawDirectCore(context, drawingRect, destination, vpH);
+            }
+            finally
+            {
+                canvas.RestoreToCount(save);
+            }
+
+            bool orderedDone = !(Parent is SkiaScroll os && (os.OrderedScrollToIndexIsSet || os.OrderedScrollTo.IsValid));
+            bool coherent = false;
+            if (orderedDone)
+            {
+                var live = base.GetStackStructure();
+                float gTol = Math.Max(8f, (float)(Spacing * RenderingScale) + 2f);
+                float bareTop = -destination.Top;
+                coherent = live != null
+                           && SnapshotFillsViewport(live, bareTop, bareTop + vpH, gTol)
+                           && ViewportViewsRealized(live, bareTop, bareTop + vpH);
+            }
+
+            if (coherent || ++_holdFrames > MaxHoldFrames)
+            {
+                _transitionHold = false; // swap to the (now coherent) live content next frame
+                _contentChanged = true;  // and force a fresh plane record off it
+                Repaint();
+            }
+            else if (ForegroundPlane != null)
+            {
+                // screen-pinned blit of the frozen plane: identical pixels to the last presented
+                // frame regardless of how the offset moves during the rebase/settle
+                var frozen = context.WithDestination(new SKRect(destination.Left, _holdScreenTop,
+                    destination.Right, _holdScreenTop + drawingRect.Height));
+                IsCaching = true;
+                DrawCache(frozen, frozen.Destination);
+                Repaint(); // keep frames coming: exit conditions are re-checked per frame
+                return;
+            }
+
+            return;
+        }
+
+        DrawDirectCore(context, drawingRect, destination, vpH);
+    }
+
+    private void DrawDirectCore(DrawingContext context, SKRect drawingRect, SKRect destination, float vpH)
+    {
         // Consume a plane the off-thread bake just finished (no-op in single-plane mode).
         UpdatePlanes();
 

@@ -3097,6 +3097,7 @@ namespace DrawnUi.Draw
                 // shifts; without this refresh the stale bounds strand the viewport at the edge
                 // (harness EDGE LOADMORE vis=-1).
                 if (this.Content is SkiaLayout mvContent && mvContent.IsTemplated
+                    && ContentSize != null && ContentSize.Pixels.Height > 0
                     && (mvContent.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
                         || mvContent.ItemsWindow != null))
                 {
@@ -3226,13 +3227,21 @@ namespace DrawnUi.Draw
                         // the viewport stayed stranded past content forever (windowed source reaching
                         // its true end after virtual-extent travel: vis=-1). OffsetVisibleAnchorY
                         // shifts the offset, the pan baseline and any running animators together.
-                        if (overscrollPoints.Y != 0)
+                        // ONLY when measurement has SETTLED: mid-flight (engage-on-grow reset, window
+                        // rebase) the progressive ContentSize is transiently tiny — a sticky write-back
+                        // then DESTROYS a just-compensated offset (engage anchor teleported to newest).
+                        // Unsettled frames keep the per-frame visual clamp (posX/posY) only.
+                        bool measureSettled = !(Content is SkiaLayout mvl && mvl.IsTemplated
+                            && mvl.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                            && mvl.LastMeasuredIndexLocal < (mvl.EffectiveItemsSource?.Count ?? 0) - 1);
+
+                        if (overscrollPoints.Y != 0 && measureSettled)
                         {
                             OffsetVisibleAnchorY(-overscrollPoints.Y);
                             posY = (float)(ViewportOffsetY * zoomedScale);
                         }
 
-                        if (overscrollPoints.X != 0)
+                        if (overscrollPoints.X != 0 && measureSettled)
                         {
                             ViewportOffsetX -= overscrollPoints.X;
                             _panningCurrentOffsetPts.X -= overscrollPoints.X;

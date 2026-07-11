@@ -1383,11 +1383,20 @@ namespace DrawnUi.Draw
         /// Engages the built-in window when the (templated) ItemsSource is big enough. The window's slice
         /// takes over pipeline eventing; the controller itself observes the user's source collection.
         /// </summary>
+        /// <summary>
+        /// Engage the built-in items window regardless of source size (normally it engages only past
+        /// <see cref="WindowSourceThreshold"/>). For lists that LIVE on the window's structure-preserving
+        /// mutation paths (chat: head-inserts must stay glued/silent) — running un-windowed below the
+        /// threshold routes the same mutations through the plain paths with different visual behavior.
+        /// Set BEFORE ItemsSource.
+        /// </summary>
+        public bool ForceItemsWindow { get; set; }
+
         protected void TryEngageItemsWindow()
         {
             var source = ItemsSource;
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
-                || source.Count <= WindowSourceThreshold
+                || (source.Count < WindowSourceThreshold && !ForceItemsWindow)
                 || (ItemTemplate == null && ItemTemplateType == null))
                 return;
 
@@ -1402,6 +1411,76 @@ namespace DrawnUi.Draw
 
             Debug.WriteLine(
                 $"[SkiaLayout] items window ENGAGED: {source.Count} source items, resident {_itemsWindow.Items.Count}");
+        }
+
+        /// <summary>
+        /// Engages the window when the source grows past the threshold DURING LIFE (chat lifecycle:
+        /// cold start under threshold, LoadMore pages push it over while the user reads history).
+        /// The window seeds CENTERED on the current viewport and the scroll offset is compensated by
+        /// the EXACT measured height of the skipped head rows — no visual jump, the user keeps reading.
+        /// Returns true when it engaged (the caller's collection change is consumed by the reset).
+        /// </summary>
+        protected bool TryEngageItemsWindowOnGrow()
+        {
+            var source = ItemsSource;
+            if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
+                || source.Count < WindowSourceThreshold
+                || (ItemTemplate == null && ItemTemplateType == null))
+                return false;
+
+            // anchor on the current viewport — FRESH from structure + scroll offset (the draw-updated
+            // FirstVisibleIndexLocal lags frames behind) and rounded to the NEAREST row top, since the
+            // ordered landing below aligns the anchor's top with the viewport top (sub-row precision).
+            int anchor = Math.Max(0, FirstVisibleIndexLocal);
+            if (Parent is SkiaScroll anchorScroll)
+            {
+                float vpTopPx = -(float)(anchorScroll.ViewportOffsetY * RenderingScale);
+                var structure = GetStackStructure();
+                if (structure != null)
+                {
+                    foreach (var cell in structure.GetChildren())
+                    {
+                        if (cell == null || !cell.WasMeasured) continue;
+                        if (cell.Destination.Bottom <= vpTopPx) continue;
+                        anchor = cell.ControlIndex;
+                        float h = cell.Destination.Bottom - cell.Destination.Top;
+                        if (h > 0 && vpTopPx - cell.Destination.Top > h / 2)
+                            anchor++; // closer to the NEXT row's top
+                        break;
+                    }
+                }
+            }
+
+            anchor = Math.Clamp(anchor, 0, source.Count - 1);
+            int start = Math.Clamp(anchor - ItemsSourceWindow.SeedCap / 2, 0,
+                Math.Max(0, source.Count - ItemsSourceWindow.SeedCap));
+
+            _itemsWindow = new ItemsSourceWindow(this, source, start);
+            _itemsWindow.FreezeUntilMeasured(); // no slides until the reset re-measure settles
+            _itemsWindow.Items.CollectionChanged += OnItemsSourceCollectionChanged;
+
+            if (source is INotifyCollectionChanged sourceCollection)
+            {
+                sourceCollection.CollectionChanged -= OnItemsSourceCollectionChanged;
+            }
+
+            Debug.WriteLine(
+                $"[SkiaLayout] items window ENGAGED on grow: {source.Count} items, slice [{_itemsWindow.WindowStart}..{_itemsWindow.WindowEnd}), anchor {anchor}");
+
+            // full pipeline reset onto the slice
+            OnItemsSourceCollectionChanged(EffectiveItemsSource,
+                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+
+            // Land back on the anchor via the ORDERED scroll machinery — it already owns every
+            // transient this reset creates: holds until the target is measured, keeps LoadMore and
+            // window slides gated while in flight, clamps against fresh bounds on arrival. A manual
+            // offset compensation here fought those same transients and lost (clamp/slide races).
+            if (Parent is SkiaScroll scroll)
+            {
+                scroll.ScrollToIndex(anchor, false, RelativePositionType.Start);
+            }
+
+            return true;
         }
 
         #endregion
@@ -1532,6 +1611,16 @@ namespace DrawnUi.Draw
         {
             if (!IsTemplated)
                 return;
+
+            // ENGAGE-ON-GROW: the source crossed the window threshold DURING LIFE (typical chat: cold
+            // start under 300, LoadMore pages push it over). Engage the window IN PLACE, anchored to the
+            // current viewport — the change that grew the source is consumed by the engage reset.
+            if (_itemsWindow == null && ReferenceEquals(sender, ItemsSource)
+                && args.Action is NotifyCollectionChangedAction.Add or NotifyCollectionChangedAction.Reset
+                && TryEngageItemsWindowOnGrow())
+            {
+                return;
+            }
 
             if (ViewsAdapter.LogEnabled)
             {
