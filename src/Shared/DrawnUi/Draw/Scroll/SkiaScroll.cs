@@ -3106,11 +3106,18 @@ namespace DrawnUi.Draw
                     // travel extension then stays stale (still extended at the true source end:
                     // a fling after jump-to-last landed the viewport in the void past the content).
                     var windowEnd = mvContent.ItemsWindow?.WindowEnd ?? -1;
+                    // AND on the SOURCE count: a user LoadMore append at the true end changes NEITHER
+                    // WindowEnd NOR the measured end NOR ContentSize — without a refresh the travel
+                    // stays clamped at the pre-append end and the user is LOCKED OUT of the appended
+                    // page (scroll nudges bounce back, window never slides into the new items).
+                    var sourceCount = mvContent.ItemsWindow != null ? (mvContent.ItemsSource?.Count ?? -1) : -1;
                     if (Math.Abs(measuredEnd - _lastMeasuredTravelEnd) > 0.5
-                        || windowEnd != _lastWindowTravelEnd)
+                        || windowEnd != _lastWindowTravelEnd
+                        || sourceCount != _lastWindowSourceCount)
                     {
                         _lastMeasuredTravelEnd = measuredEnd;
                         _lastWindowTravelEnd = windowEnd;
+                        _lastWindowSourceCount = sourceCount;
                         // must FORCE ApplyContentSize: its size-compare guard sees the unchanged
                         // ContentSize and would skip InitializeViewport, leaving the stale clamp
                         contentSizeChanged = true;
@@ -3973,6 +3980,7 @@ namespace DrawnUi.Draw
         private int _lastVirtualItemsCount = -1;
         private double _lastMeasuredTravelEnd = -1;
         private int _lastWindowTravelEnd = -1;
+        private int _lastWindowSourceCount = -1;
         private float _velocityKY;
         private float _velocityKX;
         private float _zoomedScale = 1;
