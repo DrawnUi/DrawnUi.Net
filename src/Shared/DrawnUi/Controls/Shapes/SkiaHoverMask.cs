@@ -5,6 +5,14 @@
 /// </summary>
 public class SkiaHoverMask : SkiaShape
 {
+    public SkiaHoverMask()
+    {
+        // This control paints the WHOLE parent surface, not just its own bounds — a cache
+        // recorded at its own rect (SkiaShape defaults to Operations) culls the parent-wide fill.
+        // OperationsFull records with the full canvas clip as cull rect, keeping the overlay intact.
+        UseCache = SkiaCacheType.OperationsFull;
+    }
+
     protected override void Paint(DrawingContext ctx)
     {
 
