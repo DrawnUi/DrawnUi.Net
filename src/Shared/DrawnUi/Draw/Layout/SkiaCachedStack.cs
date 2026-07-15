@@ -18,14 +18,23 @@ namespace DrawnUi.Draw;
 public class SkiaCachedStack : SkiaStack
 {
     /// <summary>
-    /// FALSE: ONE foreground plane — the band is recorded synchronously on the render thread once per
-    /// half-viewport of drift or per invalidation, and blitted in between.
+    /// FALSE (default): ONE foreground plane — the band is recorded synchronously on the render thread once
+    /// per half-viewport of drift or per invalidation, and blitted in between.
     /// TRUE: TWO planes — the next plane is recorded OFF-thread while the current one keeps blitting, so
     /// scrolling never pays a render-thread record (the LoadMore/scroll record spike disappears). On MAUI
     /// heads this requires <see cref="SkiaLayout.UsePreparedViews"/> (the bake must be a pure cache-blit
     /// pass: no binds, no measures); without it the control silently behaves as single-plane there.
+    ///
+    /// DEFAULT FALSE because for an Operations/SKPicture plane the SYNC record is cheap (recording draw ops,
+    /// no raster), so on a capable device the async machinery — FreezeStructure deep-copy under LockMeasure,
+    /// worker handoff, plane swap/generation checks, and the render-thread <c>_bakeDone.Wait(16)</c> stall
+    /// when a bake is outrun — costs MORE than it saves and fragments pacing (measurably smoother single-plane
+    /// on device). It also can publish a plane holding STALE CELL CONTENT: the generation guard versions
+    /// structure only, not a cell's own content, so a rapidly self-invalidating cell (a streaming AI bubble
+    /// growing word by word) reverts its text as an old bake lands after a new one. Turn TRUE only where a
+    /// sync record genuinely can't hit frame budget — weak hardware or GPU-surface planes.
     /// </summary>
-    public bool UseDoubleBuffering = true;
+    public bool UseDoubleBuffering = false;
 
     public override bool UsePreparedViews
     {
@@ -120,12 +129,21 @@ public class SkiaCachedStack : SkiaStack
     protected override void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
         // JUMP transition: a full-collection Replace (windowed rebase) rebuilds the whole slice —
-        // freeze the last presented plane before base processes it (see the hold in DrawDirectInternal)
+        // freeze the last presented plane before base processes it (see the hold in DrawDirectInternal).
+        // The hold takes OWNERSHIP of the plane by detaching it: the pipeline keeps running underneath
+        // (draining structure changes, recording fresh planes) and would otherwise dispose it in
+        // UpdatePlanes, mutate its picture in-place in CreateCache, or shift its anchor in
+        // OnContentTranslatedVertically — a disposed/shifted hold plane blits NOTHING (the device
+        // "blank frame + spinner" during jumps) or lands pixels off-screen.
         if (ForegroundPlane != null && IsFullCollectionReplace(args))
         {
             _transitionHold = true;
             _holdFrames = 0;
             _holdScreenTop = _lastPresentedTop;
+            DisposeObject(_holdPlane); // a still-held previous freeze (back-to-back jumps)
+            _holdPlane = ForegroundPlane;
+            ForegroundPlane = null; // pipeline records a fresh plane; never touches the frozen one
+            _cacheValid = false;
         }
 
         IncrementStructureGen();
@@ -183,10 +201,18 @@ public class SkiaCachedStack : SkiaStack
     // while the live pipeline keeps draining/measuring underneath. Released when the ordered scroll has
     // landed AND the viewport band passes the coherence gates (tiled, realized) — one-frame swap.
     private bool _transitionHold;
+    private CachedObject _holdPlane; // frozen last-presented plane, OWNED by the hold (detached from the pipeline)
     private float _holdScreenTop;   // context.Destination.Top of the last presented frame (screen-pin)
     private int _holdFrames;        // safety cap
     private const int MaxHoldFrames = 240;
     private float _lastPresentedTop;
+
+    void DisposeHoldPlane()
+    {
+        var plane = _holdPlane;
+        _holdPlane = null;
+        DisposeObject(plane);
+    }
 
     public override void DrawDirectInternal(DrawingContext context, SKRect drawingRect)
     {
@@ -197,6 +223,11 @@ public class SkiaCachedStack : SkiaStack
         float vpH = (float)ParentViewport.Pixels.Height;
 
         _lastPresentedTop = destination.Top;
+
+        if (_transitionHold && _holdPlane == null)
+        {
+            _transitionHold = false; // nothing frozen to serve — live draw below, never a blank frame
+        }
 
         if (_transitionHold)
         {
@@ -230,25 +261,23 @@ public class SkiaCachedStack : SkiaStack
 
             if (coherent || ++_holdFrames > MaxHoldFrames)
             {
-                _transitionHold = false; // swap to the (now coherent) live content next frame
-                _contentChanged = true;  // and force a fresh plane record off it
-                Repaint();
-            }
-            else if (ForegroundPlane != null)
-            {
-                // screen-pinned blit of the frozen plane: identical pixels to the last presented
-                // frame regardless of how the offset moves during the rebase/settle
-                var frozen = context.WithDestination(new SKRect(destination.Left, _holdScreenTop,
-                    destination.Right, _holdScreenTop + drawingRect.Height));
-                IsCaching = true;
-                DrawCache(frozen, frozen.Destination);
-                Repaint(); // keep frames coming: exit conditions are re-checked per frame
-                return;
+                _transitionHold = false; // swap to the (now coherent) live content NEXT frame; THIS frame
+                _contentChanged = true;  // still serves the frozen plane below — the core above painted
+                                         // zero pixels, so returning without a blit blank-framed the swap
             }
 
+            // screen-pinned blit of the OWNED frozen plane: identical pixels to the last presented
+            // frame regardless of how the offset moves during the rebase/settle — the pipeline can
+            // neither dispose nor re-anchor it (see the detach in OnItemsSourceCollectionChanged)
+            var frozen = context.WithDestination(new SKRect(destination.Left, _holdScreenTop,
+                destination.Right, _holdScreenTop + drawingRect.Height));
+            IsCaching = true;
+            DrawPlane(frozen, frozen.Destination, _holdPlane);
+            Repaint(); // keep frames coming: exit conditions are re-checked per frame
             return;
         }
 
+        DisposeHoldPlane(); // hold released last frame (or never engaged): reclaim the frozen plane
         DrawDirectCore(context, drawingRect, destination, vpH);
     }
 
@@ -488,6 +517,12 @@ public class SkiaCachedStack : SkiaStack
             return false;
         if (view.UsesCacheDoubleBuffering && view.RenderObject == null)
             return false; // never baked yet -> would record a blank
+        // A rebake is flagged/in flight: RenderObject holds the PREVIOUS visual state (streaming-text
+        // cell mid-grow). Freezing it into a plane serves REGRESSED content for the plane's whole life —
+        // the device "message text went backward" flicker. Reject; caller live-draws until the bake lands
+        // (which re-dirties via UpdateByChild and triggers a fresh record).
+        if (view.DoubleBufferedCacheIsStale)
+            return false;
         return true;
     }
 
@@ -988,9 +1023,10 @@ public class SkiaCachedStack : SkiaStack
     /// apply translation to position it according to the current scroll offset; translation and
     /// RenderTree.Offset keep gestures correctly mapped.
     /// </summary>
-    void DrawCache(DrawingContext context, SKRect dest)
+    void DrawCache(DrawingContext context, SKRect dest) => DrawPlane(context, dest, ForegroundPlane);
+
+    void DrawPlane(DrawingContext context, SKRect dest, CachedObject cache)
     {
-        var cache = ForegroundPlane;
         if (cache != null)
         {
             // RenderTree is null until the first LIVE frame builds one — a plane can be served before
@@ -1054,6 +1090,18 @@ public class SkiaCachedStack : SkiaStack
             plane.Bounds.Right, plane.Bounds.Bottom + deltaPixels);
     }
 
+    public override string DebugString
+    {
+        get
+        {
+            // plane state on top of the layout diagnostics: coverage band, validity, transition hold
+            var plane = ForegroundPlane == null
+                ? "plane none"
+                : $"plane [{_foregroundCoveredTop:0}..{_foregroundCoveredBot:0}] valid={_cacheValid}{(_transitionHold ? " HOLD" : "")}";
+            return $"{base.DebugString}, {plane}";
+        }
+    }
+
     /// <summary>The plane currently being blitted. ONLY the render thread reads/writes it.</summary>
     public CachedObject ForegroundPlane { get; set; }
 
@@ -1066,12 +1114,14 @@ public class SkiaCachedStack : SkiaStack
 
         DisposeObject(Interlocked.Exchange(ref _preparedPlane, null));
         DisposeObject(ForegroundPlane);
+        DisposeHoldPlane();
     }
 
     public override void OnDisposing()
     {
         DisposeObject(Interlocked.Exchange(ref _preparedPlane, null));
         ForegroundPlane = null;
+        DisposeHoldPlane();
         _recorder?.Dispose();
         _recorder = null;
 

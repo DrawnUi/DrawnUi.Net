@@ -426,13 +426,22 @@ namespace DrawnUi.Draw
         {
             get
             {
-                // logical (ItemsSource-space) indices — what the user scrolls by; window offset applied
+                // logical (ItemsSource-space) indices — what the user scrolls by; window offset applied.
+                // "visible" = REALLY on screen (bare); "drawn" = the painted band incl. overscan.
+                int visFirst = FirstVisibleIndex, visLast = LastVisibleIndex;
+                int visCount = visFirst < 0 || visLast < visFirst ? 0 : visLast - visFirst + 1;
                 var output =
-                    $"{Type} `{Tag}`, {MeasuredSize.Pixels.Width:0}x{MeasuredSize.Pixels.Height:0}, visible {FirstVisibleIndex}-{LastVisibleIndex} ({_countVisible}), ";
+                    $"{Type} `{Tag}`, {MeasuredSize.Pixels.Width:0}x{MeasuredSize.Pixels.Height:0}, visible {visFirst}-{visLast} ({visCount}), drawn {FirstVisibleIndexDrawn}-{LastVisibleIndexDrawn} ({_countVisible}), ";
 
                 if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
                 {
                     output += $"measured {LastMeasuredIndex + 1}, ";
+                }
+
+                // built-in items window engaged: slice position + residency over the full source
+                if (_itemsWindow != null)
+                {
+                    output += $"win [{_itemsWindow.WindowStart}..{_itemsWindow.WindowEnd}) res={_itemsWindow.Items.Count}/{_itemsWindow.Source?.Count}, ";
                 }
 
                 if (IsTemplated || RenderTree == null)

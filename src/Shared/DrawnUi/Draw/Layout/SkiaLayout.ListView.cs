@@ -19,6 +19,7 @@ public partial class SkiaLayout
         }
 
         ParentViewport = viewport;
+        _lastVisibilityOffset = offset;
 
         // built-in source window: derive batch/cap from the real viewport once visible range is known,
         // and drive internal slides from the visible range (independent of the scroll's LoadMoreCommand)
@@ -253,12 +254,46 @@ public partial class SkiaLayout
 
     // PUBLIC API speaks ItemsSource (global) space: when the built-in window (ItemsWindow) is
     // engaged, local indices are offset by WindowStart; -1 sentinels pass through unmapped.
-    /// <summary>Index of the first visible item, in ItemsSource space.</summary>
-    public int FirstVisibleIndex =>
+    //
+    // PUBLIC "visible" = REALLY intersecting the viewport, computed fresh from structure + offset on
+    // read. The protected *Local fields carry the DRAWN band instead (viewport + overscan, plane
+    // record width) — internal machinery (slide margins, AutoTune) is calibrated to that and plane
+    // blit frames don't refresh it; exposing it publicly reported "18 visible" for 8 on screen.
+
+    /// <summary>Index of the first item REALLY visible in the viewport, in ItemsSource space.</summary>
+    public int FirstVisibleIndex
+    {
+        get
+        {
+            if (ComputeVisibleRangeFromStructure(_lastVisibilityOffset, ParentViewport, out var f, out _))
+                return f + (_itemsWindow?.WindowStart ?? 0);
+            return FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        }
+    }
+
+    /// <summary>Index of the last item REALLY visible in the viewport, in ItemsSource space.</summary>
+    public int LastVisibleIndex
+    {
+        get
+        {
+            if (ComputeVisibleRangeFromStructure(_lastVisibilityOffset, ParentViewport, out _, out var l))
+                return l + (_itemsWindow?.WindowStart ?? 0);
+            return LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        }
+    }
+
+    /// <summary>Latest scroll offset seen by OnViewportWasChanged — feeds the public visibility reads.</summary>
+    protected ScaledPoint _lastVisibilityOffset;
+
+    // TECHNICAL accessors: the DRAWN band (viewport + overscan, what the pipeline/plane actually
+    // painted last), ItemsSource space. For machinery-level consumers (edge/frontier checks) that
+    // were calibrated to these semantics — NOT what a user sees on screen (use *VisibleIndex).
+    /// <summary>First index of the last DRAWN band (includes overscan), ItemsSource space.</summary>
+    public int FirstVisibleIndexDrawn =>
         FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
 
-    /// <summary>Index of the last visible item, in ItemsSource space.</summary>
-    public int LastVisibleIndex =>
+    /// <summary>Last index of the last DRAWN band (includes overscan), ItemsSource space.</summary>
+    public int LastVisibleIndexDrawn =>
         LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
 
     /// <summary>Highest measured index, in ItemsSource space.</summary>
