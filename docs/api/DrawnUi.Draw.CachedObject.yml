@@ -25,6 +25,7 @@ items:
   - DrawnUi.Draw.CachedObject.IsDisposed
   - DrawnUi.Draw.CachedObject.LastDestination
   - DrawnUi.Draw.CachedObject.LastDrawnAt
+  - DrawnUi.Draw.CachedObject.LogicalBounds
   - DrawnUi.Draw.CachedObject.Picture
   - DrawnUi.Draw.CachedObject.PreserveSourceFromDispose
   - DrawnUi.Draw.CachedObject.RecordingArea
@@ -99,6 +100,46 @@ items:
       type: System.Int32
     content.vb: Public Property DataContext As Integer
   overload: DrawnUi.Draw.CachedObject.DataContext*
+- uid: DrawnUi.Draw.CachedObject.LogicalBounds
+  commentId: P:DrawnUi.Draw.CachedObject.LogicalBounds
+  id: LogicalBounds
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: LogicalBounds
+  nameWithType: CachedObject.LogicalBounds
+  fullName: DrawnUi.Draw.CachedObject.LogicalBounds
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: LogicalBounds
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Logical (unexpanded) rect the content was recorded for. For image-backed caches
+
+    <xref href="DrawnUi.Draw.CachedObject.Bounds" data-throw-if-not-resolved="false"></xref> is the surface area inflated by effects/shadow margins
+
+    (see AggregatedEffectsMarginPixels) — any gesture translation or position-delta math
+
+    must use THIS as the recorded origin, otherwise coordinates shift by the margin.
+
+    For Operations caches Bounds is already logical (the destination), kept as-is.
+  example: []
+  syntax:
+    content: public SKRect LogicalBounds { get; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKRect
+    content.vb: Public ReadOnly Property LogicalBounds As SKRect
+  overload: DrawnUi.Draw.CachedObject.LogicalBounds*
 - uid: DrawnUi.Draw.CachedObject.TranslateInputCoords(SkiaSharp.SKRect)
   commentId: M:DrawnUi.Draw.CachedObject.TranslateInputCoords(SkiaSharp.SKRect)
   id: TranslateInputCoords(SkiaSharp.SKRect)
@@ -117,7 +158,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TranslateInputCoords
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 8
+    startLine: 17
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -148,7 +189,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculatePositionOffset
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 19
+    startLine: 28
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -179,7 +220,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Test
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 27
+    startLine: 36
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -210,7 +251,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateDrawingOffset
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 41
+    startLine: 50
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -245,7 +286,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 67
+    startLine: 81
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -285,7 +326,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 80
+    startLine: 94
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -332,7 +373,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastDrawnAt
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 108
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -361,7 +402,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastDestination
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 113
+    startLine: 127
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -390,7 +431,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 122
+    startLine: 136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -436,7 +477,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 136
+    startLine: 150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -486,7 +527,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 168
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -524,7 +565,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 176
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -562,7 +603,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 189
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -605,7 +646,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Id
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 197
+    startLine: 211
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -632,7 +673,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SurfaceIsRecycled
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 203
+    startLine: 217
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -663,7 +704,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Picture
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 205
+    startLine: 219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -692,7 +733,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Image
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 207
+    startLine: 221
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -721,7 +762,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Bounds
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 209
+    startLine: 223
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -750,7 +791,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RecordingArea
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 211
+    startLine: 225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -779,7 +820,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Type
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 213
+    startLine: 227
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -808,7 +849,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 215
+    startLine: 229
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -838,7 +879,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 237
+    startLine: 251
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -867,7 +908,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 239
+    startLine: 253
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -896,7 +937,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreserveSourceFromDispose
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 241
+    startLine: 255
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -925,7 +966,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetBitmap
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 243
+    startLine: 257
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -953,7 +994,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Surface
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 248
+    startLine: 262
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -982,7 +1023,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Children
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 250
+    startLine: 264
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1011,7 +1052,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAlive
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 252
+    startLine: 266
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1407,12 +1448,18 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
-- uid: DrawnUi.Draw.CachedObject.TranslateInputCoords*
-  commentId: Overload:DrawnUi.Draw.CachedObject.TranslateInputCoords
-  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_TranslateInputCoords_SkiaSharp_SKRect_
-  name: TranslateInputCoords
-  nameWithType: CachedObject.TranslateInputCoords
-  fullName: DrawnUi.Draw.CachedObject.TranslateInputCoords
+- uid: DrawnUi.Draw.CachedObject.Bounds
+  commentId: P:DrawnUi.Draw.CachedObject.Bounds
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_Bounds
+  name: Bounds
+  nameWithType: CachedObject.Bounds
+  fullName: DrawnUi.Draw.CachedObject.Bounds
+- uid: DrawnUi.Draw.CachedObject.LogicalBounds*
+  commentId: Overload:DrawnUi.Draw.CachedObject.LogicalBounds
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_LogicalBounds
+  name: LogicalBounds
+  nameWithType: CachedObject.LogicalBounds
+  fullName: DrawnUi.Draw.CachedObject.LogicalBounds
 - uid: SkiaSharp.SKRect
   commentId: T:SkiaSharp.SKRect
   parent: SkiaSharp
@@ -1421,6 +1468,19 @@ references:
   name: SKRect
   nameWithType: SKRect
   fullName: SkiaSharp.SKRect
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Draw.CachedObject.TranslateInputCoords*
+  commentId: Overload:DrawnUi.Draw.CachedObject.TranslateInputCoords
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_TranslateInputCoords_SkiaSharp_SKRect_
+  name: TranslateInputCoords
+  nameWithType: CachedObject.TranslateInputCoords
+  fullName: DrawnUi.Draw.CachedObject.TranslateInputCoords
 - uid: SkiaSharp.SKPoint
   commentId: T:SkiaSharp.SKPoint
   parent: SkiaSharp
@@ -1429,13 +1489,6 @@ references:
   name: SKPoint
   nameWithType: SKPoint
   fullName: SkiaSharp.SKPoint
-- uid: SkiaSharp
-  commentId: N:SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp
-  name: SkiaSharp
-  nameWithType: SkiaSharp
-  fullName: SkiaSharp
 - uid: DrawnUi.Draw.CachedObject.CalculatePositionOffset*
   commentId: Overload:DrawnUi.Draw.CachedObject.CalculatePositionOffset
   href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_CalculatePositionOffset_SkiaSharp_SKPoint_

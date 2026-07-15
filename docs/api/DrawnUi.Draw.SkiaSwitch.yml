@@ -13,11 +13,13 @@ items:
   - DrawnUi.Draw.SkiaSwitch.CreateCupertinoStyleContent
   - DrawnUi.Draw.SkiaSwitch.CreateDefaultContent
   - DrawnUi.Draw.SkiaSwitch.CreateDefaultStyleContent
+  - DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent
   - DrawnUi.Draw.SkiaSwitch.CreateMaterialStyleContent
   - DrawnUi.Draw.SkiaSwitch.CreateWindowsStyleContent
   - DrawnUi.Draw.SkiaSwitch.FindViews
   - DrawnUi.Draw.SkiaSwitch.GetThumbPosForOff
   - DrawnUi.Draw.SkiaSwitch.GetThumbPosForOn
+  - DrawnUi.Draw.SkiaSwitch.MaterialOutlineColor
   - DrawnUi.Draw.SkiaSwitch.OnChildrenChanged
   - DrawnUi.Draw.SkiaSwitch.OnToggledChanged
   - DrawnUi.Draw.SkiaSwitch.Thumb
@@ -305,6 +307,9 @@ items:
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndexLocal
   - DrawnUi.Draw.SkiaLayout.FirstVisibleIndex
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndex
+  - DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+  - DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+  - DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
   - DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   - DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
   - DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
@@ -406,6 +411,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DrawRenderObjectInternal(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.CachedObject)
   - DrawnUi.Draw.SkiaControl.IsCacheImage
   - DrawnUi.Draw.SkiaControl.IsCacheOperations
+  - DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
   - DrawnUi.Draw.SkiaControl.UseRenderingObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.DrawPlaceholder(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheValidity
@@ -426,8 +432,10 @@ items:
   - DrawnUi.Draw.SkiaControl.CreateRenderingObjectAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Action{DrawnUi.Draw.DrawingContext})
   - DrawnUi.Draw.SkiaControl.AttachEffects
   - DrawnUi.Draw.SkiaControl.OnVisualEffectsChanged
+  - DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
   - DrawnUi.Draw.SkiaControl.EffectsMarginPixels
   - DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  - DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
   - DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
   - DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
   - DrawnUi.Draw.SkiaControl.EffectsState
@@ -1321,7 +1329,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 34
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1347,7 +1355,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateCupertinoStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 64
+    startLine: 76
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1373,7 +1381,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterialStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 113
+    startLine: 125
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1381,6 +1389,66 @@ items:
     content: protected virtual void CreateMaterialStyleContent()
     content.vb: Protected Overridable Sub CreateMaterialStyleContent()
   overload: DrawnUi.Draw.SkiaSwitch.CreateMaterialStyleContent*
+- uid: DrawnUi.Draw.SkiaSwitch.MaterialOutlineColor
+  commentId: F:DrawnUi.Draw.SkiaSwitch.MaterialOutlineColor
+  id: MaterialOutlineColor
+  parent: DrawnUi.Draw.SkiaSwitch
+  langs:
+  - csharp
+  - vb
+  name: MaterialOutlineColor
+  nameWithType: SkiaSwitch.MaterialOutlineColor
+  fullName: DrawnUi.Draw.SkiaSwitch.MaterialOutlineColor
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MaterialOutlineColor
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+    startLine: 179
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Material 3 outline color, used for the unselected track border.
+  example: []
+  syntax:
+    content: protected static readonly Color MaterialOutlineColor
+    return:
+      type: Microsoft.Maui.Graphics.Color
+    content.vb: Protected Shared ReadOnly MaterialOutlineColor As Color
+- uid: DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent
+  commentId: M:DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent
+  id: CreateMaterial3StyleContent
+  parent: DrawnUi.Draw.SkiaSwitch
+  langs:
+  - csharp
+  - vb
+  name: CreateMaterial3StyleContent()
+  nameWithType: SkiaSwitch.CreateMaterial3StyleContent()
+  fullName: DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CreateMaterial3StyleContent
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+    startLine: 185
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Creates a Material 3 (Material You) switch: 52x32 full-height track,
+
+    outlined when off, filled primary when on, 24pt centered thumb.
+  example: []
+  syntax:
+    content: protected virtual void CreateMaterial3StyleContent()
+    content.vb: Protected Overridable Sub CreateMaterial3StyleContent()
+  overload: DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent*
 - uid: DrawnUi.Draw.SkiaSwitch.CreateWindowsStyleContent
   commentId: M:DrawnUi.Draw.SkiaSwitch.CreateWindowsStyleContent
   id: CreateWindowsStyleContent
@@ -1399,7 +1467,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateWindowsStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 164
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1425,7 +1493,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 206
+    startLine: 279
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1451,7 +1519,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 221
+    startLine: 294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1477,7 +1545,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Track
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 240
+    startLine: 318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1504,7 +1572,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Thumb
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 241
+    startLine: 319
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1531,7 +1599,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 243
+    startLine: 321
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1557,7 +1625,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildrenChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 249
+    startLine: 327
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1586,7 +1654,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 256
+    startLine: 334
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1615,7 +1683,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetThumbPosForOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 270
+    startLine: 348
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1643,7 +1711,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetThumbPosForOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 277
+    startLine: 355
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1671,7 +1739,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimationSpeed
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 282
+    startLine: 360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1698,7 +1766,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanAnimate
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 284
+    startLine: 362
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1726,7 +1794,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToggledChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 291
+    startLine: 369
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6335,6 +6403,27 @@ references:
   name: LastVisibleIndex
   nameWithType: SkiaLayout.LastVisibleIndex
   fullName: DrawnUi.Draw.SkiaLayout.LastVisibleIndex
+- uid: DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+  commentId: F:DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout__lastVisibilityOffset
+  name: _lastVisibilityOffset
+  nameWithType: SkiaLayout._lastVisibilityOffset
+  fullName: DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+- uid: DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+  commentId: P:DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_FirstVisibleIndexDrawn
+  name: FirstVisibleIndexDrawn
+  nameWithType: SkiaLayout.FirstVisibleIndexDrawn
+  fullName: DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+- uid: DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
+  commentId: P:DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_LastVisibleIndexDrawn
+  name: LastVisibleIndexDrawn
+  nameWithType: SkiaLayout.LastVisibleIndexDrawn
+  fullName: DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
 - uid: DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   commentId: P:DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   parent: DrawnUi.Draw.SkiaLayout
@@ -8727,6 +8816,13 @@ references:
   name: IsCacheOperations
   nameWithType: SkiaControl.IsCacheOperations
   fullName: DrawnUi.Draw.SkiaControl.IsCacheOperations
+- uid: DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
+  commentId: P:DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DoubleBufferedCacheIsStale
+  name: DoubleBufferedCacheIsStale
+  nameWithType: SkiaControl.DoubleBufferedCacheIsStale
+  fullName: DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
 - uid: DrawnUi.Draw.SkiaControl.UseRenderingObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   commentId: M:DrawnUi.Draw.SkiaControl.UseRenderingObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   parent: DrawnUi.Draw.SkiaControl
@@ -9306,6 +9402,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnVisualEffectsChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
+  commentId: P:DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AggregatedEffectsMarginPixels
+  name: AggregatedEffectsMarginPixels
+  nameWithType: SkiaControl.AggregatedEffectsMarginPixels
+  fullName: DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
 - uid: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
   commentId: P:DrawnUi.Draw.SkiaControl.EffectsMarginPixels
   parent: DrawnUi.Draw.SkiaControl
@@ -9339,6 +9442,103 @@ references:
     name: ComputeEffectsMargin
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
   - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MergeShadowMargin_System_Double__System_Double__System_Double__System_Double__DrawnUi_Draw_SkiaShadow_System_Single_
+  name: MergeShadowMargin(ref double, ref double, ref double, ref double, SkiaShadow, float)
+  nameWithType: SkiaControl.MergeShadowMargin(ref double, ref double, ref double, ref double, SkiaShadow, float)
+  fullName: DrawnUi.Draw.SkiaControl.MergeShadowMargin(ref double, ref double, ref double, ref double, DrawnUi.Draw.SkiaShadow, float)
+  nameWithType.vb: SkiaControl.MergeShadowMargin(Double, Double, Double, Double, SkiaShadow, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.MergeShadowMargin(Double, Double, Double, Double, DrawnUi.Draw.SkiaShadow, Single)
+  name.vb: MergeShadowMargin(Double, Double, Double, Double, SkiaShadow, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
+    name: MergeShadowMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MergeShadowMargin_System_Double__System_Double__System_Double__System_Double__DrawnUi_Draw_SkiaShadow_System_Single_
+  - name: (
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaShadow
+    name: SkiaShadow
+    href: DrawnUi.Draw.SkiaShadow.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
+    name: MergeShadowMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MergeShadowMargin_System_Double__System_Double__System_Double__System_Double__DrawnUi_Draw_SkiaShadow_System_Single_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaShadow
+    name: SkiaShadow
+    href: DrawnUi.Draw.SkiaShadow.html
+  - name: ','
+  - name: " "
   - uid: System.Single
     name: Single
     isExternal: true
@@ -40315,6 +40515,57 @@ references:
   name: CreateMaterialStyleContent
   nameWithType: SkiaSwitch.CreateMaterialStyleContent
   fullName: DrawnUi.Draw.SkiaSwitch.CreateMaterialStyleContent
+- uid: Microsoft.Maui.Graphics.Color
+  commentId: T:Microsoft.Maui.Graphics.Color
+  parent: Microsoft.Maui.Graphics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.color
+  name: Color
+  nameWithType: Color
+  fullName: Microsoft.Maui.Graphics.Color
+- uid: Microsoft.Maui.Graphics
+  commentId: N:Microsoft.Maui.Graphics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Maui.Graphics
+  nameWithType: Microsoft.Maui.Graphics
+  fullName: Microsoft.Maui.Graphics
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
+  - name: .
+  - uid: Microsoft.Maui.Graphics
+    name: Graphics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Maui
+    name: Maui
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui
+  - name: .
+  - uid: Microsoft.Maui.Graphics
+    name: Graphics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics
+- uid: DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent*
+  commentId: Overload:DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent
+  href: DrawnUi.Draw.SkiaSwitch.html#DrawnUi_Draw_SkiaSwitch_CreateMaterial3StyleContent
+  name: CreateMaterial3StyleContent
+  nameWithType: SkiaSwitch.CreateMaterial3StyleContent
+  fullName: DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent
 - uid: DrawnUi.Draw.SkiaSwitch.CreateWindowsStyleContent*
   commentId: Overload:DrawnUi.Draw.SkiaSwitch.CreateWindowsStyleContent
   href: DrawnUi.Draw.SkiaSwitch.html#DrawnUi_Draw_SkiaSwitch_CreateWindowsStyleContent

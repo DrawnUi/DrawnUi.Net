@@ -22,6 +22,7 @@ items:
   - DrawnUi.Draw.SkiaShape.CalculateSizeForStrokeFromContent(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaShape.ClipBackgroundColor
   - DrawnUi.Draw.SkiaShape.ClipBackgroundColorProperty
+  - DrawnUi.Draw.SkiaShape.ComputeEffectsMargin(System.Single)
   - DrawnUi.Draw.SkiaShape.CornerRadius
   - DrawnUi.Draw.SkiaShape.CornerRadiusProperty
   - DrawnUi.Draw.SkiaShape.CreateClip(System.Object,System.Boolean,SkiaSharp.SKPath)
@@ -353,6 +354,9 @@ items:
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndexLocal
   - DrawnUi.Draw.SkiaLayout.FirstVisibleIndex
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndex
+  - DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+  - DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+  - DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
   - DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   - DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
   - DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
@@ -454,6 +458,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DrawRenderObjectInternal(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.CachedObject)
   - DrawnUi.Draw.SkiaControl.IsCacheImage
   - DrawnUi.Draw.SkiaControl.IsCacheOperations
+  - DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
   - DrawnUi.Draw.SkiaControl.UseRenderingObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.DrawPlaceholder(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheValidity
@@ -474,8 +479,9 @@ items:
   - DrawnUi.Draw.SkiaControl.CreateRenderingObjectAndPaint(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Action{DrawnUi.Draw.DrawingContext})
   - DrawnUi.Draw.SkiaControl.AttachEffects
   - DrawnUi.Draw.SkiaControl.OnVisualEffectsChanged
+  - DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
   - DrawnUi.Draw.SkiaControl.EffectsMarginPixels
-  - DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  - DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
   - DrawnUi.Draw.SkiaControl.GetRenderingExpandPixels
   - DrawnUi.Draw.SkiaControl.EffectsGestureProcessors
   - DrawnUi.Draw.SkiaControl.EffectsState
@@ -2527,6 +2533,48 @@ items:
     content.vb: Protected Overrides Sub Paint(ctx As DrawingContext)
   overridden: DrawnUi.Draw.SkiaLayout.Paint(DrawnUi.Draw.DrawingContext)
   overload: DrawnUi.Draw.SkiaShape.Paint*
+- uid: DrawnUi.Draw.SkiaShape.ComputeEffectsMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShape.ComputeEffectsMargin(System.Single)
+  id: ComputeEffectsMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaShape
+  langs:
+  - csharp
+  - vb
+  name: ComputeEffectsMargin(float)
+  nameWithType: SkiaShape.ComputeEffectsMargin(float)
+  fullName: DrawnUi.Draw.SkiaShape.ComputeEffectsMargin(float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/SkiaShape.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ComputeEffectsMargin
+    path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
+    startLine: 820
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Adds the legacy <xref href="DrawnUi.Draw.SkiaShape.Shadows" data-throw-if-not-resolved="false"></xref> overflow to the effects margin so the cache surface,
+
+    clip and dirty region expand to hold the painted shadows — same pipeline VisualEffects use.
+
+    PlatformShadow (handled by base) takes precedence over Shadows at paint time, mirrored here.
+  example: []
+  syntax:
+    content: protected override Thickness ComputeEffectsMargin(float scale)
+    parameters:
+    - id: scale
+      type: System.Single
+    return:
+      type: Microsoft.Maui.Thickness
+    content.vb: Protected Overrides Function ComputeEffectsMargin(scale As Single) As Thickness
+  overridden: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  overload: DrawnUi.Draw.SkiaShape.ComputeEffectsMargin*
+  nameWithType.vb: SkiaShape.ComputeEffectsMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaShape.ComputeEffectsMargin(Single)
+  name.vb: ComputeEffectsMargin(Single)
 - uid: DrawnUi.Draw.SkiaShape.ShadowsProperty
   commentId: F:DrawnUi.Draw.SkiaShape.ShadowsProperty
   id: ShadowsProperty
@@ -2545,7 +2593,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShadowsProperty
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 878
+    startLine: 903
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2572,7 +2620,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Shadows
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 894
+    startLine: 919
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2601,7 +2649,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PolygonStar
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 927
+    startLine: 952
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2630,7 +2678,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SmoothPointsProperty
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 992
+    startLine: 1017
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2657,7 +2705,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SmoothPoints
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1022
+    startLine: 1047
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2709,7 +2757,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateStarPoints
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1169
+    startLine: 1194
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2745,7 +2793,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateStarPointsCrossed
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1217
+    startLine: 1242
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2779,7 +2827,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCompensatedStrokeWidth
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1275
+    startLine: 1300
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3499,7 +3547,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: protected SKRect CalculateContentSizeForStroke(SKRect destination, float scale)
+    content: protected virtual SKRect CalculateContentSizeForStroke(SKRect destination, float scale)
     parameters:
     - id: destination
       type: SkiaSharp.SKRect
@@ -3507,7 +3555,7 @@ items:
       type: System.Single
     return:
       type: SkiaSharp.SKRect
-    content.vb: Protected Function CalculateContentSizeForStroke(destination As SKRect, scale As Single) As SKRect
+    content.vb: Protected Overridable Function CalculateContentSizeForStroke(destination As SKRect, scale As Single) As SKRect
   overload: DrawnUi.Draw.SkiaShape.CalculateContentSizeForStroke*
   nameWithType.vb: SkiaShape.CalculateContentSizeForStroke(SKRect, Single)
   fullName.vb: DrawnUi.Draw.SkiaShape.CalculateContentSizeForStroke(SkiaSharp.SKRect, Single)
@@ -3535,7 +3583,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: protected SKRect CalculateClipSizeForStroke(SKRect destination, float scale)
+    content: protected virtual SKRect CalculateClipSizeForStroke(SKRect destination, float scale)
     parameters:
     - id: destination
       type: SkiaSharp.SKRect
@@ -3543,7 +3591,7 @@ items:
       type: System.Single
     return:
       type: SkiaSharp.SKRect
-    content.vb: Protected Function CalculateClipSizeForStroke(destination As SKRect, scale As Single) As SKRect
+    content.vb: Protected Overridable Function CalculateClipSizeForStroke(destination As SKRect, scale As Single) As SKRect
   overload: DrawnUi.Draw.SkiaShape.CalculateClipSizeForStroke*
   nameWithType.vb: SkiaShape.CalculateClipSizeForStroke(SKRect, Single)
   fullName.vb: DrawnUi.Draw.SkiaShape.CalculateClipSizeForStroke(SkiaSharp.SKRect, Single)
@@ -8107,6 +8155,27 @@ references:
   name: LastVisibleIndex
   nameWithType: SkiaLayout.LastVisibleIndex
   fullName: DrawnUi.Draw.SkiaLayout.LastVisibleIndex
+- uid: DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+  commentId: F:DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout__lastVisibilityOffset
+  name: _lastVisibilityOffset
+  nameWithType: SkiaLayout._lastVisibilityOffset
+  fullName: DrawnUi.Draw.SkiaLayout._lastVisibilityOffset
+- uid: DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+  commentId: P:DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_FirstVisibleIndexDrawn
+  name: FirstVisibleIndexDrawn
+  nameWithType: SkiaLayout.FirstVisibleIndexDrawn
+  fullName: DrawnUi.Draw.SkiaLayout.FirstVisibleIndexDrawn
+- uid: DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
+  commentId: P:DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_LastVisibleIndexDrawn
+  name: LastVisibleIndexDrawn
+  nameWithType: SkiaLayout.LastVisibleIndexDrawn
+  fullName: DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
 - uid: DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   commentId: P:DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   parent: DrawnUi.Draw.SkiaLayout
@@ -10499,6 +10568,13 @@ references:
   name: IsCacheOperations
   nameWithType: SkiaControl.IsCacheOperations
   fullName: DrawnUi.Draw.SkiaControl.IsCacheOperations
+- uid: DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
+  commentId: P:DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DoubleBufferedCacheIsStale
+  name: DoubleBufferedCacheIsStale
+  nameWithType: SkiaControl.DoubleBufferedCacheIsStale
+  fullName: DrawnUi.Draw.SkiaControl.DoubleBufferedCacheIsStale
 - uid: DrawnUi.Draw.SkiaControl.UseRenderingObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   commentId: M:DrawnUi.Draw.SkiaControl.UseRenderingObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   parent: DrawnUi.Draw.SkiaControl
@@ -11078,6 +11154,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnVisualEffectsChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
+  commentId: P:DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AggregatedEffectsMarginPixels
+  name: AggregatedEffectsMarginPixels
+  nameWithType: SkiaControl.AggregatedEffectsMarginPixels
+  fullName: DrawnUi.Draw.SkiaControl.AggregatedEffectsMarginPixels
 - uid: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
   commentId: P:DrawnUi.Draw.SkiaControl.EffectsMarginPixels
   parent: DrawnUi.Draw.SkiaControl
@@ -11085,32 +11168,98 @@ references:
   name: EffectsMarginPixels
   nameWithType: SkiaControl.EffectsMarginPixels
   fullName: DrawnUi.Draw.SkiaControl.EffectsMarginPixels
-- uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
-  commentId: M:DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+- uid: DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
-  name: ComputeEffectsMargin(float)
-  nameWithType: SkiaControl.ComputeEffectsMargin(float)
-  fullName: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(float)
-  nameWithType.vb: SkiaControl.ComputeEffectsMargin(Single)
-  fullName.vb: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(Single)
-  name.vb: ComputeEffectsMargin(Single)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MergeShadowMargin_System_Double__System_Double__System_Double__System_Double__DrawnUi_Draw_SkiaShadow_System_Single_
+  name: MergeShadowMargin(ref double, ref double, ref double, ref double, SkiaShadow, float)
+  nameWithType: SkiaControl.MergeShadowMargin(ref double, ref double, ref double, ref double, SkiaShadow, float)
+  fullName: DrawnUi.Draw.SkiaControl.MergeShadowMargin(ref double, ref double, ref double, ref double, DrawnUi.Draw.SkiaShadow, float)
+  nameWithType.vb: SkiaControl.MergeShadowMargin(Double, Double, Double, Double, SkiaShadow, Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.MergeShadowMargin(Double, Double, Double, Double, DrawnUi.Draw.SkiaShadow, Single)
+  name.vb: MergeShadowMargin(Double, Double, Double, Double, SkiaShadow, Single)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
-    name: ComputeEffectsMargin
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - uid: DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
+    name: MergeShadowMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MergeShadowMargin_System_Double__System_Double__System_Double__System_Double__DrawnUi_Draw_SkiaShadow_System_Single_
   - name: (
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaShadow
+    name: SkiaShadow
+    href: DrawnUi.Draw.SkiaShadow.html
+  - name: ','
+  - name: " "
   - uid: System.Single
     name: float
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
-    name: ComputeEffectsMargin
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - uid: DrawnUi.Draw.SkiaControl.MergeShadowMargin(System.Double@,System.Double@,System.Double@,System.Double@,DrawnUi.Draw.SkiaShadow,System.Single)
+    name: MergeShadowMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MergeShadowMargin_System_Double__System_Double__System_Double__System_Double__DrawnUi_Draw_SkiaShadow_System_Single_
   - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaShadow
+    name: SkiaShadow
+    href: DrawnUi.Draw.SkiaShadow.html
+  - name: ','
+  - name: " "
   - uid: System.Single
     name: Single
     isExternal: true
@@ -42539,6 +42688,65 @@ references:
   name: Paint
   nameWithType: SkiaShape.Paint
   fullName: DrawnUi.Draw.SkiaShape.Paint
+- uid: DrawnUi.Draw.SkiaShape.Shadows
+  commentId: P:DrawnUi.Draw.SkiaShape.Shadows
+  parent: DrawnUi.Draw.SkiaShape
+  href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_Shadows
+  name: Shadows
+  nameWithType: SkiaShape.Shadows
+  fullName: DrawnUi.Draw.SkiaShape.Shadows
+- uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  commentId: M:DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  name: ComputeEffectsMargin(float)
+  nameWithType: SkiaControl.ComputeEffectsMargin(float)
+  fullName: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(float)
+  nameWithType.vb: SkiaControl.ComputeEffectsMargin(Single)
+  fullName.vb: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(Single)
+  name.vb: ComputeEffectsMargin(Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.ComputeEffectsMargin(System.Single)
+    name: ComputeEffectsMargin
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ComputeEffectsMargin_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShape.ComputeEffectsMargin*
+  commentId: Overload:DrawnUi.Draw.SkiaShape.ComputeEffectsMargin
+  href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_ComputeEffectsMargin_System_Single_
+  name: ComputeEffectsMargin
+  nameWithType: SkiaShape.ComputeEffectsMargin
+  fullName: DrawnUi.Draw.SkiaShape.ComputeEffectsMargin
+- uid: Microsoft.Maui.Thickness
+  commentId: T:Microsoft.Maui.Thickness
+  parent: Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
+  name: Thickness
+  nameWithType: Thickness
+  fullName: Microsoft.Maui.Thickness
+- uid: DrawnUi.Draw.SkiaShape
+  commentId: T:DrawnUi.Draw.SkiaShape
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaShape.html
+  name: SkiaShape
+  nameWithType: SkiaShape
+  fullName: DrawnUi.Draw.SkiaShape
 - uid: DrawnUi.Draw.SkiaShape.Shadows*
   commentId: Overload:DrawnUi.Draw.SkiaShape.Shadows
   href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_Shadows
