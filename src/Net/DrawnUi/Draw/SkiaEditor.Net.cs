@@ -3,6 +3,10 @@ namespace DrawnUi.Draw;
 public partial class SkiaEditor
 {
     private int _stubSelectionStop = -1;
+    // Active (moving) edge of a keyboard shift-selection. _stubSelectionStop is the fixed anchor;
+    // this is the caret side that grows/shrinks. Tracked separately because CursorPosition is
+    // pinned to the selection's LEFT edge (the overlay renders [CursorPosition, +SelectionLength]).
+    private int _selectionMovingEdge = -1;
     private CancellationTokenSource? _deferCts;
 
     // Label.Lines is populated during the render pass, which happens after property-change
@@ -89,7 +93,7 @@ public partial class SkiaEditor
         if (text.Length == 0)
             return;
 
-        var remove = Math.Min(count, Math.Max(0, CursorPosition));
+        var remove = CodeUnitsBeforeCaret(text, CursorPosition, count);
         if (remove == 0)
             return;
 
@@ -116,7 +120,9 @@ public partial class SkiaEditor
         if (text.Length == 0 || CursorPosition >= text.Length)
             return;
 
-        var remove = Math.Min(count, text.Length - CursorPosition);
+        var remove = CodeUnitsAfterCaret(text, CursorPosition, count);
+        if (remove == 0)
+            return;
         Text = text.Remove(CursorPosition, remove);
         _suppressImmediateCursorMove = true;
         SelectionLength = 0;
@@ -126,23 +132,32 @@ public partial class SkiaEditor
     public void StubMoveCursor(int delta, bool extendSelection = false)
     {
         var textLength = Text?.Length ?? 0;
-        var target = Math.Clamp(CursorPosition + delta, 0, textLength);
 
         if (extendSelection)
         {
+            // Anchor stays put; only the moving edge follows the arrow. Re-seed both when there is
+            // no live selection (including after a shift-select collapsed back onto the anchor).
             if (!HasSelection)
             {
                 _stubSelectionStop = CursorPosition;
+                _selectionMovingEdge = CursorPosition;
             }
 
-            CursorPosition = Math.Min(target, _stubSelectionStop);
-            SelectionLength = Math.Abs(target - _stubSelectionStop);
+            _selectionMovingEdge = Math.Clamp(_selectionMovingEdge + delta, 0, textLength);
+            SelectionLength = Math.Abs(_selectionMovingEdge - _stubSelectionStop);
+            CursorPosition = Math.Min(_selectionMovingEdge, _stubSelectionStop);
             return;
         }
 
-        CursorPosition = target;
+        // Plain arrow with a live selection collapses to the edge in the move direction.
+        if (HasSelection)
+            CursorPosition = delta < 0 ? CursorPosition : CursorPosition + SelectionLength;
+        else
+            CursorPosition = Math.Clamp(CursorPosition + delta, 0, textLength);
+
         SelectionLength = 0;
         _stubSelectionStop = -1;
+        _selectionMovingEdge = -1;
     }
 
     public void StubSelectRange(int start, int length)
@@ -153,12 +168,19 @@ public partial class SkiaEditor
 
         CursorPosition = normalizedStart;
         SelectionLength = normalizedLength;
-        _stubSelectionStop = normalizedStart + normalizedLength;
+        _stubSelectionStop = normalizedStart;
+        _selectionMovingEdge = normalizedStart + normalizedLength;
     }
 
     public void StubSelectAll()
     {
         StubSelectRange(0, Text?.Length ?? 0);
+    }
+
+    partial void SeedKeyboardSelection(int anchor, int movingEdge)
+    {
+        _stubSelectionStop = anchor;
+        _selectionMovingEdge = movingEdge;
     }
 
     private bool HasSelection => SelectionLength > 0;
