@@ -63,10 +63,10 @@ public static class StoConsecutiveJumpRepro
     {
         page.ProbeScrollToOldest(true);
 
-        // the jump is dispatched via BeginInvokeOnMainThread — wait for it to actually START
-        // (window rebased to 0) before waiting for it to settle, else the settle detector can
-        // declare "stable" on the pre-jump idle frames
-        for (int f = 0; f < 300 && page.ProbeWindowStart != 0; f++)
+        // MIGRATED semantics: ScrollToOldest first FETCHES all remaining history, then issues the
+        // ordered jump. Wait for the ordered scroll to actually START before waiting for it to
+        // settle, else the settle detector can declare "stable" on the pre-jump idle frames.
+        for (int f = 0; f < 600 && !page.MainScroll.OrderedScrollToIndexIsSet; f++)
         {
             host.RenderFrame(16);
             Thread.Sleep(3);
@@ -75,7 +75,8 @@ public static class StoConsecutiveJumpRepro
         var frames = Settle(page, host, label);
 
         int winEnd = page.ProbeWindowEnd;
-        bool rebased = page.ProbeWindowStart == 0;
+        // newest-first list: OLDEST lives at the TAIL — arrived = window covers the list end
+        bool rebased = winEnd >= page.ProbeListCount;
 
         // is the oldest message's cell actually inside the viewport?
         bool onScreen = false;

@@ -70,6 +70,7 @@ public static class CachedScrollTrimRepro
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
+        page.ChatStack.UseDoubleBuffering = true; // base default is now FALSE; this repro targets the double-buffer path
         page.InitializeList();
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         host.AdvanceFrames(8, 16);
@@ -184,14 +185,14 @@ public static class CachedScrollTrimRepro
 
     private static void RunInner()
     {
-        Console.WriteLine($"UseDoubleBuffering={typeof(ChatMessagesStack).GetField("UseDoubleBuffering", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null) ?? "n/a (field removed)"}");
-
         var grep = new GrepListener();
         System.Diagnostics.Trace.Listeners.Add(grep);
 
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
+        page.ChatStack.UseDoubleBuffering = true; // base default is now FALSE; this repro targets the double-buffer path
+        Console.WriteLine($"UseDoubleBuffering={page.ChatStack.UseDoubleBuffering}");
         page.InitializeList();
 
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }

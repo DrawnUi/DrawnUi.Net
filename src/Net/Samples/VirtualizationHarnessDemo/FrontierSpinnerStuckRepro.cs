@@ -89,7 +89,11 @@ public static class FrontierSpinnerStuckRepro
             }
         }
 
-        Console.WriteLine($"  frontierDone={frontierDone} spinnerAfterDone(2s parked)={spinnerAfterDone}");
+        Console.WriteLine($"  frontierDone={frontierDone} spinnerAfterDone(2s parked)={spinnerAfterDone} " +
+                          $"orderedSet={page.MainScroll.OrderedScrollToIndexIsSet} " + // TEMP PROBE
+                          $"loadingOlder={typeof(ChatPage).GetField("_isLoadingOlder", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(page)} " +
+                          $"loadingJump={typeof(ChatPage).GetField("_isLoadingJump", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(page)} " +
+                          $"frontierFlag={fSpinner.GetValue(page)}");
         if (!frontierDone)
             Console.WriteLine("=> FAIL (frontier NEVER caught up at rest — measurement stall, worse than the spinner)");
         else if (spinnerAfterDone)

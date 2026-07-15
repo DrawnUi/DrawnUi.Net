@@ -7,6 +7,22 @@ DrawnChatList.ChatPage.AutoTestEnabled = false;
 DrawnChatList.ChatPage.MotionTraceEnabled = false;
 
 
+// Built-in ItemsSourceWindow regressions (MeasureFirst): Feed preset (recycled binds, slides,
+// idle churn, in-use collapse) + window slides/trims/backward refills over a 2000-item source.
+VirtualizationHarnessDemo.FeedPresetRepro.Run();
+// TELEGRAM lifecycle gate: cold start under threshold -> LoadMore pages -> ENGAGE-ON-GROW anchored
+// in place -> incoming Insert(0) glued -> badge jump to newest -> deep paging at true end.
+VirtualizationHarnessDemo.TelegramLikeRepro.Run();
+// PHASE 2 chat-migration gate: inverted newest-first chat conditions over the BUILT-IN window
+// (engage, history flings, head-insert glue, global jumps both ways, live message).
+VirtualizationHarnessDemo.BuiltinWindowChatRepro.Run();
+VirtualizationHarnessDemo.MeasureFirstWindowRepro.Run();
+VirtualizationHarnessDemo.MeasureVisibleWindowRepro.Run();
+VirtualizationHarnessDemo.CachedStackWindowRepro.Run();
+
+// parked investigation: subpixel-grid / tearing probe (device "saw" while scrolling); timing-sensitive.
+//VirtualizationHarnessDemo.SubpixelGridRepro.Run();
+
 // Repro for the reported "consecutive ScrollToOldest jumps but never scrolls to top" bug. Runs first.
 VirtualizationHarnessDemo.StoConsecutiveJumpRepro.Run();
 VirtualizationHarnessDemo.PlaneImageStartupRepro.Run();
@@ -33,6 +49,11 @@ VirtualizationHarnessDemo.TapStaleTreeRepro.Run();
 // Frontier catch-up spinner stuck when scrolling before initial measurement completes. Also LAST
 // (own host, same dispatcher-pump constraint).
 VirtualizationHarnessDemo.FrontierSpinnerStuckRepro.Run();
+
+// Streaming-AI cell growth: bottom-pinned smooth growth at newest + reading position glued when
+// scrolled away (StartMockAiAnswer must badge, not yank — same convention as ReceiveMessage).
+// LAST: own host + real ChatPage (dispatcher-pump constraint).
+VirtualizationHarnessDemo.TypingJumpRepro.Run();
 return;
 
 // Headless reconstruction of LoadMoreRepro (static 1000 items, Managed planes).
