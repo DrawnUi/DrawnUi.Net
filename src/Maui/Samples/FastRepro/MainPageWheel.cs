@@ -25,7 +25,7 @@ public class MainPageWheel : BasePageReloadable, IDisposable
     private SkiaWheelScroll _wheel = null!;
     private SkiaButton _loopButton = null!;
 
-    private bool _looped;
+    private bool _looped = true;
 
     protected override void Dispose(bool isDisposing)
     {
