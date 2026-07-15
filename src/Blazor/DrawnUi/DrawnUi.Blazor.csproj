@@ -53,6 +53,8 @@
   <ItemGroup>
     <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
     <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
+    <!-- Parked MAUI-only repro copies, not compilable outside MAUI -->
+    <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\DrawnUi\Draw\Layout\OldRepro\**\*.cs" />
   </ItemGroup>
 
  
