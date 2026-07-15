@@ -14,6 +14,23 @@
     <Project Path="../src/SharedGame/SharedGame.shproj" />
     <Project Path="../src/Wasm/Addons/DrawnUi.Wasm.Game/DrawnUi.Wasm.Game.csproj" />
   </Folder>
+  <Folder Name="/Dev/">
+    <Project Path="../../AppoMobi.Maui.DrawnUi.Demo/src/AllDrawn/AppoMobi.Maui.DrawnUi.Demo.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+    <Project Path="../../BlockChampion/src/Web/BlockChampion.Web.csproj" />
+    <Project Path="../../DrawnChatList/src/Blazor/DrawnChatList.Blazor.csproj" />
+    <Project Path="../../DrawnChatList/src/Maui/DrawnChatList.Maui.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+    <Project Path="../../DrawnChatList/src/Shared/DrawnChatList.Shared.shproj" Id="60ef8dbf-e427-472c-9bb6-8d028e4b7900" />
+    <Project Path="../../DrawnUi.Fiddle/src/DrawnUi.Fiddle/DrawnUi.Fiddle.csproj" />
+    <Project Path="../../DrawnUi.Fiddle/src/FiddleApp/FiddleApp.csproj" />
+    <Project Path="../../DrawnUiCellsRepro/DrawnUiCellsRepro.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+    <Project Path="../src/Net/Samples/GestureHarnessDemo/GestureHarnessDemo.csproj" />
+  </Folder>
   <Folder Name="/Lib/" />
   <Folder Name="/Lib/Blazor/">
     <Project Path="../src/Blazor/DrawnUi.Server/DrawnUi.Blazor.Server.csproj" />
@@ -40,9 +57,6 @@
     <Project Path="../src/Blazor/Samples/BlazorSandboxServer/BlazorSandboxServer/BlazorSandboxServer.csproj" />
   </Folder>
   <Folder Name="/Samples/MAUI/">
-    <Project Path="../../AppoMobi.Maui.DrawnUi.Demo/src/AllDrawn/AppoMobi.Maui.DrawnUi.Demo.csproj">
-      <Deploy Solution="Debug|Any CPU" />
-    </Project>
     <Project Path="../src/Maui/Samples/FastRepro/FastRepro.csproj">
       <Deploy Solution="*|Any CPU" />
     </Project>
@@ -54,8 +68,6 @@
     </Project>
   </Folder>
   <Folder Name="/Samples/NET/">
-    <Project Path="../src/Net/Samples/GestureHarnessDemo/GestureHarnessDemo.csproj" />
-    <Project Path="../src/Net/Samples/VirtualizationHarnessDemo/VirtualizationHarnessDemo.csproj" />
     <Project Path="../src/Net/Tests/DrawnUi.Net.Tests/DrawnUi.Net.Tests.csproj" />
   </Folder>
   <Folder Name="/Samples/OpenTK/">
@@ -70,6 +82,7 @@
     <Project Path="../src/Wasm/Samples/PongWeb/PongWeb.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
+    <File Path="../../../../../Users/taubl/.claude/skills/drawnui-fiddle/SKILL.md" />
     <File Path="../.gitignore" />
     <File Path="../CLAUDE.md" />
     <File Path="../nugets/DrawnUi.Maui.targets" />

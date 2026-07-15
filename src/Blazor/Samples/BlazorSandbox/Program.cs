@@ -7,8 +7,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
 await Super.UseDrawnUi(builder)
     .WithBaseUrl(builder.HostEnvironment.BaseAddress)
     .WithOptions(o => o.UseDesktopKeyboard = true)
@@ -19,6 +17,23 @@ await Super.UseDrawnUi(builder)
         assets.AddImage("dotnetbotcar.png",   "images/dotnetbotcar.png");
         assets.AddImage(@"Images\banana.gif", "media/banana.gif");
         assets.AddSvg("media/dotnet_bot.svg");
+    })
+    .ConfigureStyles(styles =>
+    {
+
+        styles.AddStyle(new Style()
+        {
+            ApplyToDerivedTypes = true,
+            TargetType = typeof(SkiaLabel),
+            Setters =
+            {
+                new Setter()
+                {
+                    Property = SkiaLabel.FontFamilyProperty,
+                    Value = "FontText"
+                }
+            }
+        });
     })
     .ConfigureFonts(fonts =>
     {

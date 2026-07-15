@@ -5,7 +5,6 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Addons/">
-    <Project Path="../../DrawnUi.Maui.Camera/src/Lib/DrawnUi.Maui.Camera.csproj" />
     <Project Path="Blazor/Addons/DrawnUi.Blazor.Game/DrawnUi.Blazor.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj" />
@@ -40,9 +39,6 @@
     <Project Path="Blazor/Samples/BlazorSandboxServer/BlazorSandboxServer/BlazorSandboxServer.csproj" />
   </Folder>
   <Folder Name="/Samples/MAUI/">
-    <Project Path="../../AppoMobi.Maui.DrawnUi.Demo/src/AllDrawn/AppoMobi.Maui.DrawnUi.Demo.csproj">
-      <Deploy Solution="Debug|Any CPU" />
-    </Project>
     <Project Path="Maui/Samples/FastRepro/FastRepro.csproj">
       <Deploy Solution="*|Any CPU" />
     </Project>
@@ -54,8 +50,6 @@
     </Project>
   </Folder>
   <Folder Name="/Samples/NET/">
-    <Project Path="Net/Samples/GestureHarnessDemo/GestureHarnessDemo.csproj" />
-    <Project Path="Net/Samples/VirtualizationHarnessDemo/VirtualizationHarnessDemo.csproj" />
     <Project Path="Net/Tests/DrawnUi.Net.Tests/DrawnUi.Net.Tests.csproj" />
   </Folder>
   <Folder Name="/Samples/OpenTK/">

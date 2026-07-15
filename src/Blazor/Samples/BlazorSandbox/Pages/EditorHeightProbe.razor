@@ -1,0 +1,72 @@
+@page "/editor-height-probe"
+@using DrawnUi.Draw
+@using DrawnUi.Views
+@using DrawnUi
+
+<PageTitle>Editor Height Bug</PageTitle>
+
+<div class="docs-page">
+    <h1>Editor Height Bug</h1>
+    <p class="docs-lead">Repro: SkiaEditor height jitters while typing.</p>
+</div>
+
+<Canvas Content="_canvasContent"
+        WidthRequest="420"
+        HeightRequest="420"
+        BackgroundColor="@Color.Parse("#111111")"
+        Gestures="@GesturesMode.Enabled"
+        Margin="0,8,0,0" />
+
+@code {
+    private SkiaLabel echo;
+    private double _lastLoggedHeight = double.NaN;
+    private readonly SkiaControl _canvasContent;
+
+    public EditorHeightProbe()
+    {
+        _canvasContent = new SkiaLayout
+        {
+            Type = LayoutType.Column,
+            Spacing = 14,
+            WidthRequest = 360,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            Children =
+            {
+                new SkiaLabel("SkiaEditor — drawn text input")
+                {
+                    FontFamily = "FontTextTitle",
+                    FontSize = 20,
+                    TextColor = Colors.White,
+                    HorizontalOptions = LayoutOptions.Center,
+                },
+                new SkiaEditor
+                {
+                    CornerRadius = 8,
+                    Padding = new Thickness(12),
+                    MaxLines = 5,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    BackgroundColor = Color.FromHex("#BEBEBE"),
+                    PlaceholderColor = Colors.Black.WithAlpha(0.5),
+                    FontSize = 15,
+                    TextColor = Colors.Black,
+                    CursorColor = Colors.Crimson,
+                    PlaceholderText = "Click and type — text wand cursor will drawn with SkiaSharp.",
+                }
+                .ObserveSelf((me, prop) =>
+                {
+                    if (prop == nameof(SkiaEditor.Text) && echo != null)
+                        echo.Text = $"{me.Text?.Length ?? 0} chars";
+
+                    Console.WriteLine($"[EditorHeightProbe] prop={prop} Height={me.Height:0.###} HeightRequest={me.HeightRequest:0.###} MeasuredLineHeight={me.Label?.MeasuredLineHeight:0.###} LinesCount={me.Label?.LinesCount}");
+                }),
+                new SkiaLabel("0 chars")
+                {
+                    FontSize = 12,
+                    TextColor = Color.FromHex("#67E8F9"),
+                    HorizontalOptions = LayoutOptions.Center,
+                }.Assign(out echo),
+            }
+        };
+    }
+}
