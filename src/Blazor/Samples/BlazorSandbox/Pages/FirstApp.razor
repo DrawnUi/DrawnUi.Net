@@ -15,7 +15,7 @@
         <Canvas
             Content="_canvasContent"
             WidthRequest="420"
-            HeightRequest="440"
+            HeightRequest="520"
             BackgroundColor="@Color.Parse("#F5F5F5")"
             Margin="0,8,0,0"
             RenderingMode="RenderingModeType.Accelerated"
@@ -63,7 +63,7 @@
             return new SkiaLayout()
             {
                 Type = LayoutType.Column,
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
                 Padding = new Thickness(40),
                 Spacing = 16,
                 UseCache = SkiaCacheType.Operations,
@@ -124,7 +124,11 @@
                             UseCache = SkiaCacheType.Operations,
                             FontSize = 14,
                             TextColor = Colors.Green,
-                            HorizontalOptions = LayoutOptions.Center,
+                            HorizontalOptions = LayoutOptions.Fill,
+                            HorizontalTextAlignment = DrawTextAlignment.Center,
+                            // fixed height + independent: text changes must not remeasure/recenter parent
+                            HeightRequest = 44,
+                            IsParentIndependent = true,
                         }
                         .ObserveProperties(() => btnClickMe, [nameof(SkiaButton.Text), nameof(SkiaButton.IsPressed)],
                             me =>
