@@ -1,0 +1,32 @@
+# DrawnUI for .NET
+
+> Hardware-accelerated rendering engine for .NET powered by SkiaSharp. Draws pixel-perfect UI on a Skia canvas across .NET MAUI, Blazor/WebAssembly, OpenTK/desktop and other .NET hosts. Open source: https://github.com/taublast/DrawnUi
+
+## Skills (for AI Agents)
+
+Save under `~/.claude/skills/<name>/SKILL.md` (or your agent's skill folder) to teach your agent DrawnUI:
+
+- [DrawnUI framework skill](https://drawnui.net/skills/drawnui/SKILL.md): controls, layouts, caching, gestures, virtualization — deep framework guidance
+- [DrawnUI fluent C# skill](https://drawnui.net/skills/drawnui-fluent/SKILL.md): fluent code-behind composition patterns for building UI in C#
+- [DrawnUI game dev skill](https://drawnui.net/skills/drawnui-game/SKILL.md): games on DrawnUi.Gaming.DrawnGame — game loop, sprite pooling, collision, input, MAUI+Blazor project templates, WASM startup optimization
+- [DrawnUI web app skill](https://drawnui.net/skills/drawnui-web-app/SKILL.md): scaffold pure-WebAssembly DrawnUi.Web apps, shared-source projects, hot reload, WASM runtime bug hunting
+- [DrawnUI Blazor skill](https://drawnui.net/skills/drawnui-blazor/SKILL.md): Blazor WASM apps — startup, gestures, rendering modes, single-thread divergences, font subsetting, GitHub Pages publishing
+- [DrawnUI OpenTK skill](https://drawnui.net/skills/drawnui-opentk/SKILL.md): desktop apps — DrawnUiWindow, CanvasHost GL overlays, update modes, window chrome/icon, Linux fixes, instant desktop test harness
+- [DrawnUI headless testing skill](https://drawnui.net/skills/drawnui-net-harness/SKILL.md): pure-.NET headless harness — render frames offscreen, simulate gestures, reproduce scroll/virtualization bugs without a device
+- [SkiaSharp SKMesh skill](https://drawnui.net/skills/skmech/SKILL.md): experimental SKMesh custom mesh drawing with SkSL — spec/buffers/DrawMesh, WASM trimming and backend traps
+- [Fiddle driving skill](https://fiddle.drawnui.net/skills/drawnui-fiddle/SKILL.md): drive the in-browser playground programmatically (window.fiddle API)
+
+## Docs
+
+- [Getting started](https://drawnui.net/articles/getting-started.html)
+- [Layouts](https://drawnui.net/articles/layouts.html)
+- [Gestures](https://drawnui.net/articles/gestures.html)
+- [Fluent C# extensions](https://drawnui.net/articles/fluent-extensions.html)
+- [Drawing pipeline](https://drawnui.net/articles/drawing-pipeline.html)
+- [Tutorials](https://drawnui.net/articles/tutorials.html)
+- [FAQ](https://drawnui.net/articles/faq.html)
+- [API reference](https://drawnui.net/api/)
+
+## Try it live
+
+- [DrawnUI Fiddle](https://fiddle.drawnui.net/): in-browser C# playground — Roslyn compiles on WebAssembly, renders live on a DrawnUI canvas. AI-drivable, has its own [llms.txt](https://fiddle.drawnui.net/llms.txt).
