@@ -6,10 +6,12 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.SkiaScrollWindowHost.#ctor(DrawnUi.Draw.SkiaScroll,DrawnUi.Draw.SkiaLayout)
+  - DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex
   - DrawnUi.Draw.SkiaScrollWindowHost.OnMeasured
   - DrawnUi.Draw.SkiaScrollWindowHost.OrderedScrollInProgress
   - DrawnUi.Draw.SkiaScrollWindowHost.ScrollToLocal(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
   - DrawnUi.Draw.SkiaScrollWindowHost.SnapToStart
+  - DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations
   - DrawnUi.Draw.SkiaScrollWindowHost.SuppressLoadMore
   - DrawnUi.Draw.SkiaScrollWindowHost.VisibleCount
   langs:
@@ -22,8 +24,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaScrollWindowHost
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
     startLine: 8
@@ -69,8 +71,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
     startLine: 14
@@ -103,8 +105,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisibleCount
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
     startLine: 23
@@ -122,6 +124,41 @@ items:
   overload: DrawnUi.Draw.SkiaScrollWindowHost.VisibleCount*
   implements:
   - DrawnUi.Draw.IWindowHost.VisibleCount
+- uid: DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex
+  commentId: P:DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex
+  id: LastVisibleIndex
+  parent: DrawnUi.Draw.SkiaScrollWindowHost
+  langs:
+  - csharp
+  - vb
+  name: LastVisibleIndex
+  nameWithType: SkiaScrollWindowHost.LastVisibleIndex
+  fullName: DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: LastVisibleIndex
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
+    startLine: 24
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Highest LOCAL (resident) index currently visible. Used to detect arrival at the oldest end
+        (LastVisibleIndex == VisibleCount-1) so a jump can release its LoadMore suppression only once landed.
+  example: []
+  syntax:
+    content: public int LastVisibleIndex { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property LastVisibleIndex As Integer
+  overload: DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex*
+  implements:
+  - DrawnUi.Draw.IWindowHost.LastVisibleIndex
 - uid: DrawnUi.Draw.SkiaScrollWindowHost.OrderedScrollInProgress
   commentId: P:DrawnUi.Draw.SkiaScrollWindowHost.OrderedScrollInProgress
   id: OrderedScrollInProgress
@@ -136,11 +173,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrderedScrollInProgress
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -169,11 +206,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SuppressLoadMore
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-    startLine: 25
+    startLine: 26
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -202,11 +239,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasured
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-    startLine: 26
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -235,11 +272,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToLocal
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-    startLine: 28
+    startLine: 29
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -275,11 +312,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapToStart
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -291,6 +328,38 @@ items:
   overload: DrawnUi.Draw.SkiaScrollWindowHost.SnapToStart*
   implements:
   - DrawnUi.Draw.IWindowHost.SnapToStart
+- uid: DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations
+  commentId: M:DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations
+  id: StopAnimations
+  parent: DrawnUi.Draw.SkiaScrollWindowHost
+  langs:
+  - csharp
+  - vb
+  name: StopAnimations()
+  nameWithType: SkiaScrollWindowHost.StopAnimations()
+  fullName: DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: StopAnimations
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/SkiaScrollWindowHost.cs
+    startLine: 34
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Stop any in-flight fling/bounce/scroll animation. Called before a programmatic jump/rebase so
+        an active fling can't keep scrolling (and triggering LoadMore) into the window swap.
+  example: []
+  syntax:
+    content: public void StopAnimations()
+    content.vb: Public Sub StopAnimations()
+  overload: DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations*
+  implements:
+  - DrawnUi.Draw.IWindowHost.StopAnimations
 references:
 - uid: DrawnUi.Draw.IWindowHost
   commentId: T:DrawnUi.Draw.IWindowHost
@@ -710,6 +779,19 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+- uid: DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex
+  href: DrawnUi.Draw.SkiaScrollWindowHost.html#DrawnUi_Draw_SkiaScrollWindowHost_LastVisibleIndex
+  name: LastVisibleIndex
+  nameWithType: SkiaScrollWindowHost.LastVisibleIndex
+  fullName: DrawnUi.Draw.SkiaScrollWindowHost.LastVisibleIndex
+- uid: DrawnUi.Draw.IWindowHost.LastVisibleIndex
+  commentId: P:DrawnUi.Draw.IWindowHost.LastVisibleIndex
+  parent: DrawnUi.Draw.IWindowHost
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_LastVisibleIndex
+  name: LastVisibleIndex
+  nameWithType: IWindowHost.LastVisibleIndex
+  fullName: DrawnUi.Draw.IWindowHost.LastVisibleIndex
 - uid: DrawnUi.Draw.SkiaScrollWindowHost.OrderedScrollInProgress*
   commentId: Overload:DrawnUi.Draw.SkiaScrollWindowHost.OrderedScrollInProgress
   href: DrawnUi.Draw.SkiaScrollWindowHost.html#DrawnUi_Draw_SkiaScrollWindowHost_OrderedScrollInProgress
@@ -857,5 +939,30 @@ references:
   - uid: DrawnUi.Draw.IWindowHost.SnapToStart
     name: SnapToStart
     href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_SnapToStart
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations
+  href: DrawnUi.Draw.SkiaScrollWindowHost.html#DrawnUi_Draw_SkiaScrollWindowHost_StopAnimations
+  name: StopAnimations
+  nameWithType: SkiaScrollWindowHost.StopAnimations
+  fullName: DrawnUi.Draw.SkiaScrollWindowHost.StopAnimations
+- uid: DrawnUi.Draw.IWindowHost.StopAnimations
+  commentId: M:DrawnUi.Draw.IWindowHost.StopAnimations
+  parent: DrawnUi.Draw.IWindowHost
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_StopAnimations
+  name: StopAnimations()
+  nameWithType: IWindowHost.StopAnimations()
+  fullName: DrawnUi.Draw.IWindowHost.StopAnimations()
+  spec.csharp:
+  - uid: DrawnUi.Draw.IWindowHost.StopAnimations
+    name: StopAnimations
+    href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_StopAnimations
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.IWindowHost.StopAnimations
+    name: StopAnimations
+    href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_StopAnimations
   - name: (
   - name: )

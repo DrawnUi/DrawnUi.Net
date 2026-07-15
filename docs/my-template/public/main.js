@@ -6,7 +6,7 @@ export default {
   iconLinks: [
     {
       icon: 'github',
-      href: 'https://github.com/taublast/DrawnUi',
+      href: 'https://github.com/DrawnUi/DrawnUi.Net',
       title: 'GitHub'
     }
   ],

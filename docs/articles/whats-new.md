@@ -128,9 +128,9 @@ This page highlights the latest updates, features, and improvements in DrawnUi.M
 
 * **Migration Issues**: Check [FAQ](faq.md) for common migration problems
 * **Breaking Changes**: See [Startup Settings](startup-settings.md) for configuration updates and technical details
-* **Community Support**: Ask questions in [GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)
-* **Bug Reports**: Report issues on [GitHub Issues](https://github.com/taublast/DrawnUi.Maui/issues)
+* **Community Support**: Ask questions in [GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)
+* **Bug Reports**: Report issues on [GitHub Issues](https://github.com/DrawnUi/DrawnUi.Net.Maui/issues)
 
 ---
 
-**Stay Updated**: Watch the [GitHub repository](https://github.com/taublast/DrawnUi.Maui) for the latest releases and updates!
+**Stay Updated**: Watch the [GitHub repository](https://github.com/DrawnUi/DrawnUi.Net.Maui) for the latest releases and updates!

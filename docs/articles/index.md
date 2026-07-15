@@ -4,7 +4,7 @@
 ![NuGet Version](https://img.shields.io/nuget/v/DrawnUi.Maui.svg)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/AppoMobi.Maui.DrawnUi.svg)
 
-[Source Code](https://github.com/taublast/DrawnUi.Maui) 👈
+[Source Code](https://github.com/DrawnUi/DrawnUi.Net.Maui) 👈
 
 **A rendering engine for .NET, including MAUI, Blazor, and platform-agnostic hosts, built on top of SkiaSharp**
 
@@ -81,14 +81,14 @@ builder.UseDrawnUi();
 - **[Advanced Features](advanced/index.md)** - Performance and platform topics
 
 ### Community & Support
-- **[GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)** - Community help and discussions
-- **[GitHub Issues](https://github.com/taublast/DrawnUi.Maui/issues)** - Report bugs or ask questions
+- **[GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)** - Community help and discussions
+- **[GitHub Issues](https://github.com/DrawnUi/DrawnUi.Net.Maui/issues)** - Report bugs or ask questions
 
 ### Additional Resources
 - **[Sample Apps](sample-apps.md)** - Apps built with DrawnUI
 - **[How DrawnUI was created](https://taublast.github.io/posts/MauiJuly/)** - article by the creator
 
-**Can't find what you're looking for?** → **[Ask in GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)** - The community is here to help!
+**Can't find what you're looking for?** → **[Ask in GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)** - The community is here to help!
 
 ---
 

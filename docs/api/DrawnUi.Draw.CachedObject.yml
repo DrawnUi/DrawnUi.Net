@@ -5,15 +5,19 @@ items:
   id: CachedObject
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKImage,SkiaSharp.SKRect,SkiaSharp.SKRect)
   - DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKPicture,SkiaSharp.SKRect,SkiaSharp.SKRect)
   - DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKSurface,SkiaSharp.SKRect,SkiaSharp.SKRect)
   - DrawnUi.Draw.CachedObject.Bounds
   - DrawnUi.Draw.CachedObject.CalculateDrawingOffset(SkiaSharp.SKRect)
   - DrawnUi.Draw.CachedObject.CalculatePositionOffset(SkiaSharp.SKPoint)
   - DrawnUi.Draw.CachedObject.Children
+  - DrawnUi.Draw.CachedObject.DataContext
   - DrawnUi.Draw.CachedObject.Dispose
-  - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint)
-  - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint)
+  - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
+  - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
+  - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
+  - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
   - DrawnUi.Draw.CachedObject.GetBitmap
   - DrawnUi.Draw.CachedObject.Id
   - DrawnUi.Draw.CachedObject.Image
@@ -40,8 +44,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CachedObject
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
     startLine: 4
@@ -66,6 +70,35 @@ items:
   - System.Object.ToString
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.CachedObject.DataContext
+  commentId: P:DrawnUi.Draw.CachedObject.DataContext
+  id: DataContext
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: DataContext
+  nameWithType: CachedObject.DataContext
+  fullName: DrawnUi.Draw.CachedObject.DataContext
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DataContext
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 6
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public int DataContext { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property DataContext As Integer
+  overload: DrawnUi.Draw.CachedObject.DataContext*
 - uid: DrawnUi.Draw.CachedObject.TranslateInputCoords(SkiaSharp.SKRect)
   commentId: M:DrawnUi.Draw.CachedObject.TranslateInputCoords(SkiaSharp.SKRect)
   id: TranslateInputCoords(SkiaSharp.SKRect)
@@ -80,11 +113,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TranslateInputCoords
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 6
+    startLine: 8
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -111,11 +144,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculatePositionOffset
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 17
+    startLine: 19
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -142,11 +175,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Test
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 25
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -173,11 +206,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateDrawingOffset
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 39
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -194,32 +227,32 @@ items:
       description: ''
     content.vb: Public Function CalculateDrawingOffset(destination As SKRect) As SKPoint
   overload: DrawnUi.Draw.CachedObject.CalculateDrawingOffset*
-- uid: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint)
-  commentId: M:DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint)
-  id: Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint)
+- uid: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
+  commentId: M:DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
+  id: Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
   parent: DrawnUi.Draw.CachedObject
   langs:
   - csharp
   - vb
-  name: Draw(SKCanvas, SKRect, SKPaint)
-  nameWithType: CachedObject.Draw(SKCanvas, SKRect, SKPaint)
-  fullName: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, SkiaSharp.SKRect, SkiaSharp.SKPaint)
+  name: Draw(SKCanvas, SKRect, SKPaint, FilterQuality)
+  nameWithType: CachedObject.Draw(SKCanvas, SKRect, SKPaint, FilterQuality)
+  fullName: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, SkiaSharp.SKRect, SkiaSharp.SKPaint, DrawnUi.Draw.FilterQuality)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 65
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: This will draw with destination corrected by offset that it had when was recorded
   example: []
   syntax:
-    content: public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint)
+    content: public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint, FilterQuality quality)
     parameters:
     - id: canvas
       type: SkiaSharp.SKCanvas
@@ -230,8 +263,57 @@ items:
     - id: paint
       type: SkiaSharp.SKPaint
       description: ''
-    content.vb: Public Sub Draw(canvas As SKCanvas, destination As SKRect, paint As SKPaint)
+    - id: quality
+      type: DrawnUi.Draw.FilterQuality
+    content.vb: Public Sub Draw(canvas As SKCanvas, destination As SKRect, paint As SKPaint, quality As FilterQuality)
   overload: DrawnUi.Draw.CachedObject.Draw*
+- uid: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
+  commentId: M:DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
+  id: Draw(SkiaSharp.SKCanvas,SkiaSharp.SKRect,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: Draw(SKCanvas, SKRect, SKPaint, in SKSamplingOptions)
+  nameWithType: CachedObject.Draw(SKCanvas, SKRect, SKPaint, in SKSamplingOptions)
+  fullName: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, SkiaSharp.SKRect, SkiaSharp.SKPaint, in SkiaSharp.SKSamplingOptions)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Draw
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 80
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    This will draw with destination corrected by offset that it had when was recorded.
+
+    Sampling applies to image-backed caches only; pass SkiaSamplingOptions.LinearNoMip when the canvas has scale/rotation transforms.
+  example: []
+  syntax:
+    content: public void Draw(SKCanvas canvas, SKRect destination, SKPaint paint, in SKSamplingOptions sampling)
+    parameters:
+    - id: canvas
+      type: SkiaSharp.SKCanvas
+      description: ''
+    - id: destination
+      type: SkiaSharp.SKRect
+      description: ''
+    - id: paint
+      type: SkiaSharp.SKPaint
+      description: ''
+    - id: sampling
+      type: SkiaSharp.SKSamplingOptions
+      description: ''
+    content.vb: Public Sub Draw(canvas As SKCanvas, destination As SKRect, paint As SKPaint, sampling As SKSamplingOptions)
+  overload: DrawnUi.Draw.CachedObject.Draw*
+  nameWithType.vb: CachedObject.Draw(SKCanvas, SKRect, SKPaint, SKSamplingOptions)
+  fullName.vb: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, SkiaSharp.SKRect, SkiaSharp.SKPaint, SkiaSharp.SKSamplingOptions)
+  name.vb: Draw(SKCanvas, SKRect, SKPaint, SKSamplingOptions)
 - uid: DrawnUi.Draw.CachedObject.LastDrawnAt
   commentId: F:DrawnUi.Draw.CachedObject.LastDrawnAt
   id: LastDrawnAt
@@ -246,11 +328,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastDrawnAt
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 93
+    startLine: 108
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -275,11 +357,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastDestination
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 98
+    startLine: 113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -290,32 +372,32 @@ items:
     return:
       type: SkiaSharp.SKRect
     content.vb: Public LastDestination As SKRect
-- uid: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint)
-  commentId: M:DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint)
-  id: Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint)
+- uid: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
+  commentId: M:DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
+  id: Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
   parent: DrawnUi.Draw.CachedObject
   langs:
   - csharp
   - vb
-  name: Draw(SKCanvas, float, float, SKPaint)
-  nameWithType: CachedObject.Draw(SKCanvas, float, float, SKPaint)
-  fullName: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, float, float, SkiaSharp.SKPaint)
+  name: Draw(SKCanvas, float, float, SKPaint, FilterQuality)
+  nameWithType: CachedObject.Draw(SKCanvas, float, float, SKPaint, FilterQuality)
+  fullName: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, float, float, SkiaSharp.SKPaint, DrawnUi.Draw.FilterQuality)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 107
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: Will draw at exact x,y coordinated without any adjustments
   example: []
   syntax:
-    content: public void Draw(SKCanvas canvas, float x, float y, SKPaint paint)
+    content: public void Draw(SKCanvas canvas, float x, float y, SKPaint paint, FilterQuality quality)
     parameters:
     - id: canvas
       type: SkiaSharp.SKCanvas
@@ -329,11 +411,63 @@ items:
     - id: paint
       type: SkiaSharp.SKPaint
       description: ''
-    content.vb: Public Sub Draw(canvas As SKCanvas, x As Single, y As Single, paint As SKPaint)
+    - id: quality
+      type: DrawnUi.Draw.FilterQuality
+    content.vb: Public Sub Draw(canvas As SKCanvas, x As Single, y As Single, paint As SKPaint, quality As FilterQuality)
   overload: DrawnUi.Draw.CachedObject.Draw*
-  nameWithType.vb: CachedObject.Draw(SKCanvas, Single, Single, SKPaint)
-  fullName.vb: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, Single, Single, SkiaSharp.SKPaint)
-  name.vb: Draw(SKCanvas, Single, Single, SKPaint)
+  nameWithType.vb: CachedObject.Draw(SKCanvas, Single, Single, SKPaint, FilterQuality)
+  fullName.vb: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, Single, Single, SkiaSharp.SKPaint, DrawnUi.Draw.FilterQuality)
+  name.vb: Draw(SKCanvas, Single, Single, SKPaint, FilterQuality)
+- uid: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
+  commentId: M:DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
+  id: Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: Draw(SKCanvas, float, float, SKPaint, in SKSamplingOptions)
+  nameWithType: CachedObject.Draw(SKCanvas, float, float, SKPaint, in SKSamplingOptions)
+  fullName: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, float, float, SkiaSharp.SKPaint, in SkiaSharp.SKSamplingOptions)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Draw
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 136
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Will draw at exact x,y coordinated without any adjustments.
+
+    Sampling applies to image-backed caches only; pass SkiaSamplingOptions.LinearNoMip when the canvas has scale/rotation transforms.
+  example: []
+  syntax:
+    content: public void Draw(SKCanvas canvas, float x, float y, SKPaint paint, in SKSamplingOptions sampling)
+    parameters:
+    - id: canvas
+      type: SkiaSharp.SKCanvas
+      description: ''
+    - id: x
+      type: System.Single
+      description: ''
+    - id: y
+      type: System.Single
+      description: ''
+    - id: paint
+      type: SkiaSharp.SKPaint
+      description: ''
+    - id: sampling
+      type: SkiaSharp.SKSamplingOptions
+      description: ''
+    content.vb: Public Sub Draw(canvas As SKCanvas, x As Single, y As Single, paint As SKPaint, sampling As SKSamplingOptions)
+  overload: DrawnUi.Draw.CachedObject.Draw*
+  nameWithType.vb: CachedObject.Draw(SKCanvas, Single, Single, SKPaint, SKSamplingOptions)
+  fullName.vb: DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas, Single, Single, SkiaSharp.SKPaint, SkiaSharp.SKSamplingOptions)
+  name.vb: Draw(SKCanvas, Single, Single, SKPaint, SKSamplingOptions)
 - uid: DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKPicture,SkiaSharp.SKRect,SkiaSharp.SKRect)
   commentId: M:DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKPicture,SkiaSharp.SKRect,SkiaSharp.SKRect)
   id: '#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKPicture,SkiaSharp.SKRect,SkiaSharp.SKRect)'
@@ -348,11 +482,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 136
+    startLine: 168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -386,11 +520,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 144
+    startLine: 176
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -410,6 +544,49 @@ items:
   nameWithType.vb: CachedObject.New(SkiaCacheType, SKSurface, SKRect, SKRect)
   fullName.vb: DrawnUi.Draw.CachedObject.New(DrawnUi.Draw.SkiaCacheType, SkiaSharp.SKSurface, SkiaSharp.SKRect, SkiaSharp.SKRect)
   name.vb: New(SkiaCacheType, SKSurface, SKRect, SKRect)
+- uid: DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKImage,SkiaSharp.SKRect,SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.CachedObject.#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKImage,SkiaSharp.SKRect,SkiaSharp.SKRect)
+  id: '#ctor(DrawnUi.Draw.SkiaCacheType,SkiaSharp.SKImage,SkiaSharp.SKRect,SkiaSharp.SKRect)'
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: CachedObject(SkiaCacheType, SKImage, SKRect, SKRect)
+  nameWithType: CachedObject.CachedObject(SkiaCacheType, SKImage, SKRect, SKRect)
+  fullName: DrawnUi.Draw.CachedObject.CachedObject(DrawnUi.Draw.SkiaCacheType, SkiaSharp.SKImage, SkiaSharp.SKRect, SkiaSharp.SKRect)
+  type: Constructor
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 189
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Image-only cache (no surface, no picture) — e.g. a plane rasterized OFF-thread into a worker-owned
+
+    reusable surface whose snapshot is handed over; the object owns and disposes the image.
+  example: []
+  syntax:
+    content: public CachedObject(SkiaCacheType type, SKImage image, SKRect bounds, SKRect recordingArea)
+    parameters:
+    - id: type
+      type: DrawnUi.Draw.SkiaCacheType
+    - id: image
+      type: SkiaSharp.SKImage
+    - id: bounds
+      type: SkiaSharp.SKRect
+    - id: recordingArea
+      type: SkiaSharp.SKRect
+    content.vb: Public Sub New(type As SkiaCacheType, image As SKImage, bounds As SKRect, recordingArea As SKRect)
+  overload: DrawnUi.Draw.CachedObject.#ctor*
+  nameWithType.vb: CachedObject.New(SkiaCacheType, SKImage, SKRect, SKRect)
+  fullName.vb: DrawnUi.Draw.CachedObject.New(DrawnUi.Draw.SkiaCacheType, SkiaSharp.SKImage, SkiaSharp.SKRect, SkiaSharp.SKRect)
+  name.vb: New(SkiaCacheType, SKImage, SKRect, SKRect)
 - uid: DrawnUi.Draw.CachedObject.Id
   commentId: F:DrawnUi.Draw.CachedObject.Id
   id: Id
@@ -424,11 +601,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Id
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 153
+    startLine: 197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -451,11 +628,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SurfaceIsRecycled
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 159
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -482,11 +659,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Picture
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 161
+    startLine: 205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -511,11 +688,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Image
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 163
+    startLine: 207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -540,11 +717,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Bounds
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 165
+    startLine: 209
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -569,11 +746,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RecordingArea
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 167
+    startLine: 211
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -598,11 +775,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Type
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 169
+    startLine: 213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -627,11 +804,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 171
+    startLine: 215
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -657,11 +834,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 193
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -686,11 +863,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 195
+    startLine: 239
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -715,11 +892,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreserveSourceFromDispose
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 197
+    startLine: 241
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -744,11 +921,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetBitmap
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 199
+    startLine: 243
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -772,11 +949,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Surface
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 204
+    startLine: 248
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -801,11 +978,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Children
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 206
+    startLine: 250
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -830,11 +1007,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAlive
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 208
+    startLine: 252
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1213,6 +1390,23 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.CachedObject.DataContext*
+  commentId: Overload:DrawnUi.Draw.CachedObject.DataContext
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_DataContext
+  name: DataContext
+  nameWithType: CachedObject.DataContext
+  fullName: DrawnUi.Draw.CachedObject.DataContext
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
 - uid: DrawnUi.Draw.CachedObject.TranslateInputCoords*
   commentId: Overload:DrawnUi.Draw.CachedObject.TranslateInputCoords
   href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_TranslateInputCoords_SkiaSharp_SKRect_
@@ -1262,7 +1456,7 @@ references:
   fullName: DrawnUi.Draw.CachedObject.CalculateDrawingOffset
 - uid: DrawnUi.Draw.CachedObject.Draw*
   commentId: Overload:DrawnUi.Draw.CachedObject.Draw
-  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_Draw_SkiaSharp_SKCanvas_SkiaSharp_SKRect_SkiaSharp_SKPaint_
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_Draw_SkiaSharp_SKCanvas_SkiaSharp_SKRect_SkiaSharp_SKPaint_DrawnUi_Draw_FilterQuality_
   name: Draw
   nameWithType: CachedObject.Draw
   fullName: DrawnUi.Draw.CachedObject.Draw
@@ -1282,6 +1476,21 @@ references:
   name: SKPaint
   nameWithType: SKPaint
   fullName: SkiaSharp.SKPaint
+- uid: DrawnUi.Draw.FilterQuality
+  commentId: T:DrawnUi.Draw.FilterQuality
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FilterQuality.html
+  name: FilterQuality
+  nameWithType: FilterQuality
+  fullName: DrawnUi.Draw.FilterQuality
+- uid: SkiaSharp.SKSamplingOptions
+  commentId: T:SkiaSharp.SKSamplingOptions
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.sksamplingoptions
+  name: SKSamplingOptions
+  nameWithType: SKSamplingOptions
+  fullName: SkiaSharp.SKSamplingOptions
 - uid: System.Single
   commentId: T:System.Single
   parent: System
@@ -1325,6 +1534,14 @@ references:
   name: SKSurface
   nameWithType: SKSurface
   fullName: SkiaSharp.SKSurface
+- uid: SkiaSharp.SKImage
+  commentId: T:SkiaSharp.SKImage
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skimage
+  name: SKImage
+  nameWithType: SKImage
+  fullName: SkiaSharp.SKImage
 - uid: System.Guid
   commentId: T:System.Guid
   parent: System
@@ -1362,14 +1579,6 @@ references:
   name: Image
   nameWithType: CachedObject.Image
   fullName: DrawnUi.Draw.CachedObject.Image
-- uid: SkiaSharp.SKImage
-  commentId: T:SkiaSharp.SKImage
-  parent: SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp.skimage
-  name: SKImage
-  nameWithType: SKImage
-  fullName: SkiaSharp.SKImage
 - uid: DrawnUi.Draw.CachedObject.Bounds*
   commentId: Overload:DrawnUi.Draw.CachedObject.Bounds
   href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_Bounds

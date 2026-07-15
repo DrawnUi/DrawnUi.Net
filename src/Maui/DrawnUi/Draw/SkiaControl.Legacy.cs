@@ -5399,7 +5399,7 @@ namespace AppoMobi.Maui.DrawnUi.Draw
             Superview?.StopAndRemoveAnimatorsByKeySubstring(keySubstring);
         }
 
-        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true)
+        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true, double speedMs = 0)
         {
             if (removePrevious)
             {
@@ -5412,6 +5412,8 @@ namespace AppoMobi.Maui.DrawnUi.Draw
                 X = x,
                 Y = y
             };
+            if (speedMs > 0)
+                animation.Speed = speedMs; // 0 = keep RippleAnimator default (500ms)
             animation.Start();
         }
 

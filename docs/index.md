@@ -21,7 +21,7 @@ description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazo
       <!-- <a href="articles/maui/getting-started.md" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
         🔨 Setup Guide
       </a> -->
-      <a href="https://github.com/taublast/DrawnUi" class="hero-btn hero-btn-secondary" style="background: rgba(255,255,255,0.12); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; border: 2px solid rgba(255,255,255,0.22); backdrop-filter: blur(2px); display: inline-block; min-width: 160px; text-align: center;">
+      <a href="https://github.com/DrawnUi/DrawnUi.Net" class="hero-btn hero-btn-secondary" style="background: rgba(255,255,255,0.12); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; border: 2px solid rgba(255,255,255,0.22); backdrop-filter: blur(2px); display: inline-block; min-width: 160px; text-align: center;">
         ⭐ GitHub MIT
       </a>
     </div>
@@ -397,8 +397,8 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 <div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
   <h4 style="margin-bottom: 15px;">💬 Community</h4>
   <p style="margin-bottom: 20px; ">Get help and share your creations</p>
-  <a href="https://github.com/taublast/DrawnUi/discussions" style="color: #4299e1; text-decoration: none; font-weight: 600;">GitHub Discussions →</a><br>
-  <a href="https://github.com/taublast/DrawnUi/issues" style="color: #4299e1; text-decoration: none; font-weight: 600;">Report Issues →</a><br>
+  <a href="https://github.com/DrawnUi/DrawnUi.Net/discussions" style="color: #4299e1; text-decoration: none; font-weight: 600;">GitHub Discussions →</a><br>
+  <a href="https://github.com/DrawnUi/DrawnUi.Net/issues" style="color: #4299e1; text-decoration: none; font-weight: 600;">Report Issues →</a><br>
   <a href="articles/faq.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">FAQ →</a>
 </div>
 

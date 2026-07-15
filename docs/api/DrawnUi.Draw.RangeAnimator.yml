@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Draw.RangeAnimator.#ctor(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.RangeAnimator.Distance
+  - DrawnUi.Draw.RangeAnimator.Shift(System.Double)
   - DrawnUi.Draw.RangeAnimator.Start(System.Action{System.Double},System.Double,System.Double,System.UInt32,Microsoft.Maui.Easing,System.Int32)
   - DrawnUi.Draw.RangeAnimator.TransformReportedValue(System.Int64)
   - DrawnUi.Draw.RangeAnimator.UpdateValue(System.Int64,System.Int64)
@@ -21,8 +22,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RangeAnimator
     path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 4
@@ -111,8 +112,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _callback
     path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 9
@@ -138,8 +139,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 12
@@ -170,8 +171,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Start
     path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 21
@@ -212,8 +213,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Distance
     path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
     startLine: 42
@@ -227,6 +228,47 @@ items:
       type: System.Double
     content.vb: Public Property Distance As Double
   overload: DrawnUi.Draw.RangeAnimator.Distance*
+- uid: DrawnUi.Draw.RangeAnimator.Shift(System.Double)
+  commentId: M:DrawnUi.Draw.RangeAnimator.Shift(System.Double)
+  id: Shift(System.Double)
+  parent: DrawnUi.Draw.RangeAnimator
+  langs:
+  - csharp
+  - vb
+  name: Shift(double)
+  nameWithType: RangeAnimator.Shift(double)
+  fullName: DrawnUi.Draw.RangeAnimator.Shift(double)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Shift
+    path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
+    startLine: 50
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Translates the whole animated range by <code class="paramref">delta</code> (same units as the value).
+
+    Used when content above the viewport is trimmed/inserted mid-scroll (window slide commit) so a
+
+    running wheel/ScrollTo trajectory keeps targeting the same content instead of overwriting the
+
+    scroll-anchor offset compensation with stale pre-shift values (viewport lands in the void).
+  example: []
+  syntax:
+    content: public void Shift(double delta)
+    parameters:
+    - id: delta
+      type: System.Double
+    content.vb: Public Sub Shift(delta As Double)
+  overload: DrawnUi.Draw.RangeAnimator.Shift*
+  nameWithType.vb: RangeAnimator.Shift(Double)
+  fullName.vb: DrawnUi.Draw.RangeAnimator.Shift(Double)
+  name.vb: Shift(Double)
 - uid: DrawnUi.Draw.RangeAnimator.UpdateValue(System.Int64,System.Int64)
   commentId: M:DrawnUi.Draw.RangeAnimator.UpdateValue(System.Int64,System.Int64)
   id: UpdateValue(System.Int64,System.Int64)
@@ -241,11 +283,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateValue
     path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-    startLine: 45
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -285,11 +327,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransformReportedValue
     path: ../src/Shared/DrawnUi/Features/Animators/RangeAnimator.cs
-    startLine: 96
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1491,6 +1533,12 @@ references:
   name: Distance
   nameWithType: RangeAnimator.Distance
   fullName: DrawnUi.Draw.RangeAnimator.Distance
+- uid: DrawnUi.Draw.RangeAnimator.Shift*
+  commentId: Overload:DrawnUi.Draw.RangeAnimator.Shift
+  href: DrawnUi.Draw.RangeAnimator.html#DrawnUi_Draw_RangeAnimator_Shift_System_Double_
+  name: Shift
+  nameWithType: RangeAnimator.Shift
+  fullName: DrawnUi.Draw.RangeAnimator.Shift
 - uid: DrawnUi.Draw.SkiaValueAnimator.UpdateValue(System.Int64,System.Int64)
   commentId: M:DrawnUi.Draw.SkiaValueAnimator.UpdateValue(System.Int64,System.Int64)
   parent: DrawnUi.Draw.SkiaValueAnimator

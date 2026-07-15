@@ -17,8 +17,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/PingPongAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PingPongAnimator
     path: ../src/Shared/DrawnUi/Features/Animators/PingPongAnimator.cs
     startLine: 2
@@ -40,6 +40,7 @@ items:
   - DrawnUi.Draw.RangeAnimator._callback
   - DrawnUi.Draw.RangeAnimator.Start(System.Action{System.Double},System.Double,System.Double,System.UInt32,Microsoft.Maui.Easing,System.Int32)
   - DrawnUi.Draw.RangeAnimator.Distance
+  - DrawnUi.Draw.RangeAnimator.Shift(System.Double)
   - DrawnUi.Draw.RangeAnimator.UpdateValue(System.Int64,System.Int64)
   - DrawnUi.Draw.RangeAnimator.TransformReportedValue(System.Int64)
   - DrawnUi.Draw.SkiaValueAnimator.Dispose
@@ -110,8 +111,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/PingPongAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Features/Animators/PingPongAnimator.cs
     startLine: 4
@@ -142,8 +143,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/PingPongAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FinishedRunning
     path: ../src/Shared/DrawnUi/Features/Animators/PingPongAnimator.cs
     startLine: 9
@@ -347,6 +348,37 @@ references:
   name: Distance
   nameWithType: RangeAnimator.Distance
   fullName: DrawnUi.Draw.RangeAnimator.Distance
+- uid: DrawnUi.Draw.RangeAnimator.Shift(System.Double)
+  commentId: M:DrawnUi.Draw.RangeAnimator.Shift(System.Double)
+  parent: DrawnUi.Draw.RangeAnimator
+  isExternal: true
+  href: DrawnUi.Draw.RangeAnimator.html#DrawnUi_Draw_RangeAnimator_Shift_System_Double_
+  name: Shift(double)
+  nameWithType: RangeAnimator.Shift(double)
+  fullName: DrawnUi.Draw.RangeAnimator.Shift(double)
+  nameWithType.vb: RangeAnimator.Shift(Double)
+  fullName.vb: DrawnUi.Draw.RangeAnimator.Shift(Double)
+  name.vb: Shift(Double)
+  spec.csharp:
+  - uid: DrawnUi.Draw.RangeAnimator.Shift(System.Double)
+    name: Shift
+    href: DrawnUi.Draw.RangeAnimator.html#DrawnUi_Draw_RangeAnimator_Shift_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RangeAnimator.Shift(System.Double)
+    name: Shift
+    href: DrawnUi.Draw.RangeAnimator.html#DrawnUi_Draw_RangeAnimator_Shift_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
 - uid: DrawnUi.Draw.RangeAnimator.UpdateValue(System.Int64,System.Int64)
   commentId: M:DrawnUi.Draw.RangeAnimator.UpdateValue(System.Int64,System.Int64)
   parent: DrawnUi.Draw.RangeAnimator

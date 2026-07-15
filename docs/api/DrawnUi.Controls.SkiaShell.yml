@@ -156,8 +156,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.PopupWrapper.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaShell
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.PopupWrapper.cs
     startLine: 2
@@ -457,11 +457,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 32
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -491,11 +491,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 44
+    startLine: 42
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -517,11 +517,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 53
+    startLine: 51
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -547,11 +547,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrozenLayers
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 66
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -576,11 +576,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Toasts
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 67
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -605,11 +605,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Popups
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 68
+    startLine: 66
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -634,11 +634,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStackScreens
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 69
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -663,11 +663,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStackModals
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 70
+    startLine: 68
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -692,11 +692,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnModalStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 72
+    startLine: 70
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -724,11 +724,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToastsStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 76
+    startLine: 74
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -756,11 +756,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPopupsStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 80
+    startLine: 78
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -788,11 +788,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPagesStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 84
+    startLine: 82
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -820,11 +820,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ModalStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 91
+    startLine: 89
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -847,11 +847,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastsStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 92
+    startLine: 90
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -874,11 +874,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 93
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -901,11 +901,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesStackChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 94
+    startLine: 92
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -928,11 +928,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Navigated
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 96
+    startLine: 94
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -955,11 +955,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Navigating
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 97
+    startLine: 95
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -982,11 +982,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RouteChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 98
+    startLine: 96
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1009,11 +1009,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNavigated
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 104
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1038,11 +1038,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNavigating
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 111
+    startLine: 109
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1067,11 +1067,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyAndCheckCanNavigate
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 118
+    startLine: 116
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1105,11 +1105,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCurrentRouteChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 127
+    startLine: 125
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1131,11 +1131,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastBackgroundColor
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 170
+    startLine: 168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1158,11 +1158,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextColor
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 171
+    startLine: 169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1185,11 +1185,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextFont
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 172
+    startLine: 170
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1212,11 +1212,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextFontWeight
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 173
+    startLine: 171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1239,11 +1239,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextSize
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 174
+    startLine: 172
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1266,11 +1266,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextMargins
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 175
+    startLine: 173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1293,11 +1293,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupBackgroundColor
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 180
+    startLine: 178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1322,11 +1322,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsBackgroundBlur
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 185
+    startLine: 183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1351,11 +1351,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsAnimationSpeed
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 187
+    startLine: 185
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1378,11 +1378,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsCancelAnimationsAfterMs
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 188
+    startLine: 186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1405,11 +1405,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LogEnabled
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 189
+    startLine: 187
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1432,11 +1432,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZIndexModals
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 190
+    startLine: 188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1459,11 +1459,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZIndexPopups
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 191
+    startLine: 189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1486,11 +1486,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZIndexToasts
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 192
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1513,11 +1513,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 194
+    startLine: 192
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1542,11 +1542,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShellLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 212
+    startLine: 210
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1571,11 +1571,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 217
+    startLine: 215
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1602,11 +1602,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RootLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 222
+    startLine: 220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1633,11 +1633,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopPopup
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 226
+    startLine: 224
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1661,11 +1661,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopModal
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 240
+    startLine: 238
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1689,11 +1689,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopmostViewInternal
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 265
+    startLine: 263
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1729,11 +1729,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopmostView
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 301
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1769,11 +1769,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 323
+    startLine: 321
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1807,11 +1807,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PresentAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 380
+    startLine: 378
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1845,11 +1845,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushModalRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 439
+    startLine: 437
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1883,11 +1883,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushRegisteredPageAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 445
+    startLine: 443
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1921,11 +1921,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 478
+    startLine: 476
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1964,11 +1964,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 513
+    startLine: 511
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2006,11 +2006,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnShellGoBack
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 533
+    startLine: 531
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2035,11 +2035,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoBack
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 535
+    startLine: 533
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2069,11 +2069,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoBackDefault
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 552
+    startLine: 550
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2103,11 +2103,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoBackInRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 586
+    startLine: 584
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2141,11 +2141,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 606
+    startLine: 604
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2179,11 +2179,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WrapScreenshot
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 654
+    startLine: 652
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2225,11 +2225,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateModalDrawer
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 702
+    startLine: 700
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2265,11 +2265,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushModalAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 726
+    startLine: 724
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2315,11 +2315,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCurrentRouteNodes
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 879
+    startLine: 877
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2347,11 +2347,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddToCurrentRouteNodes
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 886
+    startLine: 884
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2381,11 +2381,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveFromCurrentRouteNodes
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 895
+    startLine: 893
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2412,11 +2412,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentRouteAuto
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 913
+    startLine: 911
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2441,11 +2441,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushModalAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 932
+    startLine: 930
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2483,11 +2483,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModalAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 950
+    startLine: 948
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2517,11 +2517,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModalAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 987
+    startLine: 985
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2553,11 +2553,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModalAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1092
+    startLine: 1090
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2589,11 +2589,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopTabToRoot
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1140
+    startLine: 1138
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2617,11 +2617,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanFreezeLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1149
+    startLine: 1147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2648,11 +2648,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanUnfreezeLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1158
+    startLine: 1156
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2679,11 +2679,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockLayers
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1163
+    startLine: 1161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2706,11 +2706,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockNavigation
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1164
+    startLine: 1162
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2733,11 +2733,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupFrozenLayersVisibility
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1166
+    startLine: 1164
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2762,11 +2762,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezingModals
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1175
+    startLine: 1173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2791,11 +2791,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrozenLayerVisibility
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1183
+    startLine: 1181
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2831,11 +2831,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnfreezeRootLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1208
+    startLine: 1206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2872,11 +2872,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezeRootLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1260
+    startLine: 1258
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2914,11 +2914,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezeRootLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1284
+    startLine: 1282
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2956,11 +2956,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezeRootLayoutInternal
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1308
+    startLine: 1306
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2994,11 +2994,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupModalsVisibility
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1334
+    startLine: 1332
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3025,11 +3025,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _topmost
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1369
+    startLine: 1367
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3052,11 +3052,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _lockLayers
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1370
+    startLine: 1368
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3079,11 +3079,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayersChanged
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1377
+    startLine: 1375
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3115,11 +3115,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupAppeared
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1404
+    startLine: 1402
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3144,11 +3144,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupDisappeared
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1416
+    startLine: 1414
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3173,11 +3173,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CloseAllPopups
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1430
+    startLine: 1428
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3201,11 +3201,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClosePopupAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1441
+    startLine: 1439
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3239,11 +3239,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClosePopupAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1450
+    startLine: 1448
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3275,11 +3275,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OpenPopupAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1498
+    startLine: 1496
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3325,11 +3325,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CloseAllToasts
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1645
+    startLine: 1643
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3353,11 +3353,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShowToast
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1651
+    startLine: 1649
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3387,11 +3387,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnlockNavigation
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1706
+    startLine: 1704
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3419,11 +3419,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AwaitNavigationLock
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1713
+    startLine: 1711
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3453,11 +3453,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnlockLayers
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1720
+    startLine: 1718
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3485,11 +3485,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AwaitLayersLock
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1727
+    startLine: 1725
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3519,11 +3519,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShowToast
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1734
+    startLine: 1732
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3553,11 +3553,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasTopmostModalBindingContext
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1752
+    startLine: 1750
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3586,11 +3586,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyShellPropertiesToCanvas
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1766
+    startLine: 1764
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3612,11 +3612,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Canvas
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1783
+    startLine: 1781
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3641,11 +3641,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceShellLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1788
+    startLine: 1786
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3670,11 +3670,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceRootLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1818
+    startLine: 1816
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3699,11 +3699,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImportRootLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1842
+    startLine: 1840
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3731,11 +3731,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImportNavigationLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1879
+    startLine: 1877
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3763,11 +3763,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Reset
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1892
+    startLine: 1890
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3789,11 +3789,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialized
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1906
+    startLine: 1904
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3818,11 +3818,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialize
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1908
+    startLine: 1906
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3850,11 +3850,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStarted
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1941
+    startLine: 1939
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3876,11 +3876,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterActionRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1946
+    startLine: 1944
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3910,11 +3910,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteActionRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1954
+    startLine: 1952
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3944,11 +3944,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1971
+    startLine: 1969
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3978,11 +3978,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateContent
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 1976
+    startLine: 1974
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4012,11 +4012,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2003
+    startLine: 2001
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4046,11 +4046,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RouteProperty
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2008
+    startLine: 2006
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4073,11 +4073,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormatRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2119
+    startLine: 2117
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4107,11 +4107,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormatRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2125
+    startLine: 2123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4141,11 +4141,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2130
+    startLine: 2128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4175,11 +4175,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopToRootAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2147
+    startLine: 2145
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4203,11 +4203,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ModalStack
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2152
+    startLine: 2150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4232,11 +4232,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStack
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2161
+    startLine: 2159
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4261,11 +4261,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrderedRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2199
+    startLine: 2197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4290,11 +4290,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoToAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2210
+    startLine: 2208
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4321,11 +4321,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _rootRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2215
+    startLine: 2213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4348,11 +4348,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Services
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2216
+    startLine: 2214
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4375,11 +4375,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BuildRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2219
+    startLine: 2217
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4411,11 +4411,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupRoot
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2239
+    startLine: 2237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4443,11 +4443,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetRoot
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2251
+    startLine: 2249
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4491,11 +4491,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetArguments
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2276
+    startLine: 2274
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4525,11 +4525,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParseState
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2309
+    startLine: 2307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4556,11 +4556,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParseRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2320
+    startLine: 2318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4590,11 +4590,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateContentSetArguments
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2344
+    startLine: 2342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4628,11 +4628,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2368
+    startLine: 2366
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4657,11 +4657,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoToAsync
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2378
+    startLine: 2376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4704,11 +4704,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateLayout
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2547
+    startLine: 2545
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4730,11 +4730,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutInvalidated
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2552
+    startLine: 2550
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4756,11 +4756,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BottomInsets
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2564
+    startLine: 2562
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4785,11 +4785,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TopInsets
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2579
+    startLine: 2577
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4814,11 +4814,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StatusBarHeight
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2594
+    startLine: 2592
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4843,11 +4843,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnRotation
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2607
+    startLine: 2605
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4870,11 +4870,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabReselected
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2608
+    startLine: 2606
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4897,11 +4897,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MenuItems
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2609
+    startLine: 2607
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4926,11 +4926,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Buffer
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2618
+    startLine: 2616
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls

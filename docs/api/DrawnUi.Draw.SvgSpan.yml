@@ -24,8 +24,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SvgSpan
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 2
@@ -62,7 +62,7 @@ items:
   - DrawnUi.Draw.TextSpan.StrikeoutColor
   - DrawnUi.Draw.TextSpan.BackgroundColor
   - DrawnUi.Draw.TextSpan.ParagraphColor
-  - DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
+  - DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
   - DrawnUi.Draw.TextSpan.OnPropertyChanged(System.String)
   - DrawnUi.Draw.TextSpan.Default
   - DrawnUi.Draw.TextSpan.DebugString
@@ -74,6 +74,7 @@ items:
   - DrawnUi.Draw.TextSpan.HasSetFont
   - DrawnUi.Draw.TextSpan.HasSetSize
   - DrawnUi.Draw.TextSpan.Paint
+  - DrawnUi.Draw.TextSpan.Font
   - DrawnUi.Draw.TextSpan.TypeFace
   - DrawnUi.Draw.TextSpan.NeedShape
   - DrawnUi.Draw.TextSpan.HasDecorations
@@ -182,8 +183,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 4
@@ -211,8 +212,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalAlignement
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 11
@@ -243,8 +244,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Height
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 28
@@ -272,8 +273,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Width
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 45
@@ -301,8 +302,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TintColor
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 62
@@ -330,8 +331,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Source
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 79
@@ -359,8 +360,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SvgString
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 96
@@ -388,8 +389,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Control
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 112
@@ -415,8 +416,8 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Draw/Text/SvgSpan.cs
     startLine: 119
@@ -635,21 +636,21 @@ references:
   name: ParagraphColor
   nameWithType: TextSpan.ParagraphColor
   fullName: DrawnUi.Draw.TextSpan.ParagraphColor
-- uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
-  commentId: M:DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
+- uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
+  commentId: M:DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
   parent: DrawnUi.Draw.TextSpan
   isExternal: true
-  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_
-  name: SetupPaint(double, SKPaint)
-  nameWithType: TextSpan.SetupPaint(double, SKPaint)
-  fullName: DrawnUi.Draw.TextSpan.SetupPaint(double, SkiaSharp.SKPaint)
-  nameWithType.vb: TextSpan.SetupPaint(Double, SKPaint)
-  fullName.vb: DrawnUi.Draw.TextSpan.SetupPaint(Double, SkiaSharp.SKPaint)
-  name.vb: SetupPaint(Double, SKPaint)
+  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_SkiaSharp_SKFont_
+  name: SetupPaint(double, SKPaint, SKFont)
+  nameWithType: TextSpan.SetupPaint(double, SKPaint, SKFont)
+  fullName: DrawnUi.Draw.TextSpan.SetupPaint(double, SkiaSharp.SKPaint, SkiaSharp.SKFont)
+  nameWithType.vb: TextSpan.SetupPaint(Double, SKPaint, SKFont)
+  fullName.vb: DrawnUi.Draw.TextSpan.SetupPaint(Double, SkiaSharp.SKPaint, SkiaSharp.SKFont)
+  name.vb: SetupPaint(Double, SKPaint, SKFont)
   spec.csharp:
-  - uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
+  - uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
     name: SetupPaint
-    href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_
+    href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_SkiaSharp_SKFont_
   - name: (
   - uid: System.Double
     name: double
@@ -661,11 +662,17 @@ references:
     name: SKPaint
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKFont
+    name: SKFont
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skfont
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
+  - uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
     name: SetupPaint
-    href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_
+    href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_SkiaSharp_SKFont_
   - name: (
   - uid: System.Double
     name: Double
@@ -677,6 +684,12 @@ references:
     name: SKPaint
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKFont
+    name: SKFont
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skfont
   - name: )
 - uid: DrawnUi.Draw.TextSpan.OnPropertyChanged(System.String)
   commentId: M:DrawnUi.Draw.TextSpan.OnPropertyChanged(System.String)
@@ -791,6 +804,13 @@ references:
   name: Paint
   nameWithType: TextSpan.Paint
   fullName: DrawnUi.Draw.TextSpan.Paint
+- uid: DrawnUi.Draw.TextSpan.Font
+  commentId: P:DrawnUi.Draw.TextSpan.Font
+  parent: DrawnUi.Draw.TextSpan
+  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_Font
+  name: Font
+  nameWithType: TextSpan.Font
+  fullName: DrawnUi.Draw.TextSpan.Font
 - uid: DrawnUi.Draw.TextSpan.TypeFace
   commentId: P:DrawnUi.Draw.TextSpan.TypeFace
   parent: DrawnUi.Draw.TextSpan

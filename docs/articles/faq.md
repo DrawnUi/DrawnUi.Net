@@ -155,6 +155,6 @@ A: Might be Apple Metal specifics, cap FPS:
 * Please start with [Platforms and Packages](platforms.md) to pick the correct host and sample lane.
 * For MAUI-oriented walkthroughs, check out [MAUI Tutorials and Host Notes](maui/tutorials.md).
 * For browser-hosted questions, check out [Blazor FAQ](blazor/faq.md).
-* [Ask in GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)** - The community is here to help!
+* [Ask in GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)** - The community is here to help!
 
 

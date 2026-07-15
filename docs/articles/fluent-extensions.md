@@ -294,6 +294,20 @@ scroll = new SkiaScroll()
 
 Implemented via `Expression<Func<...>>` tree inspection (reads `Member.Name`, never calls `.Compile()`), so it's safe under iOS/NativeAOT — no JIT dependency. Both string and lambda overloads coexist; pick whichever reads better.
 
+`ObserveProperty` also has a lambda-property overload for the lazy-target form (`() => Model` instead of a direct instance, for a source still null at construction time):
+
+```csharp
+.ObserveProperty(() => Model, x => x.Title, me => { me.Text = Model.Title; })
+```
+
+`ObserveProperties` (multiple properties, see below) has a `params` lambda overload too — note `callback` moves BEFORE the property lambdas, since `params` must be the trailing parameter:
+
+```csharp
+.ObserveProperties(model, me => { me.Text = $"{model.A}-{model.B}"; }, x => x.A, x => x.B)
+
+.ObserveProperties(() => Model, me => { me.Text = $"{Model.A}-{Model.B}"; }, x => x.A, x => x.B)
+```
+
 **Typical example:**
 - `SkiaScroll.IsRefreshing` for pull-to-refresh, where the control can enter refresh state by gesture and the ViewModel must also receive that new value
 
@@ -319,6 +333,8 @@ new SkiaButton("Submit")
         }
     });
 ```
+
+Matching against `propertyNames` uses a `HashSet<string>` internally (O(1) lookup per `PropertyChanged` firing), not a linear scan — same for `ObservePropertiesOn`.
 
 **Real-world example from [FirstApp tutorial](first-app-code.md):**
 ```csharp

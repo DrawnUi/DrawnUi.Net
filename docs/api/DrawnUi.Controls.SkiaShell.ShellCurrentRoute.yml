@@ -16,11 +16,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShellCurrentRoute
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2362
+    startLine: 2360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -55,11 +55,11 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Nodes
     path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-    startLine: 2365
+    startLine: 2363
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls

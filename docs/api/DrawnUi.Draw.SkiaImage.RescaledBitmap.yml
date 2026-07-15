@@ -21,11 +21,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RescaledBitmap
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1390
+    startLine: 1403
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -60,11 +60,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Bitmap
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1392
+    startLine: 1405
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -89,11 +89,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _image
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1394
+    startLine: 1407
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -116,11 +116,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Image
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1396
+    startLine: 1409
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -145,20 +145,20 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Quality
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1409
+    startLine: 1422
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public SKFilterQuality Quality { get; set; }
+    content: public FilterQuality Quality { get; set; }
     parameters: []
     return:
-      type: SkiaSharp.SKFilterQuality
-    content.vb: Public Property Quality As SKFilterQuality
+      type: DrawnUi.Draw.FilterQuality
+    content.vb: Public Property Quality As FilterQuality
   overload: DrawnUi.Draw.SkiaImage.RescaledBitmap.Quality*
 - uid: DrawnUi.Draw.SkiaImage.RescaledBitmap.Source
   commentId: P:DrawnUi.Draw.SkiaImage.RescaledBitmap.Source
@@ -174,11 +174,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Source
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1411
+    startLine: 1424
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -203,11 +203,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1413
+    startLine: 1426
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -618,14 +618,13 @@ references:
   name: Quality
   nameWithType: SkiaImage.RescaledBitmap.Quality
   fullName: DrawnUi.Draw.SkiaImage.RescaledBitmap.Quality
-- uid: SkiaSharp.SKFilterQuality
-  commentId: T:SkiaSharp.SKFilterQuality
-  parent: SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp.skfilterquality
-  name: SKFilterQuality
-  nameWithType: SKFilterQuality
-  fullName: SkiaSharp.SKFilterQuality
+- uid: DrawnUi.Draw.FilterQuality
+  commentId: T:DrawnUi.Draw.FilterQuality
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FilterQuality.html
+  name: FilterQuality
+  nameWithType: FilterQuality
+  fullName: DrawnUi.Draw.FilterQuality
 - uid: DrawnUi.Draw.SkiaImage.RescaledBitmap.Source*
   commentId: Overload:DrawnUi.Draw.SkiaImage.RescaledBitmap.Source
   href: DrawnUi.Draw.SkiaImage.RescaledBitmap.html#DrawnUi_Draw_SkiaImage_RescaledBitmap_Source

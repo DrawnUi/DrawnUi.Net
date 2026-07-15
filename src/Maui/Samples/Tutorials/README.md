@@ -70,11 +70,11 @@ Tutorials/
 ## 📖 Documentation
 
 Each tutorial corresponds to documentation in the `docs/articles/` folder:
-- [First App Tutorial (XAML)](https://github.com/taublast/DrawnUi.Maui/blob/main/docs/articles/first-app.md)
-- [First App Tutorial (C# Fluent)](https://github.com/taublast/DrawnUi.Maui/blob/main/docs/articles/first-app-code.md)
-- [Creating Custom Drawn Controls](https://github.com/taublast/DrawnUi.Maui/blob/main/docs/articles/interactive-button.md)
-- [Interactive Cards Tutorial](https://github.com/taublast/DrawnUi.Maui/blob/main/docs/articles/interactive-cards.md)
-- [News Feed Scroller Tutorial](https://github.com/taublast/DrawnUi.Maui/blob/main/docs/articles/news-feed-tutorial.md)
+- [First App Tutorial (XAML)](https://github.com/DrawnUi/DrawnUi.Net.Maui/blob/main/docs/articles/first-app.md)
+- [First App Tutorial (C# Fluent)](https://github.com/DrawnUi/DrawnUi.Net.Maui/blob/main/docs/articles/first-app-code.md)
+- [Creating Custom Drawn Controls](https://github.com/DrawnUi/DrawnUi.Net.Maui/blob/main/docs/articles/interactive-button.md)
+- [Interactive Cards Tutorial](https://github.com/DrawnUi/DrawnUi.Net.Maui/blob/main/docs/articles/interactive-cards.md)
+- [News Feed Scroller Tutorial](https://github.com/DrawnUi/DrawnUi.Net.Maui/blob/main/docs/articles/news-feed-tutorial.md)
 
 ## 🎓 Learning Path
 

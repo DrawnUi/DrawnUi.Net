@@ -8,14 +8,17 @@ items:
   - DrawnUi.Draw.TemplatedViewsPool.#ctor(System.Func{System.Object},System.Int32,System.Action{System.IDisposable})
   - DrawnUi.Draw.TemplatedViewsPool.ClearStandalonePool
   - DrawnUi.Draw.TemplatedViewsPool.CreateTemplate
+  - DrawnUi.Draw.TemplatedViewsPool.CreatedCount
   - DrawnUi.Draw.TemplatedViewsPool.Dispose
   - DrawnUi.Draw.TemplatedViewsPool.Dispose(System.Boolean)
   - DrawnUi.Draw.TemplatedViewsPool.Get(System.Single,System.Object)
+  - DrawnUi.Draw.TemplatedViewsPool.GetForPreparation(System.Object,System.Func{System.Object,System.Boolean})
   - DrawnUi.Draw.TemplatedViewsPool.GetStandalone
   - DrawnUi.Draw.TemplatedViewsPool.InvalidateAll
   - DrawnUi.Draw.TemplatedViewsPool.IsDisposing
   - DrawnUi.Draw.TemplatedViewsPool.MaxDistinctHeights
   - DrawnUi.Draw.TemplatedViewsPool.MaxSize
+  - DrawnUi.Draw.TemplatedViewsPool.PeekContext(System.Object)
   - DrawnUi.Draw.TemplatedViewsPool.Reserve
   - DrawnUi.Draw.TemplatedViewsPool.Return(DrawnUi.Draw.SkiaControl,System.Int32)
   - DrawnUi.Draw.TemplatedViewsPool.ReturnStandalone(DrawnUi.Draw.SkiaControl)
@@ -30,8 +33,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TemplatedViewsPool
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
     startLine: 2
@@ -69,8 +72,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateTemplate
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
     startLine: 4
@@ -98,8 +101,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxSize
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
     startLine: 5
@@ -127,8 +130,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposing
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
     startLine: 6
@@ -154,8 +157,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
     startLine: 40
@@ -190,8 +193,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Size
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
     startLine: 47
@@ -205,6 +208,46 @@ items:
       type: System.Int32
     content.vb: Public ReadOnly Property Size As Integer
   overload: DrawnUi.Draw.TemplatedViewsPool.Size*
+- uid: DrawnUi.Draw.TemplatedViewsPool.CreatedCount
+  commentId: P:DrawnUi.Draw.TemplatedViewsPool.CreatedCount
+  id: CreatedCount
+  parent: DrawnUi.Draw.TemplatedViewsPool
+  langs:
+  - csharp
+  - vb
+  name: CreatedCount
+  nameWithType: TemplatedViewsPool.CreatedCount
+  fullName: DrawnUi.Draw.TemplatedViewsPool.CreatedCount
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CreatedCount
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 71
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Total live cell instances created by this pool and not yet disposed by it — parked in the
+
+    reservoirs PLUS rented out (in use). This, not <xref href="DrawnUi.Draw.TemplatedViewsPool.Size" data-throw-if-not-resolved="false"></xref> (parked only), is what
+
+    <xref href="DrawnUi.Draw.TemplatedViewsPool.MaxSize" data-throw-if-not-resolved="false"></xref> really caps. Gating creation on Size let totals grow unbounded while
+
+    cells were rented ("cells 198/320" with a nominal cap of 200): every creation gate now uses
+
+    CreatedCount, and returns that would keep more instances alive than MaxSize are disposed.
+  example: []
+  syntax:
+    content: public int CreatedCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property CreatedCount As Integer
+  overload: DrawnUi.Draw.TemplatedViewsPool.CreatedCount*
 - uid: DrawnUi.Draw.TemplatedViewsPool.MaxDistinctHeights
   commentId: P:DrawnUi.Draw.TemplatedViewsPool.MaxDistinctHeights
   id: MaxDistinctHeights
@@ -219,11 +262,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxDistinctHeights
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 62
+    startLine: 73
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -248,11 +291,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 190
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -280,11 +323,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 236
+    startLine: 248
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -310,11 +353,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Reserve
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 267
+    startLine: 346
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -336,11 +379,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetStandalone
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 295
+    startLine: 382
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -364,11 +407,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnStandalone
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 313
+    startLine: 400
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -393,11 +436,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearStandalonePool
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 327
+    startLine: 414
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -419,11 +462,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Get
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 343
+    startLine: 431
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -441,6 +484,109 @@ items:
   nameWithType.vb: TemplatedViewsPool.Get(Single, Object)
   fullName.vb: DrawnUi.Draw.TemplatedViewsPool.Get(Single, Object)
   name.vb: Get(Single, Object)
+- uid: DrawnUi.Draw.TemplatedViewsPool.PeekContext(System.Object)
+  commentId: M:DrawnUi.Draw.TemplatedViewsPool.PeekContext(System.Object)
+  id: PeekContext(System.Object)
+  parent: DrawnUi.Draw.TemplatedViewsPool
+  langs:
+  - csharp
+  - vb
+  name: PeekContext(object)
+  nameWithType: TemplatedViewsPool.PeekContext(object)
+  fullName: DrawnUi.Draw.TemplatedViewsPool.PeekContext(object)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PeekContext
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 509
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Read-only peek at the pooled cell tagged with this exact BindingContext, or null. Does not
+
+    remove it from the pool — used by the prepared-views pipeline to check cell readiness without
+
+    renting (see <xref href="DrawnUi.Draw.SkiaLayout.UsePreparedViews" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public SkiaControl PeekContext(object bindingContext)
+    parameters:
+    - id: bindingContext
+      type: System.Object
+    return:
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Function PeekContext(bindingContext As Object) As SkiaControl
+  overload: DrawnUi.Draw.TemplatedViewsPool.PeekContext*
+  nameWithType.vb: TemplatedViewsPool.PeekContext(Object)
+  fullName.vb: DrawnUi.Draw.TemplatedViewsPool.PeekContext(Object)
+  name.vb: PeekContext(Object)
+- uid: DrawnUi.Draw.TemplatedViewsPool.GetForPreparation(System.Object,System.Func{System.Object,System.Boolean})
+  commentId: M:DrawnUi.Draw.TemplatedViewsPool.GetForPreparation(System.Object,System.Func{System.Object,System.Boolean})
+  id: GetForPreparation(System.Object,System.Func{System.Object,System.Boolean})
+  parent: DrawnUi.Draw.TemplatedViewsPool
+  langs:
+  - csharp
+  - vb
+  name: GetForPreparation(object, Func<object, bool>)
+  nameWithType: TemplatedViewsPool.GetForPreparation(object, Func<object, bool>)
+  fullName: DrawnUi.Draw.TemplatedViewsPool.GetForPreparation(object, System.Func<object, bool>)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetForPreparation
+    path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
+    startLine: 537
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Rents a cell for OFF-THREAD preparation (bind+measure ahead of scrolling): the exact cell tagged
+
+    with this context, else a free spare, else a new instance while under MaxSize, else (pool full,
+
+    every cell tagged) evicts a tagged cell whose context is DEAD per <code class="paramref">isTagEvictable</code> —
+
+    typically a context that left a windowed source on a LoadMore trim; without reclaiming those the
+
+    pool fills with dead-tagged cells and preparation deadlocks into permanent skeletons.
+
+    Cells tagged by LIVE contexts are never evicted here: speculative (ahead/behind) preparation
+
+    stealing another wanted context's prepared cell made that index unprepared again, which re-wanted
+
+    it next pass and evicted a third — a self-sustaining eviction carousel that kept the preparation
+
+    worker (and its Repaint per prep) running at ~400 preps/sec while the list sat IDLE.
+
+    Returns null when nothing is safely available — the caller must then skip (no measure, no repaint).
+  example: []
+  syntax:
+    content: public SkiaControl GetForPreparation(object bindingContext, Func<object, bool> isTagEvictable = null)
+    parameters:
+    - id: bindingContext
+      type: System.Object
+      description: Data context the cell will be prepared for.
+    - id: isTagEvictable
+      type: System.Func{System.Object,System.Boolean}
+      description: >-
+        Judges a TAGGED cell's context: true = dead (safe to evict), false = still live (protected).
+
+        Null = never evict tagged cells.
+    return:
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Function GetForPreparation(bindingContext As Object, isTagEvictable As Func(Of Object, Boolean) = Nothing) As SkiaControl
+  overload: DrawnUi.Draw.TemplatedViewsPool.GetForPreparation*
+  nameWithType.vb: TemplatedViewsPool.GetForPreparation(Object, Func(Of Object, Boolean))
+  fullName.vb: DrawnUi.Draw.TemplatedViewsPool.GetForPreparation(Object, System.Func(Of Object, Boolean))
+  name.vb: GetForPreparation(Object, Func(Of Object, Boolean))
 - uid: DrawnUi.Draw.TemplatedViewsPool.Return(DrawnUi.Draw.SkiaControl,System.Int32)
   commentId: M:DrawnUi.Draw.TemplatedViewsPool.Return(DrawnUi.Draw.SkiaControl,System.Int32)
   id: Return(DrawnUi.Draw.SkiaControl,System.Int32)
@@ -455,11 +601,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Return
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 416
+    startLine: 577
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -489,11 +635,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateAll
     path: ../src/Shared/DrawnUi/Draw/Layout/TemplatedViewsPool.cs
-    startLine: 456
+    startLine: 628
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1039,6 +1185,24 @@ references:
   name: Size
   nameWithType: TemplatedViewsPool.Size
   fullName: DrawnUi.Draw.TemplatedViewsPool.Size
+- uid: DrawnUi.Draw.TemplatedViewsPool.Size
+  commentId: P:DrawnUi.Draw.TemplatedViewsPool.Size
+  href: DrawnUi.Draw.TemplatedViewsPool.html#DrawnUi_Draw_TemplatedViewsPool_Size
+  name: Size
+  nameWithType: TemplatedViewsPool.Size
+  fullName: DrawnUi.Draw.TemplatedViewsPool.Size
+- uid: DrawnUi.Draw.TemplatedViewsPool.MaxSize
+  commentId: P:DrawnUi.Draw.TemplatedViewsPool.MaxSize
+  href: DrawnUi.Draw.TemplatedViewsPool.html#DrawnUi_Draw_TemplatedViewsPool_MaxSize
+  name: MaxSize
+  nameWithType: TemplatedViewsPool.MaxSize
+  fullName: DrawnUi.Draw.TemplatedViewsPool.MaxSize
+- uid: DrawnUi.Draw.TemplatedViewsPool.CreatedCount*
+  commentId: Overload:DrawnUi.Draw.TemplatedViewsPool.CreatedCount
+  href: DrawnUi.Draw.TemplatedViewsPool.html#DrawnUi_Draw_TemplatedViewsPool_CreatedCount
+  name: CreatedCount
+  nameWithType: TemplatedViewsPool.CreatedCount
+  fullName: DrawnUi.Draw.TemplatedViewsPool.CreatedCount
 - uid: DrawnUi.Draw.TemplatedViewsPool.MaxDistinctHeights*
   commentId: Overload:DrawnUi.Draw.TemplatedViewsPool.MaxDistinctHeights
   href: DrawnUi.Draw.TemplatedViewsPool.html#DrawnUi_Draw_TemplatedViewsPool_MaxDistinctHeights
@@ -1121,6 +1285,113 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
+- uid: DrawnUi.Draw.SkiaLayout.UsePreparedViews
+  commentId: P:DrawnUi.Draw.SkiaLayout.UsePreparedViews
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_UsePreparedViews
+  name: UsePreparedViews
+  nameWithType: SkiaLayout.UsePreparedViews
+  fullName: DrawnUi.Draw.SkiaLayout.UsePreparedViews
+- uid: DrawnUi.Draw.TemplatedViewsPool.PeekContext*
+  commentId: Overload:DrawnUi.Draw.TemplatedViewsPool.PeekContext
+  href: DrawnUi.Draw.TemplatedViewsPool.html#DrawnUi_Draw_TemplatedViewsPool_PeekContext_System_Object_
+  name: PeekContext
+  nameWithType: TemplatedViewsPool.PeekContext
+  fullName: DrawnUi.Draw.TemplatedViewsPool.PeekContext
+- uid: DrawnUi.Draw.SkiaLayout
+  commentId: T:DrawnUi.Draw.SkiaLayout
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaLayout.html
+  name: SkiaLayout
+  nameWithType: SkiaLayout
+  fullName: DrawnUi.Draw.SkiaLayout
+- uid: DrawnUi.Draw.TemplatedViewsPool.GetForPreparation*
+  commentId: Overload:DrawnUi.Draw.TemplatedViewsPool.GetForPreparation
+  href: DrawnUi.Draw.TemplatedViewsPool.html#DrawnUi_Draw_TemplatedViewsPool_GetForPreparation_System_Object_System_Func_System_Object_System_Boolean__
+  name: GetForPreparation
+  nameWithType: TemplatedViewsPool.GetForPreparation
+  fullName: DrawnUi.Draw.TemplatedViewsPool.GetForPreparation
+- uid: System.Func{System.Object,System.Boolean}
+  commentId: T:System.Func{System.Object,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<object, bool>
+  nameWithType: Func<object, bool>
+  fullName: System.Func<object, bool>
+  nameWithType.vb: Func(Of Object, Boolean)
+  fullName.vb: System.Func(Of Object, Boolean)
+  name.vb: Func(Of Object, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
 - uid: DrawnUi.Draw.TemplatedViewsPool.Return*
   commentId: Overload:DrawnUi.Draw.TemplatedViewsPool.Return
   href: DrawnUi.Draw.TemplatedViewsPool.html#DrawnUi_Draw_TemplatedViewsPool_Return_DrawnUi_Draw_SkiaControl_System_Int32_

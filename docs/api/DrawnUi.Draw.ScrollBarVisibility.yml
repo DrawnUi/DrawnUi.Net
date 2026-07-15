@@ -1,0 +1,246 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.ScrollBarVisibility
+  commentId: T:DrawnUi.Draw.ScrollBarVisibility
+  id: ScrollBarVisibility
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.ScrollBarVisibility.Horizontal
+  - DrawnUi.Draw.ScrollBarVisibility.None
+  - DrawnUi.Draw.ScrollBarVisibility.Vertical
+  langs:
+  - csharp
+  - vb
+  name: ScrollBarVisibility
+  nameWithType: ScrollBarVisibility
+  fullName: DrawnUi.Draw.ScrollBarVisibility
+  type: Enum
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ScrollBarVisibility
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+    startLine: 6
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Which axis a SkiaScroll shows a scroll bar for. Matched against the scroll's own Orientation:
+
+    a Horizontal scroll shows a bar when Horizontal is set, any other scroll when Vertical is set.
+  example: []
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum ScrollBarVisibility
+    content.vb: >-
+      <Flags>
+
+      Public Enum ScrollBarVisibility
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+- uid: DrawnUi.Draw.ScrollBarVisibility.None
+  commentId: F:DrawnUi.Draw.ScrollBarVisibility.None
+  id: None
+  parent: DrawnUi.Draw.ScrollBarVisibility
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: ScrollBarVisibility.None
+  fullName: DrawnUi.Draw.ScrollBarVisibility.None
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: None
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: None = 0
+    return:
+      type: DrawnUi.Draw.ScrollBarVisibility
+- uid: DrawnUi.Draw.ScrollBarVisibility.Vertical
+  commentId: F:DrawnUi.Draw.ScrollBarVisibility.Vertical
+  id: Vertical
+  parent: DrawnUi.Draw.ScrollBarVisibility
+  langs:
+  - csharp
+  - vb
+  name: Vertical
+  nameWithType: ScrollBarVisibility.Vertical
+  fullName: DrawnUi.Draw.ScrollBarVisibility.Vertical
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Vertical
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+    startLine: 10
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: Vertical = 1
+    return:
+      type: DrawnUi.Draw.ScrollBarVisibility
+- uid: DrawnUi.Draw.ScrollBarVisibility.Horizontal
+  commentId: F:DrawnUi.Draw.ScrollBarVisibility.Horizontal
+  id: Horizontal
+  parent: DrawnUi.Draw.ScrollBarVisibility
+  langs:
+  - csharp
+  - vb
+  name: Horizontal
+  nameWithType: ScrollBarVisibility.Horizontal
+  fullName: DrawnUi.Draw.ScrollBarVisibility.Horizontal
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Horizontal
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: Horizontal = 2
+    return:
+      type: DrawnUi.Draw.ScrollBarVisibility
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.ScrollBarVisibility
+  commentId: T:DrawnUi.Draw.ScrollBarVisibility
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ScrollBarVisibility.html
+  name: ScrollBarVisibility
+  nameWithType: ScrollBarVisibility
+  fullName: DrawnUi.Draw.ScrollBarVisibility

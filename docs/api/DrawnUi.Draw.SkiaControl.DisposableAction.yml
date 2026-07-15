@@ -17,11 +17,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposableAction
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-    startLine: 6355
+    startLine: 6452
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -56,11 +56,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-    startLine: 6359
+    startLine: 6456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -88,11 +88,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-    startLine: 6363
+    startLine: 6460
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

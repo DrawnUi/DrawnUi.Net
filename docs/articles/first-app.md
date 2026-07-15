@@ -10,7 +10,7 @@ This quickstart guide will help you create your first DrawnUi.Maui application f
 
 ## 🚀 Live Demo in Tutorials Project
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials) for:
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials) for:
 - **First App** - This tutorial in action
 - **Interactive Cards (XAML)** - Beautiful animated cards
 - **Interactive Cards (Code)** - Same UI built with C# code-behind  

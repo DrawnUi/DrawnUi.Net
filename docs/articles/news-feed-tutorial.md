@@ -44,7 +44,7 @@ In Blazor, the page shell becomes a Razor component and the feed layout is hoste
 
 <img src="../images/scroller.jpg" alt="News Feed Tutorial" width="350" style="margin-top: 16px;" />
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials)  
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials)  
 Clone the repo and run the Tutorials project to explore all examples!
 
 ## 🎓 What You'll Learn:
@@ -584,7 +584,7 @@ public override void OnWillDisposeWithChildren()
 }
 ```
 
-> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/NewsFeed/NewsCell.xaml.cs)
+> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/NewsFeed/NewsCell.xaml.cs)
 
 ### 🌐 Data Provider
 

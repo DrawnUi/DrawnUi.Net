@@ -19,12 +19,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ElementRenderer
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 27
+    path: ../src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+    startLine: 2
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -56,12 +56,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 29
+    path: ../src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+    startLine: 4
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -88,12 +88,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 35
+    path: ../src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+    startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -114,12 +114,12 @@ items:
   type: Field
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Element
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 43
+    path: ../src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+    startLine: 18
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -143,12 +143,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintWithOpacity
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 48
+    path: ../src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+    startLine: 23
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -174,12 +174,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateRenderObject
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 50
+    path: ../src/Shared/DrawnUi/Draw/Layout/ElementRenderer.cs
+    startLine: 25
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

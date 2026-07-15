@@ -10,8 +10,8 @@ items:
   - DrawnUi.Draw.SkiaLabel.SpanMeasurement.IsGlyphAlwaysAvailableSpan(System.ReadOnlySpan{System.Char})
   - DrawnUi.Draw.SkiaLabel.SpanMeasurement.IsSpaceSpan(System.ReadOnlySpan{System.Char},System.Char)
   - DrawnUi.Draw.SkiaLabel.SpanMeasurement.LastNonSpaceIndexSpan(System.ReadOnlySpan{System.Char})
-  - DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
-  - DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
+  - DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
+  - DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
   - DrawnUi.Draw.SkiaLabel.SpanMeasurement.SpanToStringForCache(System.ReadOnlySpan{System.Char})
   langs:
   - csharp
@@ -23,8 +23,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpanMeasurement
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 9
@@ -46,22 +46,22 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
-  commentId: M:DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
-  id: MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
+- uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
+  commentId: M:DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
+  id: MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char})
   parent: DrawnUi.Draw.SkiaLabel.SpanMeasurement
   langs:
   - csharp
   - vb
-  name: MeasureTextWidthWithAdvanceSpan(SKPaint, ReadOnlySpan<char>)
-  nameWithType: SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SKPaint, ReadOnlySpan<char>)
-  fullName: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKPaint, System.ReadOnlySpan<char>)
+  name: MeasureTextWidthWithAdvanceSpan(SKFont, SKPaint, ReadOnlySpan<char>)
+  nameWithType: SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SKFont, SKPaint, ReadOnlySpan<char>)
+  fullName: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKFont, SkiaSharp.SKPaint, System.ReadOnlySpan<char>)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureTextWidthWithAdvanceSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 14
@@ -71,19 +71,21 @@ items:
   summary: Measures text width using ReadOnlySpan without converting to string
   example: []
   syntax:
-    content: public static float MeasureTextWidthWithAdvanceSpan(SKPaint paint, ReadOnlySpan<char> textSpan)
+    content: public static float MeasureTextWidthWithAdvanceSpan(SKFont font, SKPaint paint, ReadOnlySpan<char> textSpan)
     parameters:
+    - id: font
+      type: SkiaSharp.SKFont
     - id: paint
       type: SkiaSharp.SKPaint
     - id: textSpan
       type: System.ReadOnlySpan{System.Char}
     return:
       type: System.Single
-    content.vb: Public Shared Function MeasureTextWidthWithAdvanceSpan(paint As SKPaint, textSpan As ReadOnlySpan(Of Char)) As Single
+    content.vb: Public Shared Function MeasureTextWidthWithAdvanceSpan(font As SKFont, paint As SKPaint, textSpan As ReadOnlySpan(Of Char)) As Single
   overload: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan*
-  nameWithType.vb: SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SKPaint, ReadOnlySpan(Of Char))
-  fullName.vb: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKPaint, System.ReadOnlySpan(Of Char))
-  name.vb: MeasureTextWidthWithAdvanceSpan(SKPaint, ReadOnlySpan(Of Char))
+  nameWithType.vb: SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SKFont, SKPaint, ReadOnlySpan(Of Char))
+  fullName.vb: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan(SkiaSharp.SKFont, SkiaSharp.SKPaint, System.ReadOnlySpan(Of Char))
+  name.vb: MeasureTextWidthWithAdvanceSpan(SKFont, SKPaint, ReadOnlySpan(Of Char))
 - uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.IsSpaceSpan(System.ReadOnlySpan{System.Char},System.Char)
   commentId: M:DrawnUi.Draw.SkiaLabel.SpanMeasurement.IsSpaceSpan(System.ReadOnlySpan{System.Char},System.Char)
   id: IsSpaceSpan(System.ReadOnlySpan{System.Char},System.Char)
@@ -98,8 +100,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSpaceSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 23
@@ -136,8 +138,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastNonSpaceIndexSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 32
@@ -172,8 +174,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsGlyphAlwaysAvailableSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 47
@@ -208,8 +210,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpanToStringForCache
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 57
@@ -233,22 +235,22 @@ items:
   nameWithType.vb: SkiaLabel.SpanMeasurement.SpanToStringForCache(ReadOnlySpan(Of Char))
   fullName.vb: DrawnUi.Draw.SkiaLabel.SpanMeasurement.SpanToStringForCache(System.ReadOnlySpan(Of Char))
   name.vb: SpanToStringForCache(ReadOnlySpan(Of Char))
-- uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
-  commentId: M:DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
-  id: MeasurePartialTextWidthSpan(SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
+- uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
+  commentId: M:DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
+  id: MeasurePartialTextWidthSpan(SkiaSharp.SKFont,SkiaSharp.SKPaint,System.ReadOnlySpan{System.Char},System.Boolean,System.Single,SkiaSharp.SKTypeface)
   parent: DrawnUi.Draw.SkiaLabel.SpanMeasurement
   langs:
   - csharp
   - vb
-  name: MeasurePartialTextWidthSpan(SKPaint, ReadOnlySpan<char>, bool, float, SKTypeface)
-  nameWithType: SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SKPaint, ReadOnlySpan<char>, bool, float, SKTypeface)
-  fullName: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKPaint, System.ReadOnlySpan<char>, bool, float, SkiaSharp.SKTypeface)
+  name: MeasurePartialTextWidthSpan(SKFont, SKPaint, ReadOnlySpan<char>, bool, float, SKTypeface)
+  nameWithType: SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SKFont, SKPaint, ReadOnlySpan<char>, bool, float, SKTypeface)
+  fullName: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKFont, SkiaSharp.SKPaint, System.ReadOnlySpan<char>, bool, float, SkiaSharp.SKTypeface)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasurePartialTextWidthSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 68
@@ -261,8 +263,10 @@ items:
     Falls back to string conversion only for cache compatibility
   example: []
   syntax:
-    content: public static float MeasurePartialTextWidthSpan(SKPaint paint, ReadOnlySpan<char> textSpan, bool needsShaping, float scale, SKTypeface paintTypeface)
+    content: public static float MeasurePartialTextWidthSpan(SKFont font, SKPaint paint, ReadOnlySpan<char> textSpan, bool needsShaping, float scale, SKTypeface paintTypeface)
     parameters:
+    - id: font
+      type: SkiaSharp.SKFont
     - id: paint
       type: SkiaSharp.SKPaint
     - id: textSpan
@@ -275,11 +279,11 @@ items:
       type: SkiaSharp.SKTypeface
     return:
       type: System.Single
-    content.vb: Public Shared Function MeasurePartialTextWidthSpan(paint As SKPaint, textSpan As ReadOnlySpan(Of Char), needsShaping As Boolean, scale As Single, paintTypeface As SKTypeface) As Single
+    content.vb: Public Shared Function MeasurePartialTextWidthSpan(font As SKFont, paint As SKPaint, textSpan As ReadOnlySpan(Of Char), needsShaping As Boolean, scale As Single, paintTypeface As SKTypeface) As Single
   overload: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan*
-  nameWithType.vb: SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SKPaint, ReadOnlySpan(Of Char), Boolean, Single, SKTypeface)
-  fullName.vb: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKPaint, System.ReadOnlySpan(Of Char), Boolean, Single, SkiaSharp.SKTypeface)
-  name.vb: MeasurePartialTextWidthSpan(SKPaint, ReadOnlySpan(Of Char), Boolean, Single, SKTypeface)
+  nameWithType.vb: SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SKFont, SKPaint, ReadOnlySpan(Of Char), Boolean, Single, SKTypeface)
+  fullName.vb: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan(SkiaSharp.SKFont, SkiaSharp.SKPaint, System.ReadOnlySpan(Of Char), Boolean, Single, SkiaSharp.SKTypeface)
+  name.vb: MeasurePartialTextWidthSpan(SKFont, SKPaint, ReadOnlySpan(Of Char), Boolean, Single, SKTypeface)
 - uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.AppendSpan(System.Text.StringBuilder,System.ReadOnlySpan{System.Char})
   commentId: M:DrawnUi.Draw.SkiaLabel.SpanMeasurement.AppendSpan(System.Text.StringBuilder,System.ReadOnlySpan{System.Char})
   id: AppendSpan(System.Text.StringBuilder,System.ReadOnlySpan{System.Char})
@@ -294,8 +298,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AppendSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 95
@@ -330,8 +334,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AppendChar
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
     startLine: 105
@@ -614,10 +618,18 @@ references:
   fullName: System
 - uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan*
   commentId: Overload:DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan
-  href: DrawnUi.Draw.SkiaLabel.SpanMeasurement.html#DrawnUi_Draw_SkiaLabel_SpanMeasurement_MeasureTextWidthWithAdvanceSpan_SkiaSharp_SKPaint_System_ReadOnlySpan_System_Char__
+  href: DrawnUi.Draw.SkiaLabel.SpanMeasurement.html#DrawnUi_Draw_SkiaLabel_SpanMeasurement_MeasureTextWidthWithAdvanceSpan_SkiaSharp_SKFont_SkiaSharp_SKPaint_System_ReadOnlySpan_System_Char__
   name: MeasureTextWidthWithAdvanceSpan
   nameWithType: SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan
   fullName: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasureTextWidthWithAdvanceSpan
+- uid: SkiaSharp.SKFont
+  commentId: T:SkiaSharp.SKFont
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skfont
+  name: SKFont
+  nameWithType: SKFont
+  fullName: SkiaSharp.SKFont
 - uid: SkiaSharp.SKPaint
   commentId: T:SkiaSharp.SKPaint
   parent: SkiaSharp
@@ -777,7 +789,7 @@ references:
   name.vb: String
 - uid: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan*
   commentId: Overload:DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan
-  href: DrawnUi.Draw.SkiaLabel.SpanMeasurement.html#DrawnUi_Draw_SkiaLabel_SpanMeasurement_MeasurePartialTextWidthSpan_SkiaSharp_SKPaint_System_ReadOnlySpan_System_Char__System_Boolean_System_Single_SkiaSharp_SKTypeface_
+  href: DrawnUi.Draw.SkiaLabel.SpanMeasurement.html#DrawnUi_Draw_SkiaLabel_SpanMeasurement_MeasurePartialTextWidthSpan_SkiaSharp_SKFont_SkiaSharp_SKPaint_System_ReadOnlySpan_System_Char__System_Boolean_System_Single_SkiaSharp_SKTypeface_
   name: MeasurePartialTextWidthSpan
   nameWithType: SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan
   fullName: DrawnUi.Draw.SkiaLabel.SpanMeasurement.MeasurePartialTextWidthSpan

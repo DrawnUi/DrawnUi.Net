@@ -6,52 +6,82 @@ DrawnUi.Maui provides various input controls for user interaction, including sli
 
 `SkiaSlider` is a versatile slider control that supports both single value selection and range selection capabilities.
 
+The current value of a single-value slider is `End`. In range mode (`EnableRange="True"`) the selection is `Start`..`End`.
+
 ### Basic Usage
 
 ```xml
 <draw:SkiaSlider
-    Minimum="0"
-    Maximum="100"
-    Value="50"
+    Min="0"
+    Max="100"
+    End="50"
     WidthRequest="300"
-    HeightRequest="40"
-    TrackColor="LightGray"
+    TrackSelectedColor="Red"
     ThumbColor="Blue"
-    ValueChanged="OnSliderValueChanged" />
+    EndChanged="OnSliderValueChanged" />
 ```
 
 ### Range Selection
 
 ```xml
 <draw:SkiaSlider
-    Minimum="0"
-    Maximum="100"
-    Value="25"
-    ValueTo="75"
-    IsRange="true"
-    WidthRequest="300"
-    HeightRequest="40"
-    TrackColor="LightGray"
-    ThumbColor="Blue" />
+    Min="0"
+    Max="100"
+    Start="25"
+    End="75"
+    EnableRange="True"
+    WidthRequest="300" />
 ```
+
+### Platform Styles
+
+`SkiaSlider` supports [platform-specific styling](../advanced/platform-styling.md) via `ControlStyle`: `Unset` (stock look), `Cupertino`, `Material`, `Windows`, or `Platform` (picks the style matching the current OS at runtime).
+
+```xml
+<draw:SkiaSlider
+    ControlStyle="Platform"
+    Min="0"
+    Max="100"
+    End="30" />
+```
+
+`ThumbColor`, `TrackColor` and `TrackSelectedColor` work with every style. For the stock (`Unset`) look they are applied only when explicitly set — strokes and shadows follow automatically as darker shades of the set color.
 
 ### Key Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Minimum` | double | Minimum value of the slider |
-| `Maximum` | double | Maximum value of the slider |
-| `Value` | double | Current value (or start value for range) |
-| `ValueTo` | double | End value for range selection |
-| `IsRange` | bool | Whether the slider supports range selection |
-| `TrackColor` | Color | Color of the slider track |
-| `ThumbColor` | Color | Color of the slider thumb |
-| `Step` | double | Step increment for value changes |
+| `Min` | double | Minimum value (default 0) |
+| `Max` | double | Maximum value (default 100) |
+| `End` | double | Current value (single mode), or range end value |
+| `Start` | double | Range start value, used when `EnableRange` is true |
+| `EnableRange` | bool | Two thumbs selecting a `Start`..`End` range |
+| `Step` | double | Step increment values snap to (default 1) |
+| `RangeMin` | double | Minimum allowed distance between `Start` and `End` |
+| `ControlStyle` | PrebuiltControlStyle | `Unset`, `Platform`, `Cupertino`, `Material`, `Windows` |
+| `ThumbColor` | Color | Color of the thumb(s) |
+| `TrackColor` | Color | Color of the unselected track |
+| `TrackSelectedColor` | Color | Color of the selected part of the track |
+| `TrailStartOffset` | double | Fine-tune pts for where the selected trail starts relative to the start thumb center |
+| `TrailEndOffset` | double | Fine-tune pts for where the selected trail ends relative to the end thumb center |
+| `SliderHeight` | double | Height of the track area |
+| `ClickOnTrailEnabled` | bool | Tapping the track jumps the nearest thumb there (default true) |
+| `IgnoreWrongDirection` | bool | Ignore gestures along the wrong axis |
+| `Invert` | bool | Invert the direction of values |
+| `ValueStringFormat` | string | Format for `EndDesc`/`StartDesc` readable value strings |
+
+Cupertino style extras: `CupertinoTrackHeight` (default 2), `CupertinoThumbDiameter` (default 28), `CupertinoThumbBorderWidth` (default 0.5).
+
+The selected trail is anchored under the thumb centers automatically for any thumb size; use `TrailStartOffset`/`TrailEndOffset` for per-design fine-tuning.
 
 ### Events
 
-- `ValueChanged`: Raised when the slider value changes
-  - Event signature: `EventHandler<double>`
+- `EndChanged`: Raised when the value (`End`) changes. Signature: `EventHandler<double>`
+- `StartChanged`: Raised when the range start (`Start`) changes. Signature: `EventHandler<double>`
+
+### Customizing (XAML subclass)
+
+Subclass `SkiaSlider` and provide your own content: a child tagged `"Trail"` hosting the track, a `SliderTrail` tagged `"SelectedTrail"`, and a `SliderThumb` named/tagged `"EndThumb"` (plus `"StartThumb"` for range). See `Sandbox/Views/Controls/DrawnSlider.xaml` (visual reskin) and `SliderColor.xaml` (gradient color-picker slider) for working examples. User-provided content is never overridden by the built-in style logic.
 
 ## SkiaProgress
 

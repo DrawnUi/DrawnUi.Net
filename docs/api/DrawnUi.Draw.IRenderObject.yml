@@ -15,12 +15,12 @@ items:
   type: Interface
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/IRenderObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IRenderObject
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 20
+    path: ../src/Shared/DrawnUi/Draw/Layout/IRenderObject.cs
+    startLine: 2
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -42,12 +42,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      path: src/Shared/DrawnUi/Draw/Layout/IRenderObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseRenderingObject
-    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaControlWithRect.cs
-    startLine: 22
+    path: ../src/Shared/DrawnUi/Draw/Layout/IRenderObject.cs
+    startLine: 4
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

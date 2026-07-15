@@ -69,6 +69,7 @@ items:
   - DrawnUi.Draw.DynamicGrid`1
   - DrawnUi.Draw.EdgeGlowAnimator
   - DrawnUi.Draw.ElementRenderer
+  - DrawnUi.Draw.FilterQuality
   - DrawnUi.Draw.FindTagExtension
   - DrawnUi.Draw.FluentExtensions
   - DrawnUi.Draw.FontWeight
@@ -105,6 +106,7 @@ items:
   - DrawnUi.Draw.IRefreshIndicator
   - DrawnUi.Draw.IRenderEffect
   - DrawnUi.Draw.IRenderObject
+  - DrawnUi.Draw.IScrollBar
   - DrawnUi.Draw.ISkiaAccessibilityNode
   - DrawnUi.Draw.ISkiaAnimator
   - DrawnUi.Draw.ISkiaCell
@@ -128,6 +130,7 @@ items:
   - DrawnUi.Draw.IWithContent
   - DrawnUi.Draw.InfiniteLayout
   - DrawnUi.Draw.InputKey
+  - DrawnUi.Draw.ItemsSourceWindow
   - DrawnUi.Draw.KeyboardManager
   - DrawnUi.Draw.KeyedActionQueue`1
   - DrawnUi.Draw.LayoutStructure
@@ -184,6 +187,8 @@ items:
   - DrawnUi.Draw.ScaledPoint
   - DrawnUi.Draw.ScaledRect
   - DrawnUi.Draw.ScaledSize
+  - DrawnUi.Draw.ScrollBarDock
+  - DrawnUi.Draw.ScrollBarVisibility
   - DrawnUi.Draw.ScrollFlingAnimator
   - DrawnUi.Draw.ScrollFlingVectorAnimator
   - DrawnUi.Draw.ScrollInteractionState
@@ -206,6 +211,7 @@ items:
   - DrawnUi.Draw.SkiaButton.ButtonStyleType
   - DrawnUi.Draw.SkiaButton.IconPositionType
   - DrawnUi.Draw.SkiaCacheType
+  - DrawnUi.Draw.SkiaCachedStack
   - DrawnUi.Draw.SkiaCheckbox
   - DrawnUi.Draw.SkiaControl
   - DrawnUi.Draw.SkiaControl.CacheValidityType
@@ -263,7 +269,9 @@ items:
   - DrawnUi.Draw.SkiaRangeBase
   - DrawnUi.Draw.SkiaRichLabel
   - DrawnUi.Draw.SkiaRow
+  - DrawnUi.Draw.SkiaSamplingOptions
   - DrawnUi.Draw.SkiaScroll
+  - DrawnUi.Draw.SkiaScrollBar
   - DrawnUi.Draw.SkiaScrollLooped
   - DrawnUi.Draw.SkiaScrollWindowHost
   - DrawnUi.Draw.SkiaSetter
@@ -277,6 +285,8 @@ items:
   - DrawnUi.Draw.SkiaSwitch
   - DrawnUi.Draw.SkiaToggle
   - DrawnUi.Draw.SkiaTouchAnimation
+  - DrawnUi.Draw.SkiaTouchShockwaveEffect
+  - DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave
   - DrawnUi.Draw.SkiaValueAnimator
   - DrawnUi.Draw.SkiaVectorAnimator
   - DrawnUi.Draw.SkiaWrap
@@ -1023,12 +1033,49 @@ references:
   name: Super
   nameWithType: Super
   fullName: DrawnUi.Draw.Super
+- uid: DrawnUi.Draw.SkiaCachedStack
+  commentId: T:DrawnUi.Draw.SkiaCachedStack
+  href: DrawnUi.Draw.SkiaCachedStack.html
+  name: SkiaCachedStack
+  nameWithType: SkiaCachedStack
+  fullName: DrawnUi.Draw.SkiaCachedStack
 - uid: DrawnUi.Draw.DataContextIterator
   commentId: T:DrawnUi.Draw.DataContextIterator
   href: DrawnUi.Draw.DataContextIterator.html
   name: DataContextIterator
   nameWithType: DataContextIterator
   fullName: DrawnUi.Draw.DataContextIterator
+- uid: DrawnUi.Draw.ElementRenderer
+  commentId: T:DrawnUi.Draw.ElementRenderer
+  href: DrawnUi.Draw.ElementRenderer.html
+  name: ElementRenderer
+  nameWithType: ElementRenderer
+  fullName: DrawnUi.Draw.ElementRenderer
+- uid: DrawnUi.Draw.IRenderObject
+  commentId: T:DrawnUi.Draw.IRenderObject
+  href: DrawnUi.Draw.IRenderObject.html
+  name: IRenderObject
+  nameWithType: IRenderObject
+  fullName: DrawnUi.Draw.IRenderObject
+- uid: DrawnUi.Draw.RenderLabel
+  commentId: T:DrawnUi.Draw.RenderLabel
+  href: DrawnUi.Draw.RenderLabel.html
+  name: RenderLabel
+  nameWithType: RenderLabel
+  fullName: DrawnUi.Draw.RenderLabel
+- uid: DrawnUi.Draw.RenderObject
+  commentId: T:DrawnUi.Draw.RenderObject
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.RenderObject.html
+  name: RenderObject
+  nameWithType: RenderObject
+  fullName: DrawnUi.Draw.RenderObject
+- uid: DrawnUi.Draw.RenderTreeRenderer
+  commentId: T:DrawnUi.Draw.RenderTreeRenderer
+  href: DrawnUi.Draw.RenderTreeRenderer.html
+  name: RenderTreeRenderer
+  nameWithType: RenderTreeRenderer
+  fullName: DrawnUi.Draw.RenderTreeRenderer
 - uid: DrawnUi.Draw.TemplatedViewsPool
   commentId: T:DrawnUi.Draw.TemplatedViewsPool
   parent: DrawnUi.Draw
@@ -1216,6 +1263,19 @@ references:
   name: RefreshIndicator
   nameWithType: RefreshIndicator
   fullName: DrawnUi.Draw.RefreshIndicator
+- uid: DrawnUi.Draw.ScrollBarDock
+  commentId: T:DrawnUi.Draw.ScrollBarDock
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ScrollBarDock.html
+  name: ScrollBarDock
+  nameWithType: ScrollBarDock
+  fullName: DrawnUi.Draw.ScrollBarDock
+- uid: DrawnUi.Draw.SkiaScrollBar
+  commentId: T:DrawnUi.Draw.SkiaScrollBar
+  href: DrawnUi.Draw.SkiaScrollBar.html
+  name: SkiaScrollBar
+  nameWithType: SkiaScrollBar
+  fullName: DrawnUi.Draw.SkiaScrollBar
 - uid: DrawnUi.Draw.SkiaLabelFps
   commentId: T:DrawnUi.Draw.SkiaLabelFps
   href: DrawnUi.Draw.SkiaLabelFps.html
@@ -1436,37 +1496,6 @@ references:
   name: SkiaControlWithRect
   nameWithType: SkiaControlWithRect
   fullName: DrawnUi.Draw.SkiaControlWithRect
-- uid: DrawnUi.Draw.IRenderObject
-  commentId: T:DrawnUi.Draw.IRenderObject
-  href: DrawnUi.Draw.IRenderObject.html
-  name: IRenderObject
-  nameWithType: IRenderObject
-  fullName: DrawnUi.Draw.IRenderObject
-- uid: DrawnUi.Draw.ElementRenderer
-  commentId: T:DrawnUi.Draw.ElementRenderer
-  href: DrawnUi.Draw.ElementRenderer.html
-  name: ElementRenderer
-  nameWithType: ElementRenderer
-  fullName: DrawnUi.Draw.ElementRenderer
-- uid: DrawnUi.Draw.RenderTreeRenderer
-  commentId: T:DrawnUi.Draw.RenderTreeRenderer
-  href: DrawnUi.Draw.RenderTreeRenderer.html
-  name: RenderTreeRenderer
-  nameWithType: RenderTreeRenderer
-  fullName: DrawnUi.Draw.RenderTreeRenderer
-- uid: DrawnUi.Draw.RenderObject
-  commentId: T:DrawnUi.Draw.RenderObject
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.RenderObject.html
-  name: RenderObject
-  nameWithType: RenderObject
-  fullName: DrawnUi.Draw.RenderObject
-- uid: DrawnUi.Draw.RenderLabel
-  commentId: T:DrawnUi.Draw.RenderLabel
-  href: DrawnUi.Draw.RenderLabel.html
-  name: RenderLabel
-  nameWithType: RenderLabel
-  fullName: DrawnUi.Draw.RenderLabel
 - uid: DrawnUi.Draw.IWindowHost
   commentId: T:DrawnUi.Draw.IWindowHost
   parent: DrawnUi.Draw
@@ -1524,6 +1553,13 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: DrawnUi.Draw.ItemsSourceWindow
+  commentId: T:DrawnUi.Draw.ItemsSourceWindow
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ItemsSourceWindow.html
+  name: ItemsSourceWindow
+  nameWithType: ItemsSourceWindow
+  fullName: DrawnUi.Draw.ItemsSourceWindow
 - uid: DrawnUi.Draw.SkiaScrollWindowHost
   commentId: T:DrawnUi.Draw.SkiaScrollWindowHost
   href: DrawnUi.Draw.SkiaScrollWindowHost.html
@@ -1697,6 +1733,34 @@ references:
   name: ISkiaEffect
   nameWithType: ISkiaEffect
   fullName: DrawnUi.Draw.ISkiaEffect
+- uid: DrawnUi.Draw.SkiaTouchShockwaveEffect
+  commentId: T:DrawnUi.Draw.SkiaTouchShockwaveEffect
+  href: DrawnUi.Draw.SkiaTouchShockwaveEffect.html
+  name: SkiaTouchShockwaveEffect
+  nameWithType: SkiaTouchShockwaveEffect
+  fullName: DrawnUi.Draw.SkiaTouchShockwaveEffect
+- uid: DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave
+  commentId: T:DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave
+  href: DrawnUi.Draw.SkiaTouchShockwaveEffect.html
+  name: SkiaTouchShockwaveEffect.Wave
+  nameWithType: SkiaTouchShockwaveEffect.Wave
+  fullName: DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaTouchShockwaveEffect
+    name: SkiaTouchShockwaveEffect
+    href: DrawnUi.Draw.SkiaTouchShockwaveEffect.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave
+    name: Wave
+    href: DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaTouchShockwaveEffect
+    name: SkiaTouchShockwaveEffect
+    href: DrawnUi.Draw.SkiaTouchShockwaveEffect.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave
+    name: Wave
+    href: DrawnUi.Draw.SkiaTouchShockwaveEffect.Wave.html
 - uid: DrawnUi.Draw.IPostRendererEffect
   commentId: T:DrawnUi.Draw.IPostRendererEffect
   parent: DrawnUi.Draw
@@ -1865,6 +1929,19 @@ references:
   name: FontWeight
   nameWithType: FontWeight
   fullName: DrawnUi.Draw.FontWeight
+- uid: DrawnUi.Draw.FilterQuality
+  commentId: T:DrawnUi.Draw.FilterQuality
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FilterQuality.html
+  name: FilterQuality
+  nameWithType: FilterQuality
+  fullName: DrawnUi.Draw.FilterQuality
+- uid: DrawnUi.Draw.SkiaSamplingOptions
+  commentId: T:DrawnUi.Draw.SkiaSamplingOptions
+  href: DrawnUi.Draw.SkiaSamplingOptions.html
+  name: SkiaSamplingOptions
+  nameWithType: SkiaSamplingOptions
+  fullName: DrawnUi.Draw.SkiaSamplingOptions
 - uid: DrawnUi.Draw.GradientType
   commentId: T:DrawnUi.Draw.GradientType
   parent: DrawnUi.Draw
@@ -2163,6 +2240,20 @@ references:
   name: IRefreshIndicator
   nameWithType: IRefreshIndicator
   fullName: DrawnUi.Draw.IRefreshIndicator
+- uid: DrawnUi.Draw.ScrollBarVisibility
+  commentId: T:DrawnUi.Draw.ScrollBarVisibility
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ScrollBarVisibility.html
+  name: ScrollBarVisibility
+  nameWithType: ScrollBarVisibility
+  fullName: DrawnUi.Draw.ScrollBarVisibility
+- uid: DrawnUi.Draw.IScrollBar
+  commentId: T:DrawnUi.Draw.IScrollBar
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.IScrollBar.html
+  name: IScrollBar
+  nameWithType: IScrollBar
+  fullName: DrawnUi.Draw.IScrollBar
 - uid: DrawnUi.Draw.ISkiaCell
   commentId: T:DrawnUi.Draw.ISkiaCell
   parent: DrawnUi.Draw
@@ -2207,6 +2298,7 @@ references:
   fullName: DrawnUi.Draw.ISkiaGestureListener
 - uid: DrawnUi.Draw.ISkiaGestureProcessor
   commentId: T:DrawnUi.Draw.ISkiaGestureProcessor
+  parent: DrawnUi.Draw
   href: DrawnUi.Draw.ISkiaGestureProcessor.html
   name: ISkiaGestureProcessor
   nameWithType: ISkiaGestureProcessor

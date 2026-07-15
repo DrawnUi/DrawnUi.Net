@@ -36,7 +36,7 @@ The custom control logic can stay in C# and be reused across MAUI and Blazor as 
 
 <img src="../images/custombutton.jpg" alt="Custom Button Tutorial" width="350" style="margin-top: 16px;" />
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials)
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials)
 Clone the repo and run the Tutorials project to explore all examples!
 
 ## 🎓 What You'll Learn:
@@ -349,7 +349,7 @@ Let's look at the caching approach used in our GameButton:
 
 >* **Property-Driven Design**: Custom controls should be designed around bindable properties that affect their visual appearance. This makes them work seamlessly with MAUI XAML, data binding, and MVVM patterns.
 
-> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/CustomButton/GameButton.cs)
+> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/CustomButton/GameButton.cs)
 
 ## Conclusion
 

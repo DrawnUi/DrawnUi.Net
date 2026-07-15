@@ -25,8 +25,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatedShaderEffect
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 12
@@ -92,6 +92,12 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.TimeSeconds
   - DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   - DrawnUi.Draw.SkiaShaderEffect.MouseInitial
+  - DrawnUi.Draw.SkiaShaderEffect.Uniforms
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
   - DrawnUi.Draw.SkiaShaderEffect.CreateTexturesUniforms(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect,SkiaSharp.SKShader)
   - DrawnUi.Draw.SkiaShaderEffect._template
   - DrawnUi.Draw.SkiaShaderEffect._templatePlacehodler
@@ -150,6 +156,7 @@ items:
   - System.Object.ToString
   extensionMethods:
   - DrawnUi.Draw.AnimatedShaderEffect.DrawnUi.Draw.FluentExtensions.Assign``1(DrawnUi.Draw.AnimatedShaderEffect@)
+  - DrawnUi.Draw.AnimatedShaderEffect.DrawnUi.Draw.FluentExtensions.OnShaderError``1(System.Action{DrawnUi.Draw.AnimatedShaderEffect,System.String})
   - DrawnUi.Draw.AnimatedShaderEffect.DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
 - uid: DrawnUi.Draw.AnimatedShaderEffect.Center
@@ -166,8 +173,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Center
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 17
@@ -197,8 +204,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCompleted
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 19
@@ -223,8 +230,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Completed
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 24
@@ -250,8 +257,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DurationMs
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 29
@@ -281,8 +288,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Progress
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 35
@@ -315,8 +322,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Animator
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 38
@@ -342,8 +349,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Play
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 47
@@ -373,8 +380,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stop
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 88
@@ -401,15 +408,18 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateUniforms
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 93
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Creates standard uniforms via engine. Override to add custom uniforms.
+  summary: >-
+    Creates standard uniforms via engine, then merges any <xref href="DrawnUi.Draw.SkiaShaderEffect.Uniforms" data-throw-if-not-resolved="false"></xref> on top.
+
+    Override to add custom uniforms in code instead.
   example: []
   syntax:
     content: protected override SKRuntimeEffectUniforms CreateUniforms(SKRect destination)
@@ -435,8 +445,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Features/Effects/AnimatedShaderEffect.cs
     startLine: 105
@@ -1122,6 +1132,304 @@ references:
   name: MouseInitial
   nameWithType: SkiaShaderEffect.MouseInitial
   fullName: DrawnUi.Draw.SkiaShaderEffect.MouseInitial
+- uid: DrawnUi.Draw.SkiaShaderEffect.Uniforms
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.Uniforms
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_Uniforms
+  name: Uniforms
+  nameWithType: SkiaShaderEffect.Uniforms
+  fullName: DrawnUi.Draw.SkiaShaderEffect.Uniforms
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_
+  name: SetUniform(string, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single)
+  name.vb: SetUniform(String, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_
+  name: SetUniform(string, float, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single, Single)
+  name.vb: SetUniform(String, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_
+  name: SetUniform(string, float, float, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float, float, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single, Single, Single)
+  name.vb: SetUniform(String, Single, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_System_Single_
+  name: SetUniform(string, float, float, float, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float, float, float, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float, float, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single, Single, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single, Single, Single, Single)
+  name.vb: SetUniform(String, Single, Single, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  name: SetUniform(string, float[])
+  nameWithType: SkiaShaderEffect.SetUniform(string, float[])
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float[])
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single())
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single())
+  name.vb: SetUniform(String, Single())
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaShaderEffect.CreateTexturesUniforms(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect,SkiaSharp.SKShader)
   commentId: M:DrawnUi.Draw.SkiaShaderEffect.CreateTexturesUniforms(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect,SkiaSharp.SKShader)
   parent: DrawnUi.Draw.SkiaShaderEffect
@@ -2396,6 +2704,83 @@ references:
     name: AnimatedShaderEffect
     href: DrawnUi.Draw.AnimatedShaderEffect.html
   - name: )
+- uid: DrawnUi.Draw.AnimatedShaderEffect.DrawnUi.Draw.FluentExtensions.OnShaderError``1(System.Action{DrawnUi.Draw.AnimatedShaderEffect,System.String})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  name: OnShaderError<AnimatedShaderEffect>(AnimatedShaderEffect, Action<AnimatedShaderEffect, string>)
+  nameWithType: FluentExtensions.OnShaderError<AnimatedShaderEffect>(AnimatedShaderEffect, Action<AnimatedShaderEffect, string>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnShaderError<DrawnUi.Draw.AnimatedShaderEffect>(DrawnUi.Draw.AnimatedShaderEffect, System.Action<DrawnUi.Draw.AnimatedShaderEffect, string>)
+  nameWithType.vb: FluentExtensions.OnShaderError(Of AnimatedShaderEffect)(AnimatedShaderEffect, Action(Of AnimatedShaderEffect, String))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnShaderError(Of DrawnUi.Draw.AnimatedShaderEffect)(DrawnUi.Draw.AnimatedShaderEffect, System.Action(Of DrawnUi.Draw.AnimatedShaderEffect, String))
+  name.vb: OnShaderError(Of AnimatedShaderEffect)(AnimatedShaderEffect, Action(Of AnimatedShaderEffect, String))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(DrawnUi.Draw.AnimatedShaderEffect,System.Action{DrawnUi.Draw.AnimatedShaderEffect,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: <
+  - uid: DrawnUi.Draw.AnimatedShaderEffect
+    name: AnimatedShaderEffect
+    href: DrawnUi.Draw.AnimatedShaderEffect.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.AnimatedShaderEffect
+    name: AnimatedShaderEffect
+    href: DrawnUi.Draw.AnimatedShaderEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.AnimatedShaderEffect
+    name: AnimatedShaderEffect
+    href: DrawnUi.Draw.AnimatedShaderEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(DrawnUi.Draw.AnimatedShaderEffect,System.Action{DrawnUi.Draw.AnimatedShaderEffect,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.AnimatedShaderEffect
+    name: AnimatedShaderEffect
+    href: DrawnUi.Draw.AnimatedShaderEffect.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.AnimatedShaderEffect
+    name: AnimatedShaderEffect
+    href: DrawnUi.Draw.AnimatedShaderEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.AnimatedShaderEffect
+    name: AnimatedShaderEffect
+    href: DrawnUi.Draw.AnimatedShaderEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.AnimatedShaderEffect.DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   parent: DrawnUi.Draw.ThemeBindings
@@ -2689,6 +3074,70 @@ references:
   name: FluentExtensions
   nameWithType: FluentExtensions
   fullName: DrawnUi.Draw.FluentExtensions
+- uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  name: OnShaderError<T>(T, Action<T, string>)
+  nameWithType: FluentExtensions.OnShaderError<T>(T, Action<T, string>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnShaderError<T>(T, System.Action<T, string>)
+  nameWithType.vb: FluentExtensions.OnShaderError(Of T)(T, Action(Of T, String))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnShaderError(Of T)(T, System.Action(Of T, String))
+  name.vb: OnShaderError(Of T)(T, Action(Of T, String))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   isExternal: true

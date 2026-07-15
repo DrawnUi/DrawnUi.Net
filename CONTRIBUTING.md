@@ -34,4 +34,4 @@ See [CLAUDE.md](CLAUDE.md) for project structure and architecture details.
 
 ## Questions
 
-Use [GitHub Discussions](https://github.com/taublast/DrawnUi/discussions) for questions about contributing.
+Use [GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions) for questions about contributing.
