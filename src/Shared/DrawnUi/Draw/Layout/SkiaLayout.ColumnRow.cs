@@ -2205,6 +2205,19 @@ else
 
         private long _countVisible;
 
+        /// <summary>
+        /// Draw-time follower shift for a cell that re-measured during DrawStack: the delta is gated to
+        /// the stacking axis (Row -> X, Column -> Y), same rule as OffsetSubsequentCells. Applying the
+        /// cross-axis component would slide followers sideways in a Column (or vertically in a Row) when
+        /// a sibling merely changes width (e.g. a centered label mutating text every frame).
+        /// </summary>
+        private Vector2 GetFollowersOffsetDelta(SKSize diff)
+        {
+            return new Vector2(
+                Type == LayoutType.Row ? diff.Width : 0f,
+                Type == LayoutType.Column ? diff.Height : 0f);
+        }
+
         protected virtual SKRect GetStackChildDrawRect(int index, float x, float y, ControlInStack cell)
         {
             if (IsTemplated)
@@ -2716,7 +2729,7 @@ else
                                     !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
                                 {
                                     var diff = child.MeasuredSize.Pixels - reservedSlot;
-                                    cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
+                                    cell.OffsetOthers = GetFollowersOffsetDelta(diff);
 
                                     // Durably shift the FOLLOWING cells' structure positions by this grow delta so
                                     // the new layout persists (PASS 1 derives cell.Drawn from cell.Destination every
@@ -2750,7 +2763,7 @@ else
                             }
 
                             var diff = adopted.Pixels - reservedSlot;
-                            cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
+                            cell.OffsetOthers = GetFollowersOffsetDelta(diff);
                             OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
                         }
 
@@ -2875,7 +2888,7 @@ else
                             // PASS 1 clears OffsetOthers next frame and the applied structure change takes
                             // over from then on, so this never double-shifts.
                             var grow = child.MeasuredSize.Pixels - cell.Measured.Pixels;
-                            cell.OffsetOthers = new Vector2(grow.Width, grow.Height);
+                            cell.OffsetOthers = GetFollowersOffsetDelta(grow);
                         }
                     }
 
