@@ -6,21 +6,30 @@ public class CachedObject : ISkiaDisposable
 {
     public int DataContext { get; set; }
 
+    /// <summary>
+    /// Logical (unexpanded) rect the content was recorded for. For image-backed caches
+    /// <see cref="Bounds"/> is the surface area inflated by effects/shadow margins
+    /// (see AggregatedEffectsMarginPixels) — any gesture translation or position-delta math
+    /// must use THIS as the recorded origin, otherwise coordinates shift by the margin.
+    /// For Operations caches Bounds is already logical (the destination), kept as-is.
+    /// </summary>
+    public SKRect LogicalBounds => Picture != null ? Bounds : RecordingArea;
+
     public SKPoint TranslateInputCoords(SKRect drawingRect)
     {
         // Use LastDestination (actual screen position where cache was drawn) if available
         var current = LastDestination.IsEmpty ? drawingRect : LastDestination;
 
-        var offsetCacheX = current.Left - Bounds.Left;
-        var offsetCacheY = current.Top - Bounds.Top;
+        var offsetCacheX = current.Left - LogicalBounds.Left;
+        var offsetCacheY = current.Top - LogicalBounds.Top;
 
         return new SKPoint(-offsetCacheX, -offsetCacheY);
     }
 
     public SKPoint CalculatePositionOffset(SKPoint drawingRect)
     {
-        var offsetCacheX = drawingRect.X - Bounds.Left;
-        var offsetCacheY = drawingRect.Y - Bounds.Top;
+        var offsetCacheX = drawingRect.X - LogicalBounds.Left;
+        var offsetCacheY = drawingRect.Y - LogicalBounds.Top;
 
         return new SKPoint(offsetCacheX, offsetCacheY);
     }
@@ -41,7 +50,12 @@ public class CachedObject : ISkiaDisposable
     /// <returns></returns>
     public SKPoint CalculateDrawingOffset(SKRect destination)
     {
-        if (Type == SkiaCacheType.Operations)
+        // Picture-backed caches (Operations AND OperationsFull) record in ABSOLUTE coords
+        // (no -recordArea translate, unlike image caches), so the recorded origin Bounds.Left
+        // must be subtracted here. Keying on Picture != null covers both — OperationsFull was
+        // previously excluded (Type == Operations only) and fell into the image branch, so its
+        // absolute origin was never removed and content drew at ~0,0.
+        if (Picture != null)
         {
             var moveY = Bounds.Top - RecordingArea.Top;
             var moveX = Bounds.Left - RecordingArea.Left;

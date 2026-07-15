@@ -25,6 +25,29 @@ namespace DrawnUi.Draw
 
         public override bool WillClipBounds => true;
 
+        /// <summary>
+        /// Clip editor content to the FULL drawing rect, never the stroke-inset path — so a
+        /// bordered editor clips exactly like a borderless one.
+        /// Glyph descenders (g, j, p) can extend BELOW the font's metric line box (how far depends
+        /// on the font). Borderless styles clip content to the full rect, so that overflow still
+        /// shows; the base contracts the content clip for a stroke, so on bordered styles
+        /// (Cupertino/Windows) the same overflow gets cut — a visibly large cut with fonts whose
+        /// glyphs overshoot their metrics. The border still draws via the shape path and the
+        /// editor's Padding keeps text clear of the frame, so ignoring the stroke inset here is safe.
+        /// </summary>
+        protected override SKRect CalculateClipSizeForStroke(SKRect destination, float scale) => destination;
+
+        /// <summary>
+        /// Lay children out in the FULL padded area, never the stroke-inset one. The base insets the
+        /// children rect by the stroke (see <see cref="SkiaShape.CalculateContentSizeForStroke"/>), which
+        /// on a single-line editor leaves the placeholder/text label ~2px shorter than one line, so it
+        /// clips its OWN descenders (g, j, p) — the visible cut on bordered styles (Cupertino/Windows).
+        /// The border still draws via the shape path and Padding keeps text off it, so ignoring the
+        /// stroke inset for content layout is safe.
+        /// </summary>
+        protected override SKRect CalculateContentSizeForStroke(SKRect destination, float scale)
+            => ContractPixelsRect(destination, scale, UsePadding);
+
         public override void OnWillDisposeWithChildren()
         {
             base.OnWillDisposeWithChildren();
@@ -197,26 +220,42 @@ namespace DrawnUi.Draw
 
         protected virtual SkiaLabel CreatePlaceholderLabel()
         {
-            return new SkiaLabel
-            {
-                UseCache = SkiaCacheType.Operations,
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Start,
-                Margin = new Thickness(0, 0, 4, 0),
-                IsVisible = false,
-            };
+            // Mirror the content label's rendering so a placeholder with emoji/unicode shows too.
+            SkiaLabel label;
+            if (UseMarkdown)
+                label = new SkiaRichLabel();
+            else if (UseUnicode)
+                label = new SkiaRichLabel { MarkdownEnabled = false };
+            else
+                label = new SkiaLabel();
+
+            label.UseCache = SkiaCacheType.Operations;
+            label.HorizontalOptions = LayoutOptions.Fill;
+            label.VerticalOptions = LayoutOptions.Start;
+            label.Margin = new Thickness(0, 0, 4, 0);
+            label.IsVisible = false;
+            return label;
         }
 
         public virtual SkiaLabel CreateLabel()
         {
-            SkiaLabel label = UseMarkdown ? new SkiaRichLabel() : new SkiaLabel()
-            {
-                KeepSpacesOnLineBreaks = true,
-                NeedsGlyphPositions = true,
-                Margin = new Thickness(0, 0, 4, 0),
-                TextColor = this.TextColor
-            };
+            // UseMarkdown: rich label with markdown formatting (+ emoji fallback).
+            // UseUnicode: rich label, markdown OFF — emoji/unicode fallback, literal text.
+            // neither: plain single-font label (lightest).
+            SkiaLabel label;
+            if (UseMarkdown)
+                label = new SkiaRichLabel();
+            else if (UseUnicode)
+                label = new SkiaRichLabel { MarkdownEnabled = false };
+            else
+                label = new SkiaLabel();
 
+            // NOTE: applied to ALL branches — previously the object initializer bound only to the
+            // non-markdown branch of the ternary, so rich labels silently missed these settings.
+            label.KeepSpacesOnLineBreaks = true;
+            label.NeedsGlyphPositions = true;
+            label.Margin = new Thickness(0, 0, 4, 0);
+            label.TextColor = this.TextColor;
             label.HorizontalOptions = IsMultiline ? LayoutOptions.Fill : LayoutOptions.Start;
 
             return OnCreatingLabel(label);
@@ -272,8 +311,62 @@ namespace DrawnUi.Draw
             return Math.Ceiling(fontSize * 1.2);
         }
 
+        // Flat DrawnUI default palette, shared with the other default-styled controls.
+        private static readonly Color EditorDefaultAccent = Color.FromRgba(220, 20, 60, 255);  // Crimson #DC143C
+        private static readonly Color EditorDefaultBg = Color.FromRgba(242, 243, 245, 255);     // #F2F3F5
+        private static readonly Color EditorPlaceholder = Color.FromRgba(154, 160, 166, 255);   // #9AA0A6
+
+        /// <summary>
+        /// Applies platform-specific visuals (background, corner radius, border, cursor color)
+        /// per <see cref="SkiaControl.UsingControlStyle"/>. Each property is applied only when the
+        /// app has not set it explicitly, so user overrides always win. Called from
+        /// <see cref="CreateControl"/> before the label/cursor are built so colors are picked up.
+        /// </summary>
+        protected virtual void ApplyControlStyleVisuals()
+        {
+            void Bg(Color c) { if (!IsSet(BackgroundColorProperty)) BackgroundColor = c; }
+            void Corner(double c) { if (!IsSet(CornerRadiusProperty)) CornerRadius = c; }
+            void Stroke(Color c, double w)
+            {
+                if (!IsSet(StrokeColorProperty)) StrokeColor = c;
+                if (!IsSet(StrokeWidthProperty)) StrokeWidth = w;
+            }
+            void Cursor_(Color c) { if (!IsSet(CursorColorProperty)) CursorColor = c; }
+
+            if (!IsSet(PaddingProperty)) Padding = new Thickness(12, 8);
+            if (!IsSet(PlaceholderColorProperty)) PlaceholderColor = EditorPlaceholder;
+
+            switch (UsingControlStyle)
+            {
+                case PrebuiltControlStyle.Cupertino:
+                    Bg(Colors.White); Corner(10); Stroke(Color.FromRgba(199, 199, 204, 255), 1);
+                    Cursor_(Color.FromRgba(0, 122, 255, 255)); // iOS blue
+                    break;
+                case PrebuiltControlStyle.Material:
+                    Bg(Color.FromRgba(239, 235, 244, 255)); Corner(4); Stroke(Colors.Transparent, 0);
+                    Cursor_(Color.FromRgba(33, 150, 243, 255)); // Material blue
+                    break;
+                case PrebuiltControlStyle.Material3:
+                    Bg(Color.FromRgba(230, 224, 233, 255)); Corner(4); Stroke(Colors.Transparent, 0);
+                    Cursor_(Color.FromRgba(103, 80, 164, 255)); // M3 primary
+                    break;
+                case PrebuiltControlStyle.Windows:
+                    Bg(Colors.White); Corner(2); Stroke(Color.FromRgba(138, 138, 138, 255), 1);
+                    Cursor_(Color.FromRgba(0, 120, 212, 255)); // Fluent accent
+                    break;
+                default:
+                    // Unset / flat DrawnUI default. IsSet gating leaves app-configured
+                    // editors untouched, so this only styles editors that set nothing.
+                    Bg(EditorDefaultBg); Corner(8); Stroke(Colors.Transparent, 0);
+                    Cursor_(EditorDefaultAccent);
+                    break;
+            }
+        }
+
         public virtual void CreateControl()
         {
+            ApplyControlStyleVisuals();
+
             Label = CreateLabel();
 
             _placeholderLabel = CreatePlaceholderLabel();
@@ -458,11 +551,20 @@ namespace DrawnUi.Draw
             if (lines <= 1 || Label == null)
                 return contentHeightPx;
 
+            var paragraphSpacingPx = (lineHeightPx + lineSpacingPx) * (float)Label.ParagraphSpacing;
+
+            if (!AutoHeight)
+            {
+                // Fixed reservation: budget for the worst case (every line break is a paragraph
+                // break) so the box never has to grow/shrink as the user types Enter, and never
+                // clips text that legitimately needs the paragraph gap at paint time.
+                return contentHeightPx + paragraphSpacingPx * (lines - 1);
+            }
+
             var paragraphBreaks = CountVisibleParagraphBreaks(lines);
             if (paragraphBreaks == 0)
                 return contentHeightPx;
 
-            var paragraphSpacingPx = (lineHeightPx + lineSpacingPx) * (float)Label.ParagraphSpacing;
             return contentHeightPx + paragraphSpacingPx * paragraphBreaks;
         }
 
@@ -552,12 +654,53 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// Returns all glyphs for a rendered line, flattened across spans.
-        /// Override in subclasses to support multi-span lines.
+        /// Returns the line's glyphs flattened across ALL font-run spans, with line-absolute X
+        /// positions and ONE ENTRY PER UTF-16 CODE UNIT. The caret math indexes by code unit
+        /// (<see cref="CursorPosition"/> is a code-unit offset into <see cref="Text"/>), so a
+        /// multi-unit glyph (surrogate-pair emoji, some CJK) must occupy as many slots as it has
+        /// code units — otherwise the line looks shorter than the text and the caret can't reach
+        /// past it (e.g. paste "play😉" left the caret stuck at start).
+        /// A single-span line whose glyphs are all one code unit (the common ASCII/plain case)
+        /// takes a zero-allocation fast path and returns the span's array unchanged.
         /// </summary>
         protected virtual LineGlyph[] GetLineGlyphs(TextLine line)
         {
-            return line.Spans.Count > 0 ? (line.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>();
+            if (line?.Spans == null || line.Spans.Count == 0)
+                return Array.Empty<LineGlyph>();
+
+            // Fast path: one span, no multi-code-unit glyph → already per-code-unit, line-relative.
+            if (line.Spans.Count == 1)
+            {
+                var only = line.Spans[0].Glyphs ?? Array.Empty<LineGlyph>();
+                bool simple = true;
+                for (int i = 0; i < only.Length; i++)
+                {
+                    if (only[i].Length > 1) { simple = false; break; }
+                }
+                if (simple)
+                    return only;
+            }
+
+            var result = new List<LineGlyph>();
+            float spanOffsetX = 0f;
+            foreach (var span in line.Spans)
+            {
+                var glyphs = span.Glyphs;
+                if (glyphs != null)
+                {
+                    foreach (var g in glyphs)
+                    {
+                        // make X line-absolute (render adds the span's cumulative offset, not the glyph)
+                        var abs = LineGlyph.Move(g, spanOffsetX + g.Position);
+                        int units = Math.Max(1, g.Length);
+                        for (int u = 0; u < units; u++)
+                            result.Add(abs); // one slot per code unit so array index == code-unit offset
+                    }
+                }
+                spanOffsetX += span.Size.Width;
+            }
+
+            return result.ToArray();
         }
 
         /// <summary>
@@ -624,6 +767,12 @@ namespace DrawnUi.Draw
         private enum SelectionDragMode { None, ExtendFromAnchor, DragHandleStart, DragHandleEnd }
         private SelectionDragMode _selectionDragMode;
         private int _selectionAnchor;
+
+        /// <summary>
+        /// Seeds the drawn-head keyboard-selection state (anchor + moving edge) after a pointer-driven
+        /// selection so a subsequent Shift+Arrow continues coherently. No-op on native-input heads.
+        /// </summary>
+        partial void SeedKeyboardSelection(int anchor, int movingEdge);
 
         // Set by platform code to block spurious out-of-bounds Down events that arrive
         // immediately after keyboard input (e.g. WinUI pointer events after TextChanged).
@@ -711,6 +860,37 @@ namespace DrawnUi.Draw
             _selectionDragMode = SelectionDragMode.None;
             var pos = GetCursorPosition(x, y);
             Debug.WriteLine($"[EditorDown] x={x:F0} y={y:F0} pos={pos} Text.Length={Text?.Length ?? 0}");
+
+            // Shift+tap extends the selection to the tapped caret position instead of collapsing.
+            // Anchor is the existing selection's far edge (kept fixed), or the current caret when
+            // there is no selection. Sets ExtendFromAnchor so a following drag keeps extending.
+            if (KeyboardManager.IsShiftPressed && IsFocused)
+            {
+                int anchor;
+                if (SelectionLength > 0)
+                {
+                    int left = CursorPosition;
+                    int right = CursorPosition + SelectionLength;
+                    anchor = (pos - left) <= (right - pos) ? right : left;
+                }
+                else
+                {
+                    anchor = CursorPosition;
+                }
+
+                var shiftStart = Math.Min(anchor, pos);
+                var shiftEnd = Math.Max(anchor, pos);
+                _selectionAnchor = anchor;
+                _selectionDragMode = SelectionDragMode.ExtendFromAnchor;
+                CursorPosition = shiftStart;
+                SelectionLength = shiftEnd - shiftStart;
+                SetCursorPositionNative(shiftStart, shiftEnd);
+                SeedKeyboardSelection(anchor, pos);
+                SetFocusInternal(true);
+                Superview.FocusedChild = this;
+                return this;
+            }
+
             CursorPosition = pos;
 
             MainThread.BeginInvokeOnMainThread(() =>
@@ -1298,6 +1478,52 @@ namespace DrawnUi.Draw
             return len > 0 ? text.Substring(start, len) : null;
         }
 
+        /// <summary>
+        /// Number of UTF-16 code units to remove for <paramref name="count"/> grapheme clusters
+        /// ending at <paramref name="caret"/> (backspace). Grapheme-aware so a surrogate-pair emoji
+        /// (😉), a ZWJ sequence (👨‍👩‍👧) or a skin-toned emoji (👍🏽) is deleted whole — never split
+        /// into an orphaned surrogate that corrupts the string (and the markdown/rich-label parser).
+        /// </summary>
+        public static int CodeUnitsBeforeCaret(string text, int caret, int count)
+        {
+            if (string.IsNullOrEmpty(text) || caret <= 0 || count <= 0)
+                return 0;
+
+            caret = Math.Min(caret, text.Length);
+            var starts = new List<int>();
+            var e = System.Globalization.StringInfo.GetTextElementEnumerator(text);
+            while (e.MoveNext())
+            {
+                if (e.ElementIndex >= caret)
+                    break;
+                starts.Add(e.ElementIndex);
+            }
+
+            if (starts.Count == 0)
+                return caret; // caret sits inside the first element (mid-surrogate) — remove up to it
+
+            int idx = starts.Count - count;
+            int start = idx > 0 ? starts[idx] : 0;
+            return caret - start;
+        }
+
+        /// <summary>
+        /// Number of UTF-16 code units to remove for <paramref name="count"/> grapheme clusters
+        /// starting at <paramref name="caret"/> (forward delete). See <see cref="CodeUnitsBeforeCaret"/>.
+        /// </summary>
+        public static int CodeUnitsAfterCaret(string text, int caret, int count)
+        {
+            if (string.IsNullOrEmpty(text) || caret >= text.Length || count <= 0)
+                return 0;
+
+            caret = Math.Max(caret, 0);
+            int pos = caret;
+            for (int n = 0; n < count && pos < text.Length; n++)
+                pos += System.Globalization.StringInfo.GetNextTextElement(text, pos).Length;
+
+            return pos - caret;
+        }
+
         public void DeleteSelection()
         {
             if (SelectionLength <= 0) return;
@@ -1532,6 +1758,25 @@ namespace DrawnUi.Draw
             set { SetValue(UseMarkdownProperty, value); }
         }
 
+        public static readonly BindableProperty UseUnicodeProperty = BindableProperty.Create(
+            nameof(UseUnicode),
+            typeof(bool),
+            typeof(SkiaEditor),
+            true,
+            propertyChanged: OnUseMarkdownChanged);
+
+        /// <summary>
+        /// Renders emoji and other unicode glyphs the main font lacks (via per-glyph font fallback)
+        /// WITHOUT parsing markdown — text stays literal. Uses a <see cref="SkiaRichLabel"/> with
+        /// MarkdownEnabled=false. Ignored when <see cref="UseMarkdown"/> is true (markdown already
+        /// includes the same fallback). Leave both false for the lightest plain single-font label.
+        /// </summary>
+        public bool UseUnicode
+        {
+            get { return (bool)GetValue(UseUnicodeProperty); }
+            set { SetValue(UseUnicodeProperty, value); }
+        }
+
 
         public static readonly BindableProperty CanShowCursorProperty = BindableProperty.Create(
             nameof(CanShowCursor),
@@ -1694,7 +1939,7 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
             nameof(TextColor), typeof(Color), typeof(SkiaEditor),
-            Colors.GreenYellow,
+            Colors.Black,
             propertyChanged: OnNeedUpdateText);
         public Color TextColor
         {

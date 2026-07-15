@@ -64,8 +64,16 @@ namespace DrawnUi.Draw
 #if IOS || MACCATALYST
                     return PrebuiltControlStyle.Cupertino;
 #elif ANDROID
-                    return PrebuiltControlStyle.Material;
+                    return PrebuiltControlStyle.Material3;
 #elif WINDOWS || BROWSER
+                    return PrebuiltControlStyle.Windows;
+#elif DRAWNUI_NET
+                    // pure .NET heads (OpenTK, headless) have no platform compile constant —
+                    // resolve from the OS at runtime
+                    if (OperatingSystem.IsMacOS() || OperatingSystem.IsMacCatalyst())
+                        return PrebuiltControlStyle.Cupertino;
+                    if (OperatingSystem.IsAndroid())
+                        return PrebuiltControlStyle.Material3;
                     return PrebuiltControlStyle.Windows;
 #endif
                 }
@@ -304,6 +312,7 @@ namespace DrawnUi.Draw
                 if (platformShadow != value)
                 {
                     platformShadow = value;
+                    InvalidateEffectsMargin(); //cache/clip/dirty-region expansion depends on it
                     OnPropertyChanged();
                 }
             }
@@ -448,10 +457,15 @@ namespace DrawnUi.Draw
 
         private static void NeedInitialize(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is SkiaControl control)
+            if (bindable is SkiaControl control && control.DefaultContentCreated)
             {
                 control.InitializeDefaultContent(true);
             }
+            // Not yet initialized: defer to the first Measure (InitializeDefaultContent is called there).
+            // Building content synchronously here would snapshot a half-constructed object initializer:
+            // e.g. `new SkiaProgress { ControlStyle = ..., HorizontalOptions = Fill }` would run
+            // SetDefaultContentSize before HorizontalOptions is assigned, pinning WidthRequest
+            // to the default width and silently ignoring the Fill that follows.
         }
 
         /// <summary>
@@ -5619,7 +5633,7 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
+        /// https://github.com/DrawnUi/DrawnUi.Net/issues/92#issuecomment-2408805077
         /// </summary>
         public virtual void ApplyBindingContext()
         {
@@ -8052,8 +8066,9 @@ namespace DrawnUi.Draw
                 if (IsRenderingWithComposition)
                 {
                     var previousCache = RenderObjectPrevious;
-                    var offset = new SKPoint(this.DrawingRect.Left - previousCache.Bounds.Left,
-                        DrawingRect.Top - previousCache.Bounds.Top);
+                    //LogicalBounds: Bounds is inflated by effects margins, deltas must be margin-neutral
+                    var offset = new SKPoint(this.DrawingRect.Left - previousCache.LogicalBounds.Left,
+                        DrawingRect.Top - previousCache.LogicalBounds.Top);
                     clipPreviousCachePath.Reset();
 
                     foreach (var dirtyChild in DirtyChildrenInternal)
@@ -8826,6 +8841,7 @@ namespace DrawnUi.Draw
                 TrackChildAsDirty(child);
             }
 
+            InvalidateAggregatedEffectsMargin(); //subtree effects overflow changed
             OnChildrenChanged();
         }
 
@@ -8836,6 +8852,7 @@ namespace DrawnUi.Draw
                 TrackChildAsDirty(child);
             }
 
+            InvalidateAggregatedEffectsMargin(); //subtree effects overflow changed
             OnChildrenChanged();
         }
 

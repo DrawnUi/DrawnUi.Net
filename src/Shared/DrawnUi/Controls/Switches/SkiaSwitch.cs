@@ -20,6 +20,9 @@ public class SkiaSwitch : SkiaToggle
                 case PrebuiltControlStyle.Material:
                     CreateMaterialStyleContent();
                     break;
+                case PrebuiltControlStyle.Material3:
+                    CreateMaterial3StyleContent();
+                    break;
                 case PrebuiltControlStyle.Windows:
                     CreateWindowsStyleContent();
                     break;
@@ -32,9 +35,18 @@ public class SkiaSwitch : SkiaToggle
         }
     }
 
+    // Flat DrawnUI default palette, shared with the other default controls.
+    private static readonly Color DefaultAccentColor = Color.FromRgba(220, 20, 60, 255); // Crimson #DC143C
+    private static readonly Color DefaultTrackColor = Color.FromRgba(215, 219, 224, 255); // neutral #D7DBE0
+
     protected virtual void CreateDefaultStyleContent()
     {
-        SetDefaultContentSize(50, 32);
+        // Flat DrawnUI look: accent track when on, neutral track when off, white thumb.
+        // Height 28 sits between Windows (22) and Cupertino (31).
+        SetDefaultContentSize(46, 28);
+
+        if (!IsSet(ColorFrameOnProperty)) ColorFrameOn = DefaultAccentColor;
+        if (!IsSet(ColorFrameOffProperty)) ColorFrameOff = DefaultTrackColor;
 
         var shape = new SkiaShape
         {
@@ -162,6 +174,67 @@ public class SkiaSwitch : SkiaToggle
         ColorThumbOn = Colors.White;
     }
 
+    /// <summary>
+    /// Material 3 outline color, used for the unselected track border.
+    /// </summary>
+    protected static readonly Color MaterialOutlineColor = Color.FromRgba(121, 116, 126, 255); // M3 outline #79747E
+
+    /// <summary>
+    /// Creates a Material 3 (Material You) switch: 52x32 full-height track,
+    /// outlined when off, filled primary when on, 24pt centered thumb.
+    /// </summary>
+    protected virtual void CreateMaterial3StyleContent()
+    {
+        // Material 3 switch: 52x32 full-height track, outlined when off, filled primary when on
+        SetDefaultContentSize(52, 32);
+
+        Children = new List<SkiaControl>()
+        {
+            new SkiaShape
+            {
+                Tag = "Frame",
+                Type = ShapeType.Rectangle,
+                CornerRadius = 16,
+                StrokeWidth = 2,
+                StrokeColor = MaterialOutlineColor,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                UseCache = SkiaCacheType.Operations
+            },
+            new SkiaShape()
+            {
+                Type = ShapeType.Circle,
+                Margin = 4,
+                WidthRequest = 24,
+                LockRatio = 1,
+                Tag = "Thumb",
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Center,
+                Shadows = new List<SkiaShadow>()
+                {
+                    new SkiaShadow()
+                    {
+                        Blur = 3,
+                        Opacity = 0.1,
+                        X = 1,
+                        Y = 1,
+                        Color = Colors.Black
+                    }
+                }
+            },
+            new SkiaHotspot() { TransformView = this.Thumb, }.Adapt(me =>
+            {
+                me.Tapped += (s, e) => { IsToggled = !IsToggled; };
+            })
+        };
+
+        // Material 3 default colors
+        ColorFrameOff = Color.FromRgba(230, 224, 233, 255); // M3 surface container highest
+        ColorFrameOn = Color.FromRgba(103, 80, 164, 255);   // M3 primary
+        ColorThumbOff = MaterialOutlineColor;               // M3 outline
+        ColorThumbOn = Colors.White;                        // M3 on-primary
+    }
+
     protected virtual void CreateWindowsStyleContent()
     {
         SetDefaultContentSize(48, 22);
@@ -212,7 +285,7 @@ public class SkiaSwitch : SkiaToggle
             Thumb.BackgroundColor = this.ColorThumbOn;
             Track.BackgroundColor = this.ColorFrameOn;
 
-            if (ControlStyle == PrebuiltControlStyle.Windows)
+            if (UsingControlStyle is PrebuiltControlStyle.Windows or PrebuiltControlStyle.Material3)
             {
                 Track.StrokeColor = ColorFrameOn;
             }
@@ -226,10 +299,15 @@ public class SkiaSwitch : SkiaToggle
             Thumb.TranslationX = GetThumbPosForOff();
             Thumb.BackgroundColor = this.ColorThumbOff;
 
-            if (ControlStyle == PrebuiltControlStyle.Windows)
+            if (UsingControlStyle == PrebuiltControlStyle.Windows)
             {
                 Track.BackgroundColor = Colors.Transparent;
                 Track.StrokeColor = ColorFrameOff;
+            }
+            else if (UsingControlStyle == PrebuiltControlStyle.Material3)
+            {
+                Track.BackgroundColor = this.ColorFrameOff;
+                Track.StrokeColor = MaterialOutlineColor;
             }
             else
             {

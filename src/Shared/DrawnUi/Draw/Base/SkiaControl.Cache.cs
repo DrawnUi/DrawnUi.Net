@@ -77,8 +77,9 @@ public partial class SkiaControl
             {
                 IsRenderingWithComposition = true;
 
-                var offset = new SKPoint(this.DrawingRect.Left - previousCache.Bounds.Left,
-                    DrawingRect.Top - previousCache.Bounds.Top);
+                //LogicalBounds: Bounds is inflated by effects margins, deltas must be margin-neutral
+                var offset = new SKPoint(this.DrawingRect.Left - previousCache.LogicalBounds.Left,
+                    DrawingRect.Top - previousCache.LogicalBounds.Top);
 
                 //Super.Log($"[ImageComposite] {Tag} drawing cached at {offset}  {DrawingRect}");
 
@@ -453,7 +454,7 @@ public partial class SkiaControl
         cache ??= RenderObject;
         if (cache == null)
             return;
-        var destinationRect = new SKRect(x, y, x + cache.Bounds.Width, y + cache.Bounds.Height);
+        var destinationRect = new SKRect(x, y, x + cache.LogicalBounds.Width, y + cache.LogicalBounds.Height);
         var context = AddPaintArguments(ctx).WithDestination(destinationRect);
         DrawRenderObjectInternal(context, cache);
     }
@@ -462,7 +463,7 @@ public partial class SkiaControl
     {
         cache ??= RenderObject;
 
-        if (cache == null || !CompareSize(cache.Bounds.Size, size, 1))
+        if (cache == null || !CompareSize(cache.LogicalBounds.Size, size, 1))
             return false;
 
         return true;
@@ -810,6 +811,15 @@ public partial class SkiaControl
     private volatile bool _offscreenBakeBusy;
 
     /// <summary>
+    /// Double-buffered cache is NOT current: a rebake is flagged or an offscreen bake is in flight, so
+    /// RenderObject (if any) holds the PREVIOUS visual state. Plane recorders (SkiaCachedStack) must not
+    /// freeze such pixels into a band plane — the plane would serve the outdated cell state for its whole
+    /// life (streaming-text cell: older/shorter text than already presented).
+    /// </summary>
+    public bool DoubleBufferedCacheIsStale
+        => UsesCacheDoubleBuffering && (_needUpdateFrontCache || _offscreenBakeBusy);
+
+    /// <summary>
     /// The control RESIZED while holding a cache: the cached pixels are valid but at a stale size, and the
     /// double-buffered path would otherwise draw a blank placeholder until the async rebake lands (a visible
     /// blink). Re-record synchronously at the new size instead — one render-thread paint, happening only on
@@ -862,6 +872,22 @@ public partial class SkiaControl
                 }
             }
 
+            // GENUINE IN-PLACE RESIZE of a double-buffered cell (streaming text grew a line, image finished
+            // loading — SAME BindingContext, so PixelsForeign is false): the 1.7.8.2 fast path below blits the
+            // OLD-size cache and only rebakes async N frames later, drawing old-size pixels in the new-size slot
+            // until the bake lands — then it snaps. That is the streaming "history jumps a line" flicker (and an
+            // image-load grow blink). Rebuild SYNC at the new size THIS frame so pixels and layout agree
+            // immediately — exactly what the (previously orphaned) TrySyncRebuildStaleSize was written for, and
+            // what plain SkiaCacheType.Image already does via CheckCachedObjectValid's SizeMismatch path.
+            // GATED to genuine resizes: a RECYCLE rebind marks PixelsForeign=true and keeps the async path — a
+            // sync rebuild there is the ~150ms fling stall the fast path exists to avoid.
+            if (cache != null && UsesCacheDoubleBuffering && !PixelsForeign && !_offscreenBakeBusy
+                && !CompareSize(cache.RecordingArea.Size, recordArea.Size, 1)
+                && TrySyncRebuildStaleSize(context, recordArea))
+            {
+                return true; // fresh new-size cache built AND painted (CreateRenderingObjectAndPaint draws it)
+            }
+
             if (cache != null)
             {
                 //CacheValidity will be set by CheckCachedObjectValid
@@ -876,6 +902,7 @@ public partial class SkiaControl
                     // Blit the existing cache unconditionally (1.7.8.2 fast path). A size change just
                     // schedules an async rebake below (NeedUpdateFrontCache) — never a sync render-thread
                     // re-record, which stalls the frame ~150ms per cell on slow hardware during scroll.
+                    // (A genuine in-place resize was already handled sync just above.)
                     DrawRenderObjectInternal(context, cache);
 
                     Monitor.PulseAll(LockDraw);
@@ -931,6 +958,13 @@ public partial class SkiaControl
                 {
                     var clone = AddPaintArguments(context);
                     _offscreenBakeBusy = true;
+                    // Each bake SUPERSEDES older in-flight ones. A rapidly self-invalidating cell (a streaming
+                    // AI bubble growing word by word) queues several bakes as the text grows; without ordering,
+                    // an OLDER bake completing AFTER a newer one overwrites RenderObject with STALE content —
+                    // the cell's text visibly REVERTS (2 lines -> 1 line -> 2 again). Stamp each bake and let
+                    // only the latest publish. Direct increment (no CancellationTokenSource alloc) keeps the
+                    // 180ms streaming path cheap.
+                    long bakeGeneration = Interlocked.Increment(ref _offscreenRenderGeneration);
                     PushToOffscreenRendering(() =>
                     {
                         try
@@ -940,11 +974,18 @@ public partial class SkiaControl
                                 UsingCacheType,
                                 (ctx) => { PaintWithEffects(ctx); });
 
-                            RenderObjectPreparing = prepared;
-                            if (prepared != null)
+                            // Publish ONLY if a newer bake hasn't been scheduled since this one started.
+                            // Superseded => a fresher RenderObject is (or will be) set by the newer bake;
+                            // overwriting it here is the stale-text revert. Skip the swap (the double-buffer's
+                            // back surface is reused by the next bake — no leak, no dispose-of-shared hazard).
+                            if (!IsOffscreenRenderSuperseded(bakeGeneration))
                             {
-                                RenderObject = prepared;
-                                _renderObjectPreparing = null;
+                                RenderObjectPreparing = prepared;
+                                if (prepared != null)
+                                {
+                                    RenderObject = prepared;
+                                    _renderObjectPreparing = null;
+                                }
                             }
                         }
                         finally

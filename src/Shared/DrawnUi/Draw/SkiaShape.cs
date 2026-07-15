@@ -813,6 +813,29 @@ namespace DrawnUi.Draw
 
         #region SHADOWS
 
+        /// <summary>
+        /// Adds the legacy <see cref="Shadows"/> overflow to the effects margin so the cache surface,
+        /// clip and dirty region expand to hold the painted shadows — same pipeline VisualEffects use.
+        /// PlatformShadow (handled by base) takes precedence over Shadows at paint time, mirrored here.
+        /// </summary>
+        protected override Thickness ComputeEffectsMargin(float scale)
+        {
+            var margin = base.ComputeEffectsMargin(scale); // VisualEffects + PlatformShadow
+
+            if (PlatformShadow == null && Shadows is { Count: > 0 } shadows)
+            {
+                double l = margin.Left, t = margin.Top, r = margin.Right, b = margin.Bottom;
+                foreach (var shadow in shadows)
+                {
+                    MergeShadowMargin(ref l, ref t, ref r, ref b, shadow, scale);
+                }
+
+                margin = new Thickness(l, t, r, b);
+            }
+
+            return margin;
+        }
+
         private static void ShadowsPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
             if (bindable is SkiaShape control)
@@ -847,6 +870,7 @@ namespace DrawnUi.Draw
                     newCollection.CollectionChanged += control.OnShadowCollectionChanged;
                 }
 
+                control.InvalidateEffectsMargin();
                 control.Update();
             }
         }
@@ -873,6 +897,7 @@ namespace DrawnUi.Draw
                     break;
             }
 
+            InvalidateEffectsMargin();
             Update();
         }
 

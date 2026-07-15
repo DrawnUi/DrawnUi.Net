@@ -146,6 +146,9 @@ public class SkiaShadow : BindableObject, IComparable, IComparable<SkiaShadow>, 
     {
         if (bindable is SkiaShadow shadow)
         {
+            // Blur/X/Y changes alter how far the shadow paints beyond bounds:
+            // the parent's cache/clip/dirty-region expansion must be recomputed.
+            (shadow.Parent as SkiaControl)?.InvalidateEffectsMargin();
             shadow.Parent?.Update();
         }
     }

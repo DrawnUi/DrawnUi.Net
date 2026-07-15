@@ -60,6 +60,25 @@ namespace DrawnUi.Draw
         // Uncontended (single render thread, e.g. plain CellsStack) the lock is ~20ns -> no measurable cost.
         private readonly object _valuesLock = new();
 
+        // Lazily created on first explicit SetValue: GetValue's store-on-miss writes the DEFAULT into
+        // _values, so key presence there cannot answer "was this property explicitly set".
+        private HashSet<BindableProperty> _explicitlySet;
+
+        /// <summary>
+        /// Returns true if the property value was explicitly set via <see cref="SetValue"/>,
+        /// mirroring MAUI's BindableObject.IsSet semantics.
+        /// </summary>
+        public bool IsSet(BindableProperty targetProperty)
+        {
+            if (targetProperty == null)
+                throw new ArgumentNullException(nameof(targetProperty));
+
+            lock (_valuesLock)
+            {
+                return _explicitlySet != null && _explicitlySet.Contains(targetProperty);
+            }
+        }
+
         public object GetValue(BindableProperty property)
         {
             if (property == null)
@@ -98,6 +117,7 @@ namespace DrawnUi.Draw
             lock (_valuesLock)
             {
                 hadExistingValue = _values.TryGetValue(property, out oldValue);
+                (_explicitlySet ??= new()).Add(property);
             }
             if (!hadExistingValue)
             {
