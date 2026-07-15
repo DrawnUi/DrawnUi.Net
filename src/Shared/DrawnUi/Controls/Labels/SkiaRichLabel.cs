@@ -23,6 +23,34 @@ public partial class SkiaRichLabel : SkiaLabel
     {
     }
 
+    public static readonly BindableProperty MarkdownEnabledProperty = BindableProperty.Create(
+        nameof(MarkdownEnabled),
+        typeof(bool),
+        typeof(SkiaRichLabel),
+        true,
+        propertyChanged: OnMarkdownEnabledChanged);
+
+    private static void OnMarkdownEnabledChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is SkiaRichLabel control)
+        {
+            control.SetTextInternal();
+            control.Invalidate();
+        }
+    }
+
+    /// <summary>
+    /// When true (default) the text is parsed as CommonMark markdown into formatted spans.
+    /// When false the text is treated as literal — a single plain span, no markdown syntax —
+    /// while the rich per-glyph font fallback (emoji/CJK via font runs) still applies. Use
+    /// false to render emoji/unicode in a plain text field without markdown formatting.
+    /// </summary>
+    public bool MarkdownEnabled
+    {
+        get => (bool)GetValue(MarkdownEnabledProperty);
+        set => SetValue(MarkdownEnabledProperty, value);
+    }
+
     #region FAST PROBE CACHE
 
     private readonly record struct RichWordKey(

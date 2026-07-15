@@ -1483,8 +1483,19 @@ namespace DrawnUi.Draw
 
                 var measured = GetResultSize(result);
 
-                GlyphMeasurementCache.Add(paintTypeface, needsShaping, text, measured.Width, null);
-                return (measured.Width, null);
+                // Callers that only need width (normal labels) skip building positioned glyphs.
+                // Editors set NeedsGlyphPositions: without positioned glyphs for SHAPED runs
+                // (emoji, complex scripts) the caret can't map CursorPosition to an X over them,
+                // so the cursor stays stuck (e.g. after inserting "play😉"). Build them here.
+                if (!NeedsGlyphPositions)
+                {
+                    GlyphMeasurementCache.Add(paintTypeface, needsShaping, text, measured.Width, null);
+                    return (measured.Width, null);
+                }
+
+                var shapedGlyphs = BuildGlyphsFromShaping(result, text);
+                GlyphMeasurementCache.Add(paintTypeface, needsShaping, text, measured.Width, shapedGlyphs);
+                return (measured.Width, shapedGlyphs);
             }
 
             if (charMonoWidthPixels > 0)
@@ -2406,6 +2417,92 @@ namespace DrawnUi.Draw
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// Builds positioned <see cref="LineGlyph"/>s from a shaper result so the caret can map
+        /// text positions to X over shaped runs (emoji, ligatures, complex scripts). Each shaped
+        /// glyph carries its source cluster (StartIndex/Length in code units) and X position;
+        /// a glyph covering N code units (surrogate-pair emoji) is later expanded per code unit
+        /// by the editor's GetLineGlyphs.
+        /// </summary>
+        protected LineGlyph[] BuildGlyphsFromShaping(SKShaper.Result result, string text)
+        {
+            var count = result.Codepoints.Length;
+            if (count == 0)
+                return Array.Empty<LineGlyph>();
+
+            var glyphs = new LineGlyph[count];
+            for (int i = 0; i < count; i++)
+            {
+                // SKShaper feeds HarfBuzz UTF-8, so Clusters are UTF-8 BYTE offsets — but the caret
+                // (CursorPosition, StartIndex/Length) works in UTF-16 code units. Convert. Not doing
+                // this made an all-emoji string report wrong lengths (first glyph spanning both emojis)
+                // → caret landed at half the typed emojis. ASCII+trailing-emoji happened to mask it.
+                int startByte = (int)result.Clusters[i];
+                int nextByte = i + 1 < count ? (int)result.Clusters[i + 1] : -1;
+
+                int start = Utf8ByteOffsetToCharIndex(text, startByte);
+                int next = nextByte < 0 ? text.Length : Utf8ByteOffsetToCharIndex(text, nextByte);
+                if (next < start) next = start; // guard against non-monotonic clusters
+                int len = Math.Max(1, next - start);
+
+                float x = result.Points[i].X;
+                float nextX = i + 1 < count ? result.Points[i + 1].X : result.Width;
+                float width = Math.Max(0f, nextX - x);
+
+                int symbol = 0;
+                if (start >= 0 && start < text.Length)
+                {
+                    try { symbol = char.ConvertToUtf32(text, start); } catch { symbol = text[start]; }
+                }
+
+                glyphs[i] = new LineGlyph
+                {
+                    Id = (ushort)result.Codepoints[i],
+                    Symbol = symbol,
+                    IsAvailable = true,
+                    Source = text,
+                    StartIndex = start,
+                    Length = len,
+                    Position = x,
+                    Width = width,
+                };
+            }
+
+            return glyphs;
+        }
+
+        /// <summary>
+        /// Maps a UTF-8 byte offset (as reported by <see cref="SKShaper"/> clusters) to the
+        /// corresponding UTF-16 code-unit index in <paramref name="text"/>.
+        /// </summary>
+        private static int Utf8ByteOffsetToCharIndex(string text, int byteOffset)
+        {
+            if (byteOffset <= 0)
+                return 0;
+
+            int bytes = 0;
+            int i = 0;
+            while (i < text.Length)
+            {
+                if (bytes >= byteOffset)
+                    return i;
+
+                if (System.Text.Rune.DecodeFromUtf16(text.AsSpan(i), out var rune, out int charsConsumed)
+                    == System.Buffers.OperationStatus.Done)
+                {
+                    bytes += rune.Utf8SequenceLength;
+                    i += charsConsumed;
+                }
+                else
+                {
+                    bytes += 1; // lone surrogate / invalid: 1 replacement byte
+                    i += 1;
+                }
+            }
+
+            return text.Length;
         }
 
         public static SKSize GetResultSize(SKShaper.Result result)
