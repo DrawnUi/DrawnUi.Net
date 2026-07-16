@@ -26,9 +26,8 @@
     <Project Path="../../DrawnChatList/src/Shared/DrawnChatList.Shared.shproj" Id="60ef8dbf-e427-472c-9bb6-8d028e4b7900" />
     <Project Path="../../DrawnUi.Fiddle/src/DrawnUi.Fiddle/DrawnUi.Fiddle.csproj" />
     <Project Path="../../DrawnUi.Fiddle/src/FiddleApp/FiddleApp.csproj" />
-    <Project Path="../../DrawnUiCellsRepro/DrawnUiCellsRepro.csproj">
-      <Deploy Solution="Debug|Any CPU" />
-    </Project>
+    <Project Path="../../DrawnUi.Maui.Camera/src/MAUI/Lib/DrawnUi.Maui.Camera.csproj" />
+    <Project Path="../../DrawnUi.Maui.Camera/src/Shared/Lib/DrawnUi.Camera.Shared.shproj" Id="9ddd906b-34ab-495e-9606-681783720bbe" />
     <Project Path="../src/Net/Samples/GestureHarnessDemo/GestureHarnessDemo.csproj" />
   </Folder>
   <Folder Name="/Lib/" />
