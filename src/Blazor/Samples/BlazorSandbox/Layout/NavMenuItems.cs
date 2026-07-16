@@ -86,7 +86,7 @@ internal static class NavMenuItems
                         new("Picker Spinner", "pickers-spinner", "bi-disc-nav-menu"),
 
                         new("SkiaEditor", "editors-probe", "bi-pencil-square-nav-menu"),
-                        new("Editor Height Bug", "editor-height-probe", "bi-pencil-square-nav-menu"),
+                        new("Editor Height", "editor-height-probe", "bi-pencil-square-nav-menu"),
 
                         new("SkiaBackdrop", "effects-backdrop", "bi-layers-half-nav-menu"),
                         new("SkiaHoverMask", "effects-hover-mask", "bi-intersect-nav-menu"),

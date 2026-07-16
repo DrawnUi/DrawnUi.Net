@@ -3,11 +3,11 @@
 @using DrawnUi.Views
 @using DrawnUi
 
-<PageTitle>Editor Height Bug</PageTitle>
+<PageTitle>Editor Height</PageTitle>
 
 <div class="docs-page">
-    <h1>Editor Height Bug</h1>
-    <p class="docs-lead">Repro: SkiaEditor height jitters while typing.</p>
+    <h1>Editor Height</h1>
+    <p class="docs-lead">SkiaEditor grows with content while typing, up to MaxLines.</p>
 </div>
 
 <Canvas Content="_canvasContent"
@@ -19,7 +19,6 @@
 
 @code {
     private SkiaLabel echo;
-    private double _lastLoggedHeight = double.NaN;
     private readonly SkiaControl _canvasContent;
 
     public EditorHeightProbe()
@@ -57,8 +56,6 @@
                 {
                     if (prop == nameof(SkiaEditor.Text) && echo != null)
                         echo.Text = $"{me.Text?.Length ?? 0} chars";
-
-                    Console.WriteLine($"[EditorHeightProbe] prop={prop} Height={me.Height:0.###} HeightRequest={me.HeightRequest:0.###} MeasuredLineHeight={me.Label?.MeasuredLineHeight:0.###} LinesCount={me.Label?.LinesCount}");
                 }),
                 new SkiaLabel("0 chars")
                 {
