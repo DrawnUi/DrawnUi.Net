@@ -2359,8 +2359,8 @@ namespace DrawnUi.Draw
         /// </summary>
         protected double ZoomScaleInternal { get; set; }
 
-        protected ScaledSize HeaderSize;
-        protected ScaledSize FooterSize;
+        protected ScaledSize HeaderSize = new();
+        protected ScaledSize FooterSize = new();
 
         /// <summary>
         /// Calculate the value that will be set to ContentSize after that
