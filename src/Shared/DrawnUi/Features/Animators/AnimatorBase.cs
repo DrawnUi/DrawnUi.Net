@@ -55,6 +55,13 @@ public class AnimatorBase : ISkiaAnimator
 
         Parent?.Update();
 
+        // Guarantee a canvas frame after registration: the control-level Update() above can be
+        // deduped (NeedUpdate already set, control not repainted since) which would leave the
+        // canvas idle — a running animator would then never receive its first tick until some
+        // unrelated redraw happens (frozen SkiaLottie at startup case). The superview-level
+        // Update() bypasses that dedup and only marks IsDirty, so cost is one frame.
+        (Parent as SkiaControl)?.Superview?.Update();
+
         return ret.GetValueOrDefault();
     }
 

@@ -194,6 +194,24 @@ namespace DrawnUi.Draw
             return view;
         }
 
+        /// <summary>
+        /// Attaches a post-effects overlay drawn ABOVE the control's content and children,
+        /// at the same stage where the ripple renders (after-drawing overlay pass) — unlike
+        /// <c>WhenPaint</c>, which runs inside base.Paint BEFORE children. The callback
+        /// receives the drawing context and the control; return true to request continuous
+        /// repaint (animated overlay), false for a static overlay. Never mutate layout
+        /// properties inside — draw on the canvas only.
+        /// </summary>
+        /// <typeparam name="T">Type of SkiaControl</typeparam>
+        /// <param name="view">The control to attach the overlay to</param>
+        /// <param name="render">Overlay draw callback</param>
+        /// <returns>The control for chaining</returns>
+        public static T WhenPainted<T>(this T view, Func<DrawingContext, IDrawnBase, bool> render) where T : SkiaControl
+        {
+            view.PostAnimators.Add(new ActionOverlayEffect(view, render));
+            return view;
+        }
+
         #region ANIMATION
 
         /// <summary>

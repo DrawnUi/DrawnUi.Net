@@ -274,6 +274,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\ExecuteOnTick.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\Extensions\AnimateExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\Extensions\SpringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\HoverEffects\ActionOverlayEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\HoverEffects\RippleAnimator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\HoverEffects\ShimmerAnimator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\Interfaces\IAfterEffect.cs" />
