@@ -205,7 +205,7 @@ namespace DrawnUi.Draw
 
 
         public override bool IsTemplated =>
-            ((this.ItemTemplate != null || ItemTemplateType != null) && this.ItemsSource != null);
+            (this.ItemTemplate != null && this.ItemsSource != null);
 
         public SKRect GetChildRect(int index)
         {
@@ -460,7 +460,29 @@ namespace DrawnUi.Draw
             typeof(int),
             typeof(SkiaLayout),
             0,
-            propertyChanged: NeedUpdateItemsSource);
+            propertyChanged: OnSplitPropertyChanged);
+
+        static void OnSplitPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is SkiaLayout layout)
+            {
+                layout._splitCached = (int)newValue;
+            }
+
+            NeedUpdateItemsSource(bindable, oldValue, newValue);
+        }
+
+        volatile int _splitCached;
+
+        /// <summary>
+        /// Thread-safe mirror of <see cref="Split"/>. MAUI BindableObject storage is NOT safe to read
+        /// off the UI thread: the background measurement pass reading GetValue(SplitProperty) saw a
+        /// stale/default value MID-PASS — one pass computed full-width columns (Split==1) while column-
+        /// stepping with Split==2, and the offset compensation re-read yet another value, shifting the
+        /// whole batch left by a column (device 2026-07-17: 2-col grid rendered as a single shifted
+        /// column after LoadMore). ALL measure-worker code must read this mirror, never Split.
+        /// </summary>
+        protected int SplitCached => _splitCached;
 
         /// <summary>
         /// For Wrap number of columns/rows to split into, If 0 will use auto, if 1+ will have 1+ columns.
@@ -834,6 +856,11 @@ namespace DrawnUi.Draw
 
         protected object lockMeasureLayout = new();
 
+        SKSize _poolInvalidatedForSize = new(-1, -1);
+        float _poolInvalidatedForScale = -1;
+        int _poolInvalidatedForSplit = -1;
+        double _poolInvalidatedForSpacing = double.MinValue;
+
         public virtual ScaledSize MeasureLayout(MeasureRequest request, bool force)
         {
             //until we implement 2-threads rendering this is needed for ImageDoubleBuffered cache rendering
@@ -859,7 +886,23 @@ namespace DrawnUi.Draw
                         if (!canMeasureTemplates)
                             return ScaledSize.CreateEmpty(request.Scale);
 
-                        ChildrenFactory.InvalidateAllPooledCells();
+                        // Invalidate pooled cells ONLY when the box they were measured for changed
+                        // (content constraints, scale, Split/Spacing = per-column width). A structure-only
+                        // remeasure (LoadMore append, add/remove, refresh) must keep pooled measured state
+                        // and caches — otherwise every page append remeasured + re-recorded the whole pool
+                        // and defeated the context-affinity reservoir (same cell returned pre-invalidated).
+                        // Template change doesn't need this: InitializeTemplates resets the pool fully.
+                        if (_poolInvalidatedForSize != constraints.Content.Size
+                            || _poolInvalidatedForScale != request.Scale
+                            || _poolInvalidatedForSplit != Split
+                            || _poolInvalidatedForSpacing != Spacing)
+                        {
+                            _poolInvalidatedForSize = constraints.Content.Size;
+                            _poolInvalidatedForScale = request.Scale;
+                            _poolInvalidatedForSplit = Split;
+                            _poolInvalidatedForSpacing = Spacing;
+                            ChildrenFactory.InvalidateAllPooledCells();
+                        }
                     }
 
                     switch (Type)
@@ -1406,7 +1449,7 @@ namespace DrawnUi.Draw
             var source = ItemsSource;
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || (source.Count < WindowSourceThreshold && !ForceItemsWindow)
-                || (ItemTemplate == null && ItemTemplateType == null))
+                || ItemTemplate == null)
                 return;
 
             _itemsWindow = new ItemsSourceWindow(this, source);
@@ -1434,7 +1477,7 @@ namespace DrawnUi.Draw
             var source = ItemsSource;
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || source.Count < WindowSourceThreshold
-                || (ItemTemplate == null && ItemTemplateType == null))
+                || ItemTemplate == null)
                 return false;
 
             // anchor on the current viewport — FRESH from structure + scroll offset (the draw-updated
@@ -1579,6 +1622,13 @@ namespace DrawnUi.Draw
                 || StackStructure == null || StackStructure.Length == 0)
                 return false;
 
+            // SPLIT GRID: none of the structure-preserving paths are split-aware — their arithmetic
+            // appends/slides ONE item per structure row, so a 2-column grid collapses to a single
+            // half-width column after the first LoadMore page (device 2026-07-17, DrawnCells shop grid).
+            // Route through the full path: its Invalidate() re-measures the set into proper split rows.
+            if (Split > 1)
+                return false;
+
             if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
                 return true;
 
@@ -1675,6 +1725,16 @@ namespace DrawnUi.Draw
                     // Full-window swap: clear measurement/structure so background measurement runs fresh on
                     // the new window (exact content size), but keep templates intact. InitializeTemplates
                     // below resolves to InitializeSoft (Action=Replace, same ItemsSource ref) — no rebuild.
+                    ResetMeasurementForReplace();
+                }
+                else if (Split > 1)
+                {
+                    // SPLIT GRID add/remove (routed here by ShouldPreserveStructureOnCollectionChange):
+                    // a bare Invalidate is NOT enough — the measure pass continues INCREMENTALLY from the
+                    // measured frontier and appends ONE item per structure row, collapsing a 2-column grid
+                    // to a single half-width column after every LoadMore page (device 2026-07-17). Reset
+                    // measurement/structure (templates+pool intact) so the pass relays ALL items into
+                    // proper split rows.
                     ResetMeasurementForReplace();
                 }
                 ApplyNewItemsSource = false;

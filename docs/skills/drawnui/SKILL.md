@@ -3,7 +3,7 @@ name: drawnui
 description: Working with DrawnUI UI, controls, layouts (SkiaStack, SkiaRow, SkiaLayer, SkiaWrap, SkiaGrid), rendering, caching, gestures, overlays, SkiaLayout, SkiaShape, SkiaButton, Canvas, virtualization, or XAML/C# composition in DrawnUi-based apps.
 triggers:
   - drawnui
-version: 1.7.0
+version: 1.9.0
 tags: [drawnui, blazor, webassembly, dotnet]
 ---
 
@@ -33,7 +33,7 @@ For Blazor-specific work load the **`drawnui-blazor`** skill. For pure-WebAssemb
 
 ## Core Rules
 
-- For recycled/virtualized cells, lists, chats, MeasureVisible, UsePreparedViews, SkiaCachedStack, or ItemsSource windowing: see the "Recycled Cells — Strategy Picker" and "SkiaScroll + Recycled Cells" sections below plus `docs/articles/advanced/recycled-cells.md`.
+- **PROHIBITED: writing any DrawnUI UI composition without a caching plan.** Before emitting code, decide for EVERY subtree whether it is cached or uncached and WHY, from its invalidation source: static chrome (toolbars, panels, side bars) → `UseCache = Image` at the top of the subtree; scroll content → `Image` on the content (blitted at offset — never cache the scroll's parent, that thrashes per scroll frame); document/artboard layers with independently-changing children → `ImageComposite` (re-records changed children only); constantly-repainting overlays (adorners, marquee, custom per-frame paint) → NO cache; stable overlays sitting over live surfaces that repaint every frame → cache them so they blit. Shipping a whole app shell with zero `UseCache` (only leaf visuals cached) is the failure mode this rule exists to prevent — it makes a drawn app feel laggy and reads as "drawn UI is slow" when it is not.
 - ALWAYS add XML documentation comments to every class and public/protected API member you create in DrawnUI library code (classes, properties, fields, methods, ctors). Human-readable, states purpose + when to use; no undocumented public surface.
 - Prefer DrawnUI docs first, then existing repo/sample patterns, before inventing new structure.
 - Keep `Canvas` at `RenderingMode="Accelerated"` when hosting DrawnUI camera or GPU-rendered content.
@@ -63,8 +63,17 @@ Prefer alias controls over raw `SkiaLayout Type="..."` — same class, preset `T
 - Grid: `ColumnDefinitions`/`RowDefinitions` (`*`, `2*`, `Auto`, absolute), attached `SkiaLayout.Column/Row/ColumnSpan/RowSpan` (0-based), `ColumnSpacing`/`RowSpacing`. `SkiaDecoratedGrid` = grid drawing separator lines (`HorizontalLine`/`VerticalLine` gradients).
 - `Split` = explicit column count for Column/Wrap/Grid with ItemsSource; `UseDynamicColumns` lets a short last row expand; grid `Invert` flips fill order to columns-first.
 - Perf: for a known-size icon + label pair prefer an Absolute layer + left `Margin` on the label over a 2-column grid.
-- `Spacing` = between children (single value); `Padding` internal; `Margin` external. Layouts support `BackgroundColor` + `CornerRadius` directly.
+- `Spacing` = between children (single value); `Padding` internal; `Margin` external. Layouts support `BackgroundColor` directly but NOT `CornerRadius` (verified: no such member on SkiaLayout/aliases — wrap in `SkiaShape`/`SkiaFrame` for a rounded panel).
 - iOS safe insets require a MAUI root wrapper (e.g. `Grid`) around the `Canvas`; opt out via startup `MobileIsFullscreen = true`.
+
+## Positioning children inside containers — 4 ways, prefer in order
+
+WPF-style system: there is no free X/Y — the layout computes position and stamps the arranged `DrawingRect`. Pick the FIRST way that fits:
+
+1. **Layout-owned (default)**: Column/Row/Grid/Wrap parents position children — set nothing. Tune with container `Spacing`/`Padding` and per-child alignment + size requests.
+2. **Margin + alignment — the WPF-style workhorse**, works in ANY container incl. Absolute: `Margin = new(50,0,0,0)` places after a logical 50pt column; `VerticalOptions = End` + `Margin = new(0,0,0,100)` = exactly 100pt above the container bottom. Arranged by layout → `DrawingRect`/`HitBoxAuto` stay truthful (hit-testing, adorners, position math all correct). Often replaces a whole `SkiaGrid`.
+3. **`Left`/`Top` — cached controls only** (`UseCache != None`): offsets the cached output directly, no matrix transform, faster than Translation, background-thread friendly. Mind cache defaults: labels/shapes = `Operations`, `SkiaLottie`/`SkiaGif` = `ImageDoubleBuffered`, most other controls = `None`.
+4. **`TranslationX/Y` — LAST resort**: matrix transform with save/restore around every draw, the most expensive option. Only when nothing else fits (live gesture drag, transform animations). Trap: a translated CONTAINER shifts rendering but NOT its descendants' `HitBoxAuto`/`DrawingRect` — hit-testing/adorner math under a moved container goes stale unless you compensate with the ancestors' own-transform offsets.
 
 ## Control Patterns
 
@@ -235,6 +244,7 @@ Two layers must BOTH be on, or handlers never fire: (1) canvas host input mode, 
 - When debugging a "clipped shadow" report: faint stock shadows (e.g. Material thumb 0.3-opacity black, blur 2) can LOOK like a hard clip at a tangent edge — mutate the shadow loud (red, opacity 1, bigger blur/offset) via the control tree before concluding clipping.
 - `CachedObject.Bounds` semantics TRAP (bit us 2026-07): for image-backed caches Bounds = surface area INFLATED by effects margins; the logical recorded rect is `RecordingArea` (exposed as `CachedObject.LogicalBounds`). Any gesture translation (`TranslateInputCoords`), position-delta (`CalculatePositionOffset`), or composite dirty-offset math using Bounds as "recorded position" shifts by the margin the moment ANY descendant has a shadow. Symptoms: dead top/left tap strip on controls inside a cached container (composite stack with one Cupertino slider inflated the whole stack); stale color ghosts at top/left after animations (composite bg-repaint clip shifted, strip never overpainted). Repro recipe: ImageComposite stack + one shadowed child + GestureRobot tap on the top 2px strip of a switch + orange-pixel scan after toggle-OFF.
 - `ExpandDirtyRegion` (Thickness, points) is the manual override for custom `Paint` bleed or effects that don't report a margin. Final expand = per-side max(auto effect margin, ExpandDirtyRegion*scale).
+- **Post-effects overlay stage (where ripple draws)**: `control.PostAnimators` (`IOverlayEffect` list) render in `OnAfterDrawing` — ABOVE the control's content and children, at its true drawn position incl. transforms, over cached blits too. For overlay chrome (selection frames, debug bounds, badges): one-liner `.WhenPainted((ctx, c) => { ...draw...; return false; })` (wraps `ActionOverlayEffect`); reusable = subclass `RenderingAnimator`, override `OnRendering` (helpers `GetSelfDrawingLocation`, `DrawWithClipping`), add to `PostAnimators` + `Repaint()` — no Start needed for static overlays. Return value contract: true = request continuous repaint (animated), false = static. NEVER mutate layout properties from a paint-stage hook (`WhenPaint` runs inside base.Paint BEFORE children; mutating Width/TranslationX there aborts the paint pass — draw only). This beats tracking another control's position with an adorner child: the overlay is always in sync by construction.
 - Writing a custom effect that paints beyond bounds: override `GetEffectMargin`. Effects staying inside bounds (color filters, in-place shaders) inherit `Zero`, no override.
 - `CachedObject`: `Bounds` = inflated image extent, `RecordingArea` = logical DrawingRect (non-inflated). Draw offset = `Bounds.Left - RecordingArea.Left`. Validity check compares `RecordingArea.Size` (logical) — keep these two distinct or you get nonstop cache rebuild (sizes never match) or wrong blit offset (object shifted by expand).
 - Article: `docs/articles/controls/effects.md`.
@@ -399,7 +409,7 @@ Canvas = new Canvas
         HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
         Content = new SkiaStack                              // SkiaLayout Type=Column
         {
-            ItemTemplateType = typeof(RowCell),              // type-based template, pooled
+            ItemTemplate = new DataTemplate(() => new RowCell()), // compiled delegate, pooled
             ItemsSource = _items,                            // ObservableRangeCollection<MyModel>
             RecyclingTemplate = RecyclingTemplate.Enabled,
             MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,

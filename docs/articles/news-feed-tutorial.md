@@ -218,8 +218,13 @@ These are friends when it comes to creating recycled or "bindable layout-like" s
                         ReserveTemplates="10"
                         VirtualisationInflated="200"
                         Spacing="0"
-                        ItemTemplateType="{x:Type newsFeed:NewsCell}"
-                        HorizontalOptions="Fill" />
+                        HorizontalOptions="Fill">
+                        <draw:SkiaLayout.ItemTemplate>
+                            <DataTemplate>
+                                <newsFeed:NewsCell />
+                            </DataTemplate>
+                        </draw:SkiaLayout.ItemTemplate>
+                    </draw:SkiaLayout>
 
                 </draw:SkiaScroll>
 ```

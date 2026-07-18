@@ -73,8 +73,13 @@
                         VirtualisationInflated="200"
                         BackgroundMeasurementBatchSize="3"
                         Spacing="0"
-                        ItemTemplateType="{x:Type newsFeed:NewsCell}"
-                        HorizontalOptions="Fill" />
+                        HorizontalOptions="Fill">
+                        <draw:SkiaStack.ItemTemplate>
+                            <DataTemplate>
+                                <newsFeed:NewsCell />
+                            </DataTemplate>
+                        </draw:SkiaStack.ItemTemplate>
+                    </draw:SkiaStack>
 
                 </newsFeed:AppScroll>
 

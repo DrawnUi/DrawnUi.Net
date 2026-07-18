@@ -5170,7 +5170,7 @@ namespace AppoMobi.Maui.DrawnUi.Draw
         {
             get
             {
-                return (this.ItemTemplate != null || ItemTemplateType != null);
+                return this.ItemTemplate != null;
             }
         }
 
@@ -5181,10 +5181,6 @@ namespace AppoMobi.Maui.DrawnUi.Draw
 
         public virtual object CreateContentFromTemplate()
         {
-            if (ItemTemplateType != null)
-            {
-                return Activator.CreateInstance(ItemTemplateType);
-            }
             return ItemTemplate.CreateContent();
         }
 
@@ -5747,23 +5743,6 @@ namespace AppoMobi.Maui.DrawnUi.Draw
             get { return (DataTemplate)GetValue(ItemTemplateProperty); }
             set { SetValue(ItemTemplateProperty, value); }
         }
-
-        public static readonly BindableProperty ItemTemplateTypeProperty = BindableProperty.Create(
-            nameof(ItemTemplateType),
-            typeof(Type),
-            typeof(SkiaControl),
-            null
-            , propertyChanged: ItemTemplateChanged);
-
-        /// <summary>
-        /// ItemTemplate alternative for faster creation
-        /// </summary>
-        public Type ItemTemplateType
-        {
-            get { return (Type)GetValue(ItemTemplateTypeProperty); }
-            set { SetValue(ItemTemplateTypeProperty, value); }
-        }
-
 
         #region SELECTABLE TEMPLATES
 

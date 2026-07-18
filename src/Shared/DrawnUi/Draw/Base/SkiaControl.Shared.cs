@@ -8375,7 +8375,7 @@ namespace DrawnUi.Draw
             [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual bool IsTemplated
         {
-            get { return (this.ItemTemplate != null || ItemTemplateType != null); }
+            get { return this.ItemTemplate != null; }
         }
 
         public virtual void OnItemTemplateChanged()
@@ -8384,11 +8384,6 @@ namespace DrawnUi.Draw
 
         public virtual object CreateContentFromTemplate()
         {
-            if (ItemTemplateType != null)
-            {
-                return Activator.CreateInstance(ItemTemplateType);
-            }
-
             if (ItemTemplate == null)
             {
                 return null;
@@ -9053,21 +9048,6 @@ namespace DrawnUi.Draw
             set { SetValue(ItemTemplateProperty, value); }
         }
 
-        public static readonly BindableProperty ItemTemplateTypeProperty = BindableProperty.Create(
-            nameof(ItemTemplateType),
-            typeof(Type),
-            typeof(SkiaControl),
-            null
-            , propertyChanged: ItemTemplateChanged);
-
-        /// <summary>
-        /// ItemTemplate alternative for faster creation
-        /// </summary>
-        public Type ItemTemplateType
-        {
-            get { return (Type)GetValue(ItemTemplateTypeProperty); }
-            set { SetValue(ItemTemplateTypeProperty, value); }
-        }
 
         protected void AddOrRemoveView(SkiaControl subView, bool add)
         {

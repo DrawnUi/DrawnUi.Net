@@ -145,7 +145,7 @@
 			Spacing = 2,
 			Padding = new Thickness(0, 8),
 			ItemsSource = _items,
-			ItemTemplateType = typeof(RowCell),
+			ItemTemplate = new DataTemplate(() => new RowCell()),
 			Virtualisation = VirtualisationType.Managed,
 			ItemTemplatePoolSize = 0, // 0 = engine auto-sizes the pool from band geometry
 			RecyclingTemplate = RecyclingTemplate.Enabled,
