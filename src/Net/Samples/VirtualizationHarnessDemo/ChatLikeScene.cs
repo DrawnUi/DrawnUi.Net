@@ -172,7 +172,7 @@ public sealed class ChatLikeScene : IDisposable
         List.Spacing = 4;
         List.Padding = new Thickness(0, 8);
         List.ItemsSource = _window.Items;
-        List.ItemTemplateType = typeof(ChatRowCell);
+        List.ItemTemplate = new DataTemplate(() => new ChatRowCell());
         List.RecyclingTemplate = RecyclingTemplate.Enabled;
         List.MeasureItemsStrategy = MeasuringStrategy.MeasureVisible;
         List.VirtualisationInflated = 100;

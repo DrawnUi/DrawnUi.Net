@@ -120,7 +120,7 @@ public sealed class VirtualizationScene : IDisposable
             Spacing = 2,
             Padding = new Thickness(0, 8),
             ItemsSource = Items,
-            ItemTemplateType = typeof(RowCell),
+            ItemTemplate = new DataTemplate(() => new RowCell()),
             Virtualisation = VirtualisationType.Managed,
             ItemTemplatePoolSize = 64,
             RecyclingTemplate = RecyclingTemplate.Enabled,

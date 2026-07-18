@@ -157,7 +157,7 @@ public static class GestureProbe
                         Spacing = 2,
                         Padding = new Thickness(0, 8),
                         ItemsSource = items,
-                        ItemTemplateType = typeof(RippleRowCell),
+                        ItemTemplate = new DataTemplate(() => new RippleRowCell()),
                         Virtualisation = VirtualisationType.Managed,
                         ItemTemplatePoolSize = 0,
                         RecyclingTemplate = RecyclingTemplate.Enabled,

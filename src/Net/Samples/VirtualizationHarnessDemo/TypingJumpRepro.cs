@@ -17,19 +17,30 @@ public static class TypingJumpRepro
 {
     public static void Run()
     {
+        // BOTH plane modes, explicitly (never trust the base default): the sync single-plane path is what
+        // ships (default FALSE) and streaming poisons it differently than the async path — an unscoped
+        // 2026-07-17 fix made every sync record self-discard during streaming (record+discard+live thrash,
+        // "blinking, structure changing every frame") and NO gate covered single-plane + streaming.
+        Run(false);
+        Run(true);
+    }
+
+    public static void Run(bool useDoubleBuffering)
+    {
         Console.WriteLine();
-        Console.WriteLine("============== TYPING-GROW JUMP (real ChatPage) ==============");
-        try { RunCore(); }
+        Console.WriteLine($"============== TYPING-GROW JUMP (real ChatPage, UseDoubleBuffering={useDoubleBuffering}) ==============");
+        try { RunCore(useDoubleBuffering); }
         catch (Exception ex) { Console.WriteLine($"  CRASH: {ex}"); }
         Console.WriteLine("==============================================================");
     }
 
-    static void RunCore()
+    static void RunCore(bool useDoubleBuffering)
     {
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
         page.InitializeList();
+        page.ChatStack.UseDoubleBuffering = useDoubleBuffering;
 
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         for (int i = 0; i < 60; i++) { host.RenderFrame(16); Thread.Sleep(3); }

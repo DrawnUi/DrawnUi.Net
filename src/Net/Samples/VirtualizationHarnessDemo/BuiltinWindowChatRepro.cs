@@ -90,7 +90,7 @@ public static class BuiltinWindowChatRepro
                     Spacing = 4,
                     Padding = new Thickness(0, 8),
                     ItemsSource = items,
-                    ItemTemplateType = typeof(ChatLikeScene.ChatRowCell),
+                    ItemTemplate = new DataTemplate(() => new ChatLikeScene.ChatRowCell()),
                     RecyclingTemplate = RecyclingTemplate.Enabled,
                     MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
                     VirtualisationInflated = 100,

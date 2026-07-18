@@ -7,6 +7,14 @@ DrawnChatList.ChatPage.AutoTestEnabled = false;
 DrawnChatList.ChatPage.MotionTraceEnabled = false;
 
 
+// Split>1 grid gate: 2-col MeasureFirst grid — every cell in its column slot, initial + range-append
+// (the uniform-clone fast path used to stamp a Fill-expanded full-width first cell onto every clone).
+VirtualizationHarnessDemo.SplitGridRepro.Run();
+
+// Diagnostic (no assert): plane re-record cadence — how far a SkiaCachedStack scrolls between records
+// and why each record fired (drift / dirty bakes / coverage). Split=2 grid, plain + DB cell shapes.
+VirtualizationHarnessDemo.PlaneDriftRepro.Run();
+
 // Built-in ItemsSourceWindow regressions (MeasureFirst): Feed preset (recycled binds, slides,
 // idle churn, in-use collapse) + window slides/trims/backward refills over a 2000-item source.
 VirtualizationHarnessDemo.FeedPresetRepro.Run();
@@ -40,6 +48,9 @@ VirtualizationHarnessDemo.CachedJumpRepro.Run();
 VirtualizationHarnessDemo.RealChatJumpRepro.Run();
 VirtualizationHarnessDemo.ScrollBarOverflowRepro.Run();
 VirtualizationHarnessDemo.CachedScrollTrimRepro.Run();
+// Double-buffer stale-plane content gate: a slow bake (forced past the 16ms wait) must never serve
+// pre-change pixels after a live frame presented newer content (image flicker / typing jump class).
+VirtualizationHarnessDemo.StalePlaneContentRepro.Run();
 VirtualizationHarnessDemo.AssetResolveRepro.Run();
 
 // Investigation: wrong cell tapped after scrolling under double buffering (stale gesture tree).
