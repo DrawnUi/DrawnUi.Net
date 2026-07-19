@@ -2171,13 +2171,22 @@ public partial class SkiaLayout
 
     /// <summary>
     /// MeasureFirst (uniform rows) Add fast path: every row is the first item's size + spacing, so an
-    /// insert/append is pure arithmetic — followers slide down by count*stride, new cells are placed by
-    /// multiplication. No template binds, no measures, no full structure-build loop (the freeze at window
-    /// slides). Single-column stacks only; returns false to fall back to the generic path.
+    /// insert/append is pure arithmetic — followers slide down by rowsAdded*stride, new cells are placed
+    /// by row/column multiplication. No template binds, no measures, no full structure-build loop (the
+    /// freeze at window slides). Split-aware: a Split&gt;1 grid places new cells across their columns
+    /// (row = index/Split, col = index%Split). Requires the change to be Split-aligned (count and index
+    /// multiples of Split, guaranteed by IsSplitAlignedChange upstream) so survivor column parity is
+    /// preserved by a pure row-shift; returns false otherwise to fall back to the generic path.
     /// </summary>
     private bool TryApplyUniformAddMeasureFirst(StructureChange change)
     {
-        if (Type != LayoutType.Column || Split > 1 || change.Count <= 0)
+        if (Type != LayoutType.Column || change.Count <= 0)
+            return false;
+
+        var split = Split > 0 ? Split : 1;
+
+        // Split-aware arithmetic needs row-aligned inserts (col parity preserved by a pure Y-shift).
+        if (split > 1 && (change.Count % split != 0 || change.StartIndex % split != 0))
             return false;
 
         lock (LockMeasure)
@@ -2193,8 +2202,28 @@ public partial class SkiaLayout
                 return false; // no measured prototype / append beyond a gap — let the generic path handle it
 
             var spacingPixels = (float)Math.Round(Spacing * RenderingScale);
-            float stride = proto.Destination.Height + spacingPixels;
-            float blockShift = change.Count * stride;
+            float stride = proto.Destination.Height + spacingPixels;     // one ROW = cell height + spacing
+            float colWidth = proto.Destination.Width;
+            int rowsAdded = change.Count / split;                        // split==1 => == change.Count
+            float blockShift = rowsAdded * stride;                       // followers slide by whole rows
+
+            // Per-column X geometry read off the existing uniform grid (every cell in a column shares
+            // its Left). New cells in a DIFFERENT column than the prototype MUST use their own column's
+            // X — reusing the prototype's X was the single-column collapse (device 2026-07-19).
+            var colLeft = new float[split];
+            var colHasX = new bool[split];
+            foreach (var c in cells)
+            {
+                int col = c.ControlIndex % split;
+                if (!colHasX[col])
+                {
+                    colLeft[col] = c.Destination.Left;
+                    colHasX[col] = true;
+                }
+            }
+            for (int c = 0; c < split; c++)
+                if (!colHasX[c])
+                    colLeft[c] = colLeft[0] + c * (colWidth + spacingPixels); // fallback (all columns not yet resident)
 
             bool headInsert = change.StartIndex == 0;
             if (headInsert && _pendingHeadRemove != null)
@@ -2210,7 +2239,7 @@ public partial class SkiaLayout
                 insertTop = cells[0].Destination.Top - blockShift;
                 foreach (var cell in cells)
                 {
-                    cell.ControlIndex += change.Count; // memo empty: rekey directly, positions untouched
+                    cell.ControlIndex += change.Count; // count is Split-aligned: column parity preserved
                 }
             }
             else
@@ -2232,19 +2261,21 @@ public partial class SkiaLayout
                 }
             }
 
+            float protoHeight = proto.Destination.Height;
             for (int i = 0; i < change.Count; i++)
             {
-                float dy = (insertTop + i * stride) - proto.Destination.Top;
-                var dest = proto.Destination;
-                dest.Offset(0, dy);
-                var area = proto.Area;
-                area.Offset(0, dy);
+                int finalIndex = change.StartIndex + i;
+                int col = finalIndex % split;
+                float top = insertTop + (i / split) * stride;
+                var dest = new SKRect(colLeft[col], top, colLeft[col] + colWidth, top + protoHeight);
 
                 cells.Add(new ControlInStack
                 {
-                    ControlIndex = change.StartIndex + i,
+                    ControlIndex = finalIndex,
+                    Column = col,
+                    Row = finalIndex / split,
                     Destination = dest,
-                    Area = area,
+                    Area = dest,
                     Measured = proto.Measured,
                     WasMeasured = true,
                 });
@@ -2261,6 +2292,13 @@ public partial class SkiaLayout
             }
 
             cells.Sort((a, b) => a.ControlIndex.CompareTo(b.ControlIndex));
+            // keep Column/Row consistent for any consumer that reads them (RebuildStructureFromCells
+            // re-chunks by order, but DrawStack/measure paths read cell.Column for per-column layout)
+            foreach (var c in cells)
+            {
+                c.Column = c.ControlIndex % split;
+                c.Row = c.ControlIndex / split;
+            }
             RebuildStructureFromCells(cells);
 
             if (LastMeasuredIndexLocal < cells[^1].ControlIndex)
@@ -2275,8 +2313,8 @@ public partial class SkiaLayout
             UpdateProgressiveContentSize();
         }
 
-        Debug.WriteLine(
-            $"[StackStructure] MeasureFirst uniform add: {change.Count} @ {change.StartIndex}, no rebuild");
+        //Debug.WriteLine(
+        //    $"[StackStructure] MeasureFirst uniform add: {change.Count} @ {change.StartIndex}, no rebuild");
         return true;
     }
 

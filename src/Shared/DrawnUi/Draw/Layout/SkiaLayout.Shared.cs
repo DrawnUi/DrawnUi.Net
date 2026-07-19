@@ -1519,19 +1519,109 @@ namespace DrawnUi.Draw
             Debug.WriteLine(
                 $"[SkiaLayout] items window ENGAGED on grow: {source.Count} items, slice [{_itemsWindow.WindowStart}..{_itemsWindow.WindowEnd}), anchor {anchor}");
 
-            // full pipeline reset onto the slice
-            OnItemsSourceCollectionChanged(EffectiveItemsSource,
-                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-
-            // Land back on the anchor via the ORDERED scroll machinery — it already owns every
-            // transient this reset creates: holds until the target is measured, keeps LoadMore and
-            // window slides gated while in flight, clamps against fresh bounds on arrival. A manual
-            // offset compensation here fought those same transients and lost (clamp/slide races).
-            if (Parent is SkiaScroll scroll)
+            // ROOT (pixel-stable engage): transform the CURRENT (full-source) structure into the window
+            // slice IN PLACE — keep the already-measured resident cells' pixels, re-index them to local,
+            // and compensate the scroll offset by the EXACT height of the head being windowed out. The
+            // visible row stays on identical pixels, so engage is invisible. The old path Reset-WIPED the
+            // measurements (incl. the head heights it needed) then guessed the offset back via
+            // ScrollToIndex, which on MeasureVisible resolves against un-measured content and snaps to the
+            // window top => the engage jump + empty space. Falls back to that reset only if the head isn't
+            // measured (can't pin exactly).
+            if (!TryEngageWindowInPlace())
             {
-                scroll.ScrollToIndex(anchor, false, RelativePositionType.Start);
+                OnItemsSourceCollectionChanged(EffectiveItemsSource,
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                if (Parent is SkiaScroll fallbackScroll)
+                    fallbackScroll.ScrollToIndex(anchor, false, RelativePositionType.Start);
             }
 
+            return true;
+        }
+
+        /// <summary>
+        /// Pixel-stable window engage: rebuilds the layout structure from the CURRENT (full-source) structure's
+        /// already-measured cells that fall inside the freshly-created window slice — re-indexed to local and
+        /// re-based so local 0 sits at content-Y 0 — then compensates the scroll offset by the exact height of
+        /// the windowed-out head so the visible row stays on identical pixels. No remeasure, no ResetScroll, no
+        /// ScrollToIndex guess. Returns false (caller falls back to the reset path) when the slice's first item
+        /// isn't measured yet, i.e. its head height is unknown and the pin can't be exact.
+        /// </summary>
+        private bool TryEngageWindowInPlace()
+        {
+            var scale = (float)RenderingScale;
+            if (scale <= 0 || _itemsWindow == null)
+                return false;
+
+            var scroll = Parent as SkiaScroll;
+            int start = _itemsWindow.WindowStart;   // already SplitAligned + clamped by the ctor
+            int end = _itemsWindow.WindowEnd;
+            float headPx;
+
+            lock (LockMeasure)
+            {
+                var structure = StackStructure;
+                if (structure == null)
+                    return false;
+
+                var all = structure.GetChildren().Where(c => c != null && c.ControlIndex >= 0).ToList();
+
+                // exact head height = content-top of the cell that becomes local 0 (global index == start)
+                headPx = float.NaN;
+                foreach (var c in all)
+                    if (c.ControlIndex == start)
+                    {
+                        headPx = c.Destination.Top;
+                        break;
+                    }
+                if (float.IsNaN(headPx))
+                    return false; // slice head not measured -> can't pin exactly, let the caller reset
+
+                // keep the resident measured slice [start, end): re-index to local, re-base up by headPx
+                var kept = all.Where(c => c.ControlIndex >= start && c.ControlIndex < end)
+                    .OrderBy(c => c.ControlIndex).ToList();
+                if (kept.Count == 0)
+                    return false;
+
+                foreach (var c in kept)
+                {
+                    c.ControlIndex -= start;
+                    c.Destination = new SKRect(c.Destination.Left, c.Destination.Top - headPx,
+                        c.Destination.Right, c.Destination.Bottom - headPx);
+                    c.Area = new SKRect(c.Area.Left, c.Area.Top - headPx,
+                        c.Area.Right, c.Area.Bottom - headPx);
+                }
+
+                // rebuild the measurement cache keyed by the new local indices; drop head/tail entries
+                _measuredItems.Clear();
+                foreach (var c in kept)
+                    _measuredItems[c.ControlIndex] = new MeasuredItemInfo
+                    {
+                        Cell = c, LastAccessed = DateTime.UtcNow, IsInViewport = false
+                    };
+
+                _itemsShiftEpoch++; // drop any in-flight background batch keyed to the old (global) indices
+                FirstMeasuredIndexLocal = 0;
+                LastMeasuredIndexLocal = kept[^1].ControlIndex; // measured region is contiguous from local 0
+
+                RebuildStructureFromCells(kept);
+            }
+
+            // sync the adapter onto the slice (EffectiveItemsSource is now the window Items): rekey the
+            // in-use views by their unchanged data-context to the new local indices, refresh the snapshot
+            var snapshot = ChildrenFactory.CaptureContextsSnapshot(EffectiveItemsSource);
+            ChildrenFactory.InitializeSoft(false, EffectiveItemsSource, GetTemplatesPoolLimit(), snapshot);
+
+            UpdateProgressiveContentSize();
+
+            // pin: the content shrank at the top by headPx, so raise the offset by the same amount to keep
+            // the visible row on identical pixels (mirror of the head-insert commit's OffsetVisibleAnchorY)
+            scroll?.OffsetVisibleAnchorY(headPx / scale);
+
+            // measure any slice cells below the previous frontier (off-screen) in the background
+            Invalidate();
+
+            Debug.WriteLine(
+                $"[SkiaLayout] window engaged IN PLACE: slice [{start}..{end}), head {headPx:0.0}px pinned");
             return true;
         }
 
@@ -1622,11 +1712,15 @@ namespace DrawnUi.Draw
                 || StackStructure == null || StackStructure.Length == 0)
                 return false;
 
-            // SPLIT GRID: none of the structure-preserving paths are split-aware — their arithmetic
-            // appends/slides ONE item per structure row, so a 2-column grid collapses to a single
-            // half-width column after the first LoadMore page (device 2026-07-17, DrawnCells shop grid).
-            // Route through the full path: its Invalidate() re-measures the set into proper split rows.
-            if (Split > 1)
+            // SPLIT GRID: structure-preserving mutation is split-aware for BOTH strategies as long as the
+            // change lands on row boundaries (count & index both multiples of Split) so column parity is
+            // preserved by a pure row-shift — MeasureFirst via the uniform arithmetic add, MeasureVisible
+            // via its column-aware incremental measure (MeasureBatchInBackground / MeasureList place cells
+            // by col/row). Non-aligned mutations still fall through to the full remeasure that re-lays the
+            // set into proper split rows. Historic note: before the LayoutCell column-slot fix a Fill cell
+            // was arranged full-container-width, so ANY split preserve path *looked* like it collapsed to
+            // one column — that root cause is fixed, so aligned split grids now mutate without a reset.
+            if (Split > 1 && !IsSplitAlignedChange(args))
                 return false;
 
             if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
@@ -1643,6 +1737,31 @@ namespace DrawnUi.Draw
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// True when an Add/Remove lands on split-row boundaries (count AND index both multiples of Split),
+        /// so the uniform structure-preserving arithmetic keeps every survivor in its original column (pure
+        /// row-shift). Non-aligned changes would flip column parity and must take the full-rebuild path.
+        /// </summary>
+        private bool IsSplitAlignedChange(NotifyCollectionChangedEventArgs args)
+        {
+            int count, index;
+            switch (args.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    count = args.NewItems?.Count ?? 0;
+                    index = args.NewStartingIndex;
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    count = args.OldItems?.Count ?? 0;
+                    index = args.OldStartingIndex;
+                    break;
+                default:
+                    return false; // Replace/Move: not handled by the split-aware arithmetic
+            }
+
+            return count > 0 && index >= 0 && (count % Split == 0) && (index % Split == 0);
         }
 
         /// <summary>

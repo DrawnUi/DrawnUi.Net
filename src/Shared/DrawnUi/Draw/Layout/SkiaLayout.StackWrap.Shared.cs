@@ -97,20 +97,26 @@ public partial class SkiaLayout
 
             if (child != null)
             {
+                // Horizontal alignment must resolve against the cell's COLUMN SLOT (cell.Area), not the
+                // full multi-column container: for Split>1 a Fill child stretched to rectForChildrenPixels
+                // becomes full-container width and the MeasureFirst prototype copy propagates that (with a
+                // one-stride X shift) to every cell -> grid collapses to a single column. For Split==1 the
+                // slot equals the container, so this is identical to the previous behaviour.
+                var hSlot = cell.Area;
                 if (Type == LayoutType.Column
-                    && rectForChildrenPixels.Width > desiredWidth)
+                    && hSlot.Width > desiredWidth)
                 {
                     if (child.HorizontalOptions.Alignment == LayoutAlignment.Fill && child.NeedFillX)
                     {
-                        area = new(rectForChildrenPixels.Left,
+                        area = new(hSlot.Left,
                             area.Top,
-                            rectForChildrenPixels.Right,
+                            hSlot.Right,
                             area.Bottom);
                     }
                     else if (child.HorizontalOptions.Alignment == LayoutAlignment.Center)
                     {
-                        var left = rectForChildrenPixels.Left +
-                                   (float)Math.Ceiling((rectForChildrenPixels.Width - desiredWidth) / 2f);
+                        var left = hSlot.Left +
+                                   (float)Math.Ceiling((hSlot.Width - desiredWidth) / 2f);
                         area = new(left,
                             area.Top,
                             left + desiredWidth,
@@ -118,17 +124,17 @@ public partial class SkiaLayout
                     }
                     else if (child.HorizontalOptions.Alignment == LayoutAlignment.End)
                     {
-                        var left = rectForChildrenPixels.Right - desiredWidth;
+                        var left = hSlot.Right - desiredWidth;
                         area = new(left,
                             area.Top,
-                            rectForChildrenPixels.Right,
+                            hSlot.Right,
                             area.Bottom);
                     }
                     else
                     {
-                        area = new(rectForChildrenPixels.Left,
+                        area = new(hSlot.Left,
                             area.Top,
-                            rectForChildrenPixels.Left + desiredWidth,
+                            hSlot.Left + desiredWidth,
                             area.Bottom);
                     }
                 }

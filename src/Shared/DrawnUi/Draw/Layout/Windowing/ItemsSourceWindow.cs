@@ -58,7 +58,11 @@ public class ItemsSourceWindow
         _layout = layout;
         _source = source;
 
-        WindowStart = Math.Clamp(startAt, 0, Math.Max(0, source.Count - _cap));
+        // Split-aware: window bounds and slide batches ride split-row boundaries so the layout's uniform
+        // structure-preserving arithmetic keeps every survivor in its column via a pure row-shift.
+        _cap = Math.Max(SplitAlign(_cap), Math.Max(1, layout.Split));
+
+        WindowStart = SplitAlign(Math.Clamp(startAt, 0, Math.Max(0, source.Count - _cap)));
         WindowEnd = Math.Min(WindowStart + _cap, source.Count);
         var seed = new List<object>(WindowEnd - WindowStart);
         for (int i = WindowStart; i < WindowEnd; i++)
@@ -109,8 +113,8 @@ public class ItemsSourceWindow
         // CAP IS MONOTONIC and never drops below the seed: the seed's cells are already materialized —
         // shrinking under it just throws away paid work and costs one violent multi-batch cut (a 90+
         // row head trim = a one-off frame spike). It only GROWS when the real viewport demands more.
-        _batch = Math.Max(perViewport, MinBatch);
-        _cap = Math.Max(_cap, Math.Max(perViewport * Math.Max(3, SkiaLayout.WindowSourceViewports), _batch * 3));
+        _batch = Math.Max(SplitAlign(Math.Max(perViewport, MinBatch)), Math.Max(1, _layout.Split));
+        _cap = Math.Max(_cap, SplitAlign(Math.Max(perViewport * Math.Max(3, SkiaLayout.WindowSourceViewports), _batch * 3)));
         Debug.WriteLine($"[ItemsWindow] tuned: {perViewport}/viewport -> batch={_batch} cap={_cap}");
     }
 
@@ -136,6 +140,16 @@ public class ItemsSourceWindow
         if (_layout.Parent is SkiaScroll scroll &&
             (scroll.OrderedScrollToIndexIsSet || scroll.OrderedScrollTo.IsValid))
             return;
+
+        // Engage-on-grow freeze self-release for strategies that rebuild the structure SYNCHRONOUSLY
+        // (MeasureFirst / MeasureAll): they never raise MeasurementApplied — that fires only on the
+        // MeasureVisible incremental/background-measure apply path — so OnMeasurementApplied (the only
+        // other release site) never runs and the freeze would stay set forever, permanently locking the
+        // window at its engage slice (no forward slide -> blank tail, no backward slide -> stuck head).
+        // The guards above already ensured nothing is mid-slide / mid-rebase / mid-ordered-scroll, so a
+        // settled structure here is safe to unfreeze on.
+        if (_engageFreeze && StructureSettled)
+            _engageFreeze = false;
 
         // margin = 1/2 viewport: with batch = 1 viewport and cap = 4 viewports a slide lands the
         // viewport >= 1 viewport away from BOTH zones — a resting viewport can never re-trigger
@@ -171,8 +185,8 @@ public class ItemsSourceWindow
         if (local >= 0 && local < Items.Count)
             return local;
 
-        // rebase centered on the target so there is scroll room on both sides
-        WindowStart = Math.Clamp(global - _cap / 2, 0, Math.Max(0, source.Count - _cap));
+        // rebase centered on the target so there is scroll room on both sides (split-aligned start)
+        WindowStart = SplitAlign(Math.Clamp(global - _cap / 2, 0, Math.Max(0, source.Count - _cap)));
         WindowEnd = Math.Min(WindowStart + _cap, source.Count);
 
         var slice = new List<object>(WindowEnd - WindowStart);
@@ -205,6 +219,17 @@ public class ItemsSourceWindow
 
     internal void FreezeUntilMeasured() => _engageFreeze = true;
 
+    /// <summary>
+    /// Rounds a window bound / slide batch DOWN to a whole number of split-rows. Split==1 is a no-op.
+    /// Keeps every insert/remove on a row boundary so the layout's uniform arithmetic preserves column
+    /// parity (a shift by a non-multiple of Split would flip every survivor's column).
+    /// </summary>
+    private int SplitAlign(int v)
+    {
+        int s = _layout.Split > 0 ? _layout.Split : 1;
+        return s <= 1 ? v : (v / s) * s;
+    }
+
     public void RequestSlideForward()
     {
         if (_sliding || _engageFreeze || _layout.HasPendingStructureChanges || !CanSlideForward || !StructureSettled)
@@ -232,7 +257,7 @@ public class ItemsSourceWindow
             return;
         }
 
-        int n = Math.Min(_batch, source.Count - WindowEnd);
+        int n = SplitAlign(Math.Min(_batch, source.Count - WindowEnd));
         if (n <= 0)
         {
             _sliding = false;
@@ -248,7 +273,7 @@ public class ItemsSourceWindow
 
         Items.AddRange(batch);
         WindowEnd += n;
-        Debug.WriteLine($"[ItemsWindow] forward -> [{WindowStart}..{WindowEnd}) of {source.Count}");
+        //Debug.WriteLine($"[ItemsWindow] forward -> [{WindowStart}..{WindowEnd}) of {source.Count}");
 
         if (DeferredTrims)
         {
@@ -278,7 +303,7 @@ public class ItemsSourceWindow
             return;
         }
 
-        int n = Math.Min(_batch, WindowStart);
+        int n = SplitAlign(Math.Min(_batch, WindowStart));
         if (n <= 0)
         {
             _sliding = false;
@@ -286,7 +311,7 @@ public class ItemsSourceWindow
         }
 
         // trim the tail BEFORE the head insert, same UI turn — tail is far offscreen, no visual flash
-        int over = Items.Count + n - _cap;
+        int over = SplitAlign(Items.Count + n - _cap);
         if (over > 0)
         {
             over = Math.Min(over, Items.Count);
@@ -302,7 +327,7 @@ public class ItemsSourceWindow
 
         Items.InsertRange(0, batch);
         WindowStart -= n;
-        Debug.WriteLine($"[ItemsWindow] backward -> [{WindowStart}..{WindowEnd}) of {source.Count}");
+        //Debug.WriteLine($"[ItemsWindow] backward -> [{WindowStart}..{WindowEnd}) of {source.Count}");
 
         if (!DeferredTrims)
         {
@@ -313,12 +338,12 @@ public class ItemsSourceWindow
 
     private void TrimHead()
     {
-        int over = Items.Count - _cap;
+        int over = SplitAlign(Items.Count - _cap);
         if (over > 0)
         {
             Items.RemoveRange(0, over);
             WindowStart += over;
-            Debug.WriteLine($"[ItemsWindow] head trim -> [{WindowStart}..{WindowEnd})");
+            //Debug.WriteLine($"[ItemsWindow] head trim -> [{WindowStart}..{WindowEnd})");
         }
     }
 
