@@ -72,7 +72,7 @@ WPF-style system: there is no free X/Y — the layout computes position and stam
 
 1. **Layout-owned (default)**: Column/Row/Grid/Wrap parents position children — set nothing. Tune with container `Spacing`/`Padding` and per-child alignment + size requests.
 2. **Margin + alignment — the WPF-style workhorse**, works in ANY container incl. Absolute: `Margin = new(50,0,0,0)` places after a logical 50pt column; `VerticalOptions = End` + `Margin = new(0,0,0,100)` = exactly 100pt above the container bottom. Arranged by layout → `DrawingRect`/`HitBoxAuto` stay truthful (hit-testing, adorners, position math all correct). Often replaces a whole `SkiaGrid`.
-3. **`Left`/`Top` — cached controls only** (`UseCache != None`): offsets the cached output directly, no matrix transform, faster than Translation, background-thread friendly. Mind cache defaults: labels/shapes = `Operations`, `SkiaLottie`/`SkiaGif` = `ImageDoubleBuffered`, most other controls = `None`.
+3. **`Left`/`Top` — cached controls only** (`UseCache != None`): offsets the cached output directly, no matrix transform, faster than Translation, background-thread friendly. Mind cache defaults — many controls are cached out of the box (labels, shapes, svg, lottie…), see the defaults table in § Caching Guidance.
 4. **`TranslationX/Y` — LAST resort**: matrix transform with save/restore around every draw, the most expensive option. Only when nothing else fits (live gesture drag, transform animations). Trap: a translated CONTAINER shifts rendering but NOT its descendants' `HitBoxAuto`/`DrawingRect` — hit-testing/adorner math under a moved container goes stale unless you compensate with the ancestors' own-transform offsets.
 
 ## Control Patterns
@@ -82,6 +82,8 @@ WPF-style system: there is no free X/Y — the layout computes position and stam
 - `SkiaButton`: standard text/button interactions. Custom visuals contract: child tagged `Tag="BtnText"` / `Tag="BtnShape"` auto-binds text/style. Platform look set in code via `UsingControlStyle` — SkiaButton has NO bindable `ControlStyle` (unlike `SkiaSwitch`/`SkiaCheckbox`/`SkiaSlider`, which DO: Cupertino/Material/Windows/Platform).
 - `SkiaSvg`: use for icon-based controls. `TintColor` vs `FillColor`/`StrokeColor`; `SvgString` sets SVG from inline text.
 - `SkiaImage`: default `Aspect = AspectCover` — CROPS; set `AspectFit` explicitly when the whole image must show. Never combine Operations/GPU cache with GPU-surface shader effects on it.
+  - Built-in per-image adjustments, no effect object needed: `Brightness`, `Contrast`, `Saturation`, `Gamma`, `Lighten`, `Darken`, `Blur`, `ColorTint` + `EffectBlendMode`, `UseGradient`/`StartColor`/`EndColor`, `ZoomX`/`ZoomY`, `HorizontalOffset`/`VerticalOffset`.
+  - `SpriteWidth`/`SpriteHeight`/`SpriteIndex` crop ONE static frame out of a sheet. For animated sheets use `SkiaSprite` (`Columns`/`Rows`/`FramesPerSecond`).
 - `SkiaLabel`: lightweight text; `Spans` of `TextSpan` (per-span `Tapped`, `AutoFont` for emoji), `AutoSize=TextToView`, `FontWeight` 100–900.
 - `SkiaRichLabel`: markdown + automatic font fallback for emoji/CJK (ex-SkiaMarkdownLabel); `LinkTapped`/`CommandLinkTapped`.
 
@@ -169,7 +171,19 @@ Two layers must BOTH be on, or handlers never fire: (1) canvas host input mode, 
 
 ## Caching Guidance
 
-- Omitted `UseCache` means default non-cached path. Treat caching as opt-in, added only where reuse value is clear. 
+- Omitted `UseCache` means the CONTROL'S OWN default, which is NOT always `None` — see the defaults table below. Layouts, `SkiaImage` and `SkiaButton` do default to `None`, so for those treat caching as opt-in, added only where reuse value is clear.
+
+| Default | Controls |
+|---|---|
+| `Operations` | `SkiaLabel`, `SkiaShape`, `SkiaSvg`, `SkiaEditor`, `SkiaScrollBar`, `SkiaSpriteSet` (needs Left+Top), `SkiaWheelPickerCell` |
+| `OperationsFull` | `SkiaHoverMask` |
+| `ImageDoubleBuffered` | `SkiaLottie`, `SkiaGif`, `SkiaSlider`, `SkiaProgress`* |
+| `Image` | `SkiaWheelShape`, `SkiaRadioButton`* |
+| `None` | `SkiaSprite`, `SkiaCachedStack` (owns its own plane cache), layouts, `SkiaImage`, `SkiaButton` (its intended `OperationsFull` is disabled behind a todo) |
+
+\* set in `CreateDefaultStyleContent()`, so it applies to the default look only — a custom-templated `SkiaProgress`/`SkiaRadioButton` gets no cache. All others are set in the constructor.
+
+Conditional: `AutoCache` on `SkiaScroll`/`SkiaDrawer` sets THEIR OWN `UseCache = Operations` once Content exists — deliberate exception to "never cache a scroll".
 - No cache, `UseCache="None"`: use when subtree is cached and you don't need to cache more. Or if the control is will be updating with new content with frequency close to canvas fps. - GPU-backed cache should preferably live at top cached container, not nested deeper in subtree. Nested GPU cache is possible only when you explicitly know that case is safe and beneficial.
 - `UseCache="GPU"`: use when layer is worth being stored as a GPU-backed bitmap. Best for small overlays with high frequency of redrawing, prefer small top overlays.
 - `UseCache="Image"`: use when layer is worth being stored as a CPU-bitmap and redrawn from it later instead of recalculations/logical paintings.
@@ -179,6 +193,17 @@ Two layers must BOTH be on, or handlers never fire: (1) canvas host input mode, 
 - Frequently mutating does not automatically mean no cache. First ask what causes redraws: parent surface every frame, or subtree visuals themselves every frame. Cache helps in first case if subtree is stable; cache often loses in second case.
 - If parent cache already captures the whole reusable subtree, descendants commonly stay non-cached by omission unless they have their own separate reuse case.
 - If visual bug or native crash appears, inspect cache placement first.
+
+### Cache machinery (only when debugging the cache system itself)
+
+- `UseCache` is what you set, `UsingCacheType` is what runs (`Draw/Base/SkiaControl.Cache.cs:555-604`), resolved in order: (1) `!AllowCaching || !Super.CacheEnabled` → `None`; (2) if `CanUseCacheDoubleBuffering && Super.Multithreaded`: `None`→`OperationsFull`, `ImageDoubleBuffered`/`GPU`→`Image`, `ImageComposite`/`ImageCompositeGPU`→`Operations`; (3) `ImageDoubleBuffered && !CanUseCacheDoubleBuffering`→`Image`; (4) `GPU`/`ImageCompositeGPU` without `Super.GpuCacheEnabled`→`Image`/`ImageComposite`; (5) `None` + double-buffering + Multithreaded + parent is SkiaControl → `Operations`; (6) else `UseCache`. Nothing overrides `UsingCacheType` — customize via `CanUseCacheDoubleBuffering`/`AllowCaching`. Code branches on `IsCacheComposite`/`IsCacheImage`/`IsCacheGPU`, not enum equality: a new cache type must be added to all three plus both `CreateRenderingObject` paths. `SkiaCacheType.Auto` is declared but never implemented (zero references).
+- Globals (`Super.cs`): `CacheEnabled` (true, master off-switch), `GpuCacheEnabled` (true), `Multithreaded` (false, experimental — set `OffscreenRenderingAtCanvasLevel` true alongside it).
+- Offscreen bakes are NOT `Task.Run`: `OffscreenRenderingService` runs `Clamp(ProcessorCount/2, 2, 4)` dedicated `AboveNormal` threads, because on the shared threadpool latency-critical bakes queue behind app startup work and the pool grows only ~1 thread/500 ms. On WASM they drain INLINE instead (see `drawnui-blazor` skill).
+- `CacheValidityType { Valid, Missing, SizeMismatch, GraphicContextMismatch }` — `GraphicContextMismatch` = GRContext handle changed (app background→foreground kills every GPU-backed cache).
+- `PreserveSourceFromDispose` on the OLD `CachedObject` when its surface is transferred to a new one (ImageComposite / double-buffer swap) so its Dispose skips the now-shared surface. Getting it wrong = "black/empty render right after a cache swap".
+- `SurfaceCacheManager` pools CPU surfaces per (w,h): max 10 per size, 100 tracked sizes. GPU surfaces bypass the pool → `DisposableManager`, held 3 frames (may still be referenced by an in-flight frame).
+- `CachedObject.Bounds` on image-backed caches is the SURFACE extent INFLATED by effects margins; the logical control rect is `RecordingArea`/`LogicalBounds`. `ExpandDirtyRegion` is now only one input — `SkiaControl.Effects.cs` takes the per-side max of it and the auto effects margin.
+- Dirty children iterate allocation-free via `CollectionsMarshal.AsSpan(DirtyChildrenTracker.GetList())` — keep it that way.
 
 ### ImageDoubleBuffered semantics + blank-blink mechanism (fixed 2026-07)
 

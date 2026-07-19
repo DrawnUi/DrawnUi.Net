@@ -53,6 +53,7 @@ Pipeline: JS gesture package → `Canvas.OnTouchAction(TouchActionEventArgs)` �
 | Keyboard | native events | JS global listeners |
 | PDF/file system | supported | excluded / bundle-only |
 | `GetDisplayRefreshRate()` | device rate | constant 60 |
+| Offscreen cache bakes | dedicated worker threads | drained INLINE (`DrainOffscreenQueueInline`) — queued items would otherwise starve indefinitely under continuous frame load (observed: two lotties, first-queued control never pumped = permanent empty box). Same total main-thread cost, guaranteed execution |
 
 Frame loop is `Task.Delay`-based off `Super.MaxFps` (not rAF).
 

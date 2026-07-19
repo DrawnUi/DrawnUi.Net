@@ -109,6 +109,27 @@ Text alignment inside a `SkiaLabel` (NOT the label's own position): `.CenterText
 
 Property shortcuts (all chainable): `.WithHeight(n)` / `.WithWidth(n)`, `.WithMargin(all)` / `(h,v)` / `(l,t,r,b)` / `(Thickness)`, `.WithPadding(...)`, `.WithCache(SkiaCacheType.X)`, `.WithBackgroundColor(c)`, `.WithHorizontalOptions(...)` / `.WithVerticalOptions(...)`, `.WithVisibility(bool)`, `.WithTag("name")`; shape: `.Shape(ShapeType.Circle)`; image: `.WithAspect(TransformAspect.X)`; label: `.WithFontSize(n)`, `.WithTextColor(c)`, `.WithHorizontalTextAlignment(...)`.
 
+### Grid placement helpers
+
+Definitions are set on the grid itself (string form, chainable), placement on each child:
+
+```csharp
+new SkiaGrid()
+{
+    DefaultRowDefinition = new RowDefinition(GridLength.Star),   // avoids repeating N identical rows
+    Children = new List<SkiaControl>()
+    {
+        new SkiaSvg() { ... }.SetGrid(0, 0, 1, 2),   // COLUMN first, then row, then colspan, rowspan
+        new SkiaLabel() { ... }.SetGrid(1, 0),
+        new SkiaLabel() { ... }.WithColumn(2).WithRow(0).WithRowSpan(2),
+    }
+}
+.WithColumnDefinitions("32,*,40")
+.WithRowDefinitions("Auto,Auto")
+```
+
+`SetGrid(column, row)` / `SetGrid(column, row, columnSpan, rowSpan)` — **column comes first**, opposite of the usual "row, column" convention (the XML doc comment on the 4-arg overload in `FluentExtensions.Maui.cs` lists them backwards — trust the signature). Individual: `.WithRow(n)`, `.WithColumn(n)`, `.WithRowSpan(n)`, `.WithColumnSpan(n)`. Also `DefaultColumnDefinition`.
+
 ### `.Initialize` vs `.Adapt`
 
 `.Adapt(me => ...)` runs setup on the control itself mid-chain. Do NOT access OTHER `.Assign`'d references from `Adapt` — they may not exist yet. Post-build wiring that touches assigned refs goes in `.Initialize(me => ...)` on the OUTERMOST control — it runs after the whole chain is constructed.
@@ -146,6 +167,14 @@ Children = new List<SkiaControl>
     new SkiaButton("Reset").OnTapped(me => Reset()),
 };
 ```
+
+Exception — `SkiaButton.Clicked` / `Pressed` / `Released` are **fields**, not events (`Action<SkiaButton, SkiaGesturesParameters>`, `SkiaButton.cs:883-893`). Assigning them inside the initializer is valid and does not break the chain, so it is NOT the banned `+=` pattern:
+
+```csharp
+new SkiaButton("Back") { Clicked = (me, args) => App.GoBack() }
+```
+
+Same for a factory that has no chain to break — `.Tapped += ...` inside a `DataTemplate` lambda is fine (see ItemTemplate below).
 
 ---
 
@@ -415,6 +444,67 @@ Place inside a `SkiaShape` child to clip the blur to rounded corners.
 **Blazor:** requires `SkiaBackdrop.cs` in Shared project — verify before porting.
 
 ---
+
+## ItemTemplate in code-behind
+
+`ItemTemplateType` was REMOVED (breaking). The current idiom is a `DataTemplate` factory, which is also where per-cell wiring goes:
+
+```csharp
+new SkiaStack()
+{
+    RecyclingTemplate    = RecyclingTemplate.Enabled,
+    MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
+    ItemsSource          = Model.Items,
+    ItemTemplate = new DataTemplate(() =>
+    {
+        var cell = new CellServiceRequest();
+        cell.AnimationTapped  = SkiaTouchAnimation.Ripple;
+        cell.TouchEffectColor = AppColors.PrimaryLight;
+        cell.Tapped += (s, a) => Model.CommandRequestDetails.Execute(cell.BindingContext);
+        return cell;
+    }),
+}
+```
+
+The factory body is plain imperative C# — a local `var cell` + `+=` here is correct, not the composition anti-pattern (there is no children list and no chain).
+
+### Recycled cell — where the update code goes
+
+Children are pre-created in the constructor; at runtime only properties change. Two hooks on `SkiaDynamicDrawnCell`:
+
+```csharp
+protected override void OnBindingContextChanged()   // whole context swapped (recycle)
+{
+    base.OnBindingContextChanged();
+    if (BindingContext is ServiceRequest dto) { labelService.Text = dto.Service; SetStatus(dto); }
+}
+
+protected override void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)  // context mutated in place
+{
+    base.ContextPropertyChanged(sender, e);
+    if (BindingContext is ServiceRequest model
+        && e.PropertyName.IsEither(nameof(ServiceRequest.Address), nameof(ServiceRequest.AddressSub)))
+        SetAddressTo(model);
+}
+```
+
+Prefer `ContextPropertyChanged` over per-control `.ObserveProperty(...)` inside recycled cells — one subscription per cell instead of N, and nothing to unsubscribe on rebind.
+
+### Teardown — `OnWillDisposeWithChildren()`
+
+The DrawnUI cleanup hook (`SkiaControl.Shared.cs:8725`), not `Dispose(bool)`. Use it to unsubscribe app-level messengers/singletons; fluent observers (`.Observe*`) and `.Animate` unregister themselves.
+
+```csharp
+public override void OnWillDisposeWithChildren()
+{
+    base.OnWillDisposeWithChildren();
+    App.Instance.Messager.Unsubscribe(this, AppMessages.NavigatedToView);
+}
+```
+
+### `IsParentIndependent`
+
+Set on a child whose size changes at runtime (status labels, send bar, chat entry) so its remeasure does not propagate up and force the parent to remeasure. Needs an explicit size on the child; unnecessary when the parent has Fill or an explicit size.
 
 ## XAML → Code-Behind Porting
 
