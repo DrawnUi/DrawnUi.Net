@@ -303,7 +303,7 @@ public class ScreenChat : AppScreen
                             RecyclingTemplate = RecyclingTemplate.Enabled,
                             MeasureItemsStrategy = MeasuringStrategy.MeasureAll,
                             VirtualisationInflated = 40,
-                            ItemTemplateType = typeof(ChatMessageCell),
+                            ItemTemplate = new DataTemplate(() => new ChatMessageCell()),
                             ItemsSource = Model.LoaderItems.Items,
                             Margin = new(8, 0),
                         }.Assign(out StackCells)
