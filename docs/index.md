@@ -398,6 +398,14 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 </div>
 
 <div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
+  <h4 style="margin-bottom: 15px;">🤖 AI Agents</h4>
+  <p style="margin-bottom: 20px; ">Teach your coding agent DrawnUI</p>
+  <a href="articles/ai-skills.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">AI Skills →</a><br>
+  <a href="/llms.txt" style="color: #4299e1; text-decoration: none; font-weight: 600;">llms.txt →</a><br>
+  <a href="https://fiddle.drawnui.net" style="color: #4299e1; text-decoration: none; font-weight: 600;">Fiddle →</a>
+</div>
+
+<div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
   <h4 style="margin-bottom: 15px;">💬 Community</h4>
   <p style="margin-bottom: 20px; ">Get help and share your creations</p>
   <a href="https://github.com/DrawnUi/DrawnUi.Net/discussions" style="color: #4299e1; text-decoration: none; font-weight: 600;">GitHub Discussions →</a><br>

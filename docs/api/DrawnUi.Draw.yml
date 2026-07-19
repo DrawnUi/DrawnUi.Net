@@ -5,6 +5,7 @@ items:
   id: DrawnUi.Draw
   children:
   - DrawnUi.Draw.ActionOnTickAnimator
+  - DrawnUi.Draw.ActionOverlayEffect
   - DrawnUi.Draw.AddGestures
   - DrawnUi.Draw.AddGestures.GestureListener
   - DrawnUi.Draw.AdjustBrightnessEffect
@@ -2563,6 +2564,12 @@ references:
   name: SpringExtensions
   nameWithType: SpringExtensions
   fullName: DrawnUi.Draw.SpringExtensions
+- uid: DrawnUi.Draw.ActionOverlayEffect
+  commentId: T:DrawnUi.Draw.ActionOverlayEffect
+  href: DrawnUi.Draw.ActionOverlayEffect.html
+  name: ActionOverlayEffect
+  nameWithType: ActionOverlayEffect
+  fullName: DrawnUi.Draw.ActionOverlayEffect
 - uid: DrawnUi.Draw.RippleAnimator
   commentId: T:DrawnUi.Draw.RippleAnimator
   href: DrawnUi.Draw.RippleAnimator.html

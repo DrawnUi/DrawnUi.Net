@@ -5,6 +5,7 @@ items:
   id: SkiaHoverMask
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.SkiaHoverMask.#ctor
   - DrawnUi.Draw.SkiaHoverMask.Paint(DrawnUi.Draw.DrawingContext)
   langs:
   - csharp
@@ -206,6 +207,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.DebugString
   - DrawnUi.Draw.SkiaLayout.ChildrenFactory
   - DrawnUi.Draw.SkiaLayout.SplitProperty
+  - DrawnUi.Draw.SkiaLayout.SplitCached
   - DrawnUi.Draw.SkiaLayout.Split
   - DrawnUi.Draw.SkiaLayout.SplitAlignProperty
   - DrawnUi.Draw.SkiaLayout.SplitAlign
@@ -992,8 +994,6 @@ items:
   - DrawnUi.Draw.SkiaControl.UnregisterGestureListenersTree(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.ItemTemplateProperty
   - DrawnUi.Draw.SkiaControl.ItemTemplate
-  - DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-  - DrawnUi.Draw.SkiaControl.ItemTemplateType
   - DrawnUi.Draw.SkiaControl.AddOrRemoveView(DrawnUi.Draw.SkiaControl,System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetChildrenAsParameters(DrawnUi.Draw.SkiaControl[])
   - DrawnUi.Draw.SkiaControl.HasItemTemplate
@@ -1246,6 +1246,7 @@ items:
   - DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Draw.SkiaHoverMask,System.Object},System.String[])
   - DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WhenItemsSourceChangesApplied``1(System.Action{DrawnUi.Draw.SkiaHoverMask},System.String[])
   - DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Draw.SkiaHoverMask,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WhenPainted``1(System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
   - DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
   - DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
   - DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
@@ -1294,6 +1295,35 @@ items:
   - Microsoft.Maui.Controls.VisualElement.DrawnUi.Draw.StaticResourcesExtensions.GetAllWithMyselfParents
   - Microsoft.Maui.IView.DrawnUi.Extensions.InternalExtensions.DisposeControlAndChildren
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.SkiaHoverMask.#ctor
+  commentId: M:DrawnUi.Draw.SkiaHoverMask.#ctor
+  id: '#ctor'
+  parent: DrawnUi.Draw.SkiaHoverMask
+  langs:
+  - csharp
+  - vb
+  name: SkiaHoverMask()
+  nameWithType: SkiaHoverMask.SkiaHoverMask()
+  fullName: DrawnUi.Draw.SkiaHoverMask.SkiaHoverMask()
+  type: Constructor
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Shapes/SkiaHoverMask.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Controls/Shapes/SkiaHoverMask.cs
+    startLine: 7
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public SkiaHoverMask()
+    content.vb: Public Sub New()
+  overload: DrawnUi.Draw.SkiaHoverMask.#ctor*
+  nameWithType.vb: SkiaHoverMask.New()
+  fullName.vb: DrawnUi.Draw.SkiaHoverMask.New()
+  name.vb: New()
 - uid: DrawnUi.Draw.SkiaHoverMask.Paint(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaHoverMask.Paint(DrawnUi.Draw.DrawingContext)
   id: Paint(DrawnUi.Draw.DrawingContext)
@@ -1312,7 +1342,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/Controls/Shapes/SkiaHoverMask.cs
-    startLine: 7
+    startLine: 15
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5076,6 +5106,13 @@ references:
   name: SplitProperty
   nameWithType: SkiaLayout.SplitProperty
   fullName: DrawnUi.Draw.SkiaLayout.SplitProperty
+- uid: DrawnUi.Draw.SkiaLayout.SplitCached
+  commentId: P:DrawnUi.Draw.SkiaLayout.SplitCached
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_SplitCached
+  name: SplitCached
+  nameWithType: SkiaLayout.SplitCached
+  fullName: DrawnUi.Draw.SkiaLayout.SplitCached
 - uid: DrawnUi.Draw.SkiaLayout.Split
   commentId: P:DrawnUi.Draw.SkiaLayout.Split
   parent: DrawnUi.Draw.SkiaLayout
@@ -21609,20 +21646,6 @@ references:
   name: ItemTemplate
   nameWithType: SkiaControl.ItemTemplate
   fullName: DrawnUi.Draw.SkiaControl.ItemTemplate
-- uid: DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-  commentId: F:DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ItemTemplateTypeProperty
-  name: ItemTemplateTypeProperty
-  nameWithType: SkiaControl.ItemTemplateTypeProperty
-  fullName: DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-- uid: DrawnUi.Draw.SkiaControl.ItemTemplateType
-  commentId: P:DrawnUi.Draw.SkiaControl.ItemTemplateType
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ItemTemplateType
-  name: ItemTemplateType
-  nameWithType: SkiaControl.ItemTemplateType
-  fullName: DrawnUi.Draw.SkiaControl.ItemTemplateType
 - uid: DrawnUi.Draw.SkiaControl.AddOrRemoveView(DrawnUi.Draw.SkiaControl,System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.AddOrRemoveView(DrawnUi.Draw.SkiaControl,System.Boolean)
   parent: DrawnUi.Draw.SkiaControl
@@ -30849,6 +30872,93 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WhenPainted``1(System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  name: WhenPainted<SkiaHoverMask>(SkiaHoverMask, Func<DrawingContext, IDrawnBase, bool>)
+  nameWithType: FluentExtensions.WhenPainted<SkiaHoverMask>(SkiaHoverMask, Func<DrawingContext, IDrawnBase, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.WhenPainted<DrawnUi.Draw.SkiaHoverMask>(DrawnUi.Draw.SkiaHoverMask, System.Func<DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, bool>)
+  nameWithType.vb: FluentExtensions.WhenPainted(Of SkiaHoverMask)(SkiaHoverMask, Func(Of DrawingContext, IDrawnBase, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WhenPainted(Of DrawnUi.Draw.SkiaHoverMask)(DrawnUi.Draw.SkiaHoverMask, System.Func(Of DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, Boolean))
+  name.vb: WhenPainted(Of SkiaHoverMask)(SkiaHoverMask, Func(Of DrawingContext, IDrawnBase, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(DrawnUi.Draw.SkiaHoverMask,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaHoverMask
+    name: SkiaHoverMask
+    href: DrawnUi.Draw.SkiaHoverMask.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaHoverMask
+    name: SkiaHoverMask
+    href: DrawnUi.Draw.SkiaHoverMask.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(DrawnUi.Draw.SkiaHoverMask,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaHoverMask
+    name: SkiaHoverMask
+    href: DrawnUi.Draw.SkiaHoverMask.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaHoverMask
+    name: SkiaHoverMask
+    href: DrawnUi.Draw.SkiaHoverMask.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaHoverMask.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
   parent: DrawnUi.Draw.FluentExtensions
@@ -38697,6 +38807,84 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  name: WhenPainted<T>(T, Func<DrawingContext, IDrawnBase, bool>)
+  nameWithType: FluentExtensions.WhenPainted<T>(T, Func<DrawingContext, IDrawnBase, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.WhenPainted<T>(T, System.Func<DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, bool>)
+  nameWithType.vb: FluentExtensions.WhenPainted(Of T)(T, Func(Of DrawingContext, IDrawnBase, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WhenPainted(Of T)(T, System.Func(Of DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, Boolean))
+  name.vb: WhenPainted(Of T)(T, Func(Of DrawingContext, IDrawnBase, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
   isExternal: true
@@ -41009,6 +41197,15 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.SkiaHoverMask.#ctor*
+  commentId: Overload:DrawnUi.Draw.SkiaHoverMask.#ctor
+  href: DrawnUi.Draw.SkiaHoverMask.html#DrawnUi_Draw_SkiaHoverMask__ctor
+  name: SkiaHoverMask
+  nameWithType: SkiaHoverMask.SkiaHoverMask
+  fullName: DrawnUi.Draw.SkiaHoverMask.SkiaHoverMask
+  nameWithType.vb: SkiaHoverMask.New
+  fullName.vb: DrawnUi.Draw.SkiaHoverMask.New
+  name.vb: New
 - uid: DrawnUi.Draw.SkiaShape.Paint(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaShape.Paint(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaShape

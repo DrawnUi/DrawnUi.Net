@@ -802,8 +802,6 @@ items:
   - DrawnUi.Draw.SkiaControl.UnregisterGestureListenersTree(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.ItemTemplateProperty
   - DrawnUi.Draw.SkiaControl.ItemTemplate
-  - DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-  - DrawnUi.Draw.SkiaControl.ItemTemplateType
   - DrawnUi.Draw.SkiaControl.AddOrRemoveView(DrawnUi.Draw.SkiaControl,System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetChildrenAsParameters(DrawnUi.Draw.SkiaControl[])
   - DrawnUi.Draw.SkiaControl.HasItemTemplate
@@ -1044,6 +1042,7 @@ items:
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.UpdateNonStop``1
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WhenBindingContextSet``1(System.Action{DrawnUi.Controls.SkiaMauiEditor,System.Object},System.String[])
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WhenPaint``1(System.Action{DrawnUi.Controls.SkiaMauiEditor,DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WhenPainted``1(System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
@@ -17968,20 +17967,6 @@ references:
   name: ItemTemplate
   nameWithType: SkiaControl.ItemTemplate
   fullName: DrawnUi.Draw.SkiaControl.ItemTemplate
-- uid: DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-  commentId: F:DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ItemTemplateTypeProperty
-  name: ItemTemplateTypeProperty
-  nameWithType: SkiaControl.ItemTemplateTypeProperty
-  fullName: DrawnUi.Draw.SkiaControl.ItemTemplateTypeProperty
-- uid: DrawnUi.Draw.SkiaControl.ItemTemplateType
-  commentId: P:DrawnUi.Draw.SkiaControl.ItemTemplateType
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ItemTemplateType
-  name: ItemTemplateType
-  nameWithType: SkiaControl.ItemTemplateType
-  fullName: DrawnUi.Draw.SkiaControl.ItemTemplateType
 - uid: DrawnUi.Draw.SkiaControl.AddOrRemoveView(DrawnUi.Draw.SkiaControl,System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.AddOrRemoveView(DrawnUi.Draw.SkiaControl,System.Boolean)
   parent: DrawnUi.Draw.SkiaControl
@@ -26540,6 +26525,93 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WhenPainted``1(System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  name: WhenPainted<SkiaMauiEditor>(SkiaMauiEditor, Func<DrawingContext, IDrawnBase, bool>)
+  nameWithType: FluentExtensions.WhenPainted<SkiaMauiEditor>(SkiaMauiEditor, Func<DrawingContext, IDrawnBase, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.WhenPainted<DrawnUi.Controls.SkiaMauiEditor>(DrawnUi.Controls.SkiaMauiEditor, System.Func<DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, bool>)
+  nameWithType.vb: FluentExtensions.WhenPainted(Of SkiaMauiEditor)(SkiaMauiEditor, Func(Of DrawingContext, IDrawnBase, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WhenPainted(Of DrawnUi.Controls.SkiaMauiEditor)(DrawnUi.Controls.SkiaMauiEditor, System.Func(Of DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, Boolean))
+  name.vb: WhenPainted(Of SkiaMauiEditor)(SkiaMauiEditor, Func(Of DrawingContext, IDrawnBase, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(DrawnUi.Controls.SkiaMauiEditor,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaMauiEditor
+    name: SkiaMauiEditor
+    href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaMauiEditor
+    name: SkiaMauiEditor
+    href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(DrawnUi.Controls.SkiaMauiEditor,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaMauiEditor
+    name: SkiaMauiEditor
+    href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaMauiEditor
+    name: SkiaMauiEditor
+    href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)
   parent: DrawnUi.Draw.FluentExtensions
@@ -33661,6 +33733,84 @@ references:
   - uid: DrawnUi.Draw.DrawingContext
     name: DrawingContext
     href: DrawnUi.Draw.DrawingContext.html
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  name: WhenPainted<T>(T, Func<DrawingContext, IDrawnBase, bool>)
+  nameWithType: FluentExtensions.WhenPainted<T>(T, Func<DrawingContext, IDrawnBase, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.WhenPainted<T>(T, System.Func<DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, bool>)
+  nameWithType.vb: FluentExtensions.WhenPainted(Of T)(T, Func(Of DrawingContext, IDrawnBase, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WhenPainted(Of T)(T, System.Func(Of DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, Boolean))
+  name.vb: WhenPainted(Of T)(T, Func(Of DrawingContext, IDrawnBase, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WhenPainted``1(``0,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+    name: WhenPainted
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WhenPainted__1___0_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(``0,System.String)

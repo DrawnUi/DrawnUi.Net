@@ -1,55 +1,68 @@
 ### YamlMime:ManagedReference
 items:
-- uid: DrawnUi.Draw.RenderingAnimator
-  commentId: T:DrawnUi.Draw.RenderingAnimator
-  id: RenderingAnimator
+- uid: DrawnUi.Draw.ActionOverlayEffect
+  commentId: T:DrawnUi.Draw.ActionOverlayEffect
+  id: ActionOverlayEffect
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.RenderingAnimator.#ctor(DrawnUi.Draw.IDrawnBase)
-  - DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
-  - DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
-  - DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
-  - DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  - DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  - DrawnUi.Draw.RenderingAnimator.Stop
+  - DrawnUi.Draw.ActionOverlayEffect.#ctor(DrawnUi.Draw.IDrawnBase,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  - DrawnUi.Draw.ActionOverlayEffect.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   langs:
   - csharp
   - vb
-  name: RenderingAnimator
-  nameWithType: RenderingAnimator
-  fullName: DrawnUi.Draw.RenderingAnimator
+  name: ActionOverlayEffect
+  nameWithType: ActionOverlayEffect
+  fullName: DrawnUi.Draw.ActionOverlayEffect
   type: Class
   source:
     remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: RenderingAnimator
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 5
+    id: ActionOverlayEffect
+    path: ../src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
+    startLine: 13
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: This animator renders on canvas instead of just updating a value
+  summary: >-
+    Generic overlay effect rendered at the post-effects stage (the same stage where the
+
+    ripple draws), above the control's own content and children. Wraps a delegate so apps
+
+    can draw custom overlay chrome (selection frames, debug bounds, badges) without
+
+    subclassing: <code>control.PostAnimators.Add(new ActionOverlayEffect(control, (ctx, c) =&gt; { ... return false; }))</code>
+
+    or the fluent <code>.WhenPainted((ctx, c) =&gt; ...)</code>.
+
+    The delegate returns true to request continuous repaint (animated overlays),
+
+    false for static overlays that just draw whenever the control paints.
+
+    For a reusable custom effect, subclass <xref href="DrawnUi.Draw.RenderingAnimator" data-throw-if-not-resolved="false"></xref> instead and
+
+    override <code>OnRendering</code> — same contract, no library changes needed.
   example: []
   syntax:
-    content: 'public class RenderingAnimator : SkiaValueAnimator, IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable'
-    content.vb: Public Class RenderingAnimator Inherits SkiaValueAnimator Implements IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable
+    content: 'public class ActionOverlayEffect : RenderingAnimator, IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable'
+    content.vb: Public Class ActionOverlayEffect Inherits RenderingAnimator Implements IOverlayEffect, ICanRenderOnCanvas, ISkiaAnimator, IDisposable
   inheritance:
   - System.Object
   - DrawnUi.Draw.AnimatorBase
   - DrawnUi.Draw.SkiaValueAnimator
-  derivedClasses:
-  - DrawnUi.Draw.ActionOverlayEffect
-  - DrawnUi.Draw.EdgeGlowAnimator
-  - DrawnUi.Draw.RippleAnimator
-  - DrawnUi.Draw.ShimmerAnimator
+  - DrawnUi.Draw.RenderingAnimator
   implements:
   - DrawnUi.Draw.IOverlayEffect
   - DrawnUi.Draw.ICanRenderOnCanvas
   - DrawnUi.Draw.ISkiaAnimator
   - System.IDisposable
   inheritedMembers:
+  - DrawnUi.Draw.RenderingAnimator.Stop
+  - DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  - DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
+  - DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
+  - DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
   - DrawnUi.Draw.SkiaValueAnimator.Dispose
   - DrawnUi.Draw.SkiaValueAnimator.RunAsync(System.Action,System.Threading.CancellationToken)
   - DrawnUi.Draw.SkiaValueAnimator.OnRunningStateChanged(System.Boolean)
@@ -106,102 +119,73 @@ items:
   - System.Object.ToString
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.RenderingAnimator.Stop
-  commentId: M:DrawnUi.Draw.RenderingAnimator.Stop
-  id: Stop
-  parent: DrawnUi.Draw.RenderingAnimator
+- uid: DrawnUi.Draw.ActionOverlayEffect.#ctor(DrawnUi.Draw.IDrawnBase,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  commentId: M:DrawnUi.Draw.ActionOverlayEffect.#ctor(DrawnUi.Draw.IDrawnBase,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
+  id: '#ctor(DrawnUi.Draw.IDrawnBase,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})'
+  parent: DrawnUi.Draw.ActionOverlayEffect
   langs:
   - csharp
   - vb
-  name: Stop()
-  nameWithType: RenderingAnimator.Stop()
-  fullName: DrawnUi.Draw.RenderingAnimator.Stop()
-  type: Method
+  name: ActionOverlayEffect(IDrawnBase, Func<DrawingContext, IDrawnBase, bool>)
+  nameWithType: ActionOverlayEffect.ActionOverlayEffect(IDrawnBase, Func<DrawingContext, IDrawnBase, bool>)
+  fullName: DrawnUi.Draw.ActionOverlayEffect.ActionOverlayEffect(DrawnUi.Draw.IDrawnBase, System.Func<DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, bool>)
+  type: Constructor
   source:
     remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: Stop
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 7
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
+    startLine: 23
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Creates the overlay for the given control. No animation is started — adding the
+
+    effect to <xref href="DrawnUi.Draw.SkiaControl.PostAnimators" data-throw-if-not-resolved="false"></xref> is enough for it to render.
   example: []
   syntax:
-    content: public override void Stop()
-    content.vb: Public Overrides Sub [Stop]()
-  overridden: DrawnUi.Draw.SkiaValueAnimator.Stop
-  overload: DrawnUi.Draw.RenderingAnimator.Stop*
-  implements:
-  - DrawnUi.Draw.ISkiaAnimator.Stop
-- uid: DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  commentId: M:DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  id: Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  parent: DrawnUi.Draw.RenderingAnimator
-  langs:
-  - csharp
-  - vb
-  name: Render(DrawingContext, IDrawnBase)
-  nameWithType: RenderingAnimator.Render(DrawingContext, IDrawnBase)
-  fullName: DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: Render
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 16
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  summary: Renders effect overlay to canvas, return true if has drawn something and rendering needs to be applied.
-  example: []
-  syntax:
-    content: public bool Render(DrawingContext context, IDrawnBase control)
+    content: public ActionOverlayEffect(IDrawnBase control, Func<DrawingContext, IDrawnBase, bool> render)
     parameters:
-    - id: context
-      type: DrawnUi.Draw.DrawingContext
-      description: ''
     - id: control
       type: DrawnUi.Draw.IDrawnBase
-      description: ''
-    return:
-      type: System.Boolean
-      description: ''
-    content.vb: Public Function Render(context As DrawingContext, control As IDrawnBase) As Boolean
-  overload: DrawnUi.Draw.RenderingAnimator.Render*
-  implements:
-  - DrawnUi.Draw.ICanRenderOnCanvas.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-- uid: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  commentId: M:DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+      description: Owner control the overlay is drawn for.
+    - id: render
+      type: System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean}
+      description: Draw callback; return true to request continuous repaint.
+    content.vb: Public Sub New(control As IDrawnBase, render As Func(Of DrawingContext, IDrawnBase, Boolean))
+  overload: DrawnUi.Draw.ActionOverlayEffect.#ctor*
+  nameWithType.vb: ActionOverlayEffect.New(IDrawnBase, Func(Of DrawingContext, IDrawnBase, Boolean))
+  fullName.vb: DrawnUi.Draw.ActionOverlayEffect.New(DrawnUi.Draw.IDrawnBase, System.Func(Of DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, Boolean))
+  name.vb: New(IDrawnBase, Func(Of DrawingContext, IDrawnBase, Boolean))
+- uid: DrawnUi.Draw.ActionOverlayEffect.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  commentId: M:DrawnUi.Draw.ActionOverlayEffect.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   id: OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  parent: DrawnUi.Draw.RenderingAnimator
+  parent: DrawnUi.Draw.ActionOverlayEffect
   langs:
   - csharp
   - vb
   name: OnRendering(DrawingContext, IDrawnBase)
-  nameWithType: RenderingAnimator.OnRendering(DrawingContext, IDrawnBase)
-  fullName: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase)
+  nameWithType: ActionOverlayEffect.OnRendering(DrawingContext, IDrawnBase)
+  fullName: DrawnUi.Draw.ActionOverlayEffect.OnRendering(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase)
   type: Method
   source:
     remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
+      path: src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnRendering
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 28
+    path: ../src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
+    startLine: 29
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: return true if has drawn something and rendering needs to be applied
   example: []
   syntax:
-    content: protected virtual bool OnRendering(DrawingContext context, IDrawnBase control)
+    content: protected override bool OnRendering(DrawingContext context, IDrawnBase control)
     parameters:
     - id: context
       type: DrawnUi.Draw.DrawingContext
@@ -212,140 +196,17 @@ items:
     return:
       type: System.Boolean
       description: ''
-    content.vb: Protected Overridable Function OnRendering(context As DrawingContext, control As IDrawnBase) As Boolean
-  overload: DrawnUi.Draw.RenderingAnimator.OnRendering*
-- uid: DrawnUi.Draw.RenderingAnimator.#ctor(DrawnUi.Draw.IDrawnBase)
-  commentId: M:DrawnUi.Draw.RenderingAnimator.#ctor(DrawnUi.Draw.IDrawnBase)
-  id: '#ctor(DrawnUi.Draw.IDrawnBase)'
-  parent: DrawnUi.Draw.RenderingAnimator
-  langs:
-  - csharp
-  - vb
-  name: RenderingAnimator(IDrawnBase)
-  nameWithType: RenderingAnimator.RenderingAnimator(IDrawnBase)
-  fullName: DrawnUi.Draw.RenderingAnimator.RenderingAnimator(DrawnUi.Draw.IDrawnBase)
-  type: Constructor
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: .ctor
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 34
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public RenderingAnimator(IDrawnBase parent)
-    parameters:
-    - id: parent
-      type: DrawnUi.Draw.IDrawnBase
-    content.vb: Public Sub New(parent As IDrawnBase)
-  overload: DrawnUi.Draw.RenderingAnimator.#ctor*
-  nameWithType.vb: RenderingAnimator.New(IDrawnBase)
-  fullName.vb: DrawnUi.Draw.RenderingAnimator.New(DrawnUi.Draw.IDrawnBase)
-  name.vb: New(IDrawnBase)
-- uid: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
-  commentId: M:DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
-  id: GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
-  parent: DrawnUi.Draw.RenderingAnimator
-  langs:
-  - csharp
-  - vb
-  name: GetSelfDrawingLocation(IDrawnBase)
-  nameWithType: RenderingAnimator.GetSelfDrawingLocation(IDrawnBase)
-  fullName: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: GetSelfDrawingLocation
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 39
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: protected static SKPoint GetSelfDrawingLocation(IDrawnBase control)
-    parameters:
-    - id: control
-      type: DrawnUi.Draw.IDrawnBase
-    return:
-      type: SkiaSharp.SKPoint
-    content.vb: Protected Shared Function GetSelfDrawingLocation(control As IDrawnBase) As SKPoint
-  overload: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation*
-- uid: DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
-  commentId: M:DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
-  id: DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
-  parent: DrawnUi.Draw.RenderingAnimator
-  langs:
-  - csharp
-  - vb
-  name: DrawWithClipping(DrawingContext, IDrawnBase, SKPoint, Action)
-  nameWithType: RenderingAnimator.DrawWithClipping(DrawingContext, IDrawnBase, SKPoint, Action)
-  fullName: DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, SkiaSharp.SKPoint, System.Action)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: DrawWithClipping
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 57
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: protected static void DrawWithClipping(DrawingContext context, IDrawnBase control, SKPoint selfDrawingLocation, Action draw)
-    parameters:
-    - id: context
-      type: DrawnUi.Draw.DrawingContext
-    - id: control
-      type: DrawnUi.Draw.IDrawnBase
-    - id: selfDrawingLocation
-      type: SkiaSharp.SKPoint
-    - id: draw
-      type: System.Action
-    content.vb: Protected Shared Sub DrawWithClipping(context As DrawingContext, control As IDrawnBase, selfDrawingLocation As SKPoint, draw As Action)
-  overload: DrawnUi.Draw.RenderingAnimator.DrawWithClipping*
-- uid: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
-  commentId: M:DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
-  id: ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
-  parent: DrawnUi.Draw.RenderingAnimator
-  langs:
-  - csharp
-  - vb
-  name: ApplyControlClipping(IDrawnBase, SKPath, SKPoint)
-  nameWithType: RenderingAnimator.ApplyControlClipping(IDrawnBase, SKPath, SKPoint)
-  fullName: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase, SkiaSharp.SKPath, SkiaSharp.SKPoint)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: ApplyControlClipping
-    path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-    startLine: 97
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: protected static void ApplyControlClipping(IDrawnBase control, SKPath clipInsideParent, SKPoint selfDrawingLocation)
-    parameters:
-    - id: control
-      type: DrawnUi.Draw.IDrawnBase
-    - id: clipInsideParent
-      type: SkiaSharp.SKPath
-    - id: selfDrawingLocation
-      type: SkiaSharp.SKPoint
-    content.vb: Protected Shared Sub ApplyControlClipping(control As IDrawnBase, clipInsideParent As SKPath, selfDrawingLocation As SKPoint)
-  overload: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping*
+    content.vb: Protected Overrides Function OnRendering(context As DrawingContext, control As IDrawnBase) As Boolean
+  overridden: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  overload: DrawnUi.Draw.ActionOverlayEffect.OnRendering*
 references:
+- uid: DrawnUi.Draw.RenderingAnimator
+  commentId: T:DrawnUi.Draw.RenderingAnimator
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.RenderingAnimator.html
+  name: RenderingAnimator
+  nameWithType: RenderingAnimator
+  fullName: DrawnUi.Draw.RenderingAnimator
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
   href: DrawnUi.html
@@ -422,6 +283,195 @@ references:
   name: IDisposable
   nameWithType: IDisposable
   fullName: System.IDisposable
+- uid: DrawnUi.Draw.RenderingAnimator.Stop
+  commentId: M:DrawnUi.Draw.RenderingAnimator.Stop
+  parent: DrawnUi.Draw.RenderingAnimator
+  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
+  name: Stop()
+  nameWithType: RenderingAnimator.Stop()
+  fullName: DrawnUi.Draw.RenderingAnimator.Stop()
+  spec.csharp:
+  - uid: DrawnUi.Draw.RenderingAnimator.Stop
+    name: Stop
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RenderingAnimator.Stop
+    name: Stop
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  commentId: M:DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  parent: DrawnUi.Draw.RenderingAnimator
+  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Render_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
+  name: Render(DrawingContext, IDrawnBase)
+  nameWithType: RenderingAnimator.Render(DrawingContext, IDrawnBase)
+  fullName: DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase)
+  spec.csharp:
+  - uid: DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+    name: Render
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Render_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+    name: Render
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Render_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: )
+- uid: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
+  commentId: M:DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
+  parent: DrawnUi.Draw.RenderingAnimator
+  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_GetSelfDrawingLocation_DrawnUi_Draw_IDrawnBase_
+  name: GetSelfDrawingLocation(IDrawnBase)
+  nameWithType: RenderingAnimator.GetSelfDrawingLocation(IDrawnBase)
+  fullName: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
+  spec.csharp:
+  - uid: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
+    name: GetSelfDrawingLocation
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_GetSelfDrawingLocation_DrawnUi_Draw_IDrawnBase_
+  - name: (
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
+    name: GetSelfDrawingLocation
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_GetSelfDrawingLocation_DrawnUi_Draw_IDrawnBase_
+  - name: (
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: )
+- uid: DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
+  commentId: M:DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
+  parent: DrawnUi.Draw.RenderingAnimator
+  isExternal: true
+  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_DrawWithClipping_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPoint_System_Action_
+  name: DrawWithClipping(DrawingContext, IDrawnBase, SKPoint, Action)
+  nameWithType: RenderingAnimator.DrawWithClipping(DrawingContext, IDrawnBase, SKPoint, Action)
+  fullName: DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, SkiaSharp.SKPoint, System.Action)
+  spec.csharp:
+  - uid: DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
+    name: DrawWithClipping
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_DrawWithClipping_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPoint_System_Action_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
+    name: DrawWithClipping
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_DrawWithClipping_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPoint_System_Action_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+- uid: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
+  commentId: M:DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
+  parent: DrawnUi.Draw.RenderingAnimator
+  isExternal: true
+  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_ApplyControlClipping_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPath_SkiaSharp_SKPoint_
+  name: ApplyControlClipping(IDrawnBase, SKPath, SKPoint)
+  nameWithType: RenderingAnimator.ApplyControlClipping(IDrawnBase, SKPath, SKPoint)
+  fullName: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase, SkiaSharp.SKPath, SkiaSharp.SKPoint)
+  spec.csharp:
+  - uid: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
+    name: ApplyControlClipping
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_ApplyControlClipping_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPath_SkiaSharp_SKPoint_
+  - name: (
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPath
+    name: SKPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpath
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping(DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPath,SkiaSharp.SKPoint)
+    name: ApplyControlClipping
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_ApplyControlClipping_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPath_SkiaSharp_SKPoint_
+  - name: (
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPath
+    name: SKPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpath
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPoint
+    name: SKPoint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  - name: )
 - uid: DrawnUi.Draw.SkiaValueAnimator.Dispose
   commentId: M:DrawnUi.Draw.SkiaValueAnimator.Dispose
   parent: DrawnUi.Draw.SkiaValueAnimator
@@ -1436,98 +1486,22 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.SkiaValueAnimator.Stop
-  commentId: M:DrawnUi.Draw.SkiaValueAnimator.Stop
-  parent: DrawnUi.Draw.SkiaValueAnimator
-  href: DrawnUi.Draw.SkiaValueAnimator.html#DrawnUi_Draw_SkiaValueAnimator_Stop
-  name: Stop()
-  nameWithType: SkiaValueAnimator.Stop()
-  fullName: DrawnUi.Draw.SkiaValueAnimator.Stop()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaValueAnimator.Stop
-    name: Stop
-    href: DrawnUi.Draw.SkiaValueAnimator.html#DrawnUi_Draw_SkiaValueAnimator_Stop
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaValueAnimator.Stop
-    name: Stop
-    href: DrawnUi.Draw.SkiaValueAnimator.html#DrawnUi_Draw_SkiaValueAnimator_Stop
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.RenderingAnimator.Stop*
-  commentId: Overload:DrawnUi.Draw.RenderingAnimator.Stop
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
-  name: Stop
-  nameWithType: RenderingAnimator.Stop
-  fullName: DrawnUi.Draw.RenderingAnimator.Stop
-- uid: DrawnUi.Draw.ISkiaAnimator.Stop
-  commentId: M:DrawnUi.Draw.ISkiaAnimator.Stop
-  parent: DrawnUi.Draw.ISkiaAnimator
-  href: DrawnUi.Draw.ISkiaAnimator.html#DrawnUi_Draw_ISkiaAnimator_Stop
-  name: Stop()
-  nameWithType: ISkiaAnimator.Stop()
-  fullName: DrawnUi.Draw.ISkiaAnimator.Stop()
-  spec.csharp:
-  - uid: DrawnUi.Draw.ISkiaAnimator.Stop
-    name: Stop
-    href: DrawnUi.Draw.ISkiaAnimator.html#DrawnUi_Draw_ISkiaAnimator_Stop
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.ISkiaAnimator.Stop
-    name: Stop
-    href: DrawnUi.Draw.ISkiaAnimator.html#DrawnUi_Draw_ISkiaAnimator_Stop
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.RenderingAnimator.Render*
-  commentId: Overload:DrawnUi.Draw.RenderingAnimator.Render
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Render_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
-  name: Render
-  nameWithType: RenderingAnimator.Render
-  fullName: DrawnUi.Draw.RenderingAnimator.Render
-- uid: DrawnUi.Draw.ICanRenderOnCanvas.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  commentId: M:DrawnUi.Draw.ICanRenderOnCanvas.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-  parent: DrawnUi.Draw.ICanRenderOnCanvas
-  href: DrawnUi.Draw.ICanRenderOnCanvas.html#DrawnUi_Draw_ICanRenderOnCanvas_Render_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
-  name: Render(DrawingContext, IDrawnBase)
-  nameWithType: ICanRenderOnCanvas.Render(DrawingContext, IDrawnBase)
-  fullName: DrawnUi.Draw.ICanRenderOnCanvas.Render(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase)
-  spec.csharp:
-  - uid: DrawnUi.Draw.ICanRenderOnCanvas.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-    name: Render
-    href: DrawnUi.Draw.ICanRenderOnCanvas.html#DrawnUi_Draw_ICanRenderOnCanvas_Render_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
-  - name: (
-  - uid: DrawnUi.Draw.DrawingContext
-    name: DrawingContext
-    href: DrawnUi.Draw.DrawingContext.html
-  - name: ','
-  - name: " "
-  - uid: DrawnUi.Draw.IDrawnBase
-    name: IDrawnBase
-    href: DrawnUi.Draw.IDrawnBase.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.ICanRenderOnCanvas.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
-    name: Render
-    href: DrawnUi.Draw.ICanRenderOnCanvas.html#DrawnUi_Draw_ICanRenderOnCanvas_Render_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
-  - name: (
-  - uid: DrawnUi.Draw.DrawingContext
-    name: DrawingContext
-    href: DrawnUi.Draw.DrawingContext.html
-  - name: ','
-  - name: " "
-  - uid: DrawnUi.Draw.IDrawnBase
-    name: IDrawnBase
-    href: DrawnUi.Draw.IDrawnBase.html
-  - name: )
-- uid: DrawnUi.Draw.DrawingContext
-  commentId: T:DrawnUi.Draw.DrawingContext
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.DrawingContext.html
-  name: DrawingContext
-  nameWithType: DrawingContext
-  fullName: DrawnUi.Draw.DrawingContext
+- uid: DrawnUi.Draw.SkiaControl.PostAnimators
+  commentId: P:DrawnUi.Draw.SkiaControl.PostAnimators
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PostAnimators
+  name: PostAnimators
+  nameWithType: SkiaControl.PostAnimators
+  fullName: DrawnUi.Draw.SkiaControl.PostAnimators
+- uid: DrawnUi.Draw.ActionOverlayEffect.#ctor*
+  commentId: Overload:DrawnUi.Draw.ActionOverlayEffect.#ctor
+  href: DrawnUi.Draw.ActionOverlayEffect.html#DrawnUi_Draw_ActionOverlayEffect__ctor_DrawnUi_Draw_IDrawnBase_System_Func_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_System_Boolean__
+  name: ActionOverlayEffect
+  nameWithType: ActionOverlayEffect.ActionOverlayEffect
+  fullName: DrawnUi.Draw.ActionOverlayEffect.ActionOverlayEffect
+  nameWithType.vb: ActionOverlayEffect.New
+  fullName.vb: DrawnUi.Draw.ActionOverlayEffect.New
+  name.vb: New
 - uid: DrawnUi.Draw.IDrawnBase
   commentId: T:DrawnUi.Draw.IDrawnBase
   parent: DrawnUi.Draw
@@ -1535,6 +1509,156 @@ references:
   name: IDrawnBase
   nameWithType: IDrawnBase
   fullName: DrawnUi.Draw.IDrawnBase
+- uid: System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean}
+  commentId: T:System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<DrawingContext, IDrawnBase, bool>
+  nameWithType: Func<DrawingContext, IDrawnBase, bool>
+  fullName: System.Func<DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, bool>
+  nameWithType.vb: Func(Of DrawingContext, IDrawnBase, Boolean)
+  fullName.vb: System.Func(Of DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, Boolean)
+  name.vb: Func(Of DrawingContext, IDrawnBase, Boolean)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl
+  commentId: T:DrawnUi.Draw.SkiaControl
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaControl.html
+  name: SkiaControl
+  nameWithType: SkiaControl
+  fullName: DrawnUi.Draw.SkiaControl
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  commentId: M:DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  parent: DrawnUi.Draw.RenderingAnimator
+  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_OnRendering_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
+  name: OnRendering(DrawingContext, IDrawnBase)
+  nameWithType: RenderingAnimator.OnRendering(DrawingContext, IDrawnBase)
+  fullName: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase)
+  spec.csharp:
+  - uid: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+    name: OnRendering
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_OnRendering_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+    name: OnRendering
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_OnRendering_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.IDrawnBase
+    name: IDrawnBase
+    href: DrawnUi.Draw.IDrawnBase.html
+  - name: )
+- uid: DrawnUi.Draw.ActionOverlayEffect.OnRendering*
+  commentId: Overload:DrawnUi.Draw.ActionOverlayEffect.OnRendering
+  href: DrawnUi.Draw.ActionOverlayEffect.html#DrawnUi_Draw_ActionOverlayEffect_OnRendering_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
+  name: OnRendering
+  nameWithType: ActionOverlayEffect.OnRendering
+  fullName: DrawnUi.Draw.ActionOverlayEffect.OnRendering
+- uid: DrawnUi.Draw.DrawingContext
+  commentId: T:DrawnUi.Draw.DrawingContext
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.DrawingContext.html
+  name: DrawingContext
+  nameWithType: DrawingContext
+  fullName: DrawnUi.Draw.DrawingContext
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -1546,67 +1670,3 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-- uid: DrawnUi.Draw.RenderingAnimator.OnRendering*
-  commentId: Overload:DrawnUi.Draw.RenderingAnimator.OnRendering
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_OnRendering_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_
-  name: OnRendering
-  nameWithType: RenderingAnimator.OnRendering
-  fullName: DrawnUi.Draw.RenderingAnimator.OnRendering
-- uid: DrawnUi.Draw.RenderingAnimator.#ctor*
-  commentId: Overload:DrawnUi.Draw.RenderingAnimator.#ctor
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator__ctor_DrawnUi_Draw_IDrawnBase_
-  name: RenderingAnimator
-  nameWithType: RenderingAnimator.RenderingAnimator
-  fullName: DrawnUi.Draw.RenderingAnimator.RenderingAnimator
-  nameWithType.vb: RenderingAnimator.New
-  fullName.vb: DrawnUi.Draw.RenderingAnimator.New
-  name.vb: New
-- uid: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation*
-  commentId: Overload:DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_GetSelfDrawingLocation_DrawnUi_Draw_IDrawnBase_
-  name: GetSelfDrawingLocation
-  nameWithType: RenderingAnimator.GetSelfDrawingLocation
-  fullName: DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation
-- uid: SkiaSharp.SKPoint
-  commentId: T:SkiaSharp.SKPoint
-  parent: SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
-  name: SKPoint
-  nameWithType: SKPoint
-  fullName: SkiaSharp.SKPoint
-- uid: SkiaSharp
-  commentId: N:SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp
-  name: SkiaSharp
-  nameWithType: SkiaSharp
-  fullName: SkiaSharp
-- uid: DrawnUi.Draw.RenderingAnimator.DrawWithClipping*
-  commentId: Overload:DrawnUi.Draw.RenderingAnimator.DrawWithClipping
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_DrawWithClipping_DrawnUi_Draw_DrawingContext_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPoint_System_Action_
-  name: DrawWithClipping
-  nameWithType: RenderingAnimator.DrawWithClipping
-  fullName: DrawnUi.Draw.RenderingAnimator.DrawWithClipping
-- uid: System.Action
-  commentId: T:System.Action
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.action
-  name: Action
-  nameWithType: Action
-  fullName: System.Action
-- uid: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping*
-  commentId: Overload:DrawnUi.Draw.RenderingAnimator.ApplyControlClipping
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_ApplyControlClipping_DrawnUi_Draw_IDrawnBase_SkiaSharp_SKPath_SkiaSharp_SKPoint_
-  name: ApplyControlClipping
-  nameWithType: RenderingAnimator.ApplyControlClipping
-  fullName: DrawnUi.Draw.RenderingAnimator.ApplyControlClipping
-- uid: SkiaSharp.SKPath
-  commentId: T:SkiaSharp.SKPath
-  parent: SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpath
-  name: SKPath
-  nameWithType: SKPath
-  fullName: SkiaSharp.SKPath
