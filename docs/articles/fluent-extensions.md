@@ -308,6 +308,15 @@ Implemented via `Expression<Func<...>>` tree inspection (reads `Member.Name`, ne
 .ObserveProperties(() => Model, me => { me.Text = $"{Model.A}-{Model.B}"; }, x => x.A, x => x.B)
 ```
 
+At least one property lambda is **mandatory and enforced by the compiler** — the signature is `(target, callback, property, params moreProperties)`. A call with no properties fails to build:
+
+```csharp
+// CS7036 - does not compile
+.ObserveProperties(vm, me => { me.IsVisible = vm.IsBusy; })
+```
+
+This is deliberate: `ObserveProperties` always adds `BindingContext` to the watched set, so a propertyless call used to compile and produce a subscription that fired **once at attach and never again** — a silently dead observer. The string-based overloads can't be validated at compile time and instead throw `ArgumentException` when the name list is empty.
+
 **Typical example:**
 - `SkiaScroll.IsRefreshing` for pull-to-refresh, where the control can enter refresh state by gesture and the ViewModel must also receive that new value
 
@@ -335,6 +344,8 @@ new SkiaButton("Submit")
 ```
 
 Matching against `propertyNames` uses a `HashSet<string>` internally (O(1) lookup per `PropertyChanged` firing), not a linear scan — same for `ObservePropertiesOn`.
+
+`propertyNames` must not be empty: an empty list throws `ArgumentException`, because the resulting observer would watch only `BindingContext` and fire a single time at attach. The lambda overloads catch the same mistake at compile time.
 
 **Real-world example from [FirstApp tutorial](first-app-code.md):**
 ```csharp

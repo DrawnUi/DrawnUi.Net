@@ -311,6 +311,15 @@ Related observers for less common shapes: `.Observe(vm, (me, prop) => ...)` (raw
 .ObserveProperties(() => Model, me => { me.Text = $"{Model.A}-{Model.B}"; }, x => x.A, x => x.B)
 ```
 
+**At least one property is mandatory — enforced by the compiler.** Signature is `(target, callback, Expression property, params Expression[] moreProperties)`, so a propertyless call does not compile:
+
+```csharp
+// CS7036 — does NOT compile (used to compile and silently observe nothing)
+.ObserveProperties(vm, me => { if (vm.IsLoadingMore) me.Start(); else me.Stop(); })
+```
+
+Why it matters: `ObserveProperties` always appends `BindingContext` to the watched set, so a zero-property call produced a live subscription that fired **once at attach and never again** — no exception, no warning, just a control frozen at its initial state. The string-list overloads (`IEnumerable<string>`) can't be checked at compile time, so they throw `ArgumentException` on an empty list. Singular `ObserveProperty` was never affected (its single property argument is required).
+
 ---
 
 ## Gradients

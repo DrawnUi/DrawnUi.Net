@@ -1016,7 +1016,13 @@ namespace DrawnUi.Draw
             where T : SkiaControl
             where TSource : INotifyPropertyChanged
         {
-            var props = propertyNames.Concat(new[] { nameof(BindableObject.BindingContext) }).ToArray();
+            var names = propertyNames as string[] ?? propertyNames.ToArray();
+            if (names.Length == 0)
+                throw new ArgumentException(
+                    "ObserveProperties: no properties to observe, callback would fire only once at attach. Pass at least one property name.",
+                    nameof(propertyNames));
+
+            var props = names.Concat(new[] { nameof(BindableObject.BindingContext) }).ToArray();
             return control.Observe(target, (me, prop) =>
             {
                 callback?.Invoke(me);
@@ -1033,17 +1039,20 @@ namespace DrawnUi.Draw
         /// <param name="control">The control subscribing to changes</param>
         /// <param name="target">The source object being observed</param>
         /// <param name="callback">Callback to execute when any of the properties change</param>
-        /// <param name="properties">Lambdas selecting the source properties, e.g. <c>x => x.Foo, x => x.Bar</c></param>
+        /// <param name="property">First observed property, e.g. <c>x => x.Foo</c>. Required: observing nothing is always a bug.</param>
+        /// <param name="moreProperties">Additional properties, e.g. <c>x => x.Bar, x => x.Baz</c></param>
         /// <returns>The control for chaining</returns>
         public static T ObserveProperties<T, TSource>(
             this T control,
             TSource target,
             Action<T> callback,
-            params Expression<Func<TSource, object>>[] properties)
+            Expression<Func<TSource, object>> property,
+            params Expression<Func<TSource, object>>[] moreProperties)
             where T : SkiaControl
             where TSource : INotifyPropertyChanged
         {
-            return control.ObserveProperties(target, properties.Select(GetMemberName), callback);
+            return control.ObserveProperties(target,
+                moreProperties.Prepend(property).Select(GetMemberName), callback);
         }
 
         /// <summary>
@@ -1065,6 +1074,13 @@ namespace DrawnUi.Draw
             where T : SkiaControl
             where TSource : INotifyPropertyChanged
         {
+            var names = propertyNames as string[] ?? propertyNames.ToArray();
+            if (names.Length == 0)
+                throw new ArgumentException(
+                    "ObserveProperties: no properties to observe, callback would fire only once at attach. Pass at least one property name.",
+                    nameof(propertyNames));
+            propertyNames = names;
+
             return control.Initialize(me =>
             {
                 // Track current subscription for cleanup
@@ -1150,17 +1166,20 @@ namespace DrawnUi.Draw
         /// <param name="control">The control subscribing to changes</param>
         /// <param name="targetSelector">Lambda expression that returns the target control (e.g., () => Model)</param>
         /// <param name="callback">Callback to execute when any of the properties change</param>
-        /// <param name="properties">Lambdas selecting the source properties, e.g. <c>x => x.Foo, x => x.Bar</c></param>
+        /// <param name="property">First observed property, e.g. <c>x => x.Foo</c>. Required: observing nothing is always a bug.</param>
+        /// <param name="moreProperties">Additional properties, e.g. <c>x => x.Bar, x => x.Baz</c></param>
         /// <returns>The control for chaining</returns>
         public static T ObserveProperties<T, TSource>(
             this T control,
             Func<TSource> targetSelector,
             Action<T> callback,
-            params Expression<Func<TSource, object>>[] properties)
+            Expression<Func<TSource, object>> property,
+            params Expression<Func<TSource, object>>[] moreProperties)
             where T : SkiaControl
             where TSource : INotifyPropertyChanged
         {
-            return control.ObserveProperties(targetSelector, properties.Select(GetMemberName), callback);
+            return control.ObserveProperties(targetSelector,
+                moreProperties.Prepend(property).Select(GetMemberName), callback);
         }
 
         /// <summary>
