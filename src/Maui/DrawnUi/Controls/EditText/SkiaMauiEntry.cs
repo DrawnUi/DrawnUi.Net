@@ -13,6 +13,7 @@ public class SkiaMauiEntry : SkiaMauiElement, ISkiaGestureListener
 {
     public SkiaMauiEntry()
     {
+        CanBeFocused = true; //SetFrameworkFocus is overridden below and always accepts
     }
 
     protected override void Paint(DrawingContext ctx)
@@ -29,7 +30,36 @@ public class SkiaMauiEntry : SkiaMauiElement, ISkiaGestureListener
     {
         //Debug.WriteLine($"[SkiaMauiEntry] consuming '{args.Type}'");
 
+        if (args.Type == TouchActionResult.Down)
+        {
+            ClaimFocus();
+        }
+
         return this;
+    }
+
+    /// <summary>
+    /// We consume gestures ourselves, so the native control might never see the touch.
+    /// Claim framework focus on DOWN like SkiaEditor does and route it to the native control.
+    /// </summary>
+    protected void ClaimFocus()
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (IsFocused)
+            {
+                //already logically focused: the bindable callback won't fire again,
+                //but native IME could have been dismissed (Android BACK), re-arm it
+                SetFocusInternal(true);
+            }
+            else
+            {
+                IsFocused = true;
+            }
+
+            if (Superview != null)
+                Superview.FocusedChild = this;
+        });
     }
 
 #if ONPLATFORM
@@ -312,18 +342,17 @@ public class SkiaMauiEntry : SkiaMauiElement, ISkiaGestureListener
     }
 
     /// <summary>
-    /// Called by DrawnUi when the focus changes
+    /// Called by DrawnUi canvas when framework focus moves. Always accepts and routes the state
+    /// to the hosted native control.
     /// </summary>
     /// <param name="focus"></param>
-    public new bool OnFocusChanged(bool focus)
+    public override bool SetFrameworkFocus(bool focus)
     {
         lock (lockFocus)
         {
+            Debug.WriteLine($"[SkiaMauiEntry] SetFrameworkFocus {focus}");
 
-            Debug.WriteLine($"[SkiaMauiEntry] OnFocusChanged {focus}" );
-
-            if (!IsFocused)
-                return false; //reject focus
+            IsFocused = focus;
 
             if (Control != null)
             {
@@ -364,21 +393,23 @@ public class SkiaMauiEntry : SkiaMauiElement, ISkiaGestureListener
         //allow adding more views
     }
 
-    protected override void OnLayoutReady()
+    /// <summary>
+    /// Native control is created while measuring, same as SkiaMauiEditor does: OnLayoutReady
+    /// might never be raised, leaving Content null forever so the native entry was never created.
+    /// </summary>
+    public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
     {
-        base.OnLayoutReady();
+        GetOrCreateControl();
 
-        if (Control == null)
+        if (PlaceholderLabel == null)
         {
-            GetOrCreateControl();
-
             PlaceholderLabel = CreatePlaceholderLabel();
             AddSubView(PlaceholderLabel);
             UpdatePlaceholderLabel();
             UpdatePlaceholderVisibility();
-
-            Invalidate();
         }
+
+        return base.OnMeasuring(widthConstraint, heightConstraint, scale);
     }
 
     protected virtual void WhenFocusChanged(bool state)
