@@ -1669,6 +1669,8 @@ namespace DrawnUi.Controls
                         Opacity = 0,
                         HorizontalOptions = LayoutOptions.Fill,
                         VerticalOptions = LayoutOptions.End,
+                        //keep background full-bleed to screen edge but push content above system bottom bar
+                        Padding = new Thickness(0, 0, 0, Super.Screen.BottomInset),
                         BackgroundColor = ToastBackgroundColor
                     }.WithChildren(
                         new SkiaLayout() { HorizontalOptions = LayoutOptions.Fill }.WithChildren(content));
