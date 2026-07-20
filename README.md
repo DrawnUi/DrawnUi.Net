@@ -9,12 +9,13 @@ DrawnUI is a rendering and UI composition engine for .NET, powered by [SkiaSharp
 
 Supported hosts:
 
-* `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
-* `DrawnUi.Maui` - native apps on iOS, Android, MacCatalyst, and Windows.
-* `DrawnUi.Blazor.Wasm` - browser WebAssembly rendering .
+* `DrawnUi.Maui` - Android, iOS, MacCatalyst, and Windows.
+* `DrawnUi.Blazor.Wasm` - browser WebAssembly rendering.
 * `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
 * `DrawnUi.Wasm` - pure browser WebAssembly, no Blazor required.
 * `DrawnUi.OpenTk` - Windows and Linux desktops.
+* `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
+* More to come..
 
 ## Features 
 
@@ -30,7 +31,6 @@ Supported hosts:
 * __Gestures__ support for anything, panning, scrolling, zooming etc
 * __Keyboard support__, track any key
 * __Navigate__ on the canvas with shell-like techniques 
-
 
 
 ## Addons
