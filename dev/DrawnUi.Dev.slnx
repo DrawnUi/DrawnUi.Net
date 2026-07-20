@@ -18,8 +18,9 @@
     <Project Path="../../AppoMobi.Maui.DrawnUi.Demo/src/AllDrawn/AppoMobi.Maui.DrawnUi.Demo.csproj">
       <Deploy Solution="Debug|Any CPU" />
     </Project>
-    <Project Path="../../BlockChampion/src/Web/BlockChampion.Web.csproj" />
-    <Project Path="../../DrawnCells/DrawnCells.csproj" />
+    <Project Path="../../DrawnCells/DrawnCells.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
     <Project Path="../../DrawnChatList/src/Blazor/DrawnChatList.Blazor.csproj" />
     <Project Path="../../DrawnChatList/src/Maui/DrawnChatList.Maui.csproj">
       <Deploy Solution="Debug|Any CPU" />

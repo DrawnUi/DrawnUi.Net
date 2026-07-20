@@ -37,7 +37,10 @@ await Super.UseDrawnUi(builder)
     })
     .ConfigureFonts(fonts =>
     {
-        fonts.AddFont("fonts/NotoColorEmoji-Regular.ttf", "FontEmoji");
+        // Lib-shipped subsets: emoji (~900 KB, alias FontEmoji) + text symbols
+        // (~285 KB, arrows/math/geometric) instead of the 23.7 MB full emoji font
+        fonts.AddEmojis();
+        fonts.AddSymbols();
         fonts.AddFont("fonts/OpenSans-Regular.ttf",   "FontText",      FontWeight.Regular);
         fonts.AddFont("fonts/OpenSans-Semibold.ttf",  "FontTextBol");
         fonts.AddFont("fonts/OpenSans-Semibold.ttf",  "FontTextTitle");
