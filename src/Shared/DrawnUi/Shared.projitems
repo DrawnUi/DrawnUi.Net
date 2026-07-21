@@ -88,6 +88,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\IWindowHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\IWindowDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\WindowedSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\ItemsSourceWindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\Windowing\SkiaScrollWindowHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.BuildWrapLayout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\SkiaLayout.ColumnRow.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\IImageEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\IRenderEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ISkiaEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\SkiaTouchShockwaveEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ISkiaPostRendererEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\IStateEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\OuterGlowEffect.cs" />
@@ -272,6 +274,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\ExecuteOnTick.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\Extensions\AnimateExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\Extensions\SpringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\HoverEffects\ActionOverlayEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\HoverEffects\RippleAnimator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\HoverEffects\ShimmerAnimator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Animations\Interfaces\IAfterEffect.cs" />

@@ -51,7 +51,7 @@ public class SkiaCursor : SkiaShape
 
         if (_blinkAnimator != null)
         {
-            if (CanDraw)
+            if (CanDraw && IsVisibleInViewTree())
                 _blinkAnimator.Start();
             else
                 _blinkAnimator.Stop();
@@ -64,7 +64,7 @@ public class SkiaCursor : SkiaShape
 
         if (_blinkAnimator != null)
         {
-            if (newvalue)
+            if (newvalue && IsVisibleInViewTree())
             {
                 _blinkAnimator.Start();
             }
@@ -72,6 +72,27 @@ public class SkiaCursor : SkiaShape
             {
                 _blinkAnimator.Stop();
             }
+        }
+    }
+
+    /// <summary>
+    /// An ancestor's visibility can change without the cursor's own <see cref="SkiaControl.IsVisible"/>
+    /// flag changing (e.g. the editor is focused while sitting under a hidden/collapsed parent, so it
+    /// force-shows the cursor regardless of on-screen state). The blink animator gates only on the
+    /// cursor's own visibility, so without this override it would keep ticking — repainting the canvas
+    /// non-stop for a cursor that can never be seen — and would fail to resume when the ancestor reappears.
+    /// Re-evaluate the blink against the full view-tree visibility here.
+    /// </summary>
+    public override void OnParentVisibilityChanged(bool newvalue)
+    {
+        base.OnParentVisibilityChanged(newvalue);
+
+        if (_blinkAnimator != null)
+        {
+            if (newvalue && IsVisible && IsVisibleInViewTree())
+                _blinkAnimator.Start();
+            else
+                _blinkAnimator.Stop();
         }
     }
 

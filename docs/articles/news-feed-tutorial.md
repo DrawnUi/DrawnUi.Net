@@ -10,6 +10,8 @@ image: /images/scroller.jpg
 When .NET MAUI CollectionView is not enough.. Think Drawn!  
 We will be building a news feed scroller with mixed content: text posts, images, videos, articles, ads: an infinite scroll of **recycled cells** with LoadMore mechanics. 
 
+> **Which list setup fits YOUR content?** This tutorial uses the uneven-rows/medium-cells recipe (`MeasureVisible` + recycling). For uniform rows, small cells, or static lists the optimal knobs differ — see [Scrolling Lists](controls/lists.md).
+
 > **Host support**
 >
 > This article is written as a **.NET MAUI tutorial** and its code samples use MAUI XAML. The virtualization, recycled-cell, caching, and scrolling patterns are still relevant to **Blazor**.
@@ -42,7 +44,7 @@ In Blazor, the page shell becomes a Razor component and the feed layout is hoste
 
 <img src="../images/scroller.jpg" alt="News Feed Tutorial" width="350" style="margin-top: 16px;" />
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials)  
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials)  
 Clone the repo and run the Tutorials project to explore all examples!
 
 ## 🎓 What You'll Learn:
@@ -216,8 +218,13 @@ These are friends when it comes to creating recycled or "bindable layout-like" s
                         ReserveTemplates="10"
                         VirtualisationInflated="200"
                         Spacing="0"
-                        ItemTemplateType="{x:Type newsFeed:NewsCell}"
-                        HorizontalOptions="Fill" />
+                        HorizontalOptions="Fill">
+                        <draw:SkiaLayout.ItemTemplate>
+                            <DataTemplate>
+                                <newsFeed:NewsCell />
+                            </DataTemplate>
+                        </draw:SkiaLayout.ItemTemplate>
+                    </draw:SkiaLayout>
 
                 </draw:SkiaScroll>
 ```
@@ -582,7 +589,7 @@ public override void OnWillDisposeWithChildren()
 }
 ```
 
-> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/NewsFeed/NewsCell.xaml.cs)
+> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/NewsFeed/NewsCell.xaml.cs)
 
 ### 🌐 Data Provider
 

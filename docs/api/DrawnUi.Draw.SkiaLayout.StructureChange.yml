@@ -6,6 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.SkiaLayout.StructureChange.#ctor(DrawnUi.Draw.SkiaLayout.StructureChangeType,System.Int64)
+  - DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot
   - DrawnUi.Draw.SkiaLayout.StructureChange.Count
   - DrawnUi.Draw.SkiaLayout.StructureChange.Epoch
   - DrawnUi.Draw.SkiaLayout.StructureChange.InsertAtIndex
@@ -32,11 +33,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StructureChange
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 171
+    startLine: 323
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -71,11 +72,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 174
+    startLine: 326
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -105,11 +106,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stamp
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 180
+    startLine: 332
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -134,11 +135,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Epoch
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 186
+    startLine: 338
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -168,11 +169,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Type
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 188
+    startLine: 340
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -197,11 +198,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OffsetOthers
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 189
+    startLine: 341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -226,11 +227,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 190
+    startLine: 342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -255,11 +256,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Count
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 191
+    startLine: 343
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -284,11 +285,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OldCount
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 199
+    startLine: 351
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -322,11 +323,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Items
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 201
+    startLine: 353
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -337,6 +338,42 @@ items:
       type: System.Collections.Generic.List{System.Object}
     content.vb: Public Property Items As List(Of Object)
   overload: DrawnUi.Draw.SkiaLayout.StructureChange.Items*
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot
+  id: ContextsSnapshot
+  parent: DrawnUi.Draw.SkiaLayout.StructureChange
+  langs:
+  - csharp
+  - vb
+  name: ContextsSnapshot
+  nameWithType: SkiaLayout.StructureChange.ContextsSnapshot
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ContextsSnapshot
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
+    startLine: 360
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Immutable data-contexts snapshot captured on the MUTATING (UI) thread when this change was staged,
+
+    so the deferred render-thread apply (ApplyInsertShift/ApplyRemoveShift) publishes it instead of
+
+    re-reading the live ItemsSource off-thread (the Android tear -&gt; overlapping cells / crash).
+  example: []
+  syntax:
+    content: public IList ContextsSnapshot { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.IList
+    content.vb: Public Property ContextsSnapshot As IList
+  overload: DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot*
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.TargetIndex
   commentId: P:DrawnUi.Draw.SkiaLayout.StructureChange.TargetIndex
   id: TargetIndex
@@ -351,11 +388,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TargetIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 202
+    startLine: 362
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -380,11 +417,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasuredItems
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 203
+    startLine: 363
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -409,11 +446,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InsertAtIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 204
+    startLine: 364
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -438,11 +475,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsInsertOperation
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 205
+    startLine: 365
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -467,11 +504,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsVisible
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 206
+    startLine: 366
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -496,11 +533,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TailRemoval
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 214
+    startLine: 374
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -534,11 +571,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkipTrimFastPath
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 222
+    startLine: 382
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -572,11 +609,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartingPosition
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaLayout.ListView.cs
-    startLine: 225
+    startLine: 385
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1187,6 +1224,47 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot*
+  commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot
+  href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_ContextsSnapshot
+  name: ContextsSnapshot
+  nameWithType: SkiaLayout.StructureChange.ContextsSnapshot
+  fullName: DrawnUi.Draw.SkiaLayout.StructureChange.ContextsSnapshot
+- uid: System.Collections.IList
+  commentId: T:System.Collections.IList
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  name: IList
+  nameWithType: IList
+  fullName: System.Collections.IList
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
 - uid: DrawnUi.Draw.SkiaLayout.StructureChange.TargetIndex*
   commentId: Overload:DrawnUi.Draw.SkiaLayout.StructureChange.TargetIndex
   href: DrawnUi.Draw.SkiaLayout.StructureChange.html#DrawnUi_Draw_SkiaLayout_StructureChange_TargetIndex

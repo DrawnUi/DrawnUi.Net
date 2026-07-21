@@ -7,8 +7,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
 await Super.UseDrawnUi(builder)
     .WithBaseUrl(builder.HostEnvironment.BaseAddress)
     .WithOptions(o => o.UseDesktopKeyboard = true)
@@ -20,9 +18,29 @@ await Super.UseDrawnUi(builder)
         assets.AddImage(@"Images\banana.gif", "media/banana.gif");
         assets.AddSvg("media/dotnet_bot.svg");
     })
+    .ConfigureStyles(styles =>
+    {
+
+        styles.AddStyle(new Style()
+        {
+            ApplyToDerivedTypes = true,
+            TargetType = typeof(SkiaLabel),
+            Setters =
+            {
+                new Setter()
+                {
+                    Property = SkiaLabel.FontFamilyProperty,
+                    Value = "FontText"
+                }
+            }
+        });
+    })
     .ConfigureFonts(fonts =>
     {
-        fonts.AddFont("fonts/NotoColorEmoji-Regular.ttf", "FontEmoji");
+        // Lib-shipped subsets: emoji (~900 KB, alias FontEmoji) + text symbols
+        // (~285 KB, arrows/math/geometric) instead of the 23.7 MB full emoji font
+        fonts.AddEmojis();
+        fonts.AddSymbols();
         fonts.AddFont("fonts/OpenSans-Regular.ttf",   "FontText",      FontWeight.Regular);
         fonts.AddFont("fonts/OpenSans-Semibold.ttf",  "FontTextBol");
         fonts.AddFont("fonts/OpenSans-Semibold.ttf",  "FontTextTitle");

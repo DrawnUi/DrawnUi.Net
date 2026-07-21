@@ -195,6 +195,194 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Attaches a post-effects overlay drawn ABOVE the control's content and children,
+        /// at the same stage where the ripple renders (after-drawing overlay pass) — unlike
+        /// <c>WhenPaint</c>, which runs inside base.Paint BEFORE children. The callback
+        /// receives the drawing context and the control; return true to request continuous
+        /// repaint (animated overlay), false for a static overlay. Never mutate layout
+        /// properties inside — draw on the canvas only.
+        /// </summary>
+        /// <typeparam name="T">Type of SkiaControl</typeparam>
+        /// <param name="view">The control to attach the overlay to</param>
+        /// <param name="render">Overlay draw callback</param>
+        /// <returns>The control for chaining</returns>
+        public static T WhenPainted<T>(this T view, Func<DrawingContext, IDrawnBase, bool> render) where T : SkiaControl
+        {
+            view.PostAnimators.Add(new ActionOverlayEffect(view, render));
+            return view;
+        }
+
+        #region ANIMATION
+
+        /// <summary>
+        /// Starts a frame-rate independent animation driven by the framework animator
+        /// (which ticks off FrameTimeNanos), so it runs at the same visual speed on any
+        /// device regardless of FPS. Every frame the callback receives: the control, the
+        /// animator (call <c>animator.Stop()</c> to end it early), the eased progress of
+        /// the current cycle (0..1) and the seconds elapsed since the previous frame
+        /// (delta time). The animator auto-unregisters when the control is disposed.
+        /// </summary>
+        /// <typeparam name="T">Type of SkiaControl.</typeparam>
+        /// <param name="control">Control to animate.</param>
+        /// <param name="seconds">Duration of one cycle, in seconds.</param>
+        /// <param name="onFrame">(control, animator, value 0..1, deltaSeconds) — invoked each frame.</param>
+        /// <param name="repeat">-1 = loop forever, N = N extra cycles, 0 = play once.</param>
+        /// <param name="easing">Value curve; null = linear.</param>
+        /// <param name="pingPong">If true the value bounces 0→1→0 each cycle instead of restarting at 0.</param>
+        /// <param name="delaySeconds">Initial delay before starting, in seconds.</param>
+        /// <returns>The control for chaining.</returns>
+        public static T Animate<T>(this T control,
+            double seconds,
+            Action<T, SkiaValueAnimator, double, double> onFrame,
+            int repeat = 0,
+            Easing easing = null,
+            bool pingPong = false,
+            double delaySeconds = 0) where T : SkiaControl
+        {
+            if (onFrame == null)
+                return control;
+
+            RangeAnimator animator = pingPong ? new PingPongAnimator(control) : new RangeAnimator(control);
+            animator.Repeat = repeat;
+
+            long previousNanos = 0;
+
+            void Report(double value)
+            {
+                // LastFrameTimeNanos is already advanced to the current frame before this
+                // callback fires, so the delta is (now - previous). Clamped to swallow
+                // stalls and the one-frame blip at a loop boundary.
+                var nowNanos = animator.LastFrameTimeNanos;
+                double delta = 0;
+                if (previousNanos != 0 && nowNanos > previousNanos)
+                {
+                    delta = (nowNanos - previousNanos) / 1_000_000_000.0;
+                    if (delta > 0.1) delta = 0.1;
+                }
+                previousNanos = nowNanos;
+                onFrame(control, animator, value, delta);
+            }
+
+            void StartNow()
+            {
+                previousNanos = 0;
+                animator.Start(Report, 0, 1, (uint)(seconds * 1000), easing, (int)(delaySeconds * 1000));
+            }
+
+            if (control.IsLayoutReady)
+            {
+                StartNow();
+            }
+            else
+            {
+                // An animator can only tick once the control is in the visual tree, so
+                // defer the start until the control has laid out.
+                void OnReady(object sender, EventArgs e)
+                {
+                    control.LayoutIsReady -= OnReady;
+                    control.ExecuteUponDisposal.Remove($"Animate_{animator.Uid}");
+                    StartNow();
+                }
+                control.LayoutIsReady += OnReady;
+                // Drop the handler if the control is disposed before it ever lays out.
+                control.ExecuteUponDisposal[$"Animate_{animator.Uid}"] = () => control.LayoutIsReady -= OnReady;
+            }
+
+            return control;
+        }
+
+        /// <summary>Animates <see cref="SkiaControl.Rotation"/> from <paramref name="from"/> to <paramref name="to"/> degrees. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateRotation<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.Rotation = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates uniform <see cref="SkiaControl.Scale"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateScale<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.Scale = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates <see cref="SkiaControl.Opacity"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateOpacity<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.Opacity = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates <see cref="SkiaControl.TranslationX"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateTranslationX<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.TranslationX = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>Animates <see cref="SkiaControl.TranslationY"/>. See <see cref="Animate{T}"/> for the shared parameters.</summary>
+        public static T AnimateTranslationY<T>(this T control, double from, double to, double seconds,
+            int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0) where T : SkiaControl
+            => control.Animate(seconds, (me, _, v, _) => me.TranslationY = from + (to - from) * v, repeat, easing, pingPong, delaySeconds);
+
+        /// <summary>
+        /// Keeps the control's surface repainting every frame forever, without changing any
+        /// property. Needed for visuals that advance on their own each frame from outside the
+        /// property system — e.g. a time-driven <c>SkiaShaderEffect</c> (reads <c>iTime</c>) or a
+        /// clock drawn in <c>WhenPaint</c>. Without it the control draws once and freezes, since
+        /// nothing invalidates it. Implemented as an infinite no-op animator: a running animator
+        /// keeps the render loop alive, so the shader/paint re-runs with a fresh frame time.
+        /// Auto-stops when the control is disposed. Use only for genuinely animated visuals —
+        /// it holds the canvas at full frame rate.
+        /// </summary>
+        public static T UpdateNonStop<T>(this T control) where T : SkiaControl
+            => control.Animate(1.0, (_, _, _, _) => { }, repeat: -1);
+
+        #endregion
+
+        #region KEYBOARD
+
+        /// <summary>
+        /// Subscribes to global keyboard key-down while this control is alive. The handler
+        /// receives (control, key). Auto-unsubscribes when the control is disposed, so it is
+        /// safe to chain at construction. Keyboard events flow whenever the DrawnUI canvas has
+        /// focus (Blazor/Wasm/OpenTK). Handy for keyboard-driven games and shortcuts.
+        /// </summary>
+        public static T OnKeyDown<T>(this T control, Action<T, InputKey> action) where T : SkiaControl
+        {
+            if (action == null)
+                return control;
+
+            void Handler(object sender, InputKey key) => action(control, key);
+            KeyboardManager.KeyDown += Handler;
+            control.ExecuteUponDisposal[$"OnKeyDown_{Guid.NewGuid()}"] = () => KeyboardManager.KeyDown -= Handler;
+            return control;
+        }
+
+        /// <summary>
+        /// Subscribes to global keyboard key-up while this control is alive. See <see cref="OnKeyDown{T}"/>.
+        /// </summary>
+        public static T OnKeyUp<T>(this T control, Action<T, InputKey> action) where T : SkiaControl
+        {
+            if (action == null)
+                return control;
+
+            void Handler(object sender, InputKey key) => action(control, key);
+            KeyboardManager.KeyUp += Handler;
+            control.ExecuteUponDisposal[$"OnKeyUp_{Guid.NewGuid()}"] = () => KeyboardManager.KeyUp -= Handler;
+            return control;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Fluent subscription to <see cref="SkiaShaderEffect.OnCompilationError"/>: the callback
+        /// receives the effect and the SkSL compiler error text whenever <c>ShaderCode</c> /
+        /// <c>ShaderSource</c> fails to compile. Without any handler a failed compile throws
+        /// (swallowed into a log) — with this wired you can surface the error in your UI or console.
+        /// Chainable.
+        /// </summary>
+        public static T OnShaderError<T>(this T effect, Action<T, string> callback) where T : SkiaShaderEffect
+        {
+            if (callback != null)
+            {
+                effect.OnCompilationError += (s, error) => callback((T)s, error);
+            }
+            return effect;
+        }
+
+        /// <summary>
         /// Registers a callback to be executed when the control's BindingContext was set/changed.
         /// Called inside base.ApplyBindingContext().
         /// </summary>
@@ -285,12 +473,13 @@ namespace DrawnUi.Draw
         {
             // Create a unique key for this subscription
             string subscriptionKey = $"Subscribe_{target.GetHashCode()}_{Guid.NewGuid()}";
+            var filterSet = propertyFilter != null ? new HashSet<string>(propertyFilter) : null;
 
             // Create the handler
             PropertyChangedEventHandler handler = (sender, args) =>
             {
                 // If a filter is specified, only proceed if the property is in the filter
-                if (propertyFilter != null && !propertyFilter.Contains(args.PropertyName))
+                if (filterSet != null && !filterSet.Contains(args.PropertyName))
                     return;
 
                 try
@@ -429,6 +618,7 @@ namespace DrawnUi.Draw
             string mainKey = $"ObserveDynamic_{parentPropertyName}_{Guid.NewGuid()}";
             TTarget currentTarget = null;
             PropertyChangedEventHandler currentTargetHandler = null;
+            var filterSet = propertyFilter != null ? new HashSet<string>(propertyFilter) : null;
 
             // Helper to clean up current target subscription
             void CleanupCurrentTarget()
@@ -453,7 +643,7 @@ namespace DrawnUi.Draw
                 currentTargetHandler = (sender, args) =>
                 {
                     // If a filter is specified, only proceed if the property is in the filter
-                    if (propertyFilter != null && !propertyFilter.Contains(args.PropertyName))
+                    if (filterSet != null && !filterSet.Contains(args.PropertyName))
                         return;
 
                     try
@@ -539,6 +729,46 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Extracts the property name from a member access expression (e.g. <c>x => x.Foo</c>).
+        /// Tree inspection only, never compiles the expression — safe under iOS/NativeAOT.
+        /// </summary>
+        private static string GetMemberName<TSource, TProp>(Expression<Func<TSource, TProp>> expression)
+        {
+            var body = expression.Body;
+            if (body is UnaryExpression unary)
+                body = unary.Operand;
+
+            if (body is MemberExpression member)
+                return member.Member.Name;
+
+            throw new ArgumentException($"Expression '{expression}' must be a property access (e.g. x => x.Foo).");
+        }
+
+        /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperty{T, TSource}(T, TSource, string, Action{T})"/>:
+        /// pass the property as a lambda instead of a string, rename-safe.
+        /// Will unsubscribe upon control disposal.
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source object being observed</typeparam>
+        /// <typeparam name="TProp">Type of the observed property</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="property">Lambda selecting the source property, e.g. <c>x => x.Foo</c></param>
+        /// <param name="callback">Callback executed when the property changes</param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperty<T, TSource, TProp>(
+            this T control,
+            TSource target,
+            Expression<Func<TSource, TProp>> property,
+            Action<T> callback)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperty(target, GetMemberName(property), callback);
+        }
+
+        /// <summary>
         /// Subscribes to one specific property changes on a source and a target control, executing callbacks in both
         /// directions while guarding against re-entrant loops.
         /// Use this to simulate MAUI XAML two-way property binding semantics in fluent C# code.
@@ -614,6 +844,40 @@ namespace DrawnUi.Draw
             };
 
             return control;
+        }
+
+        /// <summary>
+        /// Compiled-property-name overload of <see cref="ObservePropertyTwoWay{T, TSource}"/>:
+        /// pass both properties as lambdas instead of strings, rename-safe.
+        /// Will unsubscribe upon control disposal.
+        /// </summary>
+        /// <typeparam name="T">Type of the target control (the one being extended)</typeparam>
+        /// <typeparam name="TSource">Type of the source object being observed</typeparam>
+        /// <typeparam name="TTargetProp">Type of the observed source property</typeparam>
+        /// <typeparam name="TControlProp">Type of the observed control property</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="targetProperty">Lambda selecting the source property, e.g. <c>vm => vm.Foo</c></param>
+        /// <param name="targetChanged">Callback executed when the source property changes</param>
+        /// <param name="controlProperty">Lambda selecting the control property, e.g. <c>me => me.Bar</c></param>
+        /// <param name="controlChanged">Callback executed when the control property changes</param>
+        /// <returns>The target control for chaining</returns>
+        public static T ObservePropertyTwoWay<T, TSource, TTargetProp, TControlProp>(
+            this T control,
+            TSource target,
+            Expression<Func<TSource, TTargetProp>> targetProperty,
+            Action<T> targetChanged,
+            Expression<Func<T, TControlProp>> controlProperty,
+            Action<TSource, T> controlChanged)
+            where T : SkiaControl, INotifyPropertyChanged
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObservePropertyTwoWay(
+                target,
+                GetMemberName(targetProperty),
+                targetChanged,
+                GetMemberName(controlProperty),
+                controlChanged);
         }
 
         /// <summary>
@@ -710,6 +974,29 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperty{T, TSource}(T, Func{TSource}, string, Action{T})"/>:
+        /// pass the property as a lambda instead of a string, rename-safe.
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source control being observed</typeparam>
+        /// <typeparam name="TProp">Type of the observed property</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="targetSelector">Lambda expression that returns the target control (e.g., () => Model)</param>
+        /// <param name="property">Lambda selecting the source property, e.g. <c>x => x.Foo</c></param>
+        /// <param name="callback">Callback to execute when the property changes</param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperty<T, TSource, TProp>(
+            this T control,
+            Func<TSource> targetSelector,
+            Expression<Func<TSource, TProp>> property,
+            Action<T> callback)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperty(targetSelector, GetMemberName(property), callback);
+        }
+
+        /// <summary>
         /// Subscribes to specific properties changes on a source control and executes a callback when they occur.
         /// 
         /// Will unsubscribe upon control disposal.
@@ -729,11 +1016,43 @@ namespace DrawnUi.Draw
             where T : SkiaControl
             where TSource : INotifyPropertyChanged
         {
-            var props = propertyNames.Concat(new[] { nameof(BindableObject.BindingContext) }).ToArray();
+            var names = propertyNames as string[] ?? propertyNames.ToArray();
+            if (names.Length == 0)
+                throw new ArgumentException(
+                    "ObserveProperties: no properties to observe, callback would fire only once at attach. Pass at least one property name.",
+                    nameof(propertyNames));
+
+            var props = names.Concat(new[] { nameof(BindableObject.BindingContext) }).ToArray();
             return control.Observe(target, (me, prop) =>
             {
                 callback?.Invoke(me);
             }, props);
+        }
+
+        /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperties{T, TSource}(T, TSource, IEnumerable{string}, Action{T})"/>:
+        /// pass properties as lambdas instead of strings, rename-safe. Note: callback comes before the property
+        /// lambdas here (params must be the last parameter).
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source control being observed</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="target">The source object being observed</param>
+        /// <param name="callback">Callback to execute when any of the properties change</param>
+        /// <param name="property">First observed property, e.g. <c>x => x.Foo</c>. Required: observing nothing is always a bug.</param>
+        /// <param name="moreProperties">Additional properties, e.g. <c>x => x.Bar, x => x.Baz</c></param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperties<T, TSource>(
+            this T control,
+            TSource target,
+            Action<T> callback,
+            Expression<Func<TSource, object>> property,
+            params Expression<Func<TSource, object>>[] moreProperties)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperties(target,
+                moreProperties.Prepend(property).Select(GetMemberName), callback);
         }
 
         /// <summary>
@@ -755,13 +1074,20 @@ namespace DrawnUi.Draw
             where T : SkiaControl
             where TSource : INotifyPropertyChanged
         {
+            var names = propertyNames as string[] ?? propertyNames.ToArray();
+            if (names.Length == 0)
+                throw new ArgumentException(
+                    "ObserveProperties: no properties to observe, callback would fire only once at attach. Pass at least one property name.",
+                    nameof(propertyNames));
+            propertyNames = names;
+
             return control.Initialize(me =>
             {
                 // Track current subscription for cleanup
                 string mainKey = $"ObserveProperties_{Guid.NewGuid()}";
                 TSource currentTarget = default(TSource);
                 PropertyChangedEventHandler currentTargetHandler = null;
-                var props = propertyNames.Concat(new[] { nameof(BindableObject.BindingContext) }).ToArray();
+                var props = new HashSet<string>(propertyNames.Concat(new[] { nameof(BindableObject.BindingContext) }));
 
                 // Helper to clean up current target subscription
                 void CleanupCurrentTarget()
@@ -831,6 +1157,32 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Compiled-property-name overload of <see cref="ObserveProperties{T, TSource}(T, Func{TSource}, IEnumerable{string}, Action{T})"/>:
+        /// pass properties as lambdas instead of strings, rename-safe. Note: callback comes before the property
+        /// lambdas here (params must be the last parameter).
+        /// </summary>
+        /// <typeparam name="T">Type of the control being extended</typeparam>
+        /// <typeparam name="TSource">Type of the source control being observed</typeparam>
+        /// <param name="control">The control subscribing to changes</param>
+        /// <param name="targetSelector">Lambda expression that returns the target control (e.g., () => Model)</param>
+        /// <param name="callback">Callback to execute when any of the properties change</param>
+        /// <param name="property">First observed property, e.g. <c>x => x.Foo</c>. Required: observing nothing is always a bug.</param>
+        /// <param name="moreProperties">Additional properties, e.g. <c>x => x.Bar, x => x.Baz</c></param>
+        /// <returns>The control for chaining</returns>
+        public static T ObserveProperties<T, TSource>(
+            this T control,
+            Func<TSource> targetSelector,
+            Action<T> callback,
+            Expression<Func<TSource, object>> property,
+            params Expression<Func<TSource, object>>[] moreProperties)
+            where T : SkiaControl
+            where TSource : INotifyPropertyChanged
+        {
+            return control.ObserveProperties(targetSelector,
+                moreProperties.Prepend(property).Select(GetMemberName), callback);
+        }
+
+        /// <summary>
         /// Observes a control that will be assigned later in the initialization process.
         /// </summary>
         /// <typeparam name="T">Type of the target control (the one being extended)</typeparam>
@@ -854,6 +1206,7 @@ namespace DrawnUi.Draw
                 string mainKey = $"Observe_{Guid.NewGuid()}";
                 TSource currentSource = null;
                 PropertyChangedEventHandler currentSourceHandler = null;
+                var filterSet = propertyFilter != null ? new HashSet<string>(propertyFilter) : null;
 
                 // Helper to clean up current source subscription
                 void CleanupCurrentSource()
@@ -878,7 +1231,7 @@ namespace DrawnUi.Draw
                     currentSourceHandler = (sender, args) =>
                     {
                         // If a filter is specified, only proceed if the property is in the filter
-                        if (propertyFilter != null && !propertyFilter.Contains(args.PropertyName))
+                        if (filterSet != null && !filterSet.Contains(args.PropertyName))
                             return;
 
                         try
@@ -1417,6 +1770,36 @@ namespace DrawnUi.Draw
             view.HorizontalOptions = LayoutOptions.Center;
             view.VerticalOptions = LayoutOptions.Center;
             return view;
+        }
+
+        /// <summary>
+        /// Centers the label's TEXT horizontally (<see cref="SkiaLabel.HorizontalTextAlignment"/> = Center).
+        /// Alignment of text inside the label, not of the label inside its parent — for that use <see cref="CenterX{T}"/>.
+        /// </summary>
+        public static T CenterTextX<T>(this T label) where T : SkiaLabel
+        {
+            label.HorizontalTextAlignment = DrawTextAlignment.Center;
+            return label;
+        }
+
+        /// <summary>
+        /// Centers the label's TEXT vertically (<see cref="SkiaLabel.VerticalTextAlignment"/> = Center).
+        /// Alignment of text inside the label, not of the label inside its parent — for that use <see cref="CenterY{T}"/>.
+        /// </summary>
+        public static T CenterTextY<T>(this T label) where T : SkiaLabel
+        {
+            label.VerticalTextAlignment = TextAlignment.Center;
+            return label;
+        }
+
+        /// <summary>
+        /// Centers the label's TEXT in both directions. See <see cref="CenterTextX{T}"/> / <see cref="CenterTextY{T}"/>.
+        /// </summary>
+        public static T CenterText<T>(this T label) where T : SkiaLabel
+        {
+            label.HorizontalTextAlignment = DrawTextAlignment.Center;
+            label.VerticalTextAlignment = TextAlignment.Center;
+            return label;
         }
 
         #endregion

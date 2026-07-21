@@ -11,8 +11,8 @@ items:
   - DrawnUi.Draw.ISkiaGestureListener.HitIsInside(System.Single,System.Single)
   - DrawnUi.Draw.ISkiaGestureListener.InputTransparent
   - DrawnUi.Draw.ISkiaGestureListener.LockFocus
-  - DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged(System.Boolean)
   - DrawnUi.Draw.ISkiaGestureListener.OnSkiaGestureEvent(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  - DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
   - DrawnUi.Draw.ISkiaGestureListener.Tag
   - DrawnUi.Draw.ISkiaGestureListener.Uid
   - DrawnUi.Draw.ISkiaGestureListener.ZIndex
@@ -26,8 +26,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ISkiaGestureListener
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 2
@@ -53,8 +53,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSkiaGestureEvent
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 13
@@ -92,8 +92,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InputTransparent
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 15
@@ -121,8 +121,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockFocus
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 17
@@ -150,8 +150,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlockGesturesBelow
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 19
@@ -179,8 +179,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanDraw
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 21
@@ -208,8 +208,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 23
@@ -237,8 +237,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Uid
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 25
@@ -266,8 +266,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZIndex
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 27
@@ -295,8 +295,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GestureListenerRegistrationTime
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 29
@@ -310,23 +310,23 @@ items:
       type: System.Nullable{System.DateTime}
     content.vb: Property GestureListenerRegistrationTime As Date?
   overload: DrawnUi.Draw.ISkiaGestureListener.GestureListenerRegistrationTime*
-- uid: DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged(System.Boolean)
-  commentId: M:DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged(System.Boolean)
-  id: OnFocusChanged(System.Boolean)
+- uid: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
+  commentId: M:DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
+  id: SetFrameworkFocus(System.Boolean)
   parent: DrawnUi.Draw.ISkiaGestureListener
   langs:
   - csharp
   - vb
-  name: OnFocusChanged(bool)
-  nameWithType: ISkiaGestureListener.OnFocusChanged(bool)
-  fullName: DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged(bool)
+  name: SetFrameworkFocus(bool)
+  nameWithType: ISkiaGestureListener.SetFrameworkFocus(bool)
+  fullName: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(bool)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
-    id: OnFocusChanged
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SetFrameworkFocus
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 38
   assemblies:
@@ -338,7 +338,7 @@ items:
     The view must return true of false to indicate if it accepts focus.
   example: []
   syntax:
-    content: bool OnFocusChanged(bool focus)
+    content: bool SetFrameworkFocus(bool focus)
     parameters:
     - id: focus
       type: System.Boolean
@@ -346,11 +346,11 @@ items:
     return:
       type: System.Boolean
       description: ''
-    content.vb: Function OnFocusChanged(focus As Boolean) As Boolean
-  overload: DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged*
-  nameWithType.vb: ISkiaGestureListener.OnFocusChanged(Boolean)
-  fullName.vb: DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged(Boolean)
-  name.vb: OnFocusChanged(Boolean)
+    content.vb: Function SetFrameworkFocus(focus As Boolean) As Boolean
+  overload: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus*
+  nameWithType.vb: ISkiaGestureListener.SetFrameworkFocus(Boolean)
+  fullName.vb: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(Boolean)
+  name.vb: SetFrameworkFocus(Boolean)
 - uid: DrawnUi.Draw.ISkiaGestureListener.HitIsInside(System.Single,System.Single)
   commentId: M:DrawnUi.Draw.ISkiaGestureListener.HitIsInside(System.Single,System.Single)
   id: HitIsInside(System.Single,System.Single)
@@ -365,8 +365,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HitIsInside
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaGestureListener.cs
     startLine: 40
@@ -674,12 +674,12 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged*
-  commentId: Overload:DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged
-  href: DrawnUi.Draw.ISkiaGestureListener.html#DrawnUi_Draw_ISkiaGestureListener_OnFocusChanged_System_Boolean_
-  name: OnFocusChanged
-  nameWithType: ISkiaGestureListener.OnFocusChanged
-  fullName: DrawnUi.Draw.ISkiaGestureListener.OnFocusChanged
+- uid: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus*
+  commentId: Overload:DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus
+  href: DrawnUi.Draw.ISkiaGestureListener.html#DrawnUi_Draw_ISkiaGestureListener_SetFrameworkFocus_System_Boolean_
+  name: SetFrameworkFocus
+  nameWithType: ISkiaGestureListener.SetFrameworkFocus
+  fullName: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus
 - uid: DrawnUi.Draw.ISkiaGestureListener.HitIsInside*
   commentId: Overload:DrawnUi.Draw.ISkiaGestureListener.HitIsInside
   href: DrawnUi.Draw.ISkiaGestureListener.html#DrawnUi_Draw_ISkiaGestureListener_HitIsInside_System_Single_System_Single_

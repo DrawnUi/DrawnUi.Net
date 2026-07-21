@@ -23,6 +23,16 @@ public partial class SkiaRichLabel : SkiaLabel
             {
                 base.SetTextInternal();
 
+                // Markdown OFF: keep the rich (font-run/emoji) rendering but treat text as literal —
+                // one plain span, no CommonMark parse. This is the "unicode/emoji, no formatting" mode.
+                if (!MarkdownEnabled)
+                {
+                    Spans.Clear();
+                    if (!string.IsNullOrEmpty(TextInternal))
+                        AddTextSpan(TextInternal);
+                    return;
+                }
+
                 if (!string.IsNullOrEmpty(TextInternal))
                 {
                     var markdownDocument = CommonMarkConverter.Parse(TextInternal);

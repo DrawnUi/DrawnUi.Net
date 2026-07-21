@@ -5,6 +5,11 @@ namespace DrawnUi.Controls;
 
 public class SkiaMauiEditor : SkiaMauiElement, ISkiaGestureListener
 {
+    public SkiaMauiEditor()
+    {
+        CanBeFocused = true; //SetFrameworkFocus is overridden below and always accepts
+    }
+
     protected override void Paint(DrawingContext ctx)
     {
         base.Paint(ctx);
@@ -39,7 +44,36 @@ public class SkiaMauiEditor : SkiaMauiElement, ISkiaGestureListener
             // }
         }
 
+        if (args.Type == TouchActionResult.Down)
+        {
+            ClaimFocus();
+        }
+
         return this;
+    }
+
+    /// <summary>
+    /// We consume gestures ourselves, so the native control might never see the touch.
+    /// Claim framework focus on DOWN like SkiaEditor does and route it to the native control.
+    /// </summary>
+    protected void ClaimFocus()
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (IsFocused)
+            {
+                //already logically focused: the bindable callback won't fire again,
+                //but native IME could have been dismissed (Android BACK), re-arm it
+                SetFocusInternal(true);
+            }
+            else
+            {
+                IsFocused = true;
+            }
+
+            if (Superview != null)
+                Superview.FocusedChild = this;
+        });
     }
 
     public static readonly BindableProperty MaxLinesProperty = BindableProperty.Create(nameof(MaxLines),
@@ -326,15 +360,15 @@ public class SkiaMauiEditor : SkiaMauiElement, ISkiaGestureListener
     }
 
     /// <summary>
-    /// Called by DrawnUi when the focus changes
+    /// Called by DrawnUi canvas when framework focus moves. Always accepts and routes the state
+    /// to the hosted native control.
     /// </summary>
     /// <param name="focus"></param>
-    public bool OnFocusChanged(bool focus)
+    public override bool SetFrameworkFocus(bool focus)
     {
         lock (lockFocus)
         {
-            if (!IsFocused)
-                return false; //reject focus
+            IsFocused = focus;
 
             if (Control != null)
             {

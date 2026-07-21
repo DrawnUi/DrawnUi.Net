@@ -58,7 +58,8 @@ public static class PreparedViewsRepro
 
         // cold jump to oldest, settle, jump back
         page.ProbeScrollToOldest(true);
-        for (int f = 0; f < 300 && page.ProbeWindowStart != 0; f++) { host.RenderFrame(16); Thread.Sleep(3); }
+        // migrated semantics: jump fetches-then-scrolls; wait for the ordered order to start
+        for (int f = 0; f < 600 && !page.MainScroll.OrderedScrollToIndexIsSet; f++) { host.RenderFrame(16); Thread.Sleep(3); }
         Settle(page, host);
         corrupted |= !CheckTree(page, "at-oldest");
         page.ProbeScrollToNewest(true);

@@ -18,10 +18,10 @@ description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazo
       Hardware-accelerated <strong>rendering engine</strong> for .NET, including MAUI, Blazor, and OpenTK, powered by SkiaSharp
     </p>
     <div class="hero-buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
-      <!-- <a href="articles/maui/getting-started.md" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
-        🔨 Setup Guide
-      </a> -->
-      <a href="https://github.com/taublast/DrawnUi" class="hero-btn hero-btn-secondary" style="background: rgba(255,255,255,0.12); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; border: 2px solid rgba(255,255,255,0.22); backdrop-filter: blur(2px); display: inline-block; min-width: 160px; text-align: center;">
+      <a href="https://fiddle.drawnui.net" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
+        🔨 Fiddle
+      </a>
+      <a href="https://github.com/DrawnUi/DrawnUi.Net" class="hero-btn hero-btn-secondary" style="background: rgba(255,255,255,0.12); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; border: 2px solid rgba(255,255,255,0.22); backdrop-filter: blur(2px); display: inline-block; min-width: 160px; text-align: center;">
         ⭐ GitHub MIT
       </a>
     </div>
@@ -66,7 +66,7 @@ void main() {
 </script>
 
 <div style="margin: 22px 0 0 0; padding: 16px 20px; border: 1px solid rgba(37,99,235,0.22); border-radius: 10px; background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(37,99,235,0.02)); color: #dbeafe; text-align: center;">
-  Choose your target from the <a href="articles/platforms.md" style="color: white; font-weight: 700; text-decoration: underline;">platform and package guide</a>: .NET MAUI, Blazor, DrawnUi.Wasm, OpenTK, or DrawnUi.Net.
+  Choose your target from the <a href="articles/platforms.md" style="color: white; font-weight: 700; text-decoration: underline;">platform and package guide</a>: .NET MAUI, Blazor, Wasm, OpenTK, or pure .NET.
 </div>
 
 <script id="fragShader" type="x-shader/x-fragment">
@@ -273,14 +273,7 @@ window.addEventListener('load', function() {
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 20px 0 28px 0;">
 
-<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
-  <h3 style="margin-top: 0; color: white;">.NET</h3>
-  <p>Use <strong>DrawnUi.Net</strong> when you need platform-agnostic rendering with SkiaSharp, server-side graphics, AI harness, tests and any other shared-logic development.</p>
-  <p><strong>Install:</strong></p>
-  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Net</code></pre>
-  <p><a href="articles/net/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Net guide →</a></p>
-</div>
-
+<!-- MAUI -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">MAUI</h3>
   <p>Use <strong>DrawnUi.Maui</strong> when you are building a native cross-platform app for iOS, Android, MacCatalyst, or Windows.</p>
@@ -289,6 +282,7 @@ window.addEventListener('load', function() {
   <p><a href="articles/maui/getting-started.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">MAUI setup guide →</a></p>
 </div>
 
+<!-- OPENTK -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">OpenTK</h3>
   <p>Use <strong>DrawnUi.OpenTk</strong> for native OpenGL desktop Window or Linux app, fully drawn or overlay for already existing projects.</p>
@@ -297,7 +291,7 @@ window.addEventListener('load', function() {
   <p><a href="articles/opentk/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">OpenTK guide →</a></p>
 </div>
 
-
+<!-- BLAZOR -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">Blazor</h3>
   <p>Use <strong>DrawnUi.Blazor.Wasm</strong> for browser-local rendering, or <strong>DrawnUi.Blazor.Server</strong> for server-side rendering.</p>
@@ -307,6 +301,7 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
   <p><a href="articles/blazor/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">Blazor runtime guide →</a></p>
 </div>
 
+<!-- WASM -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">WebAssembly</h3>
   <p>Use <strong>DrawnUi.Wasm</strong> for a fully drawn web app — no Blazor, no Razor, just .NET WASM + SkiaSharp for WebAssembly.</p>
@@ -315,6 +310,14 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
   <p><a href="articles/web/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Wasm guide →</a></p>
 </div>
 
+<!-- NET -->
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">.NET</h3>
+  <p>Use <strong>DrawnUi.Net</strong> when you need platform-agnostic rendering with SkiaSharp, server-side graphics, AI harness, tests and any other shared-logic development.</p>
+  <p><strong>Install:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Net</code></pre>
+  <p><a href="articles/net/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Net guide →</a></p>
+</div>
 
 
 
@@ -395,10 +398,18 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 </div>
 
 <div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
+  <h4 style="margin-bottom: 15px;">🤖 AI Agents</h4>
+  <p style="margin-bottom: 20px; ">Teach your coding agent DrawnUI</p>
+  <a href="articles/ai-skills.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">AI Skills →</a><br>
+  <a href="/llms.txt" style="color: #4299e1; text-decoration: none; font-weight: 600;">llms.txt →</a><br>
+  <a href="https://fiddle.drawnui.net" style="color: #4299e1; text-decoration: none; font-weight: 600;">Fiddle →</a>
+</div>
+
+<div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">
   <h4 style="margin-bottom: 15px;">💬 Community</h4>
   <p style="margin-bottom: 20px; ">Get help and share your creations</p>
-  <a href="https://github.com/taublast/DrawnUi/discussions" style="color: #4299e1; text-decoration: none; font-weight: 600;">GitHub Discussions →</a><br>
-  <a href="https://github.com/taublast/DrawnUi/issues" style="color: #4299e1; text-decoration: none; font-weight: 600;">Report Issues →</a><br>
+  <a href="https://github.com/DrawnUi/DrawnUi.Net/discussions" style="color: #4299e1; text-decoration: none; font-weight: 600;">GitHub Discussions →</a><br>
+  <a href="https://github.com/DrawnUi/DrawnUi.Net/issues" style="color: #4299e1; text-decoration: none; font-weight: 600;">Report Issues →</a><br>
   <a href="articles/faq.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">FAQ →</a>
 </div>
 

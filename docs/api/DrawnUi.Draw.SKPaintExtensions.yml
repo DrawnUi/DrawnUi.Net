@@ -8,15 +8,18 @@ items:
   - DrawnUi.Draw.SKPaintExtensions.GuardBlendMode(SkiaSharp.SKPaint,SkiaSharp.SKBlendMode@,SkiaSharp.SKBlendMode)
   - DrawnUi.Draw.SKPaintExtensions.GuardColor(SkiaSharp.SKPaint,SkiaSharp.SKColor@,SkiaSharp.SKColor)
   - DrawnUi.Draw.SKPaintExtensions.GuardColorFilter(SkiaSharp.SKPaint,SkiaSharp.SKColorFilter@,SkiaSharp.SKColorFilter)
-  - DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality(SkiaSharp.SKPaint,SkiaSharp.SKFilterQuality@,SkiaSharp.SKFilterQuality)
+  - DrawnUi.Draw.SKPaintExtensions.GuardFontEdging(SkiaSharp.SKFont,SkiaSharp.SKFontEdging@,SkiaSharp.SKFontEdging)
+  - DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden(SkiaSharp.SKFont,System.Boolean@,System.Boolean)
+  - DrawnUi.Draw.SKPaintExtensions.GuardFontSize(SkiaSharp.SKFont,System.Single@,System.Single)
+  - DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX(SkiaSharp.SKFont,System.Single@,System.Single)
+  - DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel(SkiaSharp.SKFont,System.Nullable{System.Boolean}@,System.Boolean)
+  - DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface(SkiaSharp.SKFont,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
   - DrawnUi.Draw.SKPaintExtensions.GuardImageFilter(SkiaSharp.SKPaint,SkiaSharp.SKImageFilter@,SkiaSharp.SKImageFilter)
   - DrawnUi.Draw.SKPaintExtensions.GuardIsAntialias(SkiaSharp.SKPaint,System.Boolean@,System.Boolean)
   - DrawnUi.Draw.SKPaintExtensions.GuardIsDither(SkiaSharp.SKPaint,System.Boolean@,System.Boolean)
   - DrawnUi.Draw.SKPaintExtensions.GuardStrokeCap(SkiaSharp.SKPaint,SkiaSharp.SKStrokeCap@,SkiaSharp.SKStrokeCap)
   - DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth(SkiaSharp.SKPaint,System.Single@,System.Single)
   - DrawnUi.Draw.SKPaintExtensions.GuardStyle(SkiaSharp.SKPaint,SkiaSharp.SKPaintStyle@,SkiaSharp.SKPaintStyle)
-  - DrawnUi.Draw.SKPaintExtensions.GuardTextSize(SkiaSharp.SKPaint,System.Single@,System.Single)
-  - DrawnUi.Draw.SKPaintExtensions.GuardTypeface(SkiaSharp.SKPaint,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
   langs:
   - csharp
   - vb
@@ -27,8 +30,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SKPaintExtensions
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
     startLine: 11
@@ -72,8 +75,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardColor
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
     startLine: 13
@@ -109,8 +112,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardStyle
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
     startLine: 19
@@ -146,8 +149,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardIsDither
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
     startLine: 25
@@ -183,8 +186,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardIsAntialias
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
     startLine: 31
@@ -205,43 +208,6 @@ items:
   nameWithType.vb: SKPaintExtensions.GuardIsAntialias(SKPaint, Boolean, Boolean)
   fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardIsAntialias(SkiaSharp.SKPaint, Boolean, Boolean)
   name.vb: GuardIsAntialias(SKPaint, Boolean, Boolean)
-- uid: DrawnUi.Draw.SKPaintExtensions.GuardTextSize(SkiaSharp.SKPaint,System.Single@,System.Single)
-  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardTextSize(SkiaSharp.SKPaint,System.Single@,System.Single)
-  id: GuardTextSize(SkiaSharp.SKPaint,System.Single@,System.Single)
-  isExtensionMethod: true
-  parent: DrawnUi.Draw.SKPaintExtensions
-  langs:
-  - csharp
-  - vb
-  name: GuardTextSize(SKPaint, ref float, float)
-  nameWithType: SKPaintExtensions.GuardTextSize(SKPaint, ref float, float)
-  fullName: DrawnUi.Draw.SKPaintExtensions.GuardTextSize(SkiaSharp.SKPaint, ref float, float)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
-    id: GuardTextSize
-    path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-    startLine: 37
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public static void GuardTextSize(this SKPaint paint, ref float cache, float value)
-    parameters:
-    - id: paint
-      type: SkiaSharp.SKPaint
-    - id: cache
-      type: System.Single
-    - id: value
-      type: System.Single
-    content.vb: Public Shared Sub GuardTextSize(paint As SKPaint, cache As Single, value As Single)
-  overload: DrawnUi.Draw.SKPaintExtensions.GuardTextSize*
-  nameWithType.vb: SKPaintExtensions.GuardTextSize(SKPaint, Single, Single)
-  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardTextSize(SkiaSharp.SKPaint, Single, Single)
-  name.vb: GuardTextSize(SKPaint, Single, Single)
 - uid: DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth(SkiaSharp.SKPaint,System.Single@,System.Single)
   commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth(SkiaSharp.SKPaint,System.Single@,System.Single)
   id: GuardStrokeWidth(SkiaSharp.SKPaint,System.Single@,System.Single)
@@ -257,11 +223,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardStrokeWidth
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-    startLine: 43
+    startLine: 37
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -294,11 +260,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardBlendMode
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-    startLine: 49
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -316,80 +282,228 @@ items:
   nameWithType.vb: SKPaintExtensions.GuardBlendMode(SKPaint, SKBlendMode, SKBlendMode)
   fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardBlendMode(SkiaSharp.SKPaint, SkiaSharp.SKBlendMode, SkiaSharp.SKBlendMode)
   name.vb: GuardBlendMode(SKPaint, SKBlendMode, SKBlendMode)
-- uid: DrawnUi.Draw.SKPaintExtensions.GuardTypeface(SkiaSharp.SKPaint,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
-  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardTypeface(SkiaSharp.SKPaint,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
-  id: GuardTypeface(SkiaSharp.SKPaint,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontSize(SkiaSharp.SKFont,System.Single@,System.Single)
+  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardFontSize(SkiaSharp.SKFont,System.Single@,System.Single)
+  id: GuardFontSize(SkiaSharp.SKFont,System.Single@,System.Single)
   isExtensionMethod: true
   parent: DrawnUi.Draw.SKPaintExtensions
   langs:
   - csharp
   - vb
-  name: GuardTypeface(SKPaint, ref SKTypeface, SKTypeface)
-  nameWithType: SKPaintExtensions.GuardTypeface(SKPaint, ref SKTypeface, SKTypeface)
-  fullName: DrawnUi.Draw.SKPaintExtensions.GuardTypeface(SkiaSharp.SKPaint, ref SkiaSharp.SKTypeface, SkiaSharp.SKTypeface)
+  name: GuardFontSize(SKFont, ref float, float)
+  nameWithType: SKPaintExtensions.GuardFontSize(SKFont, ref float, float)
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontSize(SkiaSharp.SKFont, ref float, float)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
-    id: GuardTypeface
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GuardFontSize
+    path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+    startLine: 49
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static void GuardFontSize(this SKFont font, ref float cache, float value)
+    parameters:
+    - id: font
+      type: SkiaSharp.SKFont
+    - id: cache
+      type: System.Single
+    - id: value
+      type: System.Single
+    content.vb: Public Shared Sub GuardFontSize(font As SKFont, cache As Single, value As Single)
+  overload: DrawnUi.Draw.SKPaintExtensions.GuardFontSize*
+  nameWithType.vb: SKPaintExtensions.GuardFontSize(SKFont, Single, Single)
+  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardFontSize(SkiaSharp.SKFont, Single, Single)
+  name.vb: GuardFontSize(SKFont, Single, Single)
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface(SkiaSharp.SKFont,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
+  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface(SkiaSharp.SKFont,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
+  id: GuardFontTypeface(SkiaSharp.SKFont,SkiaSharp.SKTypeface@,SkiaSharp.SKTypeface)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.SKPaintExtensions
+  langs:
+  - csharp
+  - vb
+  name: GuardFontTypeface(SKFont, ref SKTypeface, SKTypeface)
+  nameWithType: SKPaintExtensions.GuardFontTypeface(SKFont, ref SKTypeface, SKTypeface)
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface(SkiaSharp.SKFont, ref SkiaSharp.SKTypeface, SkiaSharp.SKTypeface)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GuardFontTypeface
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
     startLine: 55
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static void GuardTypeface(this SKPaint paint, ref SKTypeface cache, SKTypeface value)
+    content: public static void GuardFontTypeface(this SKFont font, ref SKTypeface cache, SKTypeface value)
     parameters:
-    - id: paint
-      type: SkiaSharp.SKPaint
+    - id: font
+      type: SkiaSharp.SKFont
     - id: cache
       type: SkiaSharp.SKTypeface
     - id: value
       type: SkiaSharp.SKTypeface
-    content.vb: Public Shared Sub GuardTypeface(paint As SKPaint, cache As SKTypeface, value As SKTypeface)
-  overload: DrawnUi.Draw.SKPaintExtensions.GuardTypeface*
-  nameWithType.vb: SKPaintExtensions.GuardTypeface(SKPaint, SKTypeface, SKTypeface)
-  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardTypeface(SkiaSharp.SKPaint, SkiaSharp.SKTypeface, SkiaSharp.SKTypeface)
-  name.vb: GuardTypeface(SKPaint, SKTypeface, SKTypeface)
-- uid: DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality(SkiaSharp.SKPaint,SkiaSharp.SKFilterQuality@,SkiaSharp.SKFilterQuality)
-  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality(SkiaSharp.SKPaint,SkiaSharp.SKFilterQuality@,SkiaSharp.SKFilterQuality)
-  id: GuardFilterQuality(SkiaSharp.SKPaint,SkiaSharp.SKFilterQuality@,SkiaSharp.SKFilterQuality)
+    content.vb: Public Shared Sub GuardFontTypeface(font As SKFont, cache As SKTypeface, value As SKTypeface)
+  overload: DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface*
+  nameWithType.vb: SKPaintExtensions.GuardFontTypeface(SKFont, SKTypeface, SKTypeface)
+  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface(SkiaSharp.SKFont, SkiaSharp.SKTypeface, SkiaSharp.SKTypeface)
+  name.vb: GuardFontTypeface(SKFont, SKTypeface, SKTypeface)
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX(SkiaSharp.SKFont,System.Single@,System.Single)
+  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX(SkiaSharp.SKFont,System.Single@,System.Single)
+  id: GuardFontSkewX(SkiaSharp.SKFont,System.Single@,System.Single)
   isExtensionMethod: true
   parent: DrawnUi.Draw.SKPaintExtensions
   langs:
   - csharp
   - vb
-  name: GuardFilterQuality(SKPaint, ref SKFilterQuality, SKFilterQuality)
-  nameWithType: SKPaintExtensions.GuardFilterQuality(SKPaint, ref SKFilterQuality, SKFilterQuality)
-  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality(SkiaSharp.SKPaint, ref SkiaSharp.SKFilterQuality, SkiaSharp.SKFilterQuality)
+  name: GuardFontSkewX(SKFont, ref float, float)
+  nameWithType: SKPaintExtensions.GuardFontSkewX(SKFont, ref float, float)
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX(SkiaSharp.SKFont, ref float, float)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
-    id: GuardFilterQuality
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GuardFontSkewX
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
     startLine: 61
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public static void GuardFilterQuality(this SKPaint paint, ref SKFilterQuality cache, SKFilterQuality value)
+    content: public static void GuardFontSkewX(this SKFont font, ref float cache, float value)
     parameters:
-    - id: paint
-      type: SkiaSharp.SKPaint
+    - id: font
+      type: SkiaSharp.SKFont
     - id: cache
-      type: SkiaSharp.SKFilterQuality
+      type: System.Single
     - id: value
-      type: SkiaSharp.SKFilterQuality
-    content.vb: Public Shared Sub GuardFilterQuality(paint As SKPaint, cache As SKFilterQuality, value As SKFilterQuality)
-  overload: DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality*
-  nameWithType.vb: SKPaintExtensions.GuardFilterQuality(SKPaint, SKFilterQuality, SKFilterQuality)
-  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality(SkiaSharp.SKPaint, SkiaSharp.SKFilterQuality, SkiaSharp.SKFilterQuality)
-  name.vb: GuardFilterQuality(SKPaint, SKFilterQuality, SKFilterQuality)
+      type: System.Single
+    content.vb: Public Shared Sub GuardFontSkewX(font As SKFont, cache As Single, value As Single)
+  overload: DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX*
+  nameWithType.vb: SKPaintExtensions.GuardFontSkewX(SKFont, Single, Single)
+  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX(SkiaSharp.SKFont, Single, Single)
+  name.vb: GuardFontSkewX(SKFont, Single, Single)
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden(SkiaSharp.SKFont,System.Boolean@,System.Boolean)
+  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden(SkiaSharp.SKFont,System.Boolean@,System.Boolean)
+  id: GuardFontEmbolden(SkiaSharp.SKFont,System.Boolean@,System.Boolean)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.SKPaintExtensions
+  langs:
+  - csharp
+  - vb
+  name: GuardFontEmbolden(SKFont, ref bool, bool)
+  nameWithType: SKPaintExtensions.GuardFontEmbolden(SKFont, ref bool, bool)
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden(SkiaSharp.SKFont, ref bool, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GuardFontEmbolden
+    path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+    startLine: 67
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static void GuardFontEmbolden(this SKFont font, ref bool cache, bool value)
+    parameters:
+    - id: font
+      type: SkiaSharp.SKFont
+    - id: cache
+      type: System.Boolean
+    - id: value
+      type: System.Boolean
+    content.vb: Public Shared Sub GuardFontEmbolden(font As SKFont, cache As Boolean, value As Boolean)
+  overload: DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden*
+  nameWithType.vb: SKPaintExtensions.GuardFontEmbolden(SKFont, Boolean, Boolean)
+  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden(SkiaSharp.SKFont, Boolean, Boolean)
+  name.vb: GuardFontEmbolden(SKFont, Boolean, Boolean)
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontEdging(SkiaSharp.SKFont,SkiaSharp.SKFontEdging@,SkiaSharp.SKFontEdging)
+  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardFontEdging(SkiaSharp.SKFont,SkiaSharp.SKFontEdging@,SkiaSharp.SKFontEdging)
+  id: GuardFontEdging(SkiaSharp.SKFont,SkiaSharp.SKFontEdging@,SkiaSharp.SKFontEdging)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.SKPaintExtensions
+  langs:
+  - csharp
+  - vb
+  name: GuardFontEdging(SKFont, ref SKFontEdging, SKFontEdging)
+  nameWithType: SKPaintExtensions.GuardFontEdging(SKFont, ref SKFontEdging, SKFontEdging)
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontEdging(SkiaSharp.SKFont, ref SkiaSharp.SKFontEdging, SkiaSharp.SKFontEdging)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GuardFontEdging
+    path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+    startLine: 73
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static void GuardFontEdging(this SKFont font, ref SKFontEdging cache, SKFontEdging value)
+    parameters:
+    - id: font
+      type: SkiaSharp.SKFont
+    - id: cache
+      type: SkiaSharp.SKFontEdging
+    - id: value
+      type: SkiaSharp.SKFontEdging
+    content.vb: Public Shared Sub GuardFontEdging(font As SKFont, cache As SKFontEdging, value As SKFontEdging)
+  overload: DrawnUi.Draw.SKPaintExtensions.GuardFontEdging*
+  nameWithType.vb: SKPaintExtensions.GuardFontEdging(SKFont, SKFontEdging, SKFontEdging)
+  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardFontEdging(SkiaSharp.SKFont, SkiaSharp.SKFontEdging, SkiaSharp.SKFontEdging)
+  name.vb: GuardFontEdging(SKFont, SKFontEdging, SKFontEdging)
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel(SkiaSharp.SKFont,System.Nullable{System.Boolean}@,System.Boolean)
+  commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel(SkiaSharp.SKFont,System.Nullable{System.Boolean}@,System.Boolean)
+  id: GuardFontSubpixel(SkiaSharp.SKFont,System.Nullable{System.Boolean}@,System.Boolean)
+  isExtensionMethod: true
+  parent: DrawnUi.Draw.SKPaintExtensions
+  langs:
+  - csharp
+  - vb
+  name: GuardFontSubpixel(SKFont, ref bool?, bool)
+  nameWithType: SKPaintExtensions.GuardFontSubpixel(SKFont, ref bool?, bool)
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel(SkiaSharp.SKFont, ref bool?, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GuardFontSubpixel
+    path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
+    startLine: 79
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static void GuardFontSubpixel(this SKFont font, ref bool? cache, bool value)
+    parameters:
+    - id: font
+      type: SkiaSharp.SKFont
+    - id: cache
+      type: System.Nullable{System.Boolean}
+    - id: value
+      type: System.Boolean
+    content.vb: Public Shared Sub GuardFontSubpixel(font As SKFont, cache As Boolean?, value As Boolean)
+  overload: DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel*
+  nameWithType.vb: SKPaintExtensions.GuardFontSubpixel(SKFont, Boolean?, Boolean)
+  fullName.vb: DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel(SkiaSharp.SKFont, Boolean?, Boolean)
+  name.vb: GuardFontSubpixel(SKFont, Boolean?, Boolean)
 - uid: DrawnUi.Draw.SKPaintExtensions.GuardStrokeCap(SkiaSharp.SKPaint,SkiaSharp.SKStrokeCap@,SkiaSharp.SKStrokeCap)
   commentId: M:DrawnUi.Draw.SKPaintExtensions.GuardStrokeCap(SkiaSharp.SKPaint,SkiaSharp.SKStrokeCap@,SkiaSharp.SKStrokeCap)
   id: GuardStrokeCap(SkiaSharp.SKPaint,SkiaSharp.SKStrokeCap@,SkiaSharp.SKStrokeCap)
@@ -405,11 +519,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardStrokeCap
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-    startLine: 67
+    startLine: 85
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -442,11 +556,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardImageFilter
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-    startLine: 73
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -479,11 +593,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GuardColorFilter
     path: ../src/Shared/DrawnUi/Draw/Base/SKPaintExtensions.cs
-    startLine: 79
+    startLine: 97
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -827,12 +941,12 @@ references:
   name: GuardIsAntialias
   nameWithType: SKPaintExtensions.GuardIsAntialias
   fullName: DrawnUi.Draw.SKPaintExtensions.GuardIsAntialias
-- uid: DrawnUi.Draw.SKPaintExtensions.GuardTextSize*
-  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardTextSize
-  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardTextSize_SkiaSharp_SKPaint_System_Single__System_Single_
-  name: GuardTextSize
-  nameWithType: SKPaintExtensions.GuardTextSize
-  fullName: DrawnUi.Draw.SKPaintExtensions.GuardTextSize
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth*
+  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth
+  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardStrokeWidth_SkiaSharp_SKPaint_System_Single__System_Single_
+  name: GuardStrokeWidth
+  nameWithType: SKPaintExtensions.GuardStrokeWidth
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth
 - uid: System.Single
   commentId: T:System.Single
   parent: System
@@ -844,12 +958,6 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-- uid: DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth*
-  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth
-  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardStrokeWidth_SkiaSharp_SKPaint_System_Single__System_Single_
-  name: GuardStrokeWidth
-  nameWithType: SKPaintExtensions.GuardStrokeWidth
-  fullName: DrawnUi.Draw.SKPaintExtensions.GuardStrokeWidth
 - uid: DrawnUi.Draw.SKPaintExtensions.GuardBlendMode*
   commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardBlendMode
   href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardBlendMode_SkiaSharp_SKPaint_SkiaSharp_SKBlendMode__SkiaSharp_SKBlendMode_
@@ -864,12 +972,26 @@ references:
   name: SKBlendMode
   nameWithType: SKBlendMode
   fullName: SkiaSharp.SKBlendMode
-- uid: DrawnUi.Draw.SKPaintExtensions.GuardTypeface*
-  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardTypeface
-  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardTypeface_SkiaSharp_SKPaint_SkiaSharp_SKTypeface__SkiaSharp_SKTypeface_
-  name: GuardTypeface
-  nameWithType: SKPaintExtensions.GuardTypeface
-  fullName: DrawnUi.Draw.SKPaintExtensions.GuardTypeface
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontSize*
+  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardFontSize
+  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardFontSize_SkiaSharp_SKFont_System_Single__System_Single_
+  name: GuardFontSize
+  nameWithType: SKPaintExtensions.GuardFontSize
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontSize
+- uid: SkiaSharp.SKFont
+  commentId: T:SkiaSharp.SKFont
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skfont
+  name: SKFont
+  nameWithType: SKFont
+  fullName: SkiaSharp.SKFont
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface*
+  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface
+  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardFontTypeface_SkiaSharp_SKFont_SkiaSharp_SKTypeface__SkiaSharp_SKTypeface_
+  name: GuardFontTypeface
+  nameWithType: SKPaintExtensions.GuardFontTypeface
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontTypeface
 - uid: SkiaSharp.SKTypeface
   commentId: T:SkiaSharp.SKTypeface
   parent: SkiaSharp
@@ -878,20 +1000,89 @@ references:
   name: SKTypeface
   nameWithType: SKTypeface
   fullName: SkiaSharp.SKTypeface
-- uid: DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality*
-  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality
-  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardFilterQuality_SkiaSharp_SKPaint_SkiaSharp_SKFilterQuality__SkiaSharp_SKFilterQuality_
-  name: GuardFilterQuality
-  nameWithType: SKPaintExtensions.GuardFilterQuality
-  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFilterQuality
-- uid: SkiaSharp.SKFilterQuality
-  commentId: T:SkiaSharp.SKFilterQuality
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX*
+  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX
+  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardFontSkewX_SkiaSharp_SKFont_System_Single__System_Single_
+  name: GuardFontSkewX
+  nameWithType: SKPaintExtensions.GuardFontSkewX
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontSkewX
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden*
+  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden
+  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardFontEmbolden_SkiaSharp_SKFont_System_Boolean__System_Boolean_
+  name: GuardFontEmbolden
+  nameWithType: SKPaintExtensions.GuardFontEmbolden
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontEmbolden
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontEdging*
+  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardFontEdging
+  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardFontEdging_SkiaSharp_SKFont_SkiaSharp_SKFontEdging__SkiaSharp_SKFontEdging_
+  name: GuardFontEdging
+  nameWithType: SKPaintExtensions.GuardFontEdging
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontEdging
+- uid: SkiaSharp.SKFontEdging
+  commentId: T:SkiaSharp.SKFontEdging
   parent: SkiaSharp
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp.skfilterquality
-  name: SKFilterQuality
-  nameWithType: SKFilterQuality
-  fullName: SkiaSharp.SKFilterQuality
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skfontedging
+  name: SKFontEdging
+  nameWithType: SKFontEdging
+  fullName: SkiaSharp.SKFontEdging
+- uid: DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel*
+  commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel
+  href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardFontSubpixel_SkiaSharp_SKFont_System_Nullable_System_Boolean___System_Boolean_
+  name: GuardFontSubpixel
+  nameWithType: SKPaintExtensions.GuardFontSubpixel
+  fullName: DrawnUi.Draw.SKPaintExtensions.GuardFontSubpixel
+- uid: System.Nullable{System.Boolean}
+  commentId: T:System.Nullable{System.Boolean}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool?
+  nameWithType: bool?
+  fullName: bool?
+  nameWithType.vb: Boolean?
+  fullName.vb: Boolean?
+  name.vb: Boolean?
+  spec.csharp:
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  spec.vb:
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: DrawnUi.Draw.SKPaintExtensions.GuardStrokeCap*
   commentId: Overload:DrawnUi.Draw.SKPaintExtensions.GuardStrokeCap
   href: DrawnUi.Draw.SKPaintExtensions.html#DrawnUi_Draw_SKPaintExtensions_GuardStrokeCap_SkiaSharp_SKPaint_SkiaSharp_SKStrokeCap__SkiaSharp_SKStrokeCap_

@@ -70,6 +70,7 @@ public static class CachedScrollTrimRepro
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
+        page.ChatStack.AutoDoubleBuffering = true; // this repro targets the double-buffer path (on while scrolling)
         page.InitializeList();
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         host.AdvanceFrames(8, 16);
@@ -184,14 +185,14 @@ public static class CachedScrollTrimRepro
 
     private static void RunInner()
     {
-        Console.WriteLine($"UseDoubleBuffering={typeof(ChatMessagesStack).GetField("UseDoubleBuffering", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null) ?? "n/a (field removed)"}");
-
         var grep = new GrepListener();
         System.Diagnostics.Trace.Listeners.Add(grep);
 
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
+        page.ChatStack.AutoDoubleBuffering = true; // this repro targets the double-buffer path (on while scrolling)
+        Console.WriteLine($"AutoDoubleBuffering={page.ChatStack.AutoDoubleBuffering}");
         page.InitializeList();
 
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
@@ -261,6 +262,7 @@ public static class CachedScrollTrimRepro
 
                 var cs = (DrawnUi.Draw.SkiaLayout)page.ChatStack;
                 Console.WriteLine($"      BAND screenY=[{bandTop}..{bandBot}] ({bandBot - bandTop}px)");
+                Console.WriteLine($"      PLANE: caching={page.ChatStack.IsCaching} [{page.ChatStack.DebugString}]");
                 // which LIVE cells straddle the band Y? (live has them; the plane is missing them)
                 foreach (var t in cs.RenderTree)
                 {
@@ -275,6 +277,31 @@ public static class CachedScrollTrimRepro
                 }
             }
         }
+
+        // ---- IDLE PHASE: stop scrolling, settle, then look for EMPTY cells at rest ----
+        // (device report 2026-07-17: "occasional EMPTY cells placeholders at IDLE" in windowed chat B —
+        // the settled-skeleton heal must clear every unprepared visible cell once the scroll rests)
+        int idleBand = 0, idleFrames = 0;
+        for (int f = 0; f < 180; f++)
+        {
+            host.RenderFrame(16);
+            Thread.Sleep(4);
+            if (f < 60) continue; // give prep/heal time to land
+            int band = host.MaxInteriorEmptyBand(ChatTheme.Bg, out var bt, out var bb);
+            if (band > 40)
+            {
+                idleFrames++;
+                if (band > idleBand)
+                {
+                    idleBand = band;
+                    if (idleFrames <= 5)
+                        Console.WriteLine($"  IDLE-EMPTY f{f} band={band}px screenY=[{bt}..{bb}] " +
+                                          $"caching={page.ChatStack.IsCaching} [{page.ChatStack.DebugString}]");
+                }
+            }
+        }
+        Console.WriteLine($"  IDLE: emptyFrames(>40px)={idleFrames}/120 maxBand={idleBand}px " +
+                          (idleFrames == 0 ? "=> IDLE OK" : "=> IDLE EMPTY CELLS REPRODUCED"));
 
         System.Diagnostics.Trace.Listeners.Remove(grep);
         Console.WriteLine($"  DEBUG-LOG: headApplied={grep.HeadApplied} headCommitted={grep.HeadCommitted} " +

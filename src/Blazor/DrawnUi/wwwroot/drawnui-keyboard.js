@@ -46,3 +46,17 @@ export function attachGlobalKeyboard() {
     window.addEventListener("keydown", state.keyDownHandler, true);
     window.addEventListener("keyup", state.keyUpHandler, true);
 }
+
+// Called when a drawn text editor (SkiaEditor) gains focus. A drawn editor has no DOM
+// element, so DOM focus stays on whatever page text input (e.g. a Monaco code editor)
+// last held it — the browser keeps delivering physical keys there. Blur that external
+// input so keys reach only the window-level listener that drives the drawn editor.
+// Scoped to text-entry elements OUTSIDE the canvas host; leaves everything else alone.
+export function blurExternalTextInput() {
+    const a = document.activeElement;
+    if (a
+        && (a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.isContentEditable)
+        && !(a.closest && a.closest(".xaml-canvas"))) {
+        a.blur();
+    }
+}

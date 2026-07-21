@@ -32,8 +32,9 @@ try {
 
     const config = getConfig();
 
-    // Input / frame / resize callbacks live in the DrawnUi.Web library assembly.
-    const lib = await getAssemblyExports('DrawnUi.Web');
+    // Input / frame / resize callbacks live in the DrawnUi.Wasm library assembly
+    // (assembly name is DrawnUi.Wasm; the DrawnUi.Web name is only the RCL asset base path).
+    const lib = await getAssemblyExports('DrawnUi.Wasm');
     const Input = lib.DrawnUi.Draw.WebInput;
     const Super = lib.DrawnUi.Draw.Super;
     const Host = lib.DrawnUi.Draw.BrowserHost;

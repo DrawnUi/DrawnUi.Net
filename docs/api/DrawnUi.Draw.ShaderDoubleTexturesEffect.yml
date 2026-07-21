@@ -43,11 +43,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderDoubleTexturesEffect
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 9
+    startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -98,6 +98,12 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.TimeSeconds
   - DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   - DrawnUi.Draw.SkiaShaderEffect.MouseInitial
+  - DrawnUi.Draw.SkiaShaderEffect.Uniforms
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
   - DrawnUi.Draw.SkiaShaderEffect.CreateUniforms(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect._template
   - DrawnUi.Draw.SkiaShaderEffect._templatePlacehodler
@@ -156,6 +162,7 @@ items:
   - System.Object.ToString
   extensionMethods:
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.DrawnUi.Draw.FluentExtensions.Assign``1(DrawnUi.Draw.ShaderDoubleTexturesEffect@)
+  - DrawnUi.Draw.ShaderDoubleTexturesEffect.DrawnUi.Draw.FluentExtensions.OnShaderError``1(System.Action{DrawnUi.Draw.ShaderDoubleTexturesEffect,System.String})
   - DrawnUi.Draw.ShaderDoubleTexturesEffect.DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
 - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.ParentReady
@@ -172,11 +179,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParentReady
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 11
+    startLine: 12
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -200,11 +207,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldDisposePreviousTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 16
+    startLine: 17
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -237,11 +244,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -265,11 +272,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TilingSecondaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 45
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -292,11 +299,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateTexturesUniforms
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 47
+    startLine: 48
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -330,11 +337,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPrimaryTextureImage
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 79
+    startLine: 80
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -373,11 +380,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlFromProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 127
+    startLine: 128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -400,11 +407,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlFrom
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 133
+    startLine: 134
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -429,11 +436,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrimarySourceProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 145
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -456,11 +463,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrimarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 152
+    startLine: 153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -485,11 +492,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResizePrimaryLoadedBitmap
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 178
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -511,11 +518,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResizedPrimaryImage
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 217
+    startLine: 218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -542,11 +549,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedPrimaryBitmap
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 218
+    startLine: 219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -571,11 +578,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadPrimarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 227
+    startLine: 228
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -609,11 +616,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSecondaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 271
+    startLine: 272
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -637,11 +644,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SecondaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 296
+    startLine: 297
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -666,11 +673,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileSecondaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 298
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -695,11 +702,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedSecondaryBitmap
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 317
+    startLine: 318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -722,11 +729,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SecondarySourceProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 321
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -749,11 +756,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SecondarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 328
+    startLine: 329
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -778,11 +785,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResizeSecondaryLoadedBitmapAndCompileTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 355
+    startLine: 356
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -804,11 +811,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadSecondarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 385
+    startLine: 386
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -842,11 +849,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DecodePackageBitmapAsync
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 420
+    startLine: 421
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -876,11 +883,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AssignedControlTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 438
+    startLine: 439
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -903,11 +910,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImportCacheTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 440
+    startLine: 441
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -929,11 +936,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyControlTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 455
+    startLine: 456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -958,11 +965,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlToProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 486
+    startLine: 487
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -985,11 +992,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 492
+    startLine: 493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1607,6 +1614,304 @@ references:
   name: MouseInitial
   nameWithType: SkiaShaderEffect.MouseInitial
   fullName: DrawnUi.Draw.SkiaShaderEffect.MouseInitial
+- uid: DrawnUi.Draw.SkiaShaderEffect.Uniforms
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.Uniforms
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_Uniforms
+  name: Uniforms
+  nameWithType: SkiaShaderEffect.Uniforms
+  fullName: DrawnUi.Draw.SkiaShaderEffect.Uniforms
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_
+  name: SetUniform(string, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single)
+  name.vb: SetUniform(String, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_
+  name: SetUniform(string, float, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single, Single)
+  name.vb: SetUniform(String, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_
+  name: SetUniform(string, float, float, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float, float, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single, Single, Single)
+  name.vb: SetUniform(String, Single, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_System_Single_
+  name: SetUniform(string, float, float, float, float)
+  nameWithType: SkiaShaderEffect.SetUniform(string, float, float, float, float)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float, float, float)
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single, Single, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single, Single, Single, Single)
+  name.vb: SetUniform(String, Single, Single, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single,System.Single,System.Single,System.Single)
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  name: SetUniform(string, float[])
+  nameWithType: SkiaShaderEffect.SetUniform(string, float[])
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float[])
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single())
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single())
+  name.vb: SetUniform(String, Single())
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaShaderEffect.CreateUniforms(SkiaSharp.SKRect)
   commentId: M:DrawnUi.Draw.SkiaShaderEffect.CreateUniforms(SkiaSharp.SKRect)
   parent: DrawnUi.Draw.SkiaShaderEffect
@@ -2859,6 +3164,83 @@ references:
     name: ShaderDoubleTexturesEffect
     href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
   - name: )
+- uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.DrawnUi.Draw.FluentExtensions.OnShaderError``1(System.Action{DrawnUi.Draw.ShaderDoubleTexturesEffect,System.String})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  name: OnShaderError<ShaderDoubleTexturesEffect>(ShaderDoubleTexturesEffect, Action<ShaderDoubleTexturesEffect, string>)
+  nameWithType: FluentExtensions.OnShaderError<ShaderDoubleTexturesEffect>(ShaderDoubleTexturesEffect, Action<ShaderDoubleTexturesEffect, string>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnShaderError<DrawnUi.Draw.ShaderDoubleTexturesEffect>(DrawnUi.Draw.ShaderDoubleTexturesEffect, System.Action<DrawnUi.Draw.ShaderDoubleTexturesEffect, string>)
+  nameWithType.vb: FluentExtensions.OnShaderError(Of ShaderDoubleTexturesEffect)(ShaderDoubleTexturesEffect, Action(Of ShaderDoubleTexturesEffect, String))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnShaderError(Of DrawnUi.Draw.ShaderDoubleTexturesEffect)(DrawnUi.Draw.ShaderDoubleTexturesEffect, System.Action(Of DrawnUi.Draw.ShaderDoubleTexturesEffect, String))
+  name.vb: OnShaderError(Of ShaderDoubleTexturesEffect)(ShaderDoubleTexturesEffect, Action(Of ShaderDoubleTexturesEffect, String))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(DrawnUi.Draw.ShaderDoubleTexturesEffect,System.Action{DrawnUi.Draw.ShaderDoubleTexturesEffect,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: <
+  - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
+    name: ShaderDoubleTexturesEffect
+    href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
+    name: ShaderDoubleTexturesEffect
+    href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
+    name: ShaderDoubleTexturesEffect
+    href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(DrawnUi.Draw.ShaderDoubleTexturesEffect,System.Action{DrawnUi.Draw.ShaderDoubleTexturesEffect,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
+    name: ShaderDoubleTexturesEffect
+    href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
+    name: ShaderDoubleTexturesEffect
+    href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect
+    name: ShaderDoubleTexturesEffect
+    href: DrawnUi.Draw.ShaderDoubleTexturesEffect.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.ShaderDoubleTexturesEffect.DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   parent: DrawnUi.Draw.ThemeBindings
@@ -3152,6 +3534,70 @@ references:
   name: FluentExtensions
   nameWithType: FluentExtensions
   fullName: DrawnUi.Draw.FluentExtensions
+- uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  name: OnShaderError<T>(T, Action<T, string>)
+  nameWithType: FluentExtensions.OnShaderError<T>(T, Action<T, string>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnShaderError<T>(T, System.Action<T, string>)
+  nameWithType.vb: FluentExtensions.OnShaderError(Of T)(T, Action(Of T, String))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnShaderError(Of T)(T, System.Action(Of T, String))
+  name.vb: OnShaderError(Of T)(T, Action(Of T, String))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnShaderError``1(``0,System.Action{``0,System.String})
+    name: OnShaderError
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnShaderError__1___0_System_Action___0_System_String__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   commentId: M:DrawnUi.Draw.ThemeBindings.WithThemeBinding``1(``0,Microsoft.Maui.Controls.BindableProperty,System.Object,System.Object,System.Object)
   isExternal: true

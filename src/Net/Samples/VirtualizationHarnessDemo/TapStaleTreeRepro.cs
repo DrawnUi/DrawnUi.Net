@@ -57,7 +57,7 @@ public static class TapStaleTreeRepro
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
-        page.ChatStack.UseDoubleBuffering = doubleBuffering;
+        page.ChatStack.AutoDoubleBuffering = doubleBuffering;
         page.InitializeList();
 
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }

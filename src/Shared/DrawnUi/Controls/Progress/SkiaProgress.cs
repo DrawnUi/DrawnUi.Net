@@ -20,6 +20,9 @@ public class SkiaProgress : SkiaRangeBase
                 case PrebuiltControlStyle.Material:
                     CreateMaterialStyleContent();
                     break;
+                case PrebuiltControlStyle.Material3:
+                    CreateMaterial3StyleContent();
+                    break;
                 case PrebuiltControlStyle.Windows:
                     CreateWindowsStyleContent();
                     break;
@@ -41,13 +44,17 @@ public class SkiaProgress : SkiaRangeBase
         Type = LayoutType.Column;
         UseCache = SkiaCacheType.ImageDoubleBuffered;
 
+        var trackHeight = ResolvedTrackHeight;
+        var trackColor = ResolvedTrackColor;
+        var progressColor = ResolvedProgressColor;
+
         Children = new List<SkiaControl>()
         {
             // Main track container
             new SkiaLayout
             {
                 Tag = "Track",
-                HeightRequest = TrackHeight,
+                HeightRequest = trackHeight,
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
                 Children = new List<SkiaControl>()
@@ -56,9 +63,9 @@ public class SkiaProgress : SkiaRangeBase
                     new SkiaShape()
                     {
                         Tag = "BackgroundTrack",
-                        BackgroundColor = TrackColor,
-                        HeightRequest = TrackHeight,
-                        CornerRadius = TrackHeight / 2,
+                        BackgroundColor = trackColor,
+                        HeightRequest = trackHeight,
+                        CornerRadius = trackHeight / 2,
                         HorizontalOptions = LayoutOptions.Fill,
                         UseCache = SkiaCacheType.Operations,
                         VerticalOptions = LayoutOptions.Center
@@ -68,9 +75,9 @@ public class SkiaProgress : SkiaRangeBase
                     new ProgressTrail()
                     {
                         Tag = "ProgressTrail",
-                        BackgroundColor = ProgressColor,
-                        HeightRequest = TrackHeight,
-                        CornerRadius = TrackHeight / 2,
+                        BackgroundColor = progressColor,
+                        HeightRequest = trackHeight,
+                        CornerRadius = trackHeight / 2,
                         HorizontalOptions = LayoutOptions.Start,
                         UseCache = SkiaCacheType.Operations,
                         VerticalOptions = LayoutOptions.Center,
@@ -84,6 +91,51 @@ public class SkiaProgress : SkiaRangeBase
         ProgressTrail = progressTrail;
     }
 
+    /// <summary>
+    /// Track color to render: an explicitly set <see cref="SkiaRangeBase.TrackColor"/> wins,
+    /// otherwise the current style's palette.
+    /// </summary>
+    protected Color ResolvedTrackColor => IsSet(TrackColorProperty)
+        ? TrackColor
+        : UsingControlStyle switch
+        {
+            PrebuiltControlStyle.Cupertino => Color.FromRgba(229, 229, 234, 255), // iOS system gray 5
+            PrebuiltControlStyle.Material => Color.FromRgba(232, 234, 237, 255), // Material surface variant
+            PrebuiltControlStyle.Material3 => Color.FromRgba(230, 224, 233, 255), // M3 surface container highest
+            PrebuiltControlStyle.Windows => Color.FromRgba(243, 242, 241, 255), // Fluent neutral background
+            _ => Color.FromRgba(215, 219, 224, 255) // DrawnUI flat default neutral #D7DBE0
+        };
+
+    /// <summary>
+    /// Progress color to render: an explicitly set <see cref="SkiaRangeBase.ProgressColor"/> wins,
+    /// otherwise the current style's palette.
+    /// </summary>
+    protected Color ResolvedProgressColor => IsSet(ProgressColorProperty)
+        ? ProgressColor
+        : UsingControlStyle switch
+        {
+            PrebuiltControlStyle.Cupertino => Color.FromRgba(0, 122, 255, 255), // iOS system blue
+            PrebuiltControlStyle.Material => Color.FromRgba(33, 150, 243, 255), // Material blue (M2 family)
+            PrebuiltControlStyle.Material3 => Color.FromRgba(103, 80, 164, 255), // M3 primary
+            PrebuiltControlStyle.Windows => Color.FromRgba(0, 120, 212, 255), // Fluent accent
+            _ => Color.FromRgba(220, 20, 60, 255) // DrawnUI flat default accent Crimson #DC143C
+        };
+
+    /// <summary>
+    /// Track height to render: an explicitly set <see cref="SkiaRangeBase.TrackHeight"/> wins,
+    /// otherwise the current style's standard height.
+    /// </summary>
+    protected double ResolvedTrackHeight => IsSet(TrackHeightProperty)
+        ? TrackHeight
+        : UsingControlStyle switch
+        {
+            PrebuiltControlStyle.Cupertino => 4.0,
+            PrebuiltControlStyle.Material => 4.0,
+            PrebuiltControlStyle.Material3 => 4.0,
+            PrebuiltControlStyle.Windows => 6.0,
+            _ => 8.0 // DrawnUI flat default
+        };
+
     protected virtual void CreateCupertinoStyleContent()
     {
         // iOS progress bar styling - follows Apple HIG specifications
@@ -94,9 +146,9 @@ public class SkiaProgress : SkiaRangeBase
         Type = LayoutType.Column;
         UseCache = SkiaCacheType.ImageDoubleBuffered;
 
-        var iosTrackHeight = 4.0; // iOS standard progress bar height
-        var iosTrackColor = Color.FromRgba(229, 229, 234, 255); // iOS system gray 5
-        var iosProgressColor = Color.FromRgba(0, 122, 255, 255); // iOS system blue #007AFF
+        var iosTrackHeight = ResolvedTrackHeight;
+        var iosTrackColor = ResolvedTrackColor;
+        var iosProgressColor = ResolvedProgressColor;
 
         Children = new List<SkiaControl>()
         {
@@ -136,11 +188,6 @@ public class SkiaProgress : SkiaRangeBase
 
         Track = track;
         ProgressTrail = progressTrail;
-
-        // Set default colors
-        TrackColor = iosTrackColor;
-        ProgressColor = iosProgressColor;
-        TrackHeight = iosTrackHeight;
     }
 
     protected virtual void CreateMaterialStyleContent()
@@ -153,9 +200,9 @@ public class SkiaProgress : SkiaRangeBase
         Type = LayoutType.Column;
         UseCache = SkiaCacheType.ImageDoubleBuffered;
 
-        var materialTrackHeight = 4.0; // Material Design standard linear progress height
-        var materialTrackColor = Color.FromRgba(232, 234, 237, 255); // Material surface variant
-        var materialProgressColor = Color.FromRgba(103, 80, 164, 255); // Material primary purple
+        var materialTrackHeight = ResolvedTrackHeight;
+        var materialTrackColor = ResolvedTrackColor;
+        var materialProgressColor = ResolvedProgressColor;
 
         Children = new List<SkiaControl>()
         {
@@ -195,11 +242,76 @@ public class SkiaProgress : SkiaRangeBase
 
         Track = track;
         ProgressTrail = progressTrail;
+    }
 
-        // Set default colors
-        TrackColor = materialTrackColor;
-        ProgressColor = materialProgressColor;
-        TrackHeight = materialTrackHeight;
+    /// <summary>
+    /// Creates a Material 3 (Material You) progress bar: rounded active indicator,
+    /// a gap before the remaining track and a small stop-indicator dot at the track end.
+    /// </summary>
+    protected virtual void CreateMaterial3StyleContent()
+    {
+        SetDefaultContentSize(200, 4);
+
+        HorizontalOptions = LayoutOptions.Fill;
+        MinimumWidthRequest = 100;
+        Type = LayoutType.Column;
+        UseCache = SkiaCacheType.ImageDoubleBuffered;
+
+        var trackHeight = ResolvedTrackHeight;
+        var trackColor = ResolvedTrackColor;
+        var progressColor = ResolvedProgressColor;
+
+        Children = new List<SkiaControl>()
+        {
+            new SkiaLayout
+            {
+                Tag = "Track",
+                HeightRequest = trackHeight,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Children = new List<SkiaControl>()
+                {
+                    new SkiaShape()
+                    {
+                        Tag = "BackgroundTrack",
+                        BackgroundColor = trackColor,
+                        HeightRequest = trackHeight,
+                        CornerRadius = 2,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        UseCache = SkiaCacheType.Operations,
+                        VerticalOptions = LayoutOptions.Center
+                    },
+
+                    new ProgressTrail()
+                    {
+                        Tag = "ProgressTrail",
+                        BackgroundColor = progressColor,
+                        HeightRequest = trackHeight,
+                        CornerRadius = 2,
+                        HorizontalOptions = LayoutOptions.Start,
+                        UseCache = SkiaCacheType.Operations,
+                        VerticalOptions = LayoutOptions.Center,
+                        XPos = 0,
+                    }.Assign(out var progressTrail),
+
+                    // M3 signature stop indicator: small dot at the track end
+                    new SkiaShape()
+                    {
+                        Tag = "StopDot",
+                        Type = ShapeType.Circle,
+                        WidthRequest = 4,
+                        LockRatio = 1,
+                        BackgroundColor = progressColor,
+                        HorizontalOptions = LayoutOptions.End,
+                        VerticalOptions = LayoutOptions.Center,
+                        UseCache = SkiaCacheType.Operations,
+                    }
+                }
+            }.Assign(out var track)
+        };
+
+        Track = track;
+        ProgressTrail = progressTrail;
     }
 
     protected virtual void CreateWindowsStyleContent()
@@ -212,9 +324,9 @@ public class SkiaProgress : SkiaRangeBase
         Type = LayoutType.Column;
         UseCache = SkiaCacheType.ImageDoubleBuffered;
 
-        var windowsTrackHeight = 6.0; // Windows standard progress bar height
-        var windowsTrackColor = Color.FromRgba(243, 242, 241, 255); // Fluent neutral background
-        var windowsProgressColor = Color.FromRgba(0, 120, 212, 255); // Fluent accent blue #0078D4
+        var windowsTrackHeight = ResolvedTrackHeight;
+        var windowsTrackColor = ResolvedTrackColor;
+        var windowsProgressColor = ResolvedProgressColor;
 
         Children = new List<SkiaControl>()
         {
@@ -254,11 +366,6 @@ public class SkiaProgress : SkiaRangeBase
 
         Track = track;
         ProgressTrail = progressTrail;
-
-        // Set default colors
-        TrackColor = windowsTrackColor;
-        ProgressColor = windowsProgressColor;
-        TrackHeight = windowsTrackHeight;
     }
 
     #endregion
@@ -274,8 +381,15 @@ public class SkiaProgress : SkiaRangeBase
             ProgressTrail = FindView<ProgressTrail>("ProgressTrail");
     }
 
+    /// <summary>
+    /// Gap in points between the active indicator and the remaining track in the Material 3 style.
+    /// </summary>
+    protected const double MaterialProgressGap = 4.0;
+
     protected override void UpdateVisualState()
     {
+        double progressWidth = -1;
+
         if (ProgressTrail is ProgressTrail trail && Track != null)
         {
             // Calculate progress width based on current value
@@ -283,10 +397,10 @@ public class SkiaProgress : SkiaRangeBase
             if (totalWidth > 0)
             {
                 var progressRatio = Math.Clamp((Value - Min) / (Max - Min), 0.0, 1.0);
-                var progressWidth = totalWidth * progressRatio;
-                
+                progressWidth = totalWidth * progressRatio;
+
                 trail.XPosEnd = progressWidth;
-                trail.BackgroundColor = ProgressColor;
+                trail.BackgroundColor = ResolvedProgressColor;
             }
         }
 
@@ -294,13 +408,24 @@ public class SkiaProgress : SkiaRangeBase
         var backgroundTrack = FindView<SkiaShape>("BackgroundTrack");
         if (backgroundTrack != null)
         {
-            backgroundTrack.BackgroundColor = TrackColor;
-            backgroundTrack.HeightRequest = TrackHeight;
+            backgroundTrack.BackgroundColor = ResolvedTrackColor;
+            backgroundTrack.HeightRequest = ResolvedTrackHeight;
+
+            if (UsingControlStyle == PrebuiltControlStyle.Material3 && progressWidth >= 0)
+            {
+                // M3 signature: remaining track starts after a gap from the active indicator
+                backgroundTrack.Margin = new Thickness(progressWidth + MaterialProgressGap, 0, 0, 0);
+            }
+        }
+
+        if (FindView<SkiaShape>("StopDot") is SkiaShape dot)
+        {
+            dot.BackgroundColor = ResolvedProgressColor;
         }
 
         if (ProgressTrail != null)
         {
-            ProgressTrail.HeightRequest = TrackHeight;
+            ProgressTrail.HeightRequest = ResolvedTrackHeight;
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace DrawnUi.Draw;
@@ -34,8 +34,19 @@ public partial class SkiaScroll
             // trajectory would race at full speed and slam-stop at the OLD edge's content position.
             // Re-plan it with the remaining velocity once this frame's bounds are refreshed.
             if (_changeSpeed != null)
+            {
                 _replanFlingY = true;
+                _replanVelocityY = _animatorFlingY.CurrentVelocity;
+            }
         }
+
+        // The direct range scroller (wheel steps, ScrollToY, snaps) also rewrites ViewportOffsetY per
+        // frame from its own start/end range. Untranslated it overwrites this compensation with stale
+        // pre-shift values: for one+ frames the viewport points outside the translated content — a
+        // BLANK frame that makes the adapter release every in-use view, then mass-rebind + re-bake
+        // next frame (the "cut lag" / "cells 11/24 -> 0/24" collapse).
+        if (_scrollerY != null && _scrollerY.IsRunning)
+            _scrollerY.Shift(deltaPoints);
 
         if (_vectorAnimatorBounceY != null && _vectorAnimatorBounceY.IsRunning)
             _vectorAnimatorBounceY.Stop(); // bounce target is stale after a content shift; let it re-evaluate
@@ -46,6 +57,13 @@ public partial class SkiaScroll
     /// (content grew during the fling, e.g. backward LoadMore prepend). Consumed in Draw.
     /// </summary>
     protected bool _replanFlingY;
+
+    /// <summary>
+    /// Velocity captured when <see cref="_replanFlingY"/> was raised, used if the cut fling already
+    /// self-finished by the time the replan is consumed.
+    /// </summary>
+    protected float _replanVelocityY;
+
 
     public float ViewportOffsetY
     {
@@ -399,6 +417,7 @@ public partial class SkiaScroll
     {
         UpdateLoadingLock(false);
 
+
         //if (CheckNeedToSnap())
         //{
         //    Snap(SystemAnimationTimeSecs);
@@ -599,13 +618,13 @@ public partial class SkiaScroll
         // the per-plane window grid, so the scroll range always spans the whole virtual list.
         if (UseVirtual && Content is SkiaLayout vlayout && vlayout.IsTemplated
             && vlayout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
-            && vlayout.ItemsSource != null && vlayout.ItemsSource.Count > 0)
+            && vlayout.EffectiveItemsSource != null && vlayout.EffectiveItemsSource.Count > 0)
         {
             float scale = (float)RenderingScale;
             if (scale <= 0) scale = 1;
             float avgPx = vlayout.GetAverageItemHeightPixels(scale);
             float spacingPx = (float)(vlayout.Spacing * scale);
-            double estTotalPts = ((avgPx + spacingPx) * vlayout.ItemsSource.Count) / scale;
+            double estTotalPts = ((avgPx + spacingPx) * vlayout.EffectiveItemsSource.Count) / scale;
 
             if (Orientation == ScrollOrientation.Vertical && estTotalPts > ptsContentHeight)
                 ptsContentHeight = (float)estTotalPts;
@@ -643,12 +662,15 @@ public partial class SkiaScroll
         // the scroll must not TRAVEL past the cells that actually exist in the structure, or it lands on
         // un-materialized space => blank. Narrow ONLY the offset bounds to the measured content; the unready
         // edge becomes a temporary content edge (normal bounce + LoadMore apply) and grows as measurement
-        // progresses. Gate on LastMeasuredIndex < Count-1 (reliable "incomplete"), NOT IsBackgroundMeasuring
+        // progresses. Gate on LastMeasuredIndexLocal < Count-1 (reliable "incomplete"), NOT IsBackgroundMeasuring
         // (that flag is False during the blank window). Pure scroll-side, no structure writes => thread-safe.
+        // (windowed sources are exempt: their extent is virtual — see the window extension below —
+        // and clamping to the measured slice would re-create the hard wall the extension removes)
         if (Content is SkiaLayout mvLayout && mvLayout.IsTemplated
             && mvLayout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
-            && mvLayout.ItemsSource != null && mvLayout.ItemsSource.Count > 0
-            && mvLayout.LastMeasuredIndex < mvLayout.ItemsSource.Count - 1)
+            && mvLayout.ItemsWindow == null
+            && mvLayout.EffectiveItemsSource != null && mvLayout.EffectiveItemsSource.Count > 0
+            && mvLayout.LastMeasuredIndexLocal < mvLayout.EffectiveItemsSource.Count - 1)
         {
             double measuredEndPts = mvLayout.GetMeasuredContentEnd(); // points, top of last measured cell
             if (measuredEndPts > 0)
@@ -675,10 +697,43 @@ public partial class SkiaScroll
             }
         }
 
+        // WINDOWED SOURCE = VIRTUAL EXTENT. The layout materializes only a physical slice (e.g. 128)
+        // of a bigger ItemsSource (e.g. 1000). Reporting the SLICE as the scroll extent makes the
+        // scroll STOP DEAD at the slice end whenever slides can't outrun the user (guaranteed on
+        // single-threaded targets: measurement/slides only progress between frames). The slice end is
+        // NOT the end of content — extend forward travel past the slice so slides can chase the offset,
+        // each head trim compensating it back: the traveler never meets a wall.
+        // The extension is CAPPED at a chase headroom (2 viewports, always > one slide batch): an
+        // unbounded remainder estimate let the viewport strand deep in unmaterialized space (blank
+        // frames, adapter in-use collapse, edge LoadMore starved on vis=-1 — harness regressions).
+        // Headroom advances as slides land, so sustained scrolling still traverses the whole source.
+        // Backward needs no extension: head inserts land at local 0 with offset compensation, and
+        // backward slides fire at the local-top margin before the clamp is ever reached.
+        _windowTravelExtension = 0;
+        if (Content is SkiaLayout wLayout && wLayout.ItemsWindow != null && wLayout.ItemsSource != null)
+        {
+            int below = wLayout.ItemsSource.Count - wLayout.ItemsWindow.WindowEnd;
+            if (below > 0)
+            {
+                float scaleW = (float)RenderingScale;
+                if (scaleW <= 0) scaleW = 1;
+                double cellPts = wLayout.GetAverageItemHeightPixels(scaleW) / scaleW + wLayout.Spacing;
+                double headroomPts = 2 * (Orientation == ScrollOrientation.Vertical
+                    ? MeasuredSize.Units.Height : MeasuredSize.Units.Width);
+                double extension = Math.Min(below * cellPts, headroomPts);
+                _windowTravelExtension = (float)extension;
+                if (Orientation == ScrollOrientation.Vertical)
+                    height += (float)extension;
+                else
+                    width += (float)extension;
+            }
+        }
+
         var rect = new SKRect(-width, -height, 0, 0);
 
         return rect;
     }
+
 
     /// <summary>
     ///
@@ -818,6 +873,18 @@ public partial class SkiaScroll
 
         _changeSpeed = null;
 
+        // A windowed source publishes only a SLICE: ContentOffsetBounds ends at the slice plus a
+        // capped chase headroom (2 viewports, see GetContentOffsetBounds), NOT at the end of the real
+        // content. Cutting the fling against that provisional wall killed it in ~20ms — the scroll
+        // froze dead at every window slide/engage until the user touched again. There IS more content
+        // below, so let the fling decelerate naturally and let the per-frame clamp hold it while the
+        // slides chase; the wall moves forward as they land.
+        if (!offsetOk && animator == _animatorFlingY && _windowTravelExtension > 0 &&
+            destination < ContentOffsetBounds.Top)
+        {
+            offsetOk = true;
+        }
+
         if (!offsetOk) //detected that scroll will end past the bounds
         {
             var clamped = ClampOffset((float)destinationPoint.X, (float)destinationPoint.Y, ContentOffsetBounds, true);
@@ -908,6 +975,29 @@ public partial class SkiaScroll
     /// </summary>
     /// <param name="offset"></param>
     /// <param name="animate"></param>
+    /// <summary>
+    /// Forward chase-headroom (points) currently included in ContentOffsetBounds for a windowed
+    /// source (see the virtual-extent block in GetContentOffsetBounds). Zero when no window or the
+    /// window reached the source end. INCREMENTAL user travel (wheel/pan/fling) may use it — slides
+    /// chase the offset; ABSOLUTE programmatic targets (ScrollToIndex) must NOT aim into it: a jump
+    /// clamped against the extended bounds landed the viewport in the VOID past the last item
+    /// (empty screen, vis=-1) until user interaction pulled it back.
+    /// </summary>
+    protected float _windowTravelExtension;
+
+    /// <summary>ContentOffsetBounds with the window chase-headroom removed: the REAL content travel.</summary>
+    protected SKRect GetHardContentOffsetBounds()
+    {
+        var b = ContentOffsetBounds;
+        if (_windowTravelExtension > 0)
+        {
+            if (Orientation == ScrollOrientation.Vertical)
+                return new SKRect(b.Left, b.Top + _windowTravelExtension, b.Right, b.Bottom);
+            return new SKRect(b.Left + _windowTravelExtension, b.Top, b.Right, b.Bottom);
+        }
+        return b;
+    }
+
     protected void ScrollToOffset(Vector2 targetOffset, float maxTimeSecs)
     {
         StopScrolling();
@@ -945,6 +1035,14 @@ public partial class SkiaScroll
     public void ScrollToIndex(int index, bool animate, RelativePositionType option = RelativePositionType.Start,
         bool clamp = false)
     {
+        // Built-in source window engaged: the public API speaks GLOBAL (ItemsSource-space) indices.
+        // Resident target -> plain local mapping; non-resident -> the window rebases centered on it
+        // (staged full replace) and the ordered scroll below waits that out before resolving geometry.
+        if (Content is SkiaLayout { ItemsWindow: not null } windowed)
+        {
+            index = windowed.ItemsWindow.MapToLocalForScroll(index);
+        }
+
         //saving to use upon creating control if this was called before its internal structure was really created
         OrderedScrollToIndex = new()
         {
@@ -982,7 +1080,7 @@ public partial class SkiaScroll
                     return false;
 
                 // MeasureVisible: the target's geometry is REAL only once measurement has passed it
-                // (LastMeasuredIndex); before that its Destination and the content bounds are estimates.
+                // (LastMeasuredIndexLocal); before that its Destination and the content bounds are estimates.
                 // The old gate ("IsBackgroundMeasuring && progress < index") had a hole: background idle +
                 // target unmeasured passed through, the offset was computed from estimates, fired and
                 // self-cleared — a window jump (ScrollToOldest) landed short and never corrected. Hold the
@@ -991,13 +1089,24 @@ public partial class SkiaScroll
                 // frames coming while we hold. Bounded: measured progress is monotonic per kick; if a kick
                 // is impossible (no constraints yet), fall through and resolve with estimates once instead
                 // of deadlocking.
-                if (layout.IsTemplated && layout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
-                    && layout.ItemsSource != null
-                    && OrderedScrollToIndex.Index < layout.ItemsSource.Count
-                    && layout.LastMeasuredIndex < OrderedScrollToIndex.Index)
+                if (layout.IsTemplated && layout.EffectiveItemsSource != null
+                    && OrderedScrollToIndex.Index < layout.EffectiveItemsSource.Count
+                    && layout.LastMeasuredIndexLocal < OrderedScrollToIndex.Index)
                 {
-                    if (layout.IsBackgroundMeasuring || layout.KickBackgroundMeasurement())
+                    if (layout.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
                     {
+                        if (layout.IsBackgroundMeasuring || layout.KickBackgroundMeasurement())
+                        {
+                            Repaint();
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        // Sync strategies (MeasureFirst): after a windowed jump's full-replace reset the
+                        // content is unmeasured for a frame or two — resolving now clamps the target into
+                        // "already there" and self-clears without moving (jump lands short). The next
+                        // measure pass restores the frontier; just hold the order until then.
                         Repaint();
                         return false;
                     }
@@ -1010,6 +1119,14 @@ public partial class SkiaScroll
 
             if (PointIsValid(offset))
             {
+                // A jump target must land INSIDE real content: clamp against the HARD bounds
+                // (chase-headroom removed) — a target clamped by the downstream ScrollToY against
+                // the EXTENDED bounds landed the viewport in the void past the last item.
+                var hard = GetHardContentOffsetBounds();
+                offset = new SKPoint(
+                    Math.Clamp(offset.X, hard.Left, hard.Right),
+                    Math.Clamp(offset.Y, hard.Top, hard.Bottom));
+
                 if (AreEqual((float)InternalViewportOffset.Units.X, offset.X, 0.5)
                     && AreEqual((float)InternalViewportOffset.Units.Y, offset.Y, 0.5))
                 {

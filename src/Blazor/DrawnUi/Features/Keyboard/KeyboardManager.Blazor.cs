@@ -21,6 +21,19 @@ public partial class KeyboardManager
         _attached = true;
     }
 
+    // Drops DOM focus from an external page text input (e.g. a Monaco code editor) so the
+    // browser stops delivering physical keys to it once a drawn SkiaEditor is focused.
+    // Fire-and-forget; no-op before the keyboard module is imported.
+    public static void BlurExternalTextInput()
+    {
+        var module = _module;
+        if (module is null)
+            return;
+
+        _ = module.InvokeVoidAsync("blurExternalTextInput").AsTask()
+            .ContinueWith(static _ => { }, TaskContinuationOptions.OnlyOnFaulted);
+    }
+
     [JSInvokable]
     public static void HandleGlobalKeyDown(string? code)
     {

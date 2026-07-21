@@ -164,6 +164,7 @@ namespace DrawnUi.Draw
             var font = SKTypeface.FromFamilyName(alias);
             if (font == null || font.FamilyName != alias)
             {
+                font = null;
                 try
                 {
                     var instance = FontRegistrar as FontRegistrar;

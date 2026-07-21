@@ -37,7 +37,7 @@ An interactive card gallery featuring:
 
 <img src="../images/cards.png" alt="Interactive Cards Tutorial" width="350" style="margin-top: 16px;" />
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Tutorials) 
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials) 
 
 Clone the repo and run the Tutorials project to explore all examples!
 
@@ -535,7 +535,7 @@ Each container uses specific caching strategies for optimal performance:
 - **`UseCache="Image"`** - Caches the entire visual result as a bitmap
     - Used in this tutorial for the title section and card containers
   - Essential for **shadow effects** - shadows are expensive to recalculate every frame
-  - Used on card containers instead of cards to avoid clipping shadows
+  - Cache placement is free: the engine auto-expands the cache surface, clip and dirty region to fit shadows/glow (see [Effects](controls/effects.md)) — you can cache the shadowed shape itself; no wrapper container is needed to avoid clipping (that was required in old DrawnUI versions only)
 
 **Why Cache Shadows?**   
 Drop shadows require complex blur calculations on every frame. Without caching, animating a card with shadows would:

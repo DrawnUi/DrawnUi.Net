@@ -5,6 +5,7 @@ items:
   id: SkiaGesturesParameters
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
   - DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs,System.Single)
   - DrawnUi.Draw.SkiaGesturesParameters.Empty
   - DrawnUi.Draw.SkiaGesturesParameters.Event
@@ -19,8 +20,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaGesturesParameters
     path: ../src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
     startLine: 18
@@ -56,8 +57,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Type
     path: ../src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
     startLine: 21
@@ -85,8 +86,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Event
     path: ../src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
     startLine: 22
@@ -100,6 +101,48 @@ items:
       type: AppoMobi.Gestures.TouchActionEventArgs
     content.vb: Public Property [Event] As TouchActionEventArgs
   overload: DrawnUi.Draw.SkiaGesturesParameters.Event*
+- uid: DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
+  commentId: P:DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
+  id: ArrivedTimeNanos
+  parent: DrawnUi.Draw.SkiaGesturesParameters
+  langs:
+  - csharp
+  - vb
+  name: ArrivedTimeNanos
+  nameWithType: SkiaGesturesParameters.ArrivedTimeNanos
+  fullName: DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ArrivedTimeNanos
+    path: ../src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
+    startLine: 32
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    When this gesture ARRIVED from the platform (<xref href="DrawnUi.Draw.Super.GetCurrentTimeNanos" data-throw-if-not-resolved="false"></xref>), not when it
+
+    gets processed. Gestures are postponed to the next frame, so a long frame (LoadMore + window engage
+
+    + measurement) drains a whole burst of them at once and every one of them would otherwise look like
+
+    it happened "now": the accumulated pan deltas teleport the scroll and a seconds-old flick starts a
+
+    full-speed fling into content the user never saw. Consumers must judge staleness against THIS,
+
+    never against processing time. Zero when unknown (synthetic/test gestures).
+  example: []
+  syntax:
+    content: public long ArrivedTimeNanos { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property ArrivedTimeNanos As Long
+  overload: DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos*
 - uid: DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs,System.Single)
   commentId: M:DrawnUi.Draw.SkiaGesturesParameters.Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs,System.Single)
   id: Create(AppoMobi.Gestures.TouchActionResult,AppoMobi.Gestures.TouchActionEventArgs,System.Single)
@@ -114,11 +157,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Create
     path: ../src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
-    startLine: 31
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -157,11 +200,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Empty
     path: ../src/Shared/DrawnUi/Features/Gestures/SkiaGesturesParameters.cs
-    startLine: 49
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -570,6 +613,41 @@ references:
   name: TouchActionEventArgs
   nameWithType: TouchActionEventArgs
   fullName: AppoMobi.Gestures.TouchActionEventArgs
+- uid: DrawnUi.Draw.Super.GetCurrentTimeNanos
+  commentId: M:DrawnUi.Draw.Super.GetCurrentTimeNanos
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_GetCurrentTimeNanos
+  name: GetCurrentTimeNanos()
+  nameWithType: Super.GetCurrentTimeNanos()
+  fullName: DrawnUi.Draw.Super.GetCurrentTimeNanos()
+  spec.csharp:
+  - uid: DrawnUi.Draw.Super.GetCurrentTimeNanos
+    name: GetCurrentTimeNanos
+    href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_GetCurrentTimeNanos
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.Super.GetCurrentTimeNanos
+    name: GetCurrentTimeNanos
+    href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_GetCurrentTimeNanos
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos*
+  commentId: Overload:DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
+  href: DrawnUi.Draw.SkiaGesturesParameters.html#DrawnUi_Draw_SkiaGesturesParameters_ArrivedTimeNanos
+  name: ArrivedTimeNanos
+  nameWithType: SkiaGesturesParameters.ArrivedTimeNanos
+  fullName: DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
 - uid: DrawnUi.Draw.SkiaGesturesParameters.Create*
   commentId: Overload:DrawnUi.Draw.SkiaGesturesParameters.Create
   href: DrawnUi.Draw.SkiaGesturesParameters.html#DrawnUi_Draw_SkiaGesturesParameters_Create_AppoMobi_Gestures_TouchActionResult_AppoMobi_Gestures_TouchActionEventArgs_System_Single_

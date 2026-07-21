@@ -61,6 +61,9 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
                 case PrebuiltControlStyle.Material:
                     CreateMaterialStyleContent();
                     break;
+                case PrebuiltControlStyle.Material3:
+                    CreateMaterial3StyleContent();
+                    break;
                 case PrebuiltControlStyle.Windows:
                     CreateWindowsStyleContent();
                     break;
@@ -94,9 +97,16 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         }
     }
 
+    // Flat DrawnUI default accent (Crimson #DC143C).
+    private static readonly Color DefaultAccentColor = Color.FromRgba(220, 20, 60, 255);
+
     protected virtual void CreateDefaultStyleContent()
     {
         SetDefaultMinimumContentSize(100, 41);
+
+        // Flat DrawnUI look: accent fill unless the app set its own background.
+        if (!backgroundColorChanged && this.InitialBackground == null)
+            this.UseBackGroundColor = DefaultAccentColor;
 
         var frame = new SkiaShape
         {
@@ -204,7 +214,7 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
             BackgroundColor = UseBackGroundColor,
             CornerRadius = 4, // Material uses smaller corners
             HorizontalOptions = LayoutOptions.Fill,
-            
+
             VerticalOptions = LayoutOptions.Fill,
             // Material shadows are more pronounced than iOS
             Shadows = new List<SkiaShadow>()
@@ -234,6 +244,53 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
                     TextColor = Colors.White,
                     FontSize = 14, // Material typical size
                     TextTransform = TextTransform.Uppercase, // Material uses uppercase
+                }
+            }
+        }.AssignParent(this);
+
+        // Store the initial values
+        InitialBackgroundColor = frame.BackgroundColor;
+        TextColor = Colors.White;
+
+        MainWrapper = wrapper;
+        MainFrame = frame;
+    }
+
+    /// <summary>
+    /// Creates a Material 3 (Material You) filled button: primary #6750A4 pill,
+    /// flat (elevation 0), sentence-case label.
+    /// </summary>
+    protected virtual void CreateMaterial3StyleContent()
+    {
+        SetDefaultMinimumContentSize(100, 40);
+
+        if (!backgroundColorChanged)
+            this.UseBackGroundColor = Color.FromRgba(103, 80, 164, 255); // M3 primary #6750A4
+
+        // Material 3 filled button: fully rounded pill, flat (elevation 0)
+        var frame = new SkiaShape
+        {
+            Tag = "BtnShape",
+            BackgroundColor = UseBackGroundColor,
+            CornerRadius = 20, // M3 filled button = pill (half of 40pt height)
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+        }.AssignParent(this);
+
+        //auto-sizing layout
+        var wrapper = new SkiaLayout()
+        {
+            Tag = "BtnWrapper",
+            Padding = ButtonPadding,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            Children =
+            {
+                new ButtonLabel()
+                {
+                    TextColor = Colors.White,
+                    FontSize = 14, // Material typical size
+                    // M3 dropped the M2 all-caps labels — sentence case
                 }
             }
         }.AssignParent(this);
@@ -672,7 +729,10 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
             if (ApplyEffect == SkiaTouchAnimation.Ripple)
             {
-                var ptsInsideControl = GetOffsetInsideControlInPoints(args.Event.Location, apply.ChildOffset);
+                // MappedLocation carries the plane blit delta + parent transforms (ChildOffset does not) —
+                // raw args.Event.Location placed the ripple at a scroll-stale Y on cells served from a plane.
+                var ptsInsideControl = GetOffsetInsideControlInPoints(
+                    new PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset);
                 control.PlayRippleAnimation(TouchEffectColor, ptsInsideControl.X, ptsInsideControl.Y);
             }
             else if (ApplyEffect == SkiaTouchAnimation.Shimmer)

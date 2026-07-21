@@ -10,6 +10,12 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <WasmBuildNative>true</WasmBuildNative>
 
+    <!-- Payload: webcil left ON (default) - only an in-browser Roslyn host needs
+         plain PE assemblies, this sample doesn't compile code at runtime. -->
+
+    <!-- Payload: drop localized BCL/component satellite resources -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+
     <!-- use nugets or ref drawnui source-->
     <UseSource>true</UseSource>
 
@@ -21,7 +27,7 @@
 </ItemGroup>
 
 <ItemGroup Condition="'$(UseSource)' != 'true'">
-    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.4.1" />
+    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.5.2" />
 </ItemGroup>
 
 <ItemGroup Condition="'$(UseSource)' == 'true'">

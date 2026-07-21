@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.JSInterop;
 
 namespace DrawnUi.Draw
@@ -14,6 +15,11 @@ namespace DrawnUi.Draw
             CancellationToken cancellationToken = default)
         {
             StartupSettings = settings;
+
+            // Fonts/images are fetched over HTTP at startup; register a default
+            // HttpClient unless the app already provided its own.
+            builder.Services.TryAddScoped(sp =>
+                new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             var host = builder.Build();
 

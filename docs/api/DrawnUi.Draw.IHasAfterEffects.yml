@@ -6,7 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.IHasAfterEffects.GetOffsetInsideControlInPoints(System.Drawing.PointF,SkiaSharp.SKPoint)
-  - DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean)
+  - DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean,System.Double)
   - DrawnUi.Draw.IHasAfterEffects.PlayShimmerAnimation(Microsoft.Maui.Graphics.Color,System.Single,System.Single,System.Int32,System.Boolean)
   langs:
   - csharp
@@ -18,8 +18,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IHasAfterEffects
     path: ../src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
     startLine: 2
@@ -31,22 +31,22 @@ items:
     content.vb: Public Interface IHasAfterEffects
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean)
-  commentId: M:DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean)
-  id: PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean)
+- uid: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean,System.Double)
+  commentId: M:DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean,System.Double)
+  id: PlayRippleAnimation(Microsoft.Maui.Graphics.Color,System.Double,System.Double,System.Boolean,System.Double)
   parent: DrawnUi.Draw.IHasAfterEffects
   langs:
   - csharp
   - vb
-  name: PlayRippleAnimation(Color, double, double, bool)
-  nameWithType: IHasAfterEffects.PlayRippleAnimation(Color, double, double, bool)
-  fullName: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color, double, double, bool)
+  name: PlayRippleAnimation(Color, double, double, bool, double)
+  nameWithType: IHasAfterEffects.PlayRippleAnimation(Color, double, double, bool, double)
+  fullName: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color, double, double, bool, double)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayRippleAnimation
     path: ../src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
     startLine: 4
@@ -54,7 +54,7 @@ items:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true)
+    content: void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true, double speedMs = 0)
     parameters:
     - id: color
       type: Microsoft.Maui.Graphics.Color
@@ -64,11 +64,13 @@ items:
       type: System.Double
     - id: removePrevious
       type: System.Boolean
-    content.vb: Sub PlayRippleAnimation(color As Color, x As Double, y As Double, removePrevious As Boolean = True)
+    - id: speedMs
+      type: System.Double
+    content.vb: Sub PlayRippleAnimation(color As Color, x As Double, y As Double, removePrevious As Boolean = True, speedMs As Double = 0)
   overload: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation*
-  nameWithType.vb: IHasAfterEffects.PlayRippleAnimation(Color, Double, Double, Boolean)
-  fullName.vb: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color, Double, Double, Boolean)
-  name.vb: PlayRippleAnimation(Color, Double, Double, Boolean)
+  nameWithType.vb: IHasAfterEffects.PlayRippleAnimation(Color, Double, Double, Boolean, Double)
+  fullName.vb: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation(Microsoft.Maui.Graphics.Color, Double, Double, Boolean, Double)
+  name.vb: PlayRippleAnimation(Color, Double, Double, Boolean, Double)
 - uid: DrawnUi.Draw.IHasAfterEffects.PlayShimmerAnimation(Microsoft.Maui.Graphics.Color,System.Single,System.Single,System.Int32,System.Boolean)
   commentId: M:DrawnUi.Draw.IHasAfterEffects.PlayShimmerAnimation(Microsoft.Maui.Graphics.Color,System.Single,System.Single,System.Int32,System.Boolean)
   id: PlayShimmerAnimation(Microsoft.Maui.Graphics.Color,System.Single,System.Single,System.Int32,System.Boolean)
@@ -83,8 +85,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayShimmerAnimation
     path: ../src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
     startLine: 6
@@ -123,8 +125,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOffsetInsideControlInPoints
     path: ../src/Shared/DrawnUi/Internals/Interfaces/IHasAfterEffects.cs
     startLine: 8
@@ -257,7 +259,7 @@ references:
     href: DrawnUi.Extensions.html
 - uid: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation*
   commentId: Overload:DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation
-  href: DrawnUi.Draw.IHasAfterEffects.html#DrawnUi_Draw_IHasAfterEffects_PlayRippleAnimation_Microsoft_Maui_Graphics_Color_System_Double_System_Double_System_Boolean_
+  href: DrawnUi.Draw.IHasAfterEffects.html#DrawnUi_Draw_IHasAfterEffects_PlayRippleAnimation_Microsoft_Maui_Graphics_Color_System_Double_System_Double_System_Boolean_System_Double_
   name: PlayRippleAnimation
   nameWithType: IHasAfterEffects.PlayRippleAnimation
   fullName: DrawnUi.Draw.IHasAfterEffects.PlayRippleAnimation

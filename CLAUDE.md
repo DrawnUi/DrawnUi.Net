@@ -9,6 +9,21 @@ This file provides guidance to AI when working with code in this repository.
 - Explain fixes and solutions BEFORE implementing — wait for approval.
 - No summaries or explanations AFTER approved changes are made. Make the changes and stay silent.
 
+### AI skills (canonical source: `docs/skills/` in this repo)
+
+Skills live in-repo at `docs/skills/<name>/SKILL.md` and are published to `https://drawnui.net/skills/` by the docs workflow. If not installed in your agent, read them directly from `docs/skills/`. Load by task:
+
+| Task | Skill |
+|---|---|
+| Any DrawnUI controls/layout/caching/gesture work | `drawnui` (always) |
+| Writing C# code-behind / fluent composition / XAML→C# porting | + `drawnui-fluent` (mandatory for fluent C#) |
+| Games (DrawnGame, sprites, pooling, WASM startup) | + `drawnui-game` |
+| Blazor head apps, font subsetting, GitHub Pages publishing | + `drawnui-blazor` |
+| Pure-WASM DrawnUi.Web apps, WASM runtime bug hunting | + `drawnui-web-app` |
+| OpenTK desktop apps, GL overlays, window chrome | + `drawnui-opentk` |
+| Headless testing/repros (no device/GPU) | + `drawnui-net-harness` |
+| SkiaSharp SKMesh / SkSL mesh drawing | + `skmech` |
+
 ---
 
 ## Project Overview
@@ -24,7 +39,7 @@ DrawnUI is a cross-platform rich UI rendering engine that draws controls with Sk
 
 **Technology stack:**
 - .NET 9 and .NET 10 (both supported; MAUI targets multi-TFM)
-- SkiaSharp v3
+- SkiaSharp v4 (4.148+) — SKPaint has no FilterQuality/text state anymore (SKSamplingOptions / SKFont; see `drawnui` skill)
 - Hardware-accelerated rendering via Skia GPU canvas
 
 ---
@@ -130,6 +145,13 @@ dotnet test src/Tests/UnitTests/UnitTests.csproj
 ```powershell
 # From src/ directory
 ./DeleteBinObj.ps1
+```
+
+**Docs (drawnui.net):**
+```powershell
+./docs/build.ps1        # full rebuild: API yaml + site + serve :8080 (pre-publish check; -NoServe for build only)
+./docs/watch.ps1        # live article editing, no API regen
+# real publish = GitHub Actions docfx.yml (workflow_dispatch)
 ```
 
 ---
@@ -302,14 +324,14 @@ public class MyCell : SkiaDynamicDrawnCell
 
 ## Layout Types
 
-`SkiaLayout` with `Type`:
-- `LayoutType.Column` — vertical stack
-- `LayoutType.Row` — horizontal stack
-- `LayoutType.Grid` — grid; use `ColumnDefinitions="35,*,100"` string format
-- `LayoutType.Wrap` — flex/wrap
-- `LayoutType.Absolute` — absolute positioning (prefer over Grid where possible)
+Prefer semantic aliases over raw `SkiaLayout Type=...` (aliases preset Type + `HorizontalOptions=Fill`; base `SkiaLayout` defaults to Absolute WITHOUT Fill):
 
-`SkiaLayer` = `SkiaLayout` with `Type=Absolute`, shorthand for layered content.
+- `SkiaStack` = Column (vertical stack)
+- `SkiaRow` = Row (horizontal stack)
+- `SkiaGrid` = Grid; use `ColumnDefinitions="35,*,100"` string format
+- `SkiaWrap` = Wrap (flex/wrap)
+- `SkiaLayer` = Absolute (layered content; prefer over Grid where possible)
+- `SkiaFrame` = `SkiaShape` Rectangle (NOT a layout)
 
 ---
 

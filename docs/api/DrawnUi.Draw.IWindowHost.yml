@@ -5,10 +5,12 @@ items:
   id: IWindowHost
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.IWindowHost.LastVisibleIndex
   - DrawnUi.Draw.IWindowHost.OnMeasured
   - DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
   - DrawnUi.Draw.IWindowHost.ScrollToLocal(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
   - DrawnUi.Draw.IWindowHost.SnapToStart
+  - DrawnUi.Draw.IWindowHost.StopAnimations
   - DrawnUi.Draw.IWindowHost.SuppressLoadMore
   - DrawnUi.Draw.IWindowHost.VisibleCount
   langs:
@@ -21,8 +23,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IWindowHost
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
     startLine: 8
@@ -57,8 +59,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisibleCount
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
     startLine: 11
@@ -74,6 +76,39 @@ items:
       type: System.Int32
     content.vb: ReadOnly Property VisibleCount As Integer
   overload: DrawnUi.Draw.IWindowHost.VisibleCount*
+- uid: DrawnUi.Draw.IWindowHost.LastVisibleIndex
+  commentId: P:DrawnUi.Draw.IWindowHost.LastVisibleIndex
+  id: LastVisibleIndex
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: LastVisibleIndex
+  nameWithType: IWindowHost.LastVisibleIndex
+  fullName: DrawnUi.Draw.IWindowHost.LastVisibleIndex
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: LastVisibleIndex
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Highest LOCAL (resident) index currently visible. Used to detect arrival at the oldest end
+        (LastVisibleIndex == VisibleCount-1) so a jump can release its LoadMore suppression only once landed.
+  example: []
+  syntax:
+    content: int LastVisibleIndex { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property LastVisibleIndex As Integer
+  overload: DrawnUi.Draw.IWindowHost.LastVisibleIndex*
 - uid: DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
   commentId: P:DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
   id: OrderedScrollInProgress
@@ -88,11 +123,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrderedScrollInProgress
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-    startLine: 14
+    startLine: 18
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -119,11 +154,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SuppressLoadMore
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-    startLine: 17
+    startLine: 21
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -150,11 +185,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasured
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-    startLine: 20
+    startLine: 24
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -181,11 +216,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToLocal
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-    startLine: 23
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -219,11 +254,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapToStart
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
-    startLine: 26
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -233,6 +268,36 @@ items:
     content: void SnapToStart()
     content.vb: Sub SnapToStart()
   overload: DrawnUi.Draw.IWindowHost.SnapToStart*
+- uid: DrawnUi.Draw.IWindowHost.StopAnimations
+  commentId: M:DrawnUi.Draw.IWindowHost.StopAnimations
+  id: StopAnimations
+  parent: DrawnUi.Draw.IWindowHost
+  langs:
+  - csharp
+  - vb
+  name: StopAnimations()
+  nameWithType: IWindowHost.StopAnimations()
+  fullName: DrawnUi.Draw.IWindowHost.StopAnimations()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: StopAnimations
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/IWindowHost.cs
+    startLine: 34
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Stop any in-flight fling/bounce/scroll animation. Called before a programmatic jump/rebase so
+        an active fling can't keep scrolling (and triggering LoadMore) into the window swap.
+  example: []
+  syntax:
+    content: void StopAnimations()
+    content.vb: Sub StopAnimations()
+  overload: DrawnUi.Draw.IWindowHost.StopAnimations*
 references:
 - uid: DrawnUi.Draw.WindowedSource`1
   commentId: T:DrawnUi.Draw.WindowedSource`1
@@ -415,6 +480,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: DrawnUi.Draw.IWindowHost.LastVisibleIndex*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.LastVisibleIndex
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_LastVisibleIndex
+  name: LastVisibleIndex
+  nameWithType: IWindowHost.LastVisibleIndex
+  fullName: DrawnUi.Draw.IWindowHost.LastVisibleIndex
 - uid: DrawnUi.Draw.IWindowHost.OrderedScrollInProgress*
   commentId: Overload:DrawnUi.Draw.IWindowHost.OrderedScrollInProgress
   href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_OrderedScrollInProgress
@@ -471,3 +542,9 @@ references:
   name: SnapToStart
   nameWithType: IWindowHost.SnapToStart
   fullName: DrawnUi.Draw.IWindowHost.SnapToStart
+- uid: DrawnUi.Draw.IWindowHost.StopAnimations*
+  commentId: Overload:DrawnUi.Draw.IWindowHost.StopAnimations
+  href: DrawnUi.Draw.IWindowHost.html#DrawnUi_Draw_IWindowHost_StopAnimations
+  name: StopAnimations
+  nameWithType: IWindowHost.StopAnimations
+  fullName: DrawnUi.Draw.IWindowHost.StopAnimations

@@ -5170,7 +5170,7 @@ namespace AppoMobi.Maui.DrawnUi.Draw
         {
             get
             {
-                return (this.ItemTemplate != null || ItemTemplateType != null);
+                return this.ItemTemplate != null;
             }
         }
 
@@ -5181,10 +5181,6 @@ namespace AppoMobi.Maui.DrawnUi.Draw
 
         public virtual object CreateContentFromTemplate()
         {
-            if (ItemTemplateType != null)
-            {
-                return Activator.CreateInstance(ItemTemplateType);
-            }
             return ItemTemplate.CreateContent();
         }
 
@@ -5399,7 +5395,7 @@ namespace AppoMobi.Maui.DrawnUi.Draw
             Superview?.StopAndRemoveAnimatorsByKeySubstring(keySubstring);
         }
 
-        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true)
+        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true, double speedMs = 0)
         {
             if (removePrevious)
             {
@@ -5412,6 +5408,8 @@ namespace AppoMobi.Maui.DrawnUi.Draw
                 X = x,
                 Y = y
             };
+            if (speedMs > 0)
+                animation.Speed = speedMs; // 0 = keep RippleAnimator default (500ms)
             animation.Start();
         }
 
@@ -5745,23 +5743,6 @@ namespace AppoMobi.Maui.DrawnUi.Draw
             get { return (DataTemplate)GetValue(ItemTemplateProperty); }
             set { SetValue(ItemTemplateProperty, value); }
         }
-
-        public static readonly BindableProperty ItemTemplateTypeProperty = BindableProperty.Create(
-            nameof(ItemTemplateType),
-            typeof(Type),
-            typeof(SkiaControl),
-            null
-            , propertyChanged: ItemTemplateChanged);
-
-        /// <summary>
-        /// ItemTemplate alternative for faster creation
-        /// </summary>
-        public Type ItemTemplateType
-        {
-            get { return (Type)GetValue(ItemTemplateTypeProperty); }
-            set { SetValue(ItemTemplateTypeProperty, value); }
-        }
-
 
         #region SELECTABLE TEMPLATES
 

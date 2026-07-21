@@ -17,8 +17,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
-        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="14.2.0" />
-        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.148.0" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="14.1.0" />
+        <!--<PackageReference Include="SkiaSharp.HarfBuzz" Version="4.151.0-preview.1.1" />-->
         <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.148.0" />
     </ItemGroup>
 

@@ -72,14 +72,20 @@ public class LottieRefreshIndicator : RefreshIndicator
     {
         base.OnParentVisibilityChanged(newvalue);
 
-        Loader?.Stop();
+        if (!newvalue)
+            Loader?.Stop();
+        else if (IsRunning && FindLoader())
+            Loader.Start();
     }
 
     public override void OnVisibilityChanged(bool newvalue)
     {
         base.OnVisibilityChanged(newvalue);
 
-        Loader?.Stop();
+        if (!newvalue)
+            Loader?.Stop();
+        else if (IsRunning && FindLoader())
+            Loader.Start();
     }
 
     bool FindLoader()

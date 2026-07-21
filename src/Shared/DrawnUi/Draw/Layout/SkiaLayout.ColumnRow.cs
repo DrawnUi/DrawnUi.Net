@@ -65,11 +65,22 @@ namespace DrawnUi.Draw
         /// </summary>
         [ThreadStatic] internal static bool PaintedSkeleton;
 
+        /// <summary>
+        /// Set (under <see cref="CollectPaintedBounds"/>, bake pass only) when the pass STALE-SERVED a cell —
+        /// drew its existing (old-size) pixels because it self-invalidated mid-paint. The kick-time gate proved
+        /// every band cell ready, so a stale-serve during the worker bake is always the TOCTOU transient
+        /// (ready at kick, went NeedMeasure during Paint). Baking that old-size snapshot freezes the pre-grow
+        /// height into the plane -> live re-record adopts the new size -> the 3->2->3 line jump. The plane owner
+        /// reads this to REJECT the publish and fall back to the (always-correct) live draw, same as a skeleton.
+        /// </summary>
+        [ThreadStatic] internal static bool PaintedStaleServe;
+
         internal static void ResetPaintedBounds()
         {
             PaintedBoundsTop = float.MaxValue;
             PaintedBoundsBottom = float.MinValue;
             PaintedSkeleton = false;
+            PaintedStaleServe = false;
         }
 
         internal static void TrackPaintedBounds(float top, float bottom)
@@ -1025,7 +1036,7 @@ else
                             {
                                 cell.Measured = ScaledSize.Default;
                                 cell.WasMeasured = true;
-                                LastMeasuredIndex = cell.ControlIndex;
+                                LastMeasuredIndexLocal = cell.ControlIndex;
                             }
 
                             continue;
@@ -1078,7 +1089,7 @@ else
                         }
 
                         cell.WasMeasured = true;
-                        LastMeasuredIndex = cell.ControlIndex;
+                        LastMeasuredIndexLocal = cell.ControlIndex;
                     }
 
                     // Inline UpdateStackSize with pre-calculated spacing
@@ -2205,6 +2216,34 @@ else
 
         private long _countVisible;
 
+        /// <summary>
+        /// Draw-time follower shift for a cell that re-measured during DrawStack: the delta is gated to
+        /// the stacking axis (Row -> X, Column -> Y), same rule as OffsetSubsequentCells. Applying the
+        /// cross-axis component would slide followers sideways in a Column (or vertically in a Row) when
+        /// a sibling merely changes width (e.g. a centered label mutating text every frame).
+        /// </summary>
+        private Vector2 GetFollowersOffsetDelta(SKSize diff)
+        {
+            return new Vector2(
+                Type == LayoutType.Row ? diff.Width : 0f,
+                Type == LayoutType.Column ? diff.Height : 0f);
+        }
+
+        /// <summary>
+        /// Single source of truth for the three draw-time grow-shift sites in DrawStackVisibleChildren
+        /// (sync-measure, prepared-reconcile, streaming-bridge). Always sets the per-frame OffsetOthers
+        /// accumulator from the size delta; when <paramref name="durable"/> also persists the shift into
+        /// the structure via OffsetSubsequentCells. Behaviour-identical to the inlined copies it replaces.
+        /// </summary>
+        private void ShiftFollowersByGrow(LayoutStructure structure, ControlInStack cell,
+            SKSize newSize, SKSize reservedSlot, bool durable)
+        {
+            var diff = newSize - reservedSlot;
+            cell.OffsetOthers = GetFollowersOffsetDelta(diff);
+            if (durable)
+                OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+        }
+
         protected virtual SKRect GetStackChildDrawRect(int index, float x, float y, ControlInStack cell)
         {
             if (IsTemplated)
@@ -2366,33 +2405,33 @@ else
                             if (e.ControlIndex > maxControlIndex) maxControlIndex = e.ControlIndex;
                         }
 
-                        //FirstMeasuredIndex = visibleElements[0].ControlIndex;
-                        //LastVisibleIndex = visibleElements[visibleElements.Count - 1].ControlIndex;
-                        FirstVisibleIndex = minControlIndex;
-                        LastVisibleIndex = maxControlIndex;
+                        //FirstMeasuredIndexLocal = visibleElements[0].ControlIndex;
+                        //LastVisibleIndexLocal = visibleElements[visibleElements.Count - 1].ControlIndex;
+                        FirstVisibleIndexLocal = minControlIndex;
+                        LastVisibleIndexLocal = maxControlIndex;
                     }
                     else
                     {
                         //visibleElements.Sort((a, b) => a.ZIndex.CompareTo(b.ZIndex));
 
-                        FirstMeasuredIndex = firstVisibleIndex;
-                        FirstVisibleIndex = firstVisibleIndex;
-                        LastVisibleIndex = lastVisibleIndex;
+                        FirstMeasuredIndexLocal = firstVisibleIndex;
+                        FirstVisibleIndexLocal = firstVisibleIndex;
+                        LastVisibleIndexLocal = lastVisibleIndex;
                     }
                 }
                 else
                 {
-                    FirstVisibleIndex = -1;
-                    FirstMeasuredIndex = -1;
-                    LastVisibleIndex = -1;
+                    FirstVisibleIndexLocal = -1;
+                    FirstMeasuredIndexLocal = -1;
+                    LastVisibleIndexLocal = -1;
                 }
 
                 // Start background measurement if needed
                 if (!IsPlaneBakePass &&
                     IsTemplated && structure != null &&
                     MeasureItemsStrategy == MeasuringStrategy.MeasureVisible &&
-                    ItemsSource != null &&
-                    lastVisibleIndex < ItemsSource.Count - 1 && // More items to measure
+                    EffectiveItemsSource != null &&
+                    lastVisibleIndex < EffectiveItemsSource.Count - 1 && // More items to measure
                     !IsBackgroundMeasuring && _pendingStructureChanges.Count == 0 &&
                     !HeadInsertInFlight && // tail measuring would integrate positions made stale by the head commit
                     !HeadRemoveInFlight) // same: staged positions would miss the pending head-trim translation
@@ -2401,13 +2440,13 @@ else
                     var nextUnmeasuredIndex = lastVisibleIndex + 1;
 
                     // Check if we already have measurements cached
-                    while (nextUnmeasuredIndex < ItemsSource.Count &&
+                    while (nextUnmeasuredIndex < EffectiveItemsSource.Count &&
                            _measuredItems.ContainsKey(nextUnmeasuredIndex))
                     {
                         nextUnmeasuredIndex++;
                     }
 
-                    if (nextUnmeasuredIndex < ItemsSource.Count)
+                    if (nextUnmeasuredIndex < EffectiveItemsSource.Count)
                     {
                         StartBackgroundMeasurement(ctx.Destination, ctx.Scale, nextUnmeasuredIndex);
                     }
@@ -2493,6 +2532,18 @@ else
             if (preparedMode && !bakePass)
             {
                 _prepVisibleUnprepared.Clear();
+            }
+
+            // Snapshot which ControlIndexes are visible this frame so ApplyStackMeasureResult can refuse to
+            // publish a structure that leaves any of THESE slots unmeasured (on-screen blank). Off-screen
+            // unmeasured cells stay allowed (normal MeasureVisible), so background measurement never stalls
+            // the scroll. Real draw only — a bake pass is a pure read and must not redefine "visible".
+            if (!bakePass)
+            {
+                _lastVisibleControlIndexes.Clear();
+                foreach (var vc in CollectionsMarshal.AsSpan(visibleElements))
+                    if (vc != null && !vc.IsCollapsed)
+                        _lastVisibleControlIndexes.Add(vc.ControlIndex);
             }
 
             try
@@ -2664,7 +2715,15 @@ else
                                     LayoutCell(cell.Measured, cell, child, cell.Area, ctx.Scale);
                                 }
 
-                                if (!bakePass)
+                                if (bakePass)
+                                {
+                                    // TOCTOU: this cell was ready at the kick gate and self-invalidated during
+                                    // the worker paint -> we just froze its OLD-size pixels. Flag so the plane
+                                    // owner rejects the publish (live draw is always current). See PaintedStaleServe.
+                                    if (CollectPaintedBounds)
+                                        PaintedStaleServe = true;
+                                }
+                                else
                                 {
                                     _prepVisibleUnprepared.Add(cell.ControlIndex);
                                 }
@@ -2715,16 +2774,13 @@ else
                                 if (reservedSlot != SKSize.Empty &&
                                     !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
                                 {
-                                    var diff = child.MeasuredSize.Pixels - reservedSlot;
-                                    cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
-
                                     // Durably shift the FOLLOWING cells' structure positions by this grow delta so
                                     // the new layout persists (PASS 1 derives cell.Drawn from cell.Destination every
                                     // frame). Without it the draw-time grow only patched the current frame via the
                                     // OffsetOthers accumulator below, and the next cell overlapped until a staged
                                     // restack landed a frame later — the visible "wrong Top" flicker while a bubble
                                     // grows in realtime (streaming AI answer). Same call the smart-measure path uses.
-                                    OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+                                    ShiftFollowersByGrow(structure, cell, child.MeasuredSize.Pixels, reservedSlot, durable: true);
                                 }
                             }
                         }
@@ -2749,9 +2805,7 @@ else
                                 LayoutCell(adopted, cell, child, cell.Area, ctx.Scale);
                             }
 
-                            var diff = adopted.Pixels - reservedSlot;
-                            cell.OffsetOthers = new Vector2(diff.Width, diff.Height);
-                            OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+                            ShiftFollowersByGrow(structure, cell, adopted.Pixels, reservedSlot, durable: true);
                         }
 
                         // RECYCLED STALE SIZE (light, no remeasure): a pooled view can still carry its PREVIOUS
@@ -2869,13 +2923,13 @@ else
                             StageSelfMeasuredCellUpdate(cell.ControlIndex, child.MeasuredSize,
                                 cell.Measured.Pixels);
 
-                            // Shift the followers THIS frame too via the accumulator below (same pattern as
-                            // the sync-measure branch), otherwise the grown cell paints over the next cell
-                            // for the one frame until the staged change lands — the visible flicker.
-                            // PASS 1 clears OffsetOthers next frame and the applied structure change takes
-                            // over from then on, so this never double-shifts.
-                            var grow = child.MeasuredSize.Pixels - cell.Measured.Pixels;
-                            cell.OffsetOthers = new Vector2(grow.Width, grow.Height);
+                            // Shift the followers THIS frame too via the accumulator (same pattern as the
+                            // sync-measure branch), otherwise the grown cell paints over the next cell for the
+                            // one frame until the staged change lands — the visible flicker. NON-durable: the
+                            // StageSelfMeasuredCellUpdate above persists the structure shift next frame, so
+                            // OffsetSubsequentCells here would double-shift. PASS 1 clears OffsetOthers next
+                            // frame and the applied structure change takes over, so this never double-shifts.
+                            ShiftFollowersByGrow(structure, cell, child.MeasuredSize.Pixels, cell.Measured.Pixels, durable: false);
                         }
                     }
 

@@ -205,7 +205,7 @@ namespace DrawnUi.Draw
 
 
         public override bool IsTemplated =>
-            ((this.ItemTemplate != null || ItemTemplateType != null) && this.ItemsSource != null);
+            (this.ItemTemplate != null && this.ItemsSource != null);
 
         public SKRect GetChildRect(int index)
         {
@@ -410,7 +410,7 @@ namespace DrawnUi.Draw
 
             if (ItemTemplate != null)
             {
-                value = ItemsSource == null || ItemsSource.Count == 0;
+                value = EffectiveItemsSource == null || EffectiveItemsSource.Count == 0;
             }
             else
             {
@@ -426,12 +426,22 @@ namespace DrawnUi.Draw
         {
             get
             {
+                // logical (ItemsSource-space) indices — what the user scrolls by; window offset applied.
+                // "visible" = REALLY on screen (bare); "drawn" = the painted band incl. overscan.
+                int visFirst = FirstVisibleIndex, visLast = LastVisibleIndex;
+                int visCount = visFirst < 0 || visLast < visFirst ? 0 : visLast - visFirst + 1;
                 var output =
-                    $"{Type} `{Tag}`, {MeasuredSize.Pixels.Width:0}x{MeasuredSize.Pixels.Height:0}, visible {FirstVisibleIndex}-{LastVisibleIndex} ({_countVisible}), ";
+                    $"{Type} `{Tag}`, {MeasuredSize.Pixels.Width:0}x{MeasuredSize.Pixels.Height:0}, visible {visFirst}-{visLast} ({visCount}), drawn {FirstVisibleIndexDrawn}-{LastVisibleIndexDrawn} ({_countVisible}), ";
 
                 if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
                 {
                     output += $"measured {LastMeasuredIndex + 1}, ";
+                }
+
+                // built-in items window engaged: slice position + residency over the full source
+                if (_itemsWindow != null)
+                {
+                    output += $"win [{_itemsWindow.WindowStart}..{_itemsWindow.WindowEnd}) res={_itemsWindow.Items.Count}/{_itemsWindow.Source?.Count}, ";
                 }
 
                 if (IsTemplated || RenderTree == null)
@@ -450,7 +460,29 @@ namespace DrawnUi.Draw
             typeof(int),
             typeof(SkiaLayout),
             0,
-            propertyChanged: NeedUpdateItemsSource);
+            propertyChanged: OnSplitPropertyChanged);
+
+        static void OnSplitPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is SkiaLayout layout)
+            {
+                layout._splitCached = (int)newValue;
+            }
+
+            NeedUpdateItemsSource(bindable, oldValue, newValue);
+        }
+
+        volatile int _splitCached;
+
+        /// <summary>
+        /// Thread-safe mirror of <see cref="Split"/>. MAUI BindableObject storage is NOT safe to read
+        /// off the UI thread: the background measurement pass reading GetValue(SplitProperty) saw a
+        /// stale/default value MID-PASS — one pass computed full-width columns (Split==1) while column-
+        /// stepping with Split==2, and the offset compensation re-read yet another value, shifting the
+        /// whole batch left by a column (device 2026-07-17: 2-col grid rendered as a single shifted
+        /// column after LoadMore). ALL measure-worker code must read this mirror, never Split.
+        /// </summary>
+        protected int SplitCached => _splitCached;
 
         /// <summary>
         /// For Wrap number of columns/rows to split into, If 0 will use auto, if 1+ will have 1+ columns.
@@ -603,7 +635,7 @@ namespace DrawnUi.Draw
         {
             if (RecyclingTemplate == RecyclingTemplate.Disabled && ItemTemplatePoolSize<1)
             {
-                return ItemsSource.Count;
+                return EffectiveItemsSource.Count;
             }
 
             if (ItemTemplatePoolSize>0)
@@ -623,7 +655,7 @@ namespace DrawnUi.Draw
             if (ItemTemplatePoolSize > 0)
                 return ItemTemplatePoolSize;
 
-            if (ItemsSource == null)
+            if (EffectiveItemsSource == null)
                 return 0;
 
             var mult = 1;
@@ -640,16 +672,37 @@ namespace DrawnUi.Draw
                 // Pre-first-layout both indices are the -1 sentinel: (-1)-(-1)+1 computes to a BOGUS 1
                 // (not caught by a "< 1" check), capping the pool at ~6 and starving the ReserveTemplates
                 // prefill ("Reserve 10 -> 5 cells"). Unknown viewport = use the fallback estimate.
-                var visible = LastVisibleIndex - FirstVisibleIndex + 1;
-                if (FirstVisibleIndex < 0 || LastVisibleIndex < FirstVisibleIndex)
+                var visible = LastVisibleIndexLocal - FirstVisibleIndexLocal + 1;
+                if (FirstVisibleIndexLocal < 0 || LastVisibleIndexLocal < FirstVisibleIndexLocal)
                     visible = 8; // viewport unknown before first layout, corrected on the next contexts swap
                 // An EXPLICIT ReserveTemplates must fit the cap, or the background warm-up can never reach
                 // its target no matter how correct the viewport estimate is.
                 var floor = Math.Max(visible * 4, visible + ReserveTemplates);
-                return Math.Min(ItemsSource.Count + mult * 2, floor + mult * 2);
+                // Cache-all ceiling: lists at/under this keep EVERY cell baked (re-scroll never rebakes = smooth);
+                // above it, cap to the viewport-realized floor for memory ("1000 items != 1000 cells").
+                // 256 is the tunable memory/smoothness line — raise for smoother huge lists, lower to save RAM.
+                const int cacheAllLimit = 256;
+                // HARD CEILING on the recycled pool. The cache-all branch below is "one view per item", and
+                // the pool cap is never re-derived downward once set (see ViewsAdapter.RefreshDataContexts),
+                // so a list that pages up to the cache-all limit keeps a per-item pool for the rest of its
+                // life — a 2-column image grid sat at ~300 live cell views (device "cells 18/301"). Recycling
+                // was explicitly asked for here; no recycled list needs more than this many instances.
+                // Override with an explicit ItemTemplatePoolSize (checked above, wins outright).
+                const int maxPoolCells = 200;
+
+                // A WINDOWED source KEEPS the cache-all ceiling on purpose. Tried the opposite (viewport floor
+                // for windowed lists, 2026-07-20) and it is worse: the plane realizes ±1 viewport, so ~3
+                // viewports of cells are live at once and the preparation horizon wants more on top. floor =
+                // max(visible*4, visible+Reserve) leaves almost no slack, the pool saturates, and every
+                // preparation evicts a cell still in demand — permanently jerky scrolling after the window
+                // engages (device: "cells <=67 and smooth scrolling is over forever"). The window already
+                // bounds memory: the slice IS the working set, so one view per slice entry is correct.
+                if (EffectiveItemsSource.Count <= Math.Max(floor + mult * 2, cacheAllLimit))
+                    return Math.Min(EffectiveItemsSource.Count + mult * 2, maxPoolCells);
+                return Math.Min(floor + mult * 2, maxPoolCells);
             }
 
-            return ItemsSource.Count + mult * 2;
+            return EffectiveItemsSource.Count + mult * 2;
         }
 
         public override void OnChildrenChanged()
@@ -818,6 +871,11 @@ namespace DrawnUi.Draw
 
         protected object lockMeasureLayout = new();
 
+        SKSize _poolInvalidatedForSize = new(-1, -1);
+        float _poolInvalidatedForScale = -1;
+        int _poolInvalidatedForSplit = -1;
+        double _poolInvalidatedForSpacing = double.MinValue;
+
         public virtual ScaledSize MeasureLayout(MeasureRequest request, bool force)
         {
             //until we implement 2-threads rendering this is needed for ImageDoubleBuffered cache rendering
@@ -843,7 +901,23 @@ namespace DrawnUi.Draw
                         if (!canMeasureTemplates)
                             return ScaledSize.CreateEmpty(request.Scale);
 
-                        ChildrenFactory.InvalidateAllPooledCells();
+                        // Invalidate pooled cells ONLY when the box they were measured for changed
+                        // (content constraints, scale, Split/Spacing = per-column width). A structure-only
+                        // remeasure (LoadMore append, add/remove, refresh) must keep pooled measured state
+                        // and caches — otherwise every page append remeasured + re-recorded the whole pool
+                        // and defeated the context-affinity reservoir (same cell returned pre-invalidated).
+                        // Template change doesn't need this: InitializeTemplates resets the pool fully.
+                        if (_poolInvalidatedForSize != constraints.Content.Size
+                            || _poolInvalidatedForScale != request.Scale
+                            || _poolInvalidatedForSplit != Split
+                            || _poolInvalidatedForSpacing != Spacing)
+                        {
+                            _poolInvalidatedForSize = constraints.Content.Size;
+                            _poolInvalidatedForScale = request.Scale;
+                            _poolInvalidatedForSplit = Split;
+                            _poolInvalidatedForSpacing = Spacing;
+                            ChildrenFactory.InvalidateAllPooledCells();
+                        }
                     }
 
                     switch (Type)
@@ -957,7 +1031,7 @@ namespace DrawnUi.Draw
                                 ApplyNewItemsSource = false;
                                 ChildrenFactory.InitializeTemplates(
                                     new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset),
-                                    CreateContentFromTemplate, ItemsSource,
+                                    CreateContentFromTemplate, EffectiveItemsSource,
                                     GetTemplatesPoolLimit(),
                                     GetTemplatesPoolPrefill());
                             }
@@ -1050,17 +1124,10 @@ namespace DrawnUi.Draw
 
         public override void InvalidateByChild(SkiaControl child)
         {
-            if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
-            {
-                //RemeasureSingleItemInBackground(child.ContextIndex);
-                child.NeedMeasure = true;
-                return;
-            }
-
             InvalidatedChildren.Add(child);
 
             if (!IsStack && Type != LayoutType.Grid && (!NeedAutoSize && (child.NeedAutoSize || IsTemplated)) ||
-                (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible))
+                (IsTemplated && (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible || MeasureItemsStrategy == MeasuringStrategy.MeasureFirst)))
             {
                 UpdateByChild(child); //simple update
                 return;
@@ -1345,34 +1412,283 @@ namespace DrawnUi.Draw
         }
 
 
+        #region BUILT-IN SOURCE WINDOW
+
+        /// <summary>
+        /// Auto-engage the built-in sliding window (<see cref="ItemsSourceWindow"/>) when a templated
+        /// ItemsSource holds more items than this. The pipeline then materializes only a bounded slice and
+        /// pages within the source internally; LoadMoreCommand fires only at real source edges.
+        /// 0 or negative disables auto-windowing.
+        /// </summary>
+        public static int WindowSourceThreshold = 300;
+
+        /// <summary>Window capacity in viewports, tuned from the real visible range after first draw.</summary>
+        public static int WindowSourceViewports = 4;
+
+        private ItemsSourceWindow _itemsWindow;
+
+        /// <summary>Active built-in window over a large ItemsSource; null when not engaged.</summary>
+        public ItemsSourceWindow ItemsWindow => _itemsWindow;
+
+        /// <summary>
+        /// The collection the pipeline actually materializes: the internal window slice when engaged,
+        /// else the raw ItemsSource. All measure/structure/pool/LoadMore internals read THIS.
+        /// </summary>
+        public IList EffectiveItemsSource => _itemsWindow?.Items ?? ItemsSource;
+
+        protected void DetachItemsWindow()
+        {
+            if (_itemsWindow == null)
+                return;
+
+            _itemsWindow.Items.CollectionChanged -= OnItemsSourceCollectionChanged;
+            _itemsWindow.Detach();
+            _itemsWindow = null;
+        }
+
+        /// <summary>
+        /// Engages the built-in window when the (templated) ItemsSource is big enough. The window's slice
+        /// takes over pipeline eventing; the controller itself observes the user's source collection.
+        /// </summary>
+        /// <summary>
+        /// Engage the built-in items window regardless of source size (normally it engages only past
+        /// <see cref="WindowSourceThreshold"/>). For lists that LIVE on the window's structure-preserving
+        /// mutation paths (chat: head-inserts must stay glued/silent) — running un-windowed below the
+        /// threshold routes the same mutations through the plain paths with different visual behavior.
+        /// Set BEFORE ItemsSource.
+        /// </summary>
+        public bool ForceItemsWindow { get; set; }
+
+        protected void TryEngageItemsWindow()
+        {
+            var source = ItemsSource;
+            if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
+                || (source.Count < WindowSourceThreshold && !ForceItemsWindow)
+                || ItemTemplate == null)
+                return;
+
+            _itemsWindow = new ItemsSourceWindow(this, source);
+            _itemsWindow.Items.CollectionChanged += OnItemsSourceCollectionChanged;
+
+            // the controller observes the user source now — pipeline must not also react to it directly
+            if (source is INotifyCollectionChanged sourceCollection)
+            {
+                sourceCollection.CollectionChanged -= OnItemsSourceCollectionChanged;
+            }
+
+            Debug.WriteLine(
+                $"[SkiaLayout] items window ENGAGED: {source.Count} source items, resident {_itemsWindow.Items.Count}");
+        }
+
+        /// <summary>
+        /// Engages the window when the source grows past the threshold DURING LIFE (chat lifecycle:
+        /// cold start under threshold, LoadMore pages push it over while the user reads history).
+        /// The window seeds CENTERED on the current viewport and the scroll offset is compensated by
+        /// the EXACT measured height of the skipped head rows — no visual jump, the user keeps reading.
+        /// Returns true when it engaged (the caller's collection change is consumed by the reset).
+        /// </summary>
+        protected bool TryEngageItemsWindowOnGrow()
+        {
+            var source = ItemsSource;
+            if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
+                || source.Count < WindowSourceThreshold
+                || ItemTemplate == null)
+                return false;
+
+            // anchor on the current viewport — FRESH from structure + scroll offset (the draw-updated
+            // FirstVisibleIndexLocal lags frames behind) and rounded to the NEAREST row top, since the
+            // ordered landing below aligns the anchor's top with the viewport top (sub-row precision).
+            int anchor = Math.Max(0, FirstVisibleIndexLocal);
+            if (Parent is SkiaScroll anchorScroll)
+            {
+                float vpTopPx = -(float)(anchorScroll.ViewportOffsetY * RenderingScale);
+                var structure = GetStackStructure();
+                if (structure != null)
+                {
+                    foreach (var cell in structure.GetChildren())
+                    {
+                        if (cell == null || !cell.WasMeasured) continue;
+                        if (cell.Destination.Bottom <= vpTopPx) continue;
+                        anchor = cell.ControlIndex;
+                        float h = cell.Destination.Bottom - cell.Destination.Top;
+                        if (h > 0 && vpTopPx - cell.Destination.Top > h / 2)
+                            anchor++; // closer to the NEXT row's top
+                        break;
+                    }
+                }
+            }
+
+            anchor = Math.Clamp(anchor, 0, source.Count - 1);
+            int start = Math.Clamp(anchor - ItemsSourceWindow.SeedCap / 2, 0,
+                Math.Max(0, source.Count - ItemsSourceWindow.SeedCap));
+
+            _itemsWindow = new ItemsSourceWindow(this, source, start);
+            _itemsWindow.FreezeUntilMeasured(); // no slides until the reset re-measure settles
+            _itemsWindow.Items.CollectionChanged += OnItemsSourceCollectionChanged;
+
+            if (source is INotifyCollectionChanged sourceCollection)
+            {
+                sourceCollection.CollectionChanged -= OnItemsSourceCollectionChanged;
+            }
+
+            Debug.WriteLine(
+                $"[SkiaLayout] items window ENGAGED on grow: {source.Count} items, slice [{_itemsWindow.WindowStart}..{_itemsWindow.WindowEnd}), anchor {anchor}");
+
+            // ROOT (pixel-stable engage): transform the CURRENT (full-source) structure into the window
+            // slice IN PLACE — keep the already-measured resident cells' pixels, re-index them to local,
+            // and compensate the scroll offset by the EXACT height of the head being windowed out. The
+            // visible row stays on identical pixels, so engage is invisible. The old path Reset-WIPED the
+            // measurements (incl. the head heights it needed) then guessed the offset back via
+            // ScrollToIndex, which on MeasureVisible resolves against un-measured content and snaps to the
+            // window top => the engage jump + empty space. Falls back to that reset only if the head isn't
+            // measured (can't pin exactly).
+            if (!TryEngageWindowInPlace())
+            {
+                OnItemsSourceCollectionChanged(EffectiveItemsSource,
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                if (Parent is SkiaScroll fallbackScroll)
+                    fallbackScroll.ScrollToIndex(anchor, false, RelativePositionType.Start);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// The built-in window just engaged IN PLACE: the whole slice was swapped (full source -> a windowed
+        /// view of it), every cell re-indexed to local and the coordinate frame re-based. Same class of event
+        /// as a windowed JUMP rebase — live frames during the rebuild can paint mixed generations or, under
+        /// prepared views, skeletons for cells whose realization is still catching up. A subclass that owns a
+        /// presented cache (SkiaCachedStack) overrides this to hold the last consistent frame until its band
+        /// is coherent again. Default no-op. Runs on the UI thread, right after the offset pin.
+        /// </summary>
+        protected virtual void OnItemsWindowEngagedInPlace()
+        {
+        }
+
+        /// <summary>
+        /// Pixel-stable window engage: rebuilds the layout structure from the CURRENT (full-source) structure's
+        /// already-measured cells that fall inside the freshly-created window slice — re-indexed to local and
+        /// re-based so local 0 sits at content-Y 0 — then compensates the scroll offset by the exact height of
+        /// the windowed-out head so the visible row stays on identical pixels. No remeasure, no ResetScroll, no
+        /// ScrollToIndex guess. Returns false (caller falls back to the reset path) when the slice's first item
+        /// isn't measured yet, i.e. its head height is unknown and the pin can't be exact.
+        /// </summary>
+        private bool TryEngageWindowInPlace()
+        {
+            var scale = (float)RenderingScale;
+            if (scale <= 0 || _itemsWindow == null)
+                return false;
+
+            var scroll = Parent as SkiaScroll;
+            int start = _itemsWindow.WindowStart;   // already SplitAligned + clamped by the ctor
+            int end = _itemsWindow.WindowEnd;
+            float headPx;
+
+            lock (LockMeasure)
+            {
+                var structure = StackStructure;
+                if (structure == null)
+                    return false;
+
+                var all = structure.GetChildren().Where(c => c != null && c.ControlIndex >= 0).ToList();
+
+                // exact head height = content-top of the cell that becomes local 0 (global index == start)
+                headPx = float.NaN;
+                foreach (var c in all)
+                    if (c.ControlIndex == start)
+                    {
+                        headPx = c.Destination.Top;
+                        break;
+                    }
+                if (float.IsNaN(headPx))
+                    return false; // slice head not measured -> can't pin exactly, let the caller reset
+
+                // keep the resident measured slice [start, end): re-index to local, re-base up by headPx
+                var kept = all.Where(c => c.ControlIndex >= start && c.ControlIndex < end)
+                    .OrderBy(c => c.ControlIndex).ToList();
+                if (kept.Count == 0)
+                    return false;
+
+                foreach (var c in kept)
+                {
+                    c.ControlIndex -= start;
+                    c.Destination = new SKRect(c.Destination.Left, c.Destination.Top - headPx,
+                        c.Destination.Right, c.Destination.Bottom - headPx);
+                    c.Area = new SKRect(c.Area.Left, c.Area.Top - headPx,
+                        c.Area.Right, c.Area.Bottom - headPx);
+                }
+
+                // rebuild the measurement cache keyed by the new local indices; drop head/tail entries
+                _measuredItems.Clear();
+                foreach (var c in kept)
+                    _measuredItems[c.ControlIndex] = new MeasuredItemInfo
+                    {
+                        Cell = c, LastAccessed = DateTime.UtcNow, IsInViewport = false
+                    };
+
+                _itemsShiftEpoch++; // drop any in-flight background batch keyed to the old (global) indices
+                FirstMeasuredIndexLocal = 0;
+                LastMeasuredIndexLocal = kept[^1].ControlIndex; // measured region is contiguous from local 0
+
+                RebuildStructureFromCells(kept);
+            }
+
+            // sync the adapter onto the slice (EffectiveItemsSource is now the window Items): rekey the
+            // in-use views by their unchanged data-context to the new local indices, refresh the snapshot
+            var snapshot = ChildrenFactory.CaptureContextsSnapshot(EffectiveItemsSource);
+            ChildrenFactory.InitializeSoft(false, EffectiveItemsSource, GetTemplatesPoolLimit(), snapshot);
+
+            UpdateProgressiveContentSize();
+
+            // pin: the content shrank at the top by headPx, so raise the offset by the same amount to keep
+            // the visible row on identical pixels (mirror of the head-insert commit's OffsetVisibleAnchorY)
+            scroll?.OffsetVisibleAnchorY(headPx / scale);
+
+            // NOT OnContentTranslatedVertically: that contract is "pure translation, no new pixels, re-anchor
+            // your plane". It does not hold here — the content becomes a DIFFERENT slice, so re-anchoring
+            // makes a plane recorded over the pre-engage geometry pass the coverage check and get served
+            // (measured: blanks the screen at engage in EngageOnLoadMoreRepro). The slice swap is a
+            // TRANSITION, which is what the hook below is for.
+            OnItemsWindowEngagedInPlace();
+
+            // measure any slice cells below the previous frontier (off-screen) in the background
+            Invalidate();
+
+            Debug.WriteLine(
+                $"[SkiaLayout] window engaged IN PLACE: slice [{start}..{end}), head {headPx:0.0}px pinned");
+            return true;
+        }
+
+        #endregion
+
         private static void ItemsSourcePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
             var skiaControl = (SkiaLayout)bindable;
 
             if (oldvalue != null)
             {
-                //if (oldvalue is IList oldList)
-                //{
-                //	foreach (var context in oldList)
-                //	{
-                //		//todo
-                //	}
-                //}
-
                 if (oldvalue is INotifyCollectionChanged oldCollection)
                 {
                     oldCollection.CollectionChanged -= skiaControl.OnItemsSourceCollectionChanged;
                 }
             }
 
+            skiaControl.DetachItemsWindow();
+            skiaControl.TryEngageItemsWindow();
 
-            if (newvalue is INotifyCollectionChanged newCollection)
+            // window engaged: its slice raises the pipeline events, the controller observes the user source
+            if (skiaControl._itemsWindow == null && newvalue is INotifyCollectionChanged newCollection)
             {
                 newCollection.CollectionChanged -= skiaControl.OnItemsSourceCollectionChanged;
                 newCollection.CollectionChanged += skiaControl.OnItemsSourceCollectionChanged;
             }
 
             skiaControl.OnItemSourceChanged();
+
+            // Seed IsEmpty from the source NOW, not only after the first measure. Otherwise IsEmpty stays at
+            // its default (false) until ApplyMeasureResult runs, so anything bound to it (EmptyView, a footer
+            // observing IsEmpty) reads "not empty" for the first frame of an empty list — a 1-frame flash.
+            skiaControl.CheckAndSetupIfEmpty();
         }
 
         private static void NeedUpdateItemsSource(BindableObject bindable, object oldvalue, object newvalue)
@@ -1384,7 +1700,8 @@ namespace DrawnUi.Draw
 
         public override void OnItemTemplateChanged()
         {
-            //PostponeInvalidation(nameof(OnItemSourceChanged), OnItemSourceChanged);
+            // XAML may set ItemTemplate after ItemsSource — re-check window engagement now that we're templated
+            TryEngageItemsWindow();
             ApplyItemsSource();
         }
 
@@ -1430,12 +1747,60 @@ namespace DrawnUi.Draw
         /// </summary>
         protected virtual bool ShouldPreserveStructureOnCollectionChange(NotifyCollectionChangedEventArgs args)
         {
-            return
-                args.Action != NotifyCollectionChangedAction.Reset &&
-                !IsFullCollectionReplace(args) &&
-                StackStructure != null
-                && StackStructure.Length > 0
-                && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible;
+            if (args.Action == NotifyCollectionChangedAction.Reset || IsFullCollectionReplace(args)
+                || StackStructure == null || StackStructure.Length == 0)
+                return false;
+
+            // SPLIT GRID: structure-preserving mutation is split-aware for BOTH strategies as long as the
+            // change lands on row boundaries (count & index both multiples of Split) so column parity is
+            // preserved by a pure row-shift — MeasureFirst via the uniform arithmetic add, MeasureVisible
+            // via its column-aware incremental measure (MeasureBatchInBackground / MeasureList place cells
+            // by col/row). Non-aligned mutations still fall through to the full remeasure that re-lays the
+            // set into proper split rows. Historic note: before the LayoutCell column-slot fix a Fill cell
+            // was arranged full-container-width, so ANY split preserve path *looked* like it collapsed to
+            // one column — that root cause is fixed, so aligned split grids now mutate without a reset.
+            if (Split > 1 && !IsSplitAlignedChange(args))
+                return false;
+
+            if (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible)
+                return true;
+
+            // MeasureFirst = uniform rows (first item's size + spacing): Add/Remove/Replace are pure
+            // arithmetic on the structure (followers slide by count*stride) — no rebuild, no binds,
+            // no measures. Applied by TryApplyUniformAddMeasureFirst / the generic remove path
+            // (Replace decomposes into Remove+Add). Move and resets keep the full rebuild.
+            if (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
+                && args.Action is NotifyCollectionChangedAction.Add
+                    or NotifyCollectionChangedAction.Remove
+                    or NotifyCollectionChangedAction.Replace)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// True when an Add/Remove lands on split-row boundaries (count AND index both multiples of Split),
+        /// so the uniform structure-preserving arithmetic keeps every survivor in its original column (pure
+        /// row-shift). Non-aligned changes would flip column parity and must take the full-rebuild path.
+        /// </summary>
+        private bool IsSplitAlignedChange(NotifyCollectionChangedEventArgs args)
+        {
+            int count, index;
+            switch (args.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    count = args.NewItems?.Count ?? 0;
+                    index = args.NewStartingIndex;
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    count = args.OldItems?.Count ?? 0;
+                    index = args.OldStartingIndex;
+                    break;
+                default:
+                    return false; // Replace/Move: not handled by the split-aware arithmetic
+            }
+
+            return count > 0 && index >= 0 && (count % Split == 0) && (index % Split == 0);
         }
 
         /// <summary>
@@ -1451,8 +1816,8 @@ namespace DrawnUi.Draw
             return args.Action == NotifyCollectionChangedAction.Replace
                    && args.NewStartingIndex == 0
                    && args.NewItems != null
-                   && ItemsSource != null
-                   && args.NewItems.Count == ItemsSource.Count;
+                   && EffectiveItemsSource != null
+                   && args.NewItems.Count == EffectiveItemsSource.Count;
         }
 
 
@@ -1463,6 +1828,16 @@ namespace DrawnUi.Draw
         {
             if (!IsTemplated)
                 return;
+
+            // ENGAGE-ON-GROW: the source crossed the window threshold DURING LIFE (typical chat: cold
+            // start under 300, LoadMore pages push it over). Engage the window IN PLACE, anchored to the
+            // current viewport — the change that grew the source is consumed by the engage reset.
+            if (_itemsWindow == null && ReferenceEquals(sender, ItemsSource)
+                && args.Action is NotifyCollectionChangedAction.Add or NotifyCollectionChangedAction.Reset
+                && TryEngageItemsWindowOnGrow())
+            {
+                return;
+            }
 
             if (ViewsAdapter.LogEnabled)
             {
@@ -1510,12 +1885,22 @@ namespace DrawnUi.Draw
                     // below resolves to InitializeSoft (Action=Replace, same ItemsSource ref) — no rebuild.
                     ResetMeasurementForReplace();
                 }
+                else if (Split > 1)
+                {
+                    // SPLIT GRID add/remove (routed here by ShouldPreserveStructureOnCollectionChange):
+                    // a bare Invalidate is NOT enough — the measure pass continues INCREMENTALLY from the
+                    // measured frontier and appends ONE item per structure row, collapsing a 2-column grid
+                    // to a single half-width column after every LoadMore page (device 2026-07-17). Reset
+                    // measurement/structure (templates+pool intact) so the pass relays ALL items into
+                    // proper split rows.
+                    ResetMeasurementForReplace();
+                }
                 ApplyNewItemsSource = false;
 
                 //we could enter here from a different thread:
                 SafeAction(() =>
                 {
-                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, ItemsSource,
+                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, EffectiveItemsSource,
                         GetTemplatesPoolLimit(),
                         GetTemplatesPoolPrefill());
 
@@ -1596,7 +1981,7 @@ ExistingLogic:
             {
                 SafeAction(() =>
                 {
-                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, ItemsSource,
+                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, EffectiveItemsSource,
                         GetTemplatesPoolLimit(), GetTemplatesPoolPrefill());
                 });
 
@@ -1683,7 +2068,7 @@ ExistingLogic:
             // Capture the data-contexts snapshot NOW, on the mutating (UI) thread, serialized with the change.
             // The apply below (staged change) and the InitializeSoft closure both run on the render thread, where
             // reading live ItemsSource races the next main-thread mutation (Android) -> torn indices/overlap/crash.
-            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(ItemsSource);
+            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(EffectiveItemsSource);
 
             // Stage the Add change for rendering pipeline
             StageStructureChange(new StructureChange(StructureChangeType.Add, MeasureStamp)
@@ -1694,17 +2079,33 @@ ExistingLogic:
                 ContextsSnapshot = contextsSnapshot
             });
 
+            // Adapter refresh ownership per Add:
+            // - Head inserts (any strategy) and ALL MeasureFirst adds: APPLY-OWNED (ApplyInsertShift or
+            //   the apply-side net, in stage order). A stage refresh is queued (SafeAction) and executes
+            //   AFTER the applies, re-applying its by-then-stale snapshot over newer state — in a window
+            //   slide's add+trim turn that flipped the adapter back to the pre-trim count until the NEXT
+            //   slide (the browser "Data jumping 48/64" oscillation with pool churn spikes).
+            // - MeasureVisible non-head appends/mid-inserts (chat LoadMore): STAGE-OWNED for now — their
+            //   apply side is not airtight (structure-null early return during seeding, stamp drops),
+            //   and background measurement needs the new count immediately. They are the only mutation
+            //   in their turn, so their snapshot cannot go stale. Unify once apply ownership is airtight
+            //   (planned with MeasureVisible + built-in window work).
+            bool applyRefreshesAdapter = args.NewStartingIndex == 0
+                                         || MeasureItemsStrategy == MeasuringStrategy.MeasureFirst;
+
             lock (LockMeasure)
             {
                 SafeAction(() =>
                 {
-                    // PRESERVE STRUCTURE: Use InitializeSoft which preserves existing structure
-                    // This updates pool size and data contexts without destroying measurements
-                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
-
-                    if (ViewsAdapter.LogEnabled)
+                    if (!applyRefreshesAdapter)
                     {
-                        Super.Log($"[SkiaLayout] {Tag} Structure preserved using InitializeSoft");
+                        // PRESERVE STRUCTURE: updates data contexts without destroying measurements
+                        ChildrenFactory.InitializeSoft(false, EffectiveItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
+
+                        if (ViewsAdapter.LogEnabled)
+                        {
+                            Super.Log($"[SkiaLayout] {Tag} Structure preserved using InitializeSoft");
+                        }
                     }
 
                     Repaint();
@@ -1728,7 +2129,7 @@ ExistingLogic:
 
             // Capture the snapshot on the mutating (UI) thread (see HandleStructurePreservingAdd) before the
             // render-thread apply/InitializeSoft re-read the live collection off-thread.
-            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(ItemsSource);
+            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(EffectiveItemsSource);
 
             // Stage the Remove change for rendering pipeline. Tail removal is detected HERE,
             // synchronously with the mutation: at apply time the live count may already include
@@ -1737,21 +2138,24 @@ ExistingLogic:
             {
                 StartIndex = args.OldStartingIndex,
                 Count = args.OldItems?.Count ?? 0,
-                TailRemoval = args.OldStartingIndex == (ItemsSource?.Count ?? -1),
+                TailRemoval = args.OldStartingIndex == (EffectiveItemsSource?.Count ?? -1),
                 ContextsSnapshot = contextsSnapshot
             });
 
+            // NO adapter refresh here: EVERY Remove apply path (head trim fast path, tail trim fast
+            // path, generic mid-remove) ends in ApplyRemoveShift, which releases removed views, rekeys
+            // survivors and swaps this snapshot in — atomically with the structure shift on the render
+            // thread. Refreshing here too served post-remove contexts against the pre-shift structure
+            // until the apply landed: every visible cell rebound to a shifted context and re-baked its
+            // cache, then rebound back after the shift (the window-slide lag spike / "0/24 in use").
             lock (LockMeasure)
             {
                 SafeAction(() =>
                 {
-                    // Use InitializeSoft to preserve structure while updating templates
-                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
-
                     if (ViewsAdapter.LogEnabled)
                     {
                         Trace.WriteLine(
-                            $"[SkiaLayout] {Tag} Structure preserved using InitializeSoft, remove change staged");
+                            $"[SkiaLayout] {Tag} remove change staged, adapter refresh deferred to apply");
                     }
 
                     // Trigger repaint without invalidation to apply staged changes
@@ -1776,7 +2180,7 @@ ExistingLogic:
 
             // Capture the snapshot on the mutating (UI) thread (see HandleStructurePreservingAdd) before the
             // render-thread apply/InitializeSoft re-read the live collection off-thread.
-            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(ItemsSource);
+            var contextsSnapshot = ChildrenFactory.CaptureContextsSnapshot(EffectiveItemsSource);
 
             // Stage the Replace change for rendering pipeline
             StageStructureChange(new StructureChange(StructureChangeType.Replace, MeasureStamp)
@@ -1793,7 +2197,7 @@ ExistingLogic:
                 SafeAction(() =>
                 {
                     // Use InitializeSoft to preserve structure while updating templates
-                    ChildrenFactory.InitializeSoft(false, ItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
+                    ChildrenFactory.InitializeSoft(false, EffectiveItemsSource, GetTemplatesPoolLimit(), contextsSnapshot);
 
                     if (ViewsAdapter.LogEnabled)
                     {
@@ -1824,7 +2228,7 @@ ExistingLogic:
             {
                 SafeAction(() =>
                 {
-                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, ItemsSource,
+                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, EffectiveItemsSource,
                         GetTemplatesPoolLimit(), GetTemplatesPoolPrefill());
                     Invalidate();
                 });
@@ -1854,7 +2258,7 @@ ExistingLogic:
             {
                 SafeAction(() =>
                 {
-                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, ItemsSource,
+                    ChildrenFactory.InitializeTemplates(args, CreateContentFromTemplate, EffectiveItemsSource,
                         GetTemplatesPoolLimit(), GetTemplatesPoolPrefill());
                     ResetScroll();
                     Invalidate();
@@ -1894,7 +2298,7 @@ ExistingLogic:
             try
             {
                 // This is a simplified validation - the full version is in ViewsAdapter
-                if (ItemsSource != null && ItemsSource.Count > 0)
+                if (EffectiveItemsSource != null && EffectiveItemsSource.Count > 0)
                 {
                     // Add any specific validation checks here
                 }

@@ -42,6 +42,25 @@ public class RangeAnimator : SkiaValueAnimator
 
     public double Distance { get; set; }
 
+    /// <summary>
+    /// Translates the whole animated range by <paramref name="delta"/> (same units as the value).
+    /// Used when content above the viewport is trimmed/inserted mid-scroll (window slide commit) so a
+    /// running wheel/ScrollTo trajectory keeps targeting the same content instead of overwriting the
+    /// scroll-anchor offset compensation with stale pre-shift values (viewport lands in the void).
+    /// </summary>
+    public void Shift(double delta)
+    {
+        if (Math.Abs(delta) < 0.0001)
+            return;
+
+        lock (lockUpdate)
+        {
+            mMinValue += delta;
+            mMaxValue += delta;
+            mValue += delta;
+        }
+    }
+
 
     protected override bool UpdateValue(long deltaT, long deltaFromStart)
     {

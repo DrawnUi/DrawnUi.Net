@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Draw.PrebuiltControlStyle.Cupertino
   - DrawnUi.Draw.PrebuiltControlStyle.Material
+  - DrawnUi.Draw.PrebuiltControlStyle.Material3
   - DrawnUi.Draw.PrebuiltControlStyle.Platform
   - DrawnUi.Draw.PrebuiltControlStyle.Unset
   - DrawnUi.Draw.PrebuiltControlStyle.Windows
@@ -20,8 +21,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrebuiltControlStyle
     path: ../src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
     startLine: 2
@@ -47,8 +48,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Unset
     path: ../src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
     startLine: 4
@@ -73,8 +74,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Platform
     path: ../src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
     startLine: 9
@@ -101,8 +102,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Cupertino
     path: ../src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
     startLine: 14
@@ -129,15 +130,18 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Material
     path: ../src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-    startLine: 19
+    startLine: 20
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Google Android tyle
+  summary: >-
+    Google Android style, Material Design 2 era. Kept as-is for apps that already
+
+    ship with this look; new apps usually want <xref href="DrawnUi.Draw.PrebuiltControlStyle.Material3" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: Material = 3
@@ -157,11 +161,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Windows
     path: ../src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -169,6 +173,41 @@ items:
   example: []
   syntax:
     content: Windows = 4
+    return:
+      type: DrawnUi.Draw.PrebuiltControlStyle
+- uid: DrawnUi.Draw.PrebuiltControlStyle.Material3
+  commentId: F:DrawnUi.Draw.PrebuiltControlStyle.Material3
+  id: Material3
+  parent: DrawnUi.Draw.PrebuiltControlStyle
+  langs:
+  - csharp
+  - vb
+  name: Material3
+  nameWithType: PrebuiltControlStyle.Material3
+  fullName: DrawnUi.Draw.PrebuiltControlStyle.Material3
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Material3
+    path: ../src/Shared/DrawnUi/Internals/Enums/PrebuiltControlStyle.cs
+    startLine: 33
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Google Android style, Material Design 3 (Material You): primary #6750A4 palette,
+
+    outlined/filled switch, pill buttons, progress with gap + stop indicator.
+
+    This is what <xref href="DrawnUi.Draw.PrebuiltControlStyle.Platform" data-throw-if-not-resolved="false"></xref> resolves to on Android.
+
+    Appended after Windows to keep existing enum numeric values stable.
+  example: []
+  syntax:
+    content: Material3 = 5
     return:
       type: DrawnUi.Draw.PrebuiltControlStyle
 references:
@@ -291,3 +330,15 @@ references:
   name: PrebuiltControlStyle
   nameWithType: PrebuiltControlStyle
   fullName: DrawnUi.Draw.PrebuiltControlStyle
+- uid: DrawnUi.Draw.PrebuiltControlStyle.Material3
+  commentId: F:DrawnUi.Draw.PrebuiltControlStyle.Material3
+  href: DrawnUi.Draw.PrebuiltControlStyle.html#DrawnUi_Draw_PrebuiltControlStyle_Material3
+  name: Material3
+  nameWithType: PrebuiltControlStyle.Material3
+  fullName: DrawnUi.Draw.PrebuiltControlStyle.Material3
+- uid: DrawnUi.Draw.PrebuiltControlStyle.Platform
+  commentId: F:DrawnUi.Draw.PrebuiltControlStyle.Platform
+  href: DrawnUi.Draw.PrebuiltControlStyle.html#DrawnUi_Draw_PrebuiltControlStyle_Platform
+  name: Platform
+  nameWithType: PrebuiltControlStyle.Platform
+  fullName: DrawnUi.Draw.PrebuiltControlStyle.Platform

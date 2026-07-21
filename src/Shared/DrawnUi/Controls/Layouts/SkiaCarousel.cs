@@ -1260,8 +1260,11 @@ public class SkiaCarousel : SnappingLayout
 
         CurrentSnap = new(-1, -1);
 
-        if (SnapPoints.Any() && (_itemsSourceChangedNeedResetIndex || SelectedIndex < 0 ||
-                                 SelectedIndex > snapPoints.Count - 1))
+        // Reset to 0 ONLY when the current index is out of range for the new items. Do NOT reset just
+        // because ItemsSource changed: a carousel that binds both ItemsSource and SelectedIndex (e.g. a
+        // gallery popup opening at a tapped item) sets its target index in the same cycle the items bind,
+        // and an unconditional items-changed reset clobbered it back to 0 (opened the wrong/first image).
+        if (SnapPoints.Any() && (SelectedIndex < 0 || SelectedIndex > snapPoints.Count - 1))
         {
             SelectedIndex = 0;
         }

@@ -40,14 +40,60 @@ public partial class SkiaLayout
 
     protected virtual void ApplyStackMeasureResult()
     {
-        if (StackStructureMeasured != null)
+        var incoming = StackStructureMeasured;
+        if (incoming == null)
+            return;
+
+        // Don't publish a structure whose ON-SCREEN slots aren't measured yet. BuildStackStructure sets
+        // StackStructureMeasured to a structure whose cells are created but NOT YET measured
+        // (WasMeasured=false, size 0), then the caller measures them in place; if another thread's Draw
+        // swaps that in mid-measure, DrawStack skips the unmeasured VISIBLE cells -> a blank frame (the
+        // empty-cell blink). Guard on VISIBLE cells only, keyed by ControlIndex from the last draw: a normal
+        // MeasureVisible publish deliberately leaves OFF-SCREEN cells unmeasured/estimated
+        // (SkiaLayout.ListView.cs) and MUST still publish, or holding the stale structure during background
+        // measurement makes scrolling jerky.
+        //
+        // CRUCIAL: holding the current structure is only valid when it actually renders those visible slots
+        // correctly — i.e. it ALREADY has them measured (an in-place refresh / delivery tick). At a JUMP
+        // (ScrollToOldest) the visible set moved to a cold region the current structure does NOT cover, so
+        // holding it lands at a stale/estimated offset (the wrong-landing bug). There, publish the incoming
+        // structure now: its geometry is correct and the still-cold cells show a brief skeleton at the RIGHT
+        // place. So hold only when the current structure has EVERY visible slot measured.
+        //
+        // And NEVER hold while an ordered jump is homing: ScrollToOldest/ScrollToIndex derives its landing
+        // offset from the published structure's extent, so it MUST see the freshest geometry — a held stale
+        // structure lands the jump at the wrong offset. The blink-guard is only for steady-state refreshes.
+        bool jumpHoming = Parent is SkiaScroll js && js.HasPendingScrollOrder;
+
+        if (!jumpHoming && _lastVisibleControlIndexes.Count > 0 && StackStructure != null)
         {
-            var previous = StackStructure;
-            StackStructure = StackStructureMeasured;
-            StackStructureMeasured = null;
-            if (previous != StackStructure)
-                previous?.Clear();
+            _measuredCurrentScratch.Clear();
+            foreach (var c in StackStructure.GetChildren())
+                if (c != null && c.WasMeasured)
+                    _measuredCurrentScratch.Add(c.ControlIndex);
+
+            bool currentCoversVisible = true;
+            foreach (var vi in _lastVisibleControlIndexes)
+                if (!_measuredCurrentScratch.Contains(vi))
+                {
+                    currentCoversVisible = false;
+                    break;
+                }
+
+            if (currentCoversVisible)
+            {
+                foreach (var cell in incoming.GetChildren())
+                    if (cell != null && !cell.WasMeasured
+                        && _lastVisibleControlIndexes.Contains(cell.ControlIndex))
+                        return; // hold: current is a valid fallback for these slots, don't blink
+            }
         }
+
+        var previous = StackStructure;
+        StackStructure = incoming;
+        StackStructureMeasured = null;
+        if (previous != StackStructure)
+            previous?.Clear();
     }
 
     protected virtual ScaledSize MeasureAndArrangeCell(SKRect destination,
@@ -97,20 +143,26 @@ public partial class SkiaLayout
 
             if (child != null)
             {
+                // Horizontal alignment must resolve against the cell's COLUMN SLOT (cell.Area), not the
+                // full multi-column container: for Split>1 a Fill child stretched to rectForChildrenPixels
+                // becomes full-container width and the MeasureFirst prototype copy propagates that (with a
+                // one-stride X shift) to every cell -> grid collapses to a single column. For Split==1 the
+                // slot equals the container, so this is identical to the previous behaviour.
+                var hSlot = cell.Area;
                 if (Type == LayoutType.Column
-                    && rectForChildrenPixels.Width > desiredWidth)
+                    && hSlot.Width > desiredWidth)
                 {
                     if (child.HorizontalOptions.Alignment == LayoutAlignment.Fill && child.NeedFillX)
                     {
-                        area = new(rectForChildrenPixels.Left,
+                        area = new(hSlot.Left,
                             area.Top,
-                            rectForChildrenPixels.Right,
+                            hSlot.Right,
                             area.Bottom);
                     }
                     else if (child.HorizontalOptions.Alignment == LayoutAlignment.Center)
                     {
-                        var left = rectForChildrenPixels.Left +
-                                   (float)Math.Ceiling((rectForChildrenPixels.Width - desiredWidth) / 2f);
+                        var left = hSlot.Left +
+                                   (float)Math.Ceiling((hSlot.Width - desiredWidth) / 2f);
                         area = new(left,
                             area.Top,
                             left + desiredWidth,
@@ -118,17 +170,17 @@ public partial class SkiaLayout
                     }
                     else if (child.HorizontalOptions.Alignment == LayoutAlignment.End)
                     {
-                        var left = rectForChildrenPixels.Right - desiredWidth;
+                        var left = hSlot.Right - desiredWidth;
                         area = new(left,
                             area.Top,
-                            rectForChildrenPixels.Right,
+                            hSlot.Right,
                             area.Bottom);
                     }
                     else
                     {
-                        area = new(rectForChildrenPixels.Left,
+                        area = new(hSlot.Left,
                             area.Top,
-                            rectForChildrenPixels.Left + desiredWidth,
+                            hSlot.Left + desiredWidth,
                             area.Bottom);
                     }
                 }

@@ -22,8 +22,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingAnimator
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 5
@@ -40,6 +40,7 @@ items:
   - DrawnUi.Draw.AnimatorBase
   - DrawnUi.Draw.SkiaValueAnimator
   derivedClasses:
+  - DrawnUi.Draw.ActionOverlayEffect
   - DrawnUi.Draw.EdgeGlowAnimator
   - DrawnUi.Draw.RippleAnimator
   - DrawnUi.Draw.ShimmerAnimator
@@ -119,8 +120,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stop
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 7
@@ -149,8 +150,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Render
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 16
@@ -189,8 +190,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnRendering
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 28
@@ -227,8 +228,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 34
@@ -259,8 +260,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelfDrawingLocation
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 39
@@ -290,8 +291,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawWithClipping
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 57
@@ -325,8 +326,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyControlClipping
     path: ../src/Shared/DrawnUi/Features/Animators/RenderingAnimator.cs
     startLine: 97

@@ -1,0 +1,297 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.FilterQuality
+  commentId: T:DrawnUi.Draw.FilterQuality
+  id: FilterQuality
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.FilterQuality.High
+  - DrawnUi.Draw.FilterQuality.Low
+  - DrawnUi.Draw.FilterQuality.Medium
+  - DrawnUi.Draw.FilterQuality.None
+  - DrawnUi.Draw.FilterQuality.Ultra
+  langs:
+  - csharp
+  - vb
+  name: FilterQuality
+  nameWithType: FilterQuality
+  fullName: DrawnUi.Draw.FilterQuality
+  type: Enum
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: FilterQuality
+    path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+    startLine: 5
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Image filtering quality level. Maps to SkiaSharp sampling options.
+  example: []
+  syntax:
+    content: public enum FilterQuality
+    content.vb: Public Enum FilterQuality
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.FilterQuality.None
+  commentId: F:DrawnUi.Draw.FilterQuality.None
+  id: None
+  parent: DrawnUi.Draw.FilterQuality
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: FilterQuality.None
+  fullName: DrawnUi.Draw.FilterQuality.None
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: None
+    path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+    startLine: 10
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: No filtering, nearest neighbor. Fastest.
+  example: []
+  syntax:
+    content: None = 0
+    return:
+      type: DrawnUi.Draw.FilterQuality
+- uid: DrawnUi.Draw.FilterQuality.Low
+  commentId: F:DrawnUi.Draw.FilterQuality.Low
+  id: Low
+  parent: DrawnUi.Draw.FilterQuality
+  langs:
+  - csharp
+  - vb
+  name: Low
+  nameWithType: FilterQuality.Low
+  fullName: DrawnUi.Draw.FilterQuality.Low
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Low
+    path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Linear filtering. Good balance of quality and performance.
+  example: []
+  syntax:
+    content: Low = 1
+    return:
+      type: DrawnUi.Draw.FilterQuality
+- uid: DrawnUi.Draw.FilterQuality.Medium
+  commentId: F:DrawnUi.Draw.FilterQuality.Medium
+  id: Medium
+  parent: DrawnUi.Draw.FilterQuality
+  langs:
+  - csharp
+  - vb
+  name: Medium
+  nameWithType: FilterQuality.Medium
+  fullName: DrawnUi.Draw.FilterQuality.Medium
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Medium
+    path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+    startLine: 20
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Linear with mipmapping for better downscaling.
+  example: []
+  syntax:
+    content: Medium = 2
+    return:
+      type: DrawnUi.Draw.FilterQuality
+- uid: DrawnUi.Draw.FilterQuality.High
+  commentId: F:DrawnUi.Draw.FilterQuality.High
+  id: High
+  parent: DrawnUi.Draw.FilterQuality
+  langs:
+  - csharp
+  - vb
+  name: High
+  nameWithType: FilterQuality.High
+  fullName: DrawnUi.Draw.FilterQuality.High
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: High
+    path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+    startLine: 25
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Linear filtering with mipmaps, matches the old SkiaSharp default high quality. Fast on GPU.
+  example: []
+  syntax:
+    content: High = 3
+    return:
+      type: DrawnUi.Draw.FilterQuality
+- uid: DrawnUi.Draw.FilterQuality.Ultra
+  commentId: F:DrawnUi.Draw.FilterQuality.Ultra
+  id: Ultra
+  parent: DrawnUi.Draw.FilterQuality
+  langs:
+  - csharp
+  - vb
+  name: Ultra
+  nameWithType: FilterQuality.Ultra
+  fullName: DrawnUi.Draw.FilterQuality.Ultra
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Ultra
+    path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+    startLine: 30
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Cubic filtering (Mitchell). Best quality, slowest.
+  example: []
+  syntax:
+    content: Ultra = 4
+    return:
+      type: DrawnUi.Draw.FilterQuality
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.FilterQuality
+  commentId: T:DrawnUi.Draw.FilterQuality
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.FilterQuality.html
+  name: FilterQuality
+  nameWithType: FilterQuality
+  fullName: DrawnUi.Draw.FilterQuality

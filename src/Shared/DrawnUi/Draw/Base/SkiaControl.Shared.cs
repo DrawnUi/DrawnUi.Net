@@ -64,8 +64,16 @@ namespace DrawnUi.Draw
 #if IOS || MACCATALYST
                     return PrebuiltControlStyle.Cupertino;
 #elif ANDROID
-                    return PrebuiltControlStyle.Material;
+                    return PrebuiltControlStyle.Material3;
 #elif WINDOWS || BROWSER
+                    return PrebuiltControlStyle.Windows;
+#elif DRAWNUI_NET
+                    // pure .NET heads (OpenTK, headless) have no platform compile constant —
+                    // resolve from the OS at runtime
+                    if (OperatingSystem.IsMacOS() || OperatingSystem.IsMacCatalyst())
+                        return PrebuiltControlStyle.Cupertino;
+                    if (OperatingSystem.IsAndroid())
+                        return PrebuiltControlStyle.Material3;
                     return PrebuiltControlStyle.Windows;
 #endif
                 }
@@ -304,6 +312,7 @@ namespace DrawnUi.Draw
                 if (platformShadow != value)
                 {
                     platformShadow = value;
+                    InvalidateEffectsMargin(); //cache/clip/dirty-region expansion depends on it
                     OnPropertyChanged();
                 }
             }
@@ -448,10 +457,15 @@ namespace DrawnUi.Draw
 
         private static void NeedInitialize(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is SkiaControl control)
+            if (bindable is SkiaControl control && control.DefaultContentCreated)
             {
                 control.InitializeDefaultContent(true);
             }
+            // Not yet initialized: defer to the first Measure (InitializeDefaultContent is called there).
+            // Building content synchronously here would snapshot a half-constructed object initializer:
+            // e.g. `new SkiaProgress { ControlStyle = ..., HorizontalOptions = Fill }` would run
+            // SetDefaultContentSize before HorizontalOptions is assigned, pinning WidthRequest
+            // to the default width and silently ignoring the Fill that follows.
         }
 
         /// <summary>
@@ -643,7 +657,13 @@ namespace DrawnUi.Draw
         /// <returns></returns>
         public virtual SKPoint GetSelfDrawingPosition()
         {
-            var position = BuildSelfDrawingPosition(LastDrawnAt.Location, this, true);
+            // LastDrawnAt is the layout rect; Left/Top are a paint-time blit offset of the cache
+            // (see DrawRenderObjectInternal) that never touches LastDrawnAt. Overlay post-animators
+            // (ripple/shimmer) draw on the outer context, so fold this control's own Left/Top in here,
+            // otherwise the effect lands at the layout slot instead of the visible position.
+            var start = LastDrawnAt.Location;
+            start.Offset((float)(Left * RenderingScale), (float)(Top * RenderingScale));
+            var position = BuildSelfDrawingPosition(start, this, true);
 
             return new(position.X, position.Y);
         }
@@ -1837,6 +1857,21 @@ namespace DrawnUi.Draw
             set { SetValue(AnimationTappedProperty, value); }
         }
 
+        public static readonly BindableProperty AnimationTappedSpeedProperty = BindableProperty.Create(
+            nameof(AnimationTappedSpeed),
+            typeof(double),
+            typeof(SkiaControl), 0.0);
+
+        /// <summary>
+        /// Duration in milliseconds of the <see cref="AnimationTapped"/> effect (currently Ripple).
+        /// 0 = use the effect's built-in default (Ripple: 500ms).
+        /// </summary>
+        public double AnimationTappedSpeed
+        {
+            get { return (double)GetValue(AnimationTappedSpeedProperty); }
+            set { SetValue(AnimationTappedSpeedProperty, value); }
+        }
+
         public static readonly BindableProperty TransformViewProperty = BindableProperty.Create(nameof(TransformView),
             typeof(object),
             typeof(SkiaControl), null);
@@ -1884,13 +1919,18 @@ namespace DrawnUi.Draw
 
                     if (AnimationTapped == SkiaTouchAnimation.Ripple)
                     {
-                        var ptsInsideControl = GetOffsetInsideControlInPoints(args.Event.Location, apply.ChildOffset);
-                        control.PlayRippleAnimation(TouchEffectColor, ptsInsideControl.X, ptsInsideControl.Y);
+                        // Use MappedLocation, not raw args.Event.Location: the parent dispatch folds the
+                        // plane blit delta (RenderTree.Offset) + parent transforms into MappedLocation, not
+                        // into ChildOffset. Raw location put the ripple at a scroll-stale Y on the first tap
+                        // after scrolling a cell served from a SkiaCachedStack plane. Identical when no plane.
+                        var ptsInsideControl = GetOffsetInsideControlInPoints(
+                            new PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset);
+                        control.PlayRippleAnimation(TouchEffectColor, ptsInsideControl.X, ptsInsideControl.Y, speedMs: AnimationTappedSpeed);
                     }
                     else if (AnimationTapped == SkiaTouchAnimation.Shimmer)
                     {
                         var color = TouchEffectColor;
-                        control.PlayShimmerAnimation(color, 150, 33, 300);
+                        control.PlayShimmerAnimation(color, 150, 33, (int)AnimationTappedSpeed);
                     }
                 }
 
@@ -4782,6 +4822,21 @@ namespace DrawnUi.Draw
         protected virtual void OnLayoutReady()
         {
             IsLayoutReady = true;
+
+            // Notify state effects the moment layout becomes ready. UpdateState normally runs in
+            // OnBeforeDrawing (start of a render), but IsLayoutReady only flips LATER in the same
+            // render (during Arrange). Without this, an IStateEffect that gates on IsLayoutReady would
+            // stay uninitialized until some *later* render happens to re-run OnBeforeDrawing — which
+            // never comes for a control that isn't re-rendered after its first layout (e.g. a cached
+            // child of a SkiaShape). Notifying here makes readiness deterministic in every container.
+            if (EffectsState != null)
+            {
+                foreach (var stateEffect in EffectsState)
+                {
+                    stateEffect?.UpdateState();
+                }
+            }
+
             LayoutIsReady?.Invoke(this, null);
             if (IsAccessibilityElement)
             {
@@ -5583,7 +5638,7 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// https://github.com/taublast/DrawnUi/issues/92#issuecomment-2408805077
+        /// https://github.com/DrawnUi/DrawnUi.Net/issues/92#issuecomment-2408805077
         /// </summary>
         public virtual void ApplyBindingContext()
         {
@@ -5620,10 +5675,6 @@ namespace DrawnUi.Draw
 
             try
             {
-                //InvalidateCacheWithPrevious();
-
-                //InvalidateViewsList(); //we might get different ZIndex which is bindable..
-
                 ApplyBindingContext();
 
                 //will apply to maui props like styles, triggers etc
@@ -7381,6 +7432,21 @@ namespace DrawnUi.Draw
             if (IsDisposing || IsDisposed || ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
                 return;
 
+            ExecuteOnPaintCallbacks(ctx);
+
+            PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
+
+            WasDrawn = true;
+        }
+
+        /// <summary>
+        /// Invokes any callbacks registered via <c>WhenPaint(...)</c> for this frame.
+        /// Overrides of <see cref="Paint"/> that do NOT call <c>base.Paint</c> (e.g.
+        /// <c>SkiaShape</c>) must call this themselves, otherwise <c>WhenPaint</c> hooks
+        /// silently never fire. Guarded by count, so it's free when unused.
+        /// </summary>
+        protected void ExecuteOnPaintCallbacks(DrawingContext ctx)
+        {
             if (ExecuteOnPaint.Count > 0)
             {
                 foreach (var action in ExecuteOnPaint.Values)
@@ -7388,10 +7454,6 @@ namespace DrawnUi.Draw
                     action?.Invoke(this, ctx);
                 }
             }
-
-            PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
-
-            WasDrawn = true;
         }
 
         private bool _wasDrawn;
@@ -8009,8 +8071,9 @@ namespace DrawnUi.Draw
                 if (IsRenderingWithComposition)
                 {
                     var previousCache = RenderObjectPrevious;
-                    var offset = new SKPoint(this.DrawingRect.Left - previousCache.Bounds.Left,
-                        DrawingRect.Top - previousCache.Bounds.Top);
+                    //LogicalBounds: Bounds is inflated by effects margins, deltas must be margin-neutral
+                    var offset = new SKPoint(this.DrawingRect.Left - previousCache.LogicalBounds.Left,
+                        DrawingRect.Top - previousCache.LogicalBounds.Top);
                     clipPreviousCachePath.Reset();
 
                     foreach (var dirtyChild in DirtyChildrenInternal)
@@ -8317,7 +8380,7 @@ namespace DrawnUi.Draw
             [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual bool IsTemplated
         {
-            get { return (this.ItemTemplate != null || ItemTemplateType != null); }
+            get { return this.ItemTemplate != null; }
         }
 
         public virtual void OnItemTemplateChanged()
@@ -8326,11 +8389,6 @@ namespace DrawnUi.Draw
 
         public virtual object CreateContentFromTemplate()
         {
-            if (ItemTemplateType != null)
-            {
-                return Activator.CreateInstance(ItemTemplateType);
-            }
-
             if (ItemTemplate == null)
             {
                 return null;
@@ -8473,7 +8531,7 @@ namespace DrawnUi.Draw
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="removePrevious"></param>
-        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true)
+        public async void PlayRippleAnimation(Color color, double x, double y, bool removePrevious = true, double speedMs = 0)
         {
             if (removePrevious)
             {
@@ -8482,6 +8540,8 @@ namespace DrawnUi.Draw
 
             //Debug.WriteLine($"[RIPPLE] start play for '{Tag}'");
             var animation = new RippleAnimator(this) { Color = color.ToSKColor(), X = x, Y = y };
+            if (speedMs > 0)
+                animation.Speed = speedMs; // 0 = keep RippleAnimator default (500ms)
             animation.Start();
         }
 
@@ -8781,6 +8841,7 @@ namespace DrawnUi.Draw
                 TrackChildAsDirty(child);
             }
 
+            InvalidateAggregatedEffectsMargin(); //subtree effects overflow changed
             OnChildrenChanged();
         }
 
@@ -8791,6 +8852,7 @@ namespace DrawnUi.Draw
                 TrackChildAsDirty(child);
             }
 
+            InvalidateAggregatedEffectsMargin(); //subtree effects overflow changed
             OnChildrenChanged();
         }
 
@@ -8991,21 +9053,6 @@ namespace DrawnUi.Draw
             set { SetValue(ItemTemplateProperty, value); }
         }
 
-        public static readonly BindableProperty ItemTemplateTypeProperty = BindableProperty.Create(
-            nameof(ItemTemplateType),
-            typeof(Type),
-            typeof(SkiaControl),
-            null
-            , propertyChanged: ItemTemplateChanged);
-
-        /// <summary>
-        /// ItemTemplate alternative for faster creation
-        /// </summary>
-        public Type ItemTemplateType
-        {
-            get { return (Type)GetValue(ItemTemplateTypeProperty); }
-            set { SetValue(ItemTemplateTypeProperty, value); }
-        }
 
         protected void AddOrRemoveView(SkiaControl subView, bool add)
         {

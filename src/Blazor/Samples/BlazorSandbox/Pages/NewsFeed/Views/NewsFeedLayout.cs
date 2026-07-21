@@ -91,7 +91,7 @@ namespace BlazorSandbox.Pages.NewsFeed.Views
                     BackgroundMeasurementBatchSize = 5,
                     VirtualisationInflated = 200,
                     Spacing = 0,
-                    ItemTemplateType = typeof(NewsCell),
+                    ItemTemplate = new DataTemplate(() => new NewsCell()),
                 }
             };
 

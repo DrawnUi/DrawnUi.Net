@@ -366,6 +366,20 @@ public class SkiaImageManager : IDisposable
         return true;
     }
 
+    /// <summary>
+    /// Removes a cached bitmap by its key (e.g. a registered/aliased resource name).
+    /// Returns true if an entry was removed.
+    /// </summary>
+    public bool RemoveFromCache(string uri)
+    {
+        if (string.IsNullOrWhiteSpace(uri))
+        {
+            return false;
+        }
+
+        return _cache.TryRemove(uri, out _);
+    }
+
     public SKBitmap GetFromCache(string url)
     {
         var bitmap = GetFromCacheInternal(url);

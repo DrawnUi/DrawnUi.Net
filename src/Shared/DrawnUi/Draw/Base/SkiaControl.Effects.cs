@@ -106,7 +106,63 @@ namespace DrawnUi.Draw
         internal void InvalidateEffectsMargin()
         {
             _effectsMarginValid = false;
+            InvalidateAggregatedEffectsMargin();
             InvalidateCache();
+        }
+
+        private Thickness _aggregatedMarginPixels = Thickness.Zero;
+        private bool _aggregatedMarginValid;
+        private float _aggregatedMarginScale = -1;
+
+        /// <summary>
+        /// Own <see cref="EffectsMarginPixels"/> UNION the aggregated margins of all children,
+        /// recursive and cached. A cached ancestor sizes its surface/clip/dirty region with this,
+        /// so a shadow or glow on a descendant survives every cache boundary above it.
+        /// Position-agnostic by design: a child's overflow expands every side of this control —
+        /// costs a few extra pixels of cache surface, avoids re-aggregating on every layout change.
+        /// </summary>
+        public Thickness AggregatedEffectsMarginPixels
+        {
+            get
+            {
+                var scale = RenderingScale;
+                if (!_aggregatedMarginValid || _aggregatedMarginScale != scale)
+                {
+                    var own = EffectsMarginPixels;
+                    double l = own.Left, t = own.Top, r = own.Right, b = own.Bottom;
+
+                    var children = Views;
+                    for (int i = 0; i < children.Count; i++)
+                    {
+                        var m = children[i].AggregatedEffectsMarginPixels;
+                        if (m.Left > l) l = m.Left;
+                        if (m.Top > t) t = m.Top;
+                        if (m.Right > r) r = m.Right;
+                        if (m.Bottom > b) b = m.Bottom;
+                    }
+
+                    _aggregatedMarginPixels = new Thickness(l, t, r, b);
+                    _aggregatedMarginScale = scale;
+                    _aggregatedMarginValid = true;
+                }
+
+                return _aggregatedMarginPixels;
+            }
+        }
+
+        /// <summary>
+        /// Invalidates the aggregated margin cache on this control and every ancestor,
+        /// so cache surfaces above a changed shadow/effect re-expand on the next draw.
+        /// Called when own effects change and when children are added/removed.
+        /// </summary>
+        internal void InvalidateAggregatedEffectsMargin()
+        {
+            var control = this;
+            while (control != null)
+            {
+                control._aggregatedMarginValid = false;
+                control = control.Parent as SkiaControl;
+            }
         }
 
         /// <summary>
@@ -131,24 +187,48 @@ namespace DrawnUi.Draw
 
         protected virtual Thickness ComputeEffectsMargin(float scale)
         {
-            if (DisableEffects)
-                return Thickness.Zero;
-
-            var effects = VisualEffects;
-            if (effects == null || effects.Count == 0)
-                return Thickness.Zero;
-
             double l = 0, t = 0, r = 0, b = 0;
-            foreach (var effect in effects)
+
+            if (!DisableEffects && VisualEffects is { Count: > 0 } effects)
             {
-                var m = effect.GetEffectMargin(scale);
-                if (m.Left > l) l = m.Left;
-                if (m.Top > t) t = m.Top;
-                if (m.Right > r) r = m.Right;
-                if (m.Bottom > b) b = m.Bottom;
+                foreach (var effect in effects)
+                {
+                    var m = effect.GetEffectMargin(scale);
+                    if (m.Left > l) l = m.Left;
+                    if (m.Top > t) t = m.Top;
+                    if (m.Right > r) r = m.Right;
+                    if (m.Bottom > b) b = m.Bottom;
+                }
             }
 
+            // MAUI Shadow (PlatformShadow) paints beyond DrawingRect the same way effects do
+            MergeShadowMargin(ref l, ref t, ref r, ref b, PlatformShadow, scale);
+
+            if (l == 0 && t == 0 && r == 0 && b == 0)
+                return Thickness.Zero;
+
             return new Thickness(l, t, r, b);
+        }
+
+        /// <summary>
+        /// Expands per-side margins (PIXELS) to cover a legacy <see cref="SkiaShadow"/>.
+        /// Mirrors CreateShadow filter math: sigma = Blur * scale, offsets scaled to pixels;
+        /// 3 * sigma bounds the gaussian (same rule DropShadowEffect uses).
+        /// </summary>
+        protected static void MergeShadowMargin(ref double left, ref double top, ref double right, ref double bottom,
+            SkiaShadow shadow, float scale)
+        {
+            if (shadow == null)
+                return;
+
+            var spread = 3.0 * shadow.Blur * scale;
+            var dx = shadow.X * scale;
+            var dy = shadow.Y * scale;
+
+            if (spread - dx > left) left = spread - dx;
+            if (spread - dy > top) top = spread - dy;
+            if (spread + dx > right) right = spread + dx;
+            if (spread + dy > bottom) bottom = spread + dy;
         }
 
         /// <summary>
@@ -158,7 +238,7 @@ namespace DrawnUi.Draw
         /// </summary>
         protected Thickness GetRenderingExpandPixels()
         {
-            var fx = EffectsMarginPixels;
+            var fx = AggregatedEffectsMarginPixels;
             var expand = ExpandDirtyRegion;
             if (expand == Thickness.Zero)
                 return fx;

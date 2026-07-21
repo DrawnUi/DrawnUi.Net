@@ -18,24 +18,55 @@ namespace DrawnUi.Draw;
 public class SkiaCachedStack : SkiaStack
 {
     /// <summary>
-    /// FALSE: ONE foreground plane — the band is recorded synchronously on the render thread once per
-    /// half-viewport of drift or per invalidation, and blitted in between.
+    /// FALSE (default): ONE foreground plane — the band is recorded synchronously on the render thread once
+    /// per half-viewport of drift or per invalidation, and blitted in between.
     /// TRUE: TWO planes — the next plane is recorded OFF-thread while the current one keeps blitting, so
     /// scrolling never pays a render-thread record (the LoadMore/scroll record spike disappears). On MAUI
     /// heads this requires <see cref="SkiaLayout.UsePreparedViews"/> (the bake must be a pure cache-blit
     /// pass: no binds, no measures); without it the control silently behaves as single-plane there.
+    ///
+    /// DEFAULT FALSE because for an Operations/SKPicture plane the SYNC record is cheap (recording draw ops,
+    /// no raster), so on a capable device the async machinery — FreezeStructure deep-copy under LockMeasure,
+    /// worker handoff, plane swap/generation checks, and the render-thread <c>_bakeDone.Wait(16)</c> stall
+    /// when a bake is outrun — costs MORE than it saves and fragments pacing (measurably smoother single-plane
+    /// on device). It also can publish a plane holding STALE CELL CONTENT: the generation guard versions
+    /// structure only, not a cell's own content, so a rapidly self-invalidating cell (a streaming AI bubble
+    /// growing word by word) reverts its text as an old bake lands after a new one. Turn TRUE only where a
+    /// sync record genuinely can't hit frame budget — weak hardware or GPU-surface planes.
+    /// </summary
+    protected bool UseDoubleBuffering = true;
+
+    /// <summary>
+    /// Drive <see cref="UseDoubleBuffering"/> from motion: ON while scrolling, OFF at rest. Off by default,
+    /// so nothing changes unless you opt in.
+    /// <para>The split matches where each mode wins. While scrolling, the render-thread record is the thing
+    /// you feel, and the async bake removes it. At rest there is nothing to hide and the sync record is the
+    /// cheaper, more predictable path.</para>
+    /// <para>It also happens to be where double buffering is least dangerous. Its known failure is publishing
+    /// STALE CELL CONTENT — the generation guard versions structure, not a cell's own pixels, so a cell that
+    /// changes mid-bake (image arrives, streaming text grows) is frozen at its old state. AT REST that stale
+    /// plane is what you keep looking at until something invalidates it; WHILE SCROLLING the drift
+    /// re-records within half a viewport, so it self-heals in a few frames. The window is not zero, though —
+    /// if your cells mutate heavily during scroll, leave this off.</para>
     /// </summary>
-    public bool UseDoubleBuffering = true;
+    protected bool AutoDoubleBuffering = false;
+
+    /// <summary>
+    /// How far the viewport may drift from the plane's record origin, as a RATIO of viewport height, before
+    /// the band is re-recorded. Must stay BELOW <see cref="SkiaControl.VirtualisationInflatedRatio"/>: the
+    /// plane covers viewport ± Ratio, so a drift of Ratio exactly exhausts the coverage and the blit falls
+    /// through to a live draw (the coverage check is the hard floor, this is the soft refresh ahead of it).
+    /// Default 0.5 with a 1.0 band = re-record after half a screen, with half a screen of coverage left as
+    /// margin. Raise toward the band ratio for fewer records (each record costs more of the band it must
+    /// re-walk, and a coverage miss mid-fling costs a live frame); lower it for more frequent, cheaper ones.
+    /// </summary>
+    public double PlaneRefreshRatio = 0.5;
 
     public override bool UsePreparedViews
     {
         get
         {
-#if BROWSER || WEB
-            return false;
-#else
             return true;
-#endif
         }
     }
 
@@ -50,6 +81,10 @@ public class SkiaCachedStack : SkiaStack
         // fling spikes), unprepared cells show their skeleton for a frame or two instead.
         MeasureItemsStrategy = MeasuringStrategy.MeasureVisible;
 
+        RecyclingTemplate = RecyclingTemplate.Enabled;
+
+        ReserveTemplates = 150;
+
         // Overscan: record ± one viewport so the plane can be REUSED (blitted, not re-recorded) while
         // scrolling within the margin = smooth. Without it the plane covers exactly the viewport and every
         // scroll frame re-records (jerky). The completeness gates + coverage clamp keep the wider records
@@ -59,6 +94,9 @@ public class SkiaCachedStack : SkiaStack
 
     /// <summary>Last scroll offset reported by the parent viewport (see OnViewportWasChanged).</summary>
     protected ScaledPoint ScrollOffset;
+
+    /// <summary>Columns per row, normalized (Split is 0 for the default single column).</summary>
+    private int SplitCells => Split > 0 ? Split : 1;
 
     public override void OnViewportWasChanged(ScaledRect viewport, ScaledPoint offset)
     {
@@ -119,10 +157,57 @@ public class SkiaCachedStack : SkiaStack
     /// <summary>Mutation hook (LoadMore/trim/add/remove on the same collection) — invalidate the plane.</summary>
     protected override void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
+        // JUMP transition: a full-collection Replace (windowed rebase) rebuilds the whole slice —
+        // freeze the last presented plane before base processes it (see the hold in DrawDirectInternal).
+        // The hold takes OWNERSHIP of the plane by detaching it: the pipeline keeps running underneath
+        // (draining structure changes, recording fresh planes) and would otherwise dispose it in
+        // UpdatePlanes, mutate its picture in-place in CreateCache, or shift its anchor in
+        // OnContentTranslatedVertically — a disposed/shifted hold plane blits NOTHING (the device
+        // "blank frame + spinner" during jumps) or lands pixels off-screen.
+        if (IsFullCollectionReplace(args))
+        {
+            BeginTransitionHold();
+        }
+
         IncrementStructureGen();
         _contentChanged = true; // invalidate the static blit so collection changes (insert/add/remove) apply
 
         base.OnItemsSourceCollectionChanged(sender, args);
+    }
+
+    /// <summary>
+    /// The built-in window engaged IN PLACE (LoadMore grew the source past the threshold): the slice was
+    /// swapped and every cell re-indexed under us, exactly like a jump rebase. Hold the last presented plane
+    /// over the rebuild — without it the frame right after the engage draws LIVE while the adapter is being
+    /// re-keyed, and prepared-views cells that aren't realized yet paint their (empty) placeholder: the
+    /// device "blink of an empty screen when the limit-window hits".
+    /// </summary>
+    protected override void OnItemsWindowEngagedInPlace()
+    {
+        base.OnItemsWindowEngagedInPlace();
+
+        BeginTransitionHold();
+    }
+
+    /// <summary>
+    /// Freeze the LAST PRESENTED plane and take OWNERSHIP of it (detach from the pipeline, which keeps
+    /// running underneath and would otherwise dispose it in UpdatePlanes, mutate its picture in-place in
+    /// CreateCache, or shift its anchor in OnContentTranslatedVertically — a disposed/shifted hold plane
+    /// blits NOTHING or lands pixels off-screen). No-op when there is nothing presented to freeze; the
+    /// draw path then falls through to a live frame as before.
+    /// </summary>
+    void BeginTransitionHold()
+    {
+        if (ForegroundPlane == null)
+            return;
+
+        _transitionHold = true;
+        _holdFrames = 0;
+        _holdScreenTop = _lastPresentedTop;
+        DisposeObject(_holdPlane); // a still-held previous freeze (back-to-back transitions)
+        _holdPlane = ForegroundPlane;
+        ForegroundPlane = null; // pipeline records a fresh plane; never touches the frozen one
+        _cacheValid = false;
     }
 
     public override void OnStructureChanged()
@@ -163,7 +248,57 @@ public class SkiaCachedStack : SkiaStack
         //image loaded or something else.. existing cell wanted an update..
         TrackChildAsDirty(child);
 
+        // CONTENT-COOL RE-RECORD. A cell can publish its OWN pixels (ImageDoubleBuffered cache ready,
+        // image arrived, streaming AI text) AFTER the plane bake already painted it — the plane then holds
+        // that cell's pre-publish pixels and nothing re-records it (the dirty tracker / _contentChanged are
+        // consumed before the bake): the rare empty/not-updated cell that survives until drift.
+        // Stamp the frame of the update; DrawDirectInternal re-records the plane once the content has
+        // COOLED (no further update for a couple of frames). Debounced on purpose: a streaming cell bumps
+        // this every frame and never cools, so it never triggers a re-record while it changes — that
+        // constant re-record is exactly the jumpiness. It catches up the moment the stream stops.
+        // Bake-thread reads never publish, but guard anyway so a plane bake can't self-trigger.
+        if (!SkiaLayout.IsPlaneBakePass)
+            Volatile.Write(ref _contentBumpFrame, Volatile.Read(ref _frameCounter));
+
         Repaint();
+    }
+
+    // Monotonic frame counter (render thread) used only for content-cool debouncing below.
+    private long _frameCounter;
+
+    // Frame of the most recent NON-bake child content update (cell cache published). Written from any
+    // thread (a cell publishes from its own offscreen worker), read on the render thread.
+    private long _contentBumpFrame = -1;
+
+    // Frame at which the CURRENT plane was last recorded. A content bump AFTER this that has since cooled
+    // means the plane is missing a cell's final pixels.
+    private long _bakeKickFrame = -1;
+
+    // Set when cooled content needs a re-record; consumed in the blit branch via the NON-invalidating
+    // path (keeps _cacheValid, front plane keeps blitting) — never the _contentChanged invalidation path.
+    private bool _contentStalePending;
+
+    private const int ContentCoolFrames = 2;
+
+    // ---- JUMP TRANSITION HOLD ("previous + spinner") -------------------------------------------------
+    // A windowed JUMP (rebase = full-collection Replace + ordered scroll in flight) rebuilds the whole
+    // slice: live frames during the re-measure paint MIXED GENERATIONS (stale pooled cells over freshly
+    // estimated ones) — "cells over cells" corruption. The jump is EXPLICIT (no heuristics): on the
+    // full-replace we freeze the LAST PRESENTED plane and overdraw every frame with it, SCREEN-PINNED,
+    // while the live pipeline keeps draining/measuring underneath. Released when the ordered scroll has
+    // landed AND the viewport band passes the coherence gates (tiled, realized) — one-frame swap.
+    private bool _transitionHold;
+    private CachedObject _holdPlane; // frozen last-presented plane, OWNED by the hold (detached from the pipeline)
+    private float _holdScreenTop;   // context.Destination.Top of the last presented frame (screen-pin)
+    private int _holdFrames;        // safety cap
+    private const int MaxHoldFrames = 240;
+    private float _lastPresentedTop;
+
+    void DisposeHoldPlane()
+    {
+        var plane = _holdPlane;
+        _holdPlane = null;
+        DisposeObject(plane);
     }
 
     public override void DrawDirectInternal(DrawingContext context, SKRect drawingRect)
@@ -174,6 +309,76 @@ public class SkiaCachedStack : SkiaStack
         var destination = context.Destination;
         float vpH = (float)ParentViewport.Pixels.Height;
 
+        _lastPresentedTop = destination.Top;
+
+        // CONTENT-COOL DEBOUNCE (see UpdateByChild): a cell published its own pixels AFTER the current plane
+        // baked, and has now been quiet for ContentCoolFrames — the plane is holding its stale pixels, so
+        // request a re-record. Consumed in the blit branch below via the non-invalidating path so the front
+        // plane keeps blitting (a streaming cell keeps bumping and never cools, so it never lands here).
+        _frameCounter++;
+        var contentBump = Volatile.Read(ref _contentBumpFrame);
+        if (contentBump > _bakeKickFrame && (_frameCounter - contentBump) >= ContentCoolFrames)
+            _contentStalePending = true;
+
+        if (_transitionHold && _holdPlane == null)
+        {
+            _transitionHold = false; // nothing frozen to serve — live draw below, never a blank frame
+        }
+
+        if (_transitionHold)
+        {
+            // run the normal pipeline UNDERNEATH with an EMPTY CLIP: all logic executes (drains
+            // structure changes, advances measurement — the exit condition depends on that progress)
+            // but paints ZERO pixels (the frozen plane has transparent gaps between cells, a plain
+            // overdraw would leak the transient through them).
+            var canvas = context.Context.Canvas;
+            int save = canvas.Save();
+            canvas.ClipRect(SKRect.Empty);
+            try
+            {
+                DrawDirectCore(context, drawingRect, destination, vpH);
+            }
+            finally
+            {
+                canvas.RestoreToCount(save);
+            }
+
+            bool orderedDone = !(Parent is SkiaScroll os && (os.OrderedScrollToIndexIsSet || os.OrderedScrollTo.IsValid));
+            bool coherent = false;
+            if (orderedDone)
+            {
+                var live = base.GetStackStructure();
+                float gTol = Math.Max(8f, (float)(Spacing * RenderingScale) + 2f);
+                float bareTop = -destination.Top;
+                coherent = live != null
+                           && SnapshotFillsViewport(live, bareTop, bareTop + vpH, gTol, SplitCells)
+                           && ViewportViewsRealized(live, bareTop, bareTop + vpH);
+            }
+
+            if (coherent || ++_holdFrames > MaxHoldFrames)
+            {
+                _transitionHold = false; // swap to the (now coherent) live content NEXT frame; THIS frame
+                _contentChanged = true;  // still serves the frozen plane below — the core above painted
+                                         // zero pixels, so returning without a blit blank-framed the swap
+            }
+
+            // screen-pinned blit of the OWNED frozen plane: identical pixels to the last presented
+            // frame regardless of how the offset moves during the rebase/settle — the pipeline can
+            // neither dispose nor re-anchor it (see the detach in OnItemsSourceCollectionChanged)
+            var frozen = context.WithDestination(new SKRect(destination.Left, _holdScreenTop,
+                destination.Right, _holdScreenTop + drawingRect.Height));
+            IsCaching = true;
+            DrawPlane(frozen, frozen.Destination, _holdPlane);
+            Repaint(); // keep frames coming: exit conditions are re-checked per frame
+            return;
+        }
+
+        DisposeHoldPlane(); // hold released last frame (or never engaged): reclaim the frozen plane
+        DrawDirectCore(context, drawingRect, destination, vpH);
+    }
+
+    private void DrawDirectCore(DrawingContext context, SKRect drawingRect, SKRect destination, float vpH)
+    {
         // Consume a plane the off-thread bake just finished (no-op in single-plane mode).
         UpdatePlanes();
 
@@ -224,9 +429,19 @@ public class SkiaCachedStack : SkiaStack
             _contentChanged = true; // live frame below: gap-rescue heals inline, next record re-bakes the band
         }
 
+        // AUTO DOUBLE BUFFERING: reuse the settle probe above as the motion signal — async bake while the
+        // viewport moves (no render-thread record in a scroll frame), sync record once it stops. Flipping it
+        // mid-flight is safe: AsyncPlaneAllowed is only read when DECIDING to kick a bake, and an already
+        // running bake still publishes into _preparedPlane for UpdatePlanes to consume under its generation
+        // check. BROWSER stays single-plane regardless (AsyncPlaneAllowed is hard-false there).
+        if (AutoDoubleBuffering)
+        {
+            UseDoubleBuffering = _settledFrames < 2;
+        }
+
         if (covered && !orderedScroll && _cacheValid && !dirty && !_contentChanged)
         {
-            // Refresh the plane once the viewport drifts half a viewport, so coverage never runs out
+            // Refresh the plane once the viewport drifts PlaneRefreshRatio viewports, so coverage never runs out
             // mid-scroll (async: kicks a background bake and keeps blitting; sync: one record here).
             // CreateCache commits _recordOffsetY/_contentChanged itself when the gates pass; a gate-reject
             // leaves them untouched so we retry next frame instead of waiting another 0.5vpH.
@@ -240,8 +455,12 @@ public class SkiaCachedStack : SkiaStack
                 _planeStale = false;
             }
 
+            // _contentStalePending: a cell's own pixels cooled after this plane baked (see the debounce
+            // above). Re-record HERE — this branch keeps _cacheValid and blits the front plane, so the
+            // refresh is invisible (no live-draw fallthrough, the jumpiness of the _contentChanged path).
             if (!_bakeInFlight &&
-                (_planeStale || Math.Abs(destination.Top - _recordOffsetY) >= vpH * 0.5f))
+                (_planeStale || _contentStalePending ||
+                 Math.Abs(destination.Top - _recordOffsetY) >= vpH * (float)PlaneRefreshRatio))
             {
                 _planeStale = false;
                 CreateCache(context, drawingRect);
@@ -299,11 +518,11 @@ public class SkiaCachedStack : SkiaStack
             _translatedThisFrame = false;
         }
 
-        // Need LIVE cells this frame. An async bake may be painting the SAME views on the worker right
-        // now — never race it: briefly wait for it to drain, it may hand us a covering plane.
+        // Need LIVE cells this frame. An async bake may still be running — give it a moment to hand us
+        // a covering plane (one frame budget, not more: waiting longer IS the jank).
         if (_bakeInFlight)
         {
-            _bakeDone.Wait(50);
+            _bakeDone.Wait(16);
             UpdatePlanes();
 
             if (_cacheValid && PlaneCoversViewport(destination, vpH))
@@ -313,14 +532,18 @@ public class SkiaCachedStack : SkiaStack
                 return;
             }
 
-            if (_bakeInFlight && ForegroundPlane != null)
+            if (_bakeInFlight && ForegroundPlane != null && PlaneCoversViewport(destination, vpH))
             {
-                // bake still running after the wait (rare) — do NOT race it: blit what we have, covered
-                // or not; blitting never touches the live views.
+                // bake still running after the wait (rare) — the current plane still covers: blit it.
                 IsCaching = true;
                 DrawCache(context, destination);
                 return;
             }
+
+            // Bake still running AND the plane does NOT cover the viewport: blitting it paints an EMPTY
+            // BAND (device: visible gap on fast backward flings that outrun the bake). Fall through to
+            // DIRECT DRAW — always current, no hole. Safe alongside the bake: the bake is a pure-read
+            // pass over a deep-frozen geometry snapshot, it does not touch the live draw state.
         }
 
         // DIRECT DRAW live cells — fills the gap, always current (no blank).
@@ -345,41 +568,80 @@ public class SkiaCachedStack : SkiaStack
     /// <para><paramref name="tol"/> is the gap tolerance in PIXELS — must be >= the layout inter-cell spacing
     /// (Spacing * RenderingScale), else the legitimate spacing between every cell reads as a hole and the gate
     /// rejects every valid record (the Android blank-plane bug: 12px spacing vs a hardcoded 8px tol).</para>
+    /// <para>Tiling is per ROW, not per cell: with <paramref name="split"/> &gt; 1 the cells of one row share
+    /// the same Destination.Top, so a per-cell cursor reads every second column as an OVERLAP and the gate
+    /// rejects EVERY record — the plane never installs (device: permanent "plane none" + per-frame live draw
+    /// for Split=2). Cells sharing a top (within tol) are merged into one row band [min top .. max bottom]
+    /// and the cursor advances once per row. For split == 1 every cell is its own row = previous behaviour.</para>
     /// </summary>
-    static bool SnapshotFillsViewport(LayoutStructure s, float top, float bot, float tol)
+    static bool SnapshotFillsViewport(LayoutStructure s, float top, float bot, float tol, int split)
     {
         if (s == null) return false;
         float cursor = top;
         bool started = false;
+
+        // pending row band being accumulated
+        bool haveRow = false;
+        float rowTop = 0, rowBot = 0;
+
+        // Consume the accumulated row against the cursor. false = gap/overlap -> reject.
+        bool FlushRow()
+        {
+            if (!haveRow) return true;
+            haveRow = false;
+
+            if (!started)
+            {
+                // Empty space ABOVE the first row in the band (viewport overscrolled past content top, e.g.
+                // the inverted start-anchor putting bareTop negative) is NOT a hole — start covering at the
+                // first row instead of demanding tiling from the (out-of-content) band top.
+                cursor = rowTop;
+                started = true;
+            }
+            else if (rowTop > cursor + tol)
+            {
+                return false;                   // real gap between rows (> spacing)
+            }
+            else if (rowTop < cursor - tol)
+            {
+                // OVERLAP: a transient mid-mutation state (e.g. a single-item height delta landed while a
+                // background batch was positioned against the old bottoms). Never record it — a plane would
+                // serve the overlap for its whole life; a live draw heals next frame.
+                return false;
+            }
+
+            if (rowBot > cursor) cursor = rowBot;
+            return true;
+        }
+
         foreach (var c in s.GetChildren())
         {
             if (c == null || !c.WasMeasured) continue;
             float ct = c.Destination.Top, cb = c.Destination.Bottom;
             if (cb <= top) continue;            // entirely above the band
             if (ct >= bot) break;               // entirely below (index-ordered) -> done scanning
-            if (!started)
-            {
-                // Empty space ABOVE the first cell in the band (viewport overscrolled past content top, e.g.
-                // the inverted start-anchor putting bareTop negative) is NOT a hole — start covering at the
-                // first cell instead of demanding tiling from the (out-of-content) band top.
-                cursor = ct;
-                started = true;
-            }
-            else if (ct > cursor + tol)
-            {
-                return false;                   // real gap between cells (> spacing)
-            }
-            else if (ct < cursor - tol)
-            {
-                // OVERLAP: a transient mid-mutation state (e.g. a single-item height delta landed while a
-                // background batch was positioned against the old bottoms). Never record it — a plane would
-                // serve the overlap for its whole life; a live draw heals next frame. (Assumes Split==1,
-                // like the cursor tiling above.)
-                return false;
-            }
 
-            if (cb > cursor) cursor = cb;
+            // Same row = same top within tol. Geometric, not c.Row: the row index is not populated on every
+            // structure path (background batches, uniform adds), the tops always are.
+            bool sameRow = haveRow && split > 1 && Math.Abs(ct - rowTop) <= tol;
+            if (!sameRow && !FlushRow())
+                return false;
+
+            if (!haveRow)
+            {
+                rowTop = ct;
+                rowBot = cb;
+                haveRow = true;
+            }
+            else
+            {
+                if (ct < rowTop) rowTop = ct;
+                if (cb > rowBot) rowBot = cb;
+            }
         }
+
+        if (!FlushRow())
+            return false;
 
         return cursor >= bot - tol;             // covered all the way to the band bottom
     }
@@ -404,6 +666,12 @@ public class SkiaCachedStack : SkiaStack
             return false;
         if (view.UsesCacheDoubleBuffering && view.RenderObject == null)
             return false; // never baked yet -> would record a blank
+        // A rebake is flagged/in flight: RenderObject holds the PREVIOUS visual state (streaming-text
+        // cell mid-grow). Freezing it into a plane serves REGRESSED content for the plane's whole life —
+        // the device "message text went backward" flicker. Reject; caller live-draws until the bake lands
+        // (which re-dirties via UpdateByChild and triggers a fresh record).
+        if (view.DoubleBufferedCacheIsStale)
+            return false;
         return true;
     }
 
@@ -534,7 +802,7 @@ public class SkiaCachedStack : SkiaStack
             var live = base.GetStackStructure();
             float gTol = Math.Max(8f, (float)(Spacing * RenderingScale) + 2f);
             if (live == null
-                || !SnapshotFillsViewport(live, bareTop, bareBot, gTol)
+                || !SnapshotFillsViewport(live, bareTop, bareBot, gTol, SplitCells)
                 || !ViewportViewsRealized(live, bareTop, bareBot))
                 return; // reject: flags untouched, caller retries next frame
 
@@ -552,6 +820,11 @@ public class SkiaCachedStack : SkiaStack
         // discard paths re-set _contentChanged, so a failed bake still forces a retry).
         _recordOffsetY = context.Destination.Top;
         _contentChanged = false;
+
+        // This record captures the cells' current pixels: any content bump up to now is baked in, so the
+        // cool-down watcher measures staleness from THIS frame (see _bakeKickFrame / ContentCoolFrames).
+        _bakeKickFrame = _frameCounter;
+        _contentStalePending = false;
 
         // This record consumes the dirty state (it paints the cells' CURRENT pixels). Blit frames never
         // reach the live DrawStack's ClearDirtyChildren — without clearing here one dirty cell keeps the
@@ -654,7 +927,16 @@ public class SkiaCachedStack : SkiaStack
     /// <summary>Second background-prepared plane is allowed: flag on, and either the head is
     /// thread-safe for live-view bakes or the prepared-views pipeline guarantees the bake is a pure
     /// cache-blit pass (no binds, no measures).</summary>
+#if BROWSER
+    // Single-threaded WASM: the offscreen pump is Task.Run on the ONE thread, so a kicked bake can only
+    // execute when the render frame yields — while the render thread's _bakeDone.Wait(16) blocks that very
+    // thread. Result: 16ms burned EVERY frame with the bake never progressing (scroll hard-stop whenever
+    // content is being measured/invalidated). Sync record is the correct mode here: an Operations plane is
+    // an SKPicture record (no raster) — one predictable record-priced frame instead of a stall.
+    private bool AsyncPlaneAllowed => false;
+#else
     private bool AsyncPlaneAllowed => UseDoubleBuffering && (AsyncBakeSafe || UsePreparedViewsActive);
+#endif
 
     // Bumped by the render thread on every structural rebase the bake's coordinates depend on: structure
     // rebuilds, batch integrations, collection changes and content translates. A bake frozen under an older
@@ -796,6 +1078,7 @@ public class SkiaCachedStack : SkiaStack
         }
 
         var gen = Volatile.Read(ref _structureGen);
+        var splitCells = SplitCells; // captured on the render thread — the post-bake gate runs on the worker
         _bakeInFlight = true;
         _bakeDone.Reset();
 
@@ -835,10 +1118,20 @@ public class SkiaCachedStack : SkiaStack
                     SkiaLayout.CollectPaintedBounds = false;
                 }
 
+                // PAINT-TIME TRANSIENT (TOCTOU): the kick gate proved every band cell ready, so a skeleton or
+                // stale-serve DURING this paint means a cell self-invalidated mid-bake (image arrived, stream
+                // tick) — the picture froze a placeholder or its OLD-size pixels. The post-bake gate below reads
+                // LIVE views and can see the cell already recovered, so it would publish the bad picture. These
+                // paint-time flags are the only signal captured at the actual moment of capture. Reject -> live
+                // draw (always current), retry next frame. Never harms fast-fling coverage: an unready cell can't
+                // pass the kick gate, so this only ever fires on the transient, not on genuine unprepared cells.
+                bool paintedTransient = SkiaLayout.PaintedSkeleton || SkiaLayout.PaintedStaleServe;
+
                 // POST-BAKE GATES on the frozen snapshot: the render thread may have mutated the LIVE
                 // structure since the kick — the snapshot itself is what got painted, so validate it.
                 float fillTol = Math.Max(8f, (float)(Spacing * RenderingScale) + 2f);
-                bool complete = SnapshotFillsViewport(bakeSnapshot, bareTop, bareBot, fillTol)
+                bool complete = !paintedTransient
+                                && SnapshotFillsViewport(bakeSnapshot, bareTop, bareBot, fillTol, splitCells)
                                 && ViewportViewsRealized(bakeSnapshot, bareTop, bareBot);
                 bool genValid = gen == Volatile.Read(ref _structureGen);
                 if (!complete || !genValid)
@@ -895,9 +1188,10 @@ public class SkiaCachedStack : SkiaStack
     /// apply translation to position it according to the current scroll offset; translation and
     /// RenderTree.Offset keep gestures correctly mapped.
     /// </summary>
-    void DrawCache(DrawingContext context, SKRect dest)
+    void DrawCache(DrawingContext context, SKRect dest) => DrawPlane(context, dest, ForegroundPlane);
+
+    void DrawPlane(DrawingContext context, SKRect dest, CachedObject cache)
     {
-        var cache = ForegroundPlane;
         if (cache != null)
         {
             // RenderTree is null until the first LIVE frame builds one — a plane can be served before
@@ -961,6 +1255,18 @@ public class SkiaCachedStack : SkiaStack
             plane.Bounds.Right, plane.Bounds.Bottom + deltaPixels);
     }
 
+    public override string DebugString
+    {
+        get
+        {
+            // plane state on top of the layout diagnostics: coverage band, validity, transition hold
+            var plane = ForegroundPlane == null
+                ? "plane none"
+                : $"plane [{_foregroundCoveredTop:0}..{_foregroundCoveredBot:0}] valid={_cacheValid}{(_transitionHold ? " HOLD" : "")}";
+            return $"{base.DebugString}, {plane}";
+        }
+    }
+
     /// <summary>The plane currently being blitted. ONLY the render thread reads/writes it.</summary>
     public CachedObject ForegroundPlane { get; set; }
 
@@ -973,12 +1279,14 @@ public class SkiaCachedStack : SkiaStack
 
         DisposeObject(Interlocked.Exchange(ref _preparedPlane, null));
         DisposeObject(ForegroundPlane);
+        DisposeHoldPlane();
     }
 
     public override void OnDisposing()
     {
         DisposeObject(Interlocked.Exchange(ref _preparedPlane, null));
         ForegroundPlane = null;
+        DisposeHoldPlane();
         _recorder?.Dispose();
         _recorder = null;
 

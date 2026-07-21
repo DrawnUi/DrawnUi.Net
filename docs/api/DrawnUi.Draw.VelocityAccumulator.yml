@@ -6,7 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.VelocityAccumulator.CalculateFinalVelocity(System.Single)
-  - DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2)
+  - DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2,System.Int64)
   - DrawnUi.Draw.VelocityAccumulator.Clear
   langs:
   - csharp
@@ -18,8 +18,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityAccumulator
     path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
     startLine: 24
@@ -55,8 +55,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clear
     path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
     startLine: 31
@@ -67,35 +67,56 @@ items:
     content: public void Clear()
     content.vb: Public Sub Clear()
   overload: DrawnUi.Draw.VelocityAccumulator.Clear*
-- uid: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2)
-  commentId: M:DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2)
-  id: CaptureVelocity(System.Numerics.Vector2)
+- uid: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2,System.Int64)
+  commentId: M:DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2,System.Int64)
+  id: CaptureVelocity(System.Numerics.Vector2,System.Int64)
   parent: DrawnUi.Draw.VelocityAccumulator
   langs:
   - csharp
   - vb
-  name: CaptureVelocity(Vector2)
-  nameWithType: VelocityAccumulator.CaptureVelocity(Vector2)
-  fullName: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2)
+  name: CaptureVelocity(Vector2, long)
+  nameWithType: VelocityAccumulator.CaptureVelocity(Vector2, long)
+  fullName: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2, long)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CaptureVelocity
     path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 36
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  example: []
   syntax:
-    content: public void CaptureVelocity(Vector2 velocity)
+    content: public void CaptureVelocity(Vector2 velocity, long arrivedTimeNanos = 0)
     parameters:
     - id: velocity
       type: System.Numerics.Vector2
-    content.vb: Public Sub CaptureVelocity(velocity As Vector2)
+      description: Sampled velocity.
+    - id: arrivedTimeNanos
+      type: System.Int64
+      description: >-
+        When the gesture that produced this sample ARRIVED from the platform
+
+        (<xref href="DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos" data-throw-if-not-resolved="false"></xref>). Pass it whenever available: gestures are
+
+        processed one frame later, so during a hitch a whole burst is drained in a single frame and
+
+        processing time makes seconds-old samples look fresh — the stale flick then starts a full-speed
+
+        fling after the frame unfreezes. With the real arrival time the age window below drops them and
+
+        the final velocity comes out zero, which is what "the user's flick is long over" should mean.
+
+        Zero/omitted falls back to now (synthetic gestures, non-postponed callers).
+    content.vb: Public Sub CaptureVelocity(velocity As Vector2, arrivedTimeNanos As Long = 0)
   overload: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity*
+  nameWithType.vb: VelocityAccumulator.CaptureVelocity(Vector2, Long)
+  fullName.vb: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity(System.Numerics.Vector2, Long)
+  name.vb: CaptureVelocity(Vector2, Long)
 - uid: DrawnUi.Draw.VelocityAccumulator.CalculateFinalVelocity(System.Single)
   commentId: M:DrawnUi.Draw.VelocityAccumulator.CalculateFinalVelocity(System.Single)
   id: CalculateFinalVelocity(System.Single)
@@ -110,11 +131,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateFinalVelocity
     path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 43
+    startLine: 55
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -486,9 +507,15 @@ references:
   name: Clear
   nameWithType: VelocityAccumulator.Clear
   fullName: DrawnUi.Draw.VelocityAccumulator.Clear
+- uid: DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
+  commentId: P:DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
+  href: DrawnUi.Draw.SkiaGesturesParameters.html#DrawnUi_Draw_SkiaGesturesParameters_ArrivedTimeNanos
+  name: ArrivedTimeNanos
+  nameWithType: SkiaGesturesParameters.ArrivedTimeNanos
+  fullName: DrawnUi.Draw.SkiaGesturesParameters.ArrivedTimeNanos
 - uid: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity*
   commentId: Overload:DrawnUi.Draw.VelocityAccumulator.CaptureVelocity
-  href: DrawnUi.Draw.VelocityAccumulator.html#DrawnUi_Draw_VelocityAccumulator_CaptureVelocity_System_Numerics_Vector2_
+  href: DrawnUi.Draw.VelocityAccumulator.html#DrawnUi_Draw_VelocityAccumulator_CaptureVelocity_System_Numerics_Vector2_System_Int64_
   name: CaptureVelocity
   nameWithType: VelocityAccumulator.CaptureVelocity
   fullName: DrawnUi.Draw.VelocityAccumulator.CaptureVelocity
@@ -500,6 +527,17 @@ references:
   name: Vector2
   nameWithType: Vector2
   fullName: System.Numerics.Vector2
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
 - uid: System.Numerics
   commentId: N:System.Numerics
   isExternal: true

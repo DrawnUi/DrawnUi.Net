@@ -109,6 +109,36 @@ When using `ItemsSource`, the `Split` property creates a grid automatically:
   - `Invert="false"` (default): Items fill left to right, top to bottom (A B, C D)
   - `Invert="true"`: Items fill top to bottom, left to right (A C, B D)
 
+## Positioning Children Inside Containers
+
+DrawnUI positions like WPF: you never set a free X/Y — the layout system computes the position and stamps the control's arranged rectangle (`DrawingRect`). There are four ways to position a child. Prefer them in this order:
+
+### 1. Let the layout own it (default)
+
+Column/Row/Wrap/Grid parents position their children — you set nothing. Tune the result with the container's `Spacing`/`Padding` and each child's alignment (`HorizontalOptions`/`VerticalOptions`) and size requests.
+
+### 2. Margin + alignment (the WPF-style workhorse)
+
+Works in any container, including Absolute. `Margin` combined with alignment gives precise edge-relative placement, still arranged by the layout system, so `DrawingRect` and hit-testing stay truthful:
+
+```csharp
+// place after a logical 50pt column
+new SkiaLabel("text") { Margin = new Thickness(50, 0, 0, 0) }
+
+// exactly 100pt above the container's bottom edge
+new SkiaShape { VerticalOptions = LayoutOptions.End, Margin = new Thickness(0, 0, 0, 100) }
+```
+
+This often replaces a whole grid — see the icon + label example in the Absolute Layout section above.
+
+### 3. Left / Top (cached controls)
+
+For a control with `UseCache != None`, `Left` and `Top` offset the cached output directly — no matrix transform involved, faster than translation, and friendly to background-thread updates. Mind the default cache types: labels and shapes default to `Operations`, `SkiaLottie`/`SkiaGif` to `ImageDoubleBuffered`, most other controls to `None`.
+
+### 4. TranslationX / TranslationY (last resort)
+
+Render transforms with a save/restore around every draw — the most expensive option. Use them only when nothing else fits: live gesture dragging, transform animations. Note that transforms move the rendering only: a translated container does not shift its children's layout rectangles, so gesture/hit-test math over translated subtrees must account for that.
+
 ## Key Properties
 
 All layouts inherit from `SkiaLayout` and support these common properties:
@@ -118,9 +148,10 @@ All layouts inherit from `SkiaLayout` and support these common properties:
 - `HorizontalOptions`/`VerticalOptions`: Layout alignment options
 - `UseCache`: Performance caching strategy (`Operations`, `Image`, `ImageComposite`)
 - `BackgroundColor`: Layout background
-- `CornerRadius`: Rounded corners
 - `Gestures`: Enable/disable touch gestures
 - `Split`: Number of columns for multi-column layouts (Column, Wrap, and Grid with ItemsSource)
+
+For rounded corners, wrap the layout in a `SkiaShape` (`SkiaFrame`) — layouts themselves have no corner radius.
 
 ## Data Binding and Templating
 
@@ -136,7 +167,7 @@ Add child controls directly in XAML or code:
 ```
 
 ### Data-Bound Content
-Use `ItemsSource` with `ItemTemplate` or `ItemTemplateType` for dynamic content. The layout will automatically create subviews for each item in the data source:
+Use `ItemsSource` with `ItemTemplate` for dynamic content. In code-behind, a lambda template `ItemTemplate = new DataTemplate(() => new MyCell())` runs a compiled delegate and is the fastest cell-creation path. The layout will automatically create subviews for each item in the data source:
 
 ```xml
 <draw:SkiaStack ItemsSource="{Binding MyItems}" Spacing="10">
@@ -168,7 +199,6 @@ For Grid layouts with `ItemsSource` and `Split`, use `Invert` to control fill di
 **Key Properties:**
 - `ItemsSource`: The data collection to bind to
 - `ItemTemplate`: DataTemplate defining how each item should be rendered
-- `ItemTemplateType`: Alternative to ItemTemplate using a type reference
 - `RecycleTemplate`: Controls view recycling behavior
 - `Split`: Number of columns for multi-column data-bound layouts
 - `Invert`: Controls fill direction for Grid layouts with ItemsSource

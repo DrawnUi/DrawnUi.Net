@@ -40,8 +40,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatorBase
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
     startLine: 2
@@ -83,8 +83,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPostAnimator
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
     startLine: 5
@@ -112,8 +112,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsHiddenInViewTree
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
     startLine: 20
@@ -145,8 +145,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
     startLine: 22
@@ -177,8 +177,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Radians
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
     startLine: 27
@@ -211,8 +211,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: runDelayMs
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
     startLine: 32
@@ -238,8 +238,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Register
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
     startLine: 35
@@ -266,11 +266,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Unregister
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 60
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -292,11 +292,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Cancel
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 84
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -318,11 +318,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Start
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 99
+    startLine: 106
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -353,11 +353,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TickFrame
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 139
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -393,11 +393,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Pause
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 148
+    startLine: 155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -423,11 +423,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Resume
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 153
+    startLine: 160
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -453,11 +453,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPaused
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 159
+    startLine: 166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -486,11 +486,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stop
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 161
+    startLine: 168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -515,11 +515,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStop
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 172
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -544,11 +544,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStart
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 173
+    startLine: 180
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -573,11 +573,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Parent
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 175
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -605,11 +605,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDeactivated
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 177
+    startLine: 184
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -638,11 +638,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastFrameTimeNanos
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 186
+    startLine: 193
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -667,11 +667,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartFrameTimeNanos
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 188
+    startLine: 195
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -696,11 +696,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Uid
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 194
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -728,11 +728,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 196
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -758,11 +758,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnRunningStateChanged
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 205
+    startLine: 212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -790,11 +790,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRunning
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 217
+    startLine: 224
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -822,11 +822,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WasStarted
     path: ../src/Shared/DrawnUi/Features/Animators/AnimatorBase.cs
-    startLine: 239
+    startLine: 246
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

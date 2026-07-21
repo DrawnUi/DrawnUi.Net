@@ -17,11 +17,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Snapping
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-    startLine: 9315
+    startLine: 9532
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -52,11 +52,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapPointsToPixel
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-    startLine: 9324
+    startLine: 9541
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -96,11 +96,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapPixelsToPixel
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs
-    startLine: 9346
+    startLine: 9563
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

@@ -45,7 +45,9 @@
     "resource": [
       {
         "files": [
-          "images/**"
+          "images/**",
+          "llms.txt",
+          "skills/**"
         ]
       }
     ],
@@ -66,6 +68,7 @@
     "template": [
       "default",
       "modern",
+      "templates/modern",
       "my-template"
     ],
      "styles": {
@@ -95,10 +98,11 @@
   "og:description": "Choose the right DrawnUI runtime for .NET MAUI, Blazor, or platform-agnostic rendering workflows.",
   "og:type": "website",
   "og:url": "https://drawnui.net",
-  "og:image": "https://drawnui.net/images/logo.png",
+  "og:image": "https://drawnui.net/images/og-banner.png",
   "twitter:card": "summary_large_image",
   "twitter:title": "DrawnUI for .NET",
   "twitter:description": "Hardware-accelerated rendering engine for .NET, including MAUI and Blazor.",
+  "twitter:image": "https://drawnui.net/images/og-banner.png",
     "_gitContribute": {
       "repo": "https://github.com/taublast/drawnui",
       "branch": "main"

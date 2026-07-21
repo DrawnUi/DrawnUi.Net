@@ -332,10 +332,14 @@ namespace DrawnUi.Controls
             {
                 Viewport = Parent.DrawingRect;
 
-                if (!CompareRects(Viewport, _lastViewport, 1))
+                if (!CompareSize(Viewport.Size, _lastViewport.Size, 1))
                 {
                     _lastViewport = Viewport;
                     Init();
+                }
+                else
+                {
+                    _lastViewport = Viewport;
                 }
             }
         }

@@ -151,4 +151,4 @@ Re-run this after every redeploy because rsync replaces real files and does not 
 **Can't find the answer to your question?** → 
 * Please check [Blazor Overview](index.md), [Blazor Packages](packages.md), and [Blazor Capabilities](capabilities.md).
 * For host-agnostic questions, check the main [Frequently Asked Questions](../faq.md).
-* [Ask in GitHub Discussions](https://github.com/taublast/DrawnUi/discussions)** - The community is here to help!
+* [Ask in GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)** - The community is here to help!

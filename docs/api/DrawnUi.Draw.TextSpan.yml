@@ -15,6 +15,7 @@ items:
   - DrawnUi.Draw.TextSpan.Dispose
   - DrawnUi.Draw.TextSpan.DrawingOffset
   - DrawnUi.Draw.TextSpan.FireTap
+  - DrawnUi.Draw.TextSpan.Font
   - DrawnUi.Draw.TextSpan.FontDetectedWith
   - DrawnUi.Draw.TextSpan.FontFamily
   - DrawnUi.Draw.TextSpan.FontSize
@@ -39,7 +40,7 @@ items:
   - DrawnUi.Draw.TextSpan.ParentControl
   - DrawnUi.Draw.TextSpan.Rects
   - DrawnUi.Draw.TextSpan.RenderingScale
-  - DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
+  - DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
   - DrawnUi.Draw.TextSpan.Shape
   - DrawnUi.Draw.TextSpan.Strikeout
   - DrawnUi.Draw.TextSpan.StrikeoutColor
@@ -67,8 +68,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextSpan
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 13
@@ -175,8 +176,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 12
@@ -204,8 +205,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 16
@@ -231,8 +232,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 20
@@ -260,8 +261,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 26
@@ -287,8 +288,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 38
@@ -316,8 +317,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 44
@@ -343,8 +344,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 59
@@ -372,8 +373,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasSetColor
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 69
@@ -401,8 +402,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrikeoutColor
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 72
@@ -430,8 +431,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BackgroundColor
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 89
@@ -459,8 +460,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParagraphColor
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 101
@@ -474,22 +475,22 @@ items:
       type: Microsoft.Maui.Graphics.Color
     content.vb: Public Property ParagraphColor As Color
   overload: DrawnUi.Draw.TextSpan.ParagraphColor*
-- uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
-  commentId: M:DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint)
-  id: SetupPaint(System.Double,SkiaSharp.SKPaint)
+- uid: DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
+  commentId: M:DrawnUi.Draw.TextSpan.SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
+  id: SetupPaint(System.Double,SkiaSharp.SKPaint,SkiaSharp.SKFont)
   parent: DrawnUi.Draw.TextSpan
   langs:
   - csharp
   - vb
-  name: SetupPaint(double, SKPaint)
-  nameWithType: TextSpan.SetupPaint(double, SKPaint)
-  fullName: DrawnUi.Draw.TextSpan.SetupPaint(double, SkiaSharp.SKPaint)
+  name: SetupPaint(double, SKPaint, SKFont)
+  nameWithType: TextSpan.SetupPaint(double, SKPaint, SKFont)
+  fullName: DrawnUi.Draw.TextSpan.SetupPaint(double, SkiaSharp.SKPaint, SkiaSharp.SKFont)
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupPaint
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
     startLine: 117
@@ -499,19 +500,21 @@ items:
   summary: Update the paint with current format properties
   example: []
   syntax:
-    content: public SKPaint SetupPaint(double scale, SKPaint defaultPaint)
+    content: public SKPaint SetupPaint(double scale, SKPaint defaultPaint, SKFont defaultFont)
     parameters:
     - id: scale
       type: System.Double
     - id: defaultPaint
       type: SkiaSharp.SKPaint
+    - id: defaultFont
+      type: SkiaSharp.SKFont
     return:
       type: SkiaSharp.SKPaint
-    content.vb: Public Function SetupPaint(scale As Double, defaultPaint As SKPaint) As SKPaint
+    content.vb: Public Function SetupPaint(scale As Double, defaultPaint As SKPaint, defaultFont As SKFont) As SKPaint
   overload: DrawnUi.Draw.TextSpan.SetupPaint*
-  nameWithType.vb: TextSpan.SetupPaint(Double, SKPaint)
-  fullName.vb: DrawnUi.Draw.TextSpan.SetupPaint(Double, SkiaSharp.SKPaint)
-  name.vb: SetupPaint(Double, SKPaint)
+  nameWithType.vb: TextSpan.SetupPaint(Double, SKPaint, SKFont)
+  fullName.vb: DrawnUi.Draw.TextSpan.SetupPaint(Double, SkiaSharp.SKPaint, SkiaSharp.SKFont)
+  name.vb: SetupPaint(Double, SKPaint, SKFont)
 - uid: DrawnUi.Draw.TextSpan.OnPropertyChanged(System.String)
   commentId: M:DrawnUi.Draw.TextSpan.OnPropertyChanged(System.String)
   id: OnPropertyChanged(System.String)
@@ -526,11 +529,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-    startLine: 191
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -562,11 +565,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Maui.cs
-    startLine: 228
+    startLine: 227
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -591,8 +594,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Default
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 16
@@ -620,8 +623,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugString
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 24
@@ -649,8 +652,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingScale
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 32
@@ -678,8 +681,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Glyphs
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 37
@@ -709,8 +712,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Shape
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 42
@@ -740,8 +743,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextFiltered
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 44
@@ -769,8 +772,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckGlyphsCanBeRendered
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 49
@@ -797,8 +800,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasSetFont
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 106
@@ -826,8 +829,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasSetSize
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 107
@@ -855,8 +858,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
     startLine: 109
@@ -870,6 +873,35 @@ items:
       type: SkiaSharp.SKPaint
     content.vb: Public Property Paint As SKPaint
   overload: DrawnUi.Draw.TextSpan.Paint*
+- uid: DrawnUi.Draw.TextSpan.Font
+  commentId: P:DrawnUi.Draw.TextSpan.Font
+  id: Font
+  parent: DrawnUi.Draw.TextSpan
+  langs:
+  - csharp
+  - vb
+  name: Font
+  nameWithType: TextSpan.Font
+  fullName: DrawnUi.Draw.TextSpan.Font
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Font
+    path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
+    startLine: 111
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public SKFont Font { get; set; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKFont
+    content.vb: Public Property Font As SKFont
+  overload: DrawnUi.Draw.TextSpan.Font*
 - uid: DrawnUi.Draw.TextSpan.TypeFace
   commentId: P:DrawnUi.Draw.TextSpan.TypeFace
   id: TypeFace
@@ -884,11 +916,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFace
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 111
+    startLine: 113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -913,11 +945,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedShape
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 124
+    startLine: 126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -942,11 +974,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasDecorations
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 135
+    startLine: 137
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -971,11 +1003,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Underline
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 144
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1000,11 +1032,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnderlineWidth
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 164
+    startLine: 166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1031,11 +1063,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Strikeout
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 181
+    startLine: 183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1060,11 +1092,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrikeoutWidth
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 201
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1091,11 +1123,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasTapHandler
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 220
+    startLine: 222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1122,11 +1154,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ForceCaptureInput
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 231
+    startLine: 233
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1153,11 +1185,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HitIsInside
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 233
+    startLine: 235
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1189,11 +1221,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FireTap
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 243
+    startLine: 245
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1215,11 +1247,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 249
+    startLine: 251
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1245,11 +1277,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawingOffset
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 262
+    startLine: 265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1276,11 +1308,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Rects
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 267
+    startLine: 270
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1305,11 +1337,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 270
+    startLine: 273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1334,11 +1366,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tapped
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 286
+    startLine: 289
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1361,11 +1393,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParentControl
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 288
+    startLine: 291
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1390,11 +1422,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _fontAutoSet
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 296
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1417,11 +1449,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateFont
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 298
+    startLine: 301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1443,11 +1475,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _typeFace
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 326
+    startLine: 329
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1470,11 +1502,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 329
+    startLine: 332
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1499,11 +1531,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineSpacing
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 345
+    startLine: 348
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1528,11 +1560,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeight
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 356
+    startLine: 359
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1557,11 +1589,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 367
+    startLine: 370
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1586,11 +1618,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsItalic
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 378
+    startLine: 381
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1615,11 +1647,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsBold
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 389
+    startLine: 392
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1644,11 +1676,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoFindFont
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 403
+    startLine: 406
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1675,11 +1707,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontDetectedWith
     path: ../src/Shared/DrawnUi/Draw/Text/TextSpan.Shared.cs
-    startLine: 414
+    startLine: 417
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3991,7 +4023,7 @@ references:
   fullName: DrawnUi.Draw.TextSpan.ParagraphColor
 - uid: DrawnUi.Draw.TextSpan.SetupPaint*
   commentId: Overload:DrawnUi.Draw.TextSpan.SetupPaint
-  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_
+  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_SetupPaint_System_Double_SkiaSharp_SKPaint_SkiaSharp_SKFont_
   name: SetupPaint
   nameWithType: TextSpan.SetupPaint
   fullName: DrawnUi.Draw.TextSpan.SetupPaint
@@ -4003,6 +4035,14 @@ references:
   name: SKPaint
   nameWithType: SKPaint
   fullName: SkiaSharp.SKPaint
+- uid: SkiaSharp.SKFont
+  commentId: T:SkiaSharp.SKFont
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skfont
+  name: SKFont
+  nameWithType: SKFont
+  fullName: SkiaSharp.SKFont
 - uid: SkiaSharp
   commentId: N:SkiaSharp
   isExternal: true
@@ -4234,6 +4274,12 @@ references:
   name: Paint
   nameWithType: TextSpan.Paint
   fullName: DrawnUi.Draw.TextSpan.Paint
+- uid: DrawnUi.Draw.TextSpan.Font*
+  commentId: Overload:DrawnUi.Draw.TextSpan.Font
+  href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_Font
+  name: Font
+  nameWithType: TextSpan.Font
+  fullName: DrawnUi.Draw.TextSpan.Font
 - uid: DrawnUi.Draw.TextSpan.TypeFace*
   commentId: Overload:DrawnUi.Draw.TextSpan.TypeFace
   href: DrawnUi.Draw.TextSpan.html#DrawnUi_Draw_TextSpan_TypeFace

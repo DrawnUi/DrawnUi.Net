@@ -116,6 +116,60 @@ public sealed class HeadlessCanvasHost : IDisposable
     }
 
     /// <summary>
+    /// Per-row content signature (sum of R+G+B per pixel row) for rows [top..bottom). Cross-correlate
+    /// signatures of consecutive frames to estimate the VERTICAL PIXEL SHIFT of rendered content —
+    /// catches visual wobble/jumps that structure-level probes (HitRect) can't see (e.g. a stale cache
+    /// plane blitted at the old position for a frame). Test-only diagnostic.
+    /// </summary>
+    public long[] RowSignature(int top, int bottom)
+    {
+        using var image = _surface.Snapshot();
+        using var bmp = SKBitmap.FromImage(image);
+
+        top = Math.Clamp(top, 0, bmp.Height);
+        bottom = Math.Clamp(bottom, top, bmp.Height);
+        var sig = new long[bottom - top];
+        for (int y = top; y < bottom; y++)
+        {
+            long sum = 0;
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                var p = bmp.GetPixel(x, y);
+                sum += p.Red + p.Green + p.Blue;
+            }
+            sig[y - top] = sum;
+        }
+
+        return sig;
+    }
+
+    /// <summary>Best vertical shift dy in [-maxShift..maxShift] aligning <paramref name="prev"/> to
+    /// <paramref name="cur"/> (minimal mean absolute difference over the overlap). Positive = content
+    /// moved DOWN on screen since the previous frame.</summary>
+    public static int EstimateVerticalShift(long[] prev, long[] cur, int maxShift = 40)
+    {
+        int best = 0;
+        double bestCost = double.MaxValue;
+        for (int dy = -maxShift; dy <= maxShift; dy++)
+        {
+            double cost = 0;
+            int n = 0;
+            for (int y = 0; y < cur.Length; y++)
+            {
+                int py = y - dy;
+                if (py < 0 || py >= prev.Length) continue;
+                cost += Math.Abs(cur[y] - prev[py]);
+                n++;
+            }
+            if (n == 0) continue;
+            cost /= n;
+            if (cost < bestCost) { bestCost = cost; best = dy; }
+        }
+
+        return best;
+    }
+
+    /// <summary>
     /// Tallest fully-background horizontal strip (in px) that sits BETWEEN content rows — i.e. an empty
     /// band/hole in the middle of rendered content (not the empty margins above/below). A row counts as
     /// "background" when fewer than <paramref name="rowFillThreshold"/> of its pixels differ from the

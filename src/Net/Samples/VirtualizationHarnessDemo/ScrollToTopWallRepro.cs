@@ -70,7 +70,8 @@ public static class ScrollToTopWallRepro
 
     static bool AtOldestTop(ChatPage page)
     {
-        if (page.ProbeWindowStart != 0)
+        // MIGRATED semantics (newest-first list): oldest = list TAIL — window covers the end.
+        if (page.ProbeWindowEnd < page.ProbeListCount)
             return false;
         var tree = page.ChatStack.RenderTree;
         if (tree == null) return false;

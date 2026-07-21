@@ -34,11 +34,23 @@ public class VelocityAccumulator
         velocities.Clear();
     }
 
-    public void CaptureVelocity(Vector2 velocity)
+    /// <param name="velocity">Sampled velocity.</param>
+    /// <param name="arrivedTimeNanos">
+    /// When the gesture that produced this sample ARRIVED from the platform
+    /// (<see cref="SkiaGesturesParameters.ArrivedTimeNanos"/>). Pass it whenever available: gestures are
+    /// processed one frame later, so during a hitch a whole burst is drained in a single frame and
+    /// processing time makes seconds-old samples look fresh — the stale flick then starts a full-speed
+    /// fling after the frame unfreezes. With the real arrival time the age window below drops them and
+    /// the final velocity comes out zero, which is what "the user's flick is long over" should mean.
+    /// Zero/omitted falls back to now (synthetic gestures, non-postponed callers).
+    /// </param>
+    public void CaptureVelocity(Vector2 velocity, long arrivedTimeNanos = 0)
     {
-        var now = DateTime.UtcNow;
+        var time = arrivedTimeNanos > 0
+            ? DateTime.UtcNow.AddTicks(-(Super.GetCurrentTimeNanos() - arrivedTimeNanos) / 100)
+            : DateTime.UtcNow;
         if (velocities.Count == MaxSampleSize) velocities.RemoveAt(0);
-        velocities.Add((velocity, now));
+        velocities.Add((velocity, time));
     }
 
     public Vector2 CalculateFinalVelocity(float clampAbsolute = 0)

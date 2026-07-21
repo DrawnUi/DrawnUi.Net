@@ -59,9 +59,17 @@ public abstract class SkiaRangeBase : SkiaLayout
 
     #region VISUAL PROPERTIES
 
+    static void NeedUpdateVisualState(BindableObject bindable, object oldvalue, object newvalue)
+    {
+        if (bindable is SkiaRangeBase control)
+        {
+            control.UpdateVisualState();
+        }
+    }
+
     public static readonly BindableProperty TrackColorProperty =
-        BindableProperty.Create(nameof(TrackColor), typeof(Color), typeof(SkiaRangeBase), 
-            new Color(0.8f, 0.8f, 0.8f));
+        BindableProperty.Create(nameof(TrackColor), typeof(Color), typeof(SkiaRangeBase),
+            new Color(0.8f, 0.8f, 0.8f), propertyChanged: NeedUpdateVisualState);
 
     /// <summary>
     /// The color of the background track
@@ -74,7 +82,7 @@ public abstract class SkiaRangeBase : SkiaLayout
 
     public static readonly BindableProperty ProgressColorProperty =
         BindableProperty.Create(nameof(ProgressColor), typeof(Color), typeof(SkiaRangeBase),
-            new Color(0f, 0.478f, 1f));
+            new Color(0f, 0.478f, 1f), propertyChanged: NeedUpdateVisualState);
 
     /// <summary>
     /// The color of the progress/selected portion
@@ -86,7 +94,8 @@ public abstract class SkiaRangeBase : SkiaLayout
     }
 
     public static readonly BindableProperty TrackHeightProperty =
-        BindableProperty.Create(nameof(TrackHeight), typeof(double), typeof(SkiaRangeBase), 4.0);
+        BindableProperty.Create(nameof(TrackHeight), typeof(double), typeof(SkiaRangeBase), 4.0,
+            propertyChanged: NeedUpdateVisualState);
 
     /// <summary>
     /// The height of the track

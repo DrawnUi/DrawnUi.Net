@@ -1,0 +1,1137 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.ItemsSourceWindow
+  commentId: T:DrawnUi.Draw.ItemsSourceWindow
+  id: ItemsSourceWindow
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.ItemsSourceWindow.#ctor(DrawnUi.Draw.SkiaLayout,System.Collections.IList,System.Int32)
+  - DrawnUi.Draw.ItemsSourceWindow.AutoTune(System.Int32,System.Int32)
+  - DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward
+  - DrawnUi.Draw.ItemsSourceWindow.CanSlideForward
+  - DrawnUi.Draw.ItemsSourceWindow.CheckSlide(System.Int32,System.Int32)
+  - DrawnUi.Draw.ItemsSourceWindow.Detach
+  - DrawnUi.Draw.ItemsSourceWindow.Items
+  - DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll(System.Int32)
+  - DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward
+  - DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward
+  - DrawnUi.Draw.ItemsSourceWindow.SeedCap
+  - DrawnUi.Draw.ItemsSourceWindow.Source
+  - DrawnUi.Draw.ItemsSourceWindow.WindowEnd
+  - DrawnUi.Draw.ItemsSourceWindow.WindowStart
+  langs:
+  - csharp
+  - vb
+  name: ItemsSourceWindow
+  nameWithType: ItemsSourceWindow
+  fullName: DrawnUi.Draw.ItemsSourceWindow
+  type: Class
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ItemsSourceWindow
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    BUILT-IN sliding window between a large user ItemsSource and the rendering pipeline.
+
+    The pipeline binds to <xref href="DrawnUi.Draw.ItemsSourceWindow.Items" data-throw-if-not-resolved="false"></xref> (a bounded slice in natural source order, exposed via
+
+    SkiaLayout.EffectiveItemsSource); this controller slides the slice INTERNALLY over the full source
+
+    (in-memory, synchronous — no spinners) as the user scrolls, reusing the layout's existing
+
+    structure-preserving mutation paths (tail append, head-insert rebase, head/tail window trims).
+
+    The app's LoadMoreCommand/LoadMoreTopCommand fire ONLY when the window reaches a source edge —
+
+    separating "page within already-available data" (internal) from "fetch more data" (app/API).
+
+    Engaged automatically by <xref href="DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow" data-throw-if-not-resolved="false"></xref> when a templated ItemsSource
+
+    exceeds <xref href="DrawnUi.Draw.SkiaLayout.WindowSourceThreshold" data-throw-if-not-resolved="false"></xref>; capacity is retuned from the real viewport
+
+    (<xref href="DrawnUi.Draw.SkiaLayout.WindowSourceViewports" data-throw-if-not-resolved="false"></xref> viewports) once the first visible range is known.
+  example: []
+  syntax:
+    content: public class ItemsSourceWindow
+    content.vb: Public Class ItemsSourceWindow
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.ItemsSourceWindow.SeedCap
+  commentId: F:DrawnUi.Draw.ItemsSourceWindow.SeedCap
+  id: SeedCap
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: SeedCap
+  nameWithType: ItemsSourceWindow.SeedCap
+  fullName: DrawnUi.Draw.ItemsSourceWindow.SeedCap
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SeedCap
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 27
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Seed window size before AutoTune — engage-on-grow centers this on the viewport.
+  example: []
+  syntax:
+    content: public const int SeedCap = 128
+    return:
+      type: System.Int32
+    content.vb: Public Const SeedCap As Integer = 128
+- uid: DrawnUi.Draw.ItemsSourceWindow.Items
+  commentId: P:DrawnUi.Draw.ItemsSourceWindow.Items
+  id: Items
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: Items
+  nameWithType: ItemsSourceWindow.Items
+  fullName: DrawnUi.Draw.ItemsSourceWindow.Items
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Items
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 38
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The materialized slice the pipeline renders. Natural source order (no inversion).
+  example: []
+  syntax:
+    content: public ObservableRangeCollection<object> Items { get; }
+    parameters: []
+    return:
+      type: AppoMobi.Specials.ObservableRangeCollection{System.Object}
+    content.vb: Public ReadOnly Property Items As ObservableRangeCollection(Of Object)
+  overload: DrawnUi.Draw.ItemsSourceWindow.Items*
+- uid: DrawnUi.Draw.ItemsSourceWindow.WindowStart
+  commentId: P:DrawnUi.Draw.ItemsSourceWindow.WindowStart
+  id: WindowStart
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: WindowStart
+  nameWithType: ItemsSourceWindow.WindowStart
+  fullName: DrawnUi.Draw.ItemsSourceWindow.WindowStart
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: WindowStart
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 41
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: 'Source range currently materialized: [WindowStart, WindowEnd).'
+  example: []
+  syntax:
+    content: public int WindowStart { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property WindowStart As Integer
+  overload: DrawnUi.Draw.ItemsSourceWindow.WindowStart*
+- uid: DrawnUi.Draw.ItemsSourceWindow.WindowEnd
+  commentId: P:DrawnUi.Draw.ItemsSourceWindow.WindowEnd
+  id: WindowEnd
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: WindowEnd
+  nameWithType: ItemsSourceWindow.WindowEnd
+  fullName: DrawnUi.Draw.ItemsSourceWindow.WindowEnd
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: WindowEnd
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 43
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public int WindowEnd { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property WindowEnd As Integer
+  overload: DrawnUi.Draw.ItemsSourceWindow.WindowEnd*
+- uid: DrawnUi.Draw.ItemsSourceWindow.Source
+  commentId: P:DrawnUi.Draw.ItemsSourceWindow.Source
+  id: Source
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: Source
+  nameWithType: ItemsSourceWindow.Source
+  fullName: DrawnUi.Draw.ItemsSourceWindow.Source
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Source
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public IList Source { get; }
+    parameters: []
+    return:
+      type: System.Collections.IList
+    content.vb: Public ReadOnly Property Source As IList
+  overload: DrawnUi.Draw.ItemsSourceWindow.Source*
+- uid: DrawnUi.Draw.ItemsSourceWindow.CanSlideForward
+  commentId: P:DrawnUi.Draw.ItemsSourceWindow.CanSlideForward
+  id: CanSlideForward
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: CanSlideForward
+  nameWithType: ItemsSourceWindow.CanSlideForward
+  fullName: DrawnUi.Draw.ItemsSourceWindow.CanSlideForward
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CanSlideForward
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 47
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public bool CanSlideForward { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property CanSlideForward As Boolean
+  overload: DrawnUi.Draw.ItemsSourceWindow.CanSlideForward*
+- uid: DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward
+  commentId: P:DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward
+  id: CanSlideBackward
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: CanSlideBackward
+  nameWithType: ItemsSourceWindow.CanSlideBackward
+  fullName: DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CanSlideBackward
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 49
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public bool CanSlideBackward { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property CanSlideBackward As Boolean
+  overload: DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward*
+- uid: DrawnUi.Draw.ItemsSourceWindow.#ctor(DrawnUi.Draw.SkiaLayout,System.Collections.IList,System.Int32)
+  commentId: M:DrawnUi.Draw.ItemsSourceWindow.#ctor(DrawnUi.Draw.SkiaLayout,System.Collections.IList,System.Int32)
+  id: '#ctor(DrawnUi.Draw.SkiaLayout,System.Collections.IList,System.Int32)'
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: ItemsSourceWindow(SkiaLayout, IList, int)
+  nameWithType: ItemsSourceWindow.ItemsSourceWindow(SkiaLayout, IList, int)
+  fullName: DrawnUi.Draw.ItemsSourceWindow.ItemsSourceWindow(DrawnUi.Draw.SkiaLayout, System.Collections.IList, int)
+  type: Constructor
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 55
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public ItemsSourceWindow(SkiaLayout layout, IList source, int startAt = 0)
+    parameters:
+    - id: layout
+      type: DrawnUi.Draw.SkiaLayout
+    - id: source
+      type: System.Collections.IList
+    - id: startAt
+      type: System.Int32
+    content.vb: Public Sub New(layout As SkiaLayout, source As IList, startAt As Integer = 0)
+  overload: DrawnUi.Draw.ItemsSourceWindow.#ctor*
+  nameWithType.vb: ItemsSourceWindow.New(SkiaLayout, IList, Integer)
+  fullName.vb: DrawnUi.Draw.ItemsSourceWindow.New(DrawnUi.Draw.SkiaLayout, System.Collections.IList, Integer)
+  name.vb: New(SkiaLayout, IList, Integer)
+- uid: DrawnUi.Draw.ItemsSourceWindow.Detach
+  commentId: M:DrawnUi.Draw.ItemsSourceWindow.Detach
+  id: Detach
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: Detach()
+  nameWithType: ItemsSourceWindow.Detach()
+  fullName: DrawnUi.Draw.ItemsSourceWindow.Detach()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Detach
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 82
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public void Detach()
+    content.vb: Public Sub Detach()
+  overload: DrawnUi.Draw.ItemsSourceWindow.Detach*
+- uid: DrawnUi.Draw.ItemsSourceWindow.AutoTune(System.Int32,System.Int32)
+  commentId: M:DrawnUi.Draw.ItemsSourceWindow.AutoTune(System.Int32,System.Int32)
+  id: AutoTune(System.Int32,System.Int32)
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: AutoTune(int, int)
+  nameWithType: ItemsSourceWindow.AutoTune(int, int)
+  fullName: DrawnUi.Draw.ItemsSourceWindow.AutoTune(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AutoTune
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 98
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Derive batch/cap from the REAL viewport: window = <xref href="DrawnUi.Draw.SkiaLayout.WindowSourceViewports" data-throw-if-not-resolved="false"></xref>
+
+    viewports of items. Tracks the MAX visible range seen — early frames can report a partial
+
+    range (a single cell) which must never lock in a tiny thrashing window.
+  example: []
+  syntax:
+    content: public void AutoTune(int firstVisible, int lastVisible)
+    parameters:
+    - id: firstVisible
+      type: System.Int32
+    - id: lastVisible
+      type: System.Int32
+    content.vb: Public Sub AutoTune(firstVisible As Integer, lastVisible As Integer)
+  overload: DrawnUi.Draw.ItemsSourceWindow.AutoTune*
+  nameWithType.vb: ItemsSourceWindow.AutoTune(Integer, Integer)
+  fullName.vb: DrawnUi.Draw.ItemsSourceWindow.AutoTune(Integer, Integer)
+  name.vb: AutoTune(Integer, Integer)
+- uid: DrawnUi.Draw.ItemsSourceWindow.CheckSlide(System.Int32,System.Int32)
+  commentId: M:DrawnUi.Draw.ItemsSourceWindow.CheckSlide(System.Int32,System.Int32)
+  id: CheckSlide(System.Int32,System.Int32)
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: CheckSlide(int, int)
+  nameWithType: ItemsSourceWindow.CheckSlide(int, int)
+  fullName: DrawnUi.Draw.ItemsSourceWindow.CheckSlide(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CheckSlide
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 125
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Slide check driven by the layout's viewport updates — INDEPENDENT of the scroll's user
+
+    LoadMoreCommand (SkiaScroll only runs its edge checks when a command is set). Near the window
+
+    tail → slide forward; near the head (when trimmed) → slide backward.
+  example: []
+  syntax:
+    content: public void CheckSlide(int firstVisible, int lastVisible)
+    parameters:
+    - id: firstVisible
+      type: System.Int32
+    - id: lastVisible
+      type: System.Int32
+    content.vb: Public Sub CheckSlide(firstVisible As Integer, lastVisible As Integer)
+  overload: DrawnUi.Draw.ItemsSourceWindow.CheckSlide*
+  nameWithType.vb: ItemsSourceWindow.CheckSlide(Integer, Integer)
+  fullName.vb: DrawnUi.Draw.ItemsSourceWindow.CheckSlide(Integer, Integer)
+  name.vb: CheckSlide(Integer, Integer)
+- uid: DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll(System.Int32)
+  commentId: M:DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll(System.Int32)
+  id: MapToLocalForScroll(System.Int32)
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: MapToLocalForScroll(int)
+  nameWithType: ItemsSourceWindow.MapToLocalForScroll(int)
+  fullName: DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MapToLocalForScroll
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 175
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Maps a GLOBAL (ItemsSource-space) index to a window-local one for a programmatic scroll.
+
+    Resident target = plain mapping. Non-resident = the window REBASES centered on the target
+
+    (ReplaceRange -&gt; the layout's clean full-replace reset path, templates preserved), then the
+
+    returned local index is scrolled to by the caller's ordered-scroll machinery, which waits out
+
+    the staged structure change before resolving geometry. Call on the UI thread.
+  example: []
+  syntax:
+    content: public int MapToLocalForScroll(int global)
+    parameters:
+    - id: global
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function MapToLocalForScroll([global] As Integer) As Integer
+  overload: DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll*
+  nameWithType.vb: ItemsSourceWindow.MapToLocalForScroll(Integer)
+  fullName.vb: DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll(Integer)
+  name.vb: MapToLocalForScroll(Integer)
+- uid: DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward
+  commentId: M:DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward
+  id: RequestSlideForward
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: RequestSlideForward()
+  nameWithType: ItemsSourceWindow.RequestSlideForward()
+  fullName: DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RequestSlideForward
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 232
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public void RequestSlideForward()
+    content.vb: Public Sub RequestSlideForward()
+  overload: DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward*
+- uid: DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward
+  commentId: M:DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward
+  id: RequestSlideBackward
+  parent: DrawnUi.Draw.ItemsSourceWindow
+  langs:
+  - csharp
+  - vb
+  name: RequestSlideBackward()
+  nameWithType: ItemsSourceWindow.RequestSlideBackward()
+  fullName: DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RequestSlideBackward
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/ItemsSourceWindow.cs
+    startLine: 241
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public void RequestSlideBackward()
+    content.vb: Public Sub RequestSlideBackward()
+  overload: DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward*
+references:
+- uid: DrawnUi.Draw.ItemsSourceWindow.Items
+  commentId: P:DrawnUi.Draw.ItemsSourceWindow.Items
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_Items
+  name: Items
+  nameWithType: ItemsSourceWindow.Items
+  fullName: DrawnUi.Draw.ItemsSourceWindow.Items
+- uid: DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow
+  commentId: M:DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TryEngageItemsWindow
+  name: TryEngageItemsWindow()
+  nameWithType: SkiaLayout.TryEngageItemsWindow()
+  fullName: DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow
+    name: TryEngageItemsWindow
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TryEngageItemsWindow
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow
+    name: TryEngageItemsWindow
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TryEngageItemsWindow
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.WindowSourceThreshold
+  commentId: F:DrawnUi.Draw.SkiaLayout.WindowSourceThreshold
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_WindowSourceThreshold
+  name: WindowSourceThreshold
+  nameWithType: SkiaLayout.WindowSourceThreshold
+  fullName: DrawnUi.Draw.SkiaLayout.WindowSourceThreshold
+- uid: DrawnUi.Draw.SkiaLayout.WindowSourceViewports
+  commentId: F:DrawnUi.Draw.SkiaLayout.WindowSourceViewports
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_WindowSourceViewports
+  name: WindowSourceViewports
+  nameWithType: SkiaLayout.WindowSourceViewports
+  fullName: DrawnUi.Draw.SkiaLayout.WindowSourceViewports
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout
+  commentId: T:DrawnUi.Draw.SkiaLayout
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaLayout.html
+  name: SkiaLayout
+  nameWithType: SkiaLayout
+  fullName: DrawnUi.Draw.SkiaLayout
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: DrawnUi.Draw.ItemsSourceWindow.Items*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.Items
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_Items
+  name: Items
+  nameWithType: ItemsSourceWindow.Items
+  fullName: DrawnUi.Draw.ItemsSourceWindow.Items
+- uid: AppoMobi.Specials.ObservableRangeCollection{System.Object}
+  commentId: T:AppoMobi.Specials.ObservableRangeCollection{System.Object}
+  parent: AppoMobi.Specials
+  definition: AppoMobi.Specials.ObservableRangeCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: ObservableRangeCollection<object>
+  nameWithType: ObservableRangeCollection<object>
+  fullName: AppoMobi.Specials.ObservableRangeCollection<object>
+  nameWithType.vb: ObservableRangeCollection(Of Object)
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of Object)
+  name.vb: ObservableRangeCollection(Of Object)
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AppoMobi.Specials.ObservableRangeCollection`1
+  commentId: T:AppoMobi.Specials.ObservableRangeCollection`1
+  isExternal: true
+  name: ObservableRangeCollection<T>
+  nameWithType: ObservableRangeCollection<T>
+  fullName: AppoMobi.Specials.ObservableRangeCollection<T>
+  nameWithType.vb: ObservableRangeCollection(Of T)
+  fullName.vb: AppoMobi.Specials.ObservableRangeCollection(Of T)
+  name.vb: ObservableRangeCollection(Of T)
+  spec.csharp:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AppoMobi.Specials.ObservableRangeCollection`1
+    name: ObservableRangeCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AppoMobi.Specials
+  commentId: N:AppoMobi.Specials
+  isExternal: true
+  name: AppoMobi.Specials
+  nameWithType: AppoMobi.Specials
+  fullName: AppoMobi.Specials
+  spec.csharp:
+  - uid: AppoMobi
+    name: AppoMobi
+    isExternal: true
+  - name: .
+  - uid: AppoMobi.Specials
+    name: Specials
+    isExternal: true
+  spec.vb:
+  - uid: AppoMobi
+    name: AppoMobi
+    isExternal: true
+  - name: .
+  - uid: AppoMobi.Specials
+    name: Specials
+    isExternal: true
+- uid: DrawnUi.Draw.ItemsSourceWindow.WindowStart*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.WindowStart
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_WindowStart
+  name: WindowStart
+  nameWithType: ItemsSourceWindow.WindowStart
+  fullName: DrawnUi.Draw.ItemsSourceWindow.WindowStart
+- uid: DrawnUi.Draw.ItemsSourceWindow.WindowEnd*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.WindowEnd
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_WindowEnd
+  name: WindowEnd
+  nameWithType: ItemsSourceWindow.WindowEnd
+  fullName: DrawnUi.Draw.ItemsSourceWindow.WindowEnd
+- uid: DrawnUi.Draw.ItemsSourceWindow.Source*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.Source
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_Source
+  name: Source
+  nameWithType: ItemsSourceWindow.Source
+  fullName: DrawnUi.Draw.ItemsSourceWindow.Source
+- uid: System.Collections.IList
+  commentId: T:System.Collections.IList
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  name: IList
+  nameWithType: IList
+  fullName: System.Collections.IList
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: DrawnUi.Draw.ItemsSourceWindow.CanSlideForward*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.CanSlideForward
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_CanSlideForward
+  name: CanSlideForward
+  nameWithType: ItemsSourceWindow.CanSlideForward
+  fullName: DrawnUi.Draw.ItemsSourceWindow.CanSlideForward
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_CanSlideBackward
+  name: CanSlideBackward
+  nameWithType: ItemsSourceWindow.CanSlideBackward
+  fullName: DrawnUi.Draw.ItemsSourceWindow.CanSlideBackward
+- uid: DrawnUi.Draw.ItemsSourceWindow.#ctor*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.#ctor
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow__ctor_DrawnUi_Draw_SkiaLayout_System_Collections_IList_System_Int32_
+  name: ItemsSourceWindow
+  nameWithType: ItemsSourceWindow.ItemsSourceWindow
+  fullName: DrawnUi.Draw.ItemsSourceWindow.ItemsSourceWindow
+  nameWithType.vb: ItemsSourceWindow.New
+  fullName.vb: DrawnUi.Draw.ItemsSourceWindow.New
+  name.vb: New
+- uid: DrawnUi.Draw.ItemsSourceWindow.Detach*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.Detach
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_Detach
+  name: Detach
+  nameWithType: ItemsSourceWindow.Detach
+  fullName: DrawnUi.Draw.ItemsSourceWindow.Detach
+- uid: DrawnUi.Draw.ItemsSourceWindow.AutoTune*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.AutoTune
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_AutoTune_System_Int32_System_Int32_
+  name: AutoTune
+  nameWithType: ItemsSourceWindow.AutoTune
+  fullName: DrawnUi.Draw.ItemsSourceWindow.AutoTune
+- uid: DrawnUi.Draw.ItemsSourceWindow.CheckSlide*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.CheckSlide
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_CheckSlide_System_Int32_System_Int32_
+  name: CheckSlide
+  nameWithType: ItemsSourceWindow.CheckSlide
+  fullName: DrawnUi.Draw.ItemsSourceWindow.CheckSlide
+- uid: DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_MapToLocalForScroll_System_Int32_
+  name: MapToLocalForScroll
+  nameWithType: ItemsSourceWindow.MapToLocalForScroll
+  fullName: DrawnUi.Draw.ItemsSourceWindow.MapToLocalForScroll
+- uid: DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_RequestSlideForward
+  name: RequestSlideForward
+  nameWithType: ItemsSourceWindow.RequestSlideForward
+  fullName: DrawnUi.Draw.ItemsSourceWindow.RequestSlideForward
+- uid: DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward*
+  commentId: Overload:DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward
+  href: DrawnUi.Draw.ItemsSourceWindow.html#DrawnUi_Draw_ItemsSourceWindow_RequestSlideBackward
+  name: RequestSlideBackward
+  nameWithType: ItemsSourceWindow.RequestSlideBackward
+  fullName: DrawnUi.Draw.ItemsSourceWindow.RequestSlideBackward

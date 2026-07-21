@@ -7,12 +7,15 @@ public sealed partial class ChatPage : BindableObject, IChatCellActions
 {
     public float KeyboardSize { get; set; }
 
-    // Probe accessors into the private windowed source (same class -> can read it).
-    public int ProbeWindowStart => _limitedSource.WindowStart;
-    public int ProbeWindowEnd => _limitedSource.WindowEnd;
-    public int ProbeResident => _limitedSource.Items.Count;
+    // Probe accessors into the migrated built-in-window state (same class -> can read it).
+    public int ProbeWindowStart => _windowStart;
+    public int ProbeWindowEnd => _windowEnd;
+    public int ProbeResident => ChatStack?.ItemsWindow?.Items.Count ?? _items.Count;
+    public int ProbeListCount => _items.Count;
 
     // Drive the app's private jump helpers from the harness (exact same code path as the UI buttons).
     public void ProbeScrollToOldest(bool animate) => ScrollToOldest(animate);
     public void ProbeScrollToNewest(bool animate) => ScrollToNewest(animate);
+    public void ProbeStartAiMock() => StartMockAiAnswer();
+    public void ProbeStopAiMock() => StopMockAiAnswer();
 }

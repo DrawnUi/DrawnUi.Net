@@ -170,7 +170,7 @@ namespace DrawnUi.Draw
             return -(float)Math.Ceiling(halfStroke);
         }
 
-        protected SKRect CalculateContentSizeForStroke(SKRect destination, float scale)
+        protected virtual SKRect CalculateContentSizeForStroke(SKRect destination, float scale)
         {
             if (WillStroke)
             {
@@ -180,7 +180,7 @@ namespace DrawnUi.Draw
             return ContractPixelsRect(destination, scale, UsePadding);
         }
 
-        protected SKRect CalculateClipSizeForStroke(SKRect destination, float scale)
+        protected virtual SKRect CalculateClipSizeForStroke(SKRect destination, float scale)
         {
             if (WillStroke)
             {

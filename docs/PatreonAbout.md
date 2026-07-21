@@ -68,7 +68,7 @@ Your support directly contributes to making these use cases even better and more
 
 ## 📞 Stay Connected
 
-- **GitHub**: [DrawnUI Repository](https://github.com/taublast/DrawnUi.Maui)
+- **GitHub**: [DrawnUI Repository](https://github.com/DrawnUi/DrawnUi.Net.Maui)
 - **Documentation**: [drawnui.net](https://drawnui.net)
 - **Discord**: [Join our community](#) *(link coming soon)*
 - **Twitter/X**: Follow for quick updates and tips

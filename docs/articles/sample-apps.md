@@ -4,7 +4,7 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
 
 ## 🎮 Learning Projects
 
-- **[Blazor Sandbox](https://github.com/taublast/DrawnUi/tree/main/src/Blazor/Samples/BlazorSandbox)** 🌐 - Explore the browser-hosted DrawnUI sample surface with:
+- **[Blazor Sandbox](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/BlazorSandbox)** 🌐 - Explore the browser-hosted DrawnUI sample surface with:
   - Blazor `Canvas` hosting patterns
   - Control and layout probes
   - Tutorial ports for browser runtime
@@ -13,7 +13,7 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
   [See it live in browser!](https://drawnui.net/sandbox/)
 
 
-- **[Pong (DrawnUi.Wasm)](https://github.com/taublast/DrawnUi/tree/main/src/Wasm/Samples/PongWeb)** 🕹️ - A full game running as **pure WebAssembly** (no Blazor) with:
+- **[Pong (DrawnUi.Wasm)](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/PongWeb)** 🕹️ - A full game running as **pure WebAssembly** (no Blazor) with:
   - `DrawnUi.Wasm` standalone host (`RunAsync`)
   - GPU (WebGL) rendering with raster fallback
   - HTTP-loaded fonts, `GesturesMode.Lock` with iOS swipe guard
@@ -21,7 +21,7 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
 
   [Play it live!](https://pong.appomobi.com/)
 
-  A minimal "Hello DrawnUI on Web" starter also lives at **[DrawnUi.Wasm.Sample](https://github.com/taublast/DrawnUi/tree/main/src/Wasm/DrawnUi.Wasm.Sample)**.
+  A minimal "Hello DrawnUI on Web" starter also lives at **[DrawnUi.Wasm.Sample](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/DrawnUi.Wasm.Sample)**.
 
 
 - **[MAUI Demo](https://github.com/taublast/AppoMobi.Maui.DrawnUi.Demo)** 🤩 - A comprehensive totally drawn app demo featuring:
@@ -30,7 +30,7 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
   - Camera integration examples
   - Custom controls showcase
 
-- **[MAUI Sandbox](https://github.com/taublast/DrawnUi.Maui/tree/main/src/Maui/Samples/Sandbox)** 🧪 - Experiment with:
+- **[MAUI Sandbox](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Sandbox)** 🧪 - Experiment with:
   - Playground examples
   - Custom controls development
   - Maps integration
@@ -48,7 +48,7 @@ Published open-source apps:
 
 ### Bricks Breaker
 _Arkanoid/Breakout-style arcade game_
-- **Browse Code**: [Github repository](https://github.com/taublast/DrawnUi.Breakout)
+- **Browse Code**: [Github repository](https://github.com/DrawnUi/DrawnUi.Net.Breakout)
 - **Play on Web**: [Bricks Breaker Web](https://taublast.github.io/DrawnUi.Breakout)
 - **Install**: [AppStore](https://apps.apple.com/us/app/bricks-breaker/id6749823869?platform=iphone), [Google Play](https://play.google.com/store/apps/details?id=com.appomobi.drawnui.breakout)
 - **Architecture**: Single Canvas root with drawn dialogs

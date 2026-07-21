@@ -223,8 +223,12 @@ public class WindowedSource<T>
             _host.StopAnimations(); // fling may have re-armed during the await; stop it before the swap
             OnSliceLoaded?.Invoke(slice);
             Items.ReplaceRange(slice);
-            _host.SnapToStart(); // offset 0 = newest, instant (always valid even mid re-measure)
-            _host.SuppressLoadMore = false;
+            // ORDERED scroll to newest (local 0), not an instant SnapToStart: the fresh window is unmeasured,
+            // so an instant offset-0 snap races the measure and lands the viewport at a random position in the
+            // new slice (observed: newest jump landing on msg1950/1970/1999 across runs). The held-until-
+            // measured ordered scroll lands deterministically at newest — same path the other jumps use.
+            _host.ScrollToLocal(0, RelativePositionType.Start, animate);
+            _host.SuppressLoadMore = false; // hand off to the self-clearing ordered-scroll LoadMore gate
             SetLoading(jump: false);
         });
     }

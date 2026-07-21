@@ -28,6 +28,9 @@ public class SkiaCheckbox : SkiaToggle
                 case PrebuiltControlStyle.Material:
                     CreateMaterialStyleContent();
                     break;
+                case PrebuiltControlStyle.Material3:
+                    CreateMaterial3StyleContent();
+                    break;
                 case PrebuiltControlStyle.Windows:
                     CreateWindowsStyleContent();
                     break;
@@ -40,16 +43,26 @@ public class SkiaCheckbox : SkiaToggle
         }
     }
     
+    // Flat DrawnUI default palette (accent + neutral outline), shared with the other default controls.
+    private static readonly Color DefaultAccentColor = Color.FromRgba(220, 20, 60, 255); // Crimson #DC143C
+    private static readonly Color DefaultOutlineColor = Color.FromRgba(142, 149, 157, 255); // neutral #8E959D
+
     protected virtual void CreateDefaultStyleContent()
     {
+        // Original DrawnUI checkbox: stroked rectangle, filled inner square when checked.
+        // Flat palette: neutral outline off, accent stroke + accent inner square on.
         SetDefaultContentSize(22, 22);
+
+        var frameOff = IsSet(ColorFrameOffProperty) ? ColorFrameOff : DefaultOutlineColor;
+        var frameOn = IsSet(ColorFrameOnProperty) ? ColorFrameOn : DefaultAccentColor;
+        var checkOn = IsSet(ColorCheckOnProperty) ? ColorCheckOn : DefaultAccentColor;
 
         this.AddSubView(new SkiaShape
         {
             Tag = "FrameOff",
             StrokeWidth = 1,
             Type = ShapeType.Rectangle,
-            StrokeColor = this.ColorFrameOff,
+            StrokeColor = frameOff,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
         });
@@ -58,7 +71,7 @@ public class SkiaCheckbox : SkiaToggle
         {
             Tag = "FrameOn",
             Type = ShapeType.Rectangle,
-            StrokeColor = this.ColorFrameOn,
+            StrokeColor = frameOn,
             StrokeWidth = 1,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
@@ -69,7 +82,7 @@ public class SkiaCheckbox : SkiaToggle
                     Tag = "ViewCheckOn",
                     UseCache = SkiaCacheType.Operations,
                     Type = ShapeType.Rectangle,
-                    BackgroundColor = this.ColorCheckOn,
+                    BackgroundColor = checkOn,
                     Margin = 3,
                     LockRatio = 1,
                     HorizontalOptions = LayoutOptions.Fill,
@@ -77,6 +90,10 @@ public class SkiaCheckbox : SkiaToggle
                 }
             }
         });
+
+        ColorFrameOff = frameOff;
+        ColorFrameOn = frameOn;
+        ColorCheckOn = checkOn;
     }
     
     protected virtual void CreateCupertinoStyleContent()
@@ -133,7 +150,7 @@ public class SkiaCheckbox : SkiaToggle
     {
         // Material style tends to use a container with a checkmark
         SetDefaultContentSize(24, 24);
-        
+
         // Frame Off (outlined box)
         this.AddSubView(new SkiaShape
         {
@@ -145,7 +162,7 @@ public class SkiaCheckbox : SkiaToggle
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
         });
-        
+
         // Frame On (filled box)
         var frameOn = new SkiaShape
         {
@@ -176,6 +193,59 @@ public class SkiaCheckbox : SkiaToggle
         // Color overrides for Material style
         ColorFrameOff = Color.FromRgba(117, 117, 117, 255);
         ColorFrameOn = Color.FromRgba(33, 150, 243, 255);
+        ColorCheckOn = Colors.White;
+    }
+
+    /// <summary>
+    /// Creates a Material 3 (Material You) checkbox: 18pt box, 2pt on-surface-variant outline
+    /// when off, filled primary #6750A4 with a white checkmark when checked.
+    /// </summary>
+    protected virtual void CreateMaterial3StyleContent()
+    {
+        SetDefaultContentSize(18, 18);
+
+        // Frame Off (outlined box)
+        this.AddSubView(new SkiaShape
+        {
+            Tag = "FrameOff",
+            StrokeWidth = 2,
+            Type = ShapeType.Rectangle,
+            CornerRadius = 2,
+            StrokeColor = Color.FromRgba(73, 69, 79, 255), // M3 on-surface variant #49454F
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+        });
+
+        // Frame On (filled box)
+        var frameOn = new SkiaShape
+        {
+            Tag = "FrameOn",
+            Type = ShapeType.Rectangle,
+            CornerRadius = 2,
+            BackgroundColor = Color.FromRgba(103, 80, 164, 255), // M3 primary #6750A4
+            StrokeWidth = 0,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+        };
+        this.AddSubView(frameOn);
+
+        // Material style checkmark
+        var checkmark = new SkiaSvg
+        {
+            Tag = "ViewCheckOn",
+            SvgString = SvgMaterialCheck,
+            TintColor = Colors.White,
+            Margin = new Thickness(2),
+            UseCache = SkiaCacheType.Operations,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+        };
+        frameOn.AddSubView(checkmark);
+        ViewCheckOn = checkmark;
+
+        // Color overrides for Material 3 style
+        ColorFrameOff = Color.FromRgba(73, 69, 79, 255);
+        ColorFrameOn = Color.FromRgba(103, 80, 164, 255);
         ColorCheckOn = Colors.White;
     }
     
@@ -244,6 +314,7 @@ public class SkiaCheckbox : SkiaToggle
                 {
                     case PrebuiltControlStyle.Cupertino:
                     case PrebuiltControlStyle.Material:
+                    case PrebuiltControlStyle.Material3:
                     case PrebuiltControlStyle.Windows:
                         shape.BackgroundColor = ColorFrameOn;
                         break;

@@ -21,6 +21,8 @@ items:
   - DrawnUi.Draw.WindowedSource`1.OnSliceLoaded
   - DrawnUi.Draw.WindowedSource`1.RebaseToOldest
   - DrawnUi.Draw.WindowedSource`1.RebaseToPresent(System.Boolean)
+  - DrawnUi.Draw.WindowedSource`1.Reconfigure(System.Int32,System.Int32)
+  - DrawnUi.Draw.WindowedSource`1.RemoveResident(`0)
   - DrawnUi.Draw.WindowedSource`1.ScrollToIndex(System.Int32,DrawnUi.Draw.RelativePositionType,System.Boolean)
   - DrawnUi.Draw.WindowedSource`1.ScrollToNewest(System.Boolean)
   - DrawnUi.Draw.WindowedSource`1.ScrollToOldest(System.Boolean)
@@ -40,8 +42,8 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WindowedSource
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
     startLine: 18
@@ -70,10 +72,10 @@ items:
     and toggles a loading flag so a single spinner can be shown (and repositioned) per operation.
   example: []
   syntax:
-    content: public sealed class WindowedSource<T>
+    content: public class WindowedSource<T>
     typeParameters:
     - id: T
-    content.vb: Public NotInheritable Class WindowedSource(Of T)
+    content.vb: Public Class WindowedSource(Of T)
   inheritance:
   - System.Object
   inheritedMembers:
@@ -81,6 +83,7 @@ items:
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
   - System.Object.GetType
+  - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
   extensionMethods:
@@ -88,6 +91,95 @@ items:
   nameWithType.vb: WindowedSource(Of T)
   fullName.vb: DrawnUi.Draw.WindowedSource(Of T)
   name.vb: WindowedSource(Of T)
+- uid: DrawnUi.Draw.WindowedSource`1.RemoveResident(`0)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.RemoveResident(`0)
+  id: RemoveResident(`0)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: RemoveResident(T)
+  nameWithType: WindowedSource<T>.RemoveResident(T)
+  fullName: DrawnUi.Draw.WindowedSource<T>.RemoveResident(T)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RemoveResident
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 31
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Removes ONE resident item keeping the window bookkeeping consistent. A bare Items.Remove()
+
+    desyncs the inverted mapping (Items[i] == All[WindowEnd-1-i]) and the totals: every later
+
+    LoadOlder/LoadNewer then pages shifted ranges — cells bind wrong messages and leave gaps
+
+    (observed: "..270, 288, GAP, 273.." after a delete + scroll). Deleting global index g:
+
+    newer residents (locals above) shift down one global slot, older keep theirs — exactly what
+
+    decrementing WindowEnd (and the total count) preserves. Call on the UI thread.
+  example: []
+  syntax:
+    content: public bool RemoveResident(T item)
+    parameters:
+    - id: item
+      type: '{T}'
+    return:
+      type: System.Boolean
+    content.vb: Public Function RemoveResident(item As T) As Boolean
+  overload: DrawnUi.Draw.WindowedSource`1.RemoveResident*
+  nameWithType.vb: WindowedSource(Of T).RemoveResident(T)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).RemoveResident(T)
+- uid: DrawnUi.Draw.WindowedSource`1.Reconfigure(System.Int32,System.Int32)
+  commentId: M:DrawnUi.Draw.WindowedSource`1.Reconfigure(System.Int32,System.Int32)
+  id: Reconfigure(System.Int32,System.Int32)
+  parent: DrawnUi.Draw.WindowedSource`1
+  langs:
+  - csharp
+  - vb
+  name: Reconfigure(int, int)
+  nameWithType: WindowedSource<T>.Reconfigure(int, int)
+  fullName: DrawnUi.Draw.WindowedSource<T>.Reconfigure(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Reconfigure
+    path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
+    startLine: 49
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Retunes the paging geometry at runtime — lets the host derive batch/cap from the ACTUAL
+
+    viewport (a phone screen fits ~15 messages, a desktop window can fit 50+; fixed constants
+
+    can't serve both). Takes effect from the next load/trim; the resident window is not
+
+    reshaped retroactively. Call from the UI thread (same thread that mutates Items).
+  example: []
+  syntax:
+    content: public void Reconfigure(int batch, int maxInMemory)
+    parameters:
+    - id: batch
+      type: System.Int32
+    - id: maxInMemory
+      type: System.Int32
+    content.vb: Public Sub Reconfigure(batch As Integer, maxInMemory As Integer)
+  overload: DrawnUi.Draw.WindowedSource`1.Reconfigure*
+  nameWithType.vb: WindowedSource(Of T).Reconfigure(Integer, Integer)
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).Reconfigure(Integer, Integer)
+  name.vb: Reconfigure(Integer, Integer)
 - uid: DrawnUi.Draw.WindowedSource`1.#ctor(System.Int32,System.Int32,System.Boolean)
   commentId: M:DrawnUi.Draw.WindowedSource`1.#ctor(System.Int32,System.Int32,System.Boolean)
   id: '#ctor(System.Int32,System.Int32,System.Boolean)'
@@ -102,11 +194,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 28
+    startLine: 62
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -138,11 +230,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Items
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 36
+    startLine: 70
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -171,11 +263,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Count
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 39
+    startLine: 73
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -204,11 +296,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WindowStart
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 41
+    startLine: 75
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -235,11 +327,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WindowEnd
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 42
+    startLine: 76
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -266,11 +358,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AtPresent
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 45
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -299,11 +391,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AtOldest
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 48
+    startLine: 82
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -332,11 +424,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSliceLoaded
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 51
+    startLine: 85
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -365,11 +457,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoadingOlder
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 54
+    startLine: 88
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -398,11 +490,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoadingNewer
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 57
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -431,11 +523,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoadingJump
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 60
+    startLine: 94
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -464,11 +556,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadingChanged
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 63
+    startLine: 97
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -497,11 +589,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetHost
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 65
+    startLine: 99
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -528,11 +620,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetDataSource
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 66
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -560,11 +652,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToLocal
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 69
+    startLine: 103
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -594,11 +686,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToGlobal
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 70
+    startLine: 104
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -628,11 +720,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeAsync
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 76
+    startLine: 110
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -665,11 +757,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 102
+    startLine: 136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -712,11 +804,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToNewest
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 159
+    startLine: 193
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -750,11 +842,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOldest
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 190
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -788,11 +880,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RebaseToPresent
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 233
+    startLine: 284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -827,11 +919,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RebaseToOldest
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 253
+    startLine: 304
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -859,11 +951,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InsertNewest
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 271
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -897,11 +989,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadOlder
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 291
+    startLine: 342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -929,11 +1021,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-      branch: OpenTk
-      repo: https://github.com/taublast/DrawnUi.git
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadNewer
     path: ../src/Shared/DrawnUi/Draw/Layout/Windowing/WindowedSource.cs
-    startLine: 328
+    startLine: 379
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1216,6 +1308,30 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.gettype
   - name: (
   - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
 - uid: System.Object.ReferenceEquals(System.Object,System.Object)
   commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
   parent: System.Object
@@ -1382,26 +1498,20 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.WindowedSource`1.#ctor*
-  commentId: Overload:DrawnUi.Draw.WindowedSource`1.#ctor
-  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1__ctor_System_Int32_System_Int32_System_Boolean_
-  name: WindowedSource
-  nameWithType: WindowedSource<T>.WindowedSource
-  fullName: DrawnUi.Draw.WindowedSource<T>.WindowedSource
-  nameWithType.vb: WindowedSource(Of T).New
-  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).New
-  name.vb: New
-- uid: System.Int32
-  commentId: T:System.Int32
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: int
-  nameWithType: int
-  fullName: int
-  nameWithType.vb: Integer
-  fullName.vb: Integer
-  name.vb: Integer
+- uid: DrawnUi.Draw.WindowedSource`1.RemoveResident*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.RemoveResident
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_RemoveResident__0_
+  name: RemoveResident
+  nameWithType: WindowedSource<T>.RemoveResident
+  fullName: DrawnUi.Draw.WindowedSource<T>.RemoveResident
+  nameWithType.vb: WindowedSource(Of T).RemoveResident
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).RemoveResident
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -1413,6 +1523,38 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: DrawnUi.Draw.WindowedSource`1.Reconfigure*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.Reconfigure
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_Reconfigure_System_Int32_System_Int32_
+  name: Reconfigure
+  nameWithType: WindowedSource<T>.Reconfigure
+  fullName: DrawnUi.Draw.WindowedSource<T>.Reconfigure
+  nameWithType.vb: WindowedSource(Of T).Reconfigure
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).Reconfigure
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: DrawnUi.Draw.WindowedSource`1.#ctor*
+  commentId: Overload:DrawnUi.Draw.WindowedSource`1.#ctor
+  href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1__ctor_System_Int32_System_Int32_System_Boolean_
+  name: WindowedSource
+  nameWithType: WindowedSource<T>.WindowedSource
+  fullName: DrawnUi.Draw.WindowedSource<T>.WindowedSource
+  nameWithType.vb: WindowedSource(Of T).New
+  fullName.vb: DrawnUi.Draw.WindowedSource(Of T).New
+  name.vb: New
 - uid: DrawnUi.Draw.WindowedSource`1.Items*
   commentId: Overload:DrawnUi.Draw.WindowedSource`1.Items
   href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_Items
@@ -1905,16 +2047,6 @@ references:
   fullName: DrawnUi.Draw.WindowedSource<T>.InsertNewest
   nameWithType.vb: WindowedSource(Of T).InsertNewest
   fullName.vb: DrawnUi.Draw.WindowedSource(Of T).InsertNewest
-- uid: '{T}'
-  commentId: '!:T'
-  definition: T
-  name: T
-  nameWithType: T
-  fullName: T
-- uid: T
-  name: T
-  nameWithType: T
-  fullName: T
 - uid: DrawnUi.Draw.WindowedSource`1.LoadOlder*
   commentId: Overload:DrawnUi.Draw.WindowedSource`1.LoadOlder
   href: DrawnUi.Draw.WindowedSource-1.html#DrawnUi_Draw_WindowedSource_1_LoadOlder
