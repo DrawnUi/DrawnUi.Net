@@ -64,8 +64,16 @@ public partial class SkiaLayout
         float vpBottom = vpTop + viewport.Pixels.Height;
 
         int lastMeasured = -1;
-        foreach (var cell in structure.GetChildren())
+        // INDEXED, not foreach: the public FirstVisibleIndex/LastVisibleIndex getters call this from
+        // ANY thread (app timers, DebugString, bindings) while measure/build mutates the structure.
+        // Dictionary/List enumerators are version-checked, so GetChildren() there threw
+        // "Collection was modified" and killed the app (device: DrawnCells DebugString timer).
+        // Index access reads add-ordered storage without a version check: a concurrent mutation can
+        // only make the scan see a shorter list or a stale cell, both harmless for a read-only range.
+        int count = structure.Length;
+        for (int i = 0; i < count; i++)
         {
+            var cell = structure[i];
             if (cell == null || !cell.WasMeasured)
                 continue;
             lastMeasured = cell.ControlIndex;
@@ -2083,8 +2091,7 @@ public partial class SkiaLayout
                     return;
                 }
 
-                if (change.StartIndex == 0 && LastMeasuredIndexLocal >= 0
-                    && !_headInsertMeasuring && _pendingHeadInsert == null)
+                if (change.StartIndex == 0 && LastMeasuredIndexLocal >= 0)
                 {
                     if (_pendingHeadRemove != null)
                     {
@@ -2092,6 +2099,30 @@ public partial class SkiaLayout
                         // offset compensations cannot be merged, rebuild cleanly instead
                         _pendingHeadRemove = null;
                         Invalidate();
+                        return;
+                    }
+
+                    // SERIALIZE concurrent head inserts (send-spam): a second StartIndex==0 must NEVER fall
+                    // through to the middle-insert branch below — that path bumps _itemsShiftEpoch, which makes
+                    // the in-flight head-insert commit drop (Epoch != _itemsShiftEpoch) and shifts indices twice,
+                    // landing cells at wrong Destinations (the overlapping-bubble corruption). Keep it on the
+                    // head path: flush a measured-and-staged block now, defer while one is still measuring.
+                    if (_pendingHeadInsert != null)
+                    {
+                        // ready to commit — apply it inline so the structure is consistent before we shift again
+                        CommitPendingHeadInsert();
+                    }
+                    if (_headInsertMeasuring)
+                    {
+                        // measurement still async: retry this exact change next frame, after it commits. The
+                        // item exists in neither the adapter nor the structure yet (both gain it on re-run), so
+                        // mark synced to skip the interim resync — no stale snapshot flip.
+                        adapterSynced = true;
+                        lock (_structureChangesLock)
+                        {
+                            _pendingStructureChanges.Add(change);
+                        }
+                        Repaint();
                         return;
                     }
 

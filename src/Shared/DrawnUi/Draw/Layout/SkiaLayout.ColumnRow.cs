@@ -65,11 +65,22 @@ namespace DrawnUi.Draw
         /// </summary>
         [ThreadStatic] internal static bool PaintedSkeleton;
 
+        /// <summary>
+        /// Set (under <see cref="CollectPaintedBounds"/>, bake pass only) when the pass STALE-SERVED a cell —
+        /// drew its existing (old-size) pixels because it self-invalidated mid-paint. The kick-time gate proved
+        /// every band cell ready, so a stale-serve during the worker bake is always the TOCTOU transient
+        /// (ready at kick, went NeedMeasure during Paint). Baking that old-size snapshot freezes the pre-grow
+        /// height into the plane -> live re-record adopts the new size -> the 3->2->3 line jump. The plane owner
+        /// reads this to REJECT the publish and fall back to the (always-correct) live draw, same as a skeleton.
+        /// </summary>
+        [ThreadStatic] internal static bool PaintedStaleServe;
+
         internal static void ResetPaintedBounds()
         {
             PaintedBoundsTop = float.MaxValue;
             PaintedBoundsBottom = float.MinValue;
             PaintedSkeleton = false;
+            PaintedStaleServe = false;
         }
 
         internal static void TrackPaintedBounds(float top, float bottom)
@@ -2677,7 +2688,15 @@ else
                                     LayoutCell(cell.Measured, cell, child, cell.Area, ctx.Scale);
                                 }
 
-                                if (!bakePass)
+                                if (bakePass)
+                                {
+                                    // TOCTOU: this cell was ready at the kick gate and self-invalidated during
+                                    // the worker paint -> we just froze its OLD-size pixels. Flag so the plane
+                                    // owner rejects the publish (live draw is always current). See PaintedStaleServe.
+                                    if (CollectPaintedBounds)
+                                        PaintedStaleServe = true;
+                                }
+                                else
                                 {
                                     _prepVisibleUnprepared.Add(cell.ControlIndex);
                                 }
