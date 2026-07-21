@@ -240,14 +240,14 @@ namespace DrawnUi.Views
             //lock (LockAnimatingControls)
             {
                 animator.IsDeactivated = false;
-                if (animator.Parent != null && !animator.Parent.IsVisible)
-                {
-                    animator.IsHiddenInViewTree = true;
-                }
-                else
-                {
-                    animator.IsHiddenInViewTree = false;
-                }
+                // Seed from the WHOLE view-tree visibility, not just the direct parent's IsVisible:
+                // an animator started on a visible control that sits under an invisible ancestor
+                // (collapsed tab, hidden page section, offscreen subtree) would otherwise register as
+                // playable and tick every frame — forcing non-stop canvas repaints for content nobody
+                // can see. IsVisibleInViewTree() walks the parent chain; called only here at
+                // registration, never per frame.
+                animator.IsHiddenInViewTree =
+                    animator.Parent != null && !animator.Parent.IsVisibleInViewTree();
 
                 AnimatingControls.TryAdd(animator.Uid, animator);
             }
