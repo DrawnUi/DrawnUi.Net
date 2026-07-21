@@ -33,8 +33,8 @@ public class SkiaCachedStack : SkiaStack
     /// structure only, not a cell's own content, so a rapidly self-invalidating cell (a streaming AI bubble
     /// growing word by word) reverts its text as an old bake lands after a new one. Turn TRUE only where a
     /// sync record genuinely can't hit frame budget — weak hardware or GPU-surface planes.
-    /// </summary>
-    protected bool UseDoubleBuffering = false;
+    /// </summary
+    protected bool UseDoubleBuffering = true;
 
     /// <summary>
     /// Drive <see cref="UseDoubleBuffering"/> from motion: ON while scrolling, OFF at rest. Off by default,
@@ -49,7 +49,7 @@ public class SkiaCachedStack : SkiaStack
     /// re-records within half a viewport, so it self-heals in a few frames. The window is not zero, though —
     /// if your cells mutate heavily during scroll, leave this off.</para>
     /// </summary>
-    public bool AutoDoubleBuffering = true;
+    protected bool AutoDoubleBuffering = false;
 
     /// <summary>
     /// How far the viewport may drift from the plane's record origin, as a RATIO of viewport height, before
@@ -66,11 +66,7 @@ public class SkiaCachedStack : SkiaStack
     {
         get
         {
-#if BROWSER || WEB
             return true;
-#else
-            return true;
-#endif
         }
     }
 
