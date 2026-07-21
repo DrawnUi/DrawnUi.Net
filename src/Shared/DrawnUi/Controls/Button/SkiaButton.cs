@@ -729,7 +729,10 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
             if (ApplyEffect == SkiaTouchAnimation.Ripple)
             {
-                var ptsInsideControl = GetOffsetInsideControlInPoints(args.Event.Location, apply.ChildOffset);
+                // MappedLocation carries the plane blit delta + parent transforms (ChildOffset does not) —
+                // raw args.Event.Location placed the ripple at a scroll-stale Y on cells served from a plane.
+                var ptsInsideControl = GetOffsetInsideControlInPoints(
+                    new PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset);
                 control.PlayRippleAnimation(TouchEffectColor, ptsInsideControl.X, ptsInsideControl.Y);
             }
             else if (ApplyEffect == SkiaTouchAnimation.Shimmer)

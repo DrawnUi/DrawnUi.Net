@@ -1919,7 +1919,12 @@ namespace DrawnUi.Draw
 
                     if (AnimationTapped == SkiaTouchAnimation.Ripple)
                     {
-                        var ptsInsideControl = GetOffsetInsideControlInPoints(args.Event.Location, apply.ChildOffset);
+                        // Use MappedLocation, not raw args.Event.Location: the parent dispatch folds the
+                        // plane blit delta (RenderTree.Offset) + parent transforms into MappedLocation, not
+                        // into ChildOffset. Raw location put the ripple at a scroll-stale Y on the first tap
+                        // after scrolling a cell served from a SkiaCachedStack plane. Identical when no plane.
+                        var ptsInsideControl = GetOffsetInsideControlInPoints(
+                            new PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset);
                         control.PlayRippleAnimation(TouchEffectColor, ptsInsideControl.X, ptsInsideControl.Y, speedMs: AnimationTappedSpeed);
                     }
                     else if (AnimationTapped == SkiaTouchAnimation.Shimmer)
