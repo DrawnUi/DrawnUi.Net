@@ -212,6 +212,13 @@ namespace DrawnUi.Draw
             // (trim/add pairs re-sizing the pool each refresh = disposal/creation spikes). Demand-driven
             // growth still exists: GetViewForIndex recomputes the honest ceiling and retries once when
             // the pool refuses a realized cell. Tradeoff: a trimmed window keeps its high-water pool.
+            //
+            // TRIED AND REVERTED (2026-07-20): correcting the cap DOWNWARD once when the source leaves the
+            // cache-all regime (>256 items, where the honest ceiling stops being "one view per item"). It
+            // does shrink the pool, but the drain is not free: the surplus is disposed through Return, and
+            // the very next event is usually the window engage dropping ~300 contexts to 128 — so ~170
+            // control disposals land in ONE frame, a visible spike exactly at the window cut (device).
+            // Any retry must drain the surplus over several frames, not on the return path.
 
             lock (_lockTemplates)
             {
@@ -318,6 +325,19 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// TRUE when the hosting scroll is neither animating nor under the finger, so work that costs a
+        /// frame (mass cell disposal after the pool ceiling drops) cannot land on a moving frame.
+        /// No hosting scroll = treat as at rest.
+        /// </summary>
+        private bool IsListAtRest()
+        {
+            if (_parent?.Parent is SkiaScroll scroll)
+                return !scroll.IsScrolling && !scroll.IsUserPanning;
+
+            return true;
+        }
+
         public void InitializeSoft(bool layoutChanged, IList dataContexts, int poolSize, IList preCaptured = null)
         {
             if (LogEnabled)
@@ -327,7 +347,23 @@ namespace DrawnUi.Draw
             {
                 TemplesInvalidating = false;
 
-                _templatedViewsPool.MaxSize = poolSize;
+                // GROW ANYTIME, SHRINK ONLY AT REST.
+                // Raising the ceiling is free. LOWERING it makes every over-cap Return dispose, and
+                // poolSize is derived from the CURRENT EffectiveItemsSource — for a windowed source that
+                // is just the resident SLICE, so the window engage/trim lowered it by ~70 cells and
+                // disposed them all inside the very frame that was already doing the swap (the lag spike
+                // at the cut, "cells 18/200 -> 16/131"). Never lowering is not the answer either: a
+                // non-recycling (cache-all) windowed list then parks a cell for every context ever
+                // scrolled instead of releasing the trimmed ones, and that memory growth is its own
+                // stutter. So the shrink still happens — just never on a moving frame.
+                if (poolSize > _templatedViewsPool.MaxSize)
+                {
+                    _templatedViewsPool.MaxSize = poolSize;
+                }
+                else if (poolSize > 0 && poolSize < _templatedViewsPool.MaxSize && IsListAtRest())
+                {
+                    _templatedViewsPool.MaxSize = poolSize;
+                }
                 if (layoutChanged)
                 {
                     foreach (var view in _cellsInUseViews.Values)
