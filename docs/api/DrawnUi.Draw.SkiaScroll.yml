@@ -298,6 +298,7 @@ items:
   - DrawnUi.Draw.SkiaScroll._panningCurrentOffsetPts
   - DrawnUi.Draw.SkiaScroll._panningLastDelta
   - DrawnUi.Draw.SkiaScroll._replanFlingY
+  - DrawnUi.Draw.SkiaScroll._replanVelocityY
   - DrawnUi.Draw.SkiaScroll._scrollMaxX
   - DrawnUi.Draw.SkiaScroll._scrollMaxY
   - DrawnUi.Draw.SkiaScroll._scrollMinX
@@ -1235,9 +1236,9 @@ items:
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveBindingContext``2(System.Action{DrawnUi.Draw.SkiaScroll,{TSource},System.String},System.Boolean)
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveOn``3({TParent},System.Func{{TTarget}},System.String,System.Action{DrawnUi.Draw.SkiaScroll,System.String},System.String[])
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObservePropertiesOn``3({TParent},System.Func{{TTarget}},System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaScroll})
-  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaScroll})
-  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaScroll})
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Draw.SkiaScroll})
   - DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaScroll},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaScroll})
@@ -6882,7 +6883,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetScrollOffset
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3300
+    startLine: 3306
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6932,7 +6933,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParallaxComputedValue
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3353
+    startLine: 3359
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6961,7 +6962,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawViews
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3364
+    startLine: 3370
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7000,7 +7001,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentAvailableSpace
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3598
+    startLine: 3614
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7029,7 +7030,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentRectWithOffset
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3603
+    startLine: 3619
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7060,7 +7061,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3605
+    startLine: 3621
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7089,7 +7090,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Init
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3610
+    startLine: 3626
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7115,7 +7116,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetChildren
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3619
+    startLine: 3635
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7149,7 +7150,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyBindingContext
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3626
+    startLine: 3642
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7178,7 +7179,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContent
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3638
+    startLine: 3654
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7210,7 +7211,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutReady
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3659
+    startLine: 3675
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7239,7 +7240,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3666
+    startLine: 3682
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7268,7 +7269,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetHeader
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3673
+    startLine: 3689
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7297,7 +7298,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFooter
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3691
+    startLine: 3707
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7326,7 +7327,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollingSpeedMsProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3710
+    startLine: 3726
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7353,7 +7354,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollingSpeedMs
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3719
+    startLine: 3735
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7384,7 +7385,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomLockedProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3725
+    startLine: 3741
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7411,7 +7412,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomLocked
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3730
+    startLine: 3746
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7440,7 +7441,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomMinProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3736
+    startLine: 3752
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7467,7 +7468,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomMin
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3741
+    startLine: 3757
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7496,7 +7497,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomMaxProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3747
+    startLine: 3763
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7523,7 +7524,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomMax
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3752
+    startLine: 3768
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7552,7 +7553,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewportZoomProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3758
+    startLine: 3774
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7579,7 +7580,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewportZoom
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3763
+    startLine: 3779
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7608,7 +7609,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityImageLoaderLockProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3769
+    startLine: 3785
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7635,7 +7636,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityImageLoaderLock
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3778
+    startLine: 3794
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7666,7 +7667,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3822
+    startLine: 3838
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7693,7 +7694,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3836
+    startLine: 3852
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7725,7 +7726,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3842
+    startLine: 3858
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7752,7 +7753,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Orientation
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3850
+    startLine: 3866
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7783,7 +7784,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollTypeProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3856
+    startLine: 3872
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7810,7 +7811,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollType
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3864
+    startLine: 3880
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7841,7 +7842,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptToKeyboardForProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3874
+    startLine: 3890
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7868,7 +7869,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptToKeyboardFor
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3880
+    startLine: 3896
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7897,7 +7898,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptToKeyboardSizeProperty
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3886
+    startLine: 3902
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7924,7 +7925,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptToKeyboardSize
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3892
+    startLine: 3908
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7953,7 +7954,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateNeededScrollForKeyboard
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3909
+    startLine: 3925
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7979,7 +7980,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptToKeyboard
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3948
+    startLine: 3964
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8005,7 +8006,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3965
+    startLine: 3981
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8041,7 +8042,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateViewport
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3976
+    startLine: 3992
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8070,7 +8071,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillClipBounds
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 3984
+    startLine: 4000
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8102,7 +8103,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDrawn
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.cs
-    startLine: 4008
+    startLine: 4024
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8703,7 +8704,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyPannedOffsetWithVelocity
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Gestures.cs
-    startLine: 711
+    startLine: 713
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8846,7 +8847,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _replanFlingY
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 55
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8860,6 +8861,38 @@ items:
     return:
       type: System.Boolean
     content.vb: Protected _replanFlingY As Boolean
+- uid: DrawnUi.Draw.SkiaScroll._replanVelocityY
+  commentId: F:DrawnUi.Draw.SkiaScroll._replanVelocityY
+  id: _replanVelocityY
+  parent: DrawnUi.Draw.SkiaScroll
+  langs:
+  - csharp
+  - vb
+  name: _replanVelocityY
+  nameWithType: SkiaScroll._replanVelocityY
+  fullName: DrawnUi.Draw.SkiaScroll._replanVelocityY
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: _replanVelocityY
+    path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
+    startLine: 64
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Velocity captured when <xref href="DrawnUi.Draw.SkiaScroll._replanFlingY" data-throw-if-not-resolved="false"></xref> was raised, used if the cut fling already
+
+    self-finished by the time the replan is consumed.
+  example: []
+  syntax:
+    content: protected float _replanVelocityY
+    return:
+      type: System.Single
+    content.vb: Protected _replanVelocityY As Single
 - uid: DrawnUi.Draw.SkiaScroll.ViewportOffsetY
   commentId: P:DrawnUi.Draw.SkiaScroll.ViewportOffsetY
   id: ViewportOffsetY
@@ -8878,7 +8911,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewportOffsetY
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 57
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8907,7 +8940,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _viewportOffsetY
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 73
+    startLine: 83
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8934,7 +8967,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewportOffsetX
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 75
+    startLine: 85
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8963,7 +8996,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _viewportOffsetX
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 91
+    startLine: 101
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8990,7 +9023,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollProgressY
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 96
+    startLine: 106
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9021,7 +9054,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollProgressX
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 116
+    startLine: 126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9052,7 +9085,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeViewport
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 132
+    startLine: 142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9084,7 +9117,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsViewportReady
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 165
+    startLine: 175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9113,7 +9146,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollingDirection
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 167
+    startLine: 177
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9142,7 +9175,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckAndSetIsStillAnimating
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 169
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9168,7 +9201,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeScroller
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 181
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9200,7 +9233,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToX
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 326
+    startLine: 336
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9238,7 +9271,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToY
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 346
+    startLine: 356
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9276,7 +9309,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScrollerStarted
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 361
+    startLine: 371
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9302,7 +9335,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScrollerUpdated
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 369
+    startLine: 379
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9328,7 +9361,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BounceIfNeeded
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 376
+    startLine: 386
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9357,7 +9390,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScrollerStopped
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 405
+    startLine: 415
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9383,7 +9416,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteDelayedScrollOrders
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 427
+    startLine: 438
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9409,7 +9442,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetClosestSidePoint
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 512
+    startLine: 523
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9450,7 +9483,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClosestPoint
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 548
+    startLine: 559
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9483,7 +9516,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OffsetOk
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 573
+    startLine: 584
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9518,7 +9551,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OverScrolled
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 583
+    startLine: 594
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9547,7 +9580,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ptsContentWidth
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 589
+    startLine: 600
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9574,7 +9607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ptsContentHeight
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 591
+    startLine: 602
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9601,7 +9634,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentOffsetBounds
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 598
+    startLine: 609
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9636,7 +9669,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateOverscrollDistance
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 732
+    startLine: 744
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9677,7 +9710,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _minVelocity
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 763
+    startLine: 775
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9704,7 +9737,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DecelerationRatio
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 767
+    startLine: 779
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9733,7 +9766,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateFriction
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 780
+    startLine: 792
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9759,7 +9792,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartToFlingFrom
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 792
+    startLine: 804
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9797,7 +9830,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FlingFrom
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 807
+    startLine: 819
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9835,7 +9868,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FlingToAuto
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 820
+    startLine: 832
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9875,7 +9908,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FlingTo
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 833
+    startLine: 845
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9915,7 +9948,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrepareToFlingAfterInitialized
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 844
+    startLine: 856
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9946,7 +9979,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FlingAfterInitialized
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 885
+    startLine: 909
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -9977,7 +10010,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrderedScrollTo
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 903
+    startLine: 927
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10009,7 +10042,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrderedScrollToIndex
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 909
+    startLine: 933
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10041,7 +10074,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearOrderedScrollToIndex
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 924
+    startLine: 948
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10069,7 +10102,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrderedScrollToIndexIsSet
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 932
+    startLine: 956
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10098,7 +10131,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasPendingScrollOrder
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 946
+    startLine: 970
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10136,7 +10169,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _windowTravelExtension
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 961
+    startLine: 985
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10165,7 +10198,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHardContentOffsetBounds
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 964
+    startLine: 988
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10195,7 +10228,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOffset
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 976
+    startLine: 1000
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10229,7 +10262,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveToY
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 994
+    startLine: 1018
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10261,7 +10294,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveToX
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1002
+    startLine: 1026
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10293,7 +10326,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToIndex
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1010
+    startLine: 1034
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10331,7 +10364,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteScrollToOrder
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1036
+    startLine: 1060
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10359,7 +10392,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteScrollToIndexOrder
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1048
+    startLine: 1072
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10387,7 +10420,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetPosition
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1180
+    startLine: 1204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10415,7 +10448,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContentOffset
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1190
+    startLine: 1214
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10455,7 +10488,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollTo
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1197
+    startLine: 1221
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10496,7 +10529,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToTop
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1211
+    startLine: 1235
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10528,7 +10561,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToBottom
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1227
+    startLine: 1251
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10560,7 +10593,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Snapped
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1299
+    startLine: 1323
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10589,7 +10622,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSnapping
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1314
+    startLine: 1338
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10618,7 +10651,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimating
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1327
+    startLine: 1351
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10647,7 +10680,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsBouncing
     path: ../src/Shared/DrawnUi/Draw/Scroll/SkiaScroll.Scrolling.cs
-    startLine: 1328
+    startLine: 1352
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -31140,21 +31173,21 @@ references:
     href: DrawnUi.Draw.SkiaScroll.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaScroll, TSource>(SkiaScroll, Func<TSource>, Action<SkiaScroll>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaScroll, TSource>(SkiaScroll, Func<TSource>, Action<SkiaScroll>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaScroll, TSource>(DrawnUi.Draw.SkiaScroll, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaScroll>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, Func(Of TSource), Action(Of SkiaScroll), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaScroll, TSource)(DrawnUi.Draw.SkiaScroll, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaScroll), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, Func(Of TSource), Action(Of SkiaScroll), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaScroll, TSource>(SkiaScroll, Func<TSource>, Action<SkiaScroll>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaScroll, TSource>(SkiaScroll, Func<TSource>, Action<SkiaScroll>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaScroll, TSource>(DrawnUi.Draw.SkiaScroll, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaScroll>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, Func(Of TSource), Action(Of SkiaScroll), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaScroll, TSource)(DrawnUi.Draw.SkiaScroll, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaScroll), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, Func(Of TSource), Action(Of SkiaScroll), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,System.Func{``1},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,System.Func{``1},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaScroll
     name: SkiaScroll
@@ -31186,6 +31219,27 @@ references:
   - uid: DrawnUi.Draw.SkiaScroll
     name: SkiaScroll
     href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -31214,9 +31268,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,System.Func{``1},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,System.Func{``1},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -31254,6 +31308,31 @@ references:
   - uid: DrawnUi.Draw.SkiaScroll
     name: SkiaScroll
     href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -31402,21 +31481,21 @@ references:
     href: DrawnUi.Draw.SkiaScroll.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaScroll.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaScroll, TSource>(SkiaScroll, TSource, Action<SkiaScroll>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaScroll, TSource>(SkiaScroll, TSource, Action<SkiaScroll>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaScroll, TSource>(DrawnUi.Draw.SkiaScroll, TSource, System.Action<DrawnUi.Draw.SkiaScroll>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, TSource, Action(Of SkiaScroll), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaScroll, TSource)(DrawnUi.Draw.SkiaScroll, TSource, System.Action(Of DrawnUi.Draw.SkiaScroll), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, TSource, Action(Of SkiaScroll), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaScroll, TSource>(SkiaScroll, TSource, Action<SkiaScroll>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaScroll, TSource>(SkiaScroll, TSource, Action<SkiaScroll>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaScroll, TSource>(DrawnUi.Draw.SkiaScroll, TSource, System.Action<DrawnUi.Draw.SkiaScroll>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, TSource, Action(Of SkiaScroll), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaScroll, TSource)(DrawnUi.Draw.SkiaScroll, TSource, System.Action(Of DrawnUi.Draw.SkiaScroll), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaScroll, TSource)(SkiaScroll, TSource, Action(Of SkiaScroll), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,``1,System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,``1,System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaScroll
     name: SkiaScroll
@@ -31442,6 +31521,27 @@ references:
   - uid: DrawnUi.Draw.SkiaScroll
     name: SkiaScroll
     href: DrawnUi.Draw.SkiaScroll.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -31470,9 +31570,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,``1,System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaScroll,``1,System.Action{DrawnUi.Draw.SkiaScroll},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -31502,6 +31602,31 @@ references:
   - uid: DrawnUi.Draw.SkiaScroll
     name: SkiaScroll
     href: DrawnUi.Draw.SkiaScroll.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -38684,20 +38809,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -38723,6 +38848,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -38751,9 +38897,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -38785,6 +38931,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -38920,20 +39091,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -38953,6 +39124,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -38981,9 +39173,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -39007,6 +39199,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -45158,6 +45375,13 @@ references:
   name: OffsetVisibleAnchorY
   nameWithType: SkiaScroll.OffsetVisibleAnchorY
   fullName: DrawnUi.Draw.SkiaScroll.OffsetVisibleAnchorY
+- uid: DrawnUi.Draw.SkiaScroll._replanFlingY
+  commentId: F:DrawnUi.Draw.SkiaScroll._replanFlingY
+  parent: DrawnUi.Draw.SkiaScroll
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll__replanFlingY
+  name: _replanFlingY
+  nameWithType: SkiaScroll._replanFlingY
+  fullName: DrawnUi.Draw.SkiaScroll._replanFlingY
 - uid: DrawnUi.Draw.SkiaScroll.ViewportOffsetY*
   commentId: Overload:DrawnUi.Draw.SkiaScroll.ViewportOffsetY
   href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ViewportOffsetY

@@ -283,6 +283,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.ForceItemsWindow
   - DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow
   - DrawnUi.Draw.SkiaLayout.TryEngageItemsWindowOnGrow
+  - DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
   - DrawnUi.Draw.SkiaLayout.OnItemTemplateChanged
   - DrawnUi.Draw.SkiaLayout.ApplyNewItemsSource
   - DrawnUi.Draw.SkiaLayout.OnItemSourceChanged
@@ -1231,9 +1232,9 @@ items:
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveBindingContext``2(System.Action{DrawnUi.Draw.SkiaButton,{TSource},System.String},System.Boolean)
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveOn``3({TParent},System.Func{{TTarget}},System.String,System.Action{DrawnUi.Draw.SkiaButton,System.String},System.String[])
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObservePropertiesOn``3({TParent},System.Func{{TTarget}},System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaButton})
-  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaButton})
-  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaButton})
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Draw.SkiaButton})
   - DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaButton},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaButton})
@@ -1959,7 +1960,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnUp
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 744
+    startLine: 747
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1990,7 +1991,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTapped
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 749
+    startLine: 752
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2023,7 +2024,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PanThreshold
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 784
+    startLine: 787
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2050,7 +2051,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 786
+    startLine: 789
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2085,7 +2086,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayCallbackMs
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 862
+    startLine: 865
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2114,7 +2115,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 864
+    startLine: 867
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2143,7 +2144,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Up
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 875
+    startLine: 878
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2170,7 +2171,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Down
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 876
+    startLine: 879
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2197,7 +2198,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clicked
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 882
+    startLine: 885
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2226,7 +2227,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Released
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 887
+    startLine: 890
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2255,7 +2256,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Pressed
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 892
+    startLine: 895
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2284,7 +2285,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalTapped
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 896
+    startLine: 899
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2313,7 +2314,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalDown
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 911
+    startLine: 914
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2342,7 +2343,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ButtonStyleProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 963
+    startLine: 966
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2369,7 +2370,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ButtonStyle
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 973
+    startLine: 976
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2400,7 +2401,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextCaseProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 979
+    startLine: 982
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2427,7 +2428,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextCase
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 989
+    startLine: 992
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2458,7 +2459,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ElevationEnabledProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 995
+    startLine: 998
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2485,7 +2486,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ElevationEnabled
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1005
+    startLine: 1008
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2516,7 +2517,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IconPositionProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1011
+    startLine: 1014
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2543,7 +2544,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IconPosition
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1021
+    startLine: 1024
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2574,7 +2575,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanningProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1035
+    startLine: 1038
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2601,7 +2602,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanning
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1040
+    startLine: 1043
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2630,7 +2631,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1046
+    startLine: 1049
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2657,7 +2658,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1053
+    startLine: 1056
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2686,7 +2687,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1059
+    startLine: 1062
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2713,7 +2714,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1066
+    startLine: 1069
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2742,7 +2743,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisabledProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1072
+    startLine: 1075
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2769,7 +2770,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisabled
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1078
+    startLine: 1081
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2798,7 +2799,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPressedProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1084
+    startLine: 1087
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2825,7 +2826,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPressed
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1094
+    startLine: 1097
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2856,7 +2857,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1100
+    startLine: 1103
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2883,7 +2884,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1109
+    startLine: 1112
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2914,7 +2915,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1115
+    startLine: 1118
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2941,7 +2942,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1121
+    startLine: 1124
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2970,7 +2971,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngleProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1127
+    startLine: 1130
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2997,7 +2998,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngle
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1133
+    startLine: 1136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3026,7 +3027,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidthProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1139
+    startLine: 1142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3053,7 +3054,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidth
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1145
+    startLine: 1148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3082,7 +3083,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeedProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1151
+    startLine: 1154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3109,7 +3110,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeed
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1157
+    startLine: 1160
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3138,7 +3139,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyEffectProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1164
+    startLine: 1167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3165,7 +3166,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyEffect
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1168
+    startLine: 1171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3194,7 +3195,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1175
+    startLine: 1178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3221,7 +3222,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1180
+    startLine: 1183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3250,7 +3251,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1186
+    startLine: 1189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3277,7 +3278,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameter
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1191
+    startLine: 1194
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3306,7 +3307,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1197
+    startLine: 1200
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3333,7 +3334,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressing
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1202
+    startLine: 1205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3362,7 +3363,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameterProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1208
+    startLine: 1211
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3389,7 +3390,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameter
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1213
+    startLine: 1216
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3418,7 +3419,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1219
+    startLine: 1222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3445,7 +3446,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1226
+    startLine: 1229
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3474,7 +3475,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidthProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1232
+    startLine: 1235
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3501,7 +3502,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidth
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1238
+    startLine: 1241
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3530,7 +3531,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _lastDownPts
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1244
+    startLine: 1247
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3557,7 +3558,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1246
+    startLine: 1249
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3584,7 +3585,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1253
+    startLine: 1256
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3613,7 +3614,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextStrokeColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1259
+    startLine: 1262
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3640,7 +3641,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextStrokeColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1266
+    startLine: 1269
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3669,7 +3670,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1282
+    startLine: 1285
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3705,7 +3706,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupBackgroundPaint
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1307
+    startLine: 1310
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6913,6 +6914,25 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.TryEngageItemsWindowOnGrow
     name: TryEngageItemsWindowOnGrow
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TryEngageItemsWindowOnGrow
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
+  name: OnItemsWindowEngagedInPlace()
+  nameWithType: SkiaLayout.OnItemsWindowEngagedInPlace()
+  fullName: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+    name: OnItemsWindowEngagedInPlace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+    name: OnItemsWindowEngagedInPlace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.OnItemTemplateChanged
@@ -28596,21 +28616,21 @@ references:
     href: DrawnUi.Draw.SkiaButton.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaButton, TSource>(SkiaButton, Func<TSource>, Action<SkiaButton>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaButton, TSource>(SkiaButton, Func<TSource>, Action<SkiaButton>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaButton, TSource>(DrawnUi.Draw.SkiaButton, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaButton>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaButton, TSource)(SkiaButton, Func(Of TSource), Action(Of SkiaButton), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaButton, TSource)(DrawnUi.Draw.SkiaButton, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaButton), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaButton, TSource)(SkiaButton, Func(Of TSource), Action(Of SkiaButton), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaButton, TSource>(SkiaButton, Func<TSource>, Action<SkiaButton>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaButton, TSource>(SkiaButton, Func<TSource>, Action<SkiaButton>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaButton, TSource>(DrawnUi.Draw.SkiaButton, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaButton>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaButton, TSource)(SkiaButton, Func(Of TSource), Action(Of SkiaButton), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaButton, TSource)(DrawnUi.Draw.SkiaButton, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaButton), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaButton, TSource)(SkiaButton, Func(Of TSource), Action(Of SkiaButton), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,System.Func{``1},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,System.Func{``1},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaButton
     name: SkiaButton
@@ -28642,6 +28662,27 @@ references:
   - uid: DrawnUi.Draw.SkiaButton
     name: SkiaButton
     href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -28670,9 +28711,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,System.Func{``1},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,System.Func{``1},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -28710,6 +28751,31 @@ references:
   - uid: DrawnUi.Draw.SkiaButton
     name: SkiaButton
     href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -28858,21 +28924,21 @@ references:
     href: DrawnUi.Draw.SkiaButton.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaButton.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaButton, TSource>(SkiaButton, TSource, Action<SkiaButton>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaButton, TSource>(SkiaButton, TSource, Action<SkiaButton>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaButton, TSource>(DrawnUi.Draw.SkiaButton, TSource, System.Action<DrawnUi.Draw.SkiaButton>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaButton, TSource)(SkiaButton, TSource, Action(Of SkiaButton), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaButton, TSource)(DrawnUi.Draw.SkiaButton, TSource, System.Action(Of DrawnUi.Draw.SkiaButton), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaButton, TSource)(SkiaButton, TSource, Action(Of SkiaButton), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaButton, TSource>(SkiaButton, TSource, Action<SkiaButton>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaButton, TSource>(SkiaButton, TSource, Action<SkiaButton>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaButton, TSource>(DrawnUi.Draw.SkiaButton, TSource, System.Action<DrawnUi.Draw.SkiaButton>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaButton, TSource)(SkiaButton, TSource, Action(Of SkiaButton), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaButton, TSource)(DrawnUi.Draw.SkiaButton, TSource, System.Action(Of DrawnUi.Draw.SkiaButton), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaButton, TSource)(SkiaButton, TSource, Action(Of SkiaButton), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,``1,System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,``1,System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaButton
     name: SkiaButton
@@ -28898,6 +28964,27 @@ references:
   - uid: DrawnUi.Draw.SkiaButton
     name: SkiaButton
     href: DrawnUi.Draw.SkiaButton.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -28926,9 +29013,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,``1,System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaButton,``1,System.Action{DrawnUi.Draw.SkiaButton},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -28958,6 +29045,31 @@ references:
   - uid: DrawnUi.Draw.SkiaButton
     name: SkiaButton
     href: DrawnUi.Draw.SkiaButton.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -36806,20 +36918,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -36845,6 +36957,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -36873,9 +37006,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -36907,6 +37040,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -37042,20 +37200,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -37075,6 +37233,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -37103,9 +37282,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -37129,6 +37308,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "

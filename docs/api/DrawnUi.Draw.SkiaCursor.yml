@@ -11,6 +11,7 @@ items:
   - DrawnUi.Draw.SkiaCursor.Initialize(DrawnUi.Draw.SkiaLabel)
   - DrawnUi.Draw.SkiaCursor.Invalidate
   - DrawnUi.Draw.SkiaCursor.OnDisposing
+  - DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged(System.Boolean)
   - DrawnUi.Draw.SkiaCursor.OnVisibilityChanged(System.Boolean)
   - DrawnUi.Draw.SkiaCursor.UpdateColors
   langs:
@@ -264,6 +265,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.ForceItemsWindow
   - DrawnUi.Draw.SkiaLayout.TryEngageItemsWindow
   - DrawnUi.Draw.SkiaLayout.TryEngageItemsWindowOnGrow
+  - DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
   - DrawnUi.Draw.SkiaLayout.OnItemTemplateChanged
   - DrawnUi.Draw.SkiaLayout.ApplyNewItemsSource
   - DrawnUi.Draw.SkiaLayout.OnItemSourceChanged
@@ -626,7 +628,6 @@ items:
   - DrawnUi.Draw.SkiaControl.VerticalOptions
   - DrawnUi.Draw.SkiaControl.HorizontalOptionsProperty
   - DrawnUi.Draw.SkiaControl.HorizontalOptions
-  - DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
   - DrawnUi.Draw.SkiaControl.VisibilityChanged
   - DrawnUi.Draw.SkiaControl.ParentVisibilityChanged
   - DrawnUi.Draw.SkiaControl.SendVisibilityChanged
@@ -1218,9 +1219,9 @@ items:
   - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveBindingContext``2(System.Action{DrawnUi.Draw.SkiaCursor,{TSource},System.String},System.Boolean)
   - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveOn``3({TParent},System.Func{{TTarget}},System.String,System.Action{DrawnUi.Draw.SkiaCursor,System.String},System.String[])
   - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObservePropertiesOn``3({TParent},System.Func{{TTarget}},System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaCursor})
-  - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaCursor})
-  - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaCursor})
   - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Draw.SkiaCursor})
   - DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaCursor},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaCursor})
@@ -1393,6 +1394,52 @@ items:
   nameWithType.vb: SkiaCursor.OnVisibilityChanged(Boolean)
   fullName.vb: DrawnUi.Draw.SkiaCursor.OnVisibilityChanged(Boolean)
   name.vb: OnVisibilityChanged(Boolean)
+- uid: DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged(System.Boolean)
+  id: OnParentVisibilityChanged(System.Boolean)
+  parent: DrawnUi.Draw.SkiaCursor
+  langs:
+  - csharp
+  - vb
+  name: OnParentVisibilityChanged(bool)
+  nameWithType: SkiaCursor.OnParentVisibilityChanged(bool)
+  fullName: DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaCursor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnParentVisibilityChanged
+    path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
+    startLine: 85
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    An ancestor's visibility can change without the cursor's own SkiaControl.IsVisible
+
+    flag changing (e.g. the editor is focused while sitting under a hidden/collapsed parent, so it
+
+    force-shows the cursor regardless of on-screen state). The blink animator gates only on the
+
+    cursor's own visibility, so without this override it would keep ticking — repainting the canvas
+
+    non-stop for a cursor that can never be seen — and would fail to resume when the ancestor reappears.
+
+    Re-evaluate the blink against the full view-tree visibility here.
+  example: []
+  syntax:
+    content: public override void OnParentVisibilityChanged(bool newvalue)
+    parameters:
+    - id: newvalue
+      type: System.Boolean
+    content.vb: Public Overrides Sub OnParentVisibilityChanged(newvalue As Boolean)
+  overridden: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
+  overload: DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged*
+  nameWithType.vb: SkiaCursor.OnParentVisibilityChanged(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged(Boolean)
+  name.vb: OnParentVisibilityChanged(Boolean)
 - uid: DrawnUi.Draw.SkiaCursor.BlinkAlpha
   commentId: F:DrawnUi.Draw.SkiaCursor.BlinkAlpha
   id: BlinkAlpha
@@ -1411,7 +1458,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlinkAlpha
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 90
+    startLine: 111
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1438,7 +1485,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateColors
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 92
+    startLine: 113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1464,7 +1511,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 98
+    startLine: 119
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1493,7 +1540,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 107
+    startLine: 128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1520,7 +1567,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Color
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 119
+    startLine: 140
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6048,6 +6095,25 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.TryEngageItemsWindowOnGrow
     name: TryEngageItemsWindowOnGrow
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_TryEngageItemsWindowOnGrow
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
+  name: OnItemsWindowEngagedInPlace()
+  nameWithType: SkiaLayout.OnItemsWindowEngagedInPlace()
+  fullName: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+    name: OnItemsWindowEngagedInPlace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+    name: OnItemsWindowEngagedInPlace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.OnItemTemplateChanged
@@ -14392,37 +14458,6 @@ references:
   name: HorizontalOptions
   nameWithType: SkiaControl.HorizontalOptions
   fullName: DrawnUi.Draw.SkiaControl.HorizontalOptions
-- uid: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
-  commentId: M:DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
-  parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnParentVisibilityChanged_System_Boolean_
-  name: OnParentVisibilityChanged(bool)
-  nameWithType: SkiaControl.OnParentVisibilityChanged(bool)
-  fullName: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(bool)
-  nameWithType.vb: SkiaControl.OnParentVisibilityChanged(Boolean)
-  fullName.vb: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(Boolean)
-  name.vb: OnParentVisibilityChanged(Boolean)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
-    name: OnParentVisibilityChanged
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnParentVisibilityChanged_System_Boolean_
-  - name: (
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
-    name: OnParentVisibilityChanged
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnParentVisibilityChanged_System_Boolean_
-  - name: (
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
 - uid: DrawnUi.Draw.SkiaControl.VisibilityChanged
   commentId: E:DrawnUi.Draw.SkiaControl.VisibilityChanged
   parent: DrawnUi.Draw.SkiaControl
@@ -28155,21 +28190,21 @@ references:
     href: DrawnUi.Draw.SkiaCursor.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaCursor, TSource>(SkiaCursor, Func<TSource>, Action<SkiaCursor>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaCursor, TSource>(SkiaCursor, Func<TSource>, Action<SkiaCursor>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCursor, TSource>(DrawnUi.Draw.SkiaCursor, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaCursor>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, Func(Of TSource), Action(Of SkiaCursor), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCursor, TSource)(DrawnUi.Draw.SkiaCursor, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaCursor), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, Func(Of TSource), Action(Of SkiaCursor), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaCursor, TSource>(SkiaCursor, Func<TSource>, Action<SkiaCursor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaCursor, TSource>(SkiaCursor, Func<TSource>, Action<SkiaCursor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCursor, TSource>(DrawnUi.Draw.SkiaCursor, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaCursor>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, Func(Of TSource), Action(Of SkiaCursor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCursor, TSource)(DrawnUi.Draw.SkiaCursor, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaCursor), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, Func(Of TSource), Action(Of SkiaCursor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaCursor
     name: SkiaCursor
@@ -28201,6 +28236,27 @@ references:
   - uid: DrawnUi.Draw.SkiaCursor
     name: SkiaCursor
     href: DrawnUi.Draw.SkiaCursor.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -28229,9 +28285,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -28269,6 +28325,31 @@ references:
   - uid: DrawnUi.Draw.SkiaCursor
     name: SkiaCursor
     href: DrawnUi.Draw.SkiaCursor.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -28417,21 +28498,21 @@ references:
     href: DrawnUi.Draw.SkiaCursor.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaCursor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaCursor, TSource>(SkiaCursor, TSource, Action<SkiaCursor>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaCursor, TSource>(SkiaCursor, TSource, Action<SkiaCursor>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCursor, TSource>(DrawnUi.Draw.SkiaCursor, TSource, System.Action<DrawnUi.Draw.SkiaCursor>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, TSource, Action(Of SkiaCursor), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCursor, TSource)(DrawnUi.Draw.SkiaCursor, TSource, System.Action(Of DrawnUi.Draw.SkiaCursor), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, TSource, Action(Of SkiaCursor), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaCursor, TSource>(SkiaCursor, TSource, Action<SkiaCursor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaCursor, TSource>(SkiaCursor, TSource, Action<SkiaCursor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCursor, TSource>(DrawnUi.Draw.SkiaCursor, TSource, System.Action<DrawnUi.Draw.SkiaCursor>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, TSource, Action(Of SkiaCursor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCursor, TSource)(DrawnUi.Draw.SkiaCursor, TSource, System.Action(Of DrawnUi.Draw.SkiaCursor), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaCursor, TSource)(SkiaCursor, TSource, Action(Of SkiaCursor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,``1,System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,``1,System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaCursor
     name: SkiaCursor
@@ -28457,6 +28538,27 @@ references:
   - uid: DrawnUi.Draw.SkiaCursor
     name: SkiaCursor
     href: DrawnUi.Draw.SkiaCursor.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -28485,9 +28587,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,``1,System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCursor,``1,System.Action{DrawnUi.Draw.SkiaCursor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -28517,6 +28619,31 @@ references:
   - uid: DrawnUi.Draw.SkiaCursor
     name: SkiaCursor
     href: DrawnUi.Draw.SkiaCursor.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -36472,20 +36599,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -36511,6 +36638,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -36539,9 +36687,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -36573,6 +36721,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -36708,20 +36881,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -36741,6 +36914,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -36769,9 +36963,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -36795,6 +36989,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -41408,6 +41627,43 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnParentVisibilityChanged_System_Boolean_
+  name: OnParentVisibilityChanged(bool)
+  nameWithType: SkiaControl.OnParentVisibilityChanged(bool)
+  fullName: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(bool)
+  nameWithType.vb: SkiaControl.OnParentVisibilityChanged(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(Boolean)
+  name.vb: OnParentVisibilityChanged(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
+    name: OnParentVisibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnParentVisibilityChanged_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnParentVisibilityChanged(System.Boolean)
+    name: OnParentVisibilityChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnParentVisibilityChanged_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged*
+  commentId: Overload:DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged
+  href: DrawnUi.Draw.SkiaCursor.html#DrawnUi_Draw_SkiaCursor_OnParentVisibilityChanged_System_Boolean_
+  name: OnParentVisibilityChanged
+  nameWithType: SkiaCursor.OnParentVisibilityChanged
+  fullName: DrawnUi.Draw.SkiaCursor.OnParentVisibilityChanged
 - uid: System.Single
   commentId: T:System.Single
   parent: System

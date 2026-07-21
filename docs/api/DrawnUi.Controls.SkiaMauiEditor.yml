@@ -5,6 +5,7 @@ items:
   id: SkiaMauiEditor
   parent: DrawnUi.Controls
   children:
+  - DrawnUi.Controls.SkiaMauiEditor.#ctor
   - DrawnUi.Controls.SkiaMauiEditor.ActionDone
   - DrawnUi.Controls.SkiaMauiEditor.ActionGo
   - DrawnUi.Controls.SkiaMauiEditor.ActionNext
@@ -12,6 +13,7 @@ items:
   - DrawnUi.Controls.SkiaMauiEditor.ActionSend
   - DrawnUi.Controls.SkiaMauiEditor.AdaptControlSize
   - DrawnUi.Controls.SkiaMauiEditor.CheckChildAdded
+  - DrawnUi.Controls.SkiaMauiEditor.ClaimFocus
   - DrawnUi.Controls.SkiaMauiEditor.CommandOnFocusChanged
   - DrawnUi.Controls.SkiaMauiEditor.CommandOnFocusChangedProperty
   - DrawnUi.Controls.SkiaMauiEditor.CommandOnSubmit
@@ -37,7 +39,6 @@ items:
   - DrawnUi.Controls.SkiaMauiEditor.MaxLines
   - DrawnUi.Controls.SkiaMauiEditor.MaxLinesProperty
   - DrawnUi.Controls.SkiaMauiEditor.OnDisposing
-  - DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged(System.Boolean)
   - DrawnUi.Controls.SkiaMauiEditor.OnLayoutChanged
   - DrawnUi.Controls.SkiaMauiEditor.OnMeasuring(System.Single,System.Single,System.Single)
   - DrawnUi.Controls.SkiaMauiEditor.Paint(DrawnUi.Draw.DrawingContext)
@@ -59,6 +60,7 @@ items:
   - DrawnUi.Controls.SkiaMauiEditor.ReturnTypeProperty
   - DrawnUi.Controls.SkiaMauiEditor.SetFocus(System.Boolean)
   - DrawnUi.Controls.SkiaMauiEditor.SetFocusInternal(System.Boolean)
+  - DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus(System.Boolean)
   - DrawnUi.Controls.SkiaMauiEditor.SubscribeToControl(System.Boolean)
   - DrawnUi.Controls.SkiaMauiEditor.Text
   - DrawnUi.Controls.SkiaMauiEditor.TextChanged
@@ -287,7 +289,6 @@ items:
   - DrawnUi.Draw.SkiaControl.GetDensity
   - DrawnUi.Draw.SkiaControl.SetHover(System.Boolean)
   - DrawnUi.Draw.SkiaControl.OnHover(System.Boolean)
-  - DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsHoveredProperty
   - DrawnUi.Draw.SkiaControl.IsHovered
   - DrawnUi.Draw.SkiaControl.VisualLayer
@@ -1013,9 +1014,9 @@ items:
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveBindingContext``2(System.Action{DrawnUi.Controls.SkiaMauiEditor,{TSource},System.String},System.Boolean)
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveOn``3({TParent},System.Func{{TTarget}},System.String,System.Action{DrawnUi.Controls.SkiaMauiEditor,System.String},System.String[])
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObservePropertiesOn``3({TParent},System.Func{{TTarget}},System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaMauiEditor})
-  - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaMauiEditor})
-  - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Controls.SkiaMauiEditor})
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Controls.SkiaMauiEditor})
   - DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Controls.SkiaMauiEditor},System.String,System.Action{{TSource},DrawnUi.Controls.SkiaMauiEditor})
@@ -1088,6 +1089,35 @@ items:
   - Microsoft.Maui.Controls.VisualElement.DrawnUi.Draw.StaticResourcesExtensions.GetAllWithMyselfParents
   - Microsoft.Maui.IView.DrawnUi.Extensions.InternalExtensions.DisposeControlAndChildren
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Controls.SkiaMauiEditor.#ctor
+  commentId: M:DrawnUi.Controls.SkiaMauiEditor.#ctor
+  id: '#ctor'
+  parent: DrawnUi.Controls.SkiaMauiEditor
+  langs:
+  - csharp
+  - vb
+  name: SkiaMauiEditor()
+  nameWithType: SkiaMauiEditor.SkiaMauiEditor()
+  fullName: DrawnUi.Controls.SkiaMauiEditor.SkiaMauiEditor()
+  type: Constructor
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    startLine: 7
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  syntax:
+    content: public SkiaMauiEditor()
+    content.vb: Public Sub New()
+  overload: DrawnUi.Controls.SkiaMauiEditor.#ctor*
+  nameWithType.vb: SkiaMauiEditor.New()
+  fullName.vb: DrawnUi.Controls.SkiaMauiEditor.New()
+  name.vb: New()
 - uid: DrawnUi.Controls.SkiaMauiEditor.Paint(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Controls.SkiaMauiEditor.Paint(DrawnUi.Draw.DrawingContext)
   id: Paint(DrawnUi.Draw.DrawingContext)
@@ -1106,7 +1136,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 7
+    startLine: 12
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1144,7 +1174,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 17
+    startLine: 22
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1161,6 +1191,37 @@ items:
     content.vb: Public Overrides Function ProcessGestures(args As SkiaGesturesParameters, apply As GestureEventProcessingInfo) As ISkiaGestureListener
   overridden: DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   overload: DrawnUi.Controls.SkiaMauiEditor.ProcessGestures*
+- uid: DrawnUi.Controls.SkiaMauiEditor.ClaimFocus
+  commentId: M:DrawnUi.Controls.SkiaMauiEditor.ClaimFocus
+  id: ClaimFocus
+  parent: DrawnUi.Controls.SkiaMauiEditor
+  langs:
+  - csharp
+  - vb
+  name: ClaimFocus()
+  nameWithType: SkiaMauiEditor.ClaimFocus()
+  fullName: DrawnUi.Controls.SkiaMauiEditor.ClaimFocus()
+  type: Method
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ClaimFocus
+    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    startLine: 58
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: >-
+    We consume gestures ourselves, so the native control might never see the touch.
+
+    Claim framework focus on DOWN like SkiaEditor does and route it to the native control.
+  example: []
+  syntax:
+    content: protected void ClaimFocus()
+    content.vb: Protected Sub ClaimFocus()
+  overload: DrawnUi.Controls.SkiaMauiEditor.ClaimFocus*
 - uid: DrawnUi.Controls.SkiaMauiEditor.MaxLinesProperty
   commentId: F:DrawnUi.Controls.SkiaMauiEditor.MaxLinesProperty
   id: MaxLinesProperty
@@ -1179,7 +1240,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 44
+    startLine: 78
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1206,7 +1267,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 49
+    startLine: 83
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1237,7 +1298,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionGo
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 70
+    startLine: 104
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1264,7 +1325,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionNext
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 71
+    startLine: 105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1291,7 +1352,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSend
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 72
+    startLine: 106
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1318,7 +1379,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSearch
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 73
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1345,7 +1406,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionDone
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 74
+    startLine: 108
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1372,7 +1433,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 81
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1399,7 +1460,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 83
+    startLine: 117
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1426,7 +1487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextSubmitted
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 85
+    startLine: 119
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1453,7 +1514,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillClipBounds
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 89
+    startLine: 123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1485,7 +1546,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MapProps
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 92
+    startLine: 126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1514,7 +1575,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateControl
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 108
+    startLine: 142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1542,7 +1603,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Control
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 132
+    startLine: 166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1571,7 +1632,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderLabel
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 133
+    startLine: 167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1598,7 +1659,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusNative
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 135
+    startLine: 169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1624,7 +1685,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnfocusNative
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 140
+    startLine: 174
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1650,7 +1711,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocus
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 149
+    startLine: 183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1682,7 +1743,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptControlSize
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 167
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1708,7 +1769,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreatePlaceholderLabel
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 182
+    startLine: 216
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1736,7 +1797,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateControl
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 201
+    startLine: 235
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1762,7 +1823,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdatePlaceholderLabel
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 215
+    startLine: 249
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1788,7 +1849,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdatePlaceholderVisibility
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 233
+    startLine: 267
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1814,7 +1875,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 241
+    startLine: 275
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1843,7 +1904,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SubscribeToControl
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 248
+    startLine: 282
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1857,43 +1918,49 @@ items:
   nameWithType.vb: SkiaMauiEditor.SubscribeToControl(Boolean)
   fullName.vb: DrawnUi.Controls.SkiaMauiEditor.SubscribeToControl(Boolean)
   name.vb: SubscribeToControl(Boolean)
-- uid: DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged(System.Boolean)
-  commentId: M:DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged(System.Boolean)
-  id: OnFocusChanged(System.Boolean)
+- uid: DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus(System.Boolean)
+  commentId: M:DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus(System.Boolean)
+  id: SetFrameworkFocus(System.Boolean)
   parent: DrawnUi.Controls.SkiaMauiEditor
   langs:
   - csharp
   - vb
-  name: OnFocusChanged(bool)
-  nameWithType: SkiaMauiEditor.OnFocusChanged(bool)
-  fullName: DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged(bool)
+  name: SetFrameworkFocus(bool)
+  nameWithType: SkiaMauiEditor.SetFrameworkFocus(bool)
+  fullName: DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus(bool)
   type: Method
   source:
     remote:
       path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: OnFocusChanged
+    id: SetFrameworkFocus
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 331
+    startLine: 366
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  summary: Called by DrawnUi when the focus changes
+  summary: >-
+    Called by DrawnUi canvas when framework focus moves. Always accepts and routes the state
+
+    to the hosted native control.
   example: []
   syntax:
-    content: public bool OnFocusChanged(bool focus)
+    content: public override bool SetFrameworkFocus(bool focus)
     parameters:
     - id: focus
       type: System.Boolean
       description: ''
     return:
       type: System.Boolean
-    content.vb: Public Function OnFocusChanged(focus As Boolean) As Boolean
-  overload: DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged*
-  nameWithType.vb: SkiaMauiEditor.OnFocusChanged(Boolean)
-  fullName.vb: DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged(Boolean)
-  name.vb: OnFocusChanged(Boolean)
+    content.vb: Public Overrides Function SetFrameworkFocus(focus As Boolean) As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+  overload: DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus*
+  implements:
+  - DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
+  nameWithType.vb: SkiaMauiEditor.SetFrameworkFocus(Boolean)
+  fullName.vb: DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus(Boolean)
+  name.vb: SetFrameworkFocus(Boolean)
 - uid: DrawnUi.Controls.SkiaMauiEditor.OnDisposing
   commentId: M:DrawnUi.Controls.SkiaMauiEditor.OnDisposing
   id: OnDisposing
@@ -1912,7 +1979,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 350
+    startLine: 384
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1941,7 +2008,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckChildAdded
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 372
+    startLine: 406
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1969,7 +2036,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 377
+    startLine: 411
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2014,7 +2081,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusInternal
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 392
+    startLine: 426
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2046,7 +2113,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardTypeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 452
+    startLine: 486
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2073,7 +2140,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardType
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 459
+    startLine: 493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2114,7 +2181,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 466
+    startLine: 500
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2141,7 +2208,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 468
+    startLine: 502
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2170,7 +2237,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 474
+    startLine: 508
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2197,7 +2264,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 478
+    startLine: 512
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2226,7 +2293,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextColorProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 484
+    startLine: 518
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2253,7 +2320,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextColor
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 488
+    startLine: 522
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2282,7 +2349,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 494
+    startLine: 528
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2309,7 +2376,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 501
+    startLine: 535
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2338,7 +2405,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 507
+    startLine: 541
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2365,7 +2432,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 511
+    startLine: 545
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2394,7 +2461,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 517
+    startLine: 551
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2421,7 +2488,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 526
+    startLine: 560
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2450,7 +2517,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 532
+    startLine: 566
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2477,7 +2544,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderText
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 539
+    startLine: 573
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2506,7 +2573,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontFamilyProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 545
+    startLine: 579
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2533,7 +2600,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontFamily
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 548
+    startLine: 582
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2562,7 +2629,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontSizeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 554
+    startLine: 588
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2589,7 +2656,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontSize
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 561
+    startLine: 595
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2618,7 +2685,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignmentProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 567
+    startLine: 601
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2645,7 +2712,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignment
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 574
+    startLine: 608
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2674,7 +2741,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderVerticalAlignmentProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 580
+    startLine: 614
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2701,7 +2768,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderVerticalAlignment
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 587
+    startLine: 621
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2730,7 +2797,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnTypeProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 593
+    startLine: 627
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2757,7 +2824,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnType
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 599
+    startLine: 633
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2786,7 +2853,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmitProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 605
+    startLine: 639
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2813,7 +2880,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmit
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 611
+    startLine: 645
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2842,7 +2909,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChangedProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 617
+    startLine: 651
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2869,7 +2936,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 623
+    startLine: 657
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2898,7 +2965,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChangedProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 629
+    startLine: 663
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2925,7 +2992,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChanged
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 635
+    startLine: 669
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2954,7 +3021,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocusedProperty
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 641
+    startLine: 675
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2981,7 +3048,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocused
     path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-    startLine: 657
+    startLine: 691
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -6671,37 +6738,6 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.OnHover(System.Boolean)
     name: OnHover
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnHover_System_Boolean_
-  - name: (
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
-  commentId: M:DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
-  parent: DrawnUi.Draw.SkiaControl
-  isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
-  name: SetFrameworkFocus(bool)
-  nameWithType: SkiaControl.SetFrameworkFocus(bool)
-  fullName: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(bool)
-  nameWithType.vb: SkiaControl.SetFrameworkFocus(Boolean)
-  fullName.vb: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(Boolean)
-  name.vb: SetFrameworkFocus(Boolean)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
-    name: SetFrameworkFocus
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
-  - name: (
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
-    name: SetFrameworkFocus
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
   - name: (
   - uid: System.Boolean
     name: Boolean
@@ -23750,21 +23786,21 @@ references:
     href: DrawnUi.Controls.SkiaMauiEditor.html
   - name: )
   - name: )
-- uid: DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, Func<TSource>, Action<SkiaMauiEditor>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, Func<TSource>, Action<SkiaMauiEditor>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Controls.SkiaMauiEditor, TSource>(DrawnUi.Controls.SkiaMauiEditor, System.Func<TSource>, System.Action<DrawnUi.Controls.SkiaMauiEditor>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, Func(Of TSource), Action(Of SkiaMauiEditor), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Controls.SkiaMauiEditor, TSource)(DrawnUi.Controls.SkiaMauiEditor, System.Func(Of TSource), System.Action(Of DrawnUi.Controls.SkiaMauiEditor), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, Func(Of TSource), Action(Of SkiaMauiEditor), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, Func<TSource>, Action<SkiaMauiEditor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, Func<TSource>, Action<SkiaMauiEditor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Controls.SkiaMauiEditor, TSource>(DrawnUi.Controls.SkiaMauiEditor, System.Func<TSource>, System.Action<DrawnUi.Controls.SkiaMauiEditor>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, Func(Of TSource), Action(Of SkiaMauiEditor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Controls.SkiaMauiEditor, TSource)(DrawnUi.Controls.SkiaMauiEditor, System.Func(Of TSource), System.Action(Of DrawnUi.Controls.SkiaMauiEditor), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, Func(Of TSource), Action(Of SkiaMauiEditor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,System.Func{``1},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,System.Func{``1},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Controls.SkiaMauiEditor
     name: SkiaMauiEditor
@@ -23796,6 +23832,27 @@ references:
   - uid: DrawnUi.Controls.SkiaMauiEditor
     name: SkiaMauiEditor
     href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -23824,9 +23881,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,System.Func{``1},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,System.Func{``1},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -23864,6 +23921,31 @@ references:
   - uid: DrawnUi.Controls.SkiaMauiEditor
     name: SkiaMauiEditor
     href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -24012,21 +24094,21 @@ references:
     href: DrawnUi.Controls.SkiaMauiEditor.html
   - name: )
   - name: )
-- uid: DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Controls.SkiaMauiEditor.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, TSource, Action<SkiaMauiEditor>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, TSource, Action<SkiaMauiEditor>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Controls.SkiaMauiEditor, TSource>(DrawnUi.Controls.SkiaMauiEditor, TSource, System.Action<DrawnUi.Controls.SkiaMauiEditor>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, TSource, Action(Of SkiaMauiEditor), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Controls.SkiaMauiEditor, TSource)(DrawnUi.Controls.SkiaMauiEditor, TSource, System.Action(Of DrawnUi.Controls.SkiaMauiEditor), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, TSource, Action(Of SkiaMauiEditor), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, TSource, Action<SkiaMauiEditor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaMauiEditor, TSource>(SkiaMauiEditor, TSource, Action<SkiaMauiEditor>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Controls.SkiaMauiEditor, TSource>(DrawnUi.Controls.SkiaMauiEditor, TSource, System.Action<DrawnUi.Controls.SkiaMauiEditor>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, TSource, Action(Of SkiaMauiEditor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Controls.SkiaMauiEditor, TSource)(DrawnUi.Controls.SkiaMauiEditor, TSource, System.Action(Of DrawnUi.Controls.SkiaMauiEditor), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaMauiEditor, TSource)(SkiaMauiEditor, TSource, Action(Of SkiaMauiEditor), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,``1,System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,``1,System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Controls.SkiaMauiEditor
     name: SkiaMauiEditor
@@ -24052,6 +24134,27 @@ references:
   - uid: DrawnUi.Controls.SkiaMauiEditor
     name: SkiaMauiEditor
     href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -24080,9 +24183,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,``1,System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Controls.SkiaMauiEditor,``1,System.Action{DrawnUi.Controls.SkiaMauiEditor},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -24112,6 +24215,31 @@ references:
   - uid: DrawnUi.Controls.SkiaMauiEditor
     name: SkiaMauiEditor
     href: DrawnUi.Controls.SkiaMauiEditor.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -31320,20 +31448,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -31359,6 +31487,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -31387,9 +31536,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -31421,6 +31570,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -31556,20 +31730,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -31589,6 +31763,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -31617,9 +31812,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -31643,6 +31838,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -36119,6 +36339,15 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: DrawnUi.Controls.SkiaMauiEditor.#ctor*
+  commentId: Overload:DrawnUi.Controls.SkiaMauiEditor.#ctor
+  href: DrawnUi.Controls.SkiaMauiEditor.html#DrawnUi_Controls_SkiaMauiEditor__ctor
+  name: SkiaMauiEditor
+  nameWithType: SkiaMauiEditor.SkiaMauiEditor
+  fullName: DrawnUi.Controls.SkiaMauiEditor.SkiaMauiEditor
+  nameWithType.vb: SkiaMauiEditor.New
+  fullName.vb: DrawnUi.Controls.SkiaMauiEditor.New
+  name.vb: New
 - uid: DrawnUi.Draw.SkiaControl.Paint(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.Paint(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -36212,6 +36441,12 @@ references:
   name: GestureEventProcessingInfo
   nameWithType: GestureEventProcessingInfo
   fullName: DrawnUi.Draw.GestureEventProcessingInfo
+- uid: DrawnUi.Controls.SkiaMauiEditor.ClaimFocus*
+  commentId: Overload:DrawnUi.Controls.SkiaMauiEditor.ClaimFocus
+  href: DrawnUi.Controls.SkiaMauiEditor.html#DrawnUi_Controls_SkiaMauiEditor_ClaimFocus
+  name: ClaimFocus
+  nameWithType: SkiaMauiEditor.ClaimFocus
+  fullName: DrawnUi.Controls.SkiaMauiEditor.ClaimFocus
 - uid: Microsoft.Maui.Controls.BindableProperty
   commentId: T:Microsoft.Maui.Controls.BindableProperty
   parent: Microsoft.Maui.Controls
@@ -36488,12 +36723,74 @@ references:
   name: SubscribeToControl
   nameWithType: SkiaMauiEditor.SubscribeToControl
   fullName: DrawnUi.Controls.SkiaMauiEditor.SubscribeToControl
-- uid: DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged*
-  commentId: Overload:DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged
-  href: DrawnUi.Controls.SkiaMauiEditor.html#DrawnUi_Controls_SkiaMauiEditor_OnFocusChanged_System_Boolean_
-  name: OnFocusChanged
-  nameWithType: SkiaMauiEditor.OnFocusChanged
-  fullName: DrawnUi.Controls.SkiaMauiEditor.OnFocusChanged
+- uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
+  name: SetFrameworkFocus(bool)
+  nameWithType: SkiaControl.SetFrameworkFocus(bool)
+  fullName: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(bool)
+  nameWithType.vb: SkiaControl.SetFrameworkFocus(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(Boolean)
+  name.vb: SetFrameworkFocus(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+    name: SetFrameworkFocus
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+    name: SetFrameworkFocus
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus*
+  commentId: Overload:DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus
+  href: DrawnUi.Controls.SkiaMauiEditor.html#DrawnUi_Controls_SkiaMauiEditor_SetFrameworkFocus_System_Boolean_
+  name: SetFrameworkFocus
+  nameWithType: SkiaMauiEditor.SetFrameworkFocus
+  fullName: DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus
+- uid: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
+  commentId: M:DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
+  parent: DrawnUi.Draw.ISkiaGestureListener
+  isExternal: true
+  href: DrawnUi.Draw.ISkiaGestureListener.html#DrawnUi_Draw_ISkiaGestureListener_SetFrameworkFocus_System_Boolean_
+  name: SetFrameworkFocus(bool)
+  nameWithType: ISkiaGestureListener.SetFrameworkFocus(bool)
+  fullName: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(bool)
+  nameWithType.vb: ISkiaGestureListener.SetFrameworkFocus(Boolean)
+  fullName.vb: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(Boolean)
+  name.vb: SetFrameworkFocus(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
+    name: SetFrameworkFocus
+    href: DrawnUi.Draw.ISkiaGestureListener.html#DrawnUi_Draw_ISkiaGestureListener_SetFrameworkFocus_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
+    name: SetFrameworkFocus
+    href: DrawnUi.Draw.ISkiaGestureListener.html#DrawnUi_Draw_ISkiaGestureListener_SetFrameworkFocus_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaMauiElement.OnDisposing
   commentId: M:DrawnUi.Draw.SkiaMauiElement.OnDisposing
   parent: DrawnUi.Draw.SkiaMauiElement

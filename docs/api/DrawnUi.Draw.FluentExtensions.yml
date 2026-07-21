@@ -43,9 +43,9 @@ items:
   - DrawnUi.Draw.FluentExtensions.ObserveBindingContext``2(``0,System.Action{``0,``1,System.String},System.Boolean)
   - DrawnUi.Draw.FluentExtensions.ObserveOn``3(``0,``1,System.Func{``2},System.String,System.Action{``0,System.String},System.String[])
   - DrawnUi.Draw.FluentExtensions.ObservePropertiesOn``3(``0,``1,System.Func{``2},System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{``0})
-  - DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   - DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Collections.Generic.IEnumerable{System.String},System.Action{``0})
-  - DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   - DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Collections.Generic.IEnumerable{System.String},System.Action{``0})
   - DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3(``0,``1,System.Func{``2},System.String,System.String,System.Action{``0})
   - DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2(``0,``1,System.String,System.Action{``0},System.String,System.Action{``1,``0})
@@ -3209,17 +3209,17 @@ items:
   nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, IEnumerable(Of String), Action(Of T))
   fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Collections.Generic.IEnumerable(Of String), System.Action(Of T))
   name.vb: ObserveProperties(Of T, TSource)(T, TSource, IEnumerable(Of String), Action(Of T))
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  id: ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  id: ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExtensionMethod: true
   parent: DrawnUi.Draw.FluentExtensions
   langs:
   - csharp
   - vb
-  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
   type: Method
   source:
     remote:
@@ -3228,7 +3228,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ObserveProperties
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1037
+    startLine: 1044
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3240,7 +3240,7 @@ items:
     lambdas here (params must be the last parameter).
   example: []
   syntax:
-    content: 'public static T ObserveProperties<T, TSource>(this T control, TSource target, Action<T> callback, params Expression<Func<TSource, object>>[] properties) where T : SkiaControl where TSource : INotifyPropertyChanged'
+    content: 'public static T ObserveProperties<T, TSource>(this T control, TSource target, Action<T> callback, Expression<Func<TSource, object>> property, params Expression<Func<TSource, object>>[] moreProperties) where T : SkiaControl where TSource : INotifyPropertyChanged'
     parameters:
     - id: control
       type: '{T}'
@@ -3251,9 +3251,12 @@ items:
     - id: callback
       type: System.Action{{T}}
       description: Callback to execute when any of the properties change
-    - id: properties
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}
+      description: 'First observed property, e.g. <code>x =&gt; x.Foo</code>. Required: observing nothing is always a bug.'
+    - id: moreProperties
       type: System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[]
-      description: Lambdas selecting the source properties, e.g. <code>x =&gt; x.Foo, x =&gt; x.Bar</code>
+      description: Additional properties, e.g. <code>x =&gt; x.Bar, x =&gt; x.Baz</code>
     typeParameters:
     - id: T
       description: Type of the control being extended
@@ -3262,11 +3265,11 @@ items:
     return:
       type: '{T}'
       description: The control for chaining
-    content.vb: Public Shared Function ObserveProperties(Of T As SkiaControl, TSource As INotifyPropertyChanged)(control As T, target As TSource, callback As Action(Of T), ParamArray properties As Expression(Of Func(Of TSource, Object))()) As T
+    content.vb: Public Shared Function ObserveProperties(Of T As SkiaControl, TSource As INotifyPropertyChanged)(control As T, target As TSource, callback As Action(Of T), [property] As Expression(Of Func(Of TSource, Object)), ParamArray moreProperties As Expression(Of Func(Of TSource, Object))()) As T
   overload: DrawnUi.Draw.FluentExtensions.ObserveProperties*
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
 - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Collections.Generic.IEnumerable{System.String},System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Collections.Generic.IEnumerable{System.String},System.Action{``0})
   id: ObserveProperties``2(``0,System.Func{``1},System.Collections.Generic.IEnumerable{System.String},System.Action{``0})
@@ -3286,7 +3289,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ObserveProperties
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1059
+    startLine: 1068
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3323,17 +3326,17 @@ items:
   nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), IEnumerable(Of String), Action(Of T))
   fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Collections.Generic.IEnumerable(Of String), System.Action(Of T))
   name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), IEnumerable(Of String), Action(Of T))
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  id: ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  id: ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExtensionMethod: true
   parent: DrawnUi.Draw.FluentExtensions
   langs:
   - csharp
   - vb
-  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
   type: Method
   source:
     remote:
@@ -3342,7 +3345,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ObserveProperties
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1154
+    startLine: 1171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3354,7 +3357,7 @@ items:
     lambdas here (params must be the last parameter).
   example: []
   syntax:
-    content: 'public static T ObserveProperties<T, TSource>(this T control, Func<TSource> targetSelector, Action<T> callback, params Expression<Func<TSource, object>>[] properties) where T : SkiaControl where TSource : INotifyPropertyChanged'
+    content: 'public static T ObserveProperties<T, TSource>(this T control, Func<TSource> targetSelector, Action<T> callback, Expression<Func<TSource, object>> property, params Expression<Func<TSource, object>>[] moreProperties) where T : SkiaControl where TSource : INotifyPropertyChanged'
     parameters:
     - id: control
       type: '{T}'
@@ -3365,9 +3368,12 @@ items:
     - id: callback
       type: System.Action{{T}}
       description: Callback to execute when any of the properties change
-    - id: properties
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}
+      description: 'First observed property, e.g. <code>x =&gt; x.Foo</code>. Required: observing nothing is always a bug.'
+    - id: moreProperties
       type: System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[]
-      description: Lambdas selecting the source properties, e.g. <code>x =&gt; x.Foo, x =&gt; x.Bar</code>
+      description: Additional properties, e.g. <code>x =&gt; x.Bar, x =&gt; x.Baz</code>
     typeParameters:
     - id: T
       description: Type of the control being extended
@@ -3376,11 +3382,11 @@ items:
     return:
       type: '{T}'
       description: The control for chaining
-    content.vb: Public Shared Function ObserveProperties(Of T As SkiaControl, TSource As INotifyPropertyChanged)(control As T, targetSelector As Func(Of TSource), callback As Action(Of T), ParamArray properties As Expression(Of Func(Of TSource, Object))()) As T
+    content.vb: Public Shared Function ObserveProperties(Of T As SkiaControl, TSource As INotifyPropertyChanged)(control As T, targetSelector As Func(Of TSource), callback As Action(Of T), [property] As Expression(Of Func(Of TSource, Object)), ParamArray moreProperties As Expression(Of Func(Of TSource, Object))()) As T
   overload: DrawnUi.Draw.FluentExtensions.ObserveProperties*
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
 - uid: DrawnUi.Draw.FluentExtensions.Observe``2(``0,System.Func{``1},System.Action{``0,System.String},System.String[])
   commentId: M:DrawnUi.Draw.FluentExtensions.Observe``2(``0,System.Func{``1},System.Action{``0,System.String},System.String[])
   id: Observe``2(``0,System.Func{``1},System.Action{``0,System.String},System.String[])
@@ -3400,7 +3406,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Observe
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1175
+    startLine: 1194
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3453,7 +3459,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Observe
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1271
+    startLine: 1290
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3509,7 +3515,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Observe
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1293
+    startLine: 1312
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3565,7 +3571,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ObserveBindingContext
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1322
+    startLine: 1341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3629,7 +3635,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ObserveBindingContextOn
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1406
+    startLine: 1425
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3690,7 +3696,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTapped
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1495
+    startLine: 1514
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3735,7 +3741,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTextChanged
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1530
+    startLine: 1549
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3783,7 +3789,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnFocusChanged
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1560
+    startLine: 1579
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3828,7 +3834,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTapped
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1583
+    startLine: 1602
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3867,7 +3873,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithChildren
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1618
+    startLine: 1637
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3912,7 +3918,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithContent
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1635
+    startLine: 1654
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3957,7 +3963,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithParent
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1648
+    startLine: 1667
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4002,7 +4008,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CenterX
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1662
+    startLine: 1681
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4044,7 +4050,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CenterY
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1674
+    startLine: 1693
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4086,7 +4092,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Fill
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1686
+    startLine: 1705
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4128,7 +4134,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FillX
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1699
+    startLine: 1718
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4170,7 +4176,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndX
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1705
+    startLine: 1724
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4207,7 +4213,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndY
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1711
+    startLine: 1730
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4244,7 +4250,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartX
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1717
+    startLine: 1736
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4281,7 +4287,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartY
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1723
+    startLine: 1742
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4318,7 +4324,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FillY
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1736
+    startLine: 1755
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4360,7 +4366,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Center
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1748
+    startLine: 1767
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4402,7 +4408,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CenterTextX
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1759
+    startLine: 1778
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4444,7 +4450,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CenterTextY
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1769
+    startLine: 1788
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4486,7 +4492,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CenterText
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1778
+    startLine: 1797
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4525,7 +4531,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithMargin
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1794
+    startLine: 1813
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4570,7 +4576,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithMargin
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1808
+    startLine: 1827
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4618,7 +4624,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithMargin
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1824
+    startLine: 1843
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4672,7 +4678,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithPadding
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1838
+    startLine: 1857
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4717,7 +4723,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithPadding
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1852
+    startLine: 1871
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4765,7 +4771,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithPadding
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1868
+    startLine: 1887
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4819,7 +4825,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithTag
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1882
+    startLine: 1901
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4864,7 +4870,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithCache
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1899
+    startLine: 1918
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4909,7 +4915,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithBackgroundColor
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1912
+    startLine: 1931
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4954,7 +4960,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithHorizontalOptions
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1925
+    startLine: 1944
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4999,7 +5005,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithVerticalOptions
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1938
+    startLine: 1957
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5044,7 +5050,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithHeight
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1951
+    startLine: 1970
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5089,7 +5095,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithWidth
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1964
+    startLine: 1983
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5134,7 +5140,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithMargin
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1977
+    startLine: 1996
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5179,7 +5185,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithVisibility
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 1983
+    startLine: 2002
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5218,7 +5224,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithShapeType
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2000
+    startLine: 2019
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5263,7 +5269,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Shape
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2013
+    startLine: 2032
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5308,7 +5314,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithAspect
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2030
+    startLine: 2049
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5353,7 +5359,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithFontSize
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2047
+    startLine: 2066
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5398,7 +5404,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithTextColor
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2060
+    startLine: 2079
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5443,7 +5449,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithHorizontalTextAlignment
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2073
+    startLine: 2092
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5488,7 +5494,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTextChanged
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2088
+    startLine: 2107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5530,7 +5536,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithText
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2105
+    startLine: 2124
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5571,7 +5577,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithItemsSource
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2114
+    startLine: 2133
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5612,7 +5618,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithEnabled
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2126
+    startLine: 2145
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5653,7 +5659,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithOpacity
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2135
+    startLine: 2154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5694,7 +5700,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithRotation
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2144
+    startLine: 2163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5735,7 +5741,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithScale
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2153
+    startLine: 2172
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5776,7 +5782,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithScale
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2162
+    startLine: 2181
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5819,7 +5825,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithType
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2172
+    startLine: 2191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5860,7 +5866,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithSpacing
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2181
+    startLine: 2200
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5901,7 +5907,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithColumnSpacing
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2190
+    startLine: 2209
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5942,7 +5948,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithRowSpacing
     path: ../src/Shared/DrawnUi/Internals/Extensions/FluentExtensions.Shared.cs
-    startLine: 2199
+    startLine: 2218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8953,6 +8959,61 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``1,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TSource, object>>
+  nameWithType: Expression<Func<TSource, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TSource, object>>
+  nameWithType.vb: Expression(Of Func(Of TSource, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))
+  name.vb: Expression(Of Func(Of TSource, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
   - name: )
 - uid: System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[]

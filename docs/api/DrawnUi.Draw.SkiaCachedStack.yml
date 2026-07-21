@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Draw.SkiaCachedStack.#ctor
   - DrawnUi.Draw.SkiaCachedStack.ApplyBackgroundMeasurementChange(DrawnUi.Draw.SkiaLayout.StructureChange)
+  - DrawnUi.Draw.SkiaCachedStack.AutoDoubleBuffering
   - DrawnUi.Draw.SkiaCachedStack.DebugString
   - DrawnUi.Draw.SkiaCachedStack.DrawDirectInternal(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaCachedStack.ForegroundPlane
@@ -17,10 +18,12 @@ items:
   - DrawnUi.Draw.SkiaCachedStack.OnDisposing
   - DrawnUi.Draw.SkiaCachedStack.OnHeadInsertCommitted
   - DrawnUi.Draw.SkiaCachedStack.OnItemsSourceCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)
+  - DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace
   - DrawnUi.Draw.SkiaCachedStack.OnStructureChanged
   - DrawnUi.Draw.SkiaCachedStack.OnTemplatesAvailable
   - DrawnUi.Draw.SkiaCachedStack.OnViewportWasChanged(DrawnUi.Draw.ScaledRect,DrawnUi.Draw.ScaledPoint)
   - DrawnUi.Draw.SkiaCachedStack.OnWillDisposeWithChildren
+  - DrawnUi.Draw.SkiaCachedStack.PlaneRefreshRatio
   - DrawnUi.Draw.SkiaCachedStack.ScrollOffset
   - DrawnUi.Draw.SkiaCachedStack.UpdateByChild(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaCachedStack.UseDoubleBuffering
@@ -1170,9 +1173,9 @@ items:
   - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveBindingContext``2(System.Action{DrawnUi.Draw.SkiaCachedStack,{TSource},System.String},System.Boolean)
   - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveOn``3({TParent},System.Func{{TTarget}},System.String,System.Action{DrawnUi.Draw.SkiaCachedStack,System.String},System.String[])
   - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObservePropertiesOn``3({TParent},System.Func{{TTarget}},System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaCachedStack})
-  - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaCachedStack})
-  - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
   - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Collections.Generic.IEnumerable{System.String},System.Action{DrawnUi.Draw.SkiaCachedStack})
   - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObservePropertyOn``3({TParent},System.Func{{TTarget}},System.String,System.String,System.Action{DrawnUi.Draw.SkiaCachedStack})
   - DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObservePropertyTwoWay``2({TSource},System.String,System.Action{DrawnUi.Draw.SkiaCachedStack},System.String,System.Action{{TSource},DrawnUi.Draw.SkiaCachedStack})
@@ -1276,41 +1279,103 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: >-
-    FALSE (default): ONE foreground plane — the band is recorded synchronously on the render thread once
-
-    per half-viewport of drift or per invalidation, and blitted in between.
-
-    TRUE: TWO planes — the next plane is recorded OFF-thread while the current one keeps blitting, so
-
-    scrolling never pays a render-thread record (the LoadMore/scroll record spike disappears). On MAUI
-
-    heads this requires <xref href="DrawnUi.Draw.SkiaLayout.UsePreparedViews" data-throw-if-not-resolved="false"></xref> (the bake must be a pure cache-blit
-
-    pass: no binds, no measures); without it the control silently behaves as single-plane there.
-
-
-    DEFAULT FALSE because for an Operations/SKPicture plane the SYNC record is cheap (recording draw ops,
-
-    no raster), so on a capable device the async machinery — FreezeStructure deep-copy under LockMeasure,
-
-    worker handoff, plane swap/generation checks, and the render-thread <code>_bakeDone.Wait(16)</code> stall
-
-    when a bake is outrun — costs MORE than it saves and fragments pacing (measurably smoother single-plane
-
-    on device). It also can publish a plane holding STALE CELL CONTENT: the generation guard versions
-
-    structure only, not a cell's own content, so a rapidly self-invalidating cell (a streaming AI bubble
-
-    growing word by word) reverts its text as an old bake lands after a new one. Turn TRUE only where a
-
-    sync record genuinely can't hit frame budget — weak hardware or GPU-surface planes.
-  example: []
   syntax:
-    content: public bool UseDoubleBuffering
+    content: protected bool UseDoubleBuffering
     return:
       type: System.Boolean
-    content.vb: Public UseDoubleBuffering As Boolean
+    content.vb: Protected UseDoubleBuffering As Boolean
+- uid: DrawnUi.Draw.SkiaCachedStack.AutoDoubleBuffering
+  commentId: F:DrawnUi.Draw.SkiaCachedStack.AutoDoubleBuffering
+  id: AutoDoubleBuffering
+  parent: DrawnUi.Draw.SkiaCachedStack
+  langs:
+  - csharp
+  - vb
+  name: AutoDoubleBuffering
+  nameWithType: SkiaCachedStack.AutoDoubleBuffering
+  fullName: DrawnUi.Draw.SkiaCachedStack.AutoDoubleBuffering
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AutoDoubleBuffering
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
+    startLine: 51
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Drive <xref href="DrawnUi.Draw.SkiaCachedStack.UseDoubleBuffering" data-throw-if-not-resolved="false"></xref> from motion: ON while scrolling, OFF at rest. Off by default,
+
+    so nothing changes unless you opt in.
+
+    <p>The split matches where each mode wins. While scrolling, the render-thread record is the thing
+
+    you feel, and the async bake removes it. At rest there is nothing to hide and the sync record is the
+
+    cheaper, more predictable path.</p>
+
+    <p>It also happens to be where double buffering is least dangerous. Its known failure is publishing
+
+    STALE CELL CONTENT — the generation guard versions structure, not a cell's own pixels, so a cell that
+
+    changes mid-bake (image arrives, streaming text grows) is frozen at its old state. AT REST that stale
+
+    plane is what you keep looking at until something invalidates it; WHILE SCROLLING the drift
+
+    re-records within half a viewport, so it self-heals in a few frames. The window is not zero, though —
+
+    if your cells mutate heavily during scroll, leave this off.</p>
+  example: []
+  syntax:
+    content: protected bool AutoDoubleBuffering
+    return:
+      type: System.Boolean
+    content.vb: Protected AutoDoubleBuffering As Boolean
+- uid: DrawnUi.Draw.SkiaCachedStack.PlaneRefreshRatio
+  commentId: F:DrawnUi.Draw.SkiaCachedStack.PlaneRefreshRatio
+  id: PlaneRefreshRatio
+  parent: DrawnUi.Draw.SkiaCachedStack
+  langs:
+  - csharp
+  - vb
+  name: PlaneRefreshRatio
+  nameWithType: SkiaCachedStack.PlaneRefreshRatio
+  fullName: DrawnUi.Draw.SkiaCachedStack.PlaneRefreshRatio
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PlaneRefreshRatio
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
+    startLine: 62
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    How far the viewport may drift from the plane's record origin, as a RATIO of viewport height, before
+
+    the band is re-recorded. Must stay BELOW <xref href="DrawnUi.Draw.SkiaControl.VirtualisationInflatedRatio" data-throw-if-not-resolved="false"></xref>: the
+
+    plane covers viewport ± Ratio, so a drift of Ratio exactly exhausts the coverage and the blit falls
+
+    through to a live draw (the coverage check is the hard floor, this is the soft refresh ahead of it).
+
+    Default 0.5 with a 1.0 band = re-record after half a screen, with half a screen of coverage left as
+
+    margin. Raise toward the band ratio for fewer records (each record costs more of the band it must
+
+    re-walk, and a coverage miss mid-fling costs a live frame); lower it for more frequent, cheaper ones.
+  example: []
+  syntax:
+    content: public double PlaneRefreshRatio
+    return:
+      type: System.Double
+    content.vb: Public PlaneRefreshRatio As Double
 - uid: DrawnUi.Draw.SkiaCachedStack.UsePreparedViews
   commentId: P:DrawnUi.Draw.SkiaCachedStack.UsePreparedViews
   id: UsePreparedViews
@@ -1329,7 +1394,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UsePreparedViews
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 38
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1378,7 +1443,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 51
+    startLine: 73
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1407,7 +1472,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollOffset
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 69
+    startLine: 95
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1436,7 +1501,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnViewportWasChanged
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 71
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1471,7 +1536,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _contentChanged
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 94
+    startLine: 123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1498,7 +1563,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCellPreparedOffthread
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 117
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1532,7 +1597,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnItemsSourceCollectionChanged
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 128
+    startLine: 157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1551,6 +1616,44 @@ items:
   nameWithType.vb: SkiaCachedStack.OnItemsSourceCollectionChanged(Object, NotifyCollectionChangedEventArgs)
   fullName.vb: DrawnUi.Draw.SkiaCachedStack.OnItemsSourceCollectionChanged(Object, System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   name.vb: OnItemsSourceCollectionChanged(Object, NotifyCollectionChangedEventArgs)
+- uid: DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace
+  commentId: M:DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace
+  id: OnItemsWindowEngagedInPlace
+  parent: DrawnUi.Draw.SkiaCachedStack
+  langs:
+  - csharp
+  - vb
+  name: OnItemsWindowEngagedInPlace()
+  nameWithType: SkiaCachedStack.OnItemsWindowEngagedInPlace()
+  fullName: DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnItemsWindowEngagedInPlace
+    path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
+    startLine: 184
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The built-in window engaged IN PLACE (LoadMore grew the source past the threshold): the slice was
+
+    swapped and every cell re-indexed under us, exactly like a jump rebase. Hold the last presented plane
+
+    over the rebuild — without it the frame right after the engage draws LIVE while the adapter is being
+
+    re-keyed, and prepared-views cells that aren't realized yet paint their (empty) placeholder: the
+
+    device "blink of an empty screen when the limit-window hits".
+  example: []
+  syntax:
+    content: protected override void OnItemsWindowEngagedInPlace()
+    content.vb: Protected Overrides Sub OnItemsWindowEngagedInPlace()
+  overridden: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+  overload: DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace*
 - uid: DrawnUi.Draw.SkiaCachedStack.OnStructureChanged
   commentId: M:DrawnUi.Draw.SkiaCachedStack.OnStructureChanged
   id: OnStructureChanged
@@ -1569,7 +1672,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStructureChanged
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 154
+    startLine: 212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1597,7 +1700,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyBackgroundMeasurementChange
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 162
+    startLine: 220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1632,7 +1735,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHeadInsertCommitted
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 170
+    startLine: 228
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1666,7 +1769,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTemplatesAvailable
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 178
+    startLine: 236
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1694,7 +1797,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateByChild
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 185
+    startLine: 243
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1726,7 +1829,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawDirectInternal
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 216
+    startLine: 303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1762,7 +1865,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetStackStructure
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 825
+    startLine: 979
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1793,7 +1896,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnContentTranslatedVertically
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 1061
+    startLine: 1226
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1839,7 +1942,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugString
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 1092
+    startLine: 1257
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1870,7 +1973,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ForegroundPlane
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 1105
+    startLine: 1270
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1901,7 +2004,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsCaching
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 1108
+    startLine: 1273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1932,7 +2035,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 1110
+    startLine: 1275
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1964,7 +2067,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Draw/Layout/SkiaCachedStack.cs
-    startLine: 1119
+    startLine: 1284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -26533,21 +26636,21 @@ references:
     href: DrawnUi.Draw.SkiaCachedStack.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2(System.Func{{TSource}},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, Func<TSource>, Action<SkiaCachedStack>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, Func<TSource>, Action<SkiaCachedStack>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCachedStack, TSource>(DrawnUi.Draw.SkiaCachedStack, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaCachedStack>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, Func(Of TSource), Action(Of SkiaCachedStack), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCachedStack, TSource)(DrawnUi.Draw.SkiaCachedStack, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaCachedStack), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, Func(Of TSource), Action(Of SkiaCachedStack), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, Func<TSource>, Action<SkiaCachedStack>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, Func<TSource>, Action<SkiaCachedStack>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCachedStack, TSource>(DrawnUi.Draw.SkiaCachedStack, System.Func<TSource>, System.Action<DrawnUi.Draw.SkiaCachedStack>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, Func(Of TSource), Action(Of SkiaCachedStack), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCachedStack, TSource)(DrawnUi.Draw.SkiaCachedStack, System.Func(Of TSource), System.Action(Of DrawnUi.Draw.SkiaCachedStack), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, Func(Of TSource), Action(Of SkiaCachedStack), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaCachedStack
     name: SkiaCachedStack
@@ -26579,6 +26682,27 @@ references:
   - uid: DrawnUi.Draw.SkiaCachedStack
     name: SkiaCachedStack
     href: DrawnUi.Draw.SkiaCachedStack.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -26607,9 +26731,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,System.Func{``1},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -26647,6 +26771,31 @@ references:
   - uid: DrawnUi.Draw.SkiaCachedStack
     name: SkiaCachedStack
     href: DrawnUi.Draw.SkiaCachedStack.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -26795,21 +26944,21 @@ references:
     href: DrawnUi.Draw.SkiaCachedStack.html
   - name: )
   - name: )
-- uid: DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.SkiaCachedStack.DrawnUi.Draw.FluentExtensions.ObserveProperties``2({TSource},System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}},System.Linq.Expressions.Expression{System.Func{{TSource},System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   parent: DrawnUi.Draw.FluentExtensions
-  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, TSource, Action<SkiaCachedStack>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, TSource, Action<SkiaCachedStack>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCachedStack, TSource>(DrawnUi.Draw.SkiaCachedStack, TSource, System.Action<DrawnUi.Draw.SkiaCachedStack>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, TSource, Action(Of SkiaCachedStack), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCachedStack, TSource)(DrawnUi.Draw.SkiaCachedStack, TSource, System.Action(Of DrawnUi.Draw.SkiaCachedStack), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, TSource, Action(Of SkiaCachedStack), ParamArray Expression(Of Func(Of TSource, Object))())
+  definition: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, TSource, Action<SkiaCachedStack>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<SkiaCachedStack, TSource>(SkiaCachedStack, TSource, Action<SkiaCachedStack>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<DrawnUi.Draw.SkiaCachedStack, TSource>(DrawnUi.Draw.SkiaCachedStack, TSource, System.Action<DrawnUi.Draw.SkiaCachedStack>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, TSource, Action(Of SkiaCachedStack), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of DrawnUi.Draw.SkiaCachedStack, TSource)(DrawnUi.Draw.SkiaCachedStack, TSource, System.Action(Of DrawnUi.Draw.SkiaCachedStack), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of SkiaCachedStack, TSource)(SkiaCachedStack, TSource, Action(Of SkiaCachedStack), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,``1,System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,``1,System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - uid: DrawnUi.Draw.SkiaCachedStack
     name: SkiaCachedStack
@@ -26835,6 +26984,27 @@ references:
   - uid: DrawnUi.Draw.SkiaCachedStack
     name: SkiaCachedStack
     href: DrawnUi.Draw.SkiaCachedStack.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -26863,9 +27033,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,``1,System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(DrawnUi.Draw.SkiaCachedStack,``1,System.Action{DrawnUi.Draw.SkiaCachedStack},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -26895,6 +27065,31 @@ references:
   - uid: DrawnUi.Draw.SkiaCachedStack
     name: SkiaCachedStack
     href: DrawnUi.Draw.SkiaCachedStack.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -34702,20 +34897,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, Func<TSource>, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, System.Func<TSource>, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, System.Func(Of TSource), System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, Func(Of TSource), Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -34741,6 +34936,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -34769,9 +34985,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,System.Func{``1},System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0_System_Func___1__System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -34803,6 +35019,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -34938,20 +35179,20 @@ references:
   - name: T
   - name: )
   - name: )
-- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
-  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+- uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  commentId: M:DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
   isExternal: true
-  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
-  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, params Expression<Func<TSource, object>>[])
-  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
-  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
-  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
-  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), ParamArray Expression(Of Func(Of TSource, Object))())
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+  name: ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  nameWithType: FluentExtensions.ObserveProperties<T, TSource>(T, TSource, Action<T>, Expression<Func<TSource, object>>, params Expression<Func<TSource, object>>[])
+  fullName: DrawnUi.Draw.FluentExtensions.ObserveProperties<T, TSource>(T, TSource, System.Action<T>, System.Linq.Expressions.Expression<System.Func<TSource, object>>, params System.Linq.Expressions.Expression<System.Func<TSource, object>>[])
+  nameWithType.vb: FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
+  fullName.vb: DrawnUi.Draw.FluentExtensions.ObserveProperties(Of T, TSource)(T, TSource, System.Action(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of TSource, Object))())
+  name.vb: ObserveProperties(Of T, TSource)(T, TSource, Action(Of T), Expression(Of Func(Of TSource, Object)), ParamArray Expression(Of Func(Of TSource, Object))())
   spec.csharp:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: <
   - name: T
   - name: ','
@@ -34971,6 +35212,27 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.action-1
   - name: <
   - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
   - name: '>'
   - name: ','
   - name: " "
@@ -34999,9 +35261,9 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
+  - uid: DrawnUi.Draw.FluentExtensions.ObserveProperties``2(``0,``1,System.Action{``0},System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Linq.Expressions.Expression{System.Func{``1,System.Object}}[])
     name: ObserveProperties
-    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object_____
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_ObserveProperties__2___0___1_System_Action___0__System_Linq_Expressions_Expression_System_Func___1_System_Object___System_Linq_Expressions_Expression_System_Func___1_System_Object_____
   - name: (
   - name: Of
   - name: " "
@@ -35025,6 +35287,31 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
   - name: ','
   - name: " "
@@ -39995,6 +40282,17 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
 - uid: DrawnUi.Draw.SkiaCachedStack.UsePreparedViews*
   commentId: Overload:DrawnUi.Draw.SkiaCachedStack.UsePreparedViews
   href: DrawnUi.Draw.SkiaCachedStack.html#DrawnUi_Draw_SkiaCachedStack_UsePreparedViews
@@ -40184,6 +40482,31 @@ references:
     name: Specialized
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.specialized
+- uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
+  name: OnItemsWindowEngagedInPlace()
+  nameWithType: SkiaLayout.OnItemsWindowEngagedInPlace()
+  fullName: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+    name: OnItemsWindowEngagedInPlace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnItemsWindowEngagedInPlace
+    name: OnItemsWindowEngagedInPlace
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnItemsWindowEngagedInPlace
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace*
+  commentId: Overload:DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace
+  href: DrawnUi.Draw.SkiaCachedStack.html#DrawnUi_Draw_SkiaCachedStack_OnItemsWindowEngagedInPlace
+  name: OnItemsWindowEngagedInPlace
+  nameWithType: SkiaCachedStack.OnItemsWindowEngagedInPlace
+  fullName: DrawnUi.Draw.SkiaCachedStack.OnItemsWindowEngagedInPlace
 - uid: DrawnUi.Draw.SkiaLayout.OnStructureChanged
   commentId: M:DrawnUi.Draw.SkiaLayout.OnStructureChanged
   parent: DrawnUi.Draw.SkiaLayout
