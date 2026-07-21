@@ -2229,6 +2229,21 @@ else
                 Type == LayoutType.Column ? diff.Height : 0f);
         }
 
+        /// <summary>
+        /// Single source of truth for the three draw-time grow-shift sites in DrawStackVisibleChildren
+        /// (sync-measure, prepared-reconcile, streaming-bridge). Always sets the per-frame OffsetOthers
+        /// accumulator from the size delta; when <paramref name="durable"/> also persists the shift into
+        /// the structure via OffsetSubsequentCells. Behaviour-identical to the inlined copies it replaces.
+        /// </summary>
+        private void ShiftFollowersByGrow(LayoutStructure structure, ControlInStack cell,
+            SKSize newSize, SKSize reservedSlot, bool durable)
+        {
+            var diff = newSize - reservedSlot;
+            cell.OffsetOthers = GetFollowersOffsetDelta(diff);
+            if (durable)
+                OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+        }
+
         protected virtual SKRect GetStackChildDrawRect(int index, float x, float y, ControlInStack cell)
         {
             if (IsTemplated)
@@ -2519,6 +2534,18 @@ else
                 _prepVisibleUnprepared.Clear();
             }
 
+            // Snapshot which ControlIndexes are visible this frame so ApplyStackMeasureResult can refuse to
+            // publish a structure that leaves any of THESE slots unmeasured (on-screen blank). Off-screen
+            // unmeasured cells stay allowed (normal MeasureVisible), so background measurement never stalls
+            // the scroll. Real draw only — a bake pass is a pure read and must not redefine "visible".
+            if (!bakePass)
+            {
+                _lastVisibleControlIndexes.Clear();
+                foreach (var vc in CollectionsMarshal.AsSpan(visibleElements))
+                    if (vc != null && !vc.IsCollapsed)
+                        _lastVisibleControlIndexes.Add(vc.ControlIndex);
+            }
+
             try
             {
                 if (!bakePass && WillDrawFromFreshItemssSource == 0 && IsTemplated
@@ -2747,16 +2774,13 @@ else
                                 if (reservedSlot != SKSize.Empty &&
                                     !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
                                 {
-                                    var diff = child.MeasuredSize.Pixels - reservedSlot;
-                                    cell.OffsetOthers = GetFollowersOffsetDelta(diff);
-
                                     // Durably shift the FOLLOWING cells' structure positions by this grow delta so
                                     // the new layout persists (PASS 1 derives cell.Drawn from cell.Destination every
                                     // frame). Without it the draw-time grow only patched the current frame via the
                                     // OffsetOthers accumulator below, and the next cell overlapped until a staged
                                     // restack landed a frame later — the visible "wrong Top" flicker while a bubble
                                     // grows in realtime (streaming AI answer). Same call the smart-measure path uses.
-                                    OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+                                    ShiftFollowersByGrow(structure, cell, child.MeasuredSize.Pixels, reservedSlot, durable: true);
                                 }
                             }
                         }
@@ -2781,9 +2805,7 @@ else
                                 LayoutCell(adopted, cell, child, cell.Area, ctx.Scale);
                             }
 
-                            var diff = adopted.Pixels - reservedSlot;
-                            cell.OffsetOthers = GetFollowersOffsetDelta(diff);
-                            OffsetSubsequentCells(structure, cell, diff.Width, diff.Height);
+                            ShiftFollowersByGrow(structure, cell, adopted.Pixels, reservedSlot, durable: true);
                         }
 
                         // RECYCLED STALE SIZE (light, no remeasure): a pooled view can still carry its PREVIOUS
@@ -2901,13 +2923,13 @@ else
                             StageSelfMeasuredCellUpdate(cell.ControlIndex, child.MeasuredSize,
                                 cell.Measured.Pixels);
 
-                            // Shift the followers THIS frame too via the accumulator below (same pattern as
-                            // the sync-measure branch), otherwise the grown cell paints over the next cell
-                            // for the one frame until the staged change lands — the visible flicker.
-                            // PASS 1 clears OffsetOthers next frame and the applied structure change takes
-                            // over from then on, so this never double-shifts.
-                            var grow = child.MeasuredSize.Pixels - cell.Measured.Pixels;
-                            cell.OffsetOthers = GetFollowersOffsetDelta(grow);
+                            // Shift the followers THIS frame too via the accumulator (same pattern as the
+                            // sync-measure branch), otherwise the grown cell paints over the next cell for the
+                            // one frame until the staged change lands — the visible flicker. NON-durable: the
+                            // StageSelfMeasuredCellUpdate above persists the structure shift next frame, so
+                            // OffsetSubsequentCells here would double-shift. PASS 1 clears OffsetOthers next
+                            // frame and the applied structure change takes over, so this never double-shifts.
+                            ShiftFollowersByGrow(structure, cell, child.MeasuredSize.Pixels, cell.Measured.Pixels, durable: false);
                         }
                     }
 

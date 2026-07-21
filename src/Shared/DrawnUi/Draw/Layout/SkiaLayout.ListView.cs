@@ -668,6 +668,17 @@ public partial class SkiaLayout
     // Visible cells found unprepared during the current draw pass (render thread only) — they get
     // top priority in the want-list so their skeletons materialize first.
     private readonly List<int> _prepVisibleUnprepared = new();
+
+    // ControlIndexes of the cells the last draw treated as VISIBLE (occupying the viewport). Written on
+    // the render thread in DrawStackVisibleChildren, read by ApplyStackMeasureResult to reject publishing
+    // an incoming structure whose VISIBLE slots aren't measured yet (would blank on screen) while still
+    // allowing normal MeasureVisible publishes where only OFF-SCREEN cells are unmeasured.
+    private readonly HashSet<int> _lastVisibleControlIndexes = new();
+
+    // Scratch: measured ControlIndexes of the CURRENT live structure, rebuilt only on frames that produced
+    // a measure. Lets ApplyStackMeasureResult verify the current structure is a valid fallback for the
+    // visible slots before holding it (see there). Reused to avoid per-publish allocation.
+    private readonly HashSet<int> _measuredCurrentScratch = new();
     private int _prepPrevFirstVisible;
     private bool _prepPostedNonEmpty;
 
@@ -2072,7 +2083,7 @@ public partial class SkiaLayout
     /// </summary>
     private void ApplyAddChange(StructureChange change)
     {
-        Debug.WriteLine($"[StackStructure] Adding {change.Count} items at index {change.StartIndex}");
+        //Debug.WriteLine($"[StackStructure] Adding {change.Count} items at index {change.StartIndex}");
 
         // Head inserts and ALL MeasureFirst adds defer the adapter refresh to this apply — whichever
         // branch runs must sync exactly once, in stage order: branches calling ApplyInsertShift set
@@ -3353,7 +3364,7 @@ public partial class SkiaLayout
         {
             var staleItem = change.Items?.Count == 1 ? change.Items[0] : null;
             int currentIndex = staleItem != null && EffectiveItemsSource != null ? EffectiveItemsSource.IndexOf(staleItem) : -1;
-            Debug.WriteLine($"[StackStructure] Stale single-item update (epoch {change.Epoch} != {_itemsShiftEpoch}), re-queued for current index {currentIndex}");
+            //Debug.WriteLine($"[StackStructure] Stale single-item update (epoch {change.Epoch} != {_itemsShiftEpoch}), re-queued for current index {currentIndex}");
             if (currentIndex >= 0)
                 RemeasureSingleItemInBackground(currentIndex);
             return;
