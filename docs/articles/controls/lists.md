@@ -63,6 +63,17 @@ Why each wins:
 
 **3 / 4 — Many small rows.** With dozens of cells visible, even cheap per-cell draws add up every frame. `SkiaCachedStack` records the viewport (± one viewport of overscan) into a single cached plane and *blits* it while scrolling, re-recording per half-viewport of drift. Internally it runs `MeasureVisible` with the prepared-views pipeline — cells are bound and measured off the render thread, ahead of the scroll — so uneven heights (case 4) work natively.
 
+Two knobs control that rhythm, and they work as a pair:
+
+| Property | Default | Meaning |
+|---|---|---|
+| `VirtualisationInflatedRatio` | `1.0` | **Band size.** The plane covers the viewport ± this many viewports. |
+| `PlaneRefreshRatio` | `0.5` | **Drift before a re-record**, as a fraction of viewport height. |
+
+Keep `PlaneRefreshRatio` below `VirtualisationInflatedRatio`. The plane can only be blitted while it still covers the visible viewport, so a drift equal to the band ratio exhausts the coverage exactly and the frame falls back to drawing cells live. The defaults re-record after half a screen of scrolling with half a screen of coverage still in hand. Raise both together for fewer, larger records; lower them for more frequent, cheaper ones.
+
+To check the plane is doing its job, enable the canvas debug string: it prints `plane [top..bottom] valid=True` when a plane is installed, or `plane none` when every frame is still drawing cells live. A second tell is `drawn X-Y` — blit frames never re-run the stack draw, so those indices stay frozen while the content moves. If `drawn` changes on every few pixels of scrolling, you are not blitting.
+
 **5 — Uneven medium-large cells.** Few cells visible means per-cell caching already carries the frame; a band plane would add little. This is the [News Feed Tutorial](../news-feed-tutorial.md) configuration.
 
 ## Big data sources
