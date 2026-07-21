@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace DrawnUi.Draw;
@@ -34,7 +34,10 @@ public partial class SkiaScroll
             // trajectory would race at full speed and slam-stop at the OLD edge's content position.
             // Re-plan it with the remaining velocity once this frame's bounds are refreshed.
             if (_changeSpeed != null)
+            {
                 _replanFlingY = true;
+                _replanVelocityY = _animatorFlingY.CurrentVelocity;
+            }
         }
 
         // The direct range scroller (wheel steps, ScrollToY, snaps) also rewrites ViewportOffsetY per
@@ -54,6 +57,13 @@ public partial class SkiaScroll
     /// (content grew during the fling, e.g. backward LoadMore prepend). Consumed in Draw.
     /// </summary>
     protected bool _replanFlingY;
+
+    /// <summary>
+    /// Velocity captured when <see cref="_replanFlingY"/> was raised, used if the cut fling already
+    /// self-finished by the time the replan is consumed.
+    /// </summary>
+    protected float _replanVelocityY;
+
 
     public float ViewportOffsetY
     {
@@ -407,6 +417,7 @@ public partial class SkiaScroll
     {
         UpdateLoadingLock(false);
 
+
         //if (CheckNeedToSnap())
         //{
         //    Snap(SystemAnimationTimeSecs);
@@ -723,6 +734,7 @@ public partial class SkiaScroll
         return rect;
     }
 
+
     /// <summary>
     ///
     /// In POINTS not pixels!!!
@@ -860,6 +872,18 @@ public partial class SkiaScroll
         }
 
         _changeSpeed = null;
+
+        // A windowed source publishes only a SLICE: ContentOffsetBounds ends at the slice plus a
+        // capped chase headroom (2 viewports, see GetContentOffsetBounds), NOT at the end of the real
+        // content. Cutting the fling against that provisional wall killed it in ~20ms — the scroll
+        // froze dead at every window slide/engage until the user touched again. There IS more content
+        // below, so let the fling decelerate naturally and let the per-frame clamp hold it while the
+        // slides chase; the wall moves forward as they land.
+        if (!offsetOk && animator == _animatorFlingY && _windowTravelExtension > 0 &&
+            destination < ContentOffsetBounds.Top)
+        {
+            offsetOk = true;
+        }
 
         if (!offsetOk) //detected that scroll will end past the bounds
         {

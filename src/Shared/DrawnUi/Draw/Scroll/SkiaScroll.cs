@@ -3167,10 +3167,16 @@ namespace DrawnUi.Draw
             if (_replanFlingY)
             {
                 _replanFlingY = false;
-                if (_animatorFlingY != null && _animatorFlingY.IsRunning)
+                if (_animatorFlingY != null)
                 {
-                    var remainingVelocity = (float)_animatorFlingY.CurrentVelocity;
+                    // The cut duration usually expires before this frame runs, so the animator is
+                    // ALREADY stopped here: use the velocity captured when the shift happened,
+                    // otherwise the scroll dies dead at every window cut.
+                    var remainingVelocity = _animatorFlingY.IsRunning
+                        ? (float)_animatorFlingY.CurrentVelocity
+                        : _replanVelocityY;
                     _animatorFlingY.Stop();
+                    _changeSpeed = null; // consumed: don't let a later anchor shift resurrect this fling
                     if (Math.Abs(remainingVelocity) > _minVelocity)
                     {
                         StartToFlingFrom(_animatorFlingY, ViewportOffsetY, remainingVelocity);
@@ -3519,15 +3525,24 @@ namespace DrawnUi.Draw
                     {
                         if (IsContentActive)
                         {
-                            offsetFooter += Content.DrawingRect.Height;
+                            // Use the CURRENT measured height, not just the last-rendered DrawingRect: the footer
+                            // offset is computed BEFORE Content renders this frame, so DrawingRect is one frame
+                            // stale. On a sudden empty->loaded growth that stale (near-zero) height positions the
+                            // footer at the top for one frame — the "footer flashes before cells" bug. Max() keeps
+                            // it below the fuller of the two, so the footer never lands ON content on any frame.
+                            offsetFooter += Math.Max(Content.DrawingRect.Height, Content.MeasuredSize.Pixels.Height);
                         }
 
                         Footer.AddTranslationY = offsetFooter / ctx.Scale;
 
-                        //draw only if onscreen
-                        var hitbox = new SKRect(Viewport.Pixels.Left, Viewport.Pixels.Top + offsetFooter,
+                        //draw only if onscreen — MUST include the current scroll offset. offsetFooter is the
+                        //footer's position at scroll=0 (below full content); without adding InternalViewportOffset
+                        //the hitbox stays far below the viewport for content taller than it, so the footer is
+                        //culled forever (space reserved in the extent, but never painted — the empty-gap bug).
+                        var footerTop = Viewport.Pixels.Top + offsetFooter + InternalViewportOffset.Pixels.Y;
+                        var hitbox = new SKRect(Viewport.Pixels.Left, footerTop,
                             Viewport.Pixels.Right,
-                            Viewport.Pixels.Top + offsetFooter + Footer.MeasuredSize.Pixels.Height);
+                            footerTop + Footer.MeasuredSize.Pixels.Height);
                         if (hitbox.IntersectsWith(this.Viewport.Pixels))
                             drawViews.Add(Footer);
                     }
@@ -3535,16 +3550,17 @@ namespace DrawnUi.Draw
                     {
                         if (IsContentActive)
                         {
-                            offsetFooter += Content.DrawingRect.Width;
+                            offsetFooter += Math.Max(Content.DrawingRect.Width, Content.MeasuredSize.Pixels.Width);
                         }
 
                         Footer.AddTranslationX = offsetFooter / ctx.Scale;
 
-                        //draw only if onscreen
+                        //draw only if onscreen — include the current horizontal scroll offset (see vertical note)
+                        var footerLeft = Viewport.Pixels.Left + offsetFooter + InternalViewportOffset.Pixels.X;
                         var hitbox = new SKRect(
-                            Viewport.Pixels.Left + offsetFooter,
+                            footerLeft,
                             Viewport.Pixels.Top,
-                            Viewport.Pixels.Left + offsetFooter + Footer.MeasuredSize.Pixels.Width,
+                            footerLeft + Footer.MeasuredSize.Pixels.Width,
                             Viewport.Pixels.Bottom);
                         if (hitbox.IntersectsWith(this.Viewport.Pixels))
                             drawViews.Add(Footer);

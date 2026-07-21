@@ -23,6 +23,16 @@ public class SkiaGesturesParameters
     public TouchActionEventArgs Event { get; set; }
 
     /// <summary>
+    /// When this gesture ARRIVED from the platform (<see cref="Super.GetCurrentTimeNanos"/>), not when it
+    /// gets processed. Gestures are postponed to the next frame, so a long frame (LoadMore + window engage
+    /// + measurement) drains a whole burst of them at once and every one of them would otherwise look like
+    /// it happened "now": the accumulated pan deltas teleport the scroll and a seconds-old flick starts a
+    /// full-speed fling into content the user never saw. Consumers must judge staleness against THIS,
+    /// never against processing time. Zero when unknown (synthetic/test gestures).
+    /// </summary>
+    public long ArrivedTimeNanos { get; set; }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="action"></param>
@@ -31,19 +41,25 @@ public class SkiaGesturesParameters
     /// <returns></returns>
     public static SkiaGesturesParameters Create(TouchActionResult action, TouchActionEventArgs args, float renderingScale)
     {
+        // Stamped HERE because Create runs on the platform input thread, at arrival — processing can be
+        // one long frame later. See ArrivedTimeNanos.
+        var arrived = Super.GetCurrentTimeNanos();
+
         if (renderingScale != args.Scale)
         {
             return new SkiaGesturesParameters()
             {
                 Type = action,
-                Event = args.Rescale(renderingScale)
+                Event = args.Rescale(renderingScale),
+                ArrivedTimeNanos = arrived
             };
         }
 
         return new SkiaGesturesParameters()
         {
             Type = action,
-            Event = args
+            Event = args,
+            ArrivedTimeNanos = arrived
         };
     }
 

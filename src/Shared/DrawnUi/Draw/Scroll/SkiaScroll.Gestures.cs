@@ -437,7 +437,9 @@ public partial class SkiaScroll
                             return consumedDefault;
                         }
 
-                        SwipeVelocityAccumulator.CaptureVelocity(new(VelocityX, VelocityY));
+                        // arrival time, NOT now: a burst drained after a long frame must age out instead of
+                        // seeding a fling from a flick that ended seconds ago
+                        SwipeVelocityAccumulator.CaptureVelocity(new(VelocityX, VelocityY), args.ArrivedTimeNanos);
 
                         var movedPtsX = (args.Event.Distance.Delta.X / RenderingScale) * ChangeDistancePanned *
                                         velocityDirection;
