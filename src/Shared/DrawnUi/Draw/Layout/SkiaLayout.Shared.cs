@@ -682,9 +682,24 @@ namespace DrawnUi.Draw
                 // above it, cap to the viewport-realized floor for memory ("1000 items != 1000 cells").
                 // 256 is the tunable memory/smoothness line — raise for smoother huge lists, lower to save RAM.
                 const int cacheAllLimit = 256;
+                // HARD CEILING on the recycled pool. The cache-all branch below is "one view per item", and
+                // the pool cap is never re-derived downward once set (see ViewsAdapter.RefreshDataContexts),
+                // so a list that pages up to the cache-all limit keeps a per-item pool for the rest of its
+                // life — a 2-column image grid sat at ~300 live cell views (device "cells 18/301"). Recycling
+                // was explicitly asked for here; no recycled list needs more than this many instances.
+                // Override with an explicit ItemTemplatePoolSize (checked above, wins outright).
+                const int maxPoolCells = 200;
+
+                // A WINDOWED source KEEPS the cache-all ceiling on purpose. Tried the opposite (viewport floor
+                // for windowed lists, 2026-07-20) and it is worse: the plane realizes ±1 viewport, so ~3
+                // viewports of cells are live at once and the preparation horizon wants more on top. floor =
+                // max(visible*4, visible+Reserve) leaves almost no slack, the pool saturates, and every
+                // preparation evicts a cell still in demand — permanently jerky scrolling after the window
+                // engages (device: "cells <=67 and smooth scrolling is over forever"). The window already
+                // bounds memory: the slice IS the working set, so one view per slice entry is correct.
                 if (EffectiveItemsSource.Count <= Math.Max(floor + mult * 2, cacheAllLimit))
-                    return EffectiveItemsSource.Count + mult * 2;
-                return floor + mult * 2;
+                    return Math.Min(EffectiveItemsSource.Count + mult * 2, maxPoolCells);
+                return Math.Min(floor + mult * 2, maxPoolCells);
             }
 
             return EffectiveItemsSource.Count + mult * 2;
@@ -1539,6 +1554,18 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// The built-in window just engaged IN PLACE: the whole slice was swapped (full source -> a windowed
+        /// view of it), every cell re-indexed to local and the coordinate frame re-based. Same class of event
+        /// as a windowed JUMP rebase — live frames during the rebuild can paint mixed generations or, under
+        /// prepared views, skeletons for cells whose realization is still catching up. A subclass that owns a
+        /// presented cache (SkiaCachedStack) overrides this to hold the last consistent frame until its band
+        /// is coherent again. Default no-op. Runs on the UI thread, right after the offset pin.
+        /// </summary>
+        protected virtual void OnItemsWindowEngagedInPlace()
+        {
+        }
+
+        /// <summary>
         /// Pixel-stable window engage: rebuilds the layout structure from the CURRENT (full-source) structure's
         /// already-measured cells that fall inside the freshly-created window slice — re-indexed to local and
         /// re-based so local 0 sits at content-Y 0 — then compensates the scroll offset by the exact height of
@@ -1617,6 +1644,13 @@ namespace DrawnUi.Draw
             // the visible row on identical pixels (mirror of the head-insert commit's OffsetVisibleAnchorY)
             scroll?.OffsetVisibleAnchorY(headPx / scale);
 
+            // NOT OnContentTranslatedVertically: that contract is "pure translation, no new pixels, re-anchor
+            // your plane". It does not hold here — the content becomes a DIFFERENT slice, so re-anchoring
+            // makes a plane recorded over the pre-engage geometry pass the coverage check and get served
+            // (measured: blanks the screen at engage in EngageOnLoadMoreRepro). The slice swap is a
+            // TRANSITION, which is what the hook below is for.
+            OnItemsWindowEngagedInPlace();
+
             // measure any slice cells below the previous frontier (off-screen) in the background
             Invalidate();
 
@@ -1650,6 +1684,11 @@ namespace DrawnUi.Draw
             }
 
             skiaControl.OnItemSourceChanged();
+
+            // Seed IsEmpty from the source NOW, not only after the first measure. Otherwise IsEmpty stays at
+            // its default (false) until ApplyMeasureResult runs, so anything bound to it (EmptyView, a footer
+            // observing IsEmpty) reads "not empty" for the first frame of an empty list — a 1-frame flash.
+            skiaControl.CheckAndSetupIfEmpty();
         }
 
         private static void NeedUpdateItemsSource(BindableObject bindable, object oldvalue, object newvalue)
