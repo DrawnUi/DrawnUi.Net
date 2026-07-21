@@ -7,6 +7,10 @@ DrawnChatList.ChatPage.AutoTestEnabled = false;
 DrawnChatList.ChatPage.MotionTraceEnabled = false;
 
 
+// Engage-on-grow vs the LoadMore that triggered it: 2-col CachedStack, tail add crossing the window
+// threshold — content must never shrink and no frame may have an empty visible band.
+VirtualizationHarnessDemo.EngageOnLoadMoreRepro.Run();
+
 // Split>1 grid gate: 2-col MeasureFirst grid — every cell in its column slot, initial + range-append
 // (the uniform-clone fast path used to stamp a Fill-expanded full-width first cell onto every clone).
 VirtualizationHarnessDemo.SplitGridRepro.Run();

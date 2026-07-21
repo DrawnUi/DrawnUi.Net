@@ -34,9 +34,6 @@ public static class CachedStackWindowRepro
             VerticalOptions = LayoutOptions.Fill,
             Content = new SkiaCachedStack
                 {
-                    // base default is now FALSE (single-plane); this repro exists to cover the double-buffer
-                    // plane machinery over the built-in window, so opt in explicitly.
-                    UseDoubleBuffering = true,
                     Type = LayoutType.Column,
                     HorizontalOptions = LayoutOptions.Fill,
                     RecyclingTemplate = RecyclingTemplate.Enabled,
@@ -68,6 +65,10 @@ public static class CachedStackWindowRepro
                 }
                 .Assign(out stack),
         };
+
+        // this repro covers the double-buffer plane machinery over the built-in window: opt in so the
+        // async bake runs while the viewport moves.
+        ((SkiaCachedStack)stack).AutoDoubleBuffering = true;
 
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: Colors.Black);
         host.Canvas.Content = scroll;

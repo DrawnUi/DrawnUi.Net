@@ -78,7 +78,7 @@ public static class StalePlaneContentRepro
             VerticalOptions = LayoutOptions.Fill,
             Content = new SkiaCachedStack
             {
-                UseDoubleBuffering = true, // this repro targets the double-buffer path regardless of the base default
+                AutoDoubleBuffering = true, // this repro targets the double-buffer path (on while scrolling)
                 RecyclingTemplate = RecyclingTemplate.Enabled,
                 Spacing = 8,
                 Padding = new Thickness(12, 8),

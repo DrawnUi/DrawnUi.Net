@@ -40,7 +40,7 @@ public static class TypingJumpRepro
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
         page.InitializeList();
-        page.ChatStack.UseDoubleBuffering = useDoubleBuffering;
+        page.ChatStack.AutoDoubleBuffering = useDoubleBuffering;
 
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         for (int i = 0; i < 60; i++) { host.RenderFrame(16); Thread.Sleep(3); }

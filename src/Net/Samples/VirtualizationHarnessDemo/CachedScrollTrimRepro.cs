@@ -70,7 +70,7 @@ public static class CachedScrollTrimRepro
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
-        page.ChatStack.UseDoubleBuffering = true; // base default is now FALSE; this repro targets the double-buffer path
+        page.ChatStack.AutoDoubleBuffering = true; // this repro targets the double-buffer path (on while scrolling)
         page.InitializeList();
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         host.AdvanceFrames(8, 16);
@@ -191,8 +191,8 @@ public static class CachedScrollTrimRepro
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
-        page.ChatStack.UseDoubleBuffering = true; // base default is now FALSE; this repro targets the double-buffer path
-        Console.WriteLine($"UseDoubleBuffering={page.ChatStack.UseDoubleBuffering}");
+        page.ChatStack.AutoDoubleBuffering = true; // this repro targets the double-buffer path (on while scrolling)
+        Console.WriteLine($"AutoDoubleBuffering={page.ChatStack.AutoDoubleBuffering}");
         page.InitializeList();
 
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }

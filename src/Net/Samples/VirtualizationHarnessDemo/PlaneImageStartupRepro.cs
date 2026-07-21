@@ -29,7 +29,7 @@ public static class PlaneImageStartupRepro
             page.InitializeList();
 
             var stack = (SkiaCachedStack)page.ChatStack;
-            stack.UseDoubleBuffering = useDouble;
+            stack.AutoDoubleBuffering = useDouble;
 
             for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
             for (int f = 0; f < 90; f++) { host.RenderFrame(16); Thread.Sleep(3); } // settle + bake + adopt
