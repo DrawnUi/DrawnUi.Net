@@ -8,10 +8,11 @@ using Xunit;
 namespace DrawnUi.Net.Tests;
 
 /// <summary>
-/// A templated stack that sizes ITSELF from its cells on the cross axis (auto-width Column, the
-/// ArtOfFoto spot-meter results list) must grow when a wider item is appended. MeasureFirst's
-/// uniform-add fast path stamped every new cell with the first cell's width, so a longer result
-/// measured into the old width and trailed with "..." while the stack never widened.
+/// MeasureFirst is uniform cells BY DESIGN: every cell takes the first cell's size, appends are
+/// arithmetic. A templated stack that sizes ITSELF from its cells on the cross axis (auto-width
+/// Column of auto-width labels, the ArtOfFoto spot-meter results list) therefore must use
+/// MeasureAll; with MeasureFirst a wider later item is squeezed into the first item's width.
+/// This pins both contracts so neither gets "fixed" into the other again.
 /// </summary>
 public class MeasureFirstAutoWidthTests
 {
@@ -28,21 +29,19 @@ public class MeasureFirstAutoWidthTests
         }
     }
 
-    [Fact]
-    public void AutoWidthColumn_MeasureFirst_GrowsWhenAWiderItemIsAdded()
+    private static (HeadlessCanvasHost host, SkiaLayout stack, SkiaShape frame) Build(
+        ObservableCollection<int> items, MeasuringStrategy strategy)
     {
-        using var host = new HeadlessCanvasHost(400, 400, scale: 1f, background: Colors.Black);
-
-        var items = new ObservableCollection<int> { 50 };
+        var host = new HeadlessCanvasHost(400, 400, scale: 1f, background: Colors.Black);
         var stack = new SkiaLayout
         {
             Type = LayoutType.Column,
             Spacing = 0,
-            HorizontalOptions = LayoutOptions.Start, // auto width from cells, like the results list
+            HorizontalOptions = LayoutOptions.Start, // auto width from cells
             VerticalOptions = LayoutOptions.Start,
             ItemsSource = items,
             ItemTemplate = new DataTemplate(() => new WidthFromContextCell()),
-            // defaults on purpose: RecyclingTemplate.Enabled + MeasuringStrategy.MeasureFirst
+            MeasureItemsStrategy = strategy,
         };
         var frame = new SkiaShape
         {
@@ -57,17 +56,43 @@ public class MeasureFirstAutoWidthTests
             VerticalOptions = LayoutOptions.Fill,
             Children = { frame }
         };
+        return (host, stack, frame);
+    }
 
-        for (int i = 0; i < 5; i++) host.RenderFrame(16);
-        Assert.Equal(50, stack.MeasuredSize.Pixels.Width);
+    [Fact]
+    public void AutoWidthColumn_MeasureAll_GrowsWhenAWiderItemIsAdded()
+    {
+        var items = new ObservableCollection<int> { 50 };
+        var (host, stack, frame) = Build(items, MeasuringStrategy.MeasureAll);
+        using (host)
+        {
+            for (int i = 0; i < 5; i++) host.RenderFrame(16);
+            Assert.Equal(50, stack.MeasuredSize.Pixels.Width);
 
-        items.Add(200);
-        for (int i = 0; i < 8; i++) host.RenderFrame(16);
+            items.Add(200);
+            for (int i = 0; i < 8; i++) host.RenderFrame(16);
 
-        var second = stack.ChildrenFactory.GetCellInUseOrNull(1);
-        Assert.NotNull(second);
-        Assert.Equal(200, second.MeasuredSize.Pixels.Width);
-        Assert.Equal(200, stack.MeasuredSize.Pixels.Width);
-        Assert.Equal(200, frame.DrawingRect.Width);
+            var second = stack.ChildrenFactory.GetCellInUseOrNull(1);
+            Assert.NotNull(second);
+            Assert.Equal(200, second.MeasuredSize.Pixels.Width);
+            Assert.Equal(200, stack.MeasuredSize.Pixels.Width);
+            Assert.Equal(200, frame.DrawingRect.Width);
+        }
+    }
+
+    [Fact]
+    public void AutoWidthColumn_MeasureFirst_KeepsUniformCells_ByDesign()
+    {
+        var items = new ObservableCollection<int> { 50 };
+        var (host, stack, _) = Build(items, MeasuringStrategy.MeasureFirst);
+        using (host)
+        {
+            for (int i = 0; i < 5; i++) host.RenderFrame(16);
+            items.Add(200);
+            for (int i = 0; i < 8; i++) host.RenderFrame(16);
+
+            // appended cell is stamped with the first cell's width: the uniform contract
+            Assert.Equal(50, stack.MeasuredSize.Pixels.Width);
+        }
     }
 }
