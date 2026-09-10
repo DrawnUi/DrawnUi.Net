@@ -594,6 +594,25 @@ namespace DrawnUi.Draw
 
         public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
         {
+            // Single-line: the label is Start-aligned inside a horizontal scroll and measures to its
+            // content, so Center/End alignment had nothing to align in. Give it the editor viewport as
+            // a MINIMUM: short text centers in the field, longer text still grows past it and scrolls.
+            if (Label != null && !IsMultiline)
+            {
+                var minWidth = -1.0;
+                if (HorizontalTextAlignment != DrawTextAlignment.Start && float.IsFinite(widthConstraint) && widthConstraint > 0)
+                {
+                    minWidth = Math.Max(0, widthConstraint / scale
+                                           - Padding.HorizontalThickness - Margins.HorizontalThickness
+                                           - Label.Margin.HorizontalThickness);
+                }
+
+                if (Label.MinimumWidthRequest != minWidth)
+                {
+                    Label.MinimumWidthRequest = minWidth;
+                }
+            }
+
             return base.OnMeasuring(widthConstraint, heightConstraint, scale);
         }
 
