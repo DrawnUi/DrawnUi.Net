@@ -186,6 +186,35 @@ public partial class SkiaScroll
 
         _scrollMaxY = 0;
 
+        // Pull an offset the new bounds no longer contain back inside them, HERE where the bounds change.
+        // The draw path has the same clamp, but only on a frame where IT sees the content size change -
+        // and SetMeasured already copies the content size into _lastContentSize during the measure pass,
+        // so after any re-measure the draw never sees a change and never clamps. Shrinking content (fewer
+        // items) then left the viewport parked past its end forever with nothing on screen (device
+        // 2026-09-10, FiltersCamera looks strip: 38 looks -> 14, offset -1890 against a max of -1791).
+        // Guards: the draw path's settled-measurement check (MeasureVisible extents are transient
+        // mid-flight), plus no clamp under a live gesture, fling/bounce or pull-to-refresh, where
+        // being past the edge is intentional - that draw clamp was effectively dead, so enabling it
+        // unguarded would snap a rubber-band or a showing refresh indicator.
+        bool measureSettled = !(Content is SkiaLayout mvl && mvl.IsTemplated
+                                && mvl.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                                && mvl.LastMeasuredIndexLocal < (mvl.EffectiveItemsSource?.Count ?? 0) - 1);
+
+        if (measureSettled && !IsUserPanning && !IsScrolling && !IsRefreshing)
+        {
+            var overscroll = CalculateOverscrollDistance((float)ViewportOffsetX, (float)ViewportOffsetY);
+            if (overscroll.X != 0)
+            {
+                ViewportOffsetX -= overscroll.X;
+                _panningCurrentOffsetPts.X -= overscroll.X;
+            }
+
+            if (overscroll.Y != 0)
+            {
+                OffsetVisibleAnchorY(-overscroll.Y);
+            }
+        }
+
         IsViewportReady = true;
         onceAfterInitializeViewport = true;
     }
@@ -964,7 +993,10 @@ public partial class SkiaScroll
     /// We might order a scroll before the control was drawn, so it's a kind of startup position
     /// saved every time one calls ScrollToIndex
     /// </summary>
-    protected ScrollToIndexOrder OrderedScrollToIndex;
+    // Explicitly "no order". The struct's default has Index 0 and IsSet means Index >= 0, so an
+    // uninitialised field is a pending ScrollToIndex(0) that nobody issued: every scroll was born with it
+    // and retried it each frame. Harmless only while index scrolls were broken on the axis it targeted.
+    protected ScrollToIndexOrder OrderedScrollToIndex = ScrollToIndexOrder.Default;
 
     // Homing state for a pending OrderedScrollToIndex: the order is held until ARRIVAL (so the
     // LoadMore gate stays closed for the whole animated travel and the retry can re-aim if content

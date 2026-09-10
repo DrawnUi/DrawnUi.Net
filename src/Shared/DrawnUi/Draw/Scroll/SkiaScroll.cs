@@ -1730,37 +1730,29 @@ namespace DrawnUi.Draw
 
         protected virtual SKPoint ClampedOrderedScrollOffset(SKPoint scrollTo)
         {
-            if (Orientation == ScrollOrientation.Vertical)
+            // Clamps an index-scroll target into the range this scroll can actually travel. It used to be
+            // a validity gate that REJECTED any target closer than one viewport to the start
+            // (|target| - viewport < 0 => NotValidPoint): scrolling back to the first item is target 0, so a
+            // horizontal ScrollToIndex(0) never resolved, the order stayed pending and was retried every
+            // frame for nothing. Device 2026-09-10 (FiltersCamera looks strip): a preset change shrank the
+            // row, the ordered scroll to 0 was rejected, and the strip stayed scrolled past its own end
+            // with no cell on screen. Same hard bounds the executor clamps against, so content that fits
+            // the viewport resolves to 0 and the order clears instead of hanging.
+            var bounds = GetHardContentOffsetBounds();
+            var x = scrollTo.X;
+            var y = scrollTo.Y;
+
+            if (Orientation == ScrollOrientation.Horizontal || Orientation == ScrollOrientation.Both)
             {
-                var scrollSpaceY = ptsContentHeight - Viewport.Units.Height;
-                var offsetViewportY = Math.Abs(scrollTo.Y) - Viewport.Units.Height;
-                if (scrollSpaceY < 0 || offsetViewportY < 0)
-                {
-                    return NotValidPoint();
-                }
-            }
-            else if (Orientation == ScrollOrientation.Horizontal)
-            {
-                var scrollSpaceX = ptsContentWidth - Viewport.Units.Width;
-                var offsetViewportX = Math.Abs(scrollTo.X) - Viewport.Units.Width;
-                if (scrollSpaceX < 0 || offsetViewportX < 0)
-                {
-                    return NotValidPoint();
-                }
-            }
-            else if (Orientation == ScrollOrientation.Both)
-            {
-                var scrollSpaceY = ptsContentHeight - Viewport.Units.Height;
-                var offsetViewportY = Math.Abs(scrollTo.Y) - Viewport.Units.Height;
-                var scrollSpaceX = ptsContentWidth - Viewport.Units.Width;
-                var offsetViewportX = Math.Abs(scrollTo.X) - Viewport.Units.Width;
-                if (scrollSpaceY < 0 || offsetViewportY < 0 || scrollSpaceX < 0 || offsetViewportX < 0)
-                {
-                    return NotValidPoint();
-                }
+                x = Math.Clamp(x, Math.Min(bounds.Left, bounds.Right), Math.Max(bounds.Left, bounds.Right));
             }
 
-            return scrollTo;
+            if (Orientation == ScrollOrientation.Vertical || Orientation == ScrollOrientation.Both)
+            {
+                y = Math.Clamp(y, Math.Min(bounds.Top, bounds.Bottom), Math.Max(bounds.Top, bounds.Bottom));
+            }
+
+            return new SKPoint(x, y);
         }
 
         /// <summary>
