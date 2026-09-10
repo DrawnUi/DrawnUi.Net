@@ -690,8 +690,23 @@ public partial class SkiaScroll
             ptsContentWidth += HeaderSize.Units.Width + FooterSize.Units.Width + (float)ContentOffset;
         }
 
-        var width = ptsContentWidth - MeasuredSize.Units.Width;
-        var height = ptsContentHeight - MeasuredSize.Units.Height;
+        // Subtract the ARRANGED box, not MeasuredSize. MeasuredSize is what this scroll asked its
+        // parent for and therefore includes its own margins, while the content is laid out inside the
+        // arranged rect minus padding — so any inset on the scroll itself (margin, padding, or both)
+        // made the offset bounds that much too small and the last inset points of content unreachable.
+        // The React head does the same thing with DrawingRect (SkiaScroll.ts OnLayoutChanged), which is
+        // why the same demo page scrolls to its end there and not here. Viewport is used rather than
+        // DrawingRect because DrawingRect is only margin-adjusted: measured 726 / DrawingRect 726 /
+        // Viewport 690 for a scroll with 36 of padding, so DrawingRect would fix the margin case and
+        // leave the padding case short.
+        // Identical to the previous expression whenever the scroll has no margin and no padding, and
+        // the fallback keeps the old value on a pass that runs before the viewport is known.
+        var viewportUnits = Viewport.Units;
+        var viewportWidth = viewportUnits.Width > 0 ? viewportUnits.Width : MeasuredSize.Units.Width;
+        var viewportHeight = viewportUnits.Height > 0 ? viewportUnits.Height : MeasuredSize.Units.Height;
+
+        var width = ptsContentWidth - viewportWidth;
+        var height = ptsContentHeight - viewportHeight;
 
         if (height < 0)
             height = 0;
