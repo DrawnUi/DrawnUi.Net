@@ -186,6 +186,35 @@ public partial class SkiaScroll
 
         _scrollMaxY = 0;
 
+        // Pull an offset the new bounds no longer contain back inside them, HERE where the bounds change.
+        // The draw path has the same clamp, but only on a frame where IT sees the content size change -
+        // and SetMeasured already copies the content size into _lastContentSize during the measure pass,
+        // so after any re-measure the draw never sees a change and never clamps. Shrinking content (fewer
+        // items) then left the viewport parked past its end forever with nothing on screen (device
+        // 2026-09-10, FiltersCamera looks strip: 38 looks -> 14, offset -1890 against a max of -1791).
+        // Guards: the draw path's settled-measurement check (MeasureVisible extents are transient
+        // mid-flight), plus no clamp under a live gesture, fling/bounce or pull-to-refresh, where
+        // being past the edge is intentional - that draw clamp was effectively dead, so enabling it
+        // unguarded would snap a rubber-band or a showing refresh indicator.
+        bool measureSettled = !(Content is SkiaLayout mvl && mvl.IsTemplated
+                                && mvl.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
+                                && mvl.LastMeasuredIndexLocal < (mvl.EffectiveItemsSource?.Count ?? 0) - 1);
+
+        if (measureSettled && !IsUserPanning && !IsScrolling && !IsRefreshing)
+        {
+            var overscroll = CalculateOverscrollDistance((float)ViewportOffsetX, (float)ViewportOffsetY);
+            if (overscroll.X != 0)
+            {
+                ViewportOffsetX -= overscroll.X;
+                _panningCurrentOffsetPts.X -= overscroll.X;
+            }
+
+            if (overscroll.Y != 0)
+            {
+                OffsetVisibleAnchorY(-overscroll.Y);
+            }
+        }
+
         IsViewportReady = true;
         onceAfterInitializeViewport = true;
     }
@@ -661,8 +690,23 @@ public partial class SkiaScroll
             ptsContentWidth += HeaderSize.Units.Width + FooterSize.Units.Width + (float)ContentOffset;
         }
 
-        var width = ptsContentWidth - MeasuredSize.Units.Width;
-        var height = ptsContentHeight - MeasuredSize.Units.Height;
+        // Subtract the ARRANGED box, not MeasuredSize. MeasuredSize is what this scroll asked its
+        // parent for and therefore includes its own margins, while the content is laid out inside the
+        // arranged rect minus padding — so any inset on the scroll itself (margin, padding, or both)
+        // made the offset bounds that much too small and the last inset points of content unreachable.
+        // The React head does the same thing with DrawingRect (SkiaScroll.ts OnLayoutChanged), which is
+        // why the same demo page scrolls to its end there and not here. Viewport is used rather than
+        // DrawingRect because DrawingRect is only margin-adjusted: measured 726 / DrawingRect 726 /
+        // Viewport 690 for a scroll with 36 of padding, so DrawingRect would fix the margin case and
+        // leave the padding case short.
+        // Identical to the previous expression whenever the scroll has no margin and no padding, and
+        // the fallback keeps the old value on a pass that runs before the viewport is known.
+        var viewportUnits = Viewport.Units;
+        var viewportWidth = viewportUnits.Width > 0 ? viewportUnits.Width : MeasuredSize.Units.Width;
+        var viewportHeight = viewportUnits.Height > 0 ? viewportUnits.Height : MeasuredSize.Units.Height;
+
+        var width = ptsContentWidth - viewportWidth;
+        var height = ptsContentHeight - viewportHeight;
 
         if (height < 0)
             height = 0;
@@ -964,7 +1008,10 @@ public partial class SkiaScroll
     /// We might order a scroll before the control was drawn, so it's a kind of startup position
     /// saved every time one calls ScrollToIndex
     /// </summary>
-    protected ScrollToIndexOrder OrderedScrollToIndex;
+    // Explicitly "no order". The struct's default has Index 0 and IsSet means Index >= 0, so an
+    // uninitialised field is a pending ScrollToIndex(0) that nobody issued: every scroll was born with it
+    // and retried it each frame. Harmless only while index scrolls were broken on the axis it targeted.
+    protected ScrollToIndexOrder OrderedScrollToIndex = ScrollToIndexOrder.Default;
 
     // Homing state for a pending OrderedScrollToIndex: the order is held until ARRIVAL (so the
     // LoadMore gate stays closed for the whole animated travel and the retry can re-aim if content

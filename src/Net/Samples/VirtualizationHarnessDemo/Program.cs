@@ -23,6 +23,10 @@ VirtualizationHarnessDemo.EditorShapedDragRepro.Run();
 // offset a cache), the gap travels, a drop inside lands and a drop outside cancels back to the start.
 VirtualizationHarnessDemo.LiftDragRepro.Run();
 
+// Horizontal strip whose roster shrinks while scrolled: stays in range, lands on the ordered index,
+// no phantom pending order (FiltersCamera looks strip vanished after a preset pick, device 2026-09-10).
+VirtualizationHarnessDemo.ScrollShrinkRepro.Run();
+
 // Engage-on-grow vs the LoadMore that triggered it: 2-col CachedStack, tail add crossing the window
 // threshold — content must never shrink and no frame may have an empty visible band.
 VirtualizationHarnessDemo.EngageOnLoadMoreRepro.Run();
