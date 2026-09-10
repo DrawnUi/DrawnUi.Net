@@ -1343,6 +1343,16 @@ namespace DrawnUi.Draw
         //    set { SetValue(InitializeTemplatesInBackgroundDelayProperty, value); }
         //}
 
+        /// <summary>
+        /// True when this stack takes its cross-axis size from its cells: an auto-width Column or an
+        /// auto-height Row. MeasureFirst copies the first cell's size to every other cell, which is only
+        /// valid when the cross axis is imposed by the layout (Fill or a size request); a self-sized
+        /// stack must measure every cell, else a wider later item is squeezed into the first item's
+        /// width and its text trails with "..." while the stack never widens.
+        /// </summary>
+        public bool IsCrossAxisAutoSized =>
+            Type == LayoutType.Column ? NeedAutoWidth : Type == LayoutType.Row && NeedAutoHeight;
+
         public static readonly BindableProperty MeasureItemsStrategyProperty = BindableProperty.Create(
             nameof(MeasureItemsStrategy),
             typeof(MeasuringStrategy),
@@ -1780,7 +1790,10 @@ namespace DrawnUi.Draw
             // no measures. Applied by TryApplyUniformAddMeasureFirst / the generic remove path
             // (Replace decomposes into Remove+Add). Move is cheaper still: uniform rows make a reorder
             // a pure rebind, so it needs no structure arithmetic at all. Resets keep the full rebuild.
-            if (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
+            // ...unless the layout sizes itself from the cells on the cross axis: then the "uniform"
+            // cell is a lie (a wider item appended to an auto-width column) and the arithmetic add
+            // would stamp the new cell with the first cell's width. Full remeasure for those.
+            if (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && !IsCrossAxisAutoSized
                 && args.Action is NotifyCollectionChangedAction.Add
                     or NotifyCollectionChangedAction.Remove
                     or NotifyCollectionChangedAction.Replace

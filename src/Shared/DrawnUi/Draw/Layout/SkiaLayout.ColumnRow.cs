@@ -495,7 +495,7 @@ else
                         if (useOneTemplate)
                         {
                             needMeasureAll = RecyclingTemplate == RecyclingTemplate.Disabled ||
-                                             MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
+                                             MeasureItemsStrategy == MeasuringStrategy.MeasureAll || IsCrossAxisAutoSized ||
                                              (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
                                               && columnsCount != Split)
                                              || !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
@@ -1005,7 +1005,7 @@ else
                     // Inline ShouldMeasureAll
                     var needMeasureAll = !useOneTemplate ||
                                          RecyclingTemplate == RecyclingTemplate.Disabled ||
-                                         MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
+                                         MeasureItemsStrategy == MeasuringStrategy.MeasureAll || IsCrossAxisAutoSized ||
                                          (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst &&
                                           columnsCount != Split) ||
                                          !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && firstCell != null);
@@ -1186,7 +1186,7 @@ else
                     // Inline ShouldMeasureAll
                     var needMeasureAll = !isTemplated || !useOneTemplate ||
                                          RecyclingTemplate == RecyclingTemplate.Disabled ||
-                                         MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
+                                         MeasureItemsStrategy == MeasuringStrategy.MeasureAll || IsCrossAxisAutoSized ||
                                          (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst &&
                                           columnsCount != Split) ||
                                          !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && firstCell != null);
@@ -1595,7 +1595,7 @@ else
             if (!isTemplated || !useOneTemplate) return true;
 
             return RecyclingTemplate == RecyclingTemplate.Disabled ||
-                   MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
+                   MeasureItemsStrategy == MeasuringStrategy.MeasureAll || IsCrossAxisAutoSized ||
                    (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && columnsCount != Split) ||
                    !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && firstCell != null);
         }
