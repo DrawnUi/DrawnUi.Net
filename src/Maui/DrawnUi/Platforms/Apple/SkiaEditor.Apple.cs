@@ -119,6 +119,17 @@ namespace DrawnUi.Draw
             Control.TextContainerInset = UIEdgeInsets.Zero;
             Control.TextContainer.LineFragmentPadding = 0;
 
+            // This is only a keyboard sink, everything is drawn by Skia. It sits 1x1 at the editor's
+            // bottom-right corner; up to iOS 18 the tiny frame clipped it, but iOS 26 draws the text
+            // and the caret outside the bounds (white first letter + blue dot near the corner on
+            // iPhone 16/17). Make it visually empty regardless of clipping.
+            Control.TextColor = UIColor.Clear;
+            Control.TintColor = UIColor.Clear;
+            Control.BackgroundColor = UIColor.Clear;
+            Control.Opaque = false;
+            Control.ClipsToBounds = true;
+            Control.Alpha = 0f;
+
             _updatingText = true;
             Control.Text = this.Text ?? string.Empty;
             _updatingText = false;
