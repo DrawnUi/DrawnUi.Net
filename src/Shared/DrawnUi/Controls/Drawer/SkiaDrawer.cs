@@ -250,7 +250,7 @@ namespace DrawnUi.Controls
         {
             if (bindable is SkiaDrawer control)
             {
-                control.SetContent(newvalue as SkiaControl);
+                control.SetContent(newvalue as SkiaControl, oldvalue as SkiaControl);
             }
         }
 
@@ -262,9 +262,12 @@ namespace DrawnUi.Controls
 
         #endregion
 
-        protected virtual void SetContent(SkiaControl view)
+        protected virtual void SetContent(SkiaControl view, SkiaControl previous = null)
         {
-            var oldContent = Views.FirstOrDefault(x => x == Content);
+            // the property already holds the new value when the changed callback runs, so the
+            // previous content must come from the callback: looking it up as Views == Content
+            // never matched, the old child stayed in Views and was disposed with the drawer
+            var oldContent = previous ?? Views.FirstOrDefault(x => x != view);
             if (view != oldContent)
             {
                 if (oldContent != null)

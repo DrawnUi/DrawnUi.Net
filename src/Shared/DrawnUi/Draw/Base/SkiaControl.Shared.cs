@@ -4296,10 +4296,12 @@ namespace DrawnUi.Draw
                         left = destination.Left;
                         right = left + useMaxWidth;
                     }
-
-                    if (right > destination.Right)
+                    // move back inside like the vertical path: truncating here clipped content when an
+                    // asymmetric margin pushed the centered box past the edge (the case guard ensures it fits)
+                    else if (right > destination.Right)
                     {
                         right = destination.Right;
+                        left = right - useMaxWidth;
                     }
 
                     if (useHorizontalThickness)
