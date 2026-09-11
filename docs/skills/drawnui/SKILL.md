@@ -86,6 +86,10 @@ Author a screen in design units (e.g. 390pt wide) and let the engine fit it: ove
 - Trap met while doing this: an icon `SkiaLabel{LockRatio=1}` inside a CENTERED Column inside a finite card grows to the card height (`max(w,h)` rule) and pushes the title out of the clip; give icon glyphs an explicit `WidthRequest/HeightRequest` box + centered text alignment instead. Also `.Fill()` chained after `HorizontalOptions=Center` in the initializer overwrites it — use `.FillY()`.
 - Windows capture tip: `PrintWindow` from a PowerShell that is NOT DPI-aware renders the window at physical size into a logical-size bitmap = cropped bottom/right (looked like "bottom row missing"). Call `SetProcessDPIAware()` first; shrink a WinUI window with `SetWindowPos` (`MoveWindow` was ignored below the initial height).
 
+## Center + asymmetric Margin semantic (verified 2026-09-11)
+
+`CalculateLayout` Center (both axes) centers the CONTENT box (measured size minus the `Left-Right` / `Top-Bottom` margin difference), then shifts it by that full difference. So `Margin right 12` moves a centered control 12pt left of center, not 6pt like MAUI. The horizontal path used to TRUNCATE the box when the pre-shift box overflowed the cell edge (ArtOfFoto timer settings trash icon: 16px glyph drawn in 13px, `Center` + `Margin(0,0,12,0)` in a 32pt grid column); now it moves the box back inside, same as vertical. Tell: `DrawingRect.Width < ContentSize.Pixels.Width` on a Center control with one-sided margin in a tight cell. Test: `src/Net/Tests/DrawnUi.Net.Tests/CenterAlignmentMarginTests.cs`.
+
 ## Positioning children inside containers — 4 ways, prefer in order
 
 WPF-style system: there is no free X/Y — the layout computes position and stamps the arranged `DrawingRect`. Pick the FIRST way that fits:
