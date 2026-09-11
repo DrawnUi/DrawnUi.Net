@@ -1666,7 +1666,13 @@ namespace DrawnUi.Draw
             nameof(ReturnType),
             typeof(ReturnType),
             typeof(SkiaEditor),
-            ReturnType.Done);
+            ReturnType.Done,
+            propertyChanged: (b, o, n) => { if (b is SkiaEditor e && e.IsFocused) e.ApplyReturnTypeNative(); });
+
+        /// <summary>
+        /// Re-applies <see cref="ReturnType"/> to an already focused native keyboard sink.
+        /// </summary>
+        partial void ApplyReturnTypeNative();
 
         /// <summary>
         /// Return key action. On soft keyboards selects the action key label.

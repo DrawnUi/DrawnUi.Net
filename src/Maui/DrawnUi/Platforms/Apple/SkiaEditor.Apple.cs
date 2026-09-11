@@ -49,7 +49,9 @@ namespace DrawnUi.Draw
                 // delegate); soft keyboards have no Shift+Enter, so Send wins for "\n".
                 if (text == "\n" && (!_editor.IsMultiline || _editor.ShouldSubmitOnEnter))
                 {
-                    _editor.ExecuteSubmit(clearFocus: false);
+                    // Single-line: the action key ends editing — submit and close the keyboard,
+                    // same as Submit(). Multiline Send keeps focus so the user can type the next message.
+                    _editor.ExecuteSubmit(clearFocus: !_editor.IsMultiline);
                     return false;
                 }
                 return true;
@@ -201,6 +203,13 @@ namespace DrawnUi.Draw
                 SkiaEditorKeyboard.Email    => UIKeyboardType.EmailAddress,
                 _                           => UIKeyboardType.Default
             };
+
+            SetReturnType(ReturnType);
+        }
+
+        partial void ApplyReturnTypeNative()
+        {
+            SetReturnType(ReturnType);
         }
 
         public void SetReturnType(ReturnType type)
@@ -214,6 +223,10 @@ namespace DrawnUi.Draw
                 case ReturnType.Search: Control.ReturnKeyType = UIReturnKeyType.Search; break;
                 default:                Control.ReturnKeyType = UIReturnKeyType.Done;   break;
             }
+
+            // A live keyboard only picks up the new key label after its input views are reloaded.
+            if (Control.IsFirstResponder)
+                Control.ReloadInputViews();
         }
 
         private CancellationTokenSource? _deferCts;

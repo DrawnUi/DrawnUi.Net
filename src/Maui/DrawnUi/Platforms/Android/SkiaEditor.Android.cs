@@ -161,7 +161,9 @@ namespace DrawnUi.Draw
             }
 
             e.Handled = true;
-            ExecuteSubmit(clearFocus: false);
+            // Single-line: the action key ends editing — submit and close the keyboard, same as
+            // Submit(). Multiline Send keeps focus so the user can type the next message.
+            ExecuteSubmit(clearFocus: !IsMultiline);
             return;
 
             if (e.ActionId == ImeAction.Done ||
