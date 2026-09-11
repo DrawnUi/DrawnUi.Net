@@ -24,7 +24,15 @@ namespace DrawnUi.Controls
                 return consumedDefault;
             }
 
-            return base.ProcessGestures(args, apply);
+            var ret =  base.ProcessGestures(args, apply);
+
+            //fix to work inside a scroll and similar
+            if (ret == null && RespondsToGestures && args.Type != TouchActionResult.Up)
+            {
+                return this;
+            }
+
+            return ret;
         }
 
         //public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
