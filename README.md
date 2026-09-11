@@ -56,8 +56,9 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://fiddle.drawnui.net)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.11
+## What's New 1.10.6.12
 
+  * Fix `SkiaCarousel` to block gestures for nor current slides
   * Fix wheel picker to work properly when hosted inside a scroll container
   * Fix `SkiaEditor` was leeking native entry display on latest iOS version.
   * Fix `SkiaScroll` margins were applied to limit scrolling bounds

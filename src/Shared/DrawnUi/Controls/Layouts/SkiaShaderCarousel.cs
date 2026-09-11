@@ -319,6 +319,12 @@ public class SkiaShaderCarousel : SkiaCarousel
     {
     }
 
+    /// <summary>
+    /// Slides all sit on the same rect, so only the selected one may take gestures: otherwise the
+    /// topmost slide in the render tree (the last on-screen one) would catch every tap, whatever is shown.
+    /// </summary>
+    protected override bool IsSlideHitTestable(int index) => index == SelectedIndex;
+
     #endregion
 
     #region GESTURE TARGETING

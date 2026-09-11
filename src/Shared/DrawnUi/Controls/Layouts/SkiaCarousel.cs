@@ -471,6 +471,9 @@ public class SkiaCarousel : SnappingLayout
                         cell.Drawn.Set(view.DrawingRect.Left, view.DrawingRect.Top, view.DrawingRect.Right,
                             view.DrawingRect.Bottom);
 
+                        if (!IsSlideHitTestable(cell.ControlIndex))
+                            continue;
+
                         var destinationRect = new SKRect(cell.Drawn.Left, cell.Drawn.Top, cell.Drawn.Right,
                             cell.Drawn.Bottom);
                         tree.Add(new SkiaControlWithRect(view,
@@ -671,6 +674,13 @@ public class SkiaCarousel : SnappingLayout
     #endregion
 
     #region ENGINE
+
+    /// <summary>
+    /// Whether the slide at <paramref name="index"/> takes part in hit-testing for the frame being rendered.
+    /// Every slide drawn on screen does by default; a carousel whose slides share one rect (see
+    /// <see cref="SkiaShaderCarousel"/>) narrows this to the slide the user actually sees.
+    /// </summary>
+    protected virtual bool IsSlideHitTestable(int index) => true;
 
     protected virtual (Vector2 Offset, bool OnScreen, bool NextToScreen) CalculateChildPosition(Vector2 currentPosition,
         int index, int childrenCount)
