@@ -58,6 +58,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.12
 
+  * Fix `SkiaDrawer` was not removing its previous content when `Content` was replaced or set to null: the old child stayed in `Views` and was disposed together with the drawer, so a kept modal content came back disposed on its next presentation (blur, no popup).
   * Fix `SkiaCarousel` to block gestures for nor current slides
   * Fix wheel picker to work properly when hosted inside a scroll container
   * Fix `SkiaEditor` was leeking native entry display on latest iOS version.
