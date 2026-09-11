@@ -523,6 +523,16 @@ public class SkiaImage : SkiaControl
         return await SkiaImageManager.Instance.LoadImageManagedAsync(source, cancel, priority);
     }
 
+    /// <summary>
+    /// Decodes a local file on the calling thread, manager cache first. Package files go through the
+    /// platform file API, which completes synchronously for local assets on every MAUI head.
+    /// </summary>
+    protected virtual SKBitmap LoadLocalFileSync(string file, CancellationToken cancel)
+    {
+        return SkiaImageManager.LoadImageOnPlatformAsync(new FileImageSource { File = file }, cancel)
+            .GetAwaiter().GetResult();
+    }
+
     public virtual void SetImageSource(ImageSource source)
     {
         //until we implement 2-threads rendering this is needed for ImageDoubleBuffered cache rendering
@@ -585,8 +595,20 @@ public class SkiaImage : SkiaControl
                         SKBitmap bitmap = null;
                         try
                         {
-                            bitmap = SkiaImageManager.Instance.LoadImageManagedAsync(source, cancel).GetAwaiter()
-                                .GetResult();
+                            if (source is FileImageSource file)
+                            {
+                                // Sync means sync: decode the file on this thread. Going through the
+                                // load queue and blocking on its task cost a ~50 ms poll tick per
+                                // image (a page of grid tiles stalled the render thread for 600 ms)
+                                // and could never return at all when the same file was already
+                                // loading for another, since recycled, control.
+                                bitmap = LoadLocalFileSync(file.File, cancel.Token);
+                            }
+                            else
+                            {
+                                bitmap = SkiaImageManager.Instance.LoadImageManagedAsync(source, cancel).GetAwaiter()
+                                    .GetResult();
+                            }
                         }
                         catch (Exception e)
                         {

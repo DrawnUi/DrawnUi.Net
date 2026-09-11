@@ -799,10 +799,28 @@ namespace DrawnUi.Controls
                                     }
                                 }
 
+                                // The drawer animates only once it has been drawn (ApplyOptions:
+                                // Animated && WasDrawn). Opening it before its first frame snaps it
+                                // open with no transition, StateTransitionComplete never fires and
+                                // the wait below holds the navigation lock forever: every later
+                                // push or pop hangs. The frozen path never hit this because the
+                                // screenshot wait spans a few frames; the unfrozen one did.
+                                while (!control.WasDrawn && !control.IsDisposed)
+                                {
+                                    await Task.Delay(15);
+                                }
+
                                 _pushModalWasOpen = false;
                                 drawer.StateTransitionComplete += OnModalDrawerStateTransitionComplete;
 
                                 control.IsOpen = true;
+
+                                // belt and braces: an open that produced no transition (already at
+                                // the open snap, disposed mid-way) must still release the lock
+                                if (!control.InTransition)
+                                {
+                                    FinalizeTransition(control);
+                                }
                             });
                         }
                     }

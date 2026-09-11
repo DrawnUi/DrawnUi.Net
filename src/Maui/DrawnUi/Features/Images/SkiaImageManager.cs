@@ -577,6 +577,7 @@ public partial class SkiaImageManager : IDisposable
                     queueItem.Task.TrySetCanceled();
 
                     FreedQueuedItem(queueItem);
+                    ReleasePendingLoads(GetQueuedUri(queueItem));
                 }
 
 
@@ -596,6 +597,7 @@ public partial class SkiaImageManager : IDisposable
                 }
 
                 FreedQueuedItem(queueItem);
+                ReleasePendingLoads(GetQueuedUri(queueItem));
             }
             finally
             {
@@ -604,6 +606,72 @@ public partial class SkiaImageManager : IDisposable
 
                 queueItem.Dispose();
             }
+        }
+    }
+
+    static string GetQueuedUri(QueueItem queueItem)
+    {
+        return queueItem.Source switch
+        {
+            UriImageSource sourceUri => sourceUri.Uri.ToString(),
+            FileImageSource sourceFile => sourceFile.File,
+            _ => null
+        };
+    }
+
+    /// <summary>
+    /// The load that owned <paramref name="uri"/> ended without a bitmap (cancelled: its SkiaImage
+    /// was recycled or got another source, or it failed). Requests for the same uri that arrived
+    /// meanwhile were parked behind it and only ever resolved by its success, so they would wait
+    /// forever, and a caller blocking on one of them synchronously (LoadLocalAsync = false) froze
+    /// the render thread for good. The first live one takes the load over, the others park behind it.
+    /// </summary>
+    void ReleasePendingLoads(string uri)
+    {
+        if (string.IsNullOrEmpty(uri))
+            return;
+
+        foreach (LoadPriority priority in Enum.GetValues(typeof(LoadPriority)))
+        {
+            var pendingLoads = GetPendingLoadsDictionary(priority);
+            if (!pendingLoads.TryRemove(uri, out var stack))
+                continue;
+
+            QueueItem next = null;
+            var rest = new List<QueueItem>();
+            while (stack.TryPop(out var pending))
+            {
+                if (pending.Cancel?.IsCancellationRequested == true)
+                {
+                    pending.Task.TrySetCanceled();
+                }
+                else if (next == null)
+                {
+                    next = pending;
+                }
+                else
+                {
+                    rest.Add(pending);
+                }
+            }
+
+            if (next == null)
+                continue;
+
+            _trackLoadingBitmapsUris[uri] = next.Task.Task;
+            if (rest.Count > 0)
+            {
+                var again = pendingLoads.GetOrAdd(uri, _ => new ConcurrentStack<QueueItem>());
+                foreach (var item in rest)
+                    again.Push(item);
+            }
+
+            lock (lockObject)
+            {
+                _queue.Enqueue(next, priority);
+            }
+
+            TraceLog($"ImageLoadManager: load of {uri} ended without a bitmap, handed over to a pending request");
         }
     }
 
