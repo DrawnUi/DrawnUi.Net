@@ -170,8 +170,15 @@ public partial class SkiaScroll
 
         HasContentToScroll = ptsContentHeight > Viewport.Units.Height || ptsContentWidth > Viewport.Units.Width;
 
+        // "Nothing to scroll" snaps the offset home, but never under a live gesture, fling or bounce:
+        // an append into a Split grid resets its measurement for a pass, the content size is
+        // transiently zero, and this wrote 0 into a running top bounce, which then jumped back to
+        // where the spring was (device 2026-09-12: one-frame jag at the overscroll after a LoadMore).
+        // The bounce lands on 0 by itself; a fling past a shrunken end is clamped below once it ends.
+        var interacting = IsUserPanning || IsScrolling || IsRefreshing;
+
         _scrollMinX = ContentOffsetBounds.Left;
-        if (_scrollMinX >= 0)
+        if (_scrollMinX >= 0 && !interacting)
         {
             ViewportOffsetX = 0;
         }
@@ -179,7 +186,7 @@ public partial class SkiaScroll
         _scrollMaxX = 0;
 
         _scrollMinY = ContentOffsetBounds.Top;
-        if (_scrollMinY >= 0)
+        if (_scrollMinY >= 0 && !interacting)
         {
             ViewportOffsetY = 0;
         }

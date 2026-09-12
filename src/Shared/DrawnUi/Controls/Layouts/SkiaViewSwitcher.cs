@@ -196,7 +196,7 @@ namespace DrawnUi.Controls
                         return stack.Last();
 
                 }
-                return new NavigationStackEntry(GetUnorderedSubviews()[selectedIndex] as SkiaControl, false, false);
+                return GetRootView(selectedIndex);
             }
             catch (Exception e)
             {
@@ -205,11 +205,21 @@ namespace DrawnUi.Controls
             return null;
         }
 
+        /// <summary>
+        /// The tab's root view, or null when there is no subview at that index yet. SelectedIndex
+        /// is commonly set in the initializer before the children are assigned, so "no view yet" is
+        /// a normal state here, not an error: it used to be reached by throwing and logging an
+        /// ArgumentOutOfRangeException on every such call.
+        /// </summary>
         public NavigationStackEntry GetRootView(int selectedIndex)
         {
             try
             {
-                return new NavigationStackEntry(GetUnorderedSubviews()[selectedIndex] as SkiaControl, false, false);
+                var views = GetUnorderedSubviews();
+                if (selectedIndex < 0 || selectedIndex >= views.Count)
+                    return null;
+
+                return new NavigationStackEntry(views[selectedIndex], false, false);
             }
             catch (Exception e)
             {

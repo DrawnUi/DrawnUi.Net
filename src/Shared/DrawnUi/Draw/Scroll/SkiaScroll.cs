@@ -1786,20 +1786,27 @@ namespace DrawnUi.Draw
                         ControlInStack childInfo = null;
 
                         bool isValid = false;
+                        // A Split layout (items grid) has Split cells per structure row: the item index
+                        // maps to row = index / Split, column = index % Split. Before, the index was read
+                        // as a row and any item past the first Split rows made the order silently invalid
+                        // (device 2026-09-12: a 3-column grid never scrolled to item 26).
+                        var split = layout.Split > 1 ? layout.Split : 1;
+                        var cellIndex = index / split;
+                        var cellLane = index % split;
                         if (Orientation == ScrollOrientation.Horizontal)
                         {
-                            if (index < structure.MaxColumns)
+                            if (cellIndex < structure.MaxColumns)
                             {
                                 isValid = true;
-                                childInfo = structure.Get(index, 0);
+                                childInfo = structure.Get(cellIndex, cellLane);
                             }
                         }
                         else
                         {
-                            if (index < structure.MaxRows)
+                            if (cellIndex < structure.MaxRows)
                             {
                                 isValid = true;
-                                childInfo = structure.Get(0, index);
+                                childInfo = structure.Get(cellLane, cellIndex);
                             }
                         }
 
@@ -2150,7 +2157,7 @@ namespace DrawnUi.Draw
             double currentOffset = Orientation == ScrollOrientation.Vertical
                 ? InternalViewportOffset.Units.Y
                 : InternalViewportOffset.Units.X;
-            var minTravel = (LoadMoreOffset + LoadMoreTopOffset + 20f) * scale;
+            var minTravel = LoadMoreOffset + LoadMoreTopOffset + 20f;
             if (Math.Abs(currentOffset - _lastLoadMoreDirectionOffset) < minTravel)
             {
                 return true;
@@ -2162,24 +2169,24 @@ namespace DrawnUi.Draw
             {
                 if (_lastLoadMoreDirection == LoadMoreDirection.Bottom && direction == LoadMoreDirection.Top)
                 {
-                    return InternalViewportOffset.Units.Y <= _scrollMinY + (LoadMoreOffset * scale);
+                    return InternalViewportOffset.Units.Y <= _scrollMinY + LoadMoreOffset;
                 }
 
                 if (_lastLoadMoreDirection == LoadMoreDirection.Top && direction == LoadMoreDirection.Bottom)
                 {
-                    return InternalViewportOffset.Units.Y >= _scrollMaxY - (LoadMoreTopOffset * scale);
+                    return InternalViewportOffset.Units.Y >= _scrollMaxY - LoadMoreTopOffset;
                 }
             }
             else if (Orientation == ScrollOrientation.Horizontal)
             {
                 if (_lastLoadMoreDirection == LoadMoreDirection.Bottom && direction == LoadMoreDirection.Top)
                 {
-                    return InternalViewportOffset.Units.X <= _scrollMinX + (LoadMoreOffset * scale);
+                    return InternalViewportOffset.Units.X <= _scrollMinX + LoadMoreOffset;
                 }
 
                 if (_lastLoadMoreDirection == LoadMoreDirection.Top && direction == LoadMoreDirection.Bottom)
                 {
-                    return InternalViewportOffset.Units.X >= _scrollMaxX - (LoadMoreTopOffset * scale);
+                    return InternalViewportOffset.Units.X >= _scrollMaxX - LoadMoreTopOffset;
                 }
             }
 
@@ -2632,10 +2639,16 @@ namespace DrawnUi.Draw
             if (OrderedScrollToIndex.IsSet)
                 return true;
 
+            // LoadMoreOffset / LoadMoreTopOffset are distances in points and every offset compared
+            // below (InternalViewportOffset.Units, _scrollMinY/_scrollMaxY from ContentOffsetBounds) is
+            // in points too. They used to be multiplied by the rendering scale, so on a 3x screen a
+            // 600pt distance became 1800pt of slack, more than most lists, and the bottom trigger
+            // fired at ANY position as soon as its latch was cleared, e.g. at a top overscroll right
+            // after an append re-armed it (device 2026-09-12, FiltersCamera My Shots).
             if (LoadMoreCommand != null)
             {
                 if (_loadMoreBottomTriggeredAt != 0
-                    && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreBottomTriggeredAt) > (LoadMoreOffset + 100) * scale
+                    && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreBottomTriggeredAt) > LoadMoreOffset + 100
                     && (DateTime.Now - _loadMoreBottomTriggeredTime).TotalSeconds > 2
                     )
                 //we have scrolled out of the triggered loadMore by 100pts
@@ -2652,7 +2665,7 @@ namespace DrawnUi.Draw
                         return true;
 
                     bool shouldTriggerLoadMore = false;
-                    var threshold = LoadMoreOffset * scale;
+                    var threshold = LoadMoreOffset;
                     shouldTriggerLoadMore = (Orientation == ScrollOrientation.Vertical &&
                                              InternalViewportOffset.Units.Y <= _scrollMinY + threshold)
                                             || (Orientation == ScrollOrientation.Horizontal &&
@@ -2699,7 +2712,7 @@ namespace DrawnUi.Draw
             if (LoadMoreTopCommand != null)
             {
                 if (_loadMoreTopTriggeredAt != 0
-                    && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreTopTriggeredAt) > (LoadMoreTopOffset + 100) * scale
+                    && Math.Abs(InternalViewportOffset.Units.Y - _loadMoreTopTriggeredAt) > LoadMoreTopOffset + 100
                     && (DateTime.Now - _loadMoreTopTriggeredTime).TotalSeconds > 2
                     )
                 {
@@ -2713,7 +2726,7 @@ namespace DrawnUi.Draw
                         return true;
 
                     bool shouldTriggerTopLoadMore = false;
-                    var threshold = LoadMoreTopOffset * scale;
+                    var threshold = LoadMoreTopOffset;
                     shouldTriggerTopLoadMore = (Orientation == ScrollOrientation.Vertical &&
                                                 InternalViewportOffset.Units.Y >= _scrollMaxY - threshold)
                                                || (Orientation == ScrollOrientation.Horizontal &&
