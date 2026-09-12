@@ -60,6 +60,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   
   * Fix `SkiaShell` unfrozen modal push no longer holds the navigation lock forever
   * Fix images loading: sync local loads decode inline; cancelled loads release parked requests
+  * Fix `SkiaScroll` LoadMore distances (`LoadMoreOffset`, `LoadMoreTopOffset`) are points and were multiplied by the rendering scale, so on a 3x screen the bottom trigger fired at any position once re-armed, e.g. at a top overscroll right after an append. The viewport init also no longer snaps the offset to 0 while a pan, fling, bounce or refresh runs (one-frame jag when an append re-measured a Split grid mid-bounce).
   
  ### Previously
 
