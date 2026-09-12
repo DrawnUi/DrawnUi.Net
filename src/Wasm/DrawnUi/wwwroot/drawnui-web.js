@@ -328,6 +328,9 @@ function pageScrollAxes(element) {
     const hs = getComputedStyle(document.documentElement), bs = getComputedStyle(document.body);
     if (!y && !clips(hs.overflowY) && !clips(bs.overflowY) && root.scrollHeight > root.clientHeight + 1) y = true;
     if (!x && !clips(hs.overflowX) && !clips(bs.overflowX) && root.scrollWidth > root.clientWidth + 1) x = true;
+    // a canvas filling a framed document (a widget in an iframe): the page that scrolls is the parent, which a
+    // cross-origin frame cannot inspect, so assume it scrolls vertically; horizontal pans and taps stay on the canvas
+    if (!y && window.self !== window.top) y = true;
     return x && y ? 'pan-x pan-y' : y ? 'pan-y' : x ? 'pan-x' : 'none';
 }
 

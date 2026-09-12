@@ -76,7 +76,7 @@ Match the SkiaSharp/HarfBuzz preview versions to whatever `DrawnUi.Web` itself r
 
 ### A2. wwwroot/index.html
 
-One `<canvas id>` + the loader module. Set `touch-action:none` on the canvas.
+One `<canvas id>` + the loader module. Set `touch-action:none` on the canvas as the pre-boot default: with `Gestures = Enabled` the library replaces it with the axes the page can scroll (vertical always inside an iframe), `Lock` keeps `none`.
 
 ```html
 <!DOCTYPE html>
@@ -236,7 +236,7 @@ Audit moved code for MAUI-only APIs (`MainThread`, native handlers, `FileSystem.
 
 - **Fonts**: `WasmFilesToBundle` is a NO-OP in the .NET WASM SDK — fonts must be STATIC WEB ASSETS under `wwwroot/fonts/`, registered with a relative path; `DrawnUi.Web` fetches them over HTTP at startup (`SkiaFontManager.InitializeWebAsync`). Do not use `WasmFilesToBundle`.
 - **Styles**: `ConfigureStyles(...)` works; explicit per-control property setters WIN over styles (a hardcoded `FontFamily="X"` overrides the style's font).
-- **Gestures**: `GesturesMode.Lock` auto-applies the iOS swipe-away CSS/JS guard (lib-level). `Enabled` = route input, no page guard.
+- **Gestures**: `GesturesMode.Lock` auto-applies the iOS swipe-away CSS/JS guard (lib-level). `Enabled` = route input and share page scrolling: touch pans along the axes the page can scroll (vertical always inside an iframe) and wheels no control used go to the page.
 - **RenderingMode** must be final BEFORE the canvas attaches — `RunAsync` handles it; don't flip it afterward (disposes the view, kills the loop).
 - GPU traps + headless CDP validation: read `src/Wasm/DrawnUi/CLAUDE.md`.
 
