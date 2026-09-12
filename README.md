@@ -60,6 +60,9 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   
   * Fix `SkiaShell` unfrozen modal push no longer holds the navigation lock forever
   * Fix images loading: sync local loads decode inline; cancelled loads release parked requests
+  * Fix `SkiaScroll.ScrollToIndex` on a Split layout (items grid): the index is an item index and lands on that item's row; it was read as a row index, so any item past the first rows made the order silently invalid.
+  * Fix `SkiaViewSwitcher` traced an `ArgumentOutOfRangeException` on every root-view lookup while `SelectedIndex` was set before its children existed (the usual initializer order); the lookups now answer null quietly.
+  * .NET harness tests for the above, for the LoadMore distance in points and for a templated carousel re-bound with a new `ItemsSource` + `SelectedIndex` in one cycle.
   * Fix `SkiaScroll` LoadMore distances (`LoadMoreOffset`, `LoadMoreTopOffset`) are points and were multiplied by the rendering scale, so on a 3x screen the bottom trigger fired at any position once re-armed, e.g. at a top overscroll right after an append. The viewport init also no longer snaps the offset to 0 while a pan, fling, bounce or refresh runs (one-frame jag when an append re-measured a Split grid mid-bounce).
   
  ### Previously

@@ -1786,20 +1786,27 @@ namespace DrawnUi.Draw
                         ControlInStack childInfo = null;
 
                         bool isValid = false;
+                        // A Split layout (items grid) has Split cells per structure row: the item index
+                        // maps to row = index / Split, column = index % Split. Before, the index was read
+                        // as a row and any item past the first Split rows made the order silently invalid
+                        // (device 2026-09-12: a 3-column grid never scrolled to item 26).
+                        var split = layout.Split > 1 ? layout.Split : 1;
+                        var cellIndex = index / split;
+                        var cellLane = index % split;
                         if (Orientation == ScrollOrientation.Horizontal)
                         {
-                            if (index < structure.MaxColumns)
+                            if (cellIndex < structure.MaxColumns)
                             {
                                 isValid = true;
-                                childInfo = structure.Get(index, 0);
+                                childInfo = structure.Get(cellIndex, cellLane);
                             }
                         }
                         else
                         {
-                            if (index < structure.MaxRows)
+                            if (cellIndex < structure.MaxRows)
                             {
                                 isValid = true;
-                                childInfo = structure.Get(0, index);
+                                childInfo = structure.Get(cellLane, cellIndex);
                             }
                         }
 
