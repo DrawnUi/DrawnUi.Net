@@ -289,9 +289,10 @@ function setupInputHandlers() {
     const relY = e => e.clientY - canvas.getBoundingClientRect().top;
     canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, relX(e), relY(e), e.button, e.buttons));
     canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, relX(e), relY(e), e.buttons));
-    canvas.addEventListener('pointerup', e => onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons));
-    canvas.addEventListener('pointercancel', e => onPointerCancel?.(e.pointerId));
-    canvas.addEventListener('wheel', e => { e.preventDefault(); moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); }, { passive: false });
+    canvas.addEventListener('pointerup', e => { onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
+    canvas.addEventListener('pointercancel', e => { onPointerCancel?.(e.pointerId); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
+    // Gestures="Enabled" shares the wheel with the page: the default is prevented only when a control used it
+    canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
     // right click / long press / Menu key: a control that handles ContextMenu suppresses the browser menu
     canvas.addEventListener('contextmenu', e => { if (onContextMenu?.(relX(e), relY(e), e.pointerType ?? 'mouse')) e.preventDefault(); });
     window.addEventListener('resize', reportCanvasSize);
@@ -304,8 +305,38 @@ function setupInputHandlers() {
 // + overscroll-behavior on the page. CSS-only (Enabled) costs nothing per frame.
 // ============================================================================
 
+let _shareInput = false;          // Gestures="Enabled": wheel and touch pans are shared with the page
+let _updateTouchAction = null;    // recomputes the canvas touch-action from what the page can scroll
+let _touchObserver = null;        // html / body ResizeObserver feeding _updateTouchAction
 let _gestureGuardEl = null;       // canvas the guard is bound to
 let _gestureGuardHandler = null;  // touchmove listener (non-passive)
+
+// Gestures="Enabled" shares touch pans with the page like MAUI's Enabled inside a native scroll view: along an axis the
+// page (or a scrolling ancestor) can scroll, the browser takes the pan and cancels the pointer; taps and the other axis
+// stay on the canvas. A page that cannot scroll keeps every touch on the canvas. touch-action is read when a touch
+// starts, so it is kept current ahead of time (attach, window / html / body resize, after every touch).
+function pageScrollAxes(element) {
+    const scrolls = (v) => v === 'auto' || v === 'scroll' || v === 'overlay';
+    const clips = (v) => v === 'hidden' || v === 'clip';
+    let x = false, y = false;
+    for (let n = element.parentElement; n && n !== document.body && n !== document.documentElement; n = n.parentElement) {
+        const st = getComputedStyle(n);
+        if (!y && scrolls(st.overflowY) && n.scrollHeight > n.clientHeight + 1) y = true;
+        if (!x && scrolls(st.overflowX) && n.scrollWidth > n.clientWidth + 1) x = true;
+    }
+    const root = document.scrollingElement || document.documentElement;
+    const hs = getComputedStyle(document.documentElement), bs = getComputedStyle(document.body);
+    if (!y && !clips(hs.overflowY) && !clips(bs.overflowY) && root.scrollHeight > root.clientHeight + 1) y = true;
+    if (!x && !clips(hs.overflowX) && !clips(bs.overflowX) && root.scrollWidth > root.clientWidth + 1) x = true;
+    return x && y ? 'pan-x pan-y' : y ? 'pan-y' : x ? 'pan-x' : 'none';
+}
+
+function detachTouchSharing() {
+    if (_updateTouchAction) window.removeEventListener('resize', _updateTouchAction);
+    _touchObserver?.disconnect();
+    _touchObserver = null;
+    _updateTouchAction = null;
+}
 
 function detachGestureGuard() {
     if (_gestureGuardEl && _gestureGuardHandler) {
@@ -327,7 +358,20 @@ export function applyGestureStyle(elementId, lock) {
         return;
     }
 
-    el.style.touchAction = 'none';
+    _shareInput = !lock;
+    detachTouchSharing();
+    if (lock) {
+        el.style.touchAction = 'none';
+    } else {
+        _updateTouchAction = () => { const pan = pageScrollAxes(el); if (el.style.touchAction !== pan) el.style.touchAction = pan; };
+        _updateTouchAction();
+        window.addEventListener('resize', _updateTouchAction);
+        if (typeof ResizeObserver === 'function') {
+            _touchObserver = new ResizeObserver(_updateTouchAction);
+            _touchObserver.observe(document.documentElement);
+            _touchObserver.observe(document.body);
+        }
+    }
 
     if (lock) {
         el.style.userSelect = 'none';

@@ -203,11 +203,17 @@ public partial class Canvas : IGestureListener
 
             if (_gestureEffect != null)
             {
-                if (consumed == null && args.Type == TouchActionResult.Panning)
+                // A control USED the input when it marked the event Handled or when it is not a BlockGesturesBelow
+                // layer: a blocker returns itself for everything it keeps from the controls below (every shell page
+                // is one), and counting that would keep the page from scrolling over the whole canvas.
+                var used = consumed != null
+                           && (args.Event.Handled || consumed is not SkiaControl { BlockGesturesBelow: true });
+
+                if (!used && args.Type == TouchActionResult.Panning)
                 {
                     _gestureEffect.WIllLock = ShareLockState.Unlocked;
                 }
-                else if (consumed != null &&
+                else if (used &&
                          (args.Type == TouchActionResult.Panning || args.Type == TouchActionResult.Wheel))
                 {
                     _gestureEffect.WIllLock = ShareLockState.Locked;

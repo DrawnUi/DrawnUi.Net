@@ -69,6 +69,13 @@ Minimal Blazor example:
 
 For browser-side `Canvas`, the default is effectively disabled until you opt in with `GesturesMode.Enabled` or `GesturesMode.Lock`.
 
+In the browser the page is the scroll view around your canvas, and the two modes differ the way they do in MAUI:
+
+- `Enabled` shares input with the page. A finger pan along an axis the page can scroll scrolls the page, while taps and the other axis stay on the canvas; a page that cannot scroll, such as a full-page app, keeps every touch. The mouse wheel scrolls the page unless a control used it, for example a `SkiaScroll` under the pointer. A canvas embedded in a longer page never traps page scrolling.
+- `Lock` keeps all input on the canvas. Use it for a full-page app or game, or for a widget whose own vertical drags (an inner list, a drawer, drag to reorder) must win inside a scrolling page.
+
+The same rules apply to the pure web head (`DrawnUi.Wasm`) and to DrawnUI for React.
+
 ### Blazor Server `Canvas`
 
 Blazor Server is different.

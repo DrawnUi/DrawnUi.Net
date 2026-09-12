@@ -519,6 +519,13 @@ public partial class SkiaScroll
                         {
                             var finalVelocity = SwipeVelocityAccumulator.CalculateFinalVelocity(this.MaxVelocity);
 
+                            // a cancelled pointer (a parent or the browser took the pan to scroll itself) settles in
+                            // place: flinging from the few moves that arrived before the cancel scrolls both at once
+                            if (args.Event.Type == TouchActionType.Cancelled)
+                            {
+                                finalVelocity = default;
+                            }
+
                             bool fling = false;
                             bool swipe = false;
 

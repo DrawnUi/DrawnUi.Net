@@ -660,7 +660,7 @@
     private string GestureStyle => Gestures switch
     {
         GesturesMode.Lock => "touch-action:none; user-select:none;",
-        GesturesMode.Enabled => "touch-action:none;",
+        GesturesMode.Enabled => string.Empty, // AppoMobi.Blazor.Gestures sets touch-action: pans the page can scroll go to the page
         _ => string.Empty
     };
 

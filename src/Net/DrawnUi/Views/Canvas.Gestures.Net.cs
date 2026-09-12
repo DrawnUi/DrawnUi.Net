@@ -29,6 +29,12 @@ public partial class Canvas
         HadInput.TryAdd(consumed.Uid, consumed);
     }
 
+    /// <summary>
+    /// Whether a control used the last processed gesture (consumed it and is not only a BlockGesturesBelow layer).
+    /// The web head reads it to decide if the browser may still scroll the page with that wheel.
+    /// </summary>
+    public bool LastInputUsed { get; private set; }
+
     protected virtual void ProcessNetGestures(SkiaGesturesParameters args)
     {
         lock (LockIterateListeners)
@@ -139,6 +145,11 @@ public partial class Canvas
                     }
                 }
             }
+
+            // shared with the page (Gestures="Enabled" on the web head): whether a control USED this input, not a
+            // BlockGesturesBelow layer merely keeping it from the controls below
+            LastInputUsed = consumed != null
+                            && (args.Event.Handled || consumed is not SkiaControl { BlockGesturesBelow: true });
 
             if (args.Type == TouchActionResult.Up && HadInput.Count > 0)
             {
