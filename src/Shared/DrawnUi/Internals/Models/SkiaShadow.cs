@@ -84,6 +84,9 @@ public class SkiaShadow : BindableObject, IComparable, IComparable<SkiaShadow>, 
         return CompareTo(other) == 0;
     }
 
+    // On the WPF head BindableObject is a DependencyObject, which seals Equals(object) and
+    // GetHashCode(). Value equality stays available through IEquatable<SkiaShadow>.
+#if !WPF
     public override bool Equals(object obj)
     {
         return obj is SkiaShadow other && Equals(other);
@@ -93,6 +96,7 @@ public class SkiaShadow : BindableObject, IComparable, IComparable<SkiaShadow>, 
     {
         return HashCode.Combine(Opacity, Color, X, Y, Blur, ShadowOnly);
     }
+#endif
 
     public static bool operator ==(SkiaShadow left, SkiaShadow right)
     {

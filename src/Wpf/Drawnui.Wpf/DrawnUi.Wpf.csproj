@@ -1,0 +1,99 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net9.0-windows;net10.0-windows</TargetFrameworks>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Title>DrawnUI for WPF</Title>
+        <PackageId>DrawnUi.Wpf</PackageId>
+        <Description>WPF host for DrawnUI — SkiaSharp rendering surface with WPF dependency properties, so drawn controls take part in WPF data binding, styles and triggers.</Description>
+        <PackageTags>drawnui wpf skia skiasharp desktop windows</PackageTags>
+        <PackageIcon>icon128.png</PackageIcon>
+        <CreatePackage>false</CreatePackage>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);WPF;NET;DRAWNUI_NET</DefineConstants>
+        <!--
+            WPF forces a net*-windows TFM, which makes the SDK define WINDOWS and makes
+            src\Directory.Build.props define ONPLATFORM. In shared code both mean "this is the MAUI
+            WinUI head" and select MAUI platform partials (DrawnView.Windows.cs, Super.Windows.cs).
+            This head is not one, so both tokens are removed while WINDOWS7_0 and friends stay.
+            The Net and OpenTK heads get the same treatment for free by targeting plain net9.0.
+        -->
+        <DefineConstants>;$(DefineConstants);</DefineConstants>
+        <DefineConstants>$(DefineConstants.Replace(';ONPLATFORM;', ';'))</DefineConstants>
+    </PropertyGroup>
+
+    <!--
+        WINDOWS is appended by the SDK targets, which are imported after the project body, so it has
+        to be removed here rather than in a PropertyGroup above. WINDOWS7_0 and NET9_0_OR_GREATER
+        are left alone.
+    -->
+    <Target Name="DrawnUiStripMauiWindowsDefine" BeforeTargets="CoreCompile">
+        <PropertyGroup>
+            <DefineConstants>;$(DefineConstants);</DefineConstants>
+            <DefineConstants>$(DefineConstants.Replace(';WINDOWS;', ';'))</DefineConstants>
+        </PropertyGroup>
+    </Target>
+
+    <!--
+        Shared DrawnUI code deliberately shadows members that FrameworkContentElement also declares
+        (Style, IsEnabled, Tag, Parent). src/Directory.Build.props promotes CS0108 to an error in
+        Release, which would make the whole head unbuildable there, so it is demoted back here.
+    -->
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);CS0108;CS0109;CS0114;1701;1702</NoWarn>
+        <WarningsNotAsErrors>$(WarningsNotAsErrors);CS0108;CS0114</WarningsNotAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\..\icon128.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AppoMobi.Gestures" Version="3.11.1" />
+        <PackageReference Include="AppoMobi.Specials" Version="10.0.2" />
+        <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+        <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
+        <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.Skottie" Version="4.148.0" />
+        <PackageReference Include="Svg.Skia" Version="4.9.0" />
+        <!--
+            ANGLE binaries for RenderingMode=Accelerated (Views/SkiaViewAccelerated.Angle.cs). Avalonia's
+            build (BSD, one merged av_libglesv2.dll per architecture) because SkiaSharp's own
+            SkiaSharp.NativeAssets.WinUI only restores on net*-windows10.0.19041 TFMs.
+        -->
+        <PackageReference Include="Avalonia.Angle.Windows.Natives" Version="2.2.0.20230930" />
+    </ItemGroup>
+
+    <!-- Net platform files (the same set DrawnUi.Net.csproj and the OpenTK head compile) -->
+    <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Net\DrawnUi\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\..\Net\DrawnUi\obj\**\*.cs" />
+    </ItemGroup>
+
+    <Import Project="..\..\Shared\DrawnUi\Shared.projitems" Label="Shared" />
+    <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
+
+    <ItemGroup>
+        <!-- same exclusions every non-MAUI head makes -->
+        <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
+        <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
+        <!-- replaced by the real GPU view in Views/SkiaViewAccelerated.Angle.cs -->
+        <Compile Remove="$(MSBuildThisFileDirectory)..\..\Net\DrawnUi\Views\SkiaViewAccelerated.Net.cs" />
+
+
+    </ItemGroup>
+
+</Project>

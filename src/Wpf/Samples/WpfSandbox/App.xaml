@@ -1,0 +1,14 @@
+<Application x:Class="WpfSandbox.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <!-- A plain WPF implicit style, targeting a drawn control. -->
+        <Style TargetType="{x:Type draw:SkiaLabel}">
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+
+    </Application.Resources>
+</Application>

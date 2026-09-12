@@ -1,0 +1,11 @@
+<Window x:Class="HelloWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"
+        Title="DrawnUI for WPF"
+        Width="980" Height="820"
+        Background="#212529">
+
+    <!-- Same canvas background and gestures as the React demo's <Canvas>. -->
+    <draw:DrawnUiElement x:Name="Drawn" RenderingMode="Accelerated" />
+</Window>

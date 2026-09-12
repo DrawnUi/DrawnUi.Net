@@ -1,6 +1,6 @@
 namespace DrawnUi
 {
-    public class Color : IEquatable<Color>
+    public partial class Color : IEquatable<Color>
     {
         public Color(float red, float green, float blue, float alpha = 1f)
         {
