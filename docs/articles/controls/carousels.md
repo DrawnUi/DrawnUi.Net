@@ -158,7 +158,7 @@ the shader contract and customization.
 <draw:SkiaShaderCarousel
     IsLooped="True"
     LinearSpeedMs="750"
-    TransitionShader="Shaders/Transitions/cube.sksl"
+    TransitionShader="Shaders/transitions/cube.sksl"
     HeightRequest="340"
     ItemsSource="{Binding Images}">
     <draw:SkiaLayout.ItemTemplate>

@@ -19,7 +19,7 @@ Every `SkiaControl` exposes a `VisualEffects` collection. Effects modify how a c
 | `IImageEffect` | `SKImageFilter` on a `SaveLayer` | `DropShadowEffect`, `OuterGlowEffect` |
 | `IColorEffect` | `SKColorFilter` on a `SaveLayer` | tint / color matrix effects |
 | `IRenderEffect` | Wraps/chains the control's own paint | `ChainDropShadowsEffect` |
-| `IPostRendererEffect` | Runs after the control is painted | `SkiaShaderEffect`, `SkiaBackdrop` |
+| `IPostRendererEffect` | Runs after the control is painted | `SkiaShaderEffect`, `AnimatedShaderEffect`, `ShaderTransitionEffect` |
 | `IStateEffect` | Per-frame state update hook | animators |
 | `ISkiaGestureProcessor` | Participates in gesture routing | interactive effects |
 
@@ -98,4 +98,4 @@ Effects that stay inside the bounds (color filters, in-place shaders) inherit th
 
 - [Shapes](shapes.md) — `SkiaShape` has its own built-in `Shadows` for shape-aware shadows.
 - [Drawing Pipeline](../drawing-pipeline.md) — how caching and `UseCache` work.
-- [Shaders](../shaders.md) — `SkiaShaderEffect` / `SkiaBackdrop` post-render effects.
+- [Shaders](../shaders.md) — `SkiaShaderEffect` and the other SkSL post-render effects. (`SkiaBackdrop` is a control that blurs what is behind it, not an effect.)
