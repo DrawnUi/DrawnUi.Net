@@ -356,6 +356,43 @@ Conditional: `AutoCache` on `SkiaScroll`/`SkiaDrawer` sets THEIR OWN `UseCache =
 - Match `GlassBackdropEffect.CornerRadius` to the parent `SkiaShape.CornerRadius` (in points, not pixels — the effect multiplies by `RenderingScale` internally).
 - `SkiaBackdrop.Blur = 0` when using a custom shader effect — the shader handles its own blur.
 
+### Resolution-independent procedural textures (grain, dither, scanlines, halftone)
+
+The same shader often renders at very different sizes: a camera preview frame (~720-1080 px), a thumbnail, a full-resolution photo (4K, 12 MP+). Anything computed per OUTPUT pixel keeps its pixel size, so relative to the picture it gets N times finer on the big image, and shown fit-to-screen (downscaled) it averages away or aliases into mush. It looks identical where preview and photo have the same size (desktop webcam) and breaks on phone captures. Verified 2026-09-13 on iPhone 16 Pro (4K still, 3x display): a newspaper dither filter looked right in preview and wrong in the photo until its pattern was made image-relative as below.
+
+Rule: build every pattern in image-relative space.
+
+```glsl
+float2 inputCoord = (fragCoord - iOffset) * iImageResolution / iResolution; // texture pixels
+float patternScale = iImageResolution.y / 720.0;  // texture pixels per reference pixel
+float2 p = inputCoord / patternScale;             // pattern space, same density at any size
+```
+
+- **Cells** (Bayer dither, halftone grid, pixelation): `int2 cell = int2(floor(p));` then look the threshold up by `cell`. Never by `fragCoord`.
+- **Hash grain** `fract(sin(dot(c, k)) * 43758.5453)` is chaotic at sub-unit steps: **scaling its input does NOT enlarge the grain**. `grain(inputCoord * 0.5)` is still 1-pixel noise (measured: correlation length 1 px at 720 and at 2880 px tall). Put it on a lattice: hard grain `hash21(floor(p))`, organic grain `valueNoise(p)`:
+
+```glsl
+float hash21(float2 p) { return fract(sin(dot(p, float2(127.1, 311.7))) * 43758.5453); }
+float valueNoise(float2 p) {
+    float2 i = floor(p);
+    float2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    float a = hash21(i);
+    float b = hash21(i + float2(1.0, 0.0));
+    float c = hash21(i + float2(0.0, 1.0));
+    float d = hash21(i + float2(1.0, 1.0));
+    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+// grain = (valueNoise(p) - 0.5) * amount;  for finer/coarser grain multiply p, never inputCoord
+```
+
+- **Stripes / scanlines**: frequency from `p` or from `uv` (`uv.y * 720.0` lines), never from raw pixels.
+- **Pixel distances** (blur radius, kernel taps, edge / micro-contrast neighbours, chromatic offset): multiply by `patternScale`, or express them as a fraction of `iImageResolution`. Keep kernel WEIGHTS computed from the unscaled tap index.
+- **Neighbour sampling trap**: `iImage1.eval` takes texture PIXELS. A neighbour is `inputCoord + float2(1.0, 0.0) * patternScale`. `1.0 / iImageResolution` is a UV-space step; added to a pixel coordinate it is ~0.001 px, so the kernel silently samples the centre pixel and the effect does nothing (seen in film-emulation micro-contrast / acutance code).
+- **Reference choice**: 720 (typical preview height) keeps the preview look unchanged. Use `min(iImageResolution.x, iImageResolution.y)` instead of `.y` when preview and output can differ in orientation. Pick one reference per app. Below the reference (thumbnails) cells become sub-pixel.
+- The `inputCoord` formula is correct in both render paths: `SkiaShaderEffect` (`iImageResolution == iResolution == destination size`) and direct `SkiaShader.DrawImage` / `DrawRect(canvas, image, dst)` (`iImageResolution` = image size).
+- **Verify without a device**: single-file SkiaSharp console (`#:package SkiaSharp@4.148.0`, `dotnet run check.cs`), `SKRuntimeEffect.CreateShader`, render the same content at N and 4N px, measure the pattern size — mean run length of equal output values for cell patterns, lag where horizontal autocorrelation drops below 0.5 for grain. Same size at both = still output-pixel bound; growing with the image = fixed. (The 0.5-lag metric quantizes: a 1 px block reads 1, a 4 px block reads 3.)
+
 ### Shader slide transitions (SkiaShaderCarousel / ShaderTransitionEffect)
 
 - `SkiaShaderCarousel` (`DrawnUi.Controls`): `SkiaCarousel` subclass where slides never translate — an attached `ShaderTransitionEffect` (a `ShaderDoubleTexturesEffect` adding `progress` + `ratio` uniforms) blends the from/to cells' cached images. Give it a gl-transitions style `transition(vec2 uv)` via `TransitionShader` (Resources/Raw path), `TransitionShaderCode` (raw SkSL string — required on OpenTK/DRAWNUI_NET and in the fiddle), or a custom `TransitionTemplate`. Cell templates MUST use `UseCache = Image` (the effect samples cell RenderObject caches); ctor forces `RecyclingTemplate.Disabled`.
