@@ -390,6 +390,8 @@ float valueNoise(float2 p) {
 // grain = (valueNoise(p) - 0.5) * amount;  for finer/coarser grain multiply p, never inputCoord
 ```
 
+- **Matching an existing preview look**: the hard lattice `grainFn(floor(inputCoord / patternScale))` keeps each shader's own grain function, stays identical at the 720 reference and, measured on 7 film shaders, keeps the grain strength of a 4x photo box-downscaled to screen size equal to the preview (before the fix it dropped to 20-50%). `valueNoise` is softer when zoomed in but interpolation lowers the grain's variance between cells, so expect weaker grain on the photo unless you compensate.
+- **Lattice on OUTPUT coordinates**: put grain on `inputCoord`, not on lens-distorted / compressed sampling coordinates. A distorted lattice drifts off the pixel grid and averages the grain away on the photo (measured: 67% of preview strength vs 100% on `inputCoord`). Grain lives on the film, not in the scene.
 - **Stripes / scanlines**: frequency from `p` or from `uv` (`uv.y * 720.0` lines), never from raw pixels.
 - **Pixel distances** (blur radius, kernel taps, edge / micro-contrast neighbours, chromatic offset): multiply by `patternScale`, or express them as a fraction of `iImageResolution`. Keep kernel WEIGHTS computed from the unscaled tap index.
 - **Neighbour sampling trap**: `iImage1.eval` takes texture PIXELS. A neighbour is `inputCoord + float2(1.0, 0.0) * patternScale`. `1.0 / iImageResolution` is a UV-space step; added to a pixel coordinate it is ~0.001 px, so the kernel silently samples the centre pixel and the effect does nothing (seen in film-emulation micro-contrast / acutance code).
