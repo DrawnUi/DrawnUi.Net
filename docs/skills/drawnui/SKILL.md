@@ -360,6 +360,10 @@ Conditional: `AutoCache` on `SkiaScroll`/`SkiaDrawer` sets THEIR OWN `UseCache =
 
 The same shader often renders at very different sizes: a camera preview frame (~720-1080 px), a thumbnail, a full-resolution photo (4K, 12 MP+). Anything computed per OUTPUT pixel keeps its pixel size, so relative to the picture it gets N times finer on the big image, and shown fit-to-screen (downscaled) it averages away or aliases into mush. It looks identical where preview and photo have the same size (desktop webcam) and breaks on phone captures. Verified 2026-09-13 on iPhone 16 Pro (4K still, 3x display): a newspaper dither filter looked right in preview and wrong in the photo until its pattern was made image-relative as below.
 
+Mandatory for any shader used on camera preview, photos or video (filter apps especially):
+- **Existing shader**: before changing or shipping it, check every pattern and pixel distance against the bullets below (grain, dither, stripes, blur/kernel taps, neighbour offsets).
+- **New shader**: implement image-relative scaling from the start, never raw `fragCoord` / `inputCoord` patterns.
+
 Rule: build every pattern in image-relative space.
 
 ```glsl
