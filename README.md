@@ -56,8 +56,13 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://fiddle.drawnui.net)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.15
+## What's New 1.10.6.16
   
+  * Fix Android `Canvas` staying blank after its kept-alive native view was moved to another window, e.g. cached content shown again inside a new popup/dialog: a canvas detected as hidden in the first window never woke up in the next one, because its visibility listeners stayed bound to the previous window's `ViewTreeObserver`. They are now re-registered, with a visibility re-check, every time the view attaches to a window.
+  * Fix memory leak: every time a kept-alive `Canvas` lost and regained its handler (a cached page pushed again after a pop) its internal Skia view leaked together with its native views. The destroyed view stayed as `Content`, MAUI mapped it again before the replacement was created, and it subscribed itself back to the static `Super.OrientationChanged` event. Replaced views are now disconnected and disposed, and a disposed view never re-subscribes.
+  * Fix Android memory leak: the canvas `ViewTreeObserver` listeners (layout and pre-draw) were removed after the view had left its window, where Android returns a throw-away observer, so the window kept every listener for the app lifetime. They are now removed from the observer they were registered with, on window detach.
+  * Fix Android `Super.SetWhiteTextStatusBar()` / `SetBlackTextStatusBar()` had no effect under MAUI 10: MAUI now sets the status bar appearance through the insets controller when the window is created (edge-to-edge), and the helpers were only toggling the legacy `SystemUiVisibility` flag. They now use the insets controller too.
+  * Fix `DrawnUi.Maui.MapsUi` on Android failing the 16 KB page-size check (system "Android App Compatibility" dialog on Android 16+): the desktop `SQLitePCLRaw.lib.e_sqlite3` and `SkiaSharp.NativeAssets.Linux` packages were referenced for every target, so the 4 KB aligned linux `libe_sqlite3.so` was packed into the APK over the 16 KB aligned Android one. They are now referenced for desktop targets only.
   * Fix center alignment drifting half a pixel right/down: when the free space around a centered child was an odd number of pixels, no whole-pixel offset could center it and rounding always pushed it right/down (e.g. the accent dot inside a `SkiaSlider` thumb). The child now takes that odd pixel, so both gaps are equal.
   * `SkiaScrollBar.IsDraggable`: desktop scroll bar behavior, drag the thumb or press the track to jump there (the thumb centers under the pointer). `GrabPadding` widens the hit area of a thin bar. Off by default, the bar stays display-only and every gesture passes through to the content. A grabbed auto-hidden bar shows again immediately.
   * `SkiaScrollBar.HideDurationSecs`: duration of the auto-hide fade-out (was a fixed 250 ms, default unchanged); with `AutoHide` and `HideDelaySecs` it sets how the bar fades after scrolling stops.
@@ -66,13 +71,13 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * Fix `SkiaScroll` jumping away from the end after an overscroll bounce when it sits in a `SkiaGrid` row with a `ScrollBar`: the bar squashes its thumb while bouncing, and every thumb resize re-measured the scroll and its parents each frame; a provisional grid measure then pulled the offset in by the other rows' height. Scroll bars set on a `SkiaScroll` are now `IsParentIndependent`, their look never re-measures the layout around them (fewer layout passes while bouncing too).
   * Fix `SkiaScroll` moved its offset during a provisional measure: a parent measuring it more than once with different sizes (a grid measures a star row before subtracting its Auto rows) made it clamp against transient bounds, and the offset stayed moved. The clamp for content that shrank past the offset now runs on draw, against the final bounds.
   * Fix `SkiaEditor` (Windows, Android, iOS) putting typed characters in the wrong place during fast typing: the caret position read from the native text control was written back to it a moment later, after more keys had moved it, so the caret jumped back one character ("drawncamera.com" came out as "drawncameracom."). A caret position that came from the native control is no longer written back to it.
+  
+ ### Previously
+
   * Fix `SkiaViewSwitcher` traced an `ArgumentOutOfRangeException` on every root-view lookup while `SelectedIndex` was set before its children existed (the usual initializer order); the lookups now answer null quietly.
   * Fix `SkiaShell` unfrozen modal push no longer holds the navigation lock forever
   * Fix `SkiaScroll.ScrollToIndex` on a Split layout (items grid): the index is an item index and lands on that item's row; it was read as a row index, so any item past the first rows made the order silently invalid.
   * Fix `SkiaScroll` LoadMore distances (`LoadMoreOffset`, `LoadMoreTopOffset`) are points and were multiplied by the rendering scale, so on a 3x screen the bottom trigger fired at any position once re-armed, e.g. at a top overscroll right after an append. The viewport init also no longer snaps the offset to 0 while a pan, fling, bounce or refresh runs (one-frame jag when an append re-measured a Split grid mid-bounce).
-  
- ### Previously
-
   * Fix images loading: sync local loads decode inline; cancelled loads release parked requests  
    * Fix `SkiaDrawer` was not removing its previous content when `Content` was replaced or set to null: the old child stayed in `Views` and was disposed together with the drawer, so a kept modal content came back disposed on its next presentation (blur, no popup).
   * Center alignment: an overflowing box is moved back inside its parent instead of being truncated.
