@@ -41,6 +41,7 @@ public class DrawnUiWindow : GameWindow
         : base(gameSettings, HideUntilCentered(nativeSettings))
     {
         _canvas = canvas;
+        _gestures = new DesktopGestureHandler(canvas);
     }
 
     private static NativeWindowSettings HideUntilCentered(NativeWindowSettings s)
@@ -226,28 +227,28 @@ public class DrawnUiWindow : GameWindow
     /// </summary>
     protected virtual void RenderScene() { }
 
+    // Every mouse button reaches the canvas with its PointerData; see DesktopGestureHandler.
+    private readonly DesktopGestureHandler _gestures;
+
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         base.OnMouseDown(e);
-        if (e.Button != OpenTkMouseButton.Left || _surface == null) return;
-        _canvas.HandleDesktopPointerDown(MousePosition.X, MousePosition.Y, ClientSize.X, ClientSize.Y);
+        if (_surface == null) return;
+        _gestures.OnMouseDown(e, MousePosition, ClientSize, MouseState);
     }
 
     protected override void OnMouseMove(MouseMoveEventArgs e)
     {
         base.OnMouseMove(e);
         if (_surface == null) return;
-        _canvas.HandleDesktopPointerMove(
-            MousePosition.X, MousePosition.Y,
-            MouseState.IsButtonDown(OpenTkMouseButton.Left),
-            ClientSize.X, ClientSize.Y);
+        _gestures.OnMouseMove(e, MousePosition, MouseState.IsAnyButtonDown, ClientSize, MouseState);
     }
 
     protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         base.OnMouseUp(e);
-        if (e.Button != OpenTkMouseButton.Left || _surface == null) return;
-        _canvas.HandleDesktopPointerUp(MousePosition.X, MousePosition.Y, ClientSize.X, ClientSize.Y);
+        if (_surface == null) return;
+        _gestures.OnMouseUp(e, MousePosition, ClientSize, MouseState);
     }
 
     protected override void OnTextInput(TextInputEventArgs e)
