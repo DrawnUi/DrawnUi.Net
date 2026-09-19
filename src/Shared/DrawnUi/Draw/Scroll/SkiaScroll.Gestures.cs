@@ -224,6 +224,9 @@ public partial class SkiaScroll
             LockGesturesUntilDown = false;
         }
 
+        if (ProcessScrollBarGestures(args, apply))
+            return this;
+
         //todo use number of gestures !!!
         if (args.Type == TouchActionResult.Down)
         {

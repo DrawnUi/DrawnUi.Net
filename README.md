@@ -58,6 +58,11 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.15
   
+  * Fix center alignment drifting half a pixel right/down: when the free space around a centered child was an odd number of pixels, no whole-pixel offset could center it and rounding always pushed it right/down (e.g. the accent dot inside a `SkiaSlider` thumb). The child now takes that odd pixel, so both gaps are equal.
+  * `SkiaScrollBar.IsDraggable`: desktop scroll bar behavior, drag the thumb or press the track to jump there (the thumb centers under the pointer). `GrabPadding` widens the hit area of a thin bar. Off by default, the bar stays display-only and every gesture passes through to the content. A grabbed auto-hidden bar shows again immediately.
+  * `SkiaScrollBar.HideDurationSecs`: duration of the auto-hide fade-out (was a fixed 250 ms, default unchanged); with `AutoHide` and `HideDelaySecs` it sets how the bar fades after scrolling stops.
+  * Fix an auto-hiding `SkiaScrollBar` could stay visible after a scroll ended: the scroll re-evaluates its scrolling state only while drawing and nothing drew after the last animation frame, so the bar never learned scrolling had stopped. A scroll with a bar now draws one more frame when scrolling ends.
+  * Fix `SkiaScroll` detached its `ScrollBar` when `Content`, `Header` or `Footer` was set after it: the scroll bar was taken for the old content and removed as a subview. It was still drawn, but without a parent it could never request a redraw of its own, so an auto-hiding bar never faded out on screen.
   * Fix `SkiaViewSwitcher` traced an `ArgumentOutOfRangeException` on every root-view lookup while `SelectedIndex` was set before its children existed (the usual initializer order); the lookups now answer null quietly.
   * Fix `SkiaShell` unfrozen modal push no longer holds the navigation lock forever
   * Fix `SkiaScroll.ScrollToIndex` on a Split layout (items grid): the index is an item index and lands on that item's row; it was read as a row index, so any item past the first rows made the order silently invalid.

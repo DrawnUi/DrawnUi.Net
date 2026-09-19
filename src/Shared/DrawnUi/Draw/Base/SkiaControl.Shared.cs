@@ -4279,6 +4279,14 @@ namespace DrawnUi.Draw
             {
                 case LayoutAlignment.Center when float.IsFinite(availableWidth) && availableWidth < MaxRealPixelSize && availableWidth > useMaxWidth:
                 {
+                    if (RoundCenterAlignment && (Math.Round(availableWidth) - Math.Round(realWidth)) % 2 != 0)
+                    {
+                        // odd free pixel: no whole-pixel offset can center the child, it would sit 0.5px
+                        // right; give it that pixel so both gaps are equal
+                        useMaxWidth += 1;
+                        realWidth += 1;
+                    }
+
                     var half = availableWidth / 2.0f - realWidth / 2.0f;
                     if (RoundCenterAlignment)
                     {
@@ -4342,6 +4350,13 @@ namespace DrawnUi.Draw
             {
                 case LayoutAlignment.Center when float.IsFinite(availableHeight) && availableHeight < MaxRealPixelSize && availableHeight > useMaxHeight:
                 {
+                    if (RoundCenterAlignment && (Math.Round(availableHeight) - Math.Round(realHeight)) % 2 != 0)
+                    {
+                        // odd free pixel: same as horizontal, grow by it instead of sitting 0.5px low
+                        useMaxHeight += 1;
+                        realHeight += 1;
+                    }
+
                     var half = availableHeight / 2.0f - realHeight / 2.0f;
                     if (RoundCenterAlignment)
                     {
