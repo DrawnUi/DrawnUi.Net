@@ -28,4 +28,12 @@ namespace DrawnUi.Draw
 {
     [TypeConverter(typeof(DrawnCornerRadiusConverter))]
     public readonly partial struct CornerRadius;
+
+    // Grid definitions: shared code carries [TypeConverter] on the ColumnDefinitions / RowDefinitions
+    // properties only for MAUI (#if !DRAWNUI_NET), so on this head the converter sits on the type.
+    [TypeConverter(typeof(DrawnColumnDefinitionsConverter))]
+    public partial class ColumnDefinitionCollection;
+
+    [TypeConverter(typeof(DrawnRowDefinitionsConverter))]
+    public partial class RowDefinitionCollection;
 }

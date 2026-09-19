@@ -17,9 +17,16 @@ public partial class App : Application
         base.OnStartup(e);
 
         Super.UseDrawnUi()
+            // Same set as the React demo's main.tsx. This head has no AddSymbols()/AddEmojis(), so the
+            // Noto subsets it ships are registered by hand under the aliases FontFamilyFallback expects.
             .ConfigureFonts(fonts => fonts
                 .AddFont("fonts/OpenSans-Regular.ttf", "FontText")
-                .AddFont("fonts/OpenSans-Semibold.ttf", "FontTextBold"))
+                .AddFont("fonts/OpenSans-Semibold.ttf", "FontText", DrawnUi.Draw.FontWeight.SemiBold) // FontAttributes=Bold / FontWeight=600 pick this face
+                .AddFont("fonts/OpenSans-Semibold.ttf", "FontTextBold")
+                .AddFont("fonts/NotoSansMathSymbols-Subset.ttf", "FontSymbols")
+                .AddFont("fonts/NotoSansSymbols2-Subset.ttf", "FontSymbols2"))
+            // No emoji font: the React demo's Noto Color Emoji subset is a COLR/SVG colour font that
+            // SkiaSharp on Windows draws as nothing. AutoFont picks the system Segoe UI Emoji instead.
             // Without this every control that leaves FontFamily empty draws in Skia's built-in face,
             // on this head as on the others. A SkiaLabel style does not reach button captions,
             // because SkiaButton pushes its own FontFamily onto its label — so style buttons too.
