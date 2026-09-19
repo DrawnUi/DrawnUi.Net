@@ -390,3 +390,19 @@ When modifying any method:
 - Add parameters or create specialized versions when a fix is context-specific
 - Never disable or remove a feature to fix an issue
 - Never make one area worse to fix another
+
+---
+
+## Known Engine Gaps (deferred on purpose, revisit later)
+
+Found while porting the React demo pages to the WPF head (2026-09). They live in SHARED code and affect every head, so they were recorded instead of changed. Each needs an explicit go from the maintainer, a harness repro before and after, and a check of every call site.
+
+| Gap | Where | Today's behaviour | Workaround in samples |
+|---|---|---|---|
+| Nested pull-to-refresh | `SkiaScroll` gesture arbitration | A `RefreshEnabled` scroll inside a scrolling page never overscrolls: the OUTER scroll wins the downward pan. Standalone it refreshes. | Keep refresh scrolls top-level, or offer `IsRefreshing = true` from a button |
+| Mouse wheel does not accumulate | `SkiaScroll` wheel handling | Each notch restarts the scroll animation, so fast successive notches travel LESS than slow ones | None; test harnesses space notches 200 ms apart or drag |
+| Font fallback is whole-label | `SkiaLabel.AutoFont`, `TextSpan.AutoFindFont`, `FontFamilyFallback` (one alias) | The whole label / span switches face when its FIRST glyph is missing; glyphs missing inside other text are dropped. No per-glyph mixing (the React engine does it) | Put symbols in their own label or span |
+| Strikethrough markdown | `SkiaRichLabel` | `~~text~~` is not parsed (the React engine parses it) | None. Purely additive, safe to add |
+| Auto-width centred stack | `SkiaLayout.ColumnRow.cs` | A `Center` / `Start` / `End` column without a width is as wide as its NON-Fill children; Fill children are squeezed. With every child Fill it adopts the constraint | Make headings `HorizontalOptions=Fill` + centred text. Deliberate semantic, published layouts rely on it: do not "fix" without a migration story |
+
+Related, smaller: `SkiaSprite` has no `Success` / `Error` events (`SkiaGif` has); `SkiaButton` has no default accessibility role (set `AccessibilityRole` to make it a node); `SkSl.OpenResourceStreamAsync` dereferences a null `Super.Services` on heads without a container; `SkiaLabel` overwrites a custom `AccessibilityLabel` from its text the way `SkiaButton` used to.
