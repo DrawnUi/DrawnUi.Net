@@ -46,6 +46,8 @@ layout.Children.Clear();        // ignored
 layout.Children.Add(child);     // ignored
 ```
 
+Also wrong BEFORE the tree is built: `Children = new List<SkiaControl>()` then `layer.Children.Add(x)` — the assignment replaced the observed collection with a plain list, so the `Add` is invisible to the engine (verified 2026-09-16: popup wrappers built this way never rendered and their `ScaleToAsync` never completed). Build the full list first and assign once; the collection-initializer form `Children = { a, b }` (no `new List`) is fine because it adds to the control's own collection.
+
 **Rule of thumb:** Use `Children = new List<...>` only during initial construction. Once `LayoutIsReady` has fired or the control is in the visual tree, use `ClearChildren()`, `AddSubView()`, `RemoveSubView()` instead.
 
 WRONG — never do this:
