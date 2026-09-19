@@ -3317,6 +3317,9 @@ namespace DrawnUi.Draw
                     ApplyPannedOffsetWithVelocity(context.Context);
                 }
 
+                // bounds are final here (Arrange above ran the last measure)
+                ClampOffsetToBoundsIfPending();
+
                 var posX = (float)(ViewportOffsetX * zoomedScale);
                 var posY = (float)(ViewportOffsetY * zoomedScale);
 

@@ -193,16 +193,36 @@ public partial class SkiaScroll
 
         _scrollMaxY = 0;
 
-        // Pull an offset the new bounds no longer contain back inside them, HERE where the bounds change.
-        // The draw path has the same clamp, but only on a frame where IT sees the content size change -
-        // and SetMeasured already copies the content size into _lastContentSize during the measure pass,
-        // so after any re-measure the draw never sees a change and never clamps. Shrinking content (fewer
-        // items) then left the viewport parked past its end forever with nothing on screen (device
-        // 2026-09-10, FiltersCamera looks strip: 38 looks -> 14, offset -1890 against a max of -1791).
-        // Guards: the draw path's settled-measurement check (MeasureVisible extents are transient
-        // mid-flight), plus no clamp under a live gesture, fling/bounce or pull-to-refresh, where
-        // being past the edge is intentional - that draw clamp was effectively dead, so enabling it
-        // unguarded would snap a rubber-band or a showing refresh indicator.
+        // Pull an offset the new bounds no longer contain back inside them - but on the next DRAW, not here.
+        // This runs from the measure pass, and a parent may measure this scroll more than once with
+        // different sizes: a grid measures a star row provisionally before subtracting its Auto rows, so
+        // the viewport is transiently taller and the bounds shorter. Clamping against those moved the
+        // offset for good (a list sitting at its end jumped up by the other rows' height, device
+        // 2026-09-19, DrawnCamera filter list). By the draw the final measure has set the final bounds.
+        _clampOffsetToBoundsPending = true;
+
+        IsViewportReady = true;
+        onceAfterInitializeViewport = true;
+    }
+
+    bool _clampOffsetToBoundsPending;
+
+    /// <summary>
+    /// Called on draw after the bounds changed (see InitializeViewport).
+    /// The draw path's content-size clamp does not cover this: SetMeasured already copies the content
+    /// size into _lastContentSize during the measure pass, so after any re-measure the draw never sees a
+    /// change. Shrinking content (fewer items) then left the viewport parked past its end forever with
+    /// nothing on screen (device 2026-09-10, FiltersCamera looks strip: 38 looks -> 14, offset -1890
+    /// against a max of -1791). Guards: settled measurement (MeasureVisible extents are transient
+    /// mid-flight), and no clamp under a live gesture, fling/bounce or pull-to-refresh, where being past
+    /// the edge is intentional.
+    /// </summary>
+    protected virtual void ClampOffsetToBoundsIfPending()
+    {
+        if (!_clampOffsetToBoundsPending)
+            return;
+        _clampOffsetToBoundsPending = false;
+
         bool measureSettled = !(Content is SkiaLayout mvl && mvl.IsTemplated
                                 && mvl.MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
                                 && mvl.LastMeasuredIndexLocal < (mvl.EffectiveItemsSource?.Count ?? 0) - 1);
@@ -221,9 +241,6 @@ public partial class SkiaScroll
                 OffsetVisibleAnchorY(-overscroll.Y);
             }
         }
-
-        IsViewportReady = true;
-        onceAfterInitializeViewport = true;
     }
 
     bool onceAfterInitializeViewport;
