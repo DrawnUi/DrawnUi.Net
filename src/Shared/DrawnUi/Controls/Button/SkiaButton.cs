@@ -538,11 +538,20 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         }
     }
 
+    private string _autoAccessibilityLabel;
+
     public virtual void ApplyProperties()
     {
         if (IsAccessibilityElement)
         {
-            AccessibilityLabel = Text;
+            // The label follows Text only while the button owns it: a label the app set itself
+            // (an icon-only button, a longer description) is left alone.
+            if (string.IsNullOrEmpty(AccessibilityLabel) || AccessibilityLabel == _autoAccessibilityLabel)
+            {
+                _autoAccessibilityLabel = Text;
+                AccessibilityLabel = Text;
+            }
+
             AccessibilityCanInteract = !IsDisabled;
         }
 
