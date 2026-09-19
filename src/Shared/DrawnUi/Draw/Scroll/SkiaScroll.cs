@@ -426,6 +426,10 @@ namespace DrawnUi.Draw
             if (indicator is SkiaControl newControl)
             {
                 if (!newControl.IsSet(ZIndexProperty)) newControl.ZIndex = 1001;
+                // the bar's look (thumb squashed on overscroll, resized to content) never changes the
+                // layout around it: without this every thumb resize re-measured the scroll and its
+                // parents each frame of a bounce
+                newControl.IsParentIndependent = true;
                 AddSubView(newControl);
             }
 
@@ -446,6 +450,10 @@ namespace DrawnUi.Draw
             if (indicator is SkiaControl newControl)
             {
                 if (!newControl.IsSet(ZIndexProperty)) newControl.ZIndex = 1001;
+                // the bar's look (thumb squashed on overscroll, resized to content) never changes the
+                // layout around it: without this every thumb resize re-measured the scroll and its
+                // parents each frame of a bounce
+                newControl.IsParentIndependent = true;
                 AddSubView(newControl);
             }
 
