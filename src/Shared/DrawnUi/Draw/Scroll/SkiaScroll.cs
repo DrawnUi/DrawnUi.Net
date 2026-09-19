@@ -3528,14 +3528,17 @@ namespace DrawnUi.Draw
                             Header.AddTranslationY = ParallaxComputedValue;
                         }
 
-                        // Adjust the header hitbox for parallax
-                        var headerTop = context.Destination.Top;
+                        // The header box lives in the same space as Viewport (local to this scroll), like the
+                        // footer below. It used to start at context.Destination.Top, a CANVAS coordinate, so the
+                        // test against the local viewport only passed for a scroll sitting near the canvas top:
+                        // placed lower than its own height, the header was never drawn.
+                        var headerTop = Viewport.Pixels.Top;
                         var headerBottom = headerTop + Header.MeasuredSize.Pixels.Height;
 
                         var hitboxHeader = new SKRect(
-                            0,
+                            Viewport.Pixels.Left,
                             (float)headerTop,
-                            context.Destination.Width,
+                            Viewport.Pixels.Right,
                             (float)headerBottom);
 
                         if (!HeaderBehind && !HeaderSticky)
@@ -3596,11 +3599,11 @@ namespace DrawnUi.Draw
                             Header.AddTranslationX = ParallaxComputedValue;
                         }
 
-                        // Adjust the header hitbox for parallax in horizontal orientation
-                        var headerLeft = ctx.Destination.Left;
+                        // Same space as Viewport (local to this scroll), see the vertical branch
+                        var headerLeft = Viewport.Pixels.Left;
                         var headerRight = headerLeft + Header.MeasuredSize.Pixels.Width;
-                        var hitboxHeader = new SKRect((float)headerLeft, 0, (float)headerRight,
-                            ctx.Destination.Height);
+                        var hitboxHeader = new SKRect((float)headerLeft, Viewport.Pixels.Top, (float)headerRight,
+                            Viewport.Pixels.Bottom);
 
                         if (!HeaderBehind && !HeaderSticky)
                         {
