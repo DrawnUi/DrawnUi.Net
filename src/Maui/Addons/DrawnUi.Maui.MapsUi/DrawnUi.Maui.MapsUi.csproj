@@ -8,8 +8,10 @@
         <PackageReference Include="Mapsui.ArcGIS" Version="5.0.0-beta.4" />
         <PackageReference Include="Mapsui.Extensions" Version="5.0.0-beta.4" />
         <PackageReference Include="MapsUi.Maui" Version="5.0.0-beta.4" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
-        <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.13" />
+        <!-- desktop-only natives: on Android the linux-* libe_sqlite3.so (4 KB aligned) gets packed over
+             the 16 KB aligned one from the .android aar and fails the Android 16+ page-size check -->
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" Condition="!$(TargetFramework.Contains('-android')) And !$(TargetFramework.Contains('-ios'))" />
+        <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.13" Condition="!$(TargetFramework.Contains('-android')) And !$(TargetFramework.Contains('-ios'))" />
         <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.android" Version="2.1.13" />
         <PackageReference Include="System.Text.Json" Version="9.0.0" />
     </ItemGroup>
