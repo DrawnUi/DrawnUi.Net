@@ -15,9 +15,14 @@
         Route="MainPage" />-->
 
     <ShellContent
+        Title="Scroll Neither repro"
+        ContentTemplate="{DataTemplate sandbox:ScrollNeitherPage}"
+        Route="MainPage" />
+
+    <!--<ShellContent
         Title="Issue 338 repro"
         ContentTemplate="{DataTemplate sandbox:Issue338Page}"
-        Route="MainPage" />
+        Route="MainPage" />-->
 
     <!--<ShellContent
         Title="SkiaWheelScroll Test"

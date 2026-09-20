@@ -390,7 +390,7 @@ public partial class SkiaScroll
                     if (ChildWasTapped)
                         break;
 
-                    bool canPan = !ScrollLocked;
+                    bool canPan = !ScrollLocked && Orientation != ScrollOrientation.Neither;
 
                     if (!IsUserPanning)
                     {
@@ -518,7 +518,7 @@ public partial class SkiaScroll
                             canSwipe = false;
                         }
 
-                        if (!ScrollLocked && canSwipe)
+                        if (!ScrollLocked && canSwipe && Orientation != ScrollOrientation.Neither)
                         {
                             var finalVelocity = SwipeVelocityAccumulator.CalculateFinalVelocity(this.MaxVelocity);
 
@@ -677,6 +677,11 @@ public partial class SkiaScroll
                     break;
 
                 case TouchActionResult.Wheel:
+
+                    if (Orientation == ScrollOrientation.Neither)
+                    {
+                        break;
+                    }
 
                     //Debug.WriteLine($"Wheel {args.Event.Wheel.Delta}");
 
