@@ -8,10 +8,15 @@ items:
   - DrawnUi.Draw.SkiaScrollBar.#ctor
   - DrawnUi.Draw.SkiaScrollBar.ApplyOrientation
   - DrawnUi.Draw.SkiaScrollBar.AutoHide
+  - DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
   - DrawnUi.Draw.SkiaScrollBar.Dock
   - DrawnUi.Draw.SkiaScrollBar.EdgeMargin
+  - DrawnUi.Draw.SkiaScrollBar.GetDragProgress(System.Single,System.Single)
+  - DrawnUi.Draw.SkiaScrollBar.GrabPadding
   - DrawnUi.Draw.SkiaScrollBar.HideDelaySecs
+  - DrawnUi.Draw.SkiaScrollBar.HideDurationSecs
   - DrawnUi.Draw.SkiaScrollBar.InitializeDefaultContent(System.Boolean)
+  - DrawnUi.Draw.SkiaScrollBar.IsDraggable
   - DrawnUi.Draw.SkiaScrollBar.MinThumbSize
   - DrawnUi.Draw.SkiaScrollBar.OnWillDisposeWithChildren
   - DrawnUi.Draw.SkiaScrollBar.SetScrollProgress(Microsoft.Maui.ScrollOrientation,System.Single,System.Single,System.Single,System.Boolean)
@@ -487,6 +492,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
   - DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty,System.Object)
   - DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  - DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -772,6 +778,7 @@ items:
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.AvoidRemeasuring(DrawnUi.Draw.MeasureRequest)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
   - DrawnUi.Draw.SkiaControl.SetMeasuredAdaptToContentSize(DrawnUi.Infrastructure.MeasuringConstraints,System.Single)
@@ -1507,6 +1514,107 @@ items:
       type: System.Double
     content.vb: Public Property HideDelaySecs As Double
   overload: DrawnUi.Draw.SkiaScrollBar.HideDelaySecs*
+- uid: DrawnUi.Draw.SkiaScrollBar.HideDurationSecs
+  commentId: P:DrawnUi.Draw.SkiaScrollBar.HideDurationSecs
+  id: HideDurationSecs
+  parent: DrawnUi.Draw.SkiaScrollBar
+  langs:
+  - csharp
+  - vb
+  name: HideDurationSecs
+  nameWithType: SkiaScrollBar.HideDurationSecs
+  fullName: DrawnUi.Draw.SkiaScrollBar.HideDurationSecs
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: HideDurationSecs
+    path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+    startLine: 133
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Duration in seconds of the fade-out once <xref href="DrawnUi.Draw.SkiaScrollBar.HideDelaySecs" data-throw-if-not-resolved="false"></xref> has passed. Default is 0.25.
+  example: []
+  syntax:
+    content: public double HideDurationSecs { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property HideDurationSecs As Double
+  overload: DrawnUi.Draw.SkiaScrollBar.HideDurationSecs*
+- uid: DrawnUi.Draw.SkiaScrollBar.IsDraggable
+  commentId: P:DrawnUi.Draw.SkiaScrollBar.IsDraggable
+  id: IsDraggable
+  parent: DrawnUi.Draw.SkiaScrollBar
+  langs:
+  - csharp
+  - vb
+  name: IsDraggable
+  nameWithType: SkiaScrollBar.IsDraggable
+  fullName: DrawnUi.Draw.SkiaScrollBar.IsDraggable
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsDraggable
+    path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+    startLine: 140
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Lets the user drag the thumb and press the track to jump there (desktop scroll bar behavior).
+
+    The owning SkiaScroll then takes the whole gesture, from down to up, when it starts on the bar.
+
+    Default is false: the bar only indicates and every gesture passes through to the content.
+  example: []
+  syntax:
+    content: public bool IsDraggable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsDraggable As Boolean
+  overload: DrawnUi.Draw.SkiaScrollBar.IsDraggable*
+- uid: DrawnUi.Draw.SkiaScrollBar.GrabPadding
+  commentId: P:DrawnUi.Draw.SkiaScrollBar.GrabPadding
+  id: GrabPadding
+  parent: DrawnUi.Draw.SkiaScrollBar
+  langs:
+  - csharp
+  - vb
+  name: GrabPadding
+  nameWithType: SkiaScrollBar.GrabPadding
+  fullName: DrawnUi.Draw.SkiaScrollBar.GrabPadding
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GrabPadding
+    path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+    startLine: 146
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Extra grab area in points on both sides of the bar, across the scrolling axis, so a thin bar
+
+    is easy to hit with a mouse. Used when <xref href="DrawnUi.Draw.SkiaScrollBar.IsDraggable" data-throw-if-not-resolved="false"></xref> is true.
+  example: []
+  syntax:
+    content: public double GrabPadding { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property GrabPadding As Double
+  overload: DrawnUi.Draw.SkiaScrollBar.GrabPadding*
 - uid: DrawnUi.Draw.SkiaScrollBar._thumb
   commentId: F:DrawnUi.Draw.SkiaScrollBar._thumb
   id: _thumb
@@ -1525,7 +1633,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _thumb
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 130
+    startLine: 148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1552,7 +1660,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _track
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 131
+    startLine: 149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1579,7 +1687,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 136
+    startLine: 157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1608,18 +1716,21 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 161
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Always run this before applying any changes while measuring.
+  summary: >-
+    Always run this before applying any changes while measuring.
+
+    Builds the default content once (or again after <xref href="DrawnUi.Draw.SkiaControl.RebuildDefaultContent" data-throw-if-not-resolved="false"></xref>).
   example: []
   syntax:
     content: public override void InitializeDefaultContent(bool force = false)
     parameters:
     - id: force
       type: System.Boolean
-      description: ''
+      description: Build again even if already built. Does not clear the previous content, use <xref href="DrawnUi.Draw.SkiaControl.RebuildDefaultContent" data-throw-if-not-resolved="false"></xref> for that.
     content.vb: Public Overrides Sub InitializeDefaultContent(force As Boolean = False)
   overridden: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   overload: DrawnUi.Draw.SkiaScrollBar.InitializeDefaultContent*
@@ -1644,7 +1755,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOrientation
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 171
+    startLine: 192
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1672,7 +1783,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetScrollProgress
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 223
+    startLine: 244
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1703,6 +1814,90 @@ items:
   nameWithType.vb: SkiaScrollBar.SetScrollProgress(ScrollOrientation, Single, Single, Single, Boolean)
   fullName.vb: DrawnUi.Draw.SkiaScrollBar.SetScrollProgress(Microsoft.Maui.ScrollOrientation, Single, Single, Single, Boolean)
   name.vb: SetScrollProgress(ScrollOrientation, Single, Single, Single, Boolean)
+- uid: DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
+  id: BeginDrag(System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaScrollBar
+  langs:
+  - csharp
+  - vb
+  name: BeginDrag(float, float)
+  nameWithType: SkiaScrollBar.BeginDrag(float, float)
+  fullName: DrawnUi.Draw.SkiaScrollBar.BeginDrag(float, float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: BeginDrag
+    path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+    startLine: 318
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Called by the owning scroll on touch down, coordinates in canvas pixels. Returns true when the
+
+    point is on the bar (track plus <xref href="DrawnUi.Draw.SkiaScrollBar.GrabPadding" data-throw-if-not-resolved="false"></xref>) and a drag starts: on the thumb it keeps
+
+    the grab point, on the track the thumb jumps to center under the pointer.
+  example: []
+  syntax:
+    content: public virtual bool BeginDrag(float x, float y)
+    parameters:
+    - id: x
+      type: System.Single
+    - id: y
+      type: System.Single
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable Function BeginDrag(x As Single, y As Single) As Boolean
+  overload: DrawnUi.Draw.SkiaScrollBar.BeginDrag*
+  nameWithType.vb: SkiaScrollBar.BeginDrag(Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaScrollBar.BeginDrag(Single, Single)
+  name.vb: BeginDrag(Single, Single)
+- uid: DrawnUi.Draw.SkiaScrollBar.GetDragProgress(System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaScrollBar.GetDragProgress(System.Single,System.Single)
+  id: GetDragProgress(System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaScrollBar
+  langs:
+  - csharp
+  - vb
+  name: GetDragProgress(float, float)
+  nameWithType: SkiaScrollBar.GetDragProgress(float, float)
+  fullName: DrawnUi.Draw.SkiaScrollBar.GetDragProgress(float, float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetDragProgress
+    path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+    startLine: 350
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Scroll progress 0.0 - 1.0 for the pointer position during a drag started by <xref href="DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single%2cSystem.Single)" data-throw-if-not-resolved="false"></xref>,
+
+    coordinates in canvas pixels.
+  example: []
+  syntax:
+    content: public virtual float GetDragProgress(float x, float y)
+    parameters:
+    - id: x
+      type: System.Single
+    - id: y
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Overridable Function GetDragProgress(x As Single, y As Single) As Single
+  overload: DrawnUi.Draw.SkiaScrollBar.GetDragProgress*
+  nameWithType.vb: SkiaScrollBar.GetDragProgress(Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaScrollBar.GetDragProgress(Single, Single)
+  name.vb: GetDragProgress(Single, Single)
 - uid: DrawnUi.Draw.SkiaScrollBar.OnWillDisposeWithChildren
   commentId: M:DrawnUi.Draw.SkiaScrollBar.OnWillDisposeWithChildren
   id: OnWillDisposeWithChildren
@@ -1721,7 +1916,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 289
+    startLine: 360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -10463,6 +10658,25 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   commentId: M:DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   parent: DrawnUi.Draw.SkiaControl
@@ -16611,6 +16825,25 @@ references:
   - uid: DrawnUi.Draw.MeasureRequest
     name: MeasureRequest
     href: DrawnUi.Draw.MeasureRequest.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   commentId: M:DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
@@ -40705,6 +40938,36 @@ references:
   name: HideDelaySecs
   nameWithType: SkiaScrollBar.HideDelaySecs
   fullName: DrawnUi.Draw.SkiaScrollBar.HideDelaySecs
+- uid: DrawnUi.Draw.SkiaScrollBar.HideDelaySecs
+  commentId: P:DrawnUi.Draw.SkiaScrollBar.HideDelaySecs
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_HideDelaySecs
+  name: HideDelaySecs
+  nameWithType: SkiaScrollBar.HideDelaySecs
+  fullName: DrawnUi.Draw.SkiaScrollBar.HideDelaySecs
+- uid: DrawnUi.Draw.SkiaScrollBar.HideDurationSecs*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollBar.HideDurationSecs
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_HideDurationSecs
+  name: HideDurationSecs
+  nameWithType: SkiaScrollBar.HideDurationSecs
+  fullName: DrawnUi.Draw.SkiaScrollBar.HideDurationSecs
+- uid: DrawnUi.Draw.SkiaScrollBar.IsDraggable*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollBar.IsDraggable
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_IsDraggable
+  name: IsDraggable
+  nameWithType: SkiaScrollBar.IsDraggable
+  fullName: DrawnUi.Draw.SkiaScrollBar.IsDraggable
+- uid: DrawnUi.Draw.SkiaScrollBar.IsDraggable
+  commentId: P:DrawnUi.Draw.SkiaScrollBar.IsDraggable
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_IsDraggable
+  name: IsDraggable
+  nameWithType: SkiaScrollBar.IsDraggable
+  fullName: DrawnUi.Draw.SkiaScrollBar.IsDraggable
+- uid: DrawnUi.Draw.SkiaScrollBar.GrabPadding*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollBar.GrabPadding
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_GrabPadding
+  name: GrabPadding
+  nameWithType: SkiaScrollBar.GrabPadding
+  fullName: DrawnUi.Draw.SkiaScrollBar.GrabPadding
 - uid: DrawnUi.Draw.SkiaShape
   commentId: T:DrawnUi.Draw.SkiaShape
   parent: DrawnUi.Draw
@@ -40868,6 +41131,66 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
+- uid: DrawnUi.Draw.SkiaScrollBar.GrabPadding
+  commentId: P:DrawnUi.Draw.SkiaScrollBar.GrabPadding
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_GrabPadding
+  name: GrabPadding
+  nameWithType: SkiaScrollBar.GrabPadding
+  fullName: DrawnUi.Draw.SkiaScrollBar.GrabPadding
+- uid: DrawnUi.Draw.SkiaScrollBar.BeginDrag*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollBar.BeginDrag
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_BeginDrag_System_Single_System_Single_
+  name: BeginDrag
+  nameWithType: SkiaScrollBar.BeginDrag
+  fullName: DrawnUi.Draw.SkiaScrollBar.BeginDrag
+- uid: DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
+  isExternal: true
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_BeginDrag_System_Single_System_Single_
+  name: BeginDrag(float, float)
+  nameWithType: SkiaScrollBar.BeginDrag(float, float)
+  fullName: DrawnUi.Draw.SkiaScrollBar.BeginDrag(float, float)
+  nameWithType.vb: SkiaScrollBar.BeginDrag(Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaScrollBar.BeginDrag(Single, Single)
+  name.vb: BeginDrag(Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
+    name: BeginDrag
+    href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_BeginDrag_System_Single_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
+    name: BeginDrag
+    href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_BeginDrag_System_Single_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaScrollBar.GetDragProgress*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollBar.GetDragProgress
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_GetDragProgress_System_Single_System_Single_
+  name: GetDragProgress
+  nameWithType: SkiaScrollBar.GetDragProgress
+  fullName: DrawnUi.Draw.SkiaScrollBar.GetDragProgress
 - uid: DrawnUi.Draw.SkiaControl.OnWillDisposeWithChildren
   commentId: M:DrawnUi.Draw.SkiaControl.OnWillDisposeWithChildren
   parent: DrawnUi.Draw.SkiaControl

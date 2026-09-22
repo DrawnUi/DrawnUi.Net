@@ -302,6 +302,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
   - DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty,System.Object)
   - DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  - DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -593,6 +594,7 @@ items:
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.OnMeasuring(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.AvoidRemeasuring(DrawnUi.Draw.MeasureRequest)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
@@ -1329,7 +1331,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAnimatorSeeking
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 103
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1363,7 +1365,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyDefaultFrame
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 118
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1391,7 +1393,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Animation
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 159
+    startLine: 163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1420,7 +1422,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyIsOnWhenNotPlayingProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 173
+    startLine: 177
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1447,7 +1449,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyIsOnWhenNotPlaying
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 184
+    startLine: 188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1483,7 +1485,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOnProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 190
+    startLine: 194
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1510,7 +1512,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOn
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 201
+    startLine: 205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1548,7 +1550,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultFrameWhenOnProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 207
+    startLine: 211
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1575,7 +1577,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultFrameWhenOn
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 217
+    startLine: 221
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1606,7 +1608,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorTintProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 223
+    startLine: 227
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1633,7 +1635,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorTint
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 234
+    startLine: 238
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1669,7 +1671,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorsProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 243
+    startLine: 247
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1696,7 +1698,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Colors
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 258
+    startLine: 262
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1725,7 +1727,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SourceProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 303
+    startLine: 307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1752,7 +1754,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Source
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 315
+    startLine: 319
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1788,7 +1790,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderFrame
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 321
+    startLine: 325
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1819,7 +1821,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadLocalJson
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 360
+    startLine: 364
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1853,7 +1855,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadSource
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 394
+    startLine: 398
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1891,7 +1893,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateAnimation
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 446
+    startLine: 450
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1925,7 +1927,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StreamFromResourceUrl
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 473
+    startLine: 477
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1961,7 +1963,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnJsonLoaded
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 504
+    startLine: 508
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2002,7 +2004,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadAnimationFromJson
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 514
+    startLine: 518
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2040,7 +2042,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetAnimation
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 533
+    startLine: 537
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2074,7 +2076,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 577
+    startLine: 581
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2103,7 +2105,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAnimatorUpdated
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 593
+    startLine: 597
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2139,7 +2141,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplySpeed
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 604
+    startLine: 608
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2167,7 +2169,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAnimatorInitializing
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 617
+    startLine: 621
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2195,7 +2197,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckCanStartAnimator
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 630
+    startLine: 634
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2225,7 +2227,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAnimatorStarting
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 635
+    startLine: 639
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2253,7 +2255,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoToStart
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 641
+    startLine: 645
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2279,7 +2281,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoToEnd
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 650
+    startLine: 654
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2305,7 +2307,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReloadSource
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 661
+    startLine: 665
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2331,7 +2333,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessJson
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 763
+    startLine: 767
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2358,7 +2360,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyTint
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 765
+    startLine: 769
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2394,7 +2396,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindColorProperties
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 820
+    startLine: 824
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2428,7 +2430,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorToRGBHexString
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 855
+    startLine: 859
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2459,7 +2461,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorToHexString
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 863
+    startLine: 867
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2490,7 +2492,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorToArrayString
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 873
+    startLine: 877
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2521,7 +2523,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StringToXamarinColorFromHex
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 883
+    startLine: 887
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2555,7 +2557,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StringToXamarinColor
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 912
+    startLine: 916
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2589,7 +2591,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorToString
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 930
+    startLine: 934
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2620,7 +2622,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateSaturation
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaLottie.cs
-    startLine: 946
+    startLine: 950
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -6650,6 +6652,25 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
     name: CreateDefaultContent
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
@@ -12969,6 +12990,25 @@ references:
   - uid: DrawnUi.Draw.MeasureRequest
     name: MeasureRequest
     href: DrawnUi.Draw.MeasureRequest.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)

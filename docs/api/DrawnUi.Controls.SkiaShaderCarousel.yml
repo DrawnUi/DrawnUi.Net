@@ -11,6 +11,7 @@ items:
   - DrawnUi.Controls.SkiaShaderCarousel.FromToChanged
   - DrawnUi.Controls.SkiaShaderCarousel.InterruptedTransitionMs
   - DrawnUi.Controls.SkiaShaderCarousel.InterruptedTransitionMsProperty
+  - DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable(System.Int32)
   - DrawnUi.Controls.SkiaShaderCarousel.OnChildrenInitialized
   - DrawnUi.Controls.SkiaShaderCarousel.OnFromToChanged
   - DrawnUi.Controls.SkiaShaderCarousel.OnMeasuring(System.Single,System.Single,System.Single)
@@ -612,6 +613,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
   - DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty,System.Object)
   - DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  - DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -896,6 +898,7 @@ items:
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.AvoidRemeasuring(DrawnUi.Draw.MeasureRequest)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
@@ -2053,6 +2056,46 @@ items:
     content.vb: Protected Overrides Sub AnimateVisibleChild(view As SkiaControl, position As Vector2)
   overridden: DrawnUi.Controls.SkiaCarousel.AnimateVisibleChild(DrawnUi.Draw.SkiaControl,System.Numerics.Vector2)
   overload: DrawnUi.Controls.SkiaShaderCarousel.AnimateVisibleChild*
+- uid: DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable(System.Int32)
+  commentId: M:DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable(System.Int32)
+  id: IsSlideHitTestable(System.Int32)
+  parent: DrawnUi.Controls.SkiaShaderCarousel
+  langs:
+  - csharp
+  - vb
+  name: IsSlideHitTestable(int)
+  nameWithType: SkiaShaderCarousel.IsSlideHitTestable(int)
+  fullName: DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsSlideHitTestable
+    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
+    startLine: 325
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: >-
+    Slides all sit on the same rect, so only the selected one may take gestures: otherwise the
+
+    topmost slide in the render tree (the last on-screen one) would catch every tap, whatever is shown.
+  example: []
+  syntax:
+    content: protected override bool IsSlideHitTestable(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function IsSlideHitTestable(index As Integer) As Boolean
+  overridden: DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(System.Int32)
+  overload: DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable*
+  nameWithType.vb: SkiaShaderCarousel.IsSlideHitTestable(Integer)
+  fullName.vb: DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable(Integer)
+  name.vb: IsSlideHitTestable(Integer)
 - uid: DrawnUi.Controls.SkiaShaderCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Controls.SkiaShaderCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   id: ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -2071,7 +2114,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 331
+    startLine: 337
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2106,7 +2149,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 371
+    startLine: 377
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2160,7 +2203,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTransitionChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 469
+    startLine: 475
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -12428,6 +12471,25 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   commentId: M:DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   parent: DrawnUi.Draw.SkiaControl
@@ -18541,6 +18603,25 @@ references:
   - uid: DrawnUi.Draw.MeasureRequest
     name: MeasureRequest
     href: DrawnUi.Draw.MeasureRequest.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
@@ -42863,6 +42944,43 @@ references:
     name: Numerics
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(System.Int32)
+  commentId: M:DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(System.Int32)
+  parent: DrawnUi.Controls.SkiaCarousel
+  isExternal: true
+  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_IsSlideHitTestable_System_Int32_
+  name: IsSlideHitTestable(int)
+  nameWithType: SkiaCarousel.IsSlideHitTestable(int)
+  fullName: DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(int)
+  nameWithType.vb: SkiaCarousel.IsSlideHitTestable(Integer)
+  fullName.vb: DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(Integer)
+  name.vb: IsSlideHitTestable(Integer)
+  spec.csharp:
+  - uid: DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(System.Int32)
+    name: IsSlideHitTestable
+    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_IsSlideHitTestable_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(System.Int32)
+    name: IsSlideHitTestable
+    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_IsSlideHitTestable_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable*
+  commentId: Overload:DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable
+  href: DrawnUi.Controls.SkiaShaderCarousel.html#DrawnUi_Controls_SkiaShaderCarousel_IsSlideHitTestable_System_Int32_
+  name: IsSlideHitTestable
+  nameWithType: SkiaShaderCarousel.IsSlideHitTestable
+  fullName: DrawnUi.Controls.SkiaShaderCarousel.IsSlideHitTestable
 - uid: DrawnUi.Controls.SkiaCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Controls.SkiaCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   parent: DrawnUi.Controls.SkiaCarousel

@@ -134,6 +134,7 @@ items:
   - DrawnUi.Draw.SkiaImage.ReloadSource
   - DrawnUi.Draw.SkiaImage.Cleared
   - DrawnUi.Draw.SkiaImage.LoadImageManagedAsync(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource,DrawnUi.Draw.LoadPriority)
+  - DrawnUi.Draw.SkiaImage.LoadLocalFileSync(System.String,System.Threading.CancellationToken)
   - DrawnUi.Draw.SkiaImage.SetImageSource(Microsoft.Maui.Controls.ImageSource)
   - DrawnUi.Draw.SkiaImage.LastSource
   - DrawnUi.Draw.SkiaImage.ImageSource
@@ -376,6 +377,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
   - DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty,System.Object)
   - DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  - DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -665,6 +667,7 @@ items:
   - DrawnUi.Draw.SkiaControl.MeasureInternal(DrawnUi.Draw.MeasureRequest)
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
   - DrawnUi.Draw.SkiaControl.SetMeasuredAdaptToContentSize(DrawnUi.Infrastructure.MeasuringConstraints,System.Single)
@@ -2991,6 +2994,49 @@ references:
   - uid: DrawnUi.Draw.LoadPriority
     name: LoadPriority
     href: DrawnUi.Draw.LoadPriority.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaImage.LoadLocalFileSync(System.String,System.Threading.CancellationToken)
+  commentId: M:DrawnUi.Draw.SkiaImage.LoadLocalFileSync(System.String,System.Threading.CancellationToken)
+  parent: DrawnUi.Draw.SkiaImage
+  isExternal: true
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_LoadLocalFileSync_System_String_System_Threading_CancellationToken_
+  name: LoadLocalFileSync(string, CancellationToken)
+  nameWithType: SkiaImage.LoadLocalFileSync(string, CancellationToken)
+  fullName: DrawnUi.Draw.SkiaImage.LoadLocalFileSync(string, System.Threading.CancellationToken)
+  nameWithType.vb: SkiaImage.LoadLocalFileSync(String, CancellationToken)
+  fullName.vb: DrawnUi.Draw.SkiaImage.LoadLocalFileSync(String, System.Threading.CancellationToken)
+  name.vb: LoadLocalFileSync(String, CancellationToken)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaImage.LoadLocalFileSync(System.String,System.Threading.CancellationToken)
+    name: LoadLocalFileSync
+    href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_LoadLocalFileSync_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaImage.LoadLocalFileSync(System.String,System.Threading.CancellationToken)
+    name: LoadLocalFileSync
+    href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_LoadLocalFileSync_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
   - name: )
 - uid: DrawnUi.Draw.SkiaImage.SetImageSource(Microsoft.Maui.Controls.ImageSource)
   commentId: M:DrawnUi.Draw.SkiaImage.SetImageSource(Microsoft.Maui.Controls.ImageSource)
@@ -7313,6 +7359,25 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
     name: CreateDefaultContent
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
@@ -13563,6 +13628,25 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.UpdateSizeRequest
     name: UpdateSizeRequest
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateSizeRequest
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)

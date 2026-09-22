@@ -166,6 +166,7 @@ items:
   - DrawnUi.Draw.SkiaScroll.InternalScrollBar
   - DrawnUi.Draw.SkiaScroll.InternalScrollBarHorizontal
   - DrawnUi.Draw.SkiaScroll.UpdateScrollBarIndicator
+  - DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaScroll.OrderedScrollProperty
   - DrawnUi.Draw.SkiaScroll.OrderedScroll
   - DrawnUi.Draw.SkiaScroll.OrderedScrollIsAnimatedProperty
@@ -372,6 +373,7 @@ items:
   - DrawnUi.Draw.SkiaScroll.ScrollProgressY
   - DrawnUi.Draw.SkiaScroll.ScrollProgressX
   - DrawnUi.Draw.SkiaScroll.InitializeViewport(System.Single)
+  - DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
   - DrawnUi.Draw.SkiaScroll.IsViewportReady
   - DrawnUi.Draw.SkiaScroll.ScrollingDirection
   - DrawnUi.Draw.SkiaScroll.CheckAndSetIsStillAnimating
@@ -579,6 +581,7 @@ items:
   - DrawnUi.Draw.SkiaControl.SkipRendering
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
   - DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty,System.Object)
+  - DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -863,6 +866,7 @@ items:
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.OnMeasuring(System.Single,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
@@ -1432,7 +1436,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugWheel
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 39
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1461,7 +1465,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Helper3dChildren
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 41
+    startLine: 49
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1488,7 +1492,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CellsPool
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 43
+    startLine: 51
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1517,7 +1521,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DataSource
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 45
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1544,7 +1548,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemsWrapper
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 47
+    startLine: 55
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1571,7 +1575,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 54
+    startLine: 62
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1600,7 +1604,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 59
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1634,7 +1638,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalChildAlignement
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 69
+    startLine: 77
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1663,7 +1667,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Use3d
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 71
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1692,7 +1696,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HapticEnabledProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 73
+    startLine: 81
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1719,7 +1723,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HapticEnabled
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 79
+    startLine: 87
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1748,7 +1752,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FadeProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 85
+    startLine: 93
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1775,7 +1779,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Fade
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 91
+    startLine: 99
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1804,7 +1808,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoopedProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 97
+    startLine: 105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1831,7 +1835,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLooped
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 103
+    startLine: 111
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1860,7 +1864,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinesColorProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 109
+    startLine: 117
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1887,7 +1891,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinesColor
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 115
+    startLine: 123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1916,7 +1920,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FadeStrengthProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 121
+    startLine: 129
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1943,7 +1947,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FadeStrength
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 130
+    startLine: 138
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1974,7 +1978,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FadeMinProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 136
+    startLine: 144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2001,7 +2005,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FadeMin
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 145
+    startLine: 153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2032,7 +2036,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WheelScrollingOffset
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 153
+    startLine: 161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2061,7 +2065,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemHeight
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 168
+    startLine: 176
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2090,7 +2094,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 180
+    startLine: 188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2117,7 +2121,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 209
+    startLine: 217
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2148,7 +2152,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisibleItemCountProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 215
+    startLine: 223
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2175,7 +2179,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisibleItemCount
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 229
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2204,10 +2208,20 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 252
+    startLine: 260
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: >-
+    Called by InitializeDefaultContent, can be used by controls to create default content for different ControlStyles. This is needed for example for MAUI controls to work with XAML without extra code.
+
+    After the call InitializeDefaultContent with set DefaultContentCreated = true;
+
+    You don't need to call SkiaControl base.CreateDefaultContent it's empty.
+
+    Cache child references without a null-guard (or reset them in <xref href="DrawnUi.Draw.SkiaControl.RebuildDefaultContent" data-throw-if-not-resolved="false"></xref>):
+
+    a rebuild disposes the previous children and calls this again.
   example: []
   syntax:
     content: protected override void CreateDefaultContent()
@@ -2232,7 +2246,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureContent
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 259
+    startLine: 267
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2277,7 +2291,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContentSize
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 266
+    startLine: 274
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2305,7 +2319,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutPositionChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 279
+    startLine: 287
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2334,7 +2348,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 292
+    startLine: 300
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2363,7 +2377,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawVirtual
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 305
+    startLine: 313
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2398,7 +2412,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyVisibleItemCount
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 368
+    startLine: 376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2424,7 +2438,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintSelectionIndicator
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 611
+    startLine: 619
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2456,7 +2470,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartToFlingFrom
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 645
+    startLine: 653
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2497,7 +2511,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PositionViewport
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 686
+    startLine: 694
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2554,7 +2568,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckNeedToSnap
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 715
+    startLine: 723
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2584,7 +2598,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Snap
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 725
+    startLine: 733
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2618,7 +2632,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScrollCompleted
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 751
+    startLine: 759
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2647,7 +2661,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActualizeSelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 763
+    startLine: 771
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2675,7 +2689,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClampOffset
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 858
+    startLine: 866
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2717,7 +2731,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 909
+    startLine: 917
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2753,7 +2767,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CellsCount
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 957
+    startLine: 965
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2782,7 +2796,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisibleCellsCountHalf
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 958
+    startLine: 966
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2811,7 +2825,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WheelHalfHeight
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 959
+    startLine: 967
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2840,7 +2854,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WheelVerticalCenter
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 960
+    startLine: 968
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2869,7 +2883,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseSpacing
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 962
+    startLine: 970
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2898,7 +2912,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsIndexValid
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 976
+    startLine: 984
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2932,7 +2946,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemsSourceCount
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 989
+    startLine: 997
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2961,7 +2975,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCellPositionForIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 1038
+    startLine: 1046
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2995,7 +3009,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetIndexAtCellPosition
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelScroll.cs
-    startLine: 1053
+    startLine: 1061
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3845,6 +3859,41 @@ references:
     name: UpdateScrollBarIndicator
     href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_UpdateScrollBarIndicator
   - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  commentId: M:DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  parent: DrawnUi.Draw.SkiaScroll
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ProcessScrollBarGestures_DrawnUi_Draw_SkiaGesturesParameters_DrawnUi_Draw_GestureEventProcessingInfo_
+  name: ProcessScrollBarGestures(SkiaGesturesParameters, GestureEventProcessingInfo)
+  nameWithType: SkiaScroll.ProcessScrollBarGestures(SkiaGesturesParameters, GestureEventProcessingInfo)
+  fullName: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+    name: ProcessScrollBarGestures
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ProcessScrollBarGestures_DrawnUi_Draw_SkiaGesturesParameters_DrawnUi_Draw_GestureEventProcessingInfo_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.GestureEventProcessingInfo
+    name: GestureEventProcessingInfo
+    href: DrawnUi.Draw.GestureEventProcessingInfo.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+    name: ProcessScrollBarGestures
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ProcessScrollBarGestures_DrawnUi_Draw_SkiaGesturesParameters_DrawnUi_Draw_GestureEventProcessingInfo_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.GestureEventProcessingInfo
+    name: GestureEventProcessingInfo
+    href: DrawnUi.Draw.GestureEventProcessingInfo.html
   - name: )
 - uid: DrawnUi.Draw.SkiaScroll.OrderedScrollProperty
   commentId: F:DrawnUi.Draw.SkiaScroll.OrderedScrollProperty
@@ -6614,6 +6663,25 @@ references:
     name: Single
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+  commentId: M:DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+  parent: DrawnUi.Draw.SkiaScroll
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ClampOffsetToBoundsIfPending
+  name: ClampOffsetToBoundsIfPending()
+  nameWithType: SkiaScroll.ClampOffsetToBoundsIfPending()
+  fullName: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+    name: ClampOffsetToBoundsIfPending
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ClampOffsetToBoundsIfPending
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+    name: ClampOffsetToBoundsIfPending
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ClampOffsetToBoundsIfPending
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaScroll.IsViewportReady
   commentId: P:DrawnUi.Draw.SkiaScroll.IsViewportReady
@@ -11010,6 +11078,25 @@ references:
     name: Object
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   commentId: M:DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
@@ -17091,6 +17178,25 @@ references:
     name: Single
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
