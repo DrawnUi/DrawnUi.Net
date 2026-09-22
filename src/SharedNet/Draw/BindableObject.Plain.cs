@@ -136,6 +136,35 @@ namespace DrawnUi.Draw
             OnPropertyChanged(property.PropertyName);
         }
 
+        /// <summary>
+        /// Resets the property to its default value and forgets that it was set (<see cref="IsSet"/> becomes false),
+        /// mirroring MAUI's BindableObject.ClearValue. Raises the change callbacks when the value actually changes.
+        /// </summary>
+        public void ClearValue(BindableProperty property)
+        {
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+
+            bool hadExistingValue;
+            object oldValue;
+            lock (_valuesLock)
+            {
+                hadExistingValue = _values.Remove(property, out oldValue);
+                _explicitlySet?.Remove(property);
+            }
+
+            if (!hadExistingValue)
+                return;
+
+            var defaultValue = property.GetDefaultValue(this);
+            if (Equals(oldValue, defaultValue))
+                return;
+
+            OnPropertyChanging(property.PropertyName);
+            property.PropertyChanged?.Invoke(this, oldValue, defaultValue);
+            OnPropertyChanged(property.PropertyName);
+        }
+
         public static void SetInheritedBindingContext(BindableObject bindable, object value)
         {
             if (bindable != null)

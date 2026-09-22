@@ -520,6 +520,16 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         FindViews();
     }
 
+    public override void RebuildDefaultContent()
+    {
+        // the cached children are disposed by the rebuild, FindViews only looks up null refs
+        MainWrapper = null;
+        MainLabel = null;
+        MainFrame = null;
+
+        base.RebuildDefaultContent();
+    }
+
     public virtual void FindViews()
     {
         if (MainWrapper == null)

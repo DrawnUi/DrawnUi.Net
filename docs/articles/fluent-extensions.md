@@ -93,6 +93,7 @@ new SkiaLabel("Hello World!")
 
 The variable you set with `Assign` will be available after the fluent chain has been completely built. 
 If you need to access them for initialization, use the `Initialize` method.  
+`Initialize` runs once, the moment the control gets its parent (added to `Children`/`Content`, or to the canvas for a root), that is right after its own initializer chain completed. It does not depend on the control being visible, measured or inside a virtualized viewport. For a control that never gets a parent it runs at its first measure. `Superview` may still be null inside it; for work that needs the live tree use `LayoutIsReady` or the `Initialized` event.  
 For observing variables that are still null at the time of UI construction use access by action inside the `Observe`, same goes for `ObserveProperty`, `ObserveProperties`:
 
 ```csharp

@@ -465,15 +465,16 @@ namespace DrawnUi.Draw
 
         private static void NeedInitialize(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is SkiaControl control && control.DefaultContentCreated)
+            if (bindable is SkiaControl control)
             {
-                control.InitializeDefaultContent(true);
+                // Content already built for the previous style: drop it and let the next Measure rebuild.
+                // Not yet built: RebuildDefaultContent is a no-op and the first Measure builds it.
+                // Building content synchronously here would snapshot a half-constructed object initializer:
+                // e.g. `new SkiaProgress { ControlStyle = ..., HorizontalOptions = Fill }` would run
+                // SetDefaultContentSize before HorizontalOptions is assigned, pinning WidthRequest
+                // to the default width and silently ignoring the Fill that follows.
+                control.RebuildDefaultContent();
             }
-            // Not yet initialized: defer to the first Measure (InitializeDefaultContent is called there).
-            // Building content synchronously here would snapshot a half-constructed object initializer:
-            // e.g. `new SkiaProgress { ControlStyle = ..., HorizontalOptions = Fill }` would run
-            // SetDefaultContentSize before HorizontalOptions is assigned, pinning WidthRequest
-            // to the default width and silently ignoring the Fill that follows.
         }
 
         /// <summary>
@@ -796,13 +797,31 @@ namespace DrawnUi.Draw
         /// </summary>
         public bool SkipRendering { get; set; }
 
+        /// <summary>
+        /// True once <see cref="InitializeDefaultContent"/> ran <see cref="CreateDefaultContent"/> (at the first Measure).
+        /// Reset by <see cref="RebuildDefaultContent"/> so the next Measure builds the content again.
+        /// </summary>
         protected bool DefaultContentCreated { get; set; }
 
         /// <summary>
-        /// Called by InitializeDefaultContent, can be used by controls to create default content for different ControlStyles. This is needed for example for MAUI controls to work with XAML without extra code.
-        /// After the call InitializeDefaultContent with set DefaultContentCreated = true;
-        /// You don't need to call SkiaControl base.CreateDefaultContent it's empty.
+        /// True when the children currently in <see cref="Views"/> were added by <see cref="CreateDefaultContent"/>
+        /// (there were none before it ran). Only then may <see cref="RebuildDefaultContent"/> clear them;
+        /// user-provided children are never touched.
         /// </summary>
+        private bool _ownsDefaultContent;
+
+        /// <summary>
+        /// Properties pinned by the style builders (<see cref="SetStyleDefault"/>, <see cref="SetDefaultContentSize"/>,
+        /// <see cref="SetDefaultMinimumContentSize"/>) since the last (re)build. <see cref="RebuildDefaultContent"/>
+        /// clears exactly these, so the next style can pin its own values while user-set ones stay.
+        /// </summary>
+        private List<BindableProperty> _stylePinnedProperties;
+
+        private void TrackStylePinned(BindableProperty property)
+        {
+            (_stylePinnedProperties ??= new()).Add(property);
+        }
+
         /// <summary>
         /// Applies a style-time default for a property ONLY when the user has not set it themselves
         /// (object initializer, XAML attribute, MAUI Style). Use inside Create*StyleContent builders:
@@ -819,6 +838,8 @@ namespace DrawnUi.Draw
                 {
                     SetValue(property, value);
                 }
+
+                TrackStylePinned(property);
             }
         }
 
@@ -828,8 +849,47 @@ namespace DrawnUi.Draw
         /// </summary>
         partial void SetValueFromStyleDefault(BindableProperty property, object value, ref bool handled);
 
+        /// <summary>
+        /// Called by InitializeDefaultContent, can be used by controls to create default content for different ControlStyles. This is needed for example for MAUI controls to work with XAML without extra code.
+        /// After the call InitializeDefaultContent with set DefaultContentCreated = true;
+        /// You don't need to call SkiaControl base.CreateDefaultContent it's empty.
+        /// Cache child references without a null-guard (or reset them in <see cref="RebuildDefaultContent"/>):
+        /// a rebuild disposes the previous children and calls this again.
+        /// </summary>
         protected virtual void CreateDefaultContent()
         {
+        }
+
+        /// <summary>
+        /// Drops the content built by <see cref="CreateDefaultContent"/> so the next Measure builds it again
+        /// with the current properties. Runs when <see cref="ControlStyle"/> changes after the content exists.
+        /// Disposes the children only if they were created by the control itself, un-pins the properties the
+        /// previous style set (see <see cref="SetStyleDefault"/>), leaves every user-set property alone.
+        /// A no-op before the first build. Override to reset cached child references, then call base.
+        /// </summary>
+        public virtual void RebuildDefaultContent()
+        {
+            if (!DefaultContentCreated)
+                return;
+
+            if (_ownsDefaultContent)
+            {
+                _ownsDefaultContent = false;
+                ClearChildren();
+            }
+
+            var pinned = _stylePinnedProperties;
+            _stylePinnedProperties = null;
+            if (pinned != null)
+            {
+                foreach (var property in pinned)
+                {
+                    ClearValue(property);
+                }
+            }
+
+            DefaultContentCreated = false;
+            Invalidate();
         }
 
         protected virtual void SetDefaultMinimumContentSize(double width, double height)
@@ -838,14 +898,20 @@ namespace DrawnUi.Draw
             {
                 if (this.MinimumWidthRequest < 0 && HorizontalOptions.Alignment != LayoutAlignment.Fill &&
                     (LockRatio == 0 || MinimumWidthRequest < 0))
+                {
                     this.MinimumWidthRequest = width + Margins.HorizontalThickness;
+                    TrackStylePinned(MinimumWidthRequestProperty);
+                }
             }
 
             if (height > 0 && HeightRequest < 0)
             {
                 if (this.MinimumHeightRequest < 0 && VerticalOptions.Alignment != LayoutAlignment.Fill &&
                     (LockRatio == 0 || MinimumHeightRequest < 0))
+                {
                     this.MinimumHeightRequest = height + Margins.VerticalThickness;
+                    TrackStylePinned(MinimumHeightRequestProperty);
+                }
             }
         }
 
@@ -855,14 +921,20 @@ namespace DrawnUi.Draw
             {
                 if (this.WidthRequest < 0 && HorizontalOptions.Alignment != LayoutAlignment.Fill &&
                     (LockRatio == 0 || HeightRequest < 0))
+                {
                     this.WidthRequest = width;
+                    TrackStylePinned(WidthRequestProperty);
+                }
             }
 
             if (height > 0 && HeightRequest < 0)
             {
                 if (this.HeightRequest < 0 && VerticalOptions.Alignment != LayoutAlignment.Fill &&
                     (LockRatio == 0 || WidthRequest < 0))
+                {
                     this.HeightRequest = height;
+                    TrackStylePinned(HeightRequestProperty);
+                }
             }
         }
 
@@ -5966,27 +6038,52 @@ namespace DrawnUi.Draw
             return false;
         }
 
+        private bool _executedAfterCreated;
+
+        /// <summary>
+        /// Runs the <see cref="ExecuteAfterCreated"/> actions (fluent <c>.Initialize(...)</c>) exactly once:
+        /// when the control is first attached to a parent (<see cref="OnParentChanged"/>), or at the first
+        /// Measure for a control that is never attached. Never runs again on a content rebuild.
+        /// </summary>
+        protected void RunExecuteAfterCreated()
+        {
+            if (_executedAfterCreated)
+                return;
+
+            _executedAfterCreated = true;
+
+            if (ExecuteAfterCreated.Count > 0)
+            {
+                foreach (var action in ExecuteAfterCreated.Values)
+                {
+                    action?.Invoke(this);
+                }
+            }
+        }
+
         /// <summary>
         /// Always run this before applying any changes while measuring.
+        /// Builds the default content once (or again after <see cref="RebuildDefaultContent"/>).
         /// </summary>
-        /// <param name="force"></param>
+        /// <param name="force">Build again even if already built. Does not clear the previous content, use <see cref="RebuildDefaultContent"/> for that.</param>
         public virtual void InitializeDefaultContent(bool force = false)
         {
             if (!DefaultContentCreated || force)
             {
                 DefaultContentCreated = true;
 
-                if (ExecuteAfterCreated.Count > 0)
-                {
-                    foreach (var action in ExecuteAfterCreated.Values)
-                    {
-                        action?.Invoke(this);
-                    }
-                }
+                RunExecuteAfterCreated();
+
+                var hadViews = Views.Count > 0;
 
                 CreateDefaultContent();
 
-                OnLifecycleStateChanged(ControlLifecycleState.Initialized);
+                _ownsDefaultContent = !hadViews && Views.Count > 0;
+
+                if (LifecycleState == ControlLifecycleState.Instantiated)
+                {
+                    OnLifecycleStateChanged(ControlLifecycleState.Initialized);
+                }
             }
         }
 
@@ -6525,7 +6622,13 @@ namespace DrawnUi.Draw
         public Dictionary<string, Action> ExecuteUponDisposal { get; } = new();
 
         /// <summary>
-        /// This will be executed ones along and just before the CreateDefaultContent. This lets you execute initialization code after the control is already in the view tree and all variables you might want to use are already filled.
+        /// Actions executed once, the first time the control gets a parent (added to Children/Content, or to the
+        /// canvas for a root). At that moment the control's own object initializer and fluent chain have
+        /// completed, so every field assigned inside them (<c>.Assign(out ...)</c>) is filled.
+        /// Runs regardless of visibility, virtualization or measuring; for a control that is never attached
+        /// it runs at its first Measure instead. Never runs again on a content rebuild.
+        /// <see cref="Superview"/> may still be null here (a parent attached later): for work that needs the
+        /// live tree use <see cref="LayoutIsReady"/> or the <see cref="Initialized"/> lifecycle event.
         /// </summary>
         public Dictionary<string, Action<SkiaControl>> ExecuteAfterCreated { get; } = new();
 
@@ -9120,7 +9223,12 @@ namespace DrawnUi.Draw
             }
 
             if (newvalue != null)
+            {
+                // First attach: the object initializer / fluent chain that built this control has completed.
+                RunExecuteAfterCreated();
+
                 Update();
+            }
 
             ParentChanged?.Invoke(this, Parent);
         }
