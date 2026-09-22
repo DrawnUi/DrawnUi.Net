@@ -80,6 +80,9 @@
             return CompareTo(other) == 0;
         }
 
+        // On the WPF head BindableObject is a DependencyObject, which seals Equals(object) and
+        // GetHashCode(). Value equality stays available through IEquatable<SkiaPoint>.
+#if !WPF
         public override bool Equals(object obj)
         {
             return obj is SkiaPoint other && Equals(other);
@@ -89,6 +92,7 @@
         {
             return HashCode.Combine(X, Y);
         }
+#endif
 
         public static bool operator ==(SkiaPoint left, SkiaPoint right)
         {

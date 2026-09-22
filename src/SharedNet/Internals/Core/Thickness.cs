@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 namespace DrawnUi.Views
 {
@@ -34,7 +34,7 @@ namespace DrawnUi.Views
     // Remarks:
     //     To be added.
     [DebuggerDisplay("Left={Left}, Top={Top}, Right={Right}, Bottom={Bottom}, HorizontalThickness={HorizontalThickness}, VerticalThickness={VerticalThickness}")]
-    public struct Thickness
+    public partial struct Thickness
     {
         //
         // Summary:

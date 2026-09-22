@@ -145,6 +145,9 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         return CompareTo(other) == 0;
     }
 
+    // On the WPF head BindableObject is a DependencyObject, which seals Equals(object) and
+    // GetHashCode(). Value equality stays available through IEquatable<SkiaShaderEffect>.
+#if !WPF
     public override bool Equals(object obj)
     {
         return obj is SkiaShaderEffect other && Equals(other);
@@ -170,6 +173,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         hash.Add(MouseInitial.Y);
         return hash.ToHashCode();
     }
+#endif
 
     public static bool operator ==(SkiaShaderEffect left, SkiaShaderEffect right)
     {

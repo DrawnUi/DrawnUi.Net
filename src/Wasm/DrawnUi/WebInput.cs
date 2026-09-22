@@ -187,7 +187,7 @@ public static partial class WebInput
     /// <param name="x">Cursor X in CSS pixels.</param>
     /// <param name="y">Cursor Y in CSS pixels.</param>
     [JSExport]
-    public static void OnWheel(double deltaX, double deltaY, int deltaMode, double x, double y)
+    public static bool OnWheel(double deltaX, double deltaY, int deltaMode, double x, double y)
     {
         // Normalize line/page modes to an approximate pixel magnitude (sign preserved).
         var factor = deltaMode switch
@@ -211,6 +211,7 @@ public static partial class WebInput
         };
 
         TargetCanvas?.OnGestureEvent(TouchActionType.Wheel, args, TouchActionResult.Wheel);
+        return TargetCanvas?.LastInputUsed ?? false; // Gestures="Enabled": the page scrolls unless a control used it
     }
 
     /// <summary>

@@ -112,13 +112,22 @@ namespace DrawnUi.Views
             {
                 _view = view;
                 _control = control;
-                _view.ViewTreeObserver?.AddOnPreDrawListener(this);
+                _observer = _view.ViewTreeObserver;
+                _observer?.AddOnPreDrawListener(this);
             }
+
+            //same as GlobalLayoutListener: must be removed from the observer it was added to
+            ViewTreeObserver _observer;
 
             public void Release()
             {
                 try
                 {
+                    if (_observer != null && _observer.IsAlive)
+                    {
+                        _observer.RemoveOnPreDrawListener(this);
+                    }
+                    _observer = null;
                     _view?.ViewTreeObserver?.RemoveOnPreDrawListener(this);
                 }
                 catch
@@ -146,23 +155,69 @@ namespace DrawnUi.Views
 
         LayoutChangedListener _layoutChangedListener;
         HiddenWakePreDrawListener _hiddenWakeListener;
+        View _observedPlatformView;
+
+        void AttachTreeListeners(View element)
+        {
+            _layoutChangedListener?.Release();
+            _hiddenWakeListener?.Release();
+            _layoutChangedListener = new LayoutChangedListener(element, this);
+            _hiddenWakeListener = new HiddenWakePreDrawListener(element, this);
+        }
+
+        /// <summary>
+        /// ViewTreeObserver belongs to the window: when a kept-alive platform view is re-parented into another
+        /// window (cached content shown inside a new Dialog/popup), listeners registered in the previous window
+        /// never fire again, and a canvas that was detected as hidden there would stay hidden forever.
+        /// </summary>
+        void OnPlatformViewAttachedToWindow(object sender, View.ViewAttachedToWindowEventArgs e)
+        {
+            if (sender is View element)
+            {
+                AttachTreeListeners(element);
+                NeedCheckParentVisibility = true;
+            }
+        }
+
+        /// <summary>
+        /// Still attached at this point, so the window observer is reachable and the listeners really get removed.
+        /// They come back in OnPlatformViewAttachedToWindow if the view is shown again.
+        /// </summary>
+        void OnPlatformViewDetachedFromWindow(object sender, View.ViewDetachedFromWindowEventArgs e)
+        {
+            ReleaseTreeListeners();
+        }
+
+        void ReleaseTreeListeners()
+        {
+            _layoutChangedListener?.Release();
+            _layoutChangedListener = null;
+            _hiddenWakeListener?.Release();
+            _hiddenWakeListener = null;
+        }
 
         protected virtual void InitFrameworkPlatform(bool subscribe)
         {
+            if (_observedPlatformView != null)
+            {
+                _observedPlatformView.ViewAttachedToWindow -= OnPlatformViewAttachedToWindow;
+                _observedPlatformView.ViewDetachedFromWindow -= OnPlatformViewDetachedFromWindow;
+                _observedPlatformView = null;
+            }
+
             if (subscribe)
             {
                 if (Handler?.PlatformView is Android.Views.View element)
                 {
-                    _layoutChangedListener = new LayoutChangedListener(element, this);
-                    _hiddenWakeListener = new HiddenWakePreDrawListener(element, this);
+                    AttachTreeListeners(element);
+                    _observedPlatformView = element;
+                    element.ViewAttachedToWindow += OnPlatformViewAttachedToWindow;
+                    element.ViewDetachedFromWindow += OnPlatformViewDetachedFromWindow;
                 }
             }
             else
             {
-                _layoutChangedListener?.Release();
-                _layoutChangedListener = null;
-                _hiddenWakeListener?.Release();
-                _hiddenWakeListener = null;
+                ReleaseTreeListeners();
             }
         }
 

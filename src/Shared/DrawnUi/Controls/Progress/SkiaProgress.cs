@@ -372,6 +372,15 @@ public class SkiaProgress : SkiaRangeBase
 
     #region IMPLEMENTATION
 
+    public override void RebuildDefaultContent()
+    {
+        // the cached children are disposed by the rebuild, FindViews only looks up null refs
+        Track = null;
+        ProgressTrail = null;
+
+        base.RebuildDefaultContent();
+    }
+
     protected override void FindViews()
     {
         if (Track == null)

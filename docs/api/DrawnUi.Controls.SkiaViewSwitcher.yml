@@ -535,6 +535,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
   - DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty,System.Object)
   - DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  - DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -820,6 +821,7 @@ items:
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.AvoidRemeasuring(DrawnUi.Draw.MeasureRequest)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
@@ -1806,10 +1808,19 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetRootView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 207
+    startLine: 213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: >-
+    The tab's root view, or null when there is no subview at that index yet. SelectedIndex
+
+    is commonly set in the initializer before the children are assigned, so "no view yet" is
+
+    a normal state here, not an error: it used to be reached by throwing and logging an
+
+    ArgumentOutOfRangeException on every such call.
+  example: []
   syntax:
     content: public SkiaViewSwitcher.NavigationStackEntry GetRootView(int selectedIndex)
     parameters:
@@ -1840,7 +1851,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 221
+    startLine: 231
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1878,7 +1889,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentPage
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 278
+    startLine: 288
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1912,7 +1923,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindPageInStack
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 304
+    startLine: 314
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1948,7 +1959,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemovePageFromStack
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 329
+    startLine: 339
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1982,7 +1993,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BringPageToFront
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 352
+    startLine: 362
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2018,7 +2029,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModal
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 384
+    startLine: 394
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2050,7 +2061,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopPage
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 388
+    startLine: 398
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2084,7 +2095,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTabNavigationIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 427
+    startLine: 437
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2112,7 +2123,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RevealNavigationView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 449
+    startLine: 459
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2144,7 +2155,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopTabToRoot
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 465
+    startLine: 475
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2174,7 +2185,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopAllTabsToRoot
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 511
+    startLine: 521
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2200,7 +2211,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStacks
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 520
+    startLine: 530
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2229,7 +2240,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 522
+    startLine: 532
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2256,7 +2267,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 530
+    startLine: 540
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2285,7 +2296,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisplayingIndexProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 536
+    startLine: 546
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2312,7 +2323,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisplayingIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 542
+    startLine: 552
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2341,7 +2352,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatePages
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 548
+    startLine: 558
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2370,7 +2381,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimateTabs
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 549
+    startLine: 559
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2399,7 +2410,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Reset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 551
+    startLine: 561
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2425,7 +2436,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAppearing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 564
+    startLine: 574
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2456,7 +2467,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisappearing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 574
+    startLine: 584
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2486,7 +2497,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAppeared
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 584
+    startLine: 594
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2517,7 +2528,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPushing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 602
+    startLine: 612
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2546,7 +2557,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPopping
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 603
+    startLine: 613
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2575,7 +2586,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationBusyProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 610
+    startLine: 620
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2602,7 +2613,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationBusy
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 613
+    startLine: 623
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2631,7 +2642,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationSpeedProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 619
+    startLine: 629
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2658,7 +2669,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationSpeed
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 623
+    startLine: 633
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2687,7 +2698,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationSpeedProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 629
+    startLine: 639
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2714,7 +2725,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationSpeed
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 633
+    startLine: 643
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2743,7 +2754,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationEasingProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 639
+    startLine: 649
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2770,7 +2781,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationEasing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 643
+    startLine: 653
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2799,7 +2810,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationEasingProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 649
+    startLine: 659
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2826,7 +2837,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationEasing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 653
+    startLine: 663
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2855,7 +2866,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Custom
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 659
+    startLine: 669
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2882,7 +2893,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreviousVisibleViewIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 662
+    startLine: 672
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2909,7 +2920,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreviousVisibleView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 663
+    startLine: 673
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2938,7 +2949,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LauchTimerOnLock
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 665
+    startLine: 675
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2972,7 +2983,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimerUpdateLocked
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 679
+    startLine: 689
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2999,7 +3010,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TopView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 680
+    startLine: 690
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3028,7 +3039,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChangeViewVisibility
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 682
+    startLine: 692
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3062,7 +3073,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 702
+    startLine: 712
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3091,7 +3102,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SemaphoreNavigationStack
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 715
+    startLine: 725
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3118,7 +3129,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugAction
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 717
+    startLine: 727
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3144,7 +3155,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessIndexBufferAsync
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 729
+    startLine: 739
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3172,7 +3183,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WaitForNextFrameAsync
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 822
+    startLine: 832
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3211,7 +3222,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupTransitionAnimation
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 838
+    startLine: 848
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3246,7 +3257,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteTransitionAnimation
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 886
+    startLine: 896
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3284,7 +3295,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FirstViewAppeared
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1005
+    startLine: 1015
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3311,7 +3322,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsApplyingIdex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1006
+    startLine: 1016
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3338,7 +3349,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplySelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1008
+    startLine: 1018
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3369,7 +3380,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSelectedIndexApplied
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1204
+    startLine: 1214
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3395,7 +3406,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1218
+    startLine: 1228
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3424,7 +3435,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BusyChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1226
+    startLine: 1236
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3451,7 +3462,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedLazyView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1227
+    startLine: 1237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3478,7 +3489,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendOnDisappearing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1233
+    startLine: 1243
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3507,7 +3518,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnloadView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1241
+    startLine: 1251
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3536,7 +3547,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Viewport
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1274
+    startLine: 1284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3568,7 +3579,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateVisibleIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1276
+    startLine: 1286
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3597,7 +3608,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrackIndexPosition
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1280
+    startLine: 1290
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3629,7 +3640,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollTo
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 1282
+    startLine: 1292
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -12198,6 +12209,25 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   commentId: M:DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   parent: DrawnUi.Draw.SkiaControl
@@ -18346,6 +18376,25 @@ references:
   - uid: DrawnUi.Draw.MeasureRequest
     name: MeasureRequest
     href: DrawnUi.Draw.MeasureRequest.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)

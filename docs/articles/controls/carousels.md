@@ -53,6 +53,7 @@ SkiaCarousel is a specialized scroll control designed specifically for creating 
 | `Spacing` | float | Space between carousel items |
 | `SidesOffset` | float | Side padding to create a peek effect |
 | `Bounces` | bool | Enables bouncing effect at edges |
+| `RespondsToGestures` | bool | Default true. False: no swiping, slides change only through `SelectedIndex` from code |
 | `ItemsSource` | IEnumerable | Data source for dynamically generating items |
 | `ItemTemplate` | DataTemplate | Template for items when using ItemsSource |
 
@@ -158,7 +159,7 @@ the shader contract and customization.
 <draw:SkiaShaderCarousel
     IsLooped="True"
     LinearSpeedMs="750"
-    TransitionShader="Shaders/Transitions/cube.sksl"
+    TransitionShader="Shaders/transitions/cube.sksl"
     HeightRequest="340"
     ItemsSource="{Binding Images}">
     <draw:SkiaLayout.ItemTemplate>

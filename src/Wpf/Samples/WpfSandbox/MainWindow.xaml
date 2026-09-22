@@ -1,0 +1,56 @@
+<Window x:Class="WpfSandbox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"
+        xmlns:local="clr-namespace:WpfSandbox"
+        Title="DrawnUI on WPF"
+        Width="520" Height="420"
+        Background="#1B1B1F">
+
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <!--
+            The drawn surface. Everything inside is Skia, not WPF, but it is declared in WPF XAML,
+            binds to the window's DataContext and is styled by a WPF style (see App.xaml, which
+            centres every SkiaLabel — neither label sets HorizontalOptions itself).
+        -->
+        <draw:DrawnUiElement x:Name="Drawn">
+            <draw:SkiaStack Spacing="16"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Center">
+
+                <draw:SkiaLabel Text="{Binding Greeting}"
+                                FontSize="16"
+                                FontAttributes="Bold"
+                                TextColor="#9BE15D" />
+
+                <!-- Colour, thickness and corner radius all written the WPF way. -->
+                <draw:SkiaShape Type="Rectangle"
+                                BackgroundColor="Red"
+                                CornerRadius="16,16,4,4"
+                                Padding="18,10"
+                                HorizontalOptions="Center">
+                    <draw:SkiaLabel Text="{Binding Pokes}"
+                                    FontSize="56"
+                                    TextColor="White" />
+                </draw:SkiaShape>
+
+                <draw:SkiaButton Text="Poke the canvas"
+                                 WidthRequest="220"
+                                 HeightRequest="46"
+                                 HorizontalOptions="Center"
+                                 CommandTapped="{Binding PokeCommand}" />
+
+                <draw:SkiaButton Text="Reset"
+                                 WidthRequest="220"
+                                 HeightRequest="46"
+                                 HorizontalOptions="Center"
+                                 CommandTapped="{Binding ResetCommand}" />
+
+            </draw:SkiaStack>
+        </draw:DrawnUiElement>
+    </Grid>
+</Window>

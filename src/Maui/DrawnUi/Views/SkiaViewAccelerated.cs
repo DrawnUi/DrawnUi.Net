@@ -29,11 +29,12 @@ public partial class SkiaViewAccelerated : SKGLView, ISkiaDrawable
     {
         base.OnHandlerChanged();
 
-        if (Handler != null)
+        if (Handler != null && !_disposed)
         {
             PaintSurface -= OnPaintingSurface;
             PaintSurface += OnPaintingSurface;
 
+            Super.OrientationChanged -= OnOrientationChanged;
             Super.OrientationChanged += OnOrientationChanged;
 
             Superview?.ConnectedHandler();
@@ -54,9 +55,14 @@ public partial class SkiaViewAccelerated : SKGLView, ISkiaDrawable
 
     private bool _newFrameReady;
 
+    bool _disposed;
+
     public void Dispose()
     {
+        _disposed = true;
         PaintSurface -= OnPaintingSurface;
+        //static event: DisconnectHandlers() does not null the Handler, so OnHandlerChanged never gets to unsubscribe
+        Super.OrientationChanged -= OnOrientationChanged;
         _surface = null;
         Superview = null;
 

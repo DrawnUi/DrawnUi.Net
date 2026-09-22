@@ -1,6 +1,6 @@
 namespace DrawnUi.Draw
 {
-    public readonly struct CornerRadius : IEquatable<CornerRadius>
+    public readonly partial struct CornerRadius : IEquatable<CornerRadius>
     {
         public CornerRadius(double uniformRadius)
             : this(uniformRadius, uniformRadius, uniformRadius, uniformRadius)

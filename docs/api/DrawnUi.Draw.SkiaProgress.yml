@@ -13,6 +13,7 @@ items:
   - DrawnUi.Draw.SkiaProgress.CreateWindowsStyleContent
   - DrawnUi.Draw.SkiaProgress.FindViews
   - DrawnUi.Draw.SkiaProgress.MaterialProgressGap
+  - DrawnUi.Draw.SkiaProgress.RebuildDefaultContent
   - DrawnUi.Draw.SkiaProgress.ResolvedProgressColor
   - DrawnUi.Draw.SkiaProgress.ResolvedTrackColor
   - DrawnUi.Draw.SkiaProgress.ResolvedTrackHeight
@@ -786,6 +787,7 @@ items:
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.AvoidRemeasuring(DrawnUi.Draw.MeasureRequest)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
@@ -1294,6 +1296,16 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Called by InitializeDefaultContent, can be used by controls to create default content for different ControlStyles. This is needed for example for MAUI controls to work with XAML without extra code.
+
+    After the call InitializeDefaultContent with set DefaultContentCreated = true;
+
+    You don't need to call SkiaControl base.CreateDefaultContent it's empty.
+
+    Cache child references without a null-guard (or reset them in <xref href="DrawnUi.Draw.SkiaControl.RebuildDefaultContent" data-throw-if-not-resolved="false"></xref>):
+
+    a rebuild disposes the previous children and calls this again.
   example: []
   syntax:
     content: protected override void CreateDefaultContent()
@@ -1537,6 +1549,44 @@ items:
     content: protected virtual void CreateWindowsStyleContent()
     content.vb: Protected Overridable Sub CreateWindowsStyleContent()
   overload: DrawnUi.Draw.SkiaProgress.CreateWindowsStyleContent*
+- uid: DrawnUi.Draw.SkiaProgress.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaProgress.RebuildDefaultContent
+  id: RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaProgress
+  langs:
+  - csharp
+  - vb
+  name: RebuildDefaultContent()
+  nameWithType: SkiaProgress.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaProgress.RebuildDefaultContent()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RebuildDefaultContent
+    path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+    startLine: 374
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Drops the content built by <xref href="DrawnUi.Draw.SkiaControl.CreateDefaultContent" data-throw-if-not-resolved="false"></xref> so the next Measure builds it again
+
+    with the current properties. Runs when <xref href="DrawnUi.Draw.SkiaControl.ControlStyle" data-throw-if-not-resolved="false"></xref> changes after the content exists.
+
+    Disposes the children only if they were created by the control itself, un-pins the properties the
+
+    previous style set (see <xref href="DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty%2cSystem.Object)" data-throw-if-not-resolved="false"></xref>), leaves every user-set property alone.
+
+    A no-op before the first build. Override to reset cached child references, then call base.
+  example: []
+  syntax:
+    content: public override void RebuildDefaultContent()
+    content.vb: Public Overrides Sub RebuildDefaultContent()
+  overridden: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  overload: DrawnUi.Draw.SkiaProgress.RebuildDefaultContent*
 - uid: DrawnUi.Draw.SkiaProgress.FindViews
   commentId: M:DrawnUi.Draw.SkiaProgress.FindViews
   id: FindViews
@@ -1555,7 +1605,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 374
+    startLine: 383
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1584,7 +1634,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaterialProgressGap
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 386
+    startLine: 395
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1613,7 +1663,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateVisualState
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 388
+    startLine: 397
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -16767,6 +16817,25 @@ references:
   - uid: DrawnUi.Draw.MeasureRequest
     name: MeasureRequest
     href: DrawnUi.Draw.MeasureRequest.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
@@ -40789,6 +40858,25 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
   commentId: M:DrawnUi.Draw.SkiaControl.CreateDefaultContent
   parent: DrawnUi.Draw.SkiaControl
@@ -40918,6 +41006,12 @@ references:
   name: CreateWindowsStyleContent
   nameWithType: SkiaProgress.CreateWindowsStyleContent
   fullName: DrawnUi.Draw.SkiaProgress.CreateWindowsStyleContent
+- uid: DrawnUi.Draw.SkiaProgress.RebuildDefaultContent*
+  commentId: Overload:DrawnUi.Draw.SkiaProgress.RebuildDefaultContent
+  href: DrawnUi.Draw.SkiaProgress.html#DrawnUi_Draw_SkiaProgress_RebuildDefaultContent
+  name: RebuildDefaultContent
+  nameWithType: SkiaProgress.RebuildDefaultContent
+  fullName: DrawnUi.Draw.SkiaProgress.RebuildDefaultContent
 - uid: DrawnUi.Draw.SkiaRangeBase.FindViews
   commentId: M:DrawnUi.Draw.SkiaRangeBase.FindViews
   parent: DrawnUi.Draw.SkiaRangeBase

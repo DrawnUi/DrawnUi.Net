@@ -520,6 +520,16 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         FindViews();
     }
 
+    public override void RebuildDefaultContent()
+    {
+        // the cached children are disposed by the rebuild, FindViews only looks up null refs
+        MainWrapper = null;
+        MainLabel = null;
+        MainFrame = null;
+
+        base.RebuildDefaultContent();
+    }
+
     public virtual void FindViews()
     {
         if (MainWrapper == null)
@@ -538,11 +548,20 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         }
     }
 
+    private string _autoAccessibilityLabel;
+
     public virtual void ApplyProperties()
     {
         if (IsAccessibilityElement)
         {
-            AccessibilityLabel = Text;
+            // The label follows Text only while the button owns it: a label the app set itself
+            // (an icon-only button, a longer description) is left alone.
+            if (string.IsNullOrEmpty(AccessibilityLabel) || AccessibilityLabel == _autoAccessibilityLabel)
+            {
+                _autoAccessibilityLabel = Text;
+                AccessibilityLabel = Text;
+            }
+
             AccessibilityCanInteract = !IsDisabled;
         }
 

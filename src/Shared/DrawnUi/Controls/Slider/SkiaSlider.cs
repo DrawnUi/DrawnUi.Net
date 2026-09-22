@@ -40,6 +40,17 @@ public class SkiaSlider : SkiaLayout
         }
     }
 
+    public override void RebuildDefaultContent()
+    {
+        // the cached children are disposed by the rebuild, FindViews only looks up null refs
+        Trail = null;
+        SelectedTrail = null;
+        EndThumb = null;
+        StartThumb = null;
+
+        base.RebuildDefaultContent();
+    }
+
     protected virtual void FindViews()
     {
         if (Trail == null)
@@ -1488,16 +1499,10 @@ public class SkiaSlider : SkiaLayout
     {
         base.OnPropertyChanged(propertyName);
 
-        // EnableRange may be set after ControlStyle in an object initializer, which causes
-        // NeedInitialize to fire before EnableRange=true. Detect this and force a rebuild.
+        // Range mode has its own thumbs: toggling it after the content exists rebuilds it.
         if (propertyName == nameof(EnableRange) && DefaultContentCreated && StyleContentCreated)
         {
-            Trail = null;
-            SelectedTrail = null;
-            EndThumb = null;
-            StartThumb = null;
-            ClearChildren();
-            DefaultContentCreated = false;
+            RebuildDefaultContent();
         }
 
         if (UpdateStyleProperties(propertyName))

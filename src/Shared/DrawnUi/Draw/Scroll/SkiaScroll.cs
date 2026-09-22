@@ -426,6 +426,10 @@ namespace DrawnUi.Draw
             if (indicator is SkiaControl newControl)
             {
                 if (!newControl.IsSet(ZIndexProperty)) newControl.ZIndex = 1001;
+                // the bar's look (thumb squashed on overscroll, resized to content) never changes the
+                // layout around it: without this every thumb resize re-measured the scroll and its
+                // parents each frame of a bounce
+                newControl.IsParentIndependent = true;
                 AddSubView(newControl);
             }
 
@@ -446,6 +450,10 @@ namespace DrawnUi.Draw
             if (indicator is SkiaControl newControl)
             {
                 if (!newControl.IsSet(ZIndexProperty)) newControl.ZIndex = 1001;
+                // the bar's look (thumb squashed on overscroll, resized to content) never changes the
+                // layout around it: without this every thumb resize re-measured the scroll and its
+                // parents each frame of a bounce
+                newControl.IsParentIndependent = true;
                 AddSubView(newControl);
             }
 
@@ -468,7 +476,13 @@ namespace DrawnUi.Draw
         /// </summary>
         protected virtual void UpdateScrollBarIndicator()
         {
-            var isScrolling = IsScrolling || IsUserPanning;
+            var isScrolling = IsScrolling || IsUserPanning || _draggedScrollBar != null;
+
+            // IsScrolling is only re-evaluated while drawing, and the last frame of a scroll animation still sees it
+            // running: without one more frame the bar never learns scrolling stopped and an auto-hiding bar never
+            // hides. Frames are being drawn anyway while scrolling, so this adds a single frame at the end.
+            if (isScrolling && (InternalScrollBar != null || InternalScrollBarHorizontal != null))
+                Repaint(); // a frame, not a cache invalidation
 
             if (InternalScrollBar != null)
             {
@@ -509,6 +523,77 @@ namespace DrawnUi.Draw
                         overscroll, isScrolling);
                 }
             }
+        }
+
+        private SkiaScrollBar _draggedScrollBar;
+        private bool _scrollBarOwnsGesture;
+
+        /// <summary>
+        /// Thumb drag and track press on a ScrollBar / ScrollBarHorizontal with IsDraggable set. A gesture that
+        /// starts on the bar belongs to it until the next down: the content neither pans nor gets the tap.
+        /// Returns true when the gesture was handled here.
+        /// </summary>
+        protected virtual bool ProcessScrollBarGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
+        {
+            if (args.Type == TouchActionResult.Down)
+            {
+                _draggedScrollBar = null;
+                _scrollBarOwnsGesture = false;
+
+                if (InternalScrollBar is not SkiaScrollBar { IsDraggable: true }
+                    && InternalScrollBarHorizontal is not SkiaScrollBar { IsDraggable: true })
+                    return false;
+
+                var offset = TranslateInputCoords(apply.ChildOffset);
+                var x = args.Event.Location.X + offset.X;
+                var y = args.Event.Location.Y + offset.Y;
+
+                if (InternalScrollBar is SkiaScrollBar vertical && vertical.BeginDrag(x, y))
+                    _draggedScrollBar = vertical;
+                else if (InternalScrollBarHorizontal is SkiaScrollBar horizontal && horizontal.BeginDrag(x, y))
+                    _draggedScrollBar = horizontal;
+
+                if (_draggedScrollBar == null)
+                    return false;
+
+                _scrollBarOwnsGesture = true;
+                StopScrolling();
+                ApplyScrollBarDrag(x, y);
+                return true;
+            }
+
+            if (!_scrollBarOwnsGesture)
+                return false;
+
+            if (_draggedScrollBar == null)
+            {
+                // released already: only the tap that follows the release belongs to the bar
+                return args.Type == TouchActionResult.Tapped || args.Type == TouchActionResult.LongPressing;
+            }
+
+            if (args.Type == TouchActionResult.Panning)
+            {
+                var offset = TranslateInputCoords(apply.ChildOffset);
+                ApplyScrollBarDrag(args.Event.Location.X + offset.X, args.Event.Location.Y + offset.Y);
+            }
+            else if (args.Type == TouchActionResult.Up)
+            {
+                _draggedScrollBar = null;
+                _scrollBarLastProgress = float.MinValue; // push the idle state so an auto-hiding bar fades again
+                _scrollBarHLastProgress = float.MinValue;
+                Update();
+            }
+
+            return true;
+        }
+
+        private void ApplyScrollBarDrag(float x, float y)
+        {
+            var progress = _draggedScrollBar.GetDragProgress(x, y);
+            if (_draggedScrollBar == InternalScrollBarHorizontal)
+                ViewportOffsetX = ClampOffsetHard(-progress * ContentOffsetBounds.Width, ViewportOffsetY).X;
+            else
+                ViewportOffsetY = ClampOffsetHard(ViewportOffsetX, -progress * ContentOffsetBounds.Height).Y;
         }
 
         private static void NeedToScroll(BindableObject bindable, object oldvalue, object newvalue)
@@ -3232,6 +3317,9 @@ namespace DrawnUi.Draw
                     ApplyPannedOffsetWithVelocity(context.Context);
                 }
 
+                // bounds are final here (Arrange above ran the last measure)
+                ClampOffsetToBoundsIfPending();
+
                 var posX = (float)(ViewportOffsetX * zoomedScale);
                 var posY = (float)(ViewportOffsetY * zoomedScale);
 
@@ -3440,14 +3528,17 @@ namespace DrawnUi.Draw
                             Header.AddTranslationY = ParallaxComputedValue;
                         }
 
-                        // Adjust the header hitbox for parallax
-                        var headerTop = context.Destination.Top;
+                        // The header box lives in the same space as Viewport (local to this scroll), like the
+                        // footer below. It used to start at context.Destination.Top, a CANVAS coordinate, so the
+                        // test against the local viewport only passed for a scroll sitting near the canvas top:
+                        // placed lower than its own height, the header was never drawn.
+                        var headerTop = Viewport.Pixels.Top;
                         var headerBottom = headerTop + Header.MeasuredSize.Pixels.Height;
 
                         var hitboxHeader = new SKRect(
-                            0,
+                            Viewport.Pixels.Left,
                             (float)headerTop,
-                            context.Destination.Width,
+                            Viewport.Pixels.Right,
                             (float)headerBottom);
 
                         if (!HeaderBehind && !HeaderSticky)
@@ -3508,11 +3599,11 @@ namespace DrawnUi.Draw
                             Header.AddTranslationX = ParallaxComputedValue;
                         }
 
-                        // Adjust the header hitbox for parallax in horizontal orientation
-                        var headerLeft = ctx.Destination.Left;
+                        // Same space as Viewport (local to this scroll), see the vertical branch
+                        var headerLeft = Viewport.Pixels.Left;
                         var headerRight = headerLeft + Header.MeasuredSize.Pixels.Width;
-                        var hitboxHeader = new SKRect((float)headerLeft, 0, (float)headerRight,
-                            ctx.Destination.Height);
+                        var hitboxHeader = new SKRect((float)headerLeft, Viewport.Pixels.Top, (float)headerRight,
+                            Viewport.Pixels.Bottom);
 
                         if (!HeaderBehind && !HeaderSticky)
                         {
@@ -3689,7 +3780,9 @@ namespace DrawnUi.Draw
         /// <param name="view"></param>
         protected virtual void SetContent(SkiaControl view)
         {
-            var oldContent = Views.Except(new[] { Footer, Header }).FirstOrDefault(x => x is not IRefreshIndicator);
+            // scroll bars are subviews too: never mistake one for the old content (it got detached, lost its parent
+            // and could no longer request a redraw of its own, e.g. its auto-hide fade)
+            var oldContent = Views.Except(new[] { Footer, Header }).FirstOrDefault(x => x is not IRefreshIndicator && x is not IScrollBar);
             if (view != oldContent)
             {
                 if (oldContent != null)
@@ -3724,7 +3817,7 @@ namespace DrawnUi.Draw
 
         public void SetHeader(SkiaControl view)
         {
-            var oldContent = Views.Except(new[] { Footer, Content }).FirstOrDefault(x => x is not IRefreshIndicator);
+            var oldContent = Views.Except(new[] { Footer, Content }).FirstOrDefault(x => x is not IRefreshIndicator && x is not IScrollBar);
             if (view != oldContent)
             {
                 if (oldContent != null)
@@ -3742,7 +3835,7 @@ namespace DrawnUi.Draw
 
         public void SetFooter(SkiaControl view)
         {
-            var oldContent = Views.Except(new[] { Header, Content }).FirstOrDefault(x => x is not IRefreshIndicator);
+            var oldContent = Views.Except(new[] { Header, Content }).FirstOrDefault(x => x is not IRefreshIndicator && x is not IScrollBar);
             if (view != oldContent)
             {
                 if (oldContent != null)

@@ -71,7 +71,7 @@ The zoom properties control the behavior:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Orientation` | ScrollOrientation | Direction of scrolling (Vertical, Horizontal, Both) |
+| `Orientation` | ScrollOrientation | Direction of scrolling: `Vertical`, `Horizontal`, `Both`, or `Neither` to lock the scroll in place (no pan, fling or mouse wheel; the wheel reaches a parent scroll) |
 | `Content` | SkiaControl | The scrollable content |
 | `Header` | SkiaControl | Optional header element |
 | `Footer` | SkiaControl | Optional footer element |
@@ -82,7 +82,7 @@ The zoom properties control the behavior:
 | `UseVirtual` | bool | Enables virtualization for large content |
 | `ScrollWidthRequest` | float | Width of the scrollable area |
 | `ScrollHeightRequest` | float | Height of the scrollable area |
-| `EnableScrolling` | bool | Enables/disables scrolling |
+| `RespondsToGestures` | bool | Default true. Set false and the scroll ignores pan, fling and mouse wheel; scrolling by code (`ScrollTo...`, offsets) keeps working. Prefer it over `Orientation="Neither"` when the scroll must stay scrollable from code |
 
 ### Scrolling Behavior Properties
 
@@ -483,9 +483,33 @@ new SkiaScroll
 | `TrackColor` | `Color` | Static track color, transparent by default |
 | `Thickness` | `double` | Bar thickness in points |
 | `EdgeMargin` | `double` | Distance from the docked edge |
-| `MinThumbSize` | `double` | Minimum thumb length for very long content |
+| `MinThumbSize` | `double` | Minimum thumb length for very long content, default 32 |
 | `AutoHide` | `bool` | Fades out after scrolling stops, default true |
-| `HideDelaySecs` | `double` | Delay before fade-out |
+| `HideDelaySecs` | `double` | Seconds after scrolling stops before the fade-out starts, default 1 |
+| `HideDurationSecs` | `double` | Seconds the fade-out takes, default 0.25 |
+| `IsDraggable` | `bool` | Desktop behavior: drag the thumb, press the track to jump there. Default false, the bar only indicates and every gesture passes through to the content |
+| `GrabPadding` | `double` | Extra hit area in points on both sides of a draggable bar, so a thin bar is easy to grab with a mouse, default 8 |
+
+A bar set on a `SkiaScroll` is `IsParentIndependent`: its thumb resizing (overscroll squash, content growth) never re-measures the scroll or the layout around it.
+
+### Draggable bar (desktop)
+
+Set `IsDraggable` on your `SkiaScrollBar` instance (there is no flag for it on `SkiaScroll`, auto-created bars stay display-only). A gesture that starts on the bar, thumb or track, belongs to the bar until the pointer goes up: dragging the thumb scrolls, pressing the track jumps there with the thumb centered under the pointer. An auto-hidden bar shows again the moment it is grabbed.
+
+```csharp
+new SkiaScroll
+{
+    Orientation = ScrollOrientation.Vertical,
+    ScrollBar = new SkiaScrollBar
+    {
+        IsDraggable = true,
+        GrabPadding = 10,   // a 4pt bar gets a 24pt wide hit area
+        Thickness = 4,
+        AutoHide = false,   // desktop apps usually keep the bar visible
+    },
+    Content = new SkiaLayout { Type = LayoutType.Column, /* items */ },
+}
+```
 
 ### Fully custom indicator
 
@@ -522,6 +546,8 @@ When working with infinite scrolling:
 - For better performance with large collections, consider using data virtualization alongside UI virtualization
 
 ### Gestures
+
+To take gestures away from a scroll entirely (a scroll driven only by code, a locked page while an overlay is up) set `RespondsToGestures="False"`. The same property exists on `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSwitch`/`SkiaCheckbox`/`SkiaRadioButton` and `SkiaSpinner`, always meaning "the user cannot move it, code still can".
 
 If scroll gesture handling conflicts with other gesture recognizers:
 - Adjust `ScrollVelocityThreshold` to control sensitivity

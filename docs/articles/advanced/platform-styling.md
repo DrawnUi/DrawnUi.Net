@@ -11,7 +11,8 @@ Some DrawnUi controls include a `ControlStyle` property that determines their vi
 - `Unset`: Default styling defined by the control
 - `Platform`: Automatically selects the appropriate style for the current platform
 - `Cupertino`: iOS-style appearance
-- `Material`: Android Material Design appearance
+- `Material`: Android Material Design 2 appearance
+- `Material3`: Android Material Design 3 (Material You) appearance
 - `Windows`: Windows-style appearance
 
 ### Basic Usage
@@ -35,7 +36,20 @@ The following controls support platform-specific styling:
 - `SkiaButton`: Different button appearances across platforms
 - `SkiaSwitch`: Toggle switches with platform-specific track and thumb styling
 - `SkiaCheckbox`: Checkbox controls with platform-appropriate checkmarks and animations
+- `SkiaRadioButton`: Radio rings and dots per platform
 - `SkiaSlider`: Change values with platform-specific track and thumb styling
+- `SkiaProgress`: Track and trail per platform (Material3 adds the gap and stop indicator)
+- `SkiaPicker`, `SkiaWheelPicker`: Field and wheel looks per platform
+- `SkiaEditor`: Background, border and cursor per platform
+
+## Changing the style at runtime
+
+`ControlStyle` is not a one-shot: setting it after the control was measured rebuilds the default content for the new style. The control drops the children it built itself (children you provided stay), releases only the sizes and defaults the previous style pinned (`WidthRequest`, `HeightRequest`, minimum sizes, alignment or cache defaults set through `SetStyleDefault`), keeps every value you set yourself, and builds the new look at the next measure. A theme or platform switch in settings needs nothing more than assigning the property.
+
+```csharp
+foreach (var toggle in Views.OfType<SkiaToggle>())
+    toggle.ControlStyle = PrebuiltControlStyle.Material3;
+```
 
 ## Platform Style Characteristics
 
@@ -77,55 +91,45 @@ This creates a button with the platform-specific shape, shadow, and behavior, bu
 
 ## Creating Custom Platform-Styled Controls
 
-If you're creating custom controls, you can leverage the same platform styling system:
+`ControlStyle` already lives on `SkiaControl`, every control has it. To support it in your own control build the look in `CreateDefaultContent` (runs once, at the first measure, after the object initializer and XAML have been applied) and switch on `UsingControlStyle`, which already resolves `Platform` to the running OS. Apply layout or cache defaults through `SetStyleDefault` and sizes through `SetDefaultContentSize`, both leave alone anything the user set explicitly and both are undone by a rebuild. The base handles a runtime `ControlStyle` change for you; if you cache child references with a null-guard, reset them in `RebuildDefaultContent`.
 
 ```csharp
-public class MyCustomControl : SkiaControl
+public class MyCustomControl : SkiaLayout
 {
-    public static readonly BindableProperty ControlStyleProperty = BindableProperty.Create(
-        nameof(ControlStyle),
-        typeof(PrebuiltControlStyle),
-        typeof(MyCustomControl),
-        PrebuiltControlStyle.Unset);
+    SkiaShape _frame;
 
-    public PrebuiltControlStyle ControlStyle
+    protected override void CreateDefaultContent()
     {
-        get { return (PrebuiltControlStyle)GetValue(ControlStyleProperty); }
-        set { SetValue(ControlStyleProperty, value); }
-    }
-    
-    protected override void OnPropertyChanged(string propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
-        
-        if (propertyName == nameof(ControlStyle))
-        {
-            ApplyPlatformStyle();
-        }
-    }
-    
-    private void ApplyPlatformStyle()
-    {
-        switch (ControlStyle)
+        if (Views.Count > 0)
+            return; // the user provided children, keep them
+
+        SetStyleDefault(HorizontalOptionsProperty, LayoutOptions.Fill);
+
+        switch (UsingControlStyle)
         {
             case PrebuiltControlStyle.Cupertino:
-                // Apply iOS-specific styling
+                SetDefaultContentSize(120, 44);
+                AddSubView(new SkiaShape { CornerRadius = 12, BackgroundColor = Color.Parse("#007AFF") }.Assign(out _frame));
                 break;
             case PrebuiltControlStyle.Material:
-                // Apply Material Design styling
+            case PrebuiltControlStyle.Material3:
+                SetDefaultContentSize(120, 40);
+                AddSubView(new SkiaShape { CornerRadius = 20, BackgroundColor = Color.Parse("#6750A4") }.Assign(out _frame));
                 break;
             case PrebuiltControlStyle.Windows:
-                // Apply Windows styling
+                SetDefaultContentSize(120, 32);
+                AddSubView(new SkiaShape { CornerRadius = 4, BackgroundColor = Color.Parse("#0078D7") }.Assign(out _frame));
                 break;
-            case PrebuiltControlStyle.Platform:
-                #if IOS || MACCATALYST
-                // Apply iOS styling
-                #elif ANDROID
-                // Apply Material styling
-                #elif WINDOWS
-                // Apply Windows styling
-                #endif
+            default:
+                SetDefaultContentSize(120, 41);
+                AddSubView(new SkiaShape { CornerRadius = 8, BackgroundColor = Color.Parse("#DC143C") }.Assign(out _frame));
                 break;
         }
+    }
+
+    public override void RebuildDefaultContent()
+    {
+        _frame = null; // disposed by the rebuild, CreateDefaultContent assigns the new one
+        base.RebuildDefaultContent();
     }
 }

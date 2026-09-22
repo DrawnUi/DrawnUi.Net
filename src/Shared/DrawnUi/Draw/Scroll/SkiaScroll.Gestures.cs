@@ -224,6 +224,9 @@ public partial class SkiaScroll
             LockGesturesUntilDown = false;
         }
 
+        if (ProcessScrollBarGestures(args, apply))
+            return this;
+
         //todo use number of gestures !!!
         if (args.Type == TouchActionResult.Down)
         {
@@ -387,7 +390,7 @@ public partial class SkiaScroll
                     if (ChildWasTapped)
                         break;
 
-                    bool canPan = !ScrollLocked;
+                    bool canPan = !ScrollLocked && Orientation != ScrollOrientation.Neither;
 
                     if (!IsUserPanning)
                     {
@@ -515,9 +518,16 @@ public partial class SkiaScroll
                             canSwipe = false;
                         }
 
-                        if (!ScrollLocked && canSwipe)
+                        if (!ScrollLocked && canSwipe && Orientation != ScrollOrientation.Neither)
                         {
                             var finalVelocity = SwipeVelocityAccumulator.CalculateFinalVelocity(this.MaxVelocity);
+
+                            // a cancelled pointer (a parent or the browser took the pan to scroll itself) settles in
+                            // place: flinging from the few moves that arrived before the cancel scrolls both at once
+                            if (args.Event.Type == TouchActionType.Cancelled)
+                            {
+                                finalVelocity = default;
+                            }
 
                             bool fling = false;
                             bool swipe = false;
@@ -667,6 +677,11 @@ public partial class SkiaScroll
                     break;
 
                 case TouchActionResult.Wheel:
+
+                    if (Orientation == ScrollOrientation.Neither)
+                    {
+                        break;
+                    }
 
                     //Debug.WriteLine($"Wheel {args.Event.Wheel.Delta}");
 

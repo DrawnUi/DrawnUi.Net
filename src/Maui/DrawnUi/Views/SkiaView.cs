@@ -17,10 +17,15 @@ public partial class SkiaView : SKCanvasView, ISkiaDrawable
 
     public DrawnView Superview { get; set; }
 
+    bool _disposed;
+
     public void Dispose()
     {
+        _disposed = true;
         _surface = null;
         PaintSurface -= OnPaintingSurface;
+        //static event: DisconnectHandlers() does not null the Handler, so OnHandlerChanged never gets to unsubscribe
+        Super.OrientationChanged -= OnOrientationChanged;
         Superview = null;
     }
 
@@ -54,11 +59,12 @@ public partial class SkiaView : SKCanvasView, ISkiaDrawable
     {
         base.OnHandlerChanged();
 
-        if (Handler != null)
+        if (Handler != null && !_disposed)
         {
             PaintSurface -= OnPaintingSurface;
             PaintSurface += OnPaintingSurface;
 
+            Super.OrientationChanged -= OnOrientationChanged;
             Super.OrientationChanged += OnOrientationChanged;
 
             Superview?.ConnectedHandler();

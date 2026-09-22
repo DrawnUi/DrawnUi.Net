@@ -122,6 +122,7 @@ items:
   - DrawnUi.Draw.SkiaScroll.InternalScrollBar
   - DrawnUi.Draw.SkiaScroll.InternalScrollBarHorizontal
   - DrawnUi.Draw.SkiaScroll.UpdateScrollBarIndicator
+  - DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaScroll.OrderedScrollProperty
   - DrawnUi.Draw.SkiaScroll.OrderedScroll
   - DrawnUi.Draw.SkiaScroll.OrderedScrollIsAnimatedProperty
@@ -335,6 +336,7 @@ items:
   - DrawnUi.Draw.SkiaScroll.ScrollProgressY
   - DrawnUi.Draw.SkiaScroll.ScrollProgressX
   - DrawnUi.Draw.SkiaScroll.InitializeViewport(System.Single)
+  - DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
   - DrawnUi.Draw.SkiaScroll.IsViewportReady
   - DrawnUi.Draw.SkiaScroll.ScrollingDirection
   - DrawnUi.Draw.SkiaScroll.CheckAndSetIsStillAnimating
@@ -542,6 +544,7 @@ items:
   - DrawnUi.Draw.SkiaControl.DefaultContentCreated
   - DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty,System.Object)
   - DrawnUi.Draw.SkiaControl.CreateDefaultContent
+  - DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   - DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.SetDefaultContentSize(System.Double,System.Double)
   - DrawnUi.Draw.SkiaControl.GenerateParentChain
@@ -827,6 +830,7 @@ items:
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.OnMeasuring(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.AvoidRemeasuring(DrawnUi.Draw.MeasureRequest)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
@@ -2587,6 +2591,41 @@ references:
     name: UpdateScrollBarIndicator
     href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_UpdateScrollBarIndicator
   - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  commentId: M:DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  parent: DrawnUi.Draw.SkiaScroll
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ProcessScrollBarGestures_DrawnUi_Draw_SkiaGesturesParameters_DrawnUi_Draw_GestureEventProcessingInfo_
+  name: ProcessScrollBarGestures(SkiaGesturesParameters, GestureEventProcessingInfo)
+  nameWithType: SkiaScroll.ProcessScrollBarGestures(SkiaGesturesParameters, GestureEventProcessingInfo)
+  fullName: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+    name: ProcessScrollBarGestures
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ProcessScrollBarGestures_DrawnUi_Draw_SkiaGesturesParameters_DrawnUi_Draw_GestureEventProcessingInfo_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.GestureEventProcessingInfo
+    name: GestureEventProcessingInfo
+    href: DrawnUi.Draw.GestureEventProcessingInfo.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaScroll.ProcessScrollBarGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+    name: ProcessScrollBarGestures
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ProcessScrollBarGestures_DrawnUi_Draw_SkiaGesturesParameters_DrawnUi_Draw_GestureEventProcessingInfo_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.GestureEventProcessingInfo
+    name: GestureEventProcessingInfo
+    href: DrawnUi.Draw.GestureEventProcessingInfo.html
   - name: )
 - uid: DrawnUi.Draw.SkiaScroll.OrderedScrollProperty
   commentId: F:DrawnUi.Draw.SkiaScroll.OrderedScrollProperty
@@ -5473,6 +5512,25 @@ references:
     name: Single
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+  commentId: M:DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+  parent: DrawnUi.Draw.SkiaScroll
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ClampOffsetToBoundsIfPending
+  name: ClampOffsetToBoundsIfPending()
+  nameWithType: SkiaScroll.ClampOffsetToBoundsIfPending()
+  fullName: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+    name: ClampOffsetToBoundsIfPending
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ClampOffsetToBoundsIfPending
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaScroll.ClampOffsetToBoundsIfPending
+    name: ClampOffsetToBoundsIfPending
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_ClampOffsetToBoundsIfPending
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaScroll.IsViewportReady
   commentId: P:DrawnUi.Draw.SkiaScroll.IsViewportReady
@@ -9893,6 +9951,25 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
     name: CreateDefaultContent
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CreateDefaultContent
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetDefaultMinimumContentSize(System.Double,System.Double)
@@ -16000,6 +16077,25 @@ references:
   - uid: DrawnUi.Draw.MeasureRequest
     name: MeasureRequest
     href: DrawnUi.Draw.MeasureRequest.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)

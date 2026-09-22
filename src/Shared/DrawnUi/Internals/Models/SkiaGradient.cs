@@ -204,6 +204,9 @@ public partial class SkiaGradient : BindableObject, ICloneable, IComparable, ICo
         return CompareTo(other) == 0;
     }
 
+    // On the WPF head BindableObject is a DependencyObject, which seals Equals(object) and
+    // GetHashCode(). Value equality stays available through IEquatable<SkiaGradient>.
+#if !WPF
     public override bool Equals(object obj)
     {
         return obj is SkiaGradient other && Equals(other);
@@ -240,6 +243,7 @@ public partial class SkiaGradient : BindableObject, ICloneable, IComparable, ICo
 
         return hash.ToHashCode();
     }
+#endif
 
     public static bool operator ==(SkiaGradient left, SkiaGradient right)
     {

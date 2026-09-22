@@ -706,7 +706,23 @@ namespace DrawnUi.Views
                 CanvasView = view;
             }
 
+            //A destroyed view stays as Content until now (setting Content while the handler is disconnected throws
+            //inside MAUI and wedges the property), so when the canvas got its handler back MAUI has just mapped
+            //that dead view and gave it a new handler: release it here, where replacing Content is safe.
+            var previous = Content;
             Content = CanvasView as View;
+            if (previous != null && !ReferenceEquals(previous, Content))
+            {
+                try
+                {
+                    previous.DisconnectHandlers();
+                }
+                catch (Exception e)
+                {
+                    Super.Log(e);
+                }
+                (previous as IDisposable)?.Dispose();
+            }
 #endif
         }
 
@@ -744,6 +760,9 @@ namespace DrawnUi.Views
                             {
                                 Super.Log(e);
                             }
+
+                            //releases static subscriptions, otherwise every replaced view stays alive forever
+                            kill.Dispose();
                         });
                     }
                     else

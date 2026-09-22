@@ -26,7 +26,7 @@ namespace DrawnUi.Draw
         public static GridLength Star => new(1, GridUnitType.Star);
     }
 
-    public class ColumnDefinitionCollection : DefinitionCollection<ColumnDefinition>
+    public partial class ColumnDefinitionCollection : DefinitionCollection<ColumnDefinition>
     {
         public ColumnDefinitionCollection() : base()
         {
@@ -41,7 +41,7 @@ namespace DrawnUi.Draw
         }
     }
 
-    public class RowDefinitionCollection : DefinitionCollection<RowDefinition>
+    public partial class RowDefinitionCollection : DefinitionCollection<RowDefinition>
     {
         public RowDefinitionCollection() : base()
         {

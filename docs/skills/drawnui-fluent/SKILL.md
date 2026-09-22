@@ -1,7 +1,7 @@
 ﻿---
 name: drawnui-fluent
 description: "Use when writing DrawnUI C# code-behind with fluent extensions. Covers inline control construction, .Assign(out _field), .Initialize(), .OnTapped(), .OnTextChanged(), .ObserveProperty(), .ObserveProperties(), .ObservePropertyTwoWay() (two-way binding), .Adapt(), .WhenPaint(), .ObserveSelf(), layout aliases (SkiaStack/SkiaRow/SkiaLayer), one-shot and looping animations, gradients, colors, shadows, SkiaLottie, SkiaImageTiles, and SkiaBackdrop code-behind patterns. Load before any DrawnUI C# composition task."
-version: 1.3.0
+version: 1.3.1
 tags: [drawnui, csharp, fluent, code-behind, maui, blazor]
 ---
 
@@ -45,6 +45,8 @@ layout.Children.RemoveAt(0); // also valid
 layout.Children.Clear();        // ignored
 layout.Children.Add(child);     // ignored
 ```
+
+Also wrong BEFORE the tree is built: `Children = new List<SkiaControl>()` then `layer.Children.Add(x)` — the assignment replaced the observed collection with a plain list, so the `Add` is invisible to the engine (verified 2026-09-16: popup wrappers built this way never rendered and their `ScaleToAsync` never completed). Build the full list first and assign once; the collection-initializer form `Children = { a, b }` (no `new List`) is fine because it adds to the control's own collection.
 
 **Rule of thumb:** Use `Children = new List<...>` only during initial construction. Once `LayoutIsReady` has fired or the control is in the visual tree, use `ClearChildren()`, `AddSubView()`, `RemoveSubView()` instead.
 
@@ -135,6 +137,8 @@ new SkiaGrid()
 ### `.Initialize` vs `.Adapt`
 
 `.Adapt(me => ...)` runs setup on the control itself mid-chain. Do NOT access OTHER `.Assign`'d references from `Adapt` — they may not exist yet. Post-build wiring that touches assigned refs goes in `.Initialize(me => ...)` on the OUTERMOST control — it runs after the whole chain is constructed.
+
+`.Initialize` fires once, when the control gets its parent (added to `Children`/`Content` or to the canvas), independent of `IsVisible`, measuring or virtualization (since 1.10.6.16; before it fired at first measure, so an `IsVisible=false` control never ran it). Never attached → runs at first measure. `Superview` may still be null inside; tree-ready work goes in `LayoutIsReady` / `Initialized`.
 
 ---
 

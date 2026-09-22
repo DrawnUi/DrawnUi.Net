@@ -425,7 +425,7 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
         protected virtual async Task<SKBitmap> DecodePackageBitmapAsync(string fileName)
         {
     #if BROWSER || DRAWNUI_NET
-        var httpClient = Super.Services.GetService(typeof(HttpClient)) as HttpClient ?? new HttpClient();
+        var httpClient = Super.Services?.GetService(typeof(HttpClient)) as HttpClient ?? new HttpClient();
         var bytes = await httpClient.GetByteArrayAsync(fileName);
         using var skStream = new SKMemoryStream(bytes);
         using var data = skStream.GetData();

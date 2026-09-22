@@ -35,7 +35,7 @@ The current value of a single-value slider is `End`. In range mode (`EnableRange
 
 ### Platform Styles
 
-`SkiaSlider` supports [platform-specific styling](../advanced/platform-styling.md) via `ControlStyle`: `Unset` (stock look), `Cupertino`, `Material`, `Windows`, or `Platform` (picks the style matching the current OS at runtime).
+`SkiaSlider` supports [platform-specific styling](../advanced/platform-styling.md) via `ControlStyle`: `Unset` (stock look), `Cupertino`, `Material`, `Material3`, `Windows`, or `Platform` (picks the style matching the current OS at runtime). The style can be changed after the slider was shown, the look is rebuilt.
 
 ```xml
 <draw:SkiaSlider
@@ -58,7 +58,7 @@ The current value of a single-value slider is `End`. In range mode (`EnableRange
 | `EnableRange` | bool | Two thumbs selecting a `Start`..`End` range |
 | `Step` | double | Step increment values snap to (default 1) |
 | `RangeMin` | double | Minimum allowed distance between `Start` and `End` |
-| `ControlStyle` | PrebuiltControlStyle | `Unset`, `Platform`, `Cupertino`, `Material`, `Windows` |
+| `ControlStyle` | PrebuiltControlStyle | `Unset`, `Platform`, `Cupertino`, `Material`, `Material3`, `Windows`; changing it at runtime rebuilds the look |
 | `ThumbColor` | Color | Color of the thumb(s) |
 | `TrackColor` | Color | Color of the unselected track |
 | `TrackSelectedColor` | Color | Color of the selected part of the track |
@@ -67,6 +67,7 @@ The current value of a single-value slider is `End`. In range mode (`EnableRange
 | `SliderHeight` | double | Height of the track area |
 | `ClickOnTrailEnabled` | bool | Tapping the track jumps the nearest thumb there (default true) |
 | `IgnoreWrongDirection` | bool | Ignore gestures along the wrong axis |
+| `RespondsToGestures` | bool | Default true. False: thumbs cannot be dragged and the track ignores taps, `Start`/`End` change from code only |
 | `Invert` | bool | Invert the direction of values |
 | `ValueStringFormat` | string | Format for `EndDesc`/`StartDesc` readable value strings |
 
@@ -119,6 +120,7 @@ Subclass `SkiaSlider` and provide your own content: a child tagged `"Trail"` hos
 | `ProgressColor` | Color | Color of the progress bar |
 | `BackgroundColor` | Color | Background color of the progress track |
 | `CornerRadius` | double | Corner radius for rounded progress bar |
+| `ControlStyle` | PrebuiltControlStyle | `Unset`, `Platform`, `Cupertino`, `Material`, `Material3` (gap and stop indicator), `Windows`; can be changed at runtime |
 
 ## SkiaWheelPicker
 

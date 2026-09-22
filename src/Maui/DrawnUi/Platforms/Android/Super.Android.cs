@@ -559,6 +559,22 @@ public partial class Super
         });
     }
 
+    /// <summary>
+    /// Goes through the insets controller: MAUI 10 sets the status bar appearance that way on window creation
+    /// (edge-to-edge), and clearing the legacy SystemUiVisibility flag does not change an appearance set there.
+    /// </summary>
+    static void SetLightStatusBarAppearance(Android.Views.Window window, bool light)
+    {
+        if (window == null)
+            return;
+
+        var controller = AndroidX.Core.View.WindowCompat.GetInsetsController(window, window.DecorView);
+        if (controller != null)
+        {
+            controller.AppearanceLightStatusBars = light;
+        }
+    }
+
     public static void SetWhiteTextStatusBar()
     {
         if (Build.VERSION.SdkInt > Android.OS.BuildVersionCodes.M)
@@ -571,14 +587,7 @@ public partial class Super
                 return;
             }
 
-            var window = activity.Window;
-
-            // Fetch the current flags.
-            var lFlags = window.DecorView.SystemUiVisibility;
-
-            var mask = ~(StatusBarVisibility)SystemUiFlags.LightStatusBar;
-
-            window.DecorView.SystemUiVisibility = lFlags & mask;
+            SetLightStatusBarAppearance(activity.Window, false);
         }
     }
 
@@ -594,12 +603,7 @@ public partial class Super
                 return;
             }
 
-            var window = activity.Window;
-
-            // Fetch the current flags.
-            var lFlags = window.DecorView.SystemUiVisibility;
-            // Update the SystemUiVisibility dependening on whether we want a Light or Dark theme.
-            window.DecorView.SystemUiVisibility = lFlags | (StatusBarVisibility)SystemUiFlags.LightStatusBar;
+            SetLightStatusBarAppearance(activity.Window, true);
         }
     }
 

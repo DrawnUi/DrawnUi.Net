@@ -33,6 +33,9 @@
   <Folder Name="/Lib/WASM/">
     <Project Path="Wasm/DrawnUi/DrawnUi.Wasm.csproj" />
   </Folder>
+  <Folder Name="/Lib/WPF/">
+    <Project Path="Wpf/Drawnui.Wpf/DrawnUi.Wpf.csproj" />
+  </Folder>
   <Folder Name="/Samples/" />
   <Folder Name="/Samples/Blazor/">
     <Project Path="Blazor/Samples/BlazorSandbox/BlazorSandbox.csproj" />
@@ -63,6 +66,10 @@
   </Folder>
   <Folder Name="/Samples/Wasm/">
     <Project Path="Wasm/Samples/PongWeb/PongWeb.csproj" />
+  </Folder>
+  <Folder Name="/Samples/WPF/">
+    <Project Path="Wpf/Samples/HelloWpf/HelloWpf.csproj" />
+    <Project Path="Wpf/Samples/WpfSandbox/WpfSandbox.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="../.gitignore" />

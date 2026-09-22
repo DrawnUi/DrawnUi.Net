@@ -70,6 +70,7 @@ items:
   - DrawnUi.Draw.SkiaButton.PanThreshold
   - DrawnUi.Draw.SkiaButton.Pressed
   - DrawnUi.Draw.SkiaButton.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  - DrawnUi.Draw.SkiaButton.RebuildDefaultContent
   - DrawnUi.Draw.SkiaButton.Released
   - DrawnUi.Draw.SkiaButton.SetupBackgroundPaint(SkiaSharp.SKPaint,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaButton.ShimmerEffectAngle
@@ -839,6 +840,7 @@ items:
   - DrawnUi.Draw.SkiaControl.Measure(System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaControl.UpdateSizeRequest
   - DrawnUi.Draw.SkiaControl.AvoidRemeasuring(DrawnUi.Draw.MeasureRequest)
+  - DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
   - DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaControl.SetMeasuredAsEmpty(System.Single)
   - DrawnUi.Draw.SkiaControl.GetContentSizeForAutosizeInPixels
@@ -1472,6 +1474,16 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Called by InitializeDefaultContent, can be used by controls to create default content for different ControlStyles. This is needed for example for MAUI controls to work with XAML without extra code.
+
+    After the call InitializeDefaultContent with set DefaultContentCreated = true;
+
+    You don't need to call SkiaControl base.CreateDefaultContent it's empty.
+
+    Cache child references without a null-guard (or reset them in <xref href="DrawnUi.Draw.SkiaControl.RebuildDefaultContent" data-throw-if-not-resolved="false"></xref>):
+
+    a rebuild disposes the previous children and calls this again.
   example: []
   syntax:
     content: protected override void CreateDefaultContent()
@@ -1858,6 +1870,44 @@ items:
     content.vb: Public Overrides Sub OnChildrenChanged()
   overridden: DrawnUi.Draw.SkiaLayout.OnChildrenChanged
   overload: DrawnUi.Draw.SkiaButton.OnChildrenChanged*
+- uid: DrawnUi.Draw.SkiaButton.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaButton.RebuildDefaultContent
+  id: RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaButton
+  langs:
+  - csharp
+  - vb
+  name: RebuildDefaultContent()
+  nameWithType: SkiaButton.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaButton.RebuildDefaultContent()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RebuildDefaultContent
+    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    startLine: 522
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Drops the content built by <xref href="DrawnUi.Draw.SkiaControl.CreateDefaultContent" data-throw-if-not-resolved="false"></xref> so the next Measure builds it again
+
+    with the current properties. Runs when <xref href="DrawnUi.Draw.SkiaControl.ControlStyle" data-throw-if-not-resolved="false"></xref> changes after the content exists.
+
+    Disposes the children only if they were created by the control itself, un-pins the properties the
+
+    previous style set (see <xref href="DrawnUi.Draw.SkiaControl.SetStyleDefault(Microsoft.Maui.Controls.BindableProperty%2cSystem.Object)" data-throw-if-not-resolved="false"></xref>), leaves every user-set property alone.
+
+    A no-op before the first build. Override to reset cached child references, then call base.
+  example: []
+  syntax:
+    content: public override void RebuildDefaultContent()
+    content.vb: Public Overrides Sub RebuildDefaultContent()
+  overridden: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  overload: DrawnUi.Draw.SkiaButton.RebuildDefaultContent*
 - uid: DrawnUi.Draw.SkiaButton.FindViews
   commentId: M:DrawnUi.Draw.SkiaButton.FindViews
   id: FindViews
@@ -1876,7 +1926,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 522
+    startLine: 532
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1902,7 +1952,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 540
+    startLine: 552
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1928,7 +1978,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDown
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 714
+    startLine: 733
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1961,7 +2011,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnUp
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 746
+    startLine: 765
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1992,7 +2042,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTapped
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 751
+    startLine: 770
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2025,7 +2075,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PanThreshold
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 786
+    startLine: 805
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2052,7 +2102,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 788
+    startLine: 807
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2087,7 +2137,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayCallbackMs
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 864
+    startLine: 883
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2116,7 +2166,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 866
+    startLine: 885
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2145,7 +2195,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Up
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 877
+    startLine: 896
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2172,7 +2222,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Down
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 878
+    startLine: 897
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2199,7 +2249,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clicked
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 884
+    startLine: 903
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2228,7 +2278,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Released
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 889
+    startLine: 908
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2257,7 +2307,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Pressed
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 894
+    startLine: 913
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2286,7 +2336,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalTapped
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 898
+    startLine: 917
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2315,7 +2365,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalDown
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 913
+    startLine: 932
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2344,7 +2394,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ButtonStyleProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 965
+    startLine: 984
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2371,7 +2421,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ButtonStyle
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 975
+    startLine: 994
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2402,7 +2452,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextCaseProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 981
+    startLine: 1000
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2429,7 +2479,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextCase
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 991
+    startLine: 1010
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2460,7 +2510,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ElevationEnabledProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 997
+    startLine: 1016
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2487,7 +2537,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ElevationEnabled
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1007
+    startLine: 1026
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2518,7 +2568,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IconPositionProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1013
+    startLine: 1032
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2545,7 +2595,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IconPosition
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1023
+    startLine: 1042
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2576,7 +2626,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanningProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1037
+    startLine: 1056
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2603,7 +2653,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanning
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1042
+    startLine: 1061
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2632,7 +2682,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1048
+    startLine: 1067
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2659,7 +2709,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1055
+    startLine: 1074
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2688,7 +2738,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1061
+    startLine: 1080
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2715,7 +2765,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1068
+    startLine: 1087
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2744,7 +2794,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisabledProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1074
+    startLine: 1093
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2771,7 +2821,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisabled
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1080
+    startLine: 1099
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2800,7 +2850,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPressedProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1086
+    startLine: 1105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2827,7 +2877,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPressed
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1096
+    startLine: 1115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2858,7 +2908,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1102
+    startLine: 1121
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2885,7 +2935,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1111
+    startLine: 1130
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2916,7 +2966,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1117
+    startLine: 1136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2943,7 +2993,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1123
+    startLine: 1142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2972,7 +3022,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngleProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1129
+    startLine: 1148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2999,7 +3049,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngle
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1135
+    startLine: 1154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3028,7 +3078,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidthProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1141
+    startLine: 1160
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3055,7 +3105,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidth
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1147
+    startLine: 1166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3084,7 +3134,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeedProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1153
+    startLine: 1172
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3111,7 +3161,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeed
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1159
+    startLine: 1178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3140,7 +3190,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyEffectProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1166
+    startLine: 1185
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3167,7 +3217,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyEffect
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1170
+    startLine: 1189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3196,7 +3246,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1177
+    startLine: 1196
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3223,7 +3273,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1182
+    startLine: 1201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3252,7 +3302,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1188
+    startLine: 1207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3279,7 +3329,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameter
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1193
+    startLine: 1212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3308,7 +3358,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1199
+    startLine: 1218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3335,7 +3385,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressing
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1204
+    startLine: 1223
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3364,7 +3414,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameterProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1210
+    startLine: 1229
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3391,7 +3441,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameter
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1215
+    startLine: 1234
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3420,7 +3470,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1221
+    startLine: 1240
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3447,7 +3497,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1228
+    startLine: 1247
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3476,7 +3526,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidthProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1234
+    startLine: 1253
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3503,7 +3553,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidth
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1240
+    startLine: 1259
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3532,7 +3582,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _lastDownPts
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1246
+    startLine: 1265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3559,7 +3609,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1248
+    startLine: 1267
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3586,7 +3636,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1255
+    startLine: 1274
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3615,7 +3665,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextStrokeColorProperty
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1261
+    startLine: 1280
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3642,7 +3692,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextStrokeColor
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1268
+    startLine: 1287
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3671,7 +3721,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1284
+    startLine: 1303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3707,7 +3757,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupBackgroundPaint
     path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-    startLine: 1309
+    startLine: 1328
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -18680,6 +18730,25 @@ references:
   - uid: DrawnUi.Draw.MeasureRequest
     name: MeasureRequest
     href: DrawnUi.Draw.MeasureRequest.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  commentId: M:DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  name: RunExecuteAfterCreated()
+  nameWithType: SkiaControl.RunExecuteAfterCreated()
+  fullName: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RunExecuteAfterCreated
+    name: RunExecuteAfterCreated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RunExecuteAfterCreated
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.InitializeDefaultContent(System.Boolean)
@@ -42747,6 +42816,25 @@ references:
   name: OnPaddingSet
   nameWithType: SkiaButton.OnPaddingSet
   fullName: DrawnUi.Draw.SkiaButton.OnPaddingSet
+- uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  name: RebuildDefaultContent()
+  nameWithType: SkiaControl.RebuildDefaultContent()
+  fullName: DrawnUi.Draw.SkiaControl.RebuildDefaultContent()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
+    name: RebuildDefaultContent
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RebuildDefaultContent
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
   commentId: M:DrawnUi.Draw.SkiaControl.CreateDefaultContent
   parent: DrawnUi.Draw.SkiaControl
@@ -42983,6 +43071,12 @@ references:
   name: OnChildrenChanged
   nameWithType: SkiaButton.OnChildrenChanged
   fullName: DrawnUi.Draw.SkiaButton.OnChildrenChanged
+- uid: DrawnUi.Draw.SkiaButton.RebuildDefaultContent*
+  commentId: Overload:DrawnUi.Draw.SkiaButton.RebuildDefaultContent
+  href: DrawnUi.Draw.SkiaButton.html#DrawnUi_Draw_SkiaButton_RebuildDefaultContent
+  name: RebuildDefaultContent
+  nameWithType: SkiaButton.RebuildDefaultContent
+  fullName: DrawnUi.Draw.SkiaButton.RebuildDefaultContent
 - uid: DrawnUi.Draw.SkiaButton.FindViews*
   commentId: Overload:DrawnUi.Draw.SkiaButton.FindViews
   href: DrawnUi.Draw.SkiaButton.html#DrawnUi_Draw_SkiaButton_FindViews

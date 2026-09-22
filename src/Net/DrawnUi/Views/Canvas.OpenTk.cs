@@ -16,10 +16,16 @@ public partial class Canvas
         ConnectedHandler();
     }
 
-    public void HandleDesktopPointerDown(float x, float y, float clientW, float clientH)
+    /// <summary>
+    /// Pointer pressed. <paramref name="pointer"/> carries which mouse button (and device) did it — every
+    /// button taps; controls filter on <c>Pointer.Button</c> or set <c>ContextMenu</c>. Null = unknown, as
+    /// hosts that only forward the primary button pass.
+    /// </summary>
+    public void HandleDesktopPointerDown(float x, float y, float clientW, float clientH, PointerData? pointer = null)
     {
         var location = new PointF(x, y);
         var args = MakeDesktopTouchArgs(TouchActionType.Pressed, location, clientW, clientH);
+        args.Pointer = pointer;
         args.IsInContact = true;
         args.Distance = new TouchActionEventArgs.DistanceInfo();
         _desktopPointerDownArgs = args;
@@ -28,11 +34,12 @@ public partial class Canvas
         OnGestureEvent(TouchActionType.Pressed, args, TouchActionResult.Down);
     }
 
-    public void HandleDesktopPointerMove(float x, float y, bool isDragging, float clientW, float clientH)
+    public void HandleDesktopPointerMove(float x, float y, bool isDragging, float clientW, float clientH, PointerData? pointer = null)
     {
         var location = new PointF(x, y);
         var actionType = isDragging ? TouchActionType.Moved : TouchActionType.Pointer;
         var args = MakeDesktopTouchArgs(actionType, location, clientW, clientH);
+        args.Pointer = pointer;
 
         if (_desktopPreviousArgs != null)
             TouchActionEventArgs.FillDistanceInfo(args, _desktopPreviousArgs);
@@ -55,7 +62,7 @@ public partial class Canvas
         _desktopPreviousArgs = args;
     }
 
-    public void HandleDesktopPointerUp(float x, float y, float clientW, float clientH)
+    public void HandleDesktopPointerUp(float x, float y, float clientW, float clientH, PointerData? pointer = null)
     {
         CancelDesktopLongPress();
 
@@ -64,6 +71,7 @@ public partial class Canvas
 
         var location = new PointF(x, y);
         var args = MakeDesktopTouchArgs(TouchActionType.Released, location, clientW, clientH);
+        args.Pointer = pointer;
         args.IsInContact = false;
 
         if (_desktopPreviousArgs != null)

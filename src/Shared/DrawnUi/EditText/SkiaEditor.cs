@@ -1020,13 +1020,24 @@ namespace DrawnUi.Draw
             if (_suppressImmediateCursorMove)
                 return;
 
-            if (SelectionLength > 0)
-                SetCursorPositionNative(CursorPosition, CursorPosition + SelectionLength);
-            else
-                SetCursorPositionNative(CursorPosition);
+            if (!_cursorFromNative)
+            {
+                if (SelectionLength > 0)
+                    SetCursorPositionNative(CursorPosition, CursorPosition + SelectionLength);
+                else
+                    SetCursorPositionNative(CursorPosition);
+            }
 
             UpdateCursorVisibility();
         }
+
+        /// <summary>
+        /// True while <see cref="CursorPosition"/> is being set from the native control's own caret
+        /// (see SetCursorPositionWithDelay): the native caret is the source then and must not be moved back.
+        /// Per thread, the timer callback runs on a worker thread.
+        /// </summary>
+        [ThreadStatic]
+        static bool _cursorFromNative;
 
         public void SelectAll()
         {
@@ -1438,8 +1449,19 @@ namespace DrawnUi.Draw
             {
                 TimerUpdateParentCursorPosition = new(TimeSpan.FromMilliseconds(ms), (arg) =>
                 {
-                    CursorPosition = arg;
-                    //Debug.WriteLine("CursorPosition from native: " + arg);
+                    // the position came FROM the native control: only the drawn cursor follows it.
+                    // Writing it back moved the native caret to a position captured before the
+                    // keystrokes typed meanwhile (fast typing / SendKeys burst): the next characters
+                    // went in before the last ones ("drawncamera.com" came out as "drawncameracom.").
+                    _cursorFromNative = true;
+                    try
+                    {
+                        CursorPosition = arg;
+                    }
+                    finally
+                    {
+                        _cursorFromNative = false;
+                    }
                 });
                 TimerUpdateParentCursorPosition.Start(position);
             }

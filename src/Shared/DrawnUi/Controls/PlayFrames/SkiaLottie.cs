@@ -91,6 +91,10 @@ public class SkiaLottie : AnimatedFramesRenderer
 
                 Monitor.PulseAll(_lockSource);
             }
+
+            // A stopped animation has no animator tick to repaint it: without this the new default
+            // frame (IsOn toggled, Stop, Finished) stays invisible until something else redraws.
+            Update();
         }
         else
         {

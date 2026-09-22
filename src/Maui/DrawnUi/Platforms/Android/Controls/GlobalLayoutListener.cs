@@ -16,11 +16,22 @@ namespace DrawnUi.Controls
             }
             View = view;
             Control = control;
-            View.ViewTreeObserver?.AddOnGlobalLayoutListener(this);
+            _observer = View.ViewTreeObserver;
+            _observer?.AddOnGlobalLayoutListener(this);
         }
+
+        // The observer we registered with: once the view is detached from its window, View.ViewTreeObserver
+        // returns a new floating observer, removing from that one is a no-op and the window keeps the listener
+        // (and everything it references) alive forever.
+        ViewTreeObserver _observer;
 
         public void Release()
         {
+            if (_observer != null && _observer.IsAlive)
+            {
+                _observer.RemoveOnGlobalLayoutListener(this);
+            }
+            _observer = null;
             View?.ViewTreeObserver?.RemoveOnGlobalLayoutListener(this);
             View = null;
             Control = default;
