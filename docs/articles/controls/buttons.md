@@ -48,13 +48,20 @@ SkiaButton supports multiple style variants through the `ButtonStyle` property:
 
 ### Platform-Specific Styling
 
-Platform-specific styles are selected automatically or can be set in code via the `UsingControlStyle` property (not bindable in XAML). Styles include:
+Set the bindable `ControlStyle` property (XAML or code) to pick a look; `UsingControlStyle` is the resolved read-only value (`Platform` resolved to the running OS). Styles include:
 
+- `Unset`: the DrawnUI default look
+- `Platform`: the style matching the current OS
 - `Cupertino`: iOS-style button
-- `Material`: Android Material Design button
+- `Material`: Android Material Design 2 button
+- `Material3`: Android Material Design 3 (Material You) button
 - `Windows`: Windows-style button
 
-> **Note:** There is no `ControlStyle` bindable property. Platform style is set internally or in code.
+```xml
+<draw:SkiaButton Text="Platform" ControlStyle="Platform" />
+```
+
+`ControlStyle` can be changed at runtime, the button rebuilds its content for the new style (see [platform styling](../advanced/platform-styling.md#changing-the-style-at-runtime)).
 
 ### Properties
 

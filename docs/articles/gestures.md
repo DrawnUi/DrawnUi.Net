@@ -329,6 +329,8 @@ Use `LockChildrenGestures` when a parent layout should decide which gestures rea
 </draw:SkiaLayout>
 ```
 
+Interactive controls that move themselves, `SkiaScroll`, `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSpinner`, and the toggles `SkiaSwitch` / `SkiaCheckbox` / `SkiaRadioButton`, also expose `RespondsToGestures` (default true). Set it to false and the control ignores user input while still being driven from code: a code-only scroll, a drawer opened only by a button, a read-only toggle.
+
 ## Practical routing
 
 Use this rule of thumb:

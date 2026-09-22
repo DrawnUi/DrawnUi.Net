@@ -26,8 +26,11 @@ Set the `ControlStyle` property to apply platform-specific styling:
 
 - `Platform`: Automatically selects the appropriate style for the current platform
 - `Cupertino`: iOS-style switch with pill-shaped track
-- `Material`: Android Material Design switch
+- `Material`: Android Material Design 2 switch
+- `Material3`: Android Material Design 3 (Material You) switch
 - `Windows`: Windows-style switch
+
+Changing `ControlStyle` at runtime, after the switch was shown, rebuilds its look (see [platform styling](../advanced/platform-styling.md#changing-the-style-at-runtime)).
 
 ```xml
 <draw:SkiaSwitch
@@ -63,9 +66,10 @@ private void OnSwitchToggled(object sender, bool isToggled)
 | `ColorFrameOff` | Color | The color of the track when toggled off |
 | `ColorThumbOn` | Color | The color of the thumb when toggled on |
 | `ColorThumbOff` | Color | The color of the thumb when toggled off |
-| `ControlStyle` | PrebuiltControlStyle | The platform-specific style |
+| `ControlStyle` | PrebuiltControlStyle | The platform-specific style, can be changed at runtime |
 | `IsAnimated` | bool | Whether state changes are animated |
 | `AnimationSpeed` | uint | Animation duration in milliseconds (default: 200) |
+| `RespondsToGestures` | bool | Default true. False: a tap does not toggle it, only `IsToggled` from code does |
 
 ### Events
 
@@ -112,6 +116,7 @@ SkiaCheckbox shares most properties with SkiaSwitch, both inheriting from SkiaTo
 | `ColorFrameOn/Off` | Color | The color of the frame in each state |
 | `ColorThumbOn/Off` | Color | The color of the thumb in each state |
 | `IsAnimated` | bool | Whether state changes are animated |
+| `RespondsToGestures` | bool | Default true. False: user taps are ignored, `IsToggled` is set from code only |
 
 ### Events
 

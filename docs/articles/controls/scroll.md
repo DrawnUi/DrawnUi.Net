@@ -82,7 +82,7 @@ The zoom properties control the behavior:
 | `UseVirtual` | bool | Enables virtualization for large content |
 | `ScrollWidthRequest` | float | Width of the scrollable area |
 | `ScrollHeightRequest` | float | Height of the scrollable area |
-| `EnableScrolling` | bool | Enables/disables scrolling |
+| `RespondsToGestures` | bool | Default true. Set false and the scroll ignores pan, fling and mouse wheel; scrolling by code (`ScrollTo...`, offsets) keeps working. Prefer it over `Orientation="Neither"` when the scroll must stay scrollable from code |
 
 ### Scrolling Behavior Properties
 
@@ -546,6 +546,8 @@ When working with infinite scrolling:
 - For better performance with large collections, consider using data virtualization alongside UI virtualization
 
 ### Gestures
+
+To take gestures away from a scroll entirely (a scroll driven only by code, a locked page while an overlay is up) set `RespondsToGestures="False"`. The same property exists on `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSwitch`/`SkiaCheckbox`/`SkiaRadioButton` and `SkiaSpinner`, always meaning "the user cannot move it, code still can".
 
 If scroll gesture handling conflicts with other gesture recognizers:
 - Adjust `ScrollVelocityThreshold` to control sensitivity
