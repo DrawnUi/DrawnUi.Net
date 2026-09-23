@@ -158,6 +158,20 @@ namespace DrawnUi.Controls
 
         #endregion
 
+        /// <summary>
+        /// The tab a navigation call works on: the requested one, else <see cref="SelectedIndex"/>, else 0.
+        /// <see cref="SelectedIndex"/> defaults to -1 (no tab selected), which for a switcher used as a plain
+        /// page stack means its single root tab: push and pop must agree on that, or a page pushed into
+        /// tab 0 can never be popped.
+        /// </summary>
+        protected int ResolveTab(int tab)
+        {
+            if (tab >= 0)
+                return tab;
+
+            return SelectedIndex >= 0 ? SelectedIndex : 0;
+        }
+
         public List<NavigationStackEntry> GetNavigationStack(int index)
         {
             var stack = new List<NavigationStackEntry>();
@@ -250,12 +264,7 @@ namespace DrawnUi.Controls
 
                 try
                 {
-                    var index = tab;
-                    if (index < 0)
-                        index = SelectedIndex;
-
-                    if (index < 0)
-                        index = 0;
+                    var index = ResolveTab(tab);
 
                     var stack = GetNavigationStack(index);
                     stack.Add(new NavigationStackEntry(view, animated, preserve));
@@ -291,8 +300,7 @@ namespace DrawnUi.Controls
             List<NavigationStackEntry> stack;
             try
             {
-                if (tab < 0)
-                    tab = SelectedIndex;
+                tab = ResolveTab(tab);
 
                 stack = GetNavigationStack(tab);
                 var subView = stack.LastOrDefault();
@@ -317,8 +325,7 @@ namespace DrawnUi.Controls
             List<NavigationStackEntry> stack;
             try
             {
-                if (tab < 0)
-                    tab = SelectedIndex;
+                tab = ResolveTab(tab);
 
                 stack = GetNavigationStack(tab);
                 if (stack.FirstOrDefault(x => x.View.GetType() == typeof(T)) is T subView)
@@ -342,8 +349,7 @@ namespace DrawnUi.Controls
             List<NavigationStackEntry> stack;
             try
             {
-                if (tab < 0)
-                    tab = SelectedIndex;
+                tab = ResolveTab(tab);
 
                 stack = GetNavigationStack(tab);
                 var foundEntry = stack.FirstOrDefault(x => x.View is T);
@@ -365,8 +371,7 @@ namespace DrawnUi.Controls
             List<NavigationStackEntry> stack;
             try
             {
-                if (tab < 0)
-                    tab = SelectedIndex;
+                tab = ResolveTab(tab);
 
                 stack = GetNavigationStack(tab);
                 var subView = stack.FirstOrDefault(x => x.GetType() == type);
@@ -402,8 +407,7 @@ namespace DrawnUi.Controls
 
             await SemaphoreNavigationStack.WaitAsync();
 
-            if (tab < 0)
-                tab = SelectedIndex;
+            tab = ResolveTab(tab);
 
             List<NavigationStackEntry> stack;
             try
@@ -438,16 +442,17 @@ namespace DrawnUi.Controls
         public int GetCurrentTabNavigationIndex()
         {
             var index = 0;
+            var tab = ResolveTab(-1);
             List<NavigationStackEntry> stack;
             try
             {
-                stack = GetNavigationStack(SelectedIndex);
+                stack = GetNavigationStack(tab);
                 index = stack.Count;
             }
             catch (Exception e)
             {
                 stack = new List<NavigationStackEntry>();
-                NavigationStacks[SelectedIndex] = stack;
+                NavigationStacks[tab] = stack;
             }
 
             return index;
@@ -482,13 +487,14 @@ namespace DrawnUi.Controls
 
             await SemaphoreNavigationStack.WaitAsync();
 
+            var tab = ResolveTab(-1);
             List<NavigationStackEntry> stack;
             try
             {
                 //show root view, hopefully behind the stack :)
-                RevealNavigationView(GetRootView(SelectedIndex));
+                RevealNavigationView(GetRootView(tab));
 
-                stack = GetNavigationStack(SelectedIndex);
+                stack = GetNavigationStack(tab);
                 foreach (var subView in stack.ToList())
                 {
                     //todo send disappearing
@@ -500,18 +506,12 @@ namespace DrawnUi.Controls
 
                 stack.Clear();
 
-                if (SelectedIndex < 0)
-                {
-                    Super.Log("SelectedIndex is -1");
-                    return;
-                }
-
-                NavigationStacks[SelectedIndex] = stack;
+                NavigationStacks[tab] = stack;
             }
             catch (Exception e)
             {
                 stack = new List<NavigationStackEntry>();
-                NavigationStacks[SelectedIndex] = stack;
+                NavigationStacks[tab] = stack;
             }
             finally
             {

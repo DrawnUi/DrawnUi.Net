@@ -45,6 +45,9 @@
     <Project Path="Maui/Samples/FastRepro/FastRepro.csproj">
       <Deploy Solution="*|Any CPU" />
     </Project>
+    <Project Path="Maui/Samples/HelloMaui/HelloMaui.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
     <Project Path="Maui/Samples/Sandbox/Sandbox.csproj">
       <Deploy Solution="Debug|Any CPU" />
     </Project>

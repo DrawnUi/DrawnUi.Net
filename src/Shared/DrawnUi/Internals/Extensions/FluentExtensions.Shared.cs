@@ -181,6 +181,16 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Runs the action once at the control's first Measure, when every <c>.Assign(out ...)</c> of the tree
+        /// it was built in has completed. Lazy-target observers use it to resolve their target.
+        /// </summary>
+        internal static T InitializeOnFirstMeasure<T>(this T view, Action<T> action) where T : SkiaControl
+        {
+            (view.ExecuteOnFirstMeasure ??= new())[Guid.NewGuid().ToString()] = control => { action.Invoke((T)control); };
+            return view;
+        }
+
+        /// <summary>
         /// Registers a callback to be executed during the paint phase of the control's rendering.
         /// Called inside the base.Paint(..).
         /// </summary>
@@ -899,7 +909,7 @@ namespace DrawnUi.Draw
             where T : SkiaControl
             where TSource : INotifyPropertyChanged
         {
-            return control.Initialize(me =>
+            return control.InitializeOnFirstMeasure(me =>
             {
                 // Track current subscription for cleanup
                 string mainKey = $"ObserveProperty_{propertyName}_{Guid.NewGuid()}";
@@ -1081,7 +1091,7 @@ namespace DrawnUi.Draw
                     nameof(propertyNames));
             propertyNames = names;
 
-            return control.Initialize(me =>
+            return control.InitializeOnFirstMeasure(me =>
             {
                 // Track current subscription for cleanup
                 string mainKey = $"ObserveProperties_{Guid.NewGuid()}";
@@ -1200,7 +1210,7 @@ namespace DrawnUi.Draw
             where T : SkiaControl
             where TSource : SkiaControl, INotifyPropertyChanged
         {
-            control.Initialize(me =>
+            control.InitializeOnFirstMeasure(me =>
             {
                 // Track current subscription for cleanup
                 string mainKey = $"Observe_{Guid.NewGuid()}";

@@ -59,6 +59,10 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 ## What's New 1.10.6.17
 
   * Fix `SkiaCheckbox` flashed the style's own colour (Windows blue, iOS blue...) for the length of the check animation before taking `ColorFrameOn` / `ColorFrameOff`: the frames were revealed first and recoloured only when the animation ended. Colours go on before a frame is shown.
+  * Fix `SkiaSlider` thumbs drawn off the track or not at all (Default, Windows, Material, Material3 looks, regression in 1.10.6.16): the lazy-target observers `ObserveProperty(() => x, ...)`, `ObserveProperties(() => x, ...)` and `Observe(() => x, ...)` resolved their target when the control got its parent, which happens inside the parent's object initializer, before its `.Assign(out ...)` ran, so they saw null and never subscribed. They now resolve it at the control's first measure, as before 1.10.6.16; `.Initialize(...)` itself still runs on attach.
+  * Fix `SkiaViewSwitcher` could never pop a page pushed while no tab was selected (`SelectedIndex` -1, its default, e.g. a `SkiaShell` NavigationLayout used as a plain page stack): `PushView` put the page into tab 0 while `PopPage` looked in tab -1, so `GoBack` and `PopToRootAsync` did nothing. All tab lookups now resolve an unselected tab to 0.
+  * Windows look: `SkiaSlider` thumb has no drop shadow any more (WinUI has none, the offset shadow made the thumb look below the track) and a 1.5 pt border; `SkiaPicker` border is 1.5 pt.
+  * New sample `src/Maui/Samples/HelloMaui`: the HelloWpf / helloreact demo (19 pages) on DrawnUi.Maui, navigated by `SkiaShell`.
 
  ### 1.10.6.16
   

@@ -563,13 +563,11 @@ public class SkiaSlider : SkiaLayout
             BackgroundColor = Colors.White,
             HorizontalOptions = LayoutOptions.Fill,
             StrokeColor = Color.FromRgba(229, 229, 229, 255),
-            StrokeWidth = 1,
+            StrokeWidth = 1.5,
             Type = ShapeType.Circle,
             VerticalOptions = LayoutOptions.Fill,
-            Shadows = new List<SkiaShadow>()
-            {
-                new SkiaShadow() { Blur = 2, Opacity = 0.25, X = 0, Y = 1, Color = Colors.Black }
-            },
+            // No drop shadow: the WinUI thumb has only a 1px elevation border, and an offset shadow made
+            // the thumb read as sitting below the track.
             Children = new List<SkiaControl>()
             {
                 new SkiaShape()

@@ -6084,6 +6084,36 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Actions run once at the first Measure, just before <see cref="CreateDefaultContent"/>. Used by the
+        /// fluent lazy-target observers (<c>ObserveProperty(() => field, ...)</c> and siblings): their target is
+        /// usually a sibling assigned with <c>.Assign(out ...)</c> later in the same object initializer, so it
+        /// can still be null when this control gets its parent (<see cref="ExecuteAfterCreated"/> time), while
+        /// at the first Measure the whole tree has been built. Allocated only when used.
+        /// </summary>
+        internal Dictionary<string, Action<SkiaControl>> ExecuteOnFirstMeasure;
+
+        private bool _executedOnFirstMeasure;
+
+        /// <summary>
+        /// Runs the <see cref="ExecuteOnFirstMeasure"/> actions exactly once, never again on a content rebuild.
+        /// </summary>
+        private void RunExecuteOnFirstMeasure()
+        {
+            if (_executedOnFirstMeasure)
+                return;
+
+            _executedOnFirstMeasure = true;
+
+            if (ExecuteOnFirstMeasure != null)
+            {
+                foreach (var action in ExecuteOnFirstMeasure.Values)
+                {
+                    action?.Invoke(this);
+                }
+            }
+        }
+
+        /// <summary>
         /// Always run this before applying any changes while measuring.
         /// Builds the default content once (or again after <see cref="RebuildDefaultContent"/>).
         /// </summary>
@@ -6095,6 +6125,8 @@ namespace DrawnUi.Draw
                 DefaultContentCreated = true;
 
                 RunExecuteAfterCreated();
+
+                RunExecuteOnFirstMeasure();
 
                 var hadViews = Views.Count > 0;
 

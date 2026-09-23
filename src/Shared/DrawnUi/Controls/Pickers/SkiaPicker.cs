@@ -258,7 +258,7 @@ public partial class SkiaPicker : SkiaLayout
             PrebuiltControlStyle.Windows => new PickerStyleMetrics(
                 new Thickness(12, 8),
                 4f,
-                1.2f,
+                1.5f,
                 Color.FromArgb("#FFFFFF"),
                 Color.FromArgb("#8A8A8A"),
                 Color.FromArgb("#111111"),
