@@ -180,7 +180,7 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
 // ── Virtual peer (no backing UIElement) ──────────────────────────────────────
 
 [SupportedOSPlatform("windows")]
-internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider
+internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider, IToggleProvider
 {
     private AccessibilityNode _node;
     private int _index;
@@ -192,8 +192,11 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
 
     internal void UpdateSnapshot(AccessibilityNode node, int index)
     {
+        var wasPressed = _node.IsPressed;
         _node  = node;
         _index = index;
+        if (wasPressed != node.IsPressed)
+            RaisePropertyChangedEvent(TogglePatternIdentifiers.ToggleStateProperty, ToState(wasPressed), ToState(node.IsPressed));
     }
 
     internal DrawnUiVirtualAutomationPeer(
@@ -270,15 +273,42 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override AutomationPeer? GetLabeledByCore() => null;
     protected override IList<AutomationPeer>? GetChildrenCore() => null;
 
-    protected override object? GetPatternCore(PatternInterface patternInterface)
-        => patternInterface == PatternInterface.Invoke && _node.CanInteract ? this : null;
+    protected override object? GetPatternCore(PatternInterface patternInterface) => patternInterface switch
+    {
+        PatternInterface.Invoke when _node.CanInteract => this,
+        PatternInterface.Toggle when (Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        _ => null,
+    };
 
+    // UIA SetFocus moves the reader cursor onto the element; it must not activate it.
+    // Same path as Tab: input controls get OnAccessibilityFocused (SkiaEditor opens its sink),
+    // the manager's FocusChanged brings XAML focus to the canvas and raises the UIA focus events.
     protected override void SetFocusCore()
     {
         var source = _node.Source;
-        if (source != null)
-            MainThread.BeginInvokeOnMainThread(() => source.OnAccessibilityActivated());
+        if (source == null) return;
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            var prev = _parent.FocusedPeer;
+            if (ReferenceEquals(prev, this)) return;
+            prev?.Source?.OnAccessibilityFocused(false);
+            source.OnAccessibilityFocused(true);
+            source.NotifyAccessibilityFocused(true);
+        });
     }
+
+    // IToggleProvider ─────────────────────────────────────────────────────────
+
+    public void Toggle() => Invoke();
+
+    public ToggleState ToggleState => ToState(Source?.AccessibilityIsPressed ?? _node.IsPressed);
+
+    private static ToggleState ToState(bool? pressed) => pressed switch
+    {
+        true  => ToggleState.On,
+        false => ToggleState.Off,
+        _     => ToggleState.Indeterminate,
+    };
 
     // IInvokeProvider ─────────────────────────────────────────────────────────
 

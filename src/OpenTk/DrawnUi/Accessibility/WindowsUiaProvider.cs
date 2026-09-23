@@ -222,11 +222,16 @@ internal sealed class VirtualElementProvider
 
     public object[]? GetEmbeddedFragmentRoots() => null;
 
+    // UIA SetFocus moves the reader cursor onto the element; it must not activate it.
     public void SetFocus()
     {
         var source = _node.Source;
-        if (source != null)
-            MainThread.BeginInvokeOnMainThread(() => source.OnAccessibilityActivated());
+        if (source == null) return;
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            source.OnAccessibilityFocused(true);
+            source.NotifyAccessibilityFocused(true);
+        });
     }
 
     public IRawElementProviderFragmentRoot? FragmentRoot => _root;
