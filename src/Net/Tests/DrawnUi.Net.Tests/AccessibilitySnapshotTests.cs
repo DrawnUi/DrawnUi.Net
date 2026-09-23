@@ -59,4 +59,51 @@ public class AccessibilitySnapshotTests
         Assert.Equal(2, manager.Snapshot.Length);
         Assert.Equal(3, changed);
     }
+    [Fact]
+    public void Defaults_FeedTheNode_And_PresentationHidesInnerLabel()
+    {
+        using var host = new HeadlessCanvasHost(400, 400);
+        var manager = host.Canvas.AccessibilityManager;
+        manager.MinUpdateIntervalMs = 0;
+
+        var button = new SkiaButton { Text = "Save", WidthRequest = 120, HeightRequest = 40, AccessibilityRole = Aria.RoleButton };
+        var toggle = new SkiaSwitch { WidthRequest = 60, HeightRequest = 30 }; // default role switch, no opt-in
+        var slider = new SkiaSlider { WidthRequest = 200, HeightRequest = 30, Min = 0, Max = 100, End = 25 };
+        var plain = new SkiaLabel { Text = "not exposed", WidthRequest = 120, HeightRequest = 20 };
+
+        var root = new SkiaLayout { Type = LayoutType.Column, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill };
+        root.AddSubView(button);
+        root.AddSubView(toggle);
+        root.AddSubView(slider);
+        root.AddSubView(plain);
+        host.Canvas.Content = root;
+        host.AdvanceFrames(3);
+
+        var snap = manager.Snapshot;
+        Assert.Equal(3, snap.Length); // button, switch, slider; plain label and the button's inner label stay out
+        Assert.DoesNotContain(snap, n => n.Label == "not exposed");
+
+        var b = Assert.Single(snap, n => n.Role == Aria.RoleButton);
+        Assert.Equal("Save", b.Label);
+        Assert.True(b.CanInteract);
+        Assert.Equal(button.AccessibilityId, b.Id);
+
+        var t = Assert.Single(snap, n => n.Role == Aria.RoleSwitch);
+        Assert.False(t.IsPressed);
+        toggle.IsToggled = true;
+        Assert.True(toggle.IsToggled, "IsToggled did not stick");
+        Assert.True(toggle.AccessibilityIsPressed, "AccessibilityIsPressed does not follow IsToggled");
+        host.AdvanceFrames(2);
+        Assert.True(Assert.Single(manager.Snapshot, n => n.Role == Aria.RoleSwitch).IsPressed, "snapshot not rebuilt after toggle");
+
+        var sl = Assert.Single(manager.Snapshot, n => n.Role == Aria.RoleSlider);
+        Assert.Equal("25", sl.Label);
+
+        button.IsDisabled = true;
+        button.AccessibilityLabel = "Custom";
+        host.AdvanceFrames(2);
+        var b2 = Assert.Single(manager.Snapshot, n => n.Role == Aria.RoleButton);
+        Assert.False(b2.CanInteract);
+        Assert.Equal("Custom", b2.Label);
+    }
 }

@@ -1745,6 +1745,7 @@ public class SkiaCarousel : SnappingLayout
             {
                 control.LastIndex = (int)o;
                 control.OnSelectedIndexChanged((int)n);
+                control.NotifyAccessibility();
             }
         });
 

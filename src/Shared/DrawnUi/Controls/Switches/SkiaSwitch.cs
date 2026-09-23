@@ -6,6 +6,11 @@
 /// </summary>
 public class SkiaSwitch : SkiaToggle
 {
+    /// <summary>Default role for every instance (React parity). Set to null to make the control opt-in again.</summary>
+    public static string? DefaultAccessibilityRole = DrawnUi.Models.Aria.RoleSwitch;
+
+    protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
+
     #region DEFAULT CONTENT
 
     protected override void CreateDefaultContent()

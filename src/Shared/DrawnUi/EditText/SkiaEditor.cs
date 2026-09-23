@@ -1926,10 +1926,19 @@ namespace DrawnUi.Draw
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
+        /// <summary>Default role for every instance (React parity). Set to null to make the control opt-in again.</summary>
+        public static string? DefaultAccessibilityRole = DrawnUi.Models.Aria.RoleTextBox;
+
+        protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
+
+        protected override string? DefaultAccessibilityLabel()
+            => !string.IsNullOrEmpty(Text) ? Text : (string.IsNullOrEmpty(PlaceholderText) ? null : PlaceholderText);
+
         private static void OnControlTextChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
             if (bindable is SkiaEditor control)
             {
+                control.NotifyAccessibility();
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     control.TextChanged?.Invoke(control, (string)newvalue);

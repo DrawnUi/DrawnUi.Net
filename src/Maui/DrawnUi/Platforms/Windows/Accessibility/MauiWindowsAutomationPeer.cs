@@ -75,6 +75,8 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         // native input sink — gives Tab-in/Tab-out cursor behaviour matching standard fields.
         prev?.Source?.OnAccessibilityFocused(false);
         FocusedPeer.Source?.OnAccessibilityFocused(true);
+        if (FocusedPeer.Source is SkiaControl focusedControl)
+            SkiaScroll.EnsureVisible(focusedControl);
 
         // Proper prev→next focus transition so Narrator reliably tracks virtual focus
         // even without an HWND-level change (same pattern as ListViewItemAutomationPeer).
@@ -118,6 +120,9 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
 
         if (FocusedPeer != null)
         {
+            if (FocusedPeer.Source is SkiaControl focusedControl)
+                SkiaScroll.EnsureVisible(focusedControl);
+
             // RaisePropertyChangedEvent signals Narrator even when canvas already holds
             // XAML focus and no HWND-level transition occurs — same pattern used by
             // ListViewItemAutomationPeer for in-list focus changes.
@@ -218,7 +223,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override string GetHelpTextCore()           => _node.Hint  ?? string.Empty;
     protected override string GetClassNameCore()          => "DrawnUiElement";
     protected override string GetLocalizedControlTypeCore() => _node.Role ?? "custom";
-    protected override string GetAutomationIdCore()       => $"drawnui_{_index}";
+    protected override string GetAutomationIdCore()       => $"drawnui_{_node.Id}";
     protected override string GetAcceleratorKeyCore()     => string.Empty;
     protected override string GetAccessKeyCore()          => string.Empty;
     protected override string GetItemStatusCore()         => string.Empty;
@@ -230,7 +235,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override AutomationOrientation GetOrientationCore() => AutomationOrientation.None;
 
     protected override bool IsKeyboardFocusableCore() => _node.CanInteract;
-    protected override bool IsEnabledCore()           => true;
+    protected override bool IsEnabledCore()           => _node.CanInteract || !DrawnUi.Models.Aria.IsInteractiveRole(_node.Role);
     protected override bool IsOffscreenCore()         => false;
     protected override bool IsContentElementCore()    => true;
     protected override bool IsControlElementCore()    => true;

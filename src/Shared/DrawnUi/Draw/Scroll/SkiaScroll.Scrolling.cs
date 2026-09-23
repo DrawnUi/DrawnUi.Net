@@ -1337,6 +1337,35 @@ public partial class SkiaScroll
         }
     }
 
+    /// <summary>
+    /// Scrolls every enclosing SkiaScroll so <paramref name="control"/> is inside its viewport
+    /// (used when keyboard / screen-reader focus lands on an off-screen node). No-op when already visible.
+    /// </summary>
+    public static void EnsureVisible(SkiaControl control, float maxTimeSecs = 0.25f, float paddingPts = 8f)
+    {
+        var parent = control?.Parent;
+        while (parent is SkiaControl p)
+        {
+            if (p is SkiaScroll scroll)
+            {
+                var scale = (float)scroll.RenderingScale;
+                var r = control.GetAccessibilityPixelRect();
+                var v = scroll.DrawingRect;
+                float dx = 0, dy = 0;
+                if (r.Top < v.Top) dy = (v.Top - r.Top) / scale + paddingPts;
+                else if (r.Bottom > v.Bottom) dy = -((r.Bottom - v.Bottom) / scale + paddingPts);
+                if (r.Left < v.Left) dx = (v.Left - r.Left) / scale + paddingPts;
+                else if (r.Right > v.Right) dx = -((r.Right - v.Right) / scale + paddingPts);
+                if (dx != 0 || dy != 0)
+                {
+                    var offset = scroll.InternalViewportOffset.Units;
+                    scroll.ScrollTo(offset.X + dx, offset.Y + dy, maxTimeSecs, true);
+                }
+            }
+            parent = p.Parent;
+        }
+    }
+
     public void ScrollToTop(float maxTimeSecs)
     {
         if (Orientation == ScrollOrientation.Vertical)

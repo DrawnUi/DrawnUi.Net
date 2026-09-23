@@ -6,6 +6,15 @@ namespace DrawnUi.Draw;
  
 public class SkiaSlider : SkiaLayout
 {
+    /// <summary>Default role for every instance (React parity). Set to null to make the control opt-in again.</summary>
+    public static string? DefaultAccessibilityRole = DrawnUi.Models.Aria.RoleSlider;
+
+    protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
+
+    protected override string? DefaultAccessibilityLabel() => EnableRange ? $"{Start} – {End}" : $"{End}";
+
+    protected override bool DefaultAccessibilityCanInteract() => RespondsToGestures;
+
     public SkiaSlider()
     {
         
@@ -1518,6 +1527,11 @@ public class SkiaSlider : SkiaLayout
 
         if (lockInternal)
             return;
+
+        if (propertyName.IsEither(nameof(Start), nameof(End)))
+        {
+            NotifyAccessibility();
+        }
 
         if (propertyName.IsEither(nameof(Width),
                 nameof(Min), nameof(Max), nameof(StartThumbX),

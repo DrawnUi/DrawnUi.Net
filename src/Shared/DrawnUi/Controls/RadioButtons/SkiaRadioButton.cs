@@ -6,6 +6,13 @@
 /// </summary>
 public class SkiaRadioButton : SkiaToggle, ISkiaRadioButton
 {
+    /// <summary>Default role for every instance (React parity). Set to null to make the control opt-in again.</summary>
+    public static string? DefaultAccessibilityRole = DrawnUi.Models.Aria.RoleRadio;
+
+    protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
+
+    protected override string? DefaultAccessibilityLabel() => string.IsNullOrEmpty(Text) ? null : Text;
+
     public SkiaRadioButton()
     {
 

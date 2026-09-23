@@ -7,6 +7,9 @@ namespace DrawnUi.Views
     {
         internal ISkiaAccessibilityNode? Source { get; init; }
 
+        /// <summary>Stable id of the source control (see <see cref="ISkiaAccessibilityNode.AccessibilityId"/>).</summary>
+        public int Id { get; init; }
+
         internal static AccessibilityNode From(ISkiaAccessibilityNode node, float scale)
         {
             var px = node.GetAccessibilityPixelRect();
@@ -19,7 +22,8 @@ namespace DrawnUi.Views
                 node.AccessibilityIsPressed,
                 node.AccessibilityLive)
             {
-                Source = node
+                Source = node,
+                Id = node.AccessibilityId
             };
         }
     }

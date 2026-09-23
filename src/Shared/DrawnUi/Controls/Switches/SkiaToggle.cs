@@ -42,6 +42,10 @@ public class SkiaToggle : SkiaLayout
 
     protected bool IsInternalCall;
 
+    protected override bool? DefaultAccessibilityIsPressed() => IsToggled;
+
+    protected override bool DefaultAccessibilityCanInteract() => RespondsToGestures;
+
     protected virtual void ChangeDefaultValue()
     {
         IsInternalCall = true;
@@ -100,6 +104,7 @@ public class SkiaToggle : SkiaLayout
     {
         var control = bindable as SkiaToggle;
         control?.OnToggledChanged();
+        control?.NotifyAccessibility(); // subclasses override OnToggledChanged without calling base
     }
 
     public bool IsToggled
