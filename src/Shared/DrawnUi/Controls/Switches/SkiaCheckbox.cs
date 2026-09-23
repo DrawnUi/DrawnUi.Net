@@ -448,10 +448,15 @@ public class SkiaCheckbox : SkiaToggle
         if (CanAnimate() && ViewCheckOn != null && FrameOff!=null && FrameOn !=null)
         {
             var msSpeed = AnimationSpeed;
+            // colours go on BEFORE a frame is revealed: the style content is built with the style's own colours
+            // (Windows blue etc.), so revealing first showed that colour for the length of the animation and
+            // the ColorFrameOn/ColorFrameOff the app set arrived only when the animation ended
             if (!IsToggled)
             {
                 _ = Task.Run(async () =>
                 {
+                    if (FrameOff is SkiaShape off)
+                        off.StrokeColor = ColorFrameOff;
                     FrameOff.IsVisible = true;
                     await ViewCheckOn.ScaleToAsync(0.0, 0.0, msSpeed, Easing.CubicOut, cancelAnimation);
                     ApplyOff();
@@ -462,10 +467,8 @@ public class SkiaCheckbox : SkiaToggle
                 _ = Task.Run(async () =>
                 {
                     ViewCheckOn.Scale = 0;
-                    ViewCheckOn.IsVisible = true;
-                    FrameOn.IsVisible = true;
+                    ApplyOn(); // frame + check take their colours, become visible; the check grows from 0
                     await ViewCheckOn.ScaleToAsync(1.0, 1.0, msSpeed, Easing.CubicIn, cancelAnimation);
-                    ApplyOn();
                 }, cancelAnimation.Token);
             }
 

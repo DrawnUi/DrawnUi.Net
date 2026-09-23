@@ -56,7 +56,11 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://fiddle.drawnui.net)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.16
+## What's New 1.10.6.17
+
+  * Fix `SkiaCheckbox` flashed the style's own colour (Windows blue, iOS blue...) for the length of the check animation before taking `ColorFrameOn` / `ColorFrameOff`: the frames were revealed first and recoloured only when the animation ended. Colours go on before a frame is shown.
+
+ ### 1.10.6.16
   
   * **Behavior change** (healing): fluent `.Initialize(me => ...)` (`ExecuteAfterCreated`) now runs the moment the control gets its parent (added to `Children`/`Content`, or to the canvas for a root), right after its own initializer chain completed. It used to run at the control's first measure, so it never ran for a control created with `IsVisible = false` (nothing measures an invisible child), ran late for virtualized children outside the viewport, and ran again on every forced content re-initialization. It now runs exactly once, whatever the visibility; a control that never gets a parent runs it at its first measure as before. Inside it `Superview` may still be null (the parent gets attached later): for work that needs the live tree use `LayoutIsReady` or the `Initialized` event.
   * `SkiaScrollBar.IsDraggable`: desktop scroll bar behavior, drag the thumb or press the track to jump there (the thumb centers under the pointer). `GrabPadding` widens the hit area of a thin bar. Off by default, the bar stays display-only and every gesture passes through to the content. A grabbed auto-hidden bar shows again immediately.
