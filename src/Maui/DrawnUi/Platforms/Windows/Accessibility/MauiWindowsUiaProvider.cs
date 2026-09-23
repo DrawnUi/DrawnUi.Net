@@ -174,7 +174,7 @@ internal sealed class VirtualElementProvider
         UiaPropertyId.ControlType          => AriaToControlType(_node.Role),
         UiaPropertyId.LocalizedControlType => _node.Role ?? "custom",
         UiaPropertyId.IsKeyboardFocusable  => _node.CanInteract,
-        UiaPropertyId.IsEnabled            => true,
+        UiaPropertyId.IsEnabled            => _node.CanInteract || !DrawnUi.Models.Aria.IsInteractiveRole(_node.Role),
         UiaPropertyId.IsControlElement     => true,
         UiaPropertyId.IsContentElement     => true,
         _ => null
@@ -200,7 +200,7 @@ internal sealed class VirtualElementProvider
         };
     }
 
-    public int[]? GetRuntimeId() => [UiaAppendRuntimeId, _index];
+    public int[]? GetRuntimeId() => [UiaAppendRuntimeId, _node.Id];
 
     public UiaRect BoundingRectangle
     {

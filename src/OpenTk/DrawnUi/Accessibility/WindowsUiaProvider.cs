@@ -176,7 +176,7 @@ internal sealed class VirtualElementProvider
         UiaPropertyId.ControlType          => AriaToControlType(_node.Role),
         UiaPropertyId.LocalizedControlType => _node.Role ?? "custom",
         UiaPropertyId.IsKeyboardFocusable  => _node.CanInteract,
-        UiaPropertyId.IsEnabled            => true,
+        UiaPropertyId.IsEnabled            => _node.CanInteract || !DrawnUi.Models.Aria.IsInteractiveRole(_node.Role),
         UiaPropertyId.IsControlElement     => true,
         UiaPropertyId.IsContentElement     => true,
         _ => null
@@ -202,7 +202,7 @@ internal sealed class VirtualElementProvider
         };
     }
 
-    public int[]? GetRuntimeId() => [UiaAppendRuntimeId, _index];
+    public int[]? GetRuntimeId() => [UiaAppendRuntimeId, _node.Id];
 
     public UiaRect BoundingRectangle
     {
@@ -222,11 +222,16 @@ internal sealed class VirtualElementProvider
 
     public object[]? GetEmbeddedFragmentRoots() => null;
 
+    // UIA SetFocus moves the reader cursor onto the element; it must not activate it.
     public void SetFocus()
     {
         var source = _node.Source;
-        if (source != null)
-            MainThread.BeginInvokeOnMainThread(() => source.OnAccessibilityActivated());
+        if (source == null) return;
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            source.OnAccessibilityFocused(true);
+            source.NotifyAccessibilityFocused(true);
+        });
     }
 
     public IRawElementProviderFragmentRoot? FragmentRoot => _root;
@@ -331,6 +336,8 @@ internal sealed class WindowsUiaProvider : IDisposable
     internal void NotifyFocusChanged(ISkiaAccessibilityNode? focused)
     {
         if (focused == null) return;
+        if (focused is SkiaControl focusedControl)
+            SkiaScroll.EnsureVisible(focusedControl);
         var snap = _manager.Snapshot;
         var idx  = Array.FindIndex(snap, n => ReferenceEquals(n.Source, focused));
         if (idx < 0) return;

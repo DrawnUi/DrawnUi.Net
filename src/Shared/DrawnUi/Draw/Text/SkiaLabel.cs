@@ -3653,8 +3653,18 @@ namespace DrawnUi.Draw
 
         protected virtual void OnTextInternalChanged()
         {
-            AccessibilityLabel = TextInternal;
+            NotifyAccessibility();
         }
+
+        /// <summary>
+        /// Class-wide opt-in: set to <see cref="DrawnUi.Models.Aria.RoleText"/> once at startup and every label without an
+        /// explicit <see cref="SkiaControl.AccessibilityRole"/> is read by screen readers. Unset by default.
+        /// </summary>
+        public static string? DefaultAccessibilityRole;
+
+        protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
+
+        protected override string? DefaultAccessibilityLabel() => TextInternal;
 
         public static readonly BindableProperty FallbackCharacterProperty = BindableProperty.Create(
             nameof(FallbackCharacter),

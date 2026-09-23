@@ -125,6 +125,14 @@ namespace DrawnUi.Models
         /// </summary>
         public static readonly string RolePresentation = "presentation";
 
+        /// <summary>
+        /// True for roles a user operates (button, link, checkbox, slider, textbox...). A node with such a role and
+        /// <c>AccessibilityCanInteract == false</c> is reported as disabled by platform layers.
+        /// </summary>
+        public static bool IsInteractiveRole(string? role) => role is "button" or "link" or "checkbox" or "radio" or "switch"
+            or "slider" or "spinbutton" or "textbox" or "searchbox" or "combobox" or "listbox" or "option" or "tab"
+            or "menuitem" or "menuitemcheckbox" or "menuitemradio" or "scrollbar";
+
         // ── Live region settings ───────────────────────────────────────────────
 
         /// <summary>

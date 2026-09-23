@@ -6,6 +6,18 @@
 /// </summary>
 public class SkiaProgress : SkiaRangeBase
 {
+    /// <summary>Default role for every instance (React parity). Set to null to make the control opt-in again.</summary>
+    public static string? DefaultAccessibilityRole = DrawnUi.Models.Aria.RoleProgressBar;
+
+    protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
+
+    protected override string? DefaultAccessibilityLabel()
+    {
+        var range = Max - Min;
+        var ratio = range > 0 ? Math.Clamp((Value - Min) / range, 0.0, 1.0) : 0.0;
+        return $"{Math.Round(ratio * 100)}%";
+    }
+
     #region DEFAULT CONTENT
 
     protected override void CreateDefaultContent()

@@ -209,10 +209,15 @@ public abstract class SkiaRangeBase : SkiaLayout
         if (lockInternal)
             return;
 
-        if (propertyName.IsEither(nameof(Value), nameof(Min), nameof(Max), 
+        if (propertyName.IsEither(nameof(Value), nameof(Min), nameof(Max),
             nameof(TrackColor), nameof(ProgressColor), nameof(TrackHeight)))
         {
             UpdateVisualState();
+        }
+
+        if (propertyName.IsEither(nameof(Value), nameof(Min), nameof(Max)))
+        {
+            NotifyAccessibility();
         }
     }
 

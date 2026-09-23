@@ -231,6 +231,7 @@ namespace DrawnUi.Controls
                 {
                     control.IsOpenChanged?.Invoke(control, (bool)n);
                     control.ApplyOptions(false);
+                    control.NotifyAccessibility();
                 }
             });
 

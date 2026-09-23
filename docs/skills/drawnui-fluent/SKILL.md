@@ -138,7 +138,7 @@ new SkiaGrid()
 
 `.Adapt(me => ...)` runs setup on the control itself mid-chain. Do NOT access OTHER `.Assign`'d references from `Adapt` — they may not exist yet. Post-build wiring that touches assigned refs goes in `.Initialize(me => ...)` on the OUTERMOST control — it runs after the whole chain is constructed.
 
-`.Initialize` fires once, when the control gets its parent (added to `Children`/`Content` or to the canvas), independent of `IsVisible`, measuring or virtualization (since 1.10.6.16; before it fired at first measure, so an `IsVisible=false` control never ran it). Never attached → runs at first measure. `Superview` may still be null inside; tree-ready work goes in `LayoutIsReady` / `Initialized`.
+`.Initialize` fires once, when the control gets its parent (added to `Children`/`Content` or to the canvas), independent of `IsVisible`, measuring or virtualization (since 1.10.6.16; before it fired at first measure, so an `IsVisible=false` control never ran it). Never attached → runs at first measure. `Superview` may still be null inside; tree-ready work goes in `LayoutIsReady` / `Initialized`. Trap: a child gets its parent INSIDE the parent's object initializer, before the parent's own `.Assign(out ...)` runs, so an `.Initialize` on a child that reads a sibling/parent field sees null. The lazy-target observers (`ObserveProperty(() => x, ...)`, `ObserveProperties(() => x, ...)`, `Observe(() => x, ...)`) therefore resolve their target at the control's FIRST MEASURE, not on attach (attach-time resolution left every SkiaSlider style thumb unsized, 2026-09-23).
 
 ---
 

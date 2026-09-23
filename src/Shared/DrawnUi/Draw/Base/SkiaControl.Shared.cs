@@ -5065,10 +5065,20 @@ namespace DrawnUi.Draw
             }
         }
 
+        private static int _nextAccessibilityId;
+
+        /// <summary>Stable per-control id used by platform layers as the automation / runtime id.</summary>
+        public int AccessibilityId { get; } = Interlocked.Increment(ref _nextAccessibilityId);
+
         private string? _accessibilityRole;
+
+        /// <summary>
+        /// Explicit role, else the class default (see <see cref="GetDefaultAccessibilityRole"/>).
+        /// <see cref="DrawnUi.Models.Aria.RolePresentation"/> keeps the control out of the tree even when a default role applies.
+        /// </summary>
         public string? AccessibilityRole
         {
-            get => _accessibilityRole;
+            get => _accessibilityRole ?? GetDefaultAccessibilityRole();
             set
             {
                 if (_accessibilityRole != value)
@@ -5079,10 +5089,22 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>Class-level default role, unset for plain controls. Subclasses expose a static so an app can opt in per class.</summary>
+        protected virtual string? GetDefaultAccessibilityRole() => null;
+
+        /// <summary>Label used when <see cref="AccessibilityLabel"/> is not set (a label's text, a button's text, a slider's value).</summary>
+        protected virtual string? DefaultAccessibilityLabel() => null;
+
+        /// <summary>Interaction default when <see cref="AccessibilityCanInteract"/> is not set: has a Tapped handler.</summary>
+        protected virtual bool DefaultAccessibilityCanInteract() => Tapped != null;
+
+        /// <summary>Toggle state default when <see cref="AccessibilityIsPressed"/> is not set (toggles report IsToggled).</summary>
+        protected virtual bool? DefaultAccessibilityIsPressed() => null;
+
         private string? _accessibilityLabel;
         public string? AccessibilityLabel
         {
-            get => _accessibilityLabel;
+            get => _accessibilityLabel ?? DefaultAccessibilityLabel();
             set
             {
                 if (_accessibilityLabel != value)
@@ -5107,15 +5129,15 @@ namespace DrawnUi.Draw
             }
         }
 
-        public bool IsAccessibilityElement => _accessibilityRole != null;
+        public bool IsAccessibilityElement => AccessibilityRole is { } role && role != DrawnUi.Models.Aria.RolePresentation;
 
         public SKRect GetAccessibilityPixelRect() =>
             VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
 
-        private bool _accessibilityCanInteract;
+        private bool? _accessibilityCanInteract;
         public bool AccessibilityCanInteract
         {
-            get => _accessibilityCanInteract;
+            get => _accessibilityCanInteract ?? DefaultAccessibilityCanInteract();
             set
             {
                 if (_accessibilityCanInteract != value)
@@ -5129,7 +5151,7 @@ namespace DrawnUi.Draw
         private bool? _accessibilityIsPressed;
         public bool? AccessibilityIsPressed
         {
-            get => _accessibilityIsPressed;
+            get => _accessibilityIsPressed ?? DefaultAccessibilityIsPressed();
             set
             {
                 if (_accessibilityIsPressed != value)
@@ -6062,6 +6084,36 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Actions run once at the first Measure, just before <see cref="CreateDefaultContent"/>. Used by the
+        /// fluent lazy-target observers (<c>ObserveProperty(() => field, ...)</c> and siblings): their target is
+        /// usually a sibling assigned with <c>.Assign(out ...)</c> later in the same object initializer, so it
+        /// can still be null when this control gets its parent (<see cref="ExecuteAfterCreated"/> time), while
+        /// at the first Measure the whole tree has been built. Allocated only when used.
+        /// </summary>
+        internal Dictionary<string, Action<SkiaControl>> ExecuteOnFirstMeasure;
+
+        private bool _executedOnFirstMeasure;
+
+        /// <summary>
+        /// Runs the <see cref="ExecuteOnFirstMeasure"/> actions exactly once, never again on a content rebuild.
+        /// </summary>
+        private void RunExecuteOnFirstMeasure()
+        {
+            if (_executedOnFirstMeasure)
+                return;
+
+            _executedOnFirstMeasure = true;
+
+            if (ExecuteOnFirstMeasure != null)
+            {
+                foreach (var action in ExecuteOnFirstMeasure.Values)
+                {
+                    action?.Invoke(this);
+                }
+            }
+        }
+
+        /// <summary>
         /// Always run this before applying any changes while measuring.
         /// Builds the default content once (or again after <see cref="RebuildDefaultContent"/>).
         /// </summary>
@@ -6073,6 +6125,8 @@ namespace DrawnUi.Draw
                 DefaultContentCreated = true;
 
                 RunExecuteAfterCreated();
+
+                RunExecuteOnFirstMeasure();
 
                 var hadViews = Views.Count > 0;
 

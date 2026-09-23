@@ -56,7 +56,15 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://fiddle.drawnui.net)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.16
+## What's New 1.10.6.17
+
+  * Fix `SkiaCheckbox` flashed the style's own colour (Windows blue, iOS blue...) for the length of the check animation before taking `ColorFrameOn` / `ColorFrameOff`: the frames were revealed first and recoloured only when the animation ended. Colours go on before a frame is shown.
+  * Fix `SkiaSlider` thumbs drawn off the track or not at all (Default, Windows, Material, Material3 looks, regression in 1.10.6.16): the lazy-target observers `ObserveProperty(() => x, ...)`, `ObserveProperties(() => x, ...)` and `Observe(() => x, ...)` resolved their target when the control got its parent, which happens inside the parent's object initializer, before its `.Assign(out ...)` ran, so they saw null and never subscribed. They now resolve it at the control's first measure, as before 1.10.6.16; `.Initialize(...)` itself still runs on attach.
+  * Fix `SkiaViewSwitcher` could never pop a page pushed while no tab was selected (`SelectedIndex` -1, its default, e.g. a `SkiaShell` NavigationLayout used as a plain page stack): `PushView` put the page into tab 0 while `PopPage` looked in tab -1, so `GoBack` and `PopToRootAsync` did nothing. All tab lookups now resolve an unselected tab to 0.
+  * Windows look: `SkiaSlider` thumb has no drop shadow any more (WinUI has none, the offset shadow made the thumb look below the track) and a 1.5 pt border; `SkiaPicker` border is 1.5 pt.
+  * New sample `src/Maui/Samples/HelloMaui`: the HelloWpf / helloreact demo (19 pages) on DrawnUi.Maui, navigated by `SkiaShell`.
+
+ ### 1.10.6.16
   
   * **Behavior change** (healing): fluent `.Initialize(me => ...)` (`ExecuteAfterCreated`) now runs the moment the control gets its parent (added to `Children`/`Content`, or to the canvas for a root), right after its own initializer chain completed. It used to run at the control's first measure, so it never ran for a control created with `IsVisible = false` (nothing measures an invisible child), ran late for virtualized children outside the viewport, and ran again on every forced content re-initialization. It now runs exactly once, whatever the visibility; a control that never gets a parent runs it at its first measure as before. Inside it `Superview` may still be null (the parent gets attached later): for work that needs the live tree use `LayoutIsReady` or the `Initialized` event.
   * `SkiaScrollBar.IsDraggable`: desktop scroll bar behavior, drag the thumb or press the track to jump there (the thumb centers under the pointer). `GrabPadding` widens the hit area of a thin bar. Off by default, the bar stays display-only and every gesture passes through to the content. A grabbed auto-hidden bar shows again immediately.

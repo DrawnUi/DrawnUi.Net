@@ -548,26 +548,27 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         }
     }
 
-    private string _autoAccessibilityLabel;
+    /// <summary>
+    /// Class-wide opt-in: set to <see cref="DrawnUi.Models.Aria.RoleButton"/> once at startup and every button without an
+    /// explicit <see cref="SkiaControl.AccessibilityRole"/> becomes an accessible, focusable node. Unset by default.
+    /// </summary>
+    public static string? DefaultAccessibilityRole;
+
+    protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
+
+    // The spoken label follows Text unless the app set AccessibilityLabel (icon-only button, longer description).
+    protected override string? DefaultAccessibilityLabel() => string.IsNullOrEmpty(Text) ? null : Text;
+
+    protected override bool DefaultAccessibilityCanInteract() => !IsDisabled;
 
     public virtual void ApplyProperties()
     {
-        if (IsAccessibilityElement)
-        {
-            // The label follows Text only while the button owns it: a label the app set itself
-            // (an icon-only button, a longer description) is left alone.
-            if (string.IsNullOrEmpty(AccessibilityLabel) || AccessibilityLabel == _autoAccessibilityLabel)
-            {
-                _autoAccessibilityLabel = Text;
-                AccessibilityLabel = Text;
-            }
-
-            AccessibilityCanInteract = !IsDisabled;
-        }
+        NotifyAccessibility(); // Text / IsDisabled feed the node defaults
 
         if (MainLabel != null)
         {
-            MainLabel.AccessibilityRole = null;
+            // the button is the accessible node, not its inner label
+            MainLabel.AccessibilityRole = DrawnUi.Models.Aria.RolePresentation;
 
             MainLabel.Text = this.Text;
 

@@ -75,6 +75,8 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         // native input sink — gives Tab-in/Tab-out cursor behaviour matching standard fields.
         prev?.Source?.OnAccessibilityFocused(false);
         FocusedPeer.Source?.OnAccessibilityFocused(true);
+        if (FocusedPeer.Source is SkiaControl focusedControl)
+            SkiaScroll.EnsureVisible(focusedControl);
 
         // Proper prev→next focus transition so Narrator reliably tracks virtual focus
         // even without an HWND-level change (same pattern as ListViewItemAutomationPeer).
@@ -118,6 +120,9 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
 
         if (FocusedPeer != null)
         {
+            if (FocusedPeer.Source is SkiaControl focusedControl)
+                SkiaScroll.EnsureVisible(focusedControl);
+
             // RaisePropertyChangedEvent signals Narrator even when canvas already holds
             // XAML focus and no HWND-level transition occurs — same pattern used by
             // ListViewItemAutomationPeer for in-list focus changes.
@@ -180,7 +185,7 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
 // ── Virtual peer (no backing UIElement) ──────────────────────────────────────
 
 [SupportedOSPlatform("windows")]
-internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider
+internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider, IToggleProvider
 {
     private AccessibilityNode _node;
     private int _index;
@@ -192,8 +197,11 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
 
     internal void UpdateSnapshot(AccessibilityNode node, int index)
     {
+        var wasPressed = _node.IsPressed;
         _node  = node;
         _index = index;
+        if (wasPressed != node.IsPressed)
+            RaisePropertyChangedEvent(TogglePatternIdentifiers.ToggleStateProperty, ToState(wasPressed), ToState(node.IsPressed));
     }
 
     internal DrawnUiVirtualAutomationPeer(
@@ -215,7 +223,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override string GetHelpTextCore()           => _node.Hint  ?? string.Empty;
     protected override string GetClassNameCore()          => "DrawnUiElement";
     protected override string GetLocalizedControlTypeCore() => _node.Role ?? "custom";
-    protected override string GetAutomationIdCore()       => $"drawnui_{_index}";
+    protected override string GetAutomationIdCore()       => $"drawnui_{_node.Id}";
     protected override string GetAcceleratorKeyCore()     => string.Empty;
     protected override string GetAccessKeyCore()          => string.Empty;
     protected override string GetItemStatusCore()         => string.Empty;
@@ -227,7 +235,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override AutomationOrientation GetOrientationCore() => AutomationOrientation.None;
 
     protected override bool IsKeyboardFocusableCore() => _node.CanInteract;
-    protected override bool IsEnabledCore()           => true;
+    protected override bool IsEnabledCore()           => _node.CanInteract || !DrawnUi.Models.Aria.IsInteractiveRole(_node.Role);
     protected override bool IsOffscreenCore()         => false;
     protected override bool IsContentElementCore()    => true;
     protected override bool IsControlElementCore()    => true;
@@ -270,15 +278,42 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override AutomationPeer? GetLabeledByCore() => null;
     protected override IList<AutomationPeer>? GetChildrenCore() => null;
 
-    protected override object? GetPatternCore(PatternInterface patternInterface)
-        => patternInterface == PatternInterface.Invoke && _node.CanInteract ? this : null;
+    protected override object? GetPatternCore(PatternInterface patternInterface) => patternInterface switch
+    {
+        PatternInterface.Invoke when _node.CanInteract => this,
+        PatternInterface.Toggle when (Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        _ => null,
+    };
 
+    // UIA SetFocus moves the reader cursor onto the element; it must not activate it.
+    // Same path as Tab: input controls get OnAccessibilityFocused (SkiaEditor opens its sink),
+    // the manager's FocusChanged brings XAML focus to the canvas and raises the UIA focus events.
     protected override void SetFocusCore()
     {
         var source = _node.Source;
-        if (source != null)
-            MainThread.BeginInvokeOnMainThread(() => source.OnAccessibilityActivated());
+        if (source == null) return;
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            var prev = _parent.FocusedPeer;
+            if (ReferenceEquals(prev, this)) return;
+            prev?.Source?.OnAccessibilityFocused(false);
+            source.OnAccessibilityFocused(true);
+            source.NotifyAccessibilityFocused(true);
+        });
     }
+
+    // IToggleProvider ─────────────────────────────────────────────────────────
+
+    public void Toggle() => Invoke();
+
+    public ToggleState ToggleState => ToState(Source?.AccessibilityIsPressed ?? _node.IsPressed);
+
+    private static ToggleState ToState(bool? pressed) => pressed switch
+    {
+        true  => ToggleState.On,
+        false => ToggleState.Off,
+        _     => ToggleState.Indeterminate,
+    };
 
     // IInvokeProvider ─────────────────────────────────────────────────────────
 

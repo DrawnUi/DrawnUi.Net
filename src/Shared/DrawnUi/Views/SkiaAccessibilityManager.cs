@@ -7,6 +7,9 @@ namespace DrawnUi.Views
     {
         internal ISkiaAccessibilityNode? Source { get; init; }
 
+        /// <summary>Stable id of the source control (see <see cref="ISkiaAccessibilityNode.AccessibilityId"/>).</summary>
+        public int Id { get; init; }
+
         internal static AccessibilityNode From(ISkiaAccessibilityNode node, float scale)
         {
             var px = node.GetAccessibilityPixelRect();
@@ -19,7 +22,8 @@ namespace DrawnUi.Views
                 node.AccessibilityIsPressed,
                 node.AccessibilityLive)
             {
-                Source = node
+                Source = node,
+                Id = node.AccessibilityId
             };
         }
     }
@@ -116,8 +120,15 @@ namespace DrawnUi.Views
             _sortBuffer.Clear();
             foreach (var node in _nodes.Keys)
             {
-                if (node is SkiaControl control && control.IsVisible && !control.IsDisposed)
-                    _sortBuffer.Add(node);
+                if (node is not SkiaControl control || !control.IsVisible || control.IsDisposed)
+                    continue;
+                // not drawn: an ancestor is hidden (e.g. the root page kept mounted under a pushed page)
+                if (IsHiddenByAncestor(control))
+                    continue;
+                var px = node.GetAccessibilityPixelRect();
+                if (px.Width <= 0 || px.Height <= 0)
+                    continue;
+                _sortBuffer.Add(node);
             }
 
             _sortBuffer.Sort(RectComparer);
@@ -126,8 +137,42 @@ namespace DrawnUi.Views
             for (int i = 0; i < _sortBuffer.Count; i++)
                 snapshot[i] = AccessibilityNode.From(_sortBuffer[i], scale);
 
+            // same nodes, same metadata, same rects: keep the old array and stay silent, so platform layers
+            // do not raise StructureChanged (and AT does not re-traverse the tree) once per interval for nothing
+            if (Same(snapshot, Snapshot))
+                return;
+
             Snapshot = snapshot;
             Changed?.Invoke();
+        }
+
+        private static bool Same(AccessibilityNode[] a, AccessibilityNode[] b)
+        {
+            if (a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++)
+            {
+                var x = a[i];
+                var y = b[i];
+                if (!ReferenceEquals(x.Source, y.Source)
+                    || x.Label != y.Label || x.Hint != y.Hint || x.Role != y.Role
+                    || x.CanInteract != y.CanInteract || x.IsPressed != y.IsPressed || x.Live != y.Live
+                    || Math.Abs(x.Rect.Left - y.Rect.Left) > 0.5f || Math.Abs(x.Rect.Top - y.Rect.Top) > 0.5f
+                    || Math.Abs(x.Rect.Right - y.Rect.Right) > 0.5f || Math.Abs(x.Rect.Bottom - y.Rect.Bottom) > 0.5f)
+                    return false;
+            }
+            return true;
+        }
+
+        private static bool IsHiddenByAncestor(SkiaControl control)
+        {
+            var current = control.Parent;
+            while (current is SkiaControl p)
+            {
+                if (!p.IsVisible || p.Opacity <= 0)
+                    return true;
+                current = p.Parent;
+            }
+            return false;
         }
 
         private static readonly Comparison<ISkiaAccessibilityNode> RectComparer = (a, b) =>

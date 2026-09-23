@@ -45,8 +45,4 @@ namespace DrawnUi.Draw
         }
     }
 
-    namespace DrawnUi.Views
-    {
-    }
-
 }

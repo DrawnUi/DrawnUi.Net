@@ -8,6 +8,9 @@ namespace DrawnUi.Draw;
 /// </summary>
 public interface ISkiaAccessibilityNode
 {
+    /// <summary>Stable per-control id; platform layers use it as the automation / runtime id so AT keeps its place across snapshot rebuilds.</summary>
+    int AccessibilityId { get; }
+
     /// <summary>ARIA/platform role string. Setting this makes <see cref="IsAccessibilityElement"/> true. Use <see cref="DrawnUi.Models.Aria"/> constants.</summary>
     string? AccessibilityRole { get; set; }
 
