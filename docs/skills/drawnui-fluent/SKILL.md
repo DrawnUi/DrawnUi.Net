@@ -213,6 +213,26 @@ Children = new List<SkiaControl>
 };
 ```
 
+**Double tap** (verified 2026-09-23, Windows): the gestures layer has no double-tap of its own, and `TouchActionResult` lives in `AppoMobi.Gestures` (add `global using AppoMobi.Gestures;`). Count two `Tapped` inside the double-click window with `.WithGestures`, keep passing the gesture on (`return null`) so the control's own handling stays intact, and reset the clock on the second tap so a third one starts over. A slider that returns to its neutral value on a double tap:
+
+```csharp
+var lastTap = DateTime.MinValue;
+return new SkiaSlider { Min = min, Max = max, End = value }
+    .WithGestures((me, args, apply) =>
+    {
+        if (args.Type != TouchActionResult.Tapped)
+            return null;
+        var now = DateTime.UtcNow;
+        var isSecond = (now - lastTap).TotalMilliseconds < 350;
+        lastTap = isSecond ? DateTime.MinValue : now; // a third tap starts over
+        if (isSecond)
+            me.End = neutral;                          // 0, or 1 for a factor such as brightness
+        return null;
+    });
+```
+
+Do not subclass the control and swallow the second `Down` for this — that also kills the thumb jump/press feedback of the first tap; the `Tapped` count leaves the control untouched.
+
 Exception — `SkiaButton.Clicked` / `Pressed` / `Released` are **fields**, not events (`Action<SkiaButton, SkiaGesturesParameters>`, `SkiaButton.cs:883-893`). Assigning them inside the initializer is valid and does not break the chain, so it is NOT the banned `+=` pattern:
 
 ```csharp

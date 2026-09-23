@@ -11,6 +11,7 @@ Drawn controls do not have accessibility turned on by default on purpose to let 
 | Blazor | Available | Invisible ARIA overlay positioned over the canvas | Accessible today, with one important hover limitation described below |
 | OpenTK Windows | Available | UIA virtual fragment providers on the native OpenTK / GLFW window | Narrator and NVDA can read and activate drawn controls |
 | .NET MAUI Windows | Available | UIA virtual fragment providers on the WinUI 3 `DesktopChildSiteBridge` | Narrator and NVDA can read and activate drawn controls |
+| WPF | Available (preview) | WPF `AutomationPeer`s: the canvas is a pane, every snapshot node a virtual peer with Invoke / Toggle patterns | Tab / Shift+Tab walk interactive nodes with a focus ring, Enter / Space activate; verified with a UI Automation client |
 | OpenTK Linux | Incoming | AT-SPI bridge on the native OpenTK window | Planned, not shipped yet |
 | .NET MAUI iOS / macCatalyst | Incoming | Virtual `UIAccessibilityElement` container | Planned, not shipped yet |
 | .NET MAUI Android | Incoming | Virtual nodes via `ExploreByTouchHelper` | Planned, not shipped yet |
