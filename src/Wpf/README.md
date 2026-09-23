@@ -84,8 +84,10 @@ Rendering is idle-gated: nothing is painted while the drawn tree is clean.
 
 ## Samples
 
-- `Samples/HelloWpf` — the full demo: every page of the React demo ported (cells, images, SVG, shapes, text, layouts, looks, snapping, animations, shell, editor, keyboard, scroll, shaders, sprites, transforms, reorder, accessibility).
-- `Samples/WpfSandbox` — a XAML window with `{Binding}` to a view model and a WPF style, project reference.
-- `Samples/WpfPackageDemo` — the same window consuming the NuGet package instead.
+In the repository, [src/Wpf/Samples](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples):
+
+- [HelloWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/HelloWpf) — the full demo, one page per feature: cells, images, SVG, shapes, text, layouts, looks, snapping, animations, shell, editor, keyboard, scroll, shaders, sprites, transforms, reorder, accessibility.
+- [WpfSandbox](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfSandbox) — a XAML window with `{Binding}` to a view model and a WPF style, referencing the head from source.
+- [WpfPackageDemo](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPackageDemo) — the same window consuming the NuGet package; copy it to start a new app.
 
 Docs: https://drawnui.net/articles/wpf/
