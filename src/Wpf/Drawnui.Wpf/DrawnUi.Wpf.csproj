@@ -15,6 +15,7 @@
         <Description>WPF host for DrawnUI — SkiaSharp rendering surface with WPF dependency properties, so drawn controls take part in WPF data binding, styles and triggers.</Description>
         <PackageTags>drawnui wpf skia skiasharp desktop windows</PackageTags>
         <PackageIcon>icon128.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <CreatePackage>false</CreatePackage>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
@@ -56,6 +57,10 @@
 
     <ItemGroup>
         <None Include="..\..\..\icon128.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\README.md" Link="README.md">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
         </None>

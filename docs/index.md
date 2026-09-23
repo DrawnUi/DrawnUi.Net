@@ -1,6 +1,6 @@
 ---
 title: DrawnUI for .NET - SkiaSharp Rendering Engine
-description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazor, pure WebAssembly, OpenTK, and any .NET.
+description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazor, pure WebAssembly, OpenTK, WPF, and any .NET.
 ---
 
 <div style="position: relative; text-align: center; padding: 30px 0 70px 0; border-radius: 12px; overflow: hidden; background: #0b1220; color: white;">
@@ -291,6 +291,15 @@ window.addEventListener('load', function() {
   <p><a href="articles/opentk/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">OpenTK guide →</a></p>
 </div>
 
+<!-- WPF -->
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">WPF <span style="font-size: 0.7em; color: #a0aec0;">preview</span></h3>
+  <p>Use <strong>DrawnUi.Wpf</strong> to put drawn, GPU-rendered controls inside a WPF window, declared in WPF XAML with bindings and styles.</p>
+  <p><strong>Install:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Wpf --prerelease</code></pre>
+  <p><a href="articles/wpf/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">WPF guide →</a></p>
+</div>
+
 <!-- BLAZOR -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">Blazor</h3>
@@ -385,6 +394,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
   <a href="articles/platforms.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Choose Your Target →</a><br>
   <a href="articles/net/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">DrawnUi.Net →</a><br>
   <a href="articles/opentk/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">OpenTK →</a><br>
+  <a href="articles/wpf/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">WPF →</a><br>
   <a href="articles/maui/getting-started.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Getting Started →</a><br>
   <a href="articles/blazor/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Blazor →</a><br>
   <a href="articles/web/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">DrawnUi.Wasm →</a><br>

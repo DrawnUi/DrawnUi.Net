@@ -14,6 +14,7 @@ For now, use the MAUI tutorials for the control and layout concepts, then switch
 
 - [Blazor Samples](blazor/samples.md)
 - [OpenTK Samples](opentk/samples.md)
+- [WPF Samples](wpf/samples.md)
 - [DrawnUi.Net Overview](net/index.md)
 
 ## How to read the current tutorials
@@ -37,5 +38,6 @@ For example:
 - [Blazor Samples](blazor/samples.md)
 - [DrawnUI for OpenTK](opentk/index.md)
 - [OpenTK Samples](opentk/samples.md)
+- [WPF Samples](wpf/samples.md)
 - [DrawnUi.Net Overview](net/index.md)
 

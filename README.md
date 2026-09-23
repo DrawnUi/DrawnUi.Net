@@ -16,6 +16,7 @@ Supported hosts:
 * `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
 * `DrawnUi.Wasm` - pure browser WebAssembly, no Blazor required.
 * `DrawnUi.OpenTk` - Windows and Linux desktops.
+* `DrawnUi.Wpf` - drawn controls inside WPF windows, preview.
 * `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
 
 ## React?
