@@ -135,6 +135,12 @@ public class SkiaSlider : SkiaLayout
         {
             Tag = tag,
             UseCache = SkiaCacheType.Image,
+            // Sized where the thumb is built, not only in the observer below. That observer fires on a trail
+            // height CHANGE; when the trail already has its final height by the time it subscribes - layout
+            // timing, so it differs per platform - the thumb keeps its default size and top alignment and
+            // draws as a small dot above the track.
+            HeightRequest = SliderHeight,
+            WidthRequest = SliderHeight,
             Children = new List<SkiaControl>()
             {
                 new SkiaShape()
@@ -289,6 +295,12 @@ public class SkiaSlider : SkiaLayout
                 {
                     Tag = "EndThumb",
                     UseCache = SkiaCacheType.Image,
+                    // Sized where the thumb is built, not only in the observer below. That observer fires on a trail
+                    // height CHANGE; when the trail already has its final height by the time it subscribes - layout
+                    // timing, so it differs per platform - the thumb keeps its default size and top alignment and
+                    // draws as a small dot above the track.
+                    HeightRequest = CupertinoThumbDiameter,
+                    WidthRequest = CupertinoThumbDiameter,
                     Children = new List<SkiaControl>()
                     {
                         new SkiaShape()
@@ -336,6 +348,8 @@ public class SkiaSlider : SkiaLayout
             {
                 Tag     = "StartThumb",
                 UseCache = SkiaCacheType.Image,
+                HeightRequest = thumbSize,
+                WidthRequest = thumbSize,
                 Left    = -2,
                 Top     = 2,
                 Padding = new Thickness(2),
@@ -488,6 +502,8 @@ public class SkiaSlider : SkiaLayout
                 {
                     Tag = "EndThumb",
                     UseCache = SkiaCacheType.Image,
+                    HeightRequest = MaterialThumbSize,
+                    WidthRequest = MaterialThumbSize,
                     Children = new List<SkiaControl>() { CreateThumbShape() }
                 }.Assign(out EndThumb)
                 .ObserveProperties(() => Trail, me =>
@@ -508,6 +524,8 @@ public class SkiaSlider : SkiaLayout
             {
                 Tag = "StartThumb",
                 UseCache = SkiaCacheType.Image,
+                HeightRequest = MaterialThumbSize,
+                WidthRequest = MaterialThumbSize,
                 Top = 4,
                 Children = new List<SkiaControl>() { CreateThumbShape() }
             }
@@ -620,6 +638,8 @@ public class SkiaSlider : SkiaLayout
                 {
                     Tag = "EndThumb",
                     UseCache = SkiaCacheType.Image,
+                    HeightRequest = WindowsThumbSize,
+                    WidthRequest = WindowsThumbSize,
                     Children = new List<SkiaControl>() { CreateThumbShape() }
                 }.Assign(out EndThumb)
                 .ObserveProperties(() => Trail, me =>
@@ -640,6 +660,8 @@ public class SkiaSlider : SkiaLayout
             {
                 Tag = "StartThumb",
                 UseCache = SkiaCacheType.Image,
+                HeightRequest = WindowsThumbSize,
+                WidthRequest = WindowsThumbSize,
                 Top = 4,
                 Children = new List<SkiaControl>() { CreateThumbShape() }
             }

@@ -58,6 +58,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.17
 
+  * Fix `SkiaSlider` drawing its thumb as a small dot above the track, on iOS in particular: every prebuilt style sized the thumb only inside an observer watching the trail's height, and when the trail already had its final height by the time that observer subscribed - layout timing, so it differed per platform - the thumb kept its default size and top alignment. Thumbs are now sized where they are built, in all four styles and for both thumbs of a range slider; the observers stay for later height changes.
   * Fix `SkiaCheckbox` flashed the style's own colour (Windows blue, iOS blue...) for the length of the check animation before taking `ColorFrameOn` / `ColorFrameOff`: the frames were revealed first and recoloured only when the animation ended. Colours go on before a frame is shown.
 
  ### 1.10.6.16
