@@ -521,40 +521,40 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
     private bool _prerenderAttempted;
     private TimeSpan _lastRenderingTime = TimeSpan.MinValue;
+    private long _clockFrameNanos;
     private long _clockWallNanos;
     private TimeSpan _clockRenderingTime;
 
     /// <summary>
     /// The frame timestamp animations advance by. WPF's composition tick lands a couple of ms early or
     /// late around the vsync while the frame is shown at the vsync itself, so sampling the wall clock at
-    /// the tick puts that jitter into every animated position. <c>RenderingTime</c> is the frame's
-    /// presentation time, uniform per frame; it is anchored to the wall clock once so the values stay
-    /// comparable with <see cref="Super.GetCurrentTimeNanos"/>.
+    /// the tick puts that jitter into every animated position. The clock advances by the tick's
+    /// <c>RenderingTime</c> step (the presentation time, one vsync per frame), bounded to the wall-clock
+    /// step: WPF's estimate sometimes leaps a whole extra frame while the ticks keep their cadence, and
+    /// an animation must not move two frames in one displayed frame. Real stalls are still followed
+    /// because the wall clock moved too. Values stay comparable with <see cref="Super.GetCurrentTimeNanos"/>.
     /// </summary>
     private long FrameClock(EventArgs e)
     {
         var now = Super.GetCurrentTimeNanos();
-        if (e is not RenderingEventArgs args)
-            return now;
-
-        if (_clockWallNanos == 0)
+        if (e is not RenderingEventArgs args || _clockFrameNanos == 0)
         {
+            _clockFrameNanos = now;
             _clockWallNanos = now;
-            _clockRenderingTime = args.RenderingTime;
+            if (e is RenderingEventArgs first)
+                _clockRenderingTime = first.RenderingTime;
             return now;
         }
 
-        var frame = _clockWallNanos + (args.RenderingTime - _clockRenderingTime).Ticks * 100;
+        const long slack = 4_000_000; // 4 ms either side of the wall-clock step
+        var wallStep = now - _clockWallNanos;
+        var renderStep = (args.RenderingTime - _clockRenderingTime).Ticks * 100;
+        var step = Math.Clamp(renderStep, Math.Max(1, wallStep - slack), wallStep + slack);
 
-        // A pause (window hidden, breakpoint) is not animated through: re-anchor when the two drift apart.
-        if (Math.Abs(frame - now) > 250_000_000)
-        {
-            _clockWallNanos = now;
-            _clockRenderingTime = args.RenderingTime;
-            return now;
-        }
-
-        return frame;
+        _clockWallNanos = now;
+        _clockRenderingTime = args.RenderingTime;
+        _clockFrameNanos += step;
+        return _clockFrameNanos;
     }
 
     /// <summary>Paints one frame into the WriteableBitmap surface. False when there is no surface.</summary>
