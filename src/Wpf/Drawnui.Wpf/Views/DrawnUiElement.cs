@@ -149,11 +149,23 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     private bool KeepInput => Gestures == GesturesMode.Lock || Canvas.LastInputUsed;
 
     /// <summary>Creates the host and its canvas.</summary>
-    public DrawnUiElement()
+    public DrawnUiElement() : this(static () => new Canvas())
     {
+    }
+
+    /// <summary>
+    /// Creates the host over a canvas of your own type. The factory runs after DrawnUI is initialized,
+    /// so a <c>Canvas</c> subclass (a game's rescaling canvas, one with an overridden draw) is hosted
+    /// exactly like the default one; <see cref="Gestures"/> and <see cref="RenderingMode"/> still apply.
+    /// </summary>
+    public DrawnUiElement(Func<Canvas> createCanvas)
+    {
+        ArgumentNullException.ThrowIfNull(createCanvas);
+
         EnsureSuperInitialized();
 
-        Canvas = new Canvas { Gestures = GesturesMode.Enabled };
+        Canvas = createCanvas() ?? throw new InvalidOperationException("The canvas factory returned null");
+        Canvas.Gestures = Gestures;
 
         // The canvas joins the WPF logical tree so DataContext flows into it the ordinary WPF way;
         // DrawnUI then propagates that context down its own tree (SkiaControl.ApplyBindingContext).

@@ -83,6 +83,8 @@ The same tree can be built in C# with the [fluent extensions](../fluent-extensio
 | `Content` | drawn root | Set from XAML or C# |
 | `ContentBuilder` | `Func<SkiaControl>` | Builds the root now and again after every C# Hot Reload |
 
+A canvas of your own type (a game's `RescalingCanvas`, a subclass with an overridden draw) is hosted through the `DrawnUiElement(Func<Canvas> createCanvas)` constructor; the factory runs after DrawnUI is initialized.
+
 A frame is produced only when the drawn tree asked for one; an idle canvas costs nothing per tick. With GPU rendering the first frame is pre-rendered on the CPU, so content appears while ANGLE is still starting.
 
 ---

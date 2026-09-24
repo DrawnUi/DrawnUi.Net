@@ -89,5 +89,6 @@ In the repository, [src/Wpf/Samples](https://github.com/DrawnUi/DrawnUi.Net/tree
 - [HelloWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/HelloWpf) — the full demo, one page per feature: cells, images, SVG, shapes, text, layouts, looks, snapping, animations, shell, editor, keyboard, scroll, shaders, sprites, transforms, reorder, accessibility.
 - [WpfSandbox](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfSandbox) — a XAML window with `{Binding}` to a view model and a WPF style, referencing the head from source.
 - [WpfPackageDemo](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPackageDemo) — the same window consuming the NuGet package; copy it to start a new app.
+- [WpfPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPong) — the Pong game shared with the OpenTK and WebAssembly samples, hosted in a WPF window through the `DrawnUi.Wpf.Game` addon: a `DrawnGame` loop, keyboard and mouse input, a `RescalingCanvas` that keeps the game's aspect ratio when the window resizes.
 
 Docs: https://drawnui.net/articles/wpf/
