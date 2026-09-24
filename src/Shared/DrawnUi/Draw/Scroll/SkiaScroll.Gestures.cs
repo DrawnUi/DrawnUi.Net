@@ -177,13 +177,18 @@ public partial class SkiaScroll
         var offsetY = ViewportOffsetY;
         var offsetX = ViewportOffsetX;
 
+        // A notch arriving while the previous wheel scroll is still animating adds onto that scroll's
+        // destination, not onto the barely-moved current offset: a fast spin travels N lines instead of
+        // restarting from where the interrupted move got to (same rule as the React engine).
         if (this.Orientation == ScrollOrientation.Vertical)
         {
-            offsetY += WheelLineSize * Math.Sign(value);
+            var baseY = _scrollerY != null && _scrollerY.IsRunning ? (float)_scrollerY.mMaxValue : offsetY;
+            offsetY = baseY + WheelLineSize * Math.Sign(value);
         }
         else if (this.Orientation == ScrollOrientation.Horizontal)
         {
-            offsetX += WheelLineSize * Math.Sign(value);
+            var baseX = _scrollerX != null && _scrollerX.IsRunning ? (float)_scrollerX.mMaxValue : offsetX;
+            offsetX = baseX + WheelLineSize * Math.Sign(value);
         }
 
         var clamped = ClampOffsetHard(offsetX, offsetY);

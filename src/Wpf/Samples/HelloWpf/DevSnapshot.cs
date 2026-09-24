@@ -78,6 +78,10 @@ public static class DevSnapshot
                 }
 
                 await Task.Delay(1200);
+
+                // Reports where the first scroll in the tree ended up, so a wheel run has a number to compare.
+                var scroll = (drawn.Canvas.Content as DrawnUi.Draw.SkiaControl)?.FindView<DrawnUi.Draw.SkiaScroll>();
+                Console.WriteLine($"[DevSnapshot] wheel: notches={notches} delay={pause}ms offsetY={scroll?.ViewportOffsetY:0.#} offsetX={scroll?.ViewportOffsetX:0.#}");
             }
 
             // HELLOWPF_TAP="x,y" taps the canvas at those PIXEL coordinates before capturing, so a
