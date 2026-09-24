@@ -35,7 +35,7 @@ Every step of the drag is one `ObservableCollection.Move(from, to)`. The layout 
 
 **The page (host).** Owns the collection, the scroll and the ghost, and exposes a small interface to the cells (`Move`, `Lift`, `Carry`, `Drop`, `Dragging`, `Spacing`, `Scroll`):
 
-- `Lift`: find the row's `DrawingRect` (walk `layout.Views` for the cell with that `ContextIndex`), size and place the ghost over it in overlay coordinates, show it, re-apply every visible cell's content so the lifted row goes blank.
+- `Lift`: find the row's `DrawingRect` with `layout.ChildrenFactory.GetCellInUseOrNull(index)` (recycled cells are NOT in `Views`, the adapter holds the realized rows; `GetCellsInUse()` lists them all), size and place the ghost over it in overlay coordinates, show it, re-apply every live cell's content so the lifted row goes blank.
 - `Carry(pointerY)`: `ghost.Top = pointer - grabOffset`, `ghost.Update()`. `Left`/`Top` move a cached control without a re-layout.
 - `Drop(index)`: a short eased animation (a second `SkiaValueAnimator`, ~140 ms) glides the ghost from where it is to the slot's current `DrawingRect.Top`, re-read every frame because the list is still catching up with the last `Move`. Then hide the ghost and re-apply the cells so the real row draws again.
 
@@ -94,7 +94,7 @@ private void Tick()
 
 ## Rules that matter
 
-- Reorder through the collection (`ObservableCollection.Move`), never by touching `Views` or `Children` of a templated layout.
+- Reorder through the collection (`ObservableCollection.Move`), never by touching `Views` or `Children` of a templated layout. To reach the realized cells (refresh a look, read a rect) use `ChildrenFactory.GetCellInUseOrNull(index)` / `GetCellsInUse()`; a templated layout's `Views` is empty.
 - `MeasureFirst` + `RecyclingTemplate.Enabled` for the live reorder; uniform row height is the assumption behind the stride arithmetic.
 - Take the scroll's gestures only for the length of the drag (`RespondsToGestures`), and always give them back, including from `OnDisposing`.
 - The cell knows nothing about the ghost; the page draws it in an `InputTransparent` overlay from the cell's `DrawingRect`.

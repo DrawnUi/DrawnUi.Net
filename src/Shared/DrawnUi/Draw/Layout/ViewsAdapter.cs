@@ -1219,6 +1219,19 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// Snapshot of every live (in-use, bound) cell of a templated layout, each carrying its data index in
+        /// <see cref="SkiaControl.ContextIndex"/>. Recycled cells never appear in the layout's <c>Views</c>, this is
+        /// the way for app code to reach the realized rows (refresh their look, read their DrawingRect for a drag).
+        /// </summary>
+        public List<SkiaControl> GetCellsInUse()
+        {
+            lock (lockVisible)
+            {
+                return new List<SkiaControl>(_cellsInUseViews.Values);
+            }
+        }
+
         /// <summary>Releases an in-use cell by index back to the GENERIC pool (hKey 0), if one is realized.</summary>
         public void ReleaseCellByIndex(int index)
         {

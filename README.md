@@ -59,6 +59,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.18
 
+  * `ViewsAdapter.GetCellsInUse()`: snapshot of every realized (bound, in-use) cell of a templated layout, next to `GetCellInUseOrNull(index)`. Recycled cells never appear in the layout's `Views`, so app code that needs the live rows (refresh their look, read a row's `DrawingRect` for a drag) goes through `ChildrenFactory`. The HelloMaui / HelloWpf drag-to-reorder pages used `Views` and never showed the lifted row; fixed.
   * Fix `SkiaLabel` cutting the descenders (g, j, p, q, y) of its last line by a pixel or two: glyph ink can reach below the font's `Descent` (and above the ascent), the line box is ascent + descent, so that ink lands outside the measured rect, and the default `Operations` cache draws the recorded picture clipped to that rect. The label now reports the font's real overshoot (`FontMetrics.Top` / `Bottom` beyond the line box) as its effects margin, so cache surface, clip and dirty region include it; layout and line spacing are unchanged. Seen with Inter on Windows (DrawnCamera What's New).
 
  ### 1.10.6.17
