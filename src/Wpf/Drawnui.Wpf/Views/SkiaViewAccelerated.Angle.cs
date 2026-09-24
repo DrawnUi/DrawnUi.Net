@@ -94,20 +94,24 @@ public partial class SkiaViewAccelerated : FrameworkElement, ISkiaDrawable
 		IsDrawing = true;
 		try
 		{
-			_gl.MakeCurrent();
-			GRContext.ResetContext();
-
-			SignalFrame(nanos > 0 ? nanos : Super.GetCurrentTimeNanos());
-			OnDraw.Invoke(_surface, new SKRect(0, 0, _width, _height));
-			_surface.Canvas.Flush();
-			GRContext.Flush();
-			// The texture is read by WPF's D3D9 device on another queue: the GL work has to be
-			// submitted before the dirty rect is announced.
-			Gles.glFlush();
-
+			// The D3DImage protocol: lock, draw into the back buffer, mark it dirty, unlock. WPF's render
+			// thread copies the texture only outside the lock, so it never picks up a half-drawn frame;
+			// drawing outside the lock let a copy overlap the next frame's GL writes and showed as
+			// mixed frames during smooth scrolls.
 			_image.Lock();
 			try
 			{
+				_gl.MakeCurrent();
+				GRContext.ResetContext();
+
+				SignalFrame(nanos > 0 ? nanos : Super.GetCurrentTimeNanos());
+				OnDraw.Invoke(_surface, new SKRect(0, 0, _width, _height));
+				_surface.Canvas.Flush();
+				GRContext.Flush();
+				// The texture is read by WPF's D3D9 device on another queue: the GL work has to be
+				// submitted before the dirty rect is announced.
+				Gles.glFlush();
+
 				_image.AddDirtyRect(new Int32Rect(0, 0, _width, _height));
 			}
 			finally

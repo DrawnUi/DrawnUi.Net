@@ -468,6 +468,16 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         if (!_running || !Canvas.CheckCanDraw() || !Canvas.CanDraw)
             return;
 
+        // WPF can raise Rendering more than once for the same frame; only the first one is drawn.
+        if (e is RenderingEventArgs args)
+        {
+            if (args.RenderingTime == _lastRenderingTime)
+                return;
+            _lastRenderingTime = args.RenderingTime;
+        }
+
+        var frameTime = FrameClock(e);
+
         if (_gpuView != null)
         {
             // CPU pre-rendering, as on the Android and Apple retained views: ANGLE start-up plus the
@@ -485,7 +495,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 }
             }
 
-            if (_gpuView.Update() && _bitmap != null)
+            if (_gpuView.Update(frameTime) && _bitmap != null)
             {
                 ReleaseSurface(); // the pre-rendered frame did its job
                 InvalidateVisual();
@@ -494,18 +504,55 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
         }
 
-        DrawSoftwareFrame();
+        DrawSoftwareFrame(frameTime);
     }
 
     private bool _prerenderAttempted;
+    private TimeSpan _lastRenderingTime = TimeSpan.MinValue;
+    private long _clockWallNanos;
+    private TimeSpan _clockRenderingTime;
+
+    /// <summary>
+    /// The frame timestamp animations advance by. WPF's composition tick lands a couple of ms early or
+    /// late around the vsync while the frame is shown at the vsync itself, so sampling the wall clock at
+    /// the tick puts that jitter into every animated position. <c>RenderingTime</c> is the frame's
+    /// presentation time, uniform per frame; it is anchored to the wall clock once so the values stay
+    /// comparable with <see cref="Super.GetCurrentTimeNanos"/>.
+    /// </summary>
+    private long FrameClock(EventArgs e)
+    {
+        var now = Super.GetCurrentTimeNanos();
+        if (e is not RenderingEventArgs args)
+            return now;
+
+        if (_clockWallNanos == 0)
+        {
+            _clockWallNanos = now;
+            _clockRenderingTime = args.RenderingTime;
+            return now;
+        }
+
+        var frame = _clockWallNanos + (args.RenderingTime - _clockRenderingTime).Ticks * 100;
+
+        // A pause (window hidden, breakpoint) is not animated through: re-anchor when the two drift apart.
+        if (Math.Abs(frame - now) > 250_000_000)
+        {
+            _clockWallNanos = now;
+            _clockRenderingTime = args.RenderingTime;
+            return now;
+        }
+
+        return frame;
+    }
 
     /// <summary>Paints one frame into the WriteableBitmap surface. False when there is no surface.</summary>
-    private bool DrawSoftwareFrame()
+    private bool DrawSoftwareFrame(long frameTime = 0)
     {
         if (!EnsureSurface())
             return false;
 
-        var frameTime = Super.GetCurrentTimeNanos();
+        if (frameTime <= 0)
+            frameTime = Super.GetCurrentTimeNanos();
         _drawable.SignalFrame(frameTime);
 
         // Points, not pixels: DrawnView derives RenderingScale from PhisicalWidth / WidthRequest,
