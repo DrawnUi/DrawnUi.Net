@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>EmptyCode</RootNamespace>
+        <AssemblyName>EmptyCode</AssemblyName>
+        <!-- Links native Skia into dotnet.native.wasm; needs the wasm-tools workload. -->
+        <WasmBuildNative>true</WasmBuildNative>
+        <!-- Content-hashed js/css names in index.html, so a redeploy is never served stale. -->
+        <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DrawnUi.Blazor.Wasm" Version="1.10.6.17" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+    </ItemGroup>
+
+</Project>
