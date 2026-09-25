@@ -1,5 +1,6 @@
 using System.Windows;
 using DrawnUi.Draw;
+using DrawnUi.Wpf;
 using Style = DrawnUi.Draw.Style;
 using Setter = DrawnUi.Draw.Setter;
 
@@ -43,6 +44,8 @@ public partial class App : Application
                     ApplyToDerivedTypes = true,
                     Setters = { new Setter { Property = SkiaButton.FontFamilyProperty, Value = "FontText" } },
                 }))
+            // Same settings class as a MAUI app: keys pressed anywhere in the window reach KeyboardManager.
+            .WithSettings(new DrawnUiStartupSettings { UseDesktopKeyboard = true })
             .Build();
     }
 }

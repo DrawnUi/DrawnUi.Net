@@ -1,5 +1,4 @@
 using System.Windows;
-using System.Windows.Input;
 using DrawnUi.Draw;
 using DrawnUi.Views;
 using DrawnUi.Wpf;
@@ -16,15 +15,12 @@ namespace WpfPong;
 /// </summary>
 public partial class MainWindow : Window
 {
-    /// <summary>Builds the window: window size from the game's logical size, then the drawn tree.</summary>
+    /// <summary>Builds the drawn tree. Window size and keyboard come from the startup settings in App.</summary>
     public MainWindow()
     {
         InitializeComponent();
 
-        Width = PongGame.WIDTH * 1.33;
-        Height = PongGame.HEIGHT * 1.33;
-
-        var element = new DrawnUiElement(() => new RescalingCanvas
+        Content = new DrawnUiElement(() => new RescalingCanvas
         {
             LogicalWidth = PongGame.WIDTH,
             LogicalHeight = PongGame.HEIGHT,
@@ -69,10 +65,5 @@ public partial class MainWindow : Window
                 }
             }
         };
-
-        Content = element;
-
-        // Keys go to the focused element: the game reads them through KeyboardManager.
-        Loaded += (_, _) => Keyboard.Focus(element);
     }
 }

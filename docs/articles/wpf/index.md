@@ -46,6 +46,53 @@ Fonts, images, Lottie and `.sksl` shader files are read from next to the executa
 </ItemGroup>
 ```
 
+### Startup settings
+
+The same `DrawnUiStartupSettings` a MAUI app passes to `UseDrawnUi` go through `.WithSettings(...)` on this head. A full startup, as in the Pong sample:
+
+```csharp
+using DrawnUi.Draw;
+using DrawnUi.Wpf;
+
+protected override void OnStartup(StartupEventArgs e)
+{
+    base.OnStartup(e);
+
+    Super.UseDrawnUi()
+        .ConfigureFonts(fonts => fonts
+            .AddFont("fonts/Orbitron-Regular.ttf", "FontGame")
+            .AddFont("fonts/Orbitron-SemiBold.ttf", "FontTextBold", FontWeight.SemiBold))
+        .ConfigureStyles(styles => styles
+            .AddStyle(new Style
+            {
+                TargetType = typeof(SkiaLabel),
+                ApplyToDerivedTypes = true,
+                Setters = { new Setter { Property = SkiaLabel.FontFamilyProperty, Value = "FontGame" } },
+            }))
+        .WithSettings(new DrawnUiStartupSettings
+        {
+            DesktopWindow = new WindowParameters { Width = 500, Height = 800, IsFixedSize = true },
+            UseDesktopKeyboard = true,
+            Logger = logger,
+            Startup = services => { /* runs once, after DrawnUI is initialized */ },
+        })
+        .Build();
+}
+```
+
+| Setting | On WPF |
+|---|---|
+| `ConfigureFonts` | `AddFont(path, alias, weight)`, paths relative to the executable |
+| `ConfigureStyles` | `AddStyle(new Style { TargetType, ApplyToDerivedTypes, Setters })`, the drawn styles system; a `SkiaButton` needs its own style, it pushes its font onto its caption |
+| `PreloadAssets` | `AddImage(alias, path)`, decoded before the first frame |
+| `DesktopWindow` | Sizes the window that hosts the first `DrawnUiElement`, in device-independent pixels; `IsFixedSize` sets `ResizeMode = NoResize` |
+| `UseDesktopKeyboard` | Every key pressed in that window reaches `KeyboardManager`, whatever has focus, as on MAUI Windows and Mac. Without it keys arrive only while a `DrawnUiElement` has keyboard focus |
+| `Logger` | Receives what `Super.Log` writes |
+| `Startup` | Runs once with `Super.Services` when the first element initializes DrawnUI |
+| `MobileIsFullscreen` | No meaning on WPF, ignored |
+
+Settings apply when the first element loads, so they need no window to exist at `OnStartup`.
+
 ---
 
 ## The element

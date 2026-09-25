@@ -37,6 +37,11 @@ Super.UseDrawnUi()
 </ItemGroup>
 ```
 
+The same `DrawnUiStartupSettings` a MAUI app uses go through `.WithSettings(...)` before `Build()`:
+`DesktopWindow` sizes the window hosting the first element, `UseDesktopKeyboard` feeds every key
+pressed in that window to `KeyboardManager`, `Logger` receives `Super.Log`, `Startup` runs once after
+initialization. `.ConfigureStyles(...)` and `.PreloadAssets(...)` are on the same builder.
+
 ## A drawn canvas in XAML
 
 ```xml

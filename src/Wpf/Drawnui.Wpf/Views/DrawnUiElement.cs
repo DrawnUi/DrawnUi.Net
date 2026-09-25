@@ -201,6 +201,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         AppPackageServices.EnsureInstalled(); // relative "package" paths resolve to files next to the exe
         Super.Init();
         ShaderFiles.PreloadAll(); // .sksl files next to the exe become ShaderSource resources
+        WpfStartup.RunStartup(); // DrawnUiStartupSettings.Startup, once
     }
 
     private double DpiScale => VisualTreeHelper.GetDpi(this).DpiScaleX;
@@ -220,6 +221,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         {
             _window = window;
             _window.Closed += OnWindowClosed;
+            WpfStartup.ApplyToWindow(window); // DesktopWindow size + window-level keyboard, first window only
         }
 
         if (_gpuView == null)
