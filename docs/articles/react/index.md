@@ -35,9 +35,13 @@ await Super.UseDrawnUi()
 
 The goal is the same API surface as the .NET version: same control names, same PascalCase property names, same measure/arrange/paint contract, so documentation transfers.
 
-Ported so far: `SkiaLayout` in Absolute, Column and Row (plus the `SkiaStack` / `SkiaRow` / `SkiaLayer` aliases) with templated recycling cells in Column mode, `SkiaScroll`, `SkiaLabel` and `SkiaRichLabel`, `SkiaShape`, `SkiaImage`, `SkiaSvg`, `SkiaButton`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider`, `SkiaProgress`, `SkiaCarousel`, `SkiaDrawer`, `SkiaEditor`, `SkiaLottie`, `SkiaGif`, `SkiaSprite`, `SkiaBackdrop`, shader effects, gradients, transforms, animators, the tap and pan gesture pipeline, and the accessibility overlay model used by DrawnUi.Blazor.
+Ported so far: `SkiaLayout` in Absolute, Column and Row (plus the `SkiaStack` / `SkiaRow` / `SkiaLayer` aliases) with templated recycling cells in Column mode, `SkiaScroll`, `SkiaLabel` and `SkiaRichLabel`, `SkiaShape`, `SkiaImage`, `SkiaSvg`, `SkiaButton`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider`, `SkiaProgress`, `SkiaCarousel`, `SkiaDrawer`, `SkiaEditor`, `SkiaLottie`, `SkiaGif`, `SkiaSprite`, `SkiaBackdrop`, `DrawnGame`, shader effects, gradients, transforms, animators, the tap and pan gesture pipeline, and the accessibility overlay model used by DrawnUi.Blazor.
 
 Caching follows the .NET model: `UseCache` takes the same values. `Operations` records an `SkPicture` and replays it, `Image` snapshots an offscreen surface, `ImageDoubleBuffered` keeps the last cache while a new one is produced, and `ImageComposite` keeps its offscreen surface between records and repaints only the children that changed plus the siblings they overlap.
+
+## Games
+
+`DrawnGame` works as in DrawnUi.Gaming: subclass it, call `StartLoop()`, override `GameLoop(deltaSeconds)` and `OnKeyDown` / `OnKeyUp`. The live demo includes the .NET Pong sample ported to TypeScript: [helloreact.drawnui.net/#/pong](https://helloreact.drawnui.net/#/pong) (after the next demo publish).
 
 ## Still in progress
 
