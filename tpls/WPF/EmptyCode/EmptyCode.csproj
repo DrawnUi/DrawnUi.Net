@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>EmptyCode</RootNamespace>
+        <AssemblyName>EmptyCode</AssemblyName>
+        <Product>DrawnApp</Product>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DrawnUi.Wpf" Version="1.10.6.17-preview.1" />
+    </ItemGroup>
+
+    <!--
+        Assets are read from the output folder on this head, by the path the code asks for.
+        Flat Link: every file lands next to the exe and is addressed by bare file name
+        ("drawnui.svg", "OpenSans-Regular.ttf"), the same way DrawnUI Fiddle snippets address them.
+        CopyToOutputDirectory is mandatory: a bare Content item in a WinExe project is not copied.
+    -->
+    <ItemGroup>
+        <Content Include="Resources\Raw\**;Resources\Fonts\**" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+</Project>
