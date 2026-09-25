@@ -184,7 +184,7 @@ var element = new DrawnUiElement(() => new RescalingCanvas
 };
 ```
 
-`Gestures = Lock` keeps every pointer event on the canvas, `UpdateMode = Constant` draws every composition tick. The window should give the element keyboard focus once loaded (`Keyboard.Focus(element)`). The complete host is the [WpfPong](samples.md#wpfpong) sample; the game design side is in [Game UI](../advanced/game-ui.md).
+`Gestures = Lock` keeps every pointer event on the canvas, `UpdateMode = Constant` draws every composition tick. The window should give the element keyboard focus once loaded (`Keyboard.Focus(element)`). The complete host is the [WpfPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPong) sample; the game design side is in [Game UI](../advanced/game-ui.md).
 
 ---
 
@@ -213,7 +213,12 @@ Things that are not obvious from the API and shaped the implementation. They mat
 
 ## Samples
 
-See [WPF Samples](samples.md).
+Two samples every DrawnUI framework has, in the repository:
+
+- **Hello**: [src/Wpf/Samples/HelloWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/HelloWpf), one page per feature (cells, images, SVG, text, layouts, shell, editor, keyboard, scroll, shaders, sprites, transforms, reorder, accessibility), navigated with `SkiaShell`.
+- **Pong**: [src/Wpf/Samples/WpfPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPong), the shared Pong game ([src/Shared/Samples/Pong.Shared](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Shared/Samples/Pong.Shared)) hosted in a WPF window through `DrawnUi.Wpf.Game`.
+
+More, and what to start from: [WPF Samples](samples.md).
 
 ---
 
