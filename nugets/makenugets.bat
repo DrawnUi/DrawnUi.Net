@@ -7,11 +7,15 @@ dotnet pack  ..\src\Maui\DrawnUi\DrawnUi.Maui.csproj -c Release
 dotnet pack  ..\src\Blazor\DrawnUi\DrawnUi.Blazor.csproj -c Release
 dotnet pack  ..\src\Blazor\DrawnUi.Server\DrawnUi.Blazor.Server.csproj -c Release
 dotnet pack  ..\src\Blazor\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj -c Release
+dotnet pack  ..\src\Wasm\DrawnUi\DrawnUi.Wasm.csproj -c Release
+dotnet pack  ..\src\Wpf\Drawnui.Wpf\DrawnUi.Wpf.csproj -c Release
 
 dotnet pack  ..\src\Blazor\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj -c Release
 dotnet pack ..\src\OpenTk\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj -c Release
 dotnet pack ..\src\Maui\Addons\DrawnUi.Maui.Game\DrawnUi.Maui.Game.csproj -c Release
 dotnet pack ..\src\Maui\Addons\DrawnUi.Maui.MapsUi\DrawnUi.Maui.MapsUi.csproj -c Release
 dotnet pack ..\src\Maui\Addons\DrawnUi.MauiGraphics\DrawnUi.MauiGraphics.csproj -c Release
+dotnet pack ..\src\Wasm\Addons\DrawnUi.Wasm.Game\DrawnUi.Wasm.Game.csproj -c Release
+dotnet pack ..\src\Wpf\Addons\DrawnUi.Wpf.Game\DrawnUi.Wpf.Game.csproj -c Release
 
 pause
