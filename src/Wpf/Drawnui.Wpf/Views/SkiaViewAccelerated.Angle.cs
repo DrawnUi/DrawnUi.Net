@@ -108,9 +108,11 @@ public partial class SkiaViewAccelerated : FrameworkElement, ISkiaDrawable
 				OnDraw.Invoke(_surface, new SKRect(0, 0, _width, _height));
 				_surface.Canvas.Flush();
 				GRContext.Flush();
-				// The texture is read by WPF's D3D9 device on another queue: the GL work has to be
-				// submitted before the dirty rect is announced.
-				Gles.glFlush();
+				// The texture is read by WPF's D3D9 device on another queue, and a share handle carries no
+				// synchronization object between the two: the GL work has to be COMPLETE, not just
+				// submitted, before the dirty rect is announced, or WPF copies a half-drawn frame (a
+				// moving ball tore across the seam). The wait is short: the frame itself was cheap.
+				Gles.glFinish();
 
 				_image.AddDirtyRect(new Int32Rect(0, 0, _width, _height));
 			}
