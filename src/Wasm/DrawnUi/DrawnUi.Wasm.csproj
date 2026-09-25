@@ -74,8 +74,10 @@
     <!-- wwwroot\** auto-served as static web assets under _content/DrawnUi.Web/ (Razor SDK). -->
 
     <!-- Ship the GPU-enabling emcc js-library + props so consumers get WebGL automatically.
-         buildTransitive flows the js-library link flag to any app referencing this package. -->
+         buildTransitive flows the js-library link flag to any app referencing this package
+         (DrawnUi.Web.targets is the file NuGet imports; it pulls in DrawnUi.Wasm.props). -->
     <ItemGroup>
+        <None Include="buildTransitive\DrawnUi.Web.targets" Pack="true" PackagePath="buildTransitive\DrawnUi.Web.targets" />
         <None Include="buildTransitive\DrawnUi.Wasm.props" Pack="true" PackagePath="buildTransitive\DrawnUi.Wasm.props" />
         <None Include="buildTransitive\SkiaSharpInterop.js" Pack="true" PackagePath="buildTransitive\SkiaSharpInterop.js" />
     </ItemGroup>

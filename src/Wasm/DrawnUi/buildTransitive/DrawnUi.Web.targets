@@ -1,0 +1,10 @@
+<Project>
+
+    <!--
+      NuGet imports only buildTransitive\<PackageId>.props / .targets. The static-web-assets SDK
+      already writes DrawnUi.Web.props into the package, so the GPU js-library link flag arrives
+      through this file. Without it a NuGet consumer fails to link: "undefined symbol: InterceptBrowserObjects".
+    -->
+    <Import Project="$(MSBuildThisFileDirectory)DrawnUi.Wasm.props" />
+
+</Project>
