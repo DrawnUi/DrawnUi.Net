@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- WinExe: no console window on Windows; on Linux it is an ordinary executable. -->
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>EmptyCode</RootNamespace>
+        <AssemblyName>EmptyCode</AssemblyName>
+        <Product>DrawnApp</Product>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64</RuntimeIdentifiers>
+    </PropertyGroup>
+
+    <!-- Release publish for a runtime: one self-contained, trimmed executable (see README.md). -->
+    <PropertyGroup Condition="'$(Configuration)' == 'Release' AND '$(RuntimeIdentifier)' != ''">
+        <SelfContained>true</SelfContained>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>full</TrimMode>
+        <PublishSingleFile>true</PublishSingleFile>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    </PropertyGroup>
+
+    <!-- OpenTK loads GL bindings by reflection and SkiaSharp is reached through paths the
+         trimmer does not see: keep them whole. -->
+    <ItemGroup Condition="'$(PublishTrimmed)' == 'true'">
+        <TrimmerRootAssembly Include="OpenTK.Graphics" />
+        <TrimmerRootAssembly Include="OpenTK.Windowing.Desktop" />
+        <TrimmerRootAssembly Include="SkiaSharp" />
+        <TrimmerRootAssembly Include="HarfBuzzSharp" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DrawnUi.OpenTk" Version="1.10.6.17" />
+        <!-- Native Skia for Linux; the Windows natives come with SkiaSharp itself. -->
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Title-bar icon, decoded at startup (ApplicationIcon covers only Explorer/taskbar). -->
+        <EmbeddedResource Include="icon.ico" LogicalName="icon.ico" />
+
+        <!-- Assets are read from the output folder on this head, by the path the code asks for.
+             Flat Link: every file lands next to the executable and is addressed by bare file name
+             ("drawnui.svg", "OpenSans-Regular.ttf"), the same way DrawnUI Fiddle snippets address them.
+             CopyToOutputDirectory is mandatory: a bare Content item in a WinExe project is not copied. -->
+        <Content Include="Resources\Raw\**;Resources\Fonts\**" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+</Project>
