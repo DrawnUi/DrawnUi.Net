@@ -59,6 +59,8 @@ Choose the sample that matches your host model:
 - Start with `OpenTkGpuHost` if you want a desktop UI app with event-driven rendering
 - Start with `OpenTkOverlay` if you already own the OpenGL render loop and want DrawnUI on top
 
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
+
 ## Related
 
 - [DrawnUI for OpenTK](index.md)

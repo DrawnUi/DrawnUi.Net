@@ -220,6 +220,8 @@ Two samples every DrawnUI framework has, in the repository:
 
 More, and what to start from: [WPF Samples](samples.md).
 
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
+
 ---
 
 ## Related

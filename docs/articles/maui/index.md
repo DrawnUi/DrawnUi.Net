@@ -27,6 +27,8 @@ Every host in the repository ships the same two samples, Hello and Pong:
 
 Both are `dotnet build -f net10.0-windows10.0.19041.0` on Windows, or the usual MAUI targets for Android, iOS and MacCatalyst. More apps: [Sample Apps](../sample-apps.md).
 
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
+
 ## When MAUI is the right host
 
 Choose the MAUI lane when you need:

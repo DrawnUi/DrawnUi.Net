@@ -73,5 +73,7 @@ _Real-time pitch detection, BPM/tempo detection_
 - **Architecture**: App drawn on a single DrawnUI `Canvas`
 - **Features**: Real-time pitch detection, BPM/tempo detection, SKSL Shaders effects and confetti! 
 
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
+
 ## Contributing Samples
 Have a cool UI or feature? Submit a PR or open an issue to share your sample with the community!

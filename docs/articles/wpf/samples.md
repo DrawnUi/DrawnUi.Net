@@ -43,3 +43,5 @@ The Pong game from the OpenTK and WebAssembly samples, hosted in a WPF window. T
 - `WpfPackageDemo` if you want a project that references the package.
 - `HelloWpf` to see a specific control or feature working on WPF.
 - `WpfPong` if you are writing a game.
+
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
