@@ -157,18 +157,19 @@ public class MainWindow(GameWindowSettings gameSettings, NativeWindowSettings na
             KeyboardManager.KeyboardReleased(key);
     }
 
-    /// <summary>Title-bar icon from the embedded icon.ico: 32x32, RGBA as GLFW wants it.</summary>
+    /// <summary>
+    /// Title-bar icon from the embedded icon.ico: 32x32 straight (unpremultiplied) RGBA, the format GLFW wants.
+    /// The pixel format is requested explicitly: Skia's platform default is not the same everywhere.
+    /// </summary>
     public static WindowIcon LoadIcon()
     {
         try
         {
             using var stream = typeof(MainWindow).Assembly.GetManifestResourceStream("icon.ico");
             using var bitmap = SKBitmap.Decode(stream);
-            using var icon = bitmap.Resize(new SKImageInfo(32, 32), new SKSamplingOptions(SKCubicResampler.Mitchell));
-            var pixels = icon.Bytes;
-            for (var i = 0; i < pixels.Length; i += 4)
-                (pixels[i], pixels[i + 2]) = (pixels[i + 2], pixels[i]);   // BGRA -> RGBA
-            return new WindowIcon(new Image(32, 32, pixels));
+            using var icon = bitmap.Resize(new SKImageInfo(32, 32, SKColorType.Rgba8888, SKAlphaType.Unpremul),
+                new SKSamplingOptions(SKCubicResampler.Mitchell));
+            return new WindowIcon(new Image(32, 32, icon.Bytes));
         }
         catch
         {

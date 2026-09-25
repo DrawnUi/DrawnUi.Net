@@ -43,6 +43,8 @@ window.Run();
 | `Constant` | On | Every VSync frame, unconditional | Games, constant animation |
 | `Dynamic` | Off | Dirty canvas only; sleeps via `GLFW.WaitEventsTimeout` | UI apps, editors |
 
+Pick `Constant` only for dynamic games, where something moves on every frame anyway. For everything else use `Dynamic` with `new GameWindowSettings { UpdateFrequency = 0 }`: animations and scrolling still run at full frame rate while they are active, but an idle window stops rendering instead of redrawing the same frame at the monitor refresh rate.
+
 ### Mixing raw GL with DrawnUI (`RenderScene`)
 
 Override `RenderScene()` to draw a 3D scene behind the DrawnUI canvas. The base class handles GL state restore, `GL.Clear`, `GRContext.ResetContext()`, and compositing automatically:

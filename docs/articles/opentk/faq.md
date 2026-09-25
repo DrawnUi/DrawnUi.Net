@@ -274,11 +274,13 @@ You do not need the .NET SDK inside WSL. Publish a self-contained Linux build on
    dotnet publish -c Release -r linux-x64 --self-contained -o out\linux
    ```
 
-3. Copy the output into the Linux file system, make it executable and swap in the system GLFW (see the EGL entry above):
+3. Copy the output into the Linux file system and make it executable:
 
    ```powershell
-   wsl -e bash -c "rm -rf ~/myapp && cp -r /mnt/c/path/to/out/linux ~/myapp && chmod +x ~/myapp/MyApp && ln -sf /usr/lib/x86_64-linux-gnu/libglfw.so.3 ~/myapp/libglfw.so.3"
+   wsl -e bash -c "rm -rf ~/myapp && cp -r /mnt/c/path/to/out/linux ~/myapp && chmod +x ~/myapp/MyApp"
    ```
+
+   The bundled GLFW (OpenTK 4.9, `opentk.redist.glfw` 3.4) ran fine under WSLg on Ubuntu 22.04 in September 2026, including a trimmed single-file build. Only if you hit the EGL error above, link the system GLFW next to the executable: `ln -sf /usr/lib/x86_64-linux-gnu/libglfw.so.3 ~/myapp/libglfw.so.3`.
 
 4. Run it:
 
