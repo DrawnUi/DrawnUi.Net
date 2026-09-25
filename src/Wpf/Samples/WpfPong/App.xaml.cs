@@ -28,9 +28,11 @@ public partial class App : Application
             })
             .WithSettings(new DrawnUiStartupSettings
             {
+                // Wider than the field on purpose: the arcade background shows in the side bands and
+                // hints that the window can be resized, the field keeps its aspect ratio (RescalingCanvas).
                 DesktopWindow = new WindowParameters
                 {
-                    Width = (int)(PongGame.WIDTH * 1.33),
+                    Width = (int)(PongGame.HEIGHT * 1.22),
                     Height = (int)(PongGame.HEIGHT * 1.33),
                 },
                 UseDesktopKeyboard = true,
