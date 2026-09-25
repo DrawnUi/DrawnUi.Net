@@ -68,7 +68,7 @@ Your `GameWindow` subclass owns rendering; DrawnUI composites as a transparent o
 
 ## Input
 
-- `DrawnUiWindow` auto-routes mouse (left button) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (backspace/delete/enter/arrows/home/end/Ctrl+A/Tab→4 spaces) built in. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
+- `DrawnUiWindow` auto-routes mouse (all buttons + wheel) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (backspace/delete/enter/arrows/home/end/Ctrl+A/Tab→4 spaces) built in. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
 - Custom controls layered behind a `SkiaEditor`: return `null` from `ProcessGestures` on Up when you didn't capture on Down, or you steal the editor's focus.
 
 ## Window niceties
@@ -88,6 +88,8 @@ Source strings (`"Images/x.gif"`, `"Lottie/x.json"`) resolve relative to the out
 - `GLXBadFBConfig` → request OpenGL 3.3 on Linux (Mesa D3D12 lacks 4.6).
 - D3D12 "Removing Device" + segfault on WSLg → keep `WindowState = WindowState.Normal`.
 - Uncapped FPS (Mesa ignores swap interval) → `DrawnUiWindow` soft-caps automatically; a custom `GameWindow` must set `UpdateFrequency` itself.
+- **Run the Linux build from Windows (no .NET SDK in WSL needed)**, verified 2026-09-25: reference `SkiaSharp.NativeAssets.Linux`, `dotnet publish -c Release -r linux-x64 --self-contained -o out\linux` on Windows, copy into the WSL file system + `chmod +x` + symlink the system `libglfw.so.3` over the bundled one, then `wsl -e bash -c "cd ~/myapp && DISPLAY=:0 ./MyApp"`. Traps: `nohup ./MyApp &` inside `wsl -e bash -c` is killed when the command returns, so run the whole `wsl` command as a background job with the app in its foreground; the window appears as a Windows window titled `MyApp (Ubuntu-...)` (a `[WARN:COPY MODE]` prefix = WSLg copy presentation, still runs); Windows-simulated mouse/wheel input reaches it; default NAT networking hides Windows `localhost` services; `LocalApplicationData` = `~/.local/share`. The WSLg window rect includes a ~35 px shadow, so scripted edge drags must target the visible border. Docs: `docs/articles/opentk/faq.md`.
+- **Resize / wheel semantics per OS** (DrawnUiWindow, 2026-09-25): Windows/macOS block the render loop in the OS modal size loop, so `DrawnUiWindow` renders from `OnResize` there (live redraw while dragging an edge); Linux keeps looping during resize, so it only repaints via the normal loop. `OnRefresh` (expose/uncover) renders on every OS. The mouse wheel goes `OnMouseWheel` → `DesktopGestureHandler.OnMouseWheel` (GLFW notch × 120) → `Canvas.HandleDesktopWheel`; `CanvasHost` apps forward `OnMouseWheel` themselves.
 
 ## macOS (unbuilt as of 2026-08-27 — investigated, not yet run)
 

@@ -258,6 +258,44 @@ WSLg is required (included in WSL 2.x). Audio works automatically via WSLg's bui
 
 ---
 
+### Build on Windows, run the Linux version under WSL2
+
+You do not need the .NET SDK inside WSL. Publish a self-contained Linux build on Windows and run it through WSLg; the Linux window opens on your Windows desktop.
+
+1. Reference the Linux Skia natives in the app (harmless on Windows):
+
+   ```xml
+   <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
+   ```
+
+2. Publish from Windows:
+
+   ```powershell
+   dotnet publish -c Release -r linux-x64 --self-contained -o out\linux
+   ```
+
+3. Copy the output into the Linux file system, make it executable and swap in the system GLFW (see the EGL entry above):
+
+   ```powershell
+   wsl -e bash -c "rm -rf ~/myapp && cp -r /mnt/c/path/to/out/linux ~/myapp && chmod +x ~/myapp/MyApp && ln -sf /usr/lib/x86_64-linux-gnu/libglfw.so.3 ~/myapp/libglfw.so.3"
+   ```
+
+4. Run it:
+
+   ```powershell
+   wsl -e bash -c "cd ~/myapp && DISPLAY=:0 ./MyApp"
+   ```
+
+Things to know:
+
+- Keep the app in the foreground of that `wsl` command. `nohup ./MyApp &` inside `wsl -e bash -c` dies as soon as the command returns. To keep your terminal free, run the whole `wsl` command as a background job instead.
+- The window shows up as a regular Windows window with the distro name in its title, e.g. `MyApp (Ubuntu-22.04)`. A `[WARN:COPY MODE]` prefix means WSLg is presenting through its copy path instead of shared GPU memory; the app still runs.
+- Mouse, wheel and keyboard input reach the app, including input simulated from Windows (useful for automated checks).
+- With WSL's default NAT networking, a service listening on `localhost` in Windows is not reachable as `localhost` from the Linux app.
+- `Environment.SpecialFolder.LocalApplicationData` is `~/.local/share` on Linux, so data an app saved on Windows is not there; copy it over if the app needs it.
+
+---
+
 ## Related
 
 - [OpenTK Guide](index.md)

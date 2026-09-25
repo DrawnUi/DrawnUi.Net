@@ -148,7 +148,11 @@ public class DrawnUiWindow : GameWindow
         base.OnResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
         RecreateSurface(e.Width, e.Height);
-        RenderDuringModalLoop();
+
+        // Linux (X11/Wayland) has no modal size loop: the render loop keeps running during a resize
+        // and picks up the Repaint from RecreateSurface, so an extra (vsync-blocking) frame here would only add lag.
+        if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
+            RenderDuringModalLoop();
     }
 
     protected override void OnRefresh()
@@ -158,6 +162,8 @@ public class DrawnUiWindow : GameWindow
     }
 
     /// <summary>
+    /// Refresh = the OS asks for the window content (expose, uncover, restore). In <see cref="UpdateModeType.Dynamic"/>
+    /// a clean canvas would not redraw on its own, and an X11 window without a compositor would stay damaged.
     /// While the user drags a window edge (Windows, macOS) the OS runs its own modal loop and
     /// <see cref="OnRenderFrame"/> does not run until the mouse is released; GLFW still delivers
     /// resize and refresh callbacks from inside that loop, so draw the frame right there.
