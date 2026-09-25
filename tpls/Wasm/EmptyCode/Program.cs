@@ -14,6 +14,9 @@ public static partial class Program
         }))
         .ConfigureFonts(fonts =>
         {
+            // Emoji and symbol subsets shipped with DrawnUI: a browser has no system fonts to fall back on.
+            fonts.AddEmojis();
+            fonts.AddSymbols();
             // Same aliases the DrawnUI Fiddle registers, so exported snippets
             // find the fonts they were written against.
             fonts.AddFont("OpenSans-Regular.ttf", "FontText");
