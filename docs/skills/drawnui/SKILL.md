@@ -251,12 +251,14 @@ Do not hand-write a new DrawnUI app's csproj/startup/host from memory: copy the 
 | OpenTK (Windows + Linux, one project) | `tpls/OpenTK/EmptyCode` | `MainWindow.cs` (static) | `Program.cs` | `Resources/Raw` (+ `Resources/Fonts`), copied next to the exe |
 | Blazor WebAssembly | `tpls/Blazor/EmptyCode` | `MainPage.razor.cs` | `Program.cs` | `wwwroot` |
 | Pure .NET WebAssembly (`DrawnUi.Web`, no Blazor) | `tpls/Wasm/EmptyCode` | `MainPage.cs` | `Program.cs` | `wwwroot` |
+| React (npm `drawnui-react`, TypeScript on CanvasKit, Vite) | `tpls/React/EmptyCode` | `src/MainPage.tsx` | `src/main.tsx` | `public` (fonts in `public/fonts`) |
 
 - Shared contract: the whole UI is `CreateMainContent()` between `// <fiddle:content>` markers — a method body returning one `SkiaControl`, exactly a DrawFiddle snippet. Replace that body with the app; keep the host code around it.
 - Assets are addressed by bare file name (`Source = "drawnui.svg"`) on every head; fonts use the aliases `FontText` / `FontTextTitle` (OpenSans).
 - To start: copy the folder, rename `EmptyCode` (folder, csproj, namespace) to the app name, change the `DrawnApp` title, then bump the DrawnUi package version in the csproj to the latest on NuGet (templates pin whatever was current when they were last touched).
 - Web heads need the `wasm-tools` workload (Skia is linked into `dotnet.native.wasm`); WPF/OpenTK need nothing extra; Linux needs `libglfw3 libgl1`.
 - DrawFiddle's **Export .NET** button produces these same templates with the snippet already spliced in.
+- React template: `npm install`, `npm run dev`; the UI is the default-exported React component in `src/MainPage.tsx` (the whole file sits between the `<fiddle:content>` markers) instead of a `CreateMainContent()` method; DrawFiddle's React export replaces that file with the TSX snippet. Same font aliases and bare-name assets as the .NET templates. Bump `drawnui-react` in `package.json` to the latest on npm. Load the `drawnui-react` skill for the React rules.
 
 ## Invalidation & Custom Controls
 
