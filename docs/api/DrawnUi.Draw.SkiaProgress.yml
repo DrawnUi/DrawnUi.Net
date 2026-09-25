@@ -11,7 +11,10 @@ items:
   - DrawnUi.Draw.SkiaProgress.CreateMaterial3StyleContent
   - DrawnUi.Draw.SkiaProgress.CreateMaterialStyleContent
   - DrawnUi.Draw.SkiaProgress.CreateWindowsStyleContent
+  - DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel
+  - DrawnUi.Draw.SkiaProgress.DefaultAccessibilityRole
   - DrawnUi.Draw.SkiaProgress.FindViews
+  - DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole
   - DrawnUi.Draw.SkiaProgress.MaterialProgressGap
   - DrawnUi.Draw.SkiaProgress.RebuildDefaultContent
   - DrawnUi.Draw.SkiaProgress.ResolvedProgressColor
@@ -753,7 +756,10 @@ items:
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
@@ -1274,6 +1280,97 @@ items:
   - Microsoft.Maui.Controls.VisualElement.DrawnUi.Draw.StaticResourcesExtensions.GetAllWithMyselfParents
   - Microsoft.Maui.IView.DrawnUi.Extensions.InternalExtensions.DisposeControlAndChildren
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.SkiaProgress.DefaultAccessibilityRole
+  commentId: F:DrawnUi.Draw.SkiaProgress.DefaultAccessibilityRole
+  id: DefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaProgress
+  langs:
+  - csharp
+  - vb
+  name: DefaultAccessibilityRole
+  nameWithType: SkiaProgress.DefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaProgress.DefaultAccessibilityRole
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Default role for every instance (React parity). Set to null to make the control opt-in again.
+  example: []
+  syntax:
+    content: public static string? DefaultAccessibilityRole
+    return:
+      type: System.String
+    content.vb: Public Shared DefaultAccessibilityRole As String
+- uid: DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole
+  id: GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaProgress
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaProgress.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetDefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Class-level default role, unset for plain controls. Subclasses expose a static so an app can opt in per class.
+  example: []
+  syntax:
+    content: protected override string? GetDefaultAccessibilityRole()
+    return:
+      type: System.String
+    content.vb: Protected Overrides Function GetDefaultAccessibilityRole() As String
+  overridden: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  overload: DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole*
+- uid: DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel
+  id: DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaProgress
+  langs:
+  - csharp
+  - vb
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaProgress.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DefaultAccessibilityLabel
+    path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Label used when <xref href="DrawnUi.Draw.SkiaControl.AccessibilityLabel" data-throw-if-not-resolved="false"></xref> is not set (a label's text, a button's text, a slider's value).
+  example: []
+  syntax:
+    content: protected override string? DefaultAccessibilityLabel()
+    return:
+      type: System.String
+    content.vb: Protected Overrides Function DefaultAccessibilityLabel() As String
+  overridden: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  overload: DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel*
 - uid: DrawnUi.Draw.SkiaProgress.CreateDefaultContent
   commentId: M:DrawnUi.Draw.SkiaProgress.CreateDefaultContent
   id: CreateDefaultContent
@@ -1292,7 +1389,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 10
+    startLine: 22
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1330,7 +1427,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultStyleContent
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 37
+    startLine: 49
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1356,7 +1453,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResolvedTrackColor
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 97
+    startLine: 109
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1390,7 +1487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResolvedProgressColor
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 112
+    startLine: 124
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1424,7 +1521,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResolvedTrackHeight
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 127
+    startLine: 139
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1458,7 +1555,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateCupertinoStyleContent
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 138
+    startLine: 150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1484,7 +1581,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterialStyleContent
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 192
+    startLine: 204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1510,7 +1607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterial3StyleContent
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 250
+    startLine: 262
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1541,7 +1638,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateWindowsStyleContent
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 316
+    startLine: 328
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1567,7 +1664,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RebuildDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 374
+    startLine: 386
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1605,7 +1702,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 383
+    startLine: 395
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1634,7 +1731,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaterialProgressGap
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 395
+    startLine: 407
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1663,7 +1760,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateVisualState
     path: ../src/Shared/DrawnUi/Controls/Progress/SkiaProgress.cs
-    startLine: 397
+    startLine: 409
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -15811,6 +15908,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityId
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityId
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityId
+  name: AccessibilityId
+  nameWithType: SkiaControl.AccessibilityId
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityId
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
   parent: DrawnUi.Draw.SkiaControl
@@ -15818,6 +15922,44 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaControl.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  name: DefaultAccessibilityIsPressed()
+  nameWithType: SkiaControl.DefaultAccessibilityIsPressed()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
   parent: DrawnUi.Draw.SkiaControl
@@ -40858,6 +41000,67 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaControl.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole*
+  commentId: Overload:DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole
+  href: DrawnUi.Draw.SkiaProgress.html#DrawnUi_Draw_SkiaProgress_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole
+  nameWithType: SkiaProgress.GetDefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaProgress.GetDefaultAccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaControl.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel*
+  commentId: Overload:DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel
+  href: DrawnUi.Draw.SkiaProgress.html#DrawnUi_Draw_SkiaProgress_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel
+  nameWithType: SkiaProgress.DefaultAccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaProgress.DefaultAccessibilityLabel
 - uid: DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   commentId: M:DrawnUi.Draw.SkiaControl.RebuildDefaultContent
   parent: DrawnUi.Draw.SkiaControl

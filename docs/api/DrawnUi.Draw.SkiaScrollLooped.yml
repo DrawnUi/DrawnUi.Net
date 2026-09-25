@@ -380,6 +380,7 @@ items:
   - DrawnUi.Draw.SkiaScroll.ResetPosition
   - DrawnUi.Draw.SkiaScroll.SetContentOffset(System.Numerics.Vector2,System.Boolean,System.Boolean)
   - DrawnUi.Draw.SkiaScroll.ScrollTo(System.Single,System.Single,System.Single,System.Boolean)
+  - DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
   - DrawnUi.Draw.SkiaScroll.ScrollToTop(System.Single)
   - DrawnUi.Draw.SkiaScroll.ScrollToBottom(System.Single)
   - DrawnUi.Draw.SkiaScroll.Snapped
@@ -796,7 +797,12 @@ items:
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
@@ -6674,6 +6680,59 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaScroll
+  isExternal: true
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_EnsureVisible_DrawnUi_Draw_SkiaControl_System_Single_System_Single_
+  name: EnsureVisible(SkiaControl, float, float)
+  nameWithType: SkiaScroll.EnsureVisible(SkiaControl, float, float)
+  fullName: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl, float, float)
+  nameWithType.vb: SkiaScroll.EnsureVisible(SkiaControl, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl, Single, Single)
+  name.vb: EnsureVisible(SkiaControl, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+    name: EnsureVisible
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_EnsureVisible_DrawnUi_Draw_SkiaControl_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+    name: EnsureVisible
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_EnsureVisible_DrawnUi_Draw_SkiaControl_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaScroll.ScrollToTop(System.Single)
   commentId: M:DrawnUi.Draw.SkiaScroll.ScrollToTop(System.Single)
@@ -15041,6 +15100,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityId
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityId
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityId
+  name: AccessibilityId
+  nameWithType: SkiaControl.AccessibilityId
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityId
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
   parent: DrawnUi.Draw.SkiaControl
@@ -15048,6 +15114,82 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaControl.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaControl.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaControl.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  name: DefaultAccessibilityIsPressed()
+  nameWithType: SkiaControl.DefaultAccessibilityIsPressed()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
   parent: DrawnUi.Draw.SkiaControl

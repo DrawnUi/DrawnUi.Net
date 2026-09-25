@@ -149,11 +149,23 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     private bool KeepInput => Gestures == GesturesMode.Lock || Canvas.LastInputUsed;
 
     /// <summary>Creates the host and its canvas.</summary>
-    public DrawnUiElement()
+    public DrawnUiElement() : this(static () => new Canvas())
     {
+    }
+
+    /// <summary>
+    /// Creates the host over a canvas of your own type. The factory runs after DrawnUI is initialized,
+    /// so a <c>Canvas</c> subclass (a game's rescaling canvas, one with an overridden draw) is hosted
+    /// exactly like the default one; <see cref="Gestures"/> and <see cref="RenderingMode"/> still apply.
+    /// </summary>
+    public DrawnUiElement(Func<Canvas> createCanvas)
+    {
+        ArgumentNullException.ThrowIfNull(createCanvas);
+
         EnsureSuperInitialized();
 
-        Canvas = new Canvas { Gestures = GesturesMode.Enabled };
+        Canvas = createCanvas() ?? throw new InvalidOperationException("The canvas factory returned null");
+        Canvas.Gestures = Gestures;
 
         // The canvas joins the WPF logical tree so DataContext flows into it the ordinary WPF way;
         // DrawnUI then propagates that context down its own tree (SkiaControl.ApplyBindingContext).
@@ -189,6 +201,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         AppPackageServices.EnsureInstalled(); // relative "package" paths resolve to files next to the exe
         Super.Init();
         ShaderFiles.PreloadAll(); // .sksl files next to the exe become ShaderSource resources
+        WpfStartup.RunStartup(); // DrawnUiStartupSettings.Startup, once
     }
 
     private double DpiScale => VisualTreeHelper.GetDpi(this).DpiScaleX;
@@ -208,6 +221,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         {
             _window = window;
             _window.Closed += OnWindowClosed;
+            WpfStartup.ApplyToWindow(window); // DesktopWindow size + window-level keyboard, first window only
         }
 
         if (_gpuView == null)
@@ -468,6 +482,16 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         if (!_running || !Canvas.CheckCanDraw() || !Canvas.CanDraw)
             return;
 
+        // WPF can raise Rendering more than once for the same frame; only the first one is drawn.
+        if (e is RenderingEventArgs args)
+        {
+            if (args.RenderingTime == _lastRenderingTime)
+                return;
+            _lastRenderingTime = args.RenderingTime;
+        }
+
+        var frameTime = FrameClock(e);
+
         if (_gpuView != null)
         {
             // CPU pre-rendering, as on the Android and Apple retained views: ANGLE start-up plus the
@@ -485,7 +509,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 }
             }
 
-            if (_gpuView.Update() && _bitmap != null)
+            if (_gpuView.Update(frameTime) && _bitmap != null)
             {
                 ReleaseSurface(); // the pre-rendered frame did its job
                 InvalidateVisual();
@@ -494,18 +518,55 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
         }
 
-        DrawSoftwareFrame();
+        DrawSoftwareFrame(frameTime);
     }
 
     private bool _prerenderAttempted;
+    private TimeSpan _lastRenderingTime = TimeSpan.MinValue;
+    private long _clockFrameNanos;
+    private long _clockWallNanos;
+    private TimeSpan _clockRenderingTime;
+
+    /// <summary>
+    /// The frame timestamp animations advance by. WPF's composition tick lands a couple of ms early or
+    /// late around the vsync while the frame is shown at the vsync itself, so sampling the wall clock at
+    /// the tick puts that jitter into every animated position. The clock advances by the tick's
+    /// <c>RenderingTime</c> step (the presentation time, one vsync per frame), bounded to the wall-clock
+    /// step: WPF's estimate sometimes leaps a whole extra frame while the ticks keep their cadence, and
+    /// an animation must not move two frames in one displayed frame. Real stalls are still followed
+    /// because the wall clock moved too. Values stay comparable with <see cref="Super.GetCurrentTimeNanos"/>.
+    /// </summary>
+    private long FrameClock(EventArgs e)
+    {
+        var now = Super.GetCurrentTimeNanos();
+        if (e is not RenderingEventArgs args || _clockFrameNanos == 0)
+        {
+            _clockFrameNanos = now;
+            _clockWallNanos = now;
+            if (e is RenderingEventArgs first)
+                _clockRenderingTime = first.RenderingTime;
+            return now;
+        }
+
+        const long slack = 4_000_000; // 4 ms either side of the wall-clock step
+        var wallStep = now - _clockWallNanos;
+        var renderStep = (args.RenderingTime - _clockRenderingTime).Ticks * 100;
+        var step = Math.Clamp(renderStep, Math.Max(1, wallStep - slack), wallStep + slack);
+
+        _clockWallNanos = now;
+        _clockRenderingTime = args.RenderingTime;
+        _clockFrameNanos += step;
+        return _clockFrameNanos;
+    }
 
     /// <summary>Paints one frame into the WriteableBitmap surface. False when there is no surface.</summary>
-    private bool DrawSoftwareFrame()
+    private bool DrawSoftwareFrame(long frameTime = 0)
     {
         if (!EnsureSurface())
             return false;
 
-        var frameTime = Super.GetCurrentTimeNanos();
+        if (frameTime <= 0)
+            frameTime = Super.GetCurrentTimeNanos();
         _drawable.SignalFrame(frameTime);
 
         // Points, not pixels: DrawnView derives RenderingScale from PhisicalWidth / WidthRequest,

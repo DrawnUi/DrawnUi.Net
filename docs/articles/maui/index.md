@@ -18,6 +18,17 @@ Run DrawnUI canvases inside a .NET MAUI app on Windows, Android, iOS and MacCata
 - [Drawn Layouts](../layouts.md)
 - [Porting Native to Drawn](../porting-maui.md)
 
+## Samples
+
+Every host in the repository ships the same two samples, Hello and Pong:
+
+- [HelloMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/HelloMaui): the full feature demo, one page per feature behind a drawn `SkiaShell` (cells, images, SVG, shapes, text, layouts, looks, carousels, Lottie, shell, editor, keyboard, scroll, shaders, sprites, transforms, drag to reorder, accessibility). Same pages as HelloWpf and the React demo.
+- [MauiPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/MauiPong): the Pong game, a thin host over the shared `src/Shared/Samples/Pong.Shared` game with the `DrawnUi.Maui.Game` addon. A `RescalingCanvas` keeps the game's logical viewport and aspect ratio in any window, `Gestures = Lock` gives the game the whole input stream, `UseDesktopKeyboard` makes the arrow keys move the paddle on Windows and Mac. See [Game UI](../advanced/game-ui.md) for the addon per host.
+
+Both are `dotnet build -f net10.0-windows10.0.19041.0` on Windows, or the usual MAUI targets for Android, iOS and MacCatalyst. More apps: [Sample Apps](../sample-apps.md).
+
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
+
 ## When MAUI is the right host
 
 Choose the MAUI lane when you need:

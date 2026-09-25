@@ -169,11 +169,9 @@ public class ReorderPage : SkiaLayer, IDragHost
     /// <summary>Where a row sits on screen right now, in canvas pixels, while that row is realized.</summary>
     private SKRect? RowRect(int index)
     {
-        foreach (var view in _rows.Views)
-        {
-            if (view is ReorderCell cell && cell.ContextIndex == index && cell.IsVisibleInViewTree())
-                return cell.DrawingRect;
-        }
+        // recycled cells are not in Views: the adapter holds the realized rows
+        if (_rows.ChildrenFactory.GetCellInUseOrNull(index) is ReorderCell cell && cell.IsVisibleInViewTree())
+            return cell.DrawingRect;
 
         return null;
     }
@@ -187,7 +185,7 @@ public class ReorderPage : SkiaLayer, IDragHost
     /// <summary>Rebinds nothing, just re-applies each row's look: used when the list did not change but a row's state did.</summary>
     private void RefreshRows()
     {
-        foreach (var view in _rows.Views)
+        foreach (var view in _rows.ChildrenFactory.GetCellsInUse())
             (view as ReorderCell)?.Refresh();
     }
 

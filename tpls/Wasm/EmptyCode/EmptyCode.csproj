@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <!--
+        Pure .NET WebAssembly: no Blazor components, no Razor. The BlazorWebAssembly SDK is used only
+        for its static-asset hosting; the app boots from wwwroot/main.js into Program.Main.
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>EmptyCode</RootNamespace>
+        <AssemblyName>EmptyCode</AssemblyName>
+        <!-- Links native Skia into dotnet.native.wasm; needs the wasm-tools workload. -->
+        <WasmBuildNative>true</WasmBuildNative>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <DefineConstants>$(DefineConstants);DRAWNUI_NET;WEB;NET;NET10;BROWSER</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DrawnUi.Web" Version="1.10.6.18" />
+        <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.148.0" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="14.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <WasmExtraConfig Include="emcc_flags">
+            <Value>-s ERROR_ON_UNDEFINED_SYMBOLS=0 -s ALLOW_MEMORY_GROWTH=1</Value>
+        </WasmExtraConfig>
+    </ItemGroup>
+
+</Project>

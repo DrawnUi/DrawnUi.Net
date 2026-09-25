@@ -16,7 +16,9 @@ items:
   - DrawnUi.Draw.SkiaSwitch.CreateMaterial3StyleContent
   - DrawnUi.Draw.SkiaSwitch.CreateMaterialStyleContent
   - DrawnUi.Draw.SkiaSwitch.CreateWindowsStyleContent
+  - DrawnUi.Draw.SkiaSwitch.DefaultAccessibilityRole
   - DrawnUi.Draw.SkiaSwitch.FindViews
+  - DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole
   - DrawnUi.Draw.SkiaSwitch.GetThumbPosForOff
   - DrawnUi.Draw.SkiaSwitch.GetThumbPosForOn
   - DrawnUi.Draw.SkiaSwitch.MaterialOutlineColor
@@ -95,6 +97,8 @@ items:
   - DrawnUi.Draw.SkiaToggle.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaToggle.OnLayoutChanged
   - DrawnUi.Draw.SkiaToggle.IsInternalCall
+  - DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+  - DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
   - DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   - DrawnUi.Draw.SkiaToggle.NotifyWasToggled
   - DrawnUi.Draw.SkiaToggle.OnDisposing
@@ -764,7 +768,9 @@ items:
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
@@ -1287,6 +1293,66 @@ items:
   - Microsoft.Maui.Controls.VisualElement.DrawnUi.Draw.StaticResourcesExtensions.GetAllWithMyselfParents
   - Microsoft.Maui.IView.DrawnUi.Extensions.InternalExtensions.DisposeControlAndChildren
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.SkiaSwitch.DefaultAccessibilityRole
+  commentId: F:DrawnUi.Draw.SkiaSwitch.DefaultAccessibilityRole
+  id: DefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaSwitch
+  langs:
+  - csharp
+  - vb
+  name: DefaultAccessibilityRole
+  nameWithType: SkiaSwitch.DefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaSwitch.DefaultAccessibilityRole
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Default role for every instance (React parity). Set to null to make the control opt-in again.
+  example: []
+  syntax:
+    content: public static string? DefaultAccessibilityRole
+    return:
+      type: System.String
+    content.vb: Public Shared DefaultAccessibilityRole As String
+- uid: DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole
+  id: GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaSwitch
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaSwitch.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetDefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Class-level default role, unset for plain controls. Subclasses expose a static so an app can opt in per class.
+  example: []
+  syntax:
+    content: protected override string? GetDefaultAccessibilityRole()
+    return:
+      type: System.String
+    content.vb: Protected Overrides Function GetDefaultAccessibilityRole() As String
+  overridden: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  overload: DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole*
 - uid: DrawnUi.Draw.SkiaSwitch.CreateDefaultContent
   commentId: M:DrawnUi.Draw.SkiaSwitch.CreateDefaultContent
   id: CreateDefaultContent
@@ -1305,7 +1371,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 10
+    startLine: 15
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1343,7 +1409,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 41
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1369,7 +1435,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateCupertinoStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 76
+    startLine: 81
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1395,7 +1461,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterialStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 125
+    startLine: 130
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1421,7 +1487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaterialOutlineColor
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 179
+    startLine: 184
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1450,7 +1516,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterial3StyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 185
+    startLine: 190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1481,7 +1547,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateWindowsStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 237
+    startLine: 242
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1507,7 +1573,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 279
+    startLine: 284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1533,7 +1599,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 294
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1559,7 +1625,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Track
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 318
+    startLine: 323
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1586,7 +1652,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Thumb
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 319
+    startLine: 324
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1613,7 +1679,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 321
+    startLine: 326
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1639,7 +1705,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildrenChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 327
+    startLine: 332
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1668,7 +1734,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 334
+    startLine: 339
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1697,7 +1763,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetThumbPosForOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 348
+    startLine: 353
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1725,7 +1791,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetThumbPosForOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 355
+    startLine: 360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1753,7 +1819,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimationSpeed
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 360
+    startLine: 365
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1780,7 +1846,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanAnimate
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 362
+    startLine: 367
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1808,7 +1874,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToggledChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaSwitch.cs
-    startLine: 369
+    startLine: 374
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2283,6 +2349,44 @@ references:
   name: IsInternalCall
   nameWithType: SkiaToggle.IsInternalCall
   fullName: DrawnUi.Draw.SkiaToggle.IsInternalCall
+- uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+  commentId: M:DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaToggle
+  href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityIsPressed
+  name: DefaultAccessibilityIsPressed()
+  nameWithType: SkiaToggle.DefaultAccessibilityIsPressed()
+  fullName: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaToggle
+  href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaToggle.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   commentId: M:DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   parent: DrawnUi.Draw.SkiaToggle
@@ -15931,6 +16035,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityId
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityId
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityId
+  name: AccessibilityId
+  nameWithType: SkiaControl.AccessibilityId
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityId
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
   parent: DrawnUi.Draw.SkiaControl
@@ -15938,6 +16049,25 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaControl.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
   parent: DrawnUi.Draw.SkiaControl
@@ -41240,6 +41370,42 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaControl.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole*
+  commentId: Overload:DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole
+  href: DrawnUi.Draw.SkiaSwitch.html#DrawnUi_Draw_SkiaSwitch_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole
+  nameWithType: SkiaSwitch.GetDefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaSwitch.GetDefaultAccessibilityRole
 - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
   commentId: M:DrawnUi.Draw.SkiaControl.CreateDefaultContent
   parent: DrawnUi.Draw.SkiaControl

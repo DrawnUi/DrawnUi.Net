@@ -3,7 +3,8 @@
     <!--
         Proof of concept: the same app as WpfSandbox, but consuming DrawnUI for WPF as a NuGet
         package instead of a project reference. Nothing from the repo's source is compiled in.
-        The preview package is not on nuget.org yet: pack it (see README.md) into a local feed first.
+        The version follows the library version in src/Directory.Build.targets; to try an unreleased
+        build, pack the library into a local feed first (see README.md).
     -->
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
@@ -13,10 +14,11 @@
         <Nullable>disable</Nullable>
         <RootNamespace>WpfPackageDemo</RootNamespace>
         <AssemblyName>WpfPackageDemo</AssemblyName>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DrawnUi.Wpf" Version="1.10.6.17-preview.1" />
+        <PackageReference Include="DrawnUi.Wpf" Version="1.10.6.18" />
     </ItemGroup>
 
 </Project>

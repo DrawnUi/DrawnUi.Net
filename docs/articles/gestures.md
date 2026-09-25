@@ -329,7 +329,7 @@ Use `LockChildrenGestures` when a parent layout should decide which gestures rea
 </draw:SkiaLayout>
 ```
 
-Interactive controls that move themselves, `SkiaScroll`, `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSpinner`, and the toggles `SkiaSwitch` / `SkiaCheckbox` / `SkiaRadioButton`, also expose `RespondsToGestures` (default true). Set it to false and the control ignores user input while still being driven from code: a code-only scroll, a drawer opened only by a button, a read-only toggle.
+Interactive controls that move themselves, `SkiaScroll`, `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSpinner`, and the toggles `SkiaSwitch` / `SkiaCheckbox` / `SkiaRadioButton`, also expose `RespondsToGestures` (default true). Set it to false and the control ignores user input while still being driven from code: a code-only scroll, a drawer opened only by a button, a read-only toggle. It also works as a temporary hand-over: a drag handle inside a scroll sets `scroll.RespondsToGestures = false` on Down and back to true on Up, so the vertical pan is the handle's for the length of the drag (see [Drag to Reorder a List](advanced/reorder.md)).
 
 ## Practical routing
 

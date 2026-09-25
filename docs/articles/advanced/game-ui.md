@@ -21,6 +21,20 @@ Check out [Breakout (Bricks Breaker) source code](https://github.com/DrawnUi/Dra
 - **Easy integration**  
     with other .NET MAUI native controls and layouts to use-platform-specific features.
 
+## Game addon per host
+
+The `DrawnGame` base class (game loop with a frame-time interpolator, keyboard state, pause and resume) ships as one addon package per host, all built from the same source, so a game is shared code between them:
+
+| Host | Package | Sample |
+| --- | --- | --- |
+| .NET MAUI | `DrawnUi.Maui.Game` | [MauiPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/MauiPong) |
+| OpenTK | `DrawnUi.OpenTk.Game` | [OpenTkPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/OpenTkPong) |
+| Blazor | `DrawnUi.Blazor.Game` | [Pong page](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/BlazorSandbox) |
+| Pure WebAssembly | `DrawnUi.Wasm.Game` | [PongWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/PongWeb) |
+| WPF | `DrawnUi.Wpf.Game` | [WpfPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPong) |
+
+The Pong samples share one game project, `src/Shared/Samples/Pong.Shared`; each host adds a window, fonts and a `RescalingCanvas` that keeps the game's aspect ratio. A bigger MAUI game with sound and levels: [Breakout](https://github.com/DrawnUi/DrawnUi.Net.Breakout).
+
 ## Game Loop and Real-Time Updates
 
 For interactive games, you need a game loop that updates the game state and redraws the UI at regular intervals.

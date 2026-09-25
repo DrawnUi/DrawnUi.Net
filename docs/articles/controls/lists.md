@@ -82,6 +82,10 @@ You can bind a huge in-memory list directly: when a templated `ItemsSource` exce
 
 `LoadMoreCommand` keeps its meaning: it fires only when the user reaches the true end of your source data — "paging within already-available data" is internal, "fetch more from the API" is yours.
 
+## Reordering
+
+A templated list is reordered through its data: `ObservableCollection.Move(from, to)` is applied to the cells the layout already has (with `MeasureFirst` a move is a pure re-bind, no rebuild). Drag to reorder, with the list moving live under the pointer, a floating copy of the row and edge auto-scroll, is a recipe on top of that: [Drag to Reorder a List](../advanced/reorder.md).
+
 ## Programmatic scrolling
 
 `SkiaScroll.ScrollToIndex(index, animate)` speaks your data's indices — with the built-in window engaged, jumping to a non-resident item rebases the window around the target automatically.
@@ -90,5 +94,6 @@ You can bind a huge in-memory list directly: when a templated `ItemsSource` exce
 
 - [Recycled Cells: Advanced Performance Techniques](../advanced/recycled-cells.md) — cell design, `SkiaDynamicDrawnCell`, per-layer caching inside cells.
 - [SkiaScroll & Virtualization](../advanced/skiascroll.md) — the scroll side in detail.
+- [Drag to Reorder a List](../advanced/reorder.md) — grip gesture, `ObservableCollection.Move` per slot, ghost row in an overlay, edge auto-scroll.
 - [News Feed Scroller Tutorial](../news-feed-tutorial.md) — full worked example for case 5.
 - [Beyond RecyclerView](https://taublast.github.io/posts/RecycledCells/) — deep-dive: a windowed, inverted chat with recycled cells and a band-plane cache.

@@ -67,17 +67,61 @@ public static class DevSnapshot
 
                 // HELLOWPF_WHEEL_DELAY=<ms> spaces the notches out (default 20).
                 var pause = int.TryParse(Environment.GetEnvironmentVariable("HELLOWPF_WHEEL_DELAY"), out var ms) ? ms : 20;
+
+                // HELLOWPF_PACE=1 records every composition tick during the wheel run: tick spacing,
+                // WPF's RenderingTime spacing and the spacing of frames the canvas actually drew.
+                var pace = Environment.GetEnvironmentVariable("HELLOWPF_PACE") == "1";
+                var ticks = new List<(double wall, double render, long frame)>();
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                EventHandler onTick = (_, args) =>
+                {
+                    var rt = args is RenderingEventArgs r ? r.RenderingTime.TotalMilliseconds : -1;
+                    long frame = 0;
+                    for (var c = 0; c < VisualTreeHelper.GetChildrenCount(drawn); c++)
+                        if (VisualTreeHelper.GetChild(drawn, c) is DrawnUi.Draw.SkiaViewAccelerated gpu) frame = gpu.FrameTime;
+                    ticks.Add((clock.Elapsed.TotalMilliseconds, rt, frame));
+                };
+                if (pace) CompositionTarget.Rendering += onTick;
                 for (var i = 0; i < Math.Abs(notches); i++)
                 {
                     // HELLOWPF_WHEEL_X / _Y place the pointer (pixels); default centre. A page with nested
                     // scrolls needs the pointer over the outer one (a side margin) to scroll the page.
                     var wx = float.TryParse(Environment.GetEnvironmentVariable("HELLOWPF_WHEEL_X"), out var px) ? px : w / 2;
                     var wy = float.TryParse(Environment.GetEnvironmentVariable("HELLOWPF_WHEEL_Y"), out var py) ? py : h / 2;
+                    var notchClock = System.Diagnostics.Stopwatch.StartNew();
                     drawn.Canvas.HandleDesktopWheel(wx, wy, -120 * 5 * step, w, h);
+                    if (pace) Console.WriteLine($"[DevSnapshot] pace notch {i} sync cost {notchClock.Elapsed.TotalMilliseconds:0.0} ms at tick #{ticks.Count}");
                     await Task.Delay(pause);
                 }
 
                 await Task.Delay(1200);
+
+                if (pace)
+                {
+                    CompositionTarget.Rendering -= onTick;
+                    static string Hist(IEnumerable<double> deltas)
+                    {
+                        var d = deltas.ToList();
+                        if (d.Count == 0) return "none";
+                        int b0 = d.Count(x => x < 10), b1 = d.Count(x => x >= 10 && x < 20), b2 = d.Count(x => x >= 20 && x < 30), b3 = d.Count(x => x >= 30);
+                        return $"n={d.Count} <10ms:{b0} 10-20:{b1} 20-30:{b2} >=30:{b3} min={d.Min():0.0} max={d.Max():0.0} avg={d.Average():0.0}";
+                    }
+                    var wallDeltas = ticks.Zip(ticks.Skip(1), (p, n) => n.wall - p.wall);
+                    var renderDeltas = ticks.Zip(ticks.Skip(1), (p, n) => n.render - p.render);
+                    var dupRender = ticks.Zip(ticks.Skip(1), (p, n) => n.render == p.render).Count(x => x);
+                    var frames = ticks.Where(t => t.frame > 0).Select(t => t.frame).Distinct().ToList();
+                    var frameDeltas = frames.Zip(frames.Skip(1), (p, n) => (n - p) / 1_000_000.0);
+                    var ticksPerFrame = ticks.Count(t => t.frame > 0) / Math.Max(1.0, frames.Count);
+                    Console.WriteLine($"[DevSnapshot] pace ticks(wall): {Hist(wallDeltas)}");
+                    Console.WriteLine($"[DevSnapshot] pace ticks(RenderingTime): {Hist(renderDeltas)} sameRenderingTimeTicks={dupRender}");
+                    Console.WriteLine($"[DevSnapshot] pace drawn frames: {Hist(frameDeltas)} ticksPerDrawnFrame={ticksPerFrame:0.00}");
+                    var seq = string.Join(" ", ticks.Zip(ticks.Skip(1), (p, n) => $"{n.wall - p.wall:0}{(n.frame != p.frame ? "*" : "")}").Take(120));
+                    Console.WriteLine($"[DevSnapshot] pace first ticks (ms, * = new frame): {seq}");
+                }
+
+                // Reports where the first scroll in the tree ended up, so a wheel run has a number to compare.
+                var scroll = (drawn.Canvas.Content as DrawnUi.Draw.SkiaControl)?.FindView<DrawnUi.Draw.SkiaScroll>();
+                Console.WriteLine($"[DevSnapshot] wheel: notches={notches} delay={pause}ms offsetY={scroll?.ViewportOffsetY:0.#} offsetX={scroll?.ViewportOffsetX:0.#}");
             }
 
             // HELLOWPF_TAP="x,y" taps the canvas at those PIXEL coordinates before capturing, so a

@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--using Directory.Build.props-->
+
+    <PropertyGroup>
+        <Title>Game creation addon to DrawnUI for WPF</Title>
+        <PackageId>DrawnUi.Wpf.Game</PackageId>
+        <Description>Base class for implementing a game with SkiaSharp inside a WPF window</Description>
+        <PackageTags>wpf drawnui skia skiasharp draw game desktop windows</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFrameworks>net9.0-windows;net10.0-windows</TargetFrameworks>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <PackageIcon>icon128.png</PackageIcon>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);WPF;NET;DRAWNUI_NET</DefineConstants>
+        <!-- Same as DrawnUi.Wpf: the net*-windows TFM must not read as the MAUI WinUI head in shared code. -->
+        <DefineConstants>;$(DefineConstants);</DefineConstants>
+        <DefineConstants>$(DefineConstants.Replace(';ONPLATFORM;', ';'))</DefineConstants>
+    </PropertyGroup>
+
+    <Target Name="DrawnUiStripMauiWindowsDefine" BeforeTargets="CoreCompile">
+        <PropertyGroup>
+            <DefineConstants>;$(DefineConstants);</DefineConstants>
+            <DefineConstants>$(DefineConstants.Replace(';WINDOWS;', ';'))</DefineConstants>
+        </PropertyGroup>
+    </Target>
+
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);CS0108;CS0109;CS0114;1701;1702</NoWarn>
+        <WarningsNotAsErrors>$(WarningsNotAsErrors);CS0108;CS0114</WarningsNotAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\..\..\icon128.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Drawnui.Wpf\DrawnUi.Wpf.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedGame\SharedGame.projitems" Label="Shared" />
+
+</Project>

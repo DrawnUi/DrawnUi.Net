@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>WpfPong</RootNamespace>
+        <AssemblyName>WpfPong</AssemblyName>
+        <Title>Pong – DrawnUI WPF Sample</Title>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Drawnui.Wpf\DrawnUi.Wpf.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Wpf.Game\DrawnUi.Wpf.Game.csproj" />
+    </ItemGroup>
+
+    <!-- The game itself is shared with the OpenTK, Blazor and WASM Pong samples. -->
+    <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
+
+    <!-- Assets load relative to the output directory on this head; a bare Content item is not copied. -->
+    <ItemGroup>
+        <Content Include="fonts\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Images\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+</Project>

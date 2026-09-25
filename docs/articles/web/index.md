@@ -69,6 +69,7 @@ public static Task Main() =>
 
 - `src/Web/DrawnUi.Wasm.Sample` — minimal "Hello DrawnUI on Web" with a button.
 - `src/Web/Samples/PongWeb` — full game (GPU, fonts, gestures, OG/SEO). Live demo: <a href="https://pong.appomobi.com/" target="_blank" rel="noopener noreferrer">pong.appomobi.com</a>.
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
 
 ## Start here
 

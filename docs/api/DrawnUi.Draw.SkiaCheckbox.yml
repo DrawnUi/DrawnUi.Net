@@ -18,9 +18,11 @@ items:
   - DrawnUi.Draw.SkiaCheckbox.CreateMaterial3StyleContent
   - DrawnUi.Draw.SkiaCheckbox.CreateMaterialStyleContent
   - DrawnUi.Draw.SkiaCheckbox.CreateWindowsStyleContent
+  - DrawnUi.Draw.SkiaCheckbox.DefaultAccessibilityRole
   - DrawnUi.Draw.SkiaCheckbox.FindViews
   - DrawnUi.Draw.SkiaCheckbox.FrameOff
   - DrawnUi.Draw.SkiaCheckbox.FrameOn
+  - DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole
   - DrawnUi.Draw.SkiaCheckbox.OnChildrenChanged
   - DrawnUi.Draw.SkiaCheckbox.OnToggledChanged
   - DrawnUi.Draw.SkiaCheckbox.SvgCupertinoCheck
@@ -98,6 +100,8 @@ items:
   - DrawnUi.Draw.SkiaToggle.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaToggle.OnLayoutChanged
   - DrawnUi.Draw.SkiaToggle.IsInternalCall
+  - DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+  - DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
   - DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   - DrawnUi.Draw.SkiaToggle.NotifyWasToggled
   - DrawnUi.Draw.SkiaToggle.OnDisposing
@@ -767,7 +771,9 @@ items:
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
@@ -1290,6 +1296,66 @@ items:
   - Microsoft.Maui.Controls.VisualElement.DrawnUi.Draw.StaticResourcesExtensions.GetAllWithMyselfParents
   - Microsoft.Maui.IView.DrawnUi.Extensions.InternalExtensions.DisposeControlAndChildren
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.SkiaCheckbox.DefaultAccessibilityRole
+  commentId: F:DrawnUi.Draw.SkiaCheckbox.DefaultAccessibilityRole
+  id: DefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaCheckbox
+  langs:
+  - csharp
+  - vb
+  name: DefaultAccessibilityRole
+  nameWithType: SkiaCheckbox.DefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaCheckbox.DefaultAccessibilityRole
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Default role for every instance (React parity). Set to null to make the control opt-in again.
+  example: []
+  syntax:
+    content: public static string? DefaultAccessibilityRole
+    return:
+      type: System.String
+    content.vb: Public Shared DefaultAccessibilityRole As String
+- uid: DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole
+  id: GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaCheckbox
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaCheckbox.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetDefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Class-level default role, unset for plain controls. Subclasses expose a static so an app can opt in per class.
+  example: []
+  syntax:
+    content: protected override string? GetDefaultAccessibilityRole()
+    return:
+      type: System.String
+    content.vb: Protected Overrides Function GetDefaultAccessibilityRole() As String
+  overridden: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  overload: DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole*
 - uid: DrawnUi.Draw.SkiaCheckbox.SvgCupertinoCheck
   commentId: F:DrawnUi.Draw.SkiaCheckbox.SvgCupertinoCheck
   id: SvgCupertinoCheck
@@ -1308,7 +1374,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SvgCupertinoCheck
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 12
+    startLine: 17
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1335,7 +1401,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SvgMaterialCheck
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 14
+    startLine: 19
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1362,7 +1428,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SvgWindowsCheck
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 16
+    startLine: 21
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1389,7 +1455,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 18
+    startLine: 23
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1427,7 +1493,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 49
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1453,7 +1519,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateCupertinoStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 98
+    startLine: 103
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1479,7 +1545,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterialStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 148
+    startLine: 153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1505,7 +1571,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterial3StyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 202
+    startLine: 207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1536,7 +1602,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateWindowsStyleContent
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 251
+    startLine: 256
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1562,7 +1628,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 303
+    startLine: 308
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1588,7 +1654,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 355
+    startLine: 360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1614,7 +1680,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrameOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 378
+    startLine: 383
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1641,7 +1707,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrameOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 379
+    startLine: 384
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1668,7 +1734,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewCheckOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 380
+    startLine: 385
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1695,7 +1761,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildrenChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 382
+    startLine: 387
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1724,7 +1790,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 389
+    startLine: 394
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1750,7 +1816,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 407
+    startLine: 412
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1779,7 +1845,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorCheckOnProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 420
+    startLine: 425
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1806,7 +1872,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorCheckOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 426
+    startLine: 431
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1835,7 +1901,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanAnimate
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 432
+    startLine: 437
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1863,7 +1929,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimationSpeed
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 437
+    startLine: 442
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1890,7 +1956,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToggledChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaCheckbox.cs
-    startLine: 441
+    startLine: 446
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2365,6 +2431,44 @@ references:
   name: IsInternalCall
   nameWithType: SkiaToggle.IsInternalCall
   fullName: DrawnUi.Draw.SkiaToggle.IsInternalCall
+- uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+  commentId: M:DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaToggle
+  href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityIsPressed
+  name: DefaultAccessibilityIsPressed()
+  nameWithType: SkiaToggle.DefaultAccessibilityIsPressed()
+  fullName: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaToggle
+  href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaToggle.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   commentId: M:DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   parent: DrawnUi.Draw.SkiaToggle
@@ -16013,6 +16117,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityId
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityId
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityId
+  name: AccessibilityId
+  nameWithType: SkiaControl.AccessibilityId
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityId
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
   parent: DrawnUi.Draw.SkiaControl
@@ -16020,6 +16131,25 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaControl.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
   parent: DrawnUi.Draw.SkiaControl
@@ -41333,6 +41463,31 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaControl.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole*
+  commentId: Overload:DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole
+  href: DrawnUi.Draw.SkiaCheckbox.html#DrawnUi_Draw_SkiaCheckbox_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole
+  nameWithType: SkiaCheckbox.GetDefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaCheckbox.GetDefaultAccessibilityRole
 - uid: DrawnUi.Draw.SkiaControl.CreateDefaultContent
   commentId: M:DrawnUi.Draw.SkiaControl.CreateDefaultContent
   parent: DrawnUi.Draw.SkiaControl

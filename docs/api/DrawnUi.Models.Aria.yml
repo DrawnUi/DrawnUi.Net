@@ -5,6 +5,7 @@ items:
   id: Aria
   parent: DrawnUi.Models
   children:
+  - DrawnUi.Models.Aria.IsInteractiveRole(System.String)
   - DrawnUi.Models.Aria.LiveAssertive
   - DrawnUi.Models.Aria.LivePolite
   - DrawnUi.Models.Aria.RoleAlert
@@ -1158,6 +1159,45 @@ items:
     return:
       type: System.String
     content.vb: Public Shared ReadOnly RolePresentation As String
+- uid: DrawnUi.Models.Aria.IsInteractiveRole(System.String)
+  commentId: M:DrawnUi.Models.Aria.IsInteractiveRole(System.String)
+  id: IsInteractiveRole(System.String)
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: IsInteractiveRole(string?)
+  nameWithType: Aria.IsInteractiveRole(string?)
+  fullName: DrawnUi.Models.Aria.IsInteractiveRole(string?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsInteractiveRole
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 131
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: >-
+    True for roles a user operates (button, link, checkbox, slider, textbox...). A node with such a role and
+
+    <code>AccessibilityCanInteract == false</code> is reported as disabled by platform layers.
+  example: []
+  syntax:
+    content: public static bool IsInteractiveRole(string? role)
+    parameters:
+    - id: role
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsInteractiveRole(role As String) As Boolean
+  overload: DrawnUi.Models.Aria.IsInteractiveRole*
+  nameWithType.vb: Aria.IsInteractiveRole(String)
+  fullName.vb: DrawnUi.Models.Aria.IsInteractiveRole(String)
+  name.vb: IsInteractiveRole(String)
 - uid: DrawnUi.Models.Aria.LivePolite
   commentId: F:DrawnUi.Models.Aria.LivePolite
   id: LivePolite
@@ -1176,7 +1216,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LivePolite
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 133
+    startLine: 141
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1208,7 +1248,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LiveAssertive
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 139
+    startLine: 147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1571,3 +1611,20 @@ references:
   name: RoleAlertDialog
   nameWithType: Aria.RoleAlertDialog
   fullName: DrawnUi.Models.Aria.RoleAlertDialog
+- uid: DrawnUi.Models.Aria.IsInteractiveRole*
+  commentId: Overload:DrawnUi.Models.Aria.IsInteractiveRole
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_IsInteractiveRole_System_String_
+  name: IsInteractiveRole
+  nameWithType: Aria.IsInteractiveRole
+  fullName: DrawnUi.Models.Aria.IsInteractiveRole
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

@@ -2867,13 +2867,32 @@ namespace DrawnUi.Draw
 #endif
 
 
+        /// <summary>
+        /// Pixels the font's glyphs can paint ABOVE the corrected ascent (FontMetrics.Top) and BELOW
+        /// FontMetrics.Descent (FontMetrics.Bottom). The line box is ascent + descent, so this ink lands
+        /// outside the measured rect: reported through ComputeEffectsMargin so a cached label (the
+        /// default Operations cache draws the picture clipped to its recording area) keeps it.
+        /// </summary>
+        float _glyphOvershootTop;
+        float _glyphOvershootBottom;
+
         void UpdateFontMetrics(SKPaint paint, SKFont font)
         {
             FontMetrics = font.Metrics;
+            var ascent = GetCorrectedAscent(font, paint);
             LineHeightPixels =
-                (float)Math.Round((GetCorrectedAscent(font, paint) + FontMetrics.Descent) *
+                (float)Math.Round((ascent + FontMetrics.Descent) *
                                   LineHeight); //PaintText.FontSpacing;
             fontUnderline = FontMetrics.UnderlinePosition.GetValueOrDefault();
+
+            var overshootTop = Math.Max(0f, -FontMetrics.Top - ascent);
+            var overshootBottom = Math.Max(0f, FontMetrics.Bottom - FontMetrics.Descent);
+            if (overshootTop != _glyphOvershootTop || overshootBottom != _glyphOvershootBottom)
+            {
+                _glyphOvershootTop = overshootTop;
+                _glyphOvershootBottom = overshootBottom;
+                InvalidateEffectsMargin();
+            }
 
             if (!string.IsNullOrEmpty(this.MonoForDigits))
             {
@@ -3799,18 +3818,28 @@ namespace DrawnUi.Draw
         {
             var margin = base.ComputeEffectsMargin(scale);
 
-            if (DropShadowSize <= 0 || DropShadowColor == null || DropShadowColor.Alpha == 0)
-                return margin;
+            // glyph ink beyond the ascent/descent line box (see UpdateFontMetrics), already in pixels
+            var left = margin.Left;
+            var top = Math.Max(margin.Top, Math.Ceiling(_glyphOvershootTop));
+            var right = margin.Right;
+            var bottom = Math.Max(margin.Bottom, Math.Ceiling(_glyphOvershootBottom));
 
-            var size = DropShadowSize * scale;
-            var offsetX = DropShadowOffsetX * scale;
-            var offsetY = DropShadowOffsetY * scale;
+            if (DropShadowSize > 0 && DropShadowColor != null && DropShadowColor.Alpha != 0)
+            {
+                var size = DropShadowSize * scale;
+                var offsetX = DropShadowOffsetX * scale;
+                var offsetY = DropShadowOffsetY * scale;
 
-            return new Thickness(
-                Math.Max(margin.Left, Math.Max(0, size - offsetX)),
-                Math.Max(margin.Top, Math.Max(0, size - offsetY)),
-                Math.Max(margin.Right, Math.Max(0, size + offsetX)),
-                Math.Max(margin.Bottom, Math.Max(0, size + offsetY)));
+                left = Math.Max(left, Math.Max(0, size - offsetX));
+                top = Math.Max(top, Math.Max(0, size - offsetY));
+                right = Math.Max(right, Math.Max(0, size + offsetX));
+                bottom = Math.Max(bottom, Math.Max(0, size + offsetY));
+            }
+
+            if (left == 0 && top == 0 && right == 0 && bottom == 0)
+                return Thickness.Zero;
+
+            return new Thickness(left, top, right, bottom);
         }
 
         public static readonly BindableProperty DropShadowColorProperty = BindableProperty.Create(

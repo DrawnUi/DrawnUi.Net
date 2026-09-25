@@ -42,6 +42,8 @@ items:
   - DrawnUi.Draw.SkiaEditor.CursorPosition
   - DrawnUi.Draw.SkiaEditor.CursorPositionProperty
   - DrawnUi.Draw.SkiaEditor.CutSelection
+  - DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel
+  - DrawnUi.Draw.SkiaEditor.DefaultAccessibilityRole
   - DrawnUi.Draw.SkiaEditor.DeleteSelection
   - DrawnUi.Draw.SkiaEditor.DisposePlatform
   - DrawnUi.Draw.SkiaEditor.ExecuteSubmit(System.Boolean)
@@ -55,6 +57,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.GetContentSizeForAutosizeInPixels
   - DrawnUi.Draw.SkiaEditor.GetCursorLine
   - DrawnUi.Draw.SkiaEditor.GetCursorPosition(System.Single,System.Single)
+  - DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole
   - DrawnUi.Draw.SkiaEditor.GetEditorBreakText(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.GetLineGlyphs(DrawnUi.Draw.TextLine)
   - DrawnUi.Draw.SkiaEditor.GetSelectedText
@@ -922,7 +925,10 @@ items:
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
@@ -4463,6 +4469,97 @@ items:
       type: System.String
     content.vb: Public Property Text As String
   overload: DrawnUi.Draw.SkiaEditor.Text*
+- uid: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityRole
+  commentId: F:DrawnUi.Draw.SkiaEditor.DefaultAccessibilityRole
+  id: DefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: DefaultAccessibilityRole
+  nameWithType: SkiaEditor.DefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityRole
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1929
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Default role for every instance (React parity). Set to null to make the control opt-in again.
+  example: []
+  syntax:
+    content: public static string? DefaultAccessibilityRole
+    return:
+      type: System.String
+    content.vb: Public Shared DefaultAccessibilityRole As String
+- uid: DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole
+  id: GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaEditor.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetDefaultAccessibilityRole
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1931
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Class-level default role, unset for plain controls. Subclasses expose a static so an app can opt in per class.
+  example: []
+  syntax:
+    content: protected override string? GetDefaultAccessibilityRole()
+    return:
+      type: System.String
+    content.vb: Protected Overrides Function GetDefaultAccessibilityRole() As String
+  overridden: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  overload: DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole*
+- uid: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel
+  id: DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaEditor.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DefaultAccessibilityLabel
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1933
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Label used when <xref href="DrawnUi.Draw.SkiaControl.AccessibilityLabel" data-throw-if-not-resolved="false"></xref> is not set (a label's text, a button's text, a slider's value).
+  example: []
+  syntax:
+    content: protected override string? DefaultAccessibilityLabel()
+    return:
+      type: System.String
+    content.vb: Protected Overrides Function DefaultAccessibilityLabel() As String
+  overridden: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  overload: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel*
 - uid: DrawnUi.Draw.SkiaEditor.FontSizeProperty
   commentId: F:DrawnUi.Draw.SkiaEditor.FontSizeProperty
   id: FontSizeProperty
@@ -4481,7 +4578,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1949
+    startLine: 1958
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4508,7 +4605,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1953
+    startLine: 1962
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4537,7 +4634,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1959
+    startLine: 1968
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4564,7 +4661,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1966
+    startLine: 1975
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4593,7 +4690,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1972
+    startLine: 1981
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4620,7 +4717,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1979
+    startLine: 1988
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4649,7 +4746,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1986
+    startLine: 1995
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4676,7 +4773,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1993
+    startLine: 2002
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4705,7 +4802,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1999
+    startLine: 2008
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4732,7 +4829,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2001
+    startLine: 2010
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4761,7 +4858,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2007
+    startLine: 2016
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4788,7 +4885,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2011
+    startLine: 2020
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4817,7 +4914,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2017
+    startLine: 2026
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4844,7 +4941,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2024
+    startLine: 2033
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4873,7 +4970,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradientProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2031
+    startLine: 2040
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4900,7 +4997,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradient
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2038
+    startLine: 2047
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4929,7 +5026,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2044
+    startLine: 2053
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4956,7 +5053,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2051
+    startLine: 2060
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4985,7 +5082,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradientProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2058
+    startLine: 2067
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5012,7 +5109,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradient
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2066
+    startLine: 2075
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5041,7 +5138,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLengthProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2073
+    startLine: 2082
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5068,7 +5165,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLength
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2088
+    startLine: 2097
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5097,7 +5194,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2094
+    startLine: 2103
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5124,7 +5221,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2101
+    startLine: 2110
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5153,7 +5250,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2107
+    startLine: 2116
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5180,7 +5277,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderText
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2114
+    startLine: 2123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5209,7 +5306,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2120
+    startLine: 2129
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5236,7 +5333,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2127
+    startLine: 2136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5265,7 +5362,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2133
+    startLine: 2142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5292,7 +5389,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2140
+    startLine: 2149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5321,7 +5418,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2162
+    startLine: 2171
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5348,7 +5445,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2164
+    startLine: 2173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5377,7 +5474,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2170
+    startLine: 2179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5404,7 +5501,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2178
+    startLine: 2187
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5440,7 +5537,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionGo
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2190
+    startLine: 2199
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5467,7 +5564,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionNext
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2191
+    startLine: 2200
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5494,7 +5591,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSend
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2192
+    startLine: 2201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5521,7 +5618,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSearch
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2193
+    startLine: 2202
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5548,7 +5645,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionDone
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2194
+    startLine: 2203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5575,7 +5672,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorPositionNative
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2201
+    startLine: 2210
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5609,7 +5706,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposePlatform
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2206
+    startLine: 2215
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5635,7 +5732,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusNative
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2211
+    startLine: 2220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5667,7 +5764,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateNativePosition
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2216
+    startLine: 2225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5693,7 +5790,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyKeyboardType
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2221
+    startLine: 2230
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -20808,6 +20905,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityId
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityId
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityId
+  name: AccessibilityId
+  nameWithType: SkiaControl.AccessibilityId
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityId
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
   parent: DrawnUi.Draw.SkiaControl
@@ -20815,6 +20919,44 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaControl.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  name: DefaultAccessibilityIsPressed()
+  nameWithType: SkiaControl.DefaultAccessibilityIsPressed()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
   parent: DrawnUi.Draw.SkiaControl
@@ -47513,6 +47655,56 @@ references:
   name: Text
   nameWithType: SkiaEditor.Text
   fullName: DrawnUi.Draw.SkiaEditor.Text
+- uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaControl.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole
+  nameWithType: SkiaEditor.GetDefaultAccessibilityRole
+  fullName: DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaControl.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel
+  nameWithType: SkiaEditor.DefaultAccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel
 - uid: DrawnUi.Draw.SkiaEditor.FontSize*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.FontSize
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_FontSize

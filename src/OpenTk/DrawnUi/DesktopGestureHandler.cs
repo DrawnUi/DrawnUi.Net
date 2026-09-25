@@ -46,6 +46,15 @@ public class DesktopGestureHandler
     }
 
     /// <summary>
+    /// GLFW reports the wheel in notches (+1 away from the user, fractions on precision touchpads);
+    /// the canvas takes the Windows convention of 120 per notch.
+    /// </summary>
+    public void OnMouseWheel(MouseWheelEventArgs e, Vector2 mousePos, Vector2i clientSize)
+    {
+        _canvas.HandleDesktopWheel(mousePos.X, mousePos.Y, (int)MathF.Round(e.OffsetY * 120), clientSize.X, clientSize.Y);
+    }
+
+    /// <summary>
     /// GLFW button → gesture pointer. Button numbers follow the DOM convention the browser heads use
     /// (0 left, 1 middle, 2 right, 3/4 the side buttons), so app code filters the same way everywhere.
     /// </summary>

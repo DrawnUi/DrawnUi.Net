@@ -35,6 +35,7 @@
   </Folder>
   <Folder Name="/Lib/WPF/">
     <Project Path="Wpf/Drawnui.Wpf/DrawnUi.Wpf.csproj" />
+    <Project Path="Wpf/Addons/DrawnUi.Wpf.Game/DrawnUi.Wpf.Game.csproj" />
   </Folder>
   <Folder Name="/Samples/" />
   <Folder Name="/Samples/Blazor/">
@@ -46,6 +47,9 @@
       <Deploy Solution="*|Any CPU" />
     </Project>
     <Project Path="Maui/Samples/HelloMaui/HelloMaui.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+    <Project Path="Maui/Samples/MauiPong/MauiPong.csproj">
       <Deploy Solution="Debug|Any CPU" />
     </Project>
     <Project Path="Maui/Samples/Sandbox/Sandbox.csproj">
@@ -72,6 +76,7 @@
   </Folder>
   <Folder Name="/Samples/WPF/">
     <Project Path="Wpf/Samples/HelloWpf/HelloWpf.csproj" />
+    <Project Path="Wpf/Samples/WpfPong/WpfPong.csproj" />
     <Project Path="Wpf/Samples/WpfSandbox/WpfSandbox.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">

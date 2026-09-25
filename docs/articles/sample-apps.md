@@ -24,6 +24,10 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
   A minimal "Hello DrawnUI on Web" starter also lives at **[DrawnUi.Wasm.Sample](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/DrawnUi.Wasm.Sample)**.
 
 
+- **[HelloMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/HelloMaui)** 📱 - The full feature demo on .NET MAUI (Windows, Android, iOS, MacCatalyst), one page per feature navigated with a drawn `SkiaShell`: recycled cells, images, SVG, shapes, text, layouts, platform looks, carousels, Lottie, shell, editor, keyboard, scroll, shaders, sprites, transforms, drag to reorder, accessibility. Same pages as HelloWpf and the React demo.
+
+- **[MauiPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/MauiPong)** 🕹️ - The Pong game on .NET MAUI: a thin host (window, fonts, background, `RescalingCanvas`) over the shared `src/Shared/Samples/Pong.Shared` game, built with the `DrawnUi.Maui.Game` addon. Tap to serve, arrow keys move the paddle on desktop. The same game runs on OpenTK, WPF, Blazor and pure WebAssembly.
+
 - **[MAUI Demo](https://github.com/taublast/AppoMobi.Maui.DrawnUi.Demo)** 🤩 - A comprehensive totally drawn app demo featuring:
   - Navigation on the canvas with SkiaShell
   - Recycled cells and virtualization
@@ -68,6 +72,8 @@ _Real-time pitch detection, BPM/tempo detection_
 - **Read More**: [Blog article](https://taublast.github.io/posts/SolTempo/)
 - **Architecture**: App drawn on a single DrawnUI `Canvas`
 - **Features**: Real-time pitch detection, BPM/tempo detection, SKSL Shaders effects and confetti! 
+
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
 
 ## Contributing Samples
 Have a cool UI or feature? Submit a PR or open an issue to share your sample with the community!

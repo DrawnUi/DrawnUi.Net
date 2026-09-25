@@ -50,6 +50,8 @@ Font files must be present next to the executable at runtime. Mark them as conte
 
 See [OpenTK Samples](samples.md) for a fuller walkthrough of the sample projects and which one to start with.
 
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
+
 ---
 
 ## Related

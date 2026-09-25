@@ -30,6 +30,8 @@ OUT_DIRS = [
     # DrawnUi.Blazor.Core static web assets -> _content/DrawnUi.Blazor.Core/fonts/
     # exposed to apps via IFontCollection.AddSymbols() / AddEmojis()
     os.path.join(REPO, "src", "Blazor", "DrawnUi", "wwwroot", "fonts"),
+    # DrawnUi.Web (pure WASM) static web assets -> _content/DrawnUi.Web/fonts/, same API
+    os.path.join(REPO, "src", "Wasm", "DrawnUi", "wwwroot", "fonts"),
 ]
 
 SOURCES = {

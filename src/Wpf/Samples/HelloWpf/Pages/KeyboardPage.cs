@@ -41,7 +41,7 @@ public class KeyboardPage : SkiaLayer
                     Children = new List<SkiaControl>
                     {
                         new SkiaLabel("Keyboard Input") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
-                        new SkiaLabel("KeyboardManager is fed by DrawnUiElement's preview key events (the WPF equivalent of the Blazor / Wasm window listeners): shortcuts, game input, drawn editors. Click the canvas, then press letters, arrows, modifiers or function keys.")
+                        new SkiaLabel("KeyboardManager is fed by the window (UseDesktopKeyboard in the startup settings, as on MAUI desktop) and by a focused DrawnUiElement: shortcuts, game input, drawn editors. Press letters, arrows, modifiers or function keys.")
                         {
                             FontSize = 13, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,
                         },

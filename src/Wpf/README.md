@@ -4,13 +4,16 @@
 normal `FrameworkElement`; everything inside it is drawn with SkiaSharp, on the GPU through ANGLE
 or in software, and takes part in WPF XAML, `{Binding}`, styles and triggers.
 
-Preview. Windows only, .NET 9 and .NET 10 (`net9.0-windows`, `net10.0-windows`).
+Windows only, .NET 9 and .NET 10 (`net9.0-windows`, `net10.0-windows`).
 
 ## Install
 
 ```bash
-dotnet add package DrawnUi.Wpf --prerelease
+dotnet add package DrawnUi.Wpf
 ```
+
+For games add `DrawnUi.Wpf.Game`: the `DrawnGame` base class shared with the MAUI, OpenTK, Blazor and
+WASM game addons, hosted through `new DrawnUiElement(() => new RescalingCanvas { ... })`.
 
 ## Startup
 
@@ -33,6 +36,11 @@ Super.UseDrawnUi()
   </Content>
 </ItemGroup>
 ```
+
+The same `DrawnUiStartupSettings` a MAUI app uses go through `.WithSettings(...)` before `Build()`:
+`DesktopWindow` sizes the window hosting the first element, `UseDesktopKeyboard` feeds every key
+pressed in that window to `KeyboardManager`, `Logger` receives `Super.Log`, `Startup` runs once after
+initialization. `.ConfigureStyles(...)` and `.PreloadAssets(...)` are on the same builder.
 
 ## A drawn canvas in XAML
 
@@ -75,12 +83,11 @@ Rendering is idle-gated: nothing is painted while the drawn tree is clean.
 - `SkiaShell` for drawn navigation: pages, tabs, popups, modals, toasts, `IVisibilityAware` callbacks.
 - C# Hot Reload under Visual Studio, Rider and `dotnet watch`.
 
-## Preview limits
+## Known limitations
 
 - Touch and pen were implemented against the WPF touch events but not yet exercised on touch hardware; pen pressure is not read.
 - XAML Hot Reload for drawn controls is untested; C# Hot Reload is.
 - Editor Shift+arrow and Ctrl combinations were tested in code only.
-- No native control embedding (`SkiaMauiElement` has no WPF equivalent yet).
 
 ## Samples
 
@@ -89,5 +96,6 @@ In the repository, [src/Wpf/Samples](https://github.com/DrawnUi/DrawnUi.Net/tree
 - [HelloWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/HelloWpf) — the full demo, one page per feature: cells, images, SVG, shapes, text, layouts, looks, snapping, animations, shell, editor, keyboard, scroll, shaders, sprites, transforms, reorder, accessibility.
 - [WpfSandbox](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfSandbox) — a XAML window with `{Binding}` to a view model and a WPF style, referencing the head from source.
 - [WpfPackageDemo](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPackageDemo) — the same window consuming the NuGet package; copy it to start a new app.
+- [WpfPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPong) — the Pong game shared with the OpenTK and WebAssembly samples, hosted in a WPF window through the `DrawnUi.Wpf.Game` addon: a `DrawnGame` loop, keyboard and mouse input, a `RescalingCanvas` that keeps the game's aspect ratio when the window resizes.
 
 Docs: https://drawnui.net/articles/wpf/

@@ -16,7 +16,7 @@ Supported hosts:
 * `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
 * `DrawnUi.Wasm` - pure browser WebAssembly, no Blazor required.
 * `DrawnUi.OpenTk` - Windows and Linux desktops.
-* `DrawnUi.Wpf` - drawn controls inside WPF windows, preview.
+* `DrawnUi.Wpf` - drawn controls inside WPF windows.
 * `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
 
 ## React?
@@ -43,7 +43,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## Addons
 
-* Create games: `DrawnUi.DrawnUi.Game`, `DrawnUi.Blazor.Game`,`DrawnUi.OpenTk.game`.
+* Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Wasm.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Wpf.Game`.
 * .NET MAUI only: `DrawnUi.MauiGraphics`
 * .NET MAUI only: `DrawnUi.DrawnUi.MapsUi`
 * .NET MAUI only: `DrawnUi.DrawnUi.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
@@ -57,51 +57,37 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://fiddle.drawnui.net)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.17
+## What's New 1.10.6.18
 
-  * Fix `SkiaCheckbox` flashed the style's own colour (Windows blue, iOS blue...) for the length of the check animation before taking `ColorFrameOn` / `ColorFrameOff`: the frames were revealed first and recoloured only when the animation ended. Colours go on before a frame is shown.
-  * Fix `SkiaSlider` thumbs drawn off the track or not at all (Default, Windows, Material, Material3 looks, regression in 1.10.6.16): the lazy-target observers `ObserveProperty(() => x, ...)`, `ObserveProperties(() => x, ...)` and `Observe(() => x, ...)` resolved their target when the control got its parent, which happens inside the parent's object initializer, before its `.Assign(out ...)` ran, so they saw null and never subscribed. They now resolve it at the control's first measure, as before 1.10.6.16; `.Initialize(...)` itself still runs on attach.
-  * Fix `SkiaViewSwitcher` could never pop a page pushed while no tab was selected (`SelectedIndex` -1, its default, e.g. a `SkiaShell` NavigationLayout used as a plain page stack): `PushView` put the page into tab 0 while `PopPage` looked in tab -1, so `GoBack` and `PopToRootAsync` did nothing. All tab lookups now resolve an unselected tab to 0.
-  * Windows look: `SkiaSlider` thumb has no drop shadow any more (WinUI has none, the offset shadow made the thumb look below the track) and a 1.5 pt border; `SkiaPicker` border is 1.5 pt.
-  * New sample `src/Maui/Samples/HelloMaui`: the HelloWpf / helloreact demo (19 pages) on DrawnUi.Maui, navigated by `SkiaShell`.
+  * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and even React. Each builds and runs as-is, with the whole UI in one method to replace..
+  * Emoji and symbols now draw on `DrawnUi.Web` (pure WASM): add them with `fonts.AddEmojis()` and `fonts.AddSymbols()`, the subsets DrawnUi.Blazor already ships. A browser has no system fonts, so without them those glyphs were blank.
+  * Images and SVGs with a relative source (`"drawnui.svg"`) now load on `DrawnUi.Web`, and http sources now load on OpenTK. Both heads lacked an `HttpClient`.
+  * Fixed `DrawnUi.Web` failing to link when referenced as a NuGet package (`undefined symbol: InterceptBrowserObjects`).
+  * The mouse wheel scrolls on `DrawnUi.OpenTk`.
+  * An OpenTK window now keeps drawing while you resize it.
+  * Mouse wheel: a fast spin travels farther than a slow one. Each notch used to restart the scroll animation and throw away the rest of the previous notch, so spinning faster scrolled less. All heads.
+  * `DrawnUi.Wpf` startup options: `Super.UseDrawnUi().WithSettings(new DrawnUiStartupSettings { ... })`, same settings class as MAUI — window size, desktop keyboard feeding `KeyboardManager`, logger, one-time startup action.
+  * `DrawnUi.Wpf` accelerated rendering is smooth: no more mixed or torn frames during scrolls and animations, and animations advance by the frame's presentation time instead of a jittery clock sample.
+  * New addon `DrawnUi.Wpf.Game`, so the WPF head runs `DrawnGame` like every other head, with a `WpfPong` sample.
+  * New sample `MauiPong`: every head now ships the Hello + Pong pair (MAUI, WPF, OpenTK, Blazor, WASM).
+  * `SkiaLabel` no longer clips the descenders (g, j, p, q, y) of its last line — glyph ink reaching past the line box is now part of the label's cached surface.
+  * Fixed a `SkiaScroll` jumping to the top when a control below the fold (a slider in a scrolled list) started its own drag: a transient measure made the scroll think its content no longer overflowed.
+  * `ViewsAdapter.GetCellsInUse()`: all realized cells of a templated layout, for app code that needs the live rows (drag-to-reorder, refreshing a row's look). Recycled cells never appear in `Views`.
 
- ### 1.10.6.16
-  
-  * **Behavior change** (healing): fluent `.Initialize(me => ...)` (`ExecuteAfterCreated`) now runs the moment the control gets its parent (added to `Children`/`Content`, or to the canvas for a root), right after its own initializer chain completed. It used to run at the control's first measure, so it never ran for a control created with `IsVisible = false` (nothing measures an invisible child), ran late for virtualized children outside the viewport, and ran again on every forced content re-initialization. It now runs exactly once, whatever the visibility; a control that never gets a parent runs it at its first measure as before. Inside it `Superview` may still be null (the parent gets attached later): for work that needs the live tree use `LayoutIsReady` or the `Initialized` event.
-  * `SkiaScrollBar.IsDraggable`: desktop scroll bar behavior, drag the thumb or press the track to jump there (the thumb centers under the pointer). `GrabPadding` widens the hit area of a thin bar. Off by default, the bar stays display-only and every gesture passes through to the content. A grabbed auto-hidden bar shows again immediately.
-  * `SkiaScrollBar.HideDurationSecs`: duration of the auto-hide fade-out (was a fixed 250 ms, default unchanged); with `AutoHide` and `HideDelaySecs` it sets how the bar fades after scrolling stops.
-  * Fix an auto-hiding `SkiaScrollBar` could stay visible after a scroll ended: the scroll re-evaluates its scrolling state only while drawing and nothing drew after the last animation frame, so the bar never learned scrolling had stopped. A scroll with a bar now draws one more frame when scrolling ends.
-  * Fix `SkiaScroll` detached its `ScrollBar` when `Content`, `Header` or `Footer` was set after it: the scroll bar was taken for the old content and removed as a subview. It was still drawn, but without a parent it could never request a redraw of its own, so an auto-hiding bar never faded out on screen.
-  * Fix `SkiaScroll` jumping away from the end after an overscroll bounce when it sits in a `SkiaGrid` row with a `ScrollBar`: the bar squashes its thumb while bouncing, and every thumb resize re-measured the scroll and its parents each frame; a provisional grid measure then pulled the offset in by the other rows' height. Scroll bars set on a `SkiaScroll` are now `IsParentIndependent`, their look never re-measures the layout around them (fewer layout passes while bouncing too).
-  * Fix `SkiaScroll` moved its offset during a provisional measure: a parent measuring it more than once with different sizes (a grid measures a star row before subtracting its Auto rows) made it clamp against transient bounds, and the offset stayed moved. The clamp for content that shrank past the offset now runs on draw, against the final bounds.
-  * Fix changing `ControlStyle` after a control was measured had no effect: `SkiaButton`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider`, `SkiaProgress`, `SkiaPicker`, `SkiaWheelPicker` all guard their default content with "create only when empty", and the sizes pinned by the first style (`WidthRequest`/`HeightRequest`, style defaults) were never released. New `SkiaControl.RebuildDefaultContent()` drops the content the control built itself (user-provided children stay), un-pins exactly the properties the previous style set (user-set values stay), and lets the next measure build the new style; `ControlStyle` now calls it, the `SkiaSlider.EnableRange` rebuild uses it too. The `Initialized` lifecycle event fires once, not again on a rebuild. Non-MAUI heads (Blazor, WPF, OpenTK, headless) got `BindableObject.ClearValue` for this.
-  * Fix `SkiaScroll` still reacting to gestures when `Orientation` is set to `ScrollOrientation.Neither` ([#347](https://github.com/taublast/DrawnUi/issues/347)): a drag rubber-banded the viewport and sprang back on release, and the mouse wheel was consumed without scrolling anything, so it never reached a parent scroll. Panning, fling and wheel are now all skipped for `Neither`.
-  * Fix Android `Canvas` staying blank after its kept-alive native view was moved to another window, e.g. cached content shown again inside a new popup/dialog: a canvas detected as hidden in the first window never woke up in the next one, because its visibility listeners stayed bound to the previous window's `ViewTreeObserver`. They are now re-registered, with a visibility re-check, every time the view attaches to a window.
-  * Fix memory leak: every time a kept-alive `Canvas` lost and regained its handler (a cached page pushed again after a pop) its internal Skia view leaked together with its native views. The destroyed view stayed as `Content`, MAUI mapped it again before the replacement was created, and it subscribed itself back to the static `Super.OrientationChanged` event. Replaced views are now disconnected and disposed, and a disposed view never re-subscribes.
-  * Fix Android memory leak: the canvas `ViewTreeObserver` listeners (layout and pre-draw) were removed after the view had left its window, where Android returns a throw-away observer, so the window kept every listener for the app lifetime. They are now removed from the observer they were registered with, on window detach.
-  * Fix Android `Super.SetWhiteTextStatusBar()` / `SetBlackTextStatusBar()` had no effect under MAUI 10: MAUI now sets the status bar appearance through the insets controller when the window is created (edge-to-edge), and the helpers were only toggling the legacy `SystemUiVisibility` flag. They now use the insets controller too.
-  * Fix `DrawnUi.Maui.MapsUi` on Android failing the 16 KB page-size check (system "Android App Compatibility" dialog on Android 16+): the desktop `SQLitePCLRaw.lib.e_sqlite3` and `SkiaSharp.NativeAssets.Linux` packages were referenced for every target, so the 4 KB aligned linux `libe_sqlite3.so` was packed into the APK over the 16 KB aligned Android one. They are now referenced for desktop targets only.
-  * Fix center alignment drifting half a pixel right/down: when the free space around a centered child was an odd number of pixels, no whole-pixel offset could center it and rounding always pushed it right/down (e.g. the accent dot inside a `SkiaSlider` thumb). The child now takes that odd pixel, so both gaps are equal.
-  * Fix `SkiaEditor` (Windows, Android, iOS) putting typed characters in the wrong place during fast typing: the caret position read from the native text control was written back to it a moment later, after more keys had moved it, so the caret jumped back one character ("drawncamera.com" came out as "drawncameracom."). A caret position that came from the native control is no longer written back to it.
-  
  ### Previously
 
-  * Fix `SkiaViewSwitcher` traced an `ArgumentOutOfRangeException` on every root-view lookup while `SelectedIndex` was set before its children existed (the usual initializer order); the lookups now answer null quietly.
-  * Fix `SkiaShell` unfrozen modal push no longer holds the navigation lock forever
-  * Fix `SkiaScroll.ScrollToIndex` on a Split layout (items grid): the index is an item index and lands on that item's row; it was read as a row index, so any item past the first rows made the order silently invalid.
-  * Fix `SkiaScroll` LoadMore distances (`LoadMoreOffset`, `LoadMoreTopOffset`) are points and were multiplied by the rendering scale, so on a 3x screen the bottom trigger fired at any position once re-armed, e.g. at a top overscroll right after an append. The viewport init also no longer snaps the offset to 0 while a pan, fling, bounce or refresh runs (one-frame jag when an append re-measured a Split grid mid-bounce).
-  * Fix images loading: sync local loads decode inline; cancelled loads release parked requests  
-   * Fix `SkiaDrawer` was not removing its previous content when `Content` was replaced or set to null: the old child stayed in `Views` and was disposed together with the drawer, so a kept modal content came back disposed on its next presentation (blur, no popup).
-  * Center alignment: an overflowing box is moved back inside its parent instead of being truncated.
-  * Fix `SkiaCarousel` to block gestures for nor current slides
-  * Fix wheel picker to work properly when hosted inside a scroll container
-  * Fix `SkiaEditor` was leeking native entry display on latest iOS version.
-  * Fix `SkiaScroll` margins were applied to limit scrolling bounds
-  * Fix autosized `SkiaScroll` not expanding horizontally after content changed
-  * Fix centering text inside `SkiaEditor`
-  * Fix `SkiaScroll` margins were applied to limit scrolling bounds
-  * Fix autosized `SkiaScroll` not expanding horizontally after content changed
-  * Updated docs and skills at [https://drawnui.net](https://drawnui.net)
+  * Fluent `.Initialize(me => ...)` runs once when the control gets its parent, not at its first measure, so it also runs for controls created invisible or outside the viewport.
+  * `SkiaScrollBar.IsDraggable`: desktop behavior, drag the thumb or press the track to jump there; `HideDurationSecs` controls the auto-hide fade. Off by default, the bar stays display-only.
+  * Changing `ControlStyle` after a control was measured rebuilds its default content, so switching platform looks at runtime works; sizes pinned by the previous style are released, user-set values stay.
+  * Lazy observers (`ObserveProperty`, `ObserveProperties`, `Observe`) resolve their target at first measure again — they missed fields assigned with `.Assign(out ...)`, which drew slider thumbs off the track.
+  * `SkiaViewSwitcher` can pop pages pushed while no tab is selected, and stays quiet when `SelectedIndex` is set before its children exist.
+  * `SkiaScroll` ignores gestures when `Orientation` is `Neither`, so drags and the wheel reach the parent scroll ([#347](https://github.com/taublast/DrawnUi/issues/347)).
+  * `SkiaScroll` keeps its offset through provisional measures (a star row inside a `SkiaGrid`), including after an overscroll bounce; `ScrollToIndex` on a Split layout takes an item index; LoadMore distances are points, not pixels.
+  * `SkiaCheckbox` takes its own colours before the check animation shows a frame; the Windows look lost the slider thumb shadow and uses 1.5 pt borders.
+  * Android: a `Canvas` kept alive and moved to another window (a cached page shown in a new dialog) no longer stays blank, and two memory leaks around canvas re-attach are fixed. `Super.SetWhiteTextStatusBar()` works under MAUI 10.
+  * `DrawnUi.Maui.MapsUi` passes the Android 16 KB page-size check — desktop native packages no longer ship inside the APK.
+  * `SkiaEditor` puts fast-typed characters in the right place, centers its text, and no longer leaks the native entry on iOS.
+  * New samples and docs: `HelloMaui` (19 pages via `SkiaShell`), plus docs and AI skills at [https://drawnui.net](https://drawnui.net).
  
 ---
 MIT | Free to use and customize

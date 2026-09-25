@@ -61,6 +61,8 @@ Choose the sample that matches your runtime decision:
 - Start with `BlazorSandboxServer` when DrawnUI is part of an existing Blazor Server flow
 - Start with `BlazorSandboxHybrid` when you need both runtime models in one app
 
+- **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
+
 ## Related
 
 - [Blazor Overview](index.md)

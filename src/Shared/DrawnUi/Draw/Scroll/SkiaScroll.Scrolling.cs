@@ -170,27 +170,20 @@ public partial class SkiaScroll
 
         HasContentToScroll = ptsContentHeight > Viewport.Units.Height || ptsContentWidth > Viewport.Units.Width;
 
-        // "Nothing to scroll" snaps the offset home, but never under a live gesture, fling or bounce:
-        // an append into a Split grid resets its measurement for a pass, the content size is
-        // transiently zero, and this wrote 0 into a running top bounce, which then jumped back to
-        // where the spring was (device 2026-09-12: one-frame jag at the overscroll after a LoadMore).
-        // The bounce lands on 0 by itself; a fling past a shrunken end is clamped below once it ends.
-        var interacting = IsUserPanning || IsScrolling || IsRefreshing;
-
+        // "Nothing to scroll" is NOT decided here. This runs from the measure pass, and a parent may
+        // measure this scroll provisionally: a grid measures its star row at the full height before
+        // subtracting the Auto rows, so for that pass the viewport is taller than the content and the
+        // bounds say "everything fits". Snapping the offset home on that pass threw a scrolled list back
+        // to 0 whenever anything re-measured during a child's own gesture (device 2026-09-24, DrawnCamera
+        // Adjust: dragging a slider below the fold updated its value label, the list jumped to the top and
+        // the slider left the screen; nothing guarded it because the SCROLL was not the one panning).
+        // Earlier the same snap wrote 0 into a running bounce after a Split grid append (2026-09-12).
+        // The bounds are set here; the offset is pulled inside them on the next DRAW, against the final
+        // measure (ClampOffsetToBoundsIfPending): content that really fits lands on 0 there.
         _scrollMinX = ContentOffsetBounds.Left;
-        if (_scrollMinX >= 0 && !interacting)
-        {
-            ViewportOffsetX = 0;
-        }
-
         _scrollMaxX = 0;
 
         _scrollMinY = ContentOffsetBounds.Top;
-        if (_scrollMinY >= 0 && !interacting)
-        {
-            ViewportOffsetY = 0;
-        }
-
         _scrollMaxY = 0;
 
         // Pull an offset the new bounds no longer contain back inside them - but on the next DRAW, not here.

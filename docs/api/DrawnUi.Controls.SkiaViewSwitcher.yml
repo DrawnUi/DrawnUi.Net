@@ -60,6 +60,7 @@ items:
   - DrawnUi.Controls.SkiaViewSwitcher.PushView(DrawnUi.Draw.SkiaControl,System.Boolean,System.Boolean,System.Int32)
   - DrawnUi.Controls.SkiaViewSwitcher.RemovePageFromStack``1(System.Int32)
   - DrawnUi.Controls.SkiaViewSwitcher.Reset
+  - DrawnUi.Controls.SkiaViewSwitcher.ResolveTab(System.Int32)
   - DrawnUi.Controls.SkiaViewSwitcher.RevealNavigationView(DrawnUi.Controls.SkiaViewSwitcher.NavigationStackEntry)
   - DrawnUi.Controls.SkiaViewSwitcher.ScrollTo(System.Single,System.Single,System.Single,System.Boolean)
   - DrawnUi.Controls.SkiaViewSwitcher.SelectedIndex
@@ -787,7 +788,12 @@ items:
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
@@ -1718,6 +1724,49 @@ items:
   nameWithType.vb: SkiaViewSwitcher.SetChildren(IEnumerable(Of SkiaControl))
   fullName.vb: DrawnUi.Controls.SkiaViewSwitcher.SetChildren(System.Collections.Generic.IEnumerable(Of DrawnUi.Draw.SkiaControl))
   name.vb: SetChildren(IEnumerable(Of SkiaControl))
+- uid: DrawnUi.Controls.SkiaViewSwitcher.ResolveTab(System.Int32)
+  commentId: M:DrawnUi.Controls.SkiaViewSwitcher.ResolveTab(System.Int32)
+  id: ResolveTab(System.Int32)
+  parent: DrawnUi.Controls.SkiaViewSwitcher
+  langs:
+  - csharp
+  - vb
+  name: ResolveTab(int)
+  nameWithType: SkiaViewSwitcher.ResolveTab(int)
+  fullName: DrawnUi.Controls.SkiaViewSwitcher.ResolveTab(int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ResolveTab
+    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    startLine: 166
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: >-
+    The tab a navigation call works on: the requested one, else <xref href="DrawnUi.Controls.SkiaViewSwitcher.SelectedIndex" data-throw-if-not-resolved="false"></xref>, else 0.
+
+    <xref href="DrawnUi.Controls.SkiaViewSwitcher.SelectedIndex" data-throw-if-not-resolved="false"></xref> defaults to -1 (no tab selected), which for a switcher used as a plain
+
+    page stack means its single root tab: push and pop must agree on that, or a page pushed into
+
+    tab 0 can never be popped.
+  example: []
+  syntax:
+    content: protected int ResolveTab(int tab)
+    parameters:
+    - id: tab
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Protected Function ResolveTab(tab As Integer) As Integer
+  overload: DrawnUi.Controls.SkiaViewSwitcher.ResolveTab*
+  nameWithType.vb: SkiaViewSwitcher.ResolveTab(Integer)
+  fullName.vb: DrawnUi.Controls.SkiaViewSwitcher.ResolveTab(Integer)
+  name.vb: ResolveTab(Integer)
 - uid: DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack(System.Int32)
   commentId: M:DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack(System.Int32)
   id: GetNavigationStack(System.Int32)
@@ -1736,7 +1785,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetNavigationStack
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 160
+    startLine: 174
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1770,7 +1819,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 186
+    startLine: 200
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1808,7 +1857,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetRootView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 213
+    startLine: 227
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1851,7 +1900,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 231
+    startLine: 245
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1889,7 +1938,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentPage
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 288
+    startLine: 297
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1923,7 +1972,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindPageInStack
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 314
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1959,7 +2008,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemovePageFromStack
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 339
+    startLine: 346
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1993,7 +2042,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BringPageToFront
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 362
+    startLine: 368
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2029,7 +2078,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModal
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 394
+    startLine: 399
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2061,7 +2110,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopPage
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 398
+    startLine: 403
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2095,7 +2144,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTabNavigationIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 437
+    startLine: 441
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2123,7 +2172,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RevealNavigationView
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 459
+    startLine: 464
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2155,7 +2204,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopTabToRoot
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-    startLine: 475
+    startLine: 480
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -17370,6 +17419,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityId
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityId
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityId
+  name: AccessibilityId
+  nameWithType: SkiaControl.AccessibilityId
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityId
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
   parent: DrawnUi.Draw.SkiaControl
@@ -17377,6 +17433,82 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaControl.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaControl.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaControl.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  name: DefaultAccessibilityIsPressed()
+  nameWithType: SkiaControl.DefaultAccessibilityIsPressed()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
   parent: DrawnUi.Draw.SkiaControl
@@ -42702,12 +42834,18 @@ references:
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
   - name: )
-- uid: DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack*
-  commentId: Overload:DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack
-  href: DrawnUi.Controls.SkiaViewSwitcher.html#DrawnUi_Controls_SkiaViewSwitcher_GetNavigationStack_System_Int32_
-  name: GetNavigationStack
-  nameWithType: SkiaViewSwitcher.GetNavigationStack
-  fullName: DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack
+- uid: DrawnUi.Controls.SkiaViewSwitcher.SelectedIndex
+  commentId: P:DrawnUi.Controls.SkiaViewSwitcher.SelectedIndex
+  href: DrawnUi.Controls.SkiaViewSwitcher.html#DrawnUi_Controls_SkiaViewSwitcher_SelectedIndex
+  name: SelectedIndex
+  nameWithType: SkiaViewSwitcher.SelectedIndex
+  fullName: DrawnUi.Controls.SkiaViewSwitcher.SelectedIndex
+- uid: DrawnUi.Controls.SkiaViewSwitcher.ResolveTab*
+  commentId: Overload:DrawnUi.Controls.SkiaViewSwitcher.ResolveTab
+  href: DrawnUi.Controls.SkiaViewSwitcher.html#DrawnUi_Controls_SkiaViewSwitcher_ResolveTab_System_Int32_
+  name: ResolveTab
+  nameWithType: SkiaViewSwitcher.ResolveTab
+  fullName: DrawnUi.Controls.SkiaViewSwitcher.ResolveTab
 - uid: System.Int32
   commentId: T:System.Int32
   parent: System
@@ -42719,6 +42857,12 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+- uid: DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack*
+  commentId: Overload:DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack
+  href: DrawnUi.Controls.SkiaViewSwitcher.html#DrawnUi_Controls_SkiaViewSwitcher_GetNavigationStack_System_Int32_
+  name: GetNavigationStack
+  nameWithType: SkiaViewSwitcher.GetNavigationStack
+  fullName: DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack
 - uid: System.Collections.Generic.List{DrawnUi.Controls.SkiaViewSwitcher.NavigationStackEntry}
   commentId: T:System.Collections.Generic.List{DrawnUi.Controls.SkiaViewSwitcher.NavigationStackEntry}
   parent: System.Collections.Generic
