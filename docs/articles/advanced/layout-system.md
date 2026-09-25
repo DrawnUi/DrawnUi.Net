@@ -74,9 +74,9 @@ The `ViewsAdapter` class manages template instantiation, recycling, and state ma
 
 The layout system supports different strategies for measuring item sizes:
 
-- **MeasureFirst**: Measures all items before rendering
-- **MeasureAll**: Continuously measures all items
-- **MeasureVisible**: Only measures visible items
+- **MeasureAll** (default): Measures every item, each keeps its own size
+- **MeasureFirst**: Measures the first item only, every row takes its size (uniform rows)
+- **MeasureVisible**: Measures visible items, the rest in background
 
 These strategies let you balance between layout accuracy and performance.
 

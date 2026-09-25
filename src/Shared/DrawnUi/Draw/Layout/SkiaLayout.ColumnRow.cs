@@ -497,7 +497,7 @@ else
                             needMeasureAll = RecyclingTemplate == RecyclingTemplate.Disabled ||
                                              MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
                                              (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
-                                              && columnsCount != Split)
+                                              && columnsCount != SplitColumns)
                                              || !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
                                                   && firstCell != null);
                         }
@@ -572,7 +572,7 @@ else
                                     bool needMeasure =
                                         needMeasureAll ||
                                         (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst &&
-                                         columnsCount != Split)
+                                         columnsCount != SplitColumns)
                                         || !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst &&
                                              firstCell != null);
 
@@ -1007,7 +1007,7 @@ else
                                          RecyclingTemplate == RecyclingTemplate.Disabled ||
                                          MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
                                          (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst &&
-                                          columnsCount != Split) ||
+                                          columnsCount != SplitColumns) ||
                                          !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && firstCell != null);
 
                     // Inline CalculateWidthPerColumn with pre-calculated spacing
@@ -1188,7 +1188,7 @@ else
                                          RecyclingTemplate == RecyclingTemplate.Disabled ||
                                          MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
                                          (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst &&
-                                          columnsCount != Split) ||
+                                          columnsCount != SplitColumns) ||
                                          !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && firstCell != null);
 
                     // Inline CalculateWidthPerColumn
@@ -1590,13 +1590,20 @@ else
             return rectForChildrenPixels.Width;
         }
 
+        /// <summary>
+        /// Columns a full row holds. Split defaults to 0, which is a plain single-column stack: comparing a
+        /// row's column count against the raw 0 made every row look "partial", so MeasureFirst silently
+        /// measured every cell (a ~385-row list re-measured all rows on each width change).
+        /// </summary>
+        private int SplitColumns => Split > 0 ? Split : 1;
+
         private bool ShouldMeasureAll(bool isTemplated, bool useOneTemplate, int columnsCount, ControlInStack firstCell)
         {
             if (!isTemplated || !useOneTemplate) return true;
 
             return RecyclingTemplate == RecyclingTemplate.Disabled ||
                    MeasureItemsStrategy == MeasuringStrategy.MeasureAll ||
-                   (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && columnsCount != Split) ||
+                   (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && columnsCount != SplitColumns) ||
                    !(MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && firstCell != null);
         }
 
@@ -1935,9 +1942,10 @@ else
 
                 if (hasChanges)
                 {
-                    // Calculate new content size by adjusting current size
-                    var newContentWidth = MeasuredSize.Pixels.Width + totalDeltaWidth;
-                    var newContentHeight = MeasuredSize.Pixels.Height + totalDeltaHeight;
+                    // Adjust the previous CONTENT size: the result is a content size the caller pads again,
+                    // starting from MeasuredSize (already padded) grew the layout by its padding each time.
+                    var newContentWidth = ContentSize.Pixels.Width + totalDeltaWidth;
+                    var newContentHeight = ContentSize.Pixels.Height + totalDeltaHeight;
 
                     // Apply layout constraints (Fill options)
                     if (HorizontalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Width >= 0)

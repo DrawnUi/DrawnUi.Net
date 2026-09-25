@@ -15,7 +15,7 @@ When you scroll through a list with hundreds or thousands of items, creating a n
 
 ## Basic Setup
 
-Enable recycling with the `RecyclingTemplate` property:
+Recycling is on by default (`RecyclingTemplate="Enabled"`). This list sets `MeasureFirst` because every `MyCell` has the same height; leave it out (the default `MeasureAll`) when rows can differ:
 
 ```xml
 <draw:SkiaLayout
@@ -73,21 +73,21 @@ public partial class MyCell : SkiaDynamicDrawnCell
 
 The `MeasureItemsStrategy` property controls how DrawnUI measures cell heights, which is crucial for performance:
 
-### MeasureFirst (Default)
+### MeasureFirst
 ```xml
 MeasureItemsStrategy="MeasureFirst"
 ```
-- **Best for**: Lists with consistent or similar item heights
-- **How it works**: Measures the first few items and uses that height for all items
-- **Performance**: Fastest, but can cause layout issues with varying heights
+- **Best for**: Lists whose rows all have the same height
+- **How it works**: Measures the first item and gives every row its size; adds, removes and moves are pure arithmetic
+- **Performance**: Fastest, but rows of other heights are cut or padded to the first row's height
 
-### MeasureAll
+### MeasureAll (Default)
 ```xml
 MeasureItemsStrategy="MeasureAll"
 ```
-- **Best for**: Small to medium lists where accuracy is important
-- **How it works**: Measures every item before displaying
-- **Performance**: Slower initial load, but accurate layout
+- **Best for**: Rows of different heights, small to medium lists
+- **How it works**: Measures every item before displaying; items added, removed or replaced later are measured as they arrive
+- **Performance**: Slower initial load than `MeasureFirst`, but exact for any content
 
 ### MeasureVisible (Experimental)
 ```xml
@@ -267,8 +267,8 @@ The framework calls these internally for the windowed LoadMore paths; custom lay
 **Solution**: Always reset all dynamic content in `SetContent()`
 
 ### Problem: Incorrect Heights
-**Cause**: Using wrong measure strategy for your content type
-**Solution**: Choose appropriate `MeasureItemsStrategy` based on your data
+**Cause**: `MeasureFirst` on rows of different heights: every row takes the first row's height
+**Solution**: Use `MeasureAll` (the default) or, for thousands of uneven rows, `MeasureVisible`; keep `MeasureFirst` for rows that all share one height
 
 ### Problem: Poor Scrolling Performance
 **Cause**: Not using proper caching or too many complex operations in `SetContent()`

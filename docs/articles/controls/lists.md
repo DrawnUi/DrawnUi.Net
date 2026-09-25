@@ -36,13 +36,13 @@ This is the general guide: how the pieces fit, which setup matches your content,
 
 ## The two main knobs
 
-**`RecyclingTemplate`** — who owns cell instances:
+**`RecyclingTemplate`** (default `Enabled`) — who owns cell instances:
 - `Disabled`: one view per item, kept alive and bound. Fast revisits, memory grows with item count.
 - `Enabled`: a small pool of cells is re-bound as items scroll in and out. Memory stays flat for infinite feeds; each appearing cell pays a re-bind.
 
-**`MeasureItemsStrategy`** — when items get measured:
-- `MeasureAll`: everything up-front. Simple and exact; startup cost grows with count.
-- `MeasureFirst`: measures ONE cell, positions every row arithmetically from that size. Zero per-item measuring — but requires truly uniform row heights.
+**`MeasureItemsStrategy`** (default `MeasureAll`) — when items get measured:
+- `MeasureAll`: every item measured, items added or replaced later measured as they arrive. Simple and exact for rows of any height; startup cost grows with count.
+- `MeasureFirst`: measures ONE cell, positions every row arithmetically from that size. Zero per-item measuring — but requires truly uniform row heights: a row of another height is cut or padded to the first row's height.
 - `MeasureVisible`: measures what's on screen now, the rest in background batches. Instant startup with thousands of uneven items; content size refines as measurement progresses.
 
 ## Which setup for which content
