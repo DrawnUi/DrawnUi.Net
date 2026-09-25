@@ -804,7 +804,12 @@ items:
   - DrawnUi.Draw.SkiaControl.Disposing
   - DrawnUi.Draw.SkiaControl.UnregisterAccessibility
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
+  - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
+  - DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
@@ -2045,7 +2050,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOpen
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 236
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2074,7 +2079,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 242
+    startLine: 243
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2101,7 +2106,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 256
+    startLine: 257
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2130,7 +2135,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContent
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 264
+    startLine: 265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2161,7 +2166,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Close
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 288
+    startLine: 289
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2187,7 +2192,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Open
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 293
+    startLine: 294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2213,7 +2218,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 324
+    startLine: 325
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2242,7 +2247,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOffsetToHide
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 353
+    startLine: 354
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2273,7 +2278,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoVelocity
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 405
+    startLine: 406
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2309,7 +2314,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetAutoVelocity
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 407
+    startLine: 408
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2345,7 +2350,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentOffsetBounds
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 425
+    startLine: 426
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2376,7 +2381,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyPosition
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 465
+    startLine: 466
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2407,7 +2412,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOptions
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 473
+    startLine: 474
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2441,7 +2446,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 519
+    startLine: 520
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2479,7 +2484,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckNeedToSnap
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 540
+    startLine: 541
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2507,7 +2512,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetIsOpen
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 548
+    startLine: 549
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2533,7 +2538,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateReportedPosition
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 561
+    startLine: 562
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2561,7 +2566,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetClosestSidePoint
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 577
+    startLine: 578
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2602,7 +2607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserFocused
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 623
+    startLine: 624
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2631,7 +2636,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 624
+    startLine: 625
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2660,7 +2665,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningOffset
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 625
+    startLine: 626
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2687,7 +2692,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityAccumulator
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 627
+    startLine: 628
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2716,7 +2721,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildWasTapped
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 629
+    startLine: 630
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2743,7 +2748,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 633
+    startLine: 634
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2778,7 +2783,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoClose
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 969
+    startLine: 970
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2807,7 +2812,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClampOffsetWithRubberBand
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 977
+    startLine: 978
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -17139,6 +17144,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityChanged
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityId
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityId
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityId
+  name: AccessibilityId
+  nameWithType: SkiaControl.AccessibilityId
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityId
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityRole
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityRole
   parent: DrawnUi.Draw.SkiaControl
@@ -17146,6 +17158,82 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
+- uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  commentId: M:DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  name: GetDefaultAccessibilityRole()
+  nameWithType: SkiaControl.GetDefaultAccessibilityRole()
+  fullName: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetDefaultAccessibilityRole
+    name: GetDefaultAccessibilityRole
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetDefaultAccessibilityRole
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  name: DefaultAccessibilityLabel()
+  nameWithType: SkiaControl.DefaultAccessibilityLabel()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
+    name: DefaultAccessibilityLabel
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityLabel
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaControl.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  name: DefaultAccessibilityIsPressed()
+  nameWithType: SkiaControl.DefaultAccessibilityIsPressed()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
+    name: DefaultAccessibilityIsPressed
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityIsPressed
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
   parent: DrawnUi.Draw.SkiaControl

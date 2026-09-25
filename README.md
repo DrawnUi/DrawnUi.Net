@@ -59,19 +59,19 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.18
 
-  * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and even React. Each builds and runs as-is, with the whole UI in one method to replace. DrawFiddle's Export .NET and React export build from them.
+  * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and even React. Each builds and runs as-is, with the whole UI in one method to replace..
   * Emoji and symbols now draw on `DrawnUi.Web` (pure WASM): add them with `fonts.AddEmojis()` and `fonts.AddSymbols()`, the subsets DrawnUi.Blazor already ships. A browser has no system fonts, so without them those glyphs were blank.
   * Images and SVGs with a relative source (`"drawnui.svg"`) now load on `DrawnUi.Web`, and http sources now load on OpenTK. Both heads lacked an `HttpClient`.
   * Fixed `DrawnUi.Web` failing to link when referenced as a NuGet package (`undefined symbol: InterceptBrowserObjects`).
-  * The mouse wheel scrolls on `DrawnUi.OpenTk` — it was never forwarded, so a `SkiaScroll` only moved by dragging.
-  * An OpenTK window now keeps drawing while you drag its edge, instead of freezing on a stretched frame until you let go.
+  * The mouse wheel scrolls on `DrawnUi.OpenTk`.
+  * An OpenTK window now keeps drawing while you resize it.
   * Mouse wheel: a fast spin travels farther than a slow one. Each notch used to restart the scroll animation and throw away the rest of the previous notch, so spinning faster scrolled less. All heads.
-  * `SkiaLabel` no longer clips the descenders (g, j, p, q, y) of its last line — glyph ink reaching past the line box is now part of the label's cached surface.
-  * Fixed a `SkiaScroll` jumping to the top when a control below the fold (a slider in a scrolled list) started its own drag: a transient measure made the scroll think its content no longer overflowed.
   * `DrawnUi.Wpf` startup options: `Super.UseDrawnUi().WithSettings(new DrawnUiStartupSettings { ... })`, same settings class as MAUI — window size, desktop keyboard feeding `KeyboardManager`, logger, one-time startup action.
   * `DrawnUi.Wpf` accelerated rendering is smooth: no more mixed or torn frames during scrolls and animations, and animations advance by the frame's presentation time instead of a jittery clock sample.
   * New addon `DrawnUi.Wpf.Game`, so the WPF head runs `DrawnGame` like every other head, with a `WpfPong` sample.
   * New sample `MauiPong`: every head now ships the Hello + Pong pair (MAUI, WPF, OpenTK, Blazor, WASM).
+  * `SkiaLabel` no longer clips the descenders (g, j, p, q, y) of its last line — glyph ink reaching past the line box is now part of the label's cached surface.
+  * Fixed a `SkiaScroll` jumping to the top when a control below the fold (a slider in a scrolled list) started its own drag: a transient measure made the scroll think its content no longer overflowed.
   * `ViewsAdapter.GetCellsInUse()`: all realized cells of a templated layout, for app code that needs the live rows (drag-to-reorder, refreshing a row's look). Recycled cells never appear in `Views`.
 
  ### Previously

@@ -8,6 +8,7 @@ items:
   - DrawnUi.Views.AccessibilityNode.#ctor(System.String,System.String,System.String,SkiaSharp.SKRect,System.Boolean,System.Nullable{System.Boolean},System.String)
   - DrawnUi.Views.AccessibilityNode.CanInteract
   - DrawnUi.Views.AccessibilityNode.Hint
+  - DrawnUi.Views.AccessibilityNode.Id
   - DrawnUi.Views.AccessibilityNode.IsPressed
   - DrawnUi.Views.AccessibilityNode.Label
   - DrawnUi.Views.AccessibilityNode.Live
@@ -295,6 +296,37 @@ items:
       type: System.String
     content.vb: Public Property Live As String
   overload: DrawnUi.Views.AccessibilityNode.Live*
+- uid: DrawnUi.Views.AccessibilityNode.Id
+  commentId: P:DrawnUi.Views.AccessibilityNode.Id
+  id: Id
+  parent: DrawnUi.Views.AccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: AccessibilityNode.Id
+  fullName: DrawnUi.Views.AccessibilityNode.Id
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Id
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 10
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: Stable id of the source control (see <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public int Id { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Id As Integer
+  overload: DrawnUi.Views.AccessibilityNode.Id*
 references:
 - uid: DrawnUi.Views
   commentId: N:DrawnUi.Views
@@ -845,3 +877,56 @@ references:
   name: Live
   nameWithType: AccessibilityNode.Live
   fullName: DrawnUi.Views.AccessibilityNode.Live
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityId
+  name: AccessibilityId
+  nameWithType: ISkiaAccessibilityNode.AccessibilityId
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+- uid: DrawnUi.Views.AccessibilityNode.Id*
+  commentId: Overload:DrawnUi.Views.AccessibilityNode.Id
+  href: DrawnUi.Views.AccessibilityNode.html#DrawnUi_Views_AccessibilityNode_Id
+  name: Id
+  nameWithType: AccessibilityNode.Id
+  fullName: DrawnUi.Views.AccessibilityNode.Id
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode
+  commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html
+  name: ISkiaAccessibilityNode
+  nameWithType: ISkiaAccessibilityNode
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html

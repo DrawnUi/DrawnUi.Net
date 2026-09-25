@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityCanInteract
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityHint
+  - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityIsPressed
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
   - DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLive
@@ -50,6 +51,37 @@ items:
     content.vb: Public Interface ISkiaAccessibilityNode
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+  id: AccessibilityId
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityId
+  nameWithType: ISkiaAccessibilityNode.AccessibilityId
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AccessibilityId
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Stable per-control id; platform layers use it as the automation / runtime id so AT keeps its place across snapshot rebuilds.
+  example: []
+  syntax:
+    content: int AccessibilityId { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property AccessibilityId As Integer
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId*
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
   commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityRole
   id: AccessibilityRole
@@ -68,7 +100,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityRole
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 11
+    startLine: 14
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -99,7 +131,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityLabel
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 14
+    startLine: 17
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -130,7 +162,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityHint
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 17
+    startLine: 20
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -161,7 +193,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityCanInteract
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 23
+    startLine: 26
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -195,7 +227,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityIsPressed
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 28
+    startLine: 31
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -226,7 +258,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityLive
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 35
+    startLine: 38
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -262,7 +294,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAccessibilityElement
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 38
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -293,7 +325,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetAccessibilityPixelRect
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 44
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -326,7 +358,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityActivated
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 50
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -357,7 +389,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyAccessibility
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 56
+    startLine: 59
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -388,7 +420,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityUnregistered
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 59
+    startLine: 62
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -416,7 +448,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyAccessibilityFocused
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 65
+    startLine: 68
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -453,7 +485,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityFocused
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 73
+    startLine: 76
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -603,6 +635,30 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityId
+  name: AccessibilityId
+  nameWithType: ISkiaAccessibilityNode.AccessibilityId
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityId
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
   commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.IsAccessibilityElement
   parent: DrawnUi.Draw.ISkiaAccessibilityNode
@@ -640,13 +696,6 @@ references:
   name: ISkiaAccessibilityNode
   nameWithType: ISkiaAccessibilityNode
   fullName: DrawnUi.Draw.ISkiaAccessibilityNode
-- uid: System
-  commentId: N:System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System
-  nameWithType: System
-  fullName: System
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel*
   commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
   href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityLabel
