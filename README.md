@@ -59,7 +59,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.18
 
-  * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and React. Each builds and runs as-is, with the whole UI in one method to replace. DrawFiddle's Export .NET and React export build from them.
+  * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and even React. Each builds and runs as-is, with the whole UI in one method to replace. DrawFiddle's Export .NET and React export build from them.
   * Emoji and symbols now draw on `DrawnUi.Web` (pure WASM): add them with `fonts.AddEmojis()` and `fonts.AddSymbols()`, the subsets DrawnUi.Blazor already ships. A browser has no system fonts, so without them those glyphs were blank.
   * Images and SVGs with a relative source (`"drawnui.svg"`) now load on `DrawnUi.Web`, and http sources now load on OpenTK. Both heads lacked an `HttpClient`.
   * Fixed `DrawnUi.Web` failing to link when referenced as a NuGet package (`undefined symbol: InterceptBrowserObjects`).
