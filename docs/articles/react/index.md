@@ -16,6 +16,8 @@ npm i drawnui-react@preview react react-dom
 
 `drawnui-react` gives you the React tags plus the engine types, `drawnui-react/core` the engine alone. CanvasKit's `.wasm` is referenced with a `?url` import, so a bundler that understands it (Vite) is required.
 
+To start a new app, copy the starter template [`tpls/React/EmptyCode`](https://github.com/DrawnUi/DrawnUi.Net/tree/main/tpls/React/EmptyCode): a Vite + React app with the canvas, fonts and startup already wired. Run `npm install` and `npm run dev`, then build your UI in `src/MainPage.tsx`.
+
 ## Usage
 
 ```tsx
@@ -35,9 +37,20 @@ await Super.UseDrawnUi()
 
 The goal is the same API surface as the .NET version: same control names, same PascalCase property names, same measure/arrange/paint contract, so documentation transfers.
 
-Ported so far: `SkiaLayout` in Absolute, Column and Row (plus the `SkiaStack` / `SkiaRow` / `SkiaLayer` aliases) with templated recycling cells in Column mode, `SkiaScroll`, `SkiaLabel` and `SkiaRichLabel`, `SkiaShape`, `SkiaImage`, `SkiaSvg`, `SkiaButton`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider`, `SkiaProgress`, `SkiaCarousel`, `SkiaDrawer`, `SkiaEditor`, `SkiaLottie`, `SkiaGif`, `SkiaSprite`, `SkiaBackdrop`, `DrawnGame`, shader effects, gradients, transforms, animators, the tap and pan gesture pipeline, and the accessibility overlay model used by DrawnUi.Blazor.
+What you can use today:
 
-Caching follows the .NET model: `UseCache` takes the same values. `Operations` records an `SkPicture` and replays it, `Image` snapshots an offscreen surface, `ImageDoubleBuffered` keeps the last cache while a new one is produced, and `ImageComposite` keeps its offscreen surface between records and repaints only the children that changed plus the siblings they overlap.
+- **Layouts**: `SkiaLayout` in Absolute, Column, Row, Wrap and Grid, with the `SkiaStack`, `SkiaRow`, `SkiaLayer`, `SkiaWrap` and `SkiaGrid` aliases, and `SkiaDecoratedGrid`. Long lists recycle their cells.
+- **Scrolling**: `SkiaScroll` with headers, footers, `SkiaScrollBar`, pull to refresh (`RefreshIndicator`) and snapping.
+- **Text**: `SkiaLabel` with spans, `SkiaRichLabel` with markdown, and `SkiaEditor` for drawn text input.
+- **Shapes and images**: `SkiaShape`, `SkiaImage`, `SkiaImageTiles`, `SkiaSvg`, gradients, shadows and shader effects.
+- **Controls**: `SkiaButton`, `SkiaHotspot`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider` and `SkiaProgress`, in the Default, Cupertino, Material and Windows looks.
+- **Carousels and panels**: `SkiaCarousel`, `SkiaShaderCarousel` and `SkiaDrawer`.
+- **Animation**: `SkiaLottie`, `SkiaGif`, `SkiaSprite`, `SkiaSpriteSet`, animators and transforms.
+- **Apps and games**: `SkiaShell` navigation (pages, popups, modals, toasts), `DrawnGame`, `KeyboardManager` and styles (`ConfigureStyles`).
+- **Input**: taps and pans. Every mouse button taps, with the button in `e.Parameters.Event.Pointer`, and `ContextMenu` on any control (and on `<Canvas>`) takes the right-click menu request, with the same handler shape as on the .NET web heads.
+- **Accessibility**: the same overlay model as DrawnUi.Blazor.
+
+Caching follows the .NET model: `UseCache` takes the same values. `Operations` records an `SkPicture` and replays it, `Image` snapshots an offscreen surface, `ImageDoubleBuffered` keeps the last cache while a new one is produced, and `ImageComposite` keeps its offscreen surface between records and repaints only the children that changed plus the siblings they overlap. On an accelerated (WebGL) canvas the offscreen surface lives on the GPU, so `Image` and `GPU` caches both stay on the graphics card.
 
 ## Samples
 
@@ -93,10 +106,11 @@ Want to see it in action? The demo includes Pong, ported line by line from the .
 
 ## Still in progress
 
-Work continues control by control against the .NET sources. On the list today:
+Work continues control by control against the .NET sources. Not there yet:
 
-- A dedicated GPU cache path. `GPU` currently resolves to `Image` and `ImageCompositeGPU` to `ImageComposite`.
-- Long press, hover and multi-touch pinch. They are declared for parity and not produced yet. Right click: every mouse button taps, with the button in `e.Parameters.Event.Pointer`, and `ContextMenu` on any control (and on `<Canvas>`) takes the browser menu request, the same handler shape as on the .NET web heads.
+- **Gestures**: long press, hover and two-finger pinch.
+- **Recycling beyond one column**: lists in a single column reuse their cells, while templated rows, grids and wraps still create every item.
+- **Controls**: `SkiaViewSwitcher`, `SkiaTabsSelector`, `SkiaWheelPicker`, `SkiaSpinner`, `SkiaCachedStack` and `SkiaLabelFps`.
 
 ## Known limitations
 
