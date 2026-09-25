@@ -366,6 +366,12 @@
         _measuredCanvasWidth = nextWidth;
         _measuredCanvasHeight = nextHeight;
 
+        // A canvas that follows its host on both axes is sized by CSS: its markup does not depend on
+        // the host size, and SkiaSharp resizes + redraws the bitmap itself. Re-rendering the component
+        // here would add a Blazor render pass to every frame of a window drag for nothing.
+        if (CanvasFollowsHostWidth && CanvasFollowsHostHeight)
+            return;
+
         await InvokeAsync(StateHasChanged);
     }
 
@@ -424,8 +430,19 @@
         ? (float)HeightRequest
         : UsesAutoHostHeight ? AutoCanvasHeight : _measuredCanvasHeight > 0 ? _measuredCanvasHeight : AutoCanvasHeight;
 
+    // A Fill axis without a size request follows its host through CSS: the canvas then resizes in the
+    // same frame as the window, SkiaSharp sees it at once and the frame is redrawn before paint (as
+    // DrawnUi.React does). A pixel size from .NET waited for a JS->.NET->Blazor render round trip per
+    // step, so during a window drag the canvas froze at the old size and caught up only at the end.
     private string CanvasSurfaceElementStyle =>
-        $"width: {CanvasElementWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}px; height: {CanvasElementHeight.ToString(System.Globalization.CultureInfo.InvariantCulture)}px;";
+        $"width: {CssLength(CanvasFollowsHostWidth, CanvasElementWidth)}; height: {CssLength(CanvasFollowsHostHeight, CanvasElementHeight)};";
+
+    private bool CanvasFollowsHostWidth => !UsesAutoHostWidth && !(WidthRequest > 0 && CanUseRequestedCanvasSize());
+
+    private bool CanvasFollowsHostHeight => !UsesAutoHostHeight && !(HeightRequest > 0 && CanUseRequestedCanvasSize());
+
+    private static string CssLength(bool followsHost, float pixels) =>
+        followsHost ? "100%" : pixels.ToString(System.Globalization.CultureInfo.InvariantCulture) + "px";
 
     private float AutoCanvasWidth
     {
