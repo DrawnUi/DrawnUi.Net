@@ -14,7 +14,7 @@ Save under `~/.claude/skills/<name>/SKILL.md` (or your agent's skill folder) to 
 - [DrawnUI OpenTK skill](https://drawnui.net/skills/drawnui-opentk/SKILL.md): desktop apps — DrawnUiWindow, CanvasHost GL overlays, update modes, window chrome/icon, Linux fixes, instant desktop test harness
 - [DrawnUI headless testing skill](https://drawnui.net/skills/drawnui-net-harness/SKILL.md): pure-.NET headless harness — render frames offscreen, simulate gestures, reproduce scroll/virtualization bugs without a device
 - [SkiaSharp SKMesh skill](https://drawnui.net/skills/skmech/SKILL.md): experimental SKMesh custom mesh drawing with SkSL — spec/buffers/DrawMesh, WASM trimming and backend traps. Bundle — also fetch [references/api-overview.md](https://drawnui.net/skills/skmech/references/api-overview.md) and [references/examples.md](https://drawnui.net/skills/skmech/references/examples.md)
-- [Fiddle driving skill](https://fiddle.drawnui.net/skills/drawnui-fiddle/SKILL.md): drive the in-browser playground programmatically (window.fiddle API)
+- [Fiddle driving skill](https://drawfiddle.com/skills/drawnui-fiddle/SKILL.md): drive the in-browser playground programmatically (window.fiddle API)
 
 ## Docs
 
@@ -39,4 +39,4 @@ DrawnUI for React (npm `drawnui-react`) is the same engine in TypeScript on Canv
 
 ## Try it live
 
-- [DrawnUI Fiddle](https://fiddle.drawnui.net/): in-browser C# playground — Roslyn compiles on WebAssembly, renders live on a DrawnUI canvas. AI-drivable, has its own [llms.txt](https://fiddle.drawnui.net/llms.txt).
+- [DrawnUI Fiddle](https://drawfiddle.com/): in-browser C# playground — Roslyn compiles on WebAssembly, renders live on a DrawnUI canvas. AI-drivable, has its own [llms.txt](https://drawfiddle.com/llms.txt).

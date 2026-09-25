@@ -7,7 +7,7 @@
 
 DrawnUI is a rendering and UI composition engine for .NET, powered by [SkiaSharp](https://github.com/mono/SkiaSharp) with gestures, layouts, effects and animations running with hardware acceleration.
 
-🤩 [Fiddle in browser](https://fiddle.drawnui.net) 👈
+🤩 [Fiddle in browser](https://drawfiddle.com) 👈
 
 Supported hosts:
 
@@ -54,7 +54,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 👉 [Docs and Samples](https://drawnui.net)   
 🤖 [AI skills](https://drawnui.net/llms.txt)   
-🤩 [Fiddle](https://fiddle.drawnui.net)   
+🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
 ## What's New 1.10.6.19
