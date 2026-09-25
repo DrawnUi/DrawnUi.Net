@@ -27,13 +27,13 @@ The `DrawnGame` base class (game loop with a frame-time interpolator, keyboard s
 
 | Host | Package | Sample |
 | --- | --- | --- |
-| .NET MAUI | `DrawnUi.Maui.Game` | [Breakout](https://github.com/DrawnUi/DrawnUi.Net.Breakout) |
+| .NET MAUI | `DrawnUi.Maui.Game` | [MauiPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/MauiPong) |
 | OpenTK | `DrawnUi.OpenTk.Game` | [OpenTkPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/OpenTkPong) |
 | Blazor | `DrawnUi.Blazor.Game` | [Pong page](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/BlazorSandbox) |
 | Pure WebAssembly | `DrawnUi.Wasm.Game` | [PongWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/PongWeb) |
 | WPF | `DrawnUi.Wpf.Game` | [WpfPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPong) |
 
-The Pong samples share one game project, `src/Shared/Samples/Pong.Shared`; each host adds a window, fonts and a `RescalingCanvas` that keeps the game's aspect ratio.
+The Pong samples share one game project, `src/Shared/Samples/Pong.Shared`; each host adds a window, fonts and a `RescalingCanvas` that keeps the game's aspect ratio. A bigger MAUI game with sound and levels: [Breakout](https://github.com/DrawnUi/DrawnUi.Net.Breakout).
 
 ## Game Loop and Real-Time Updates
 
