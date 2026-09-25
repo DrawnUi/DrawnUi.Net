@@ -57,7 +57,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://fiddle.drawnui.net)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.18
+## What's New 1.10.6.19
 
   * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and even React. Each builds and runs as-is, with the whole UI in one method to replace..
   * Emoji and symbols now draw on `DrawnUi.Web` (pure WASM): add them with `fonts.AddEmojis()` and `fonts.AddSymbols()`, the subsets DrawnUi.Blazor already ships. A browser has no system fonts, so without them those glyphs were blank.
