@@ -42,9 +42,9 @@ dotnet add package DrawnUi.Wasm
 dotnet add package DrawnUi.OpenTk
 ```
 
-**For WPF (drawn controls inside a WPF window, preview):**
+**For WPF (drawn controls inside a WPF window):**
 ```bash
-dotnet add package DrawnUi.Wpf --prerelease
+dotnet add package DrawnUi.Wpf
 ```
 
 **For platform-agnostic .NET workflows:**
@@ -79,7 +79,7 @@ builder.UseDrawnUi();
 - **[Blazor FAQ](blazor/faq.md)** - Package choice, migration path, and support boundaries
 - **[DrawnUi.Wasm](web/index.md)** - Pure WebAssembly host (no Blazor): standalone fully drawn web apps and games
 - **[DrawnUI for OpenTK](opentk/index.md)** - OpenTK `GameWindow` host: games, GPU tools, and desktop apps on Windows/Linux
-- **[DrawnUI for WPF](wpf/index.md)** - `DrawnUiElement` inside a WPF window: drawn controls in WPF XAML with bindings and styles (preview)
+- **[DrawnUI for WPF](wpf/index.md)** - `DrawnUiElement` inside a WPF window: drawn controls in WPF XAML with bindings and styles
 - **[DrawnUi.Net](net/index.md)** - Platform-agnostic rendering, harnesses, and headless workflows
 - **[Fluent Extensions](fluent-extensions.md)** - Code-behind UI creation patterns
 - **[FAQ](faq.md)** - Frequently asked questions and answers

@@ -13,7 +13,7 @@ Use this page first when you need to decide which package to install and which r
 | Blazor Server | `DrawnUi.Blazor.Server` | DrawnUI should be hosted in a Blazor Server or `InteractiveServer` app | Event-driven widgets, low-fps, dashboards, mixed Razor + DrawnUI pages |
 | Pure WebAssembly | `DrawnUi.Wasm` | You want a standalone fully drawn web app with no Blazor | Games, tools, full-canvas web surfaces; smallest WASM payload |
 | OpenTK (Windows/Linux) | `DrawnUi.OpenTk.Game` | You need fast and small-sized desktop app/game | create from scratch or overlay drawn layouts on top of your OpenGL window |
-| WPF (Windows) | `DrawnUi.Wpf` (preview) | You have or want a WPF app and need drawn, GPU-rendered UI inside it | Drawn controls declared in WPF XAML with `{Binding}` and styles, or a full drawn window with `SkiaShell` |
+| WPF (Windows) | `DrawnUi.Wpf` (+ `DrawnUi.Wpf.Game` for games) | You have or want a WPF app and need drawn, GPU-rendered UI inside it | Drawn controls declared in WPF XAML with `{Binding}` and styles, a full drawn window with `SkiaShell`, or a game |
 | Platform-agnostic .NET | `DrawnUi.Net` | You need DrawnUI without a framework-specific UI host | Headless rendering, console app, server-side, image/PDF generation, harnesses, shared-logic debugging |
 
 ## .NET MAUI
@@ -108,11 +108,14 @@ Start here:
 
 ## WPF (Windows)
 
-Install the preview package:
+Install:
 
 ```bash
-dotnet add package DrawnUi.Wpf --prerelease
+dotnet add package DrawnUi.Wpf
+dotnet add package DrawnUi.Wpf.Game
 ```
+
+The second package is the game addon (`DrawnGame`), only for games.
 
 Choose WPF when you already have a WPF application, or want one, and need DrawnUI inside a WPF window: `DrawnUiElement` is a normal `FrameworkElement`, the drawn controls inside it are declared in WPF XAML and take part in `{Binding}`, styles and triggers.
 
@@ -121,10 +124,12 @@ Use it for:
 - drawn, animated, GPU-rendered panels inside existing WPF apps
 - one drawn UI shared between WPF, MAUI, Blazor and OpenTK
 - full-window drawn desktop apps with `SkiaShell` navigation
+- desktop games, the same game source as on OpenTK and in the browser
 
 Start here:
 
 - [DrawnUI for WPF](wpf/index.md)
+- [WPF Samples](wpf/samples.md)
 
 ## Pure .NET
 
@@ -150,4 +155,4 @@ Start here:
 
 ## More targets coming
 
-The DrawnUI umbrella is expanding and your PRs are welcome. Current docs cover MAUI, Blazor, DrawnUi.Wasm, DrawnUi.Net, OpenTK, and WPF (preview), while future platform targets can slot into the same package-and-host model.
+The DrawnUI umbrella is expanding and your PRs are welcome. Current docs cover MAUI, Blazor, DrawnUi.Wasm, DrawnUi.Net, OpenTK, and WPF, while future platform targets can slot into the same package-and-host model.

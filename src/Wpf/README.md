@@ -4,13 +4,16 @@
 normal `FrameworkElement`; everything inside it is drawn with SkiaSharp, on the GPU through ANGLE
 or in software, and takes part in WPF XAML, `{Binding}`, styles and triggers.
 
-Preview. Windows only, .NET 9 and .NET 10 (`net9.0-windows`, `net10.0-windows`).
+Windows only, .NET 9 and .NET 10 (`net9.0-windows`, `net10.0-windows`).
 
 ## Install
 
 ```bash
-dotnet add package DrawnUi.Wpf --prerelease
+dotnet add package DrawnUi.Wpf
 ```
+
+For games add `DrawnUi.Wpf.Game`: the `DrawnGame` base class shared with the MAUI, OpenTK, Blazor and
+WASM game addons, hosted through `new DrawnUiElement(() => new RescalingCanvas { ... })`.
 
 ## Startup
 
@@ -75,12 +78,11 @@ Rendering is idle-gated: nothing is painted while the drawn tree is clean.
 - `SkiaShell` for drawn navigation: pages, tabs, popups, modals, toasts, `IVisibilityAware` callbacks.
 - C# Hot Reload under Visual Studio, Rider and `dotnet watch`.
 
-## Preview limits
+## Known limitations
 
 - Touch and pen were implemented against the WPF touch events but not yet exercised on touch hardware; pen pressure is not read.
 - XAML Hot Reload for drawn controls is untested; C# Hot Reload is.
 - Editor Shift+arrow and Ctrl combinations were tested in code only.
-- No native control embedding (`SkiaMauiElement` has no WPF equivalent yet).
 
 ## Samples
 

@@ -293,10 +293,10 @@ window.addEventListener('load', function() {
 
 <!-- WPF -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
-  <h3 style="margin-top: 0; color: white;">WPF <span style="font-size: 0.7em; color: #a0aec0;">preview</span></h3>
+  <h3 style="margin-top: 0; color: white;">WPF</h3>
   <p>Use <strong>DrawnUi.Wpf</strong> to put drawn, GPU-rendered controls inside a WPF window, declared in WPF XAML with bindings and styles.</p>
   <p><strong>Install:</strong></p>
-  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Wpf --prerelease</code></pre>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Wpf</code></pre>
   <p><a href="articles/wpf/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">WPF guide →</a></p>
 </div>
 
