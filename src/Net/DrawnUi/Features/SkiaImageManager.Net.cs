@@ -56,8 +56,7 @@ public class SkiaImageManager : IDisposable
                 return new FileStream(local, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 
-        var httpClient = Super.Services?.GetService<HttpClient>()
-            ?? throw new InvalidOperationException("[SkiaImageManager] HttpClient service was not found.");
+        var httpClient = GetHttpClient();
 
         await _loadSemaphore.WaitAsync(cancel);
         try
@@ -463,9 +462,22 @@ public class SkiaImageManager : IDisposable
         return null;
     }
 
+    /// <summary>
+    /// Base address for relative sources when no HttpClient is registered in <see cref="Super.Services"/>.
+    /// The web head sets it to the page base URL, so "drawnui.svg" is fetched from the site like a font.
+    /// </summary>
+    public static Uri HttpBaseAddress { get; set; }
+
+    private static HttpClient _ownHttpClient;
+
+    /// <summary>
+    /// The app's registered HttpClient, else one of our own: heads without a DI container (pure web,
+    /// OpenTK) register none, and without this every relative or http image source silently failed.
+    /// </summary>
     private static HttpClient GetHttpClient()
     {
-        return Super.Services?.GetService<HttpClient>();
+        return Super.Services?.GetService<HttpClient>()
+               ?? (_ownHttpClient ??= new HttpClient { BaseAddress = HttpBaseAddress });
     }
 
     private string ResolveRegisteredSource(string path)

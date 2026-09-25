@@ -31,6 +31,10 @@ public static partial class BrowserHost
         // no-op in the .NET WASM SDK), so fetch them over HTTP from static web assets, like Blazor.
         await SkiaFontManager.Instance.InitializeWebAsync(JsInterop.GetBaseUrl());
 
+        // Images and SVGs with relative sources ("drawnui.svg") come from the same site.
+        if (Uri.TryCreate(JsInterop.GetBaseUrl(), UriKind.Absolute, out var baseUri))
+            SkiaImageManager.HttpBaseAddress = baseUri;
+
         // Wire DOM input listeners + read the element's CSS size / device pixel ratio.
         JsInterop.InitCanvas(0, 0);
         JsInterop.UpdateCanvasSize();
