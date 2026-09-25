@@ -127,6 +127,12 @@ class MyGameWindow : GameWindow
         _host?.Gestures.OnMouseUp(e, MousePosition, ClientSize);
     }
 
+    protected override void OnMouseWheel(MouseWheelEventArgs e)
+    {
+        base.OnMouseWheel(e);
+        _host?.Gestures.OnMouseWheel(e, MousePosition, ClientSize);
+    }
+
     protected override void OnTextInput(TextInputEventArgs e)
     {
         base.OnTextInput(e);

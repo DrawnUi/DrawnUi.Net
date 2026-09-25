@@ -86,6 +86,36 @@ public partial class Canvas
         _desktopPreviousArgs = null;
     }
 
+    /// <summary>
+    /// Mouse wheel entry point for the desktop heads (OpenTK, WPF), mirroring the browser heads
+    /// (<c>WebInput.OnWheel</c>): a <see cref="TouchActionType.Wheel"/> gesture carrying
+    /// <see cref="WheelEventArgs"/>, which is what <c>SkiaScroll</c> listens for.
+    /// </summary>
+    /// <param name="x">Pointer X in canvas pixels.</param>
+    /// <param name="y">Pointer Y in canvas pixels.</param>
+    /// <param name="delta">Wheel delta in the Windows convention: +120 per notch away from the user, -120 toward.</param>
+    /// <param name="clientW">Canvas width in pixels.</param>
+    /// <param name="clientH">Canvas height in pixels.</param>
+    public void HandleDesktopWheel(float x, float y, int delta, float clientW, float clientH)
+    {
+        if (delta == 0)
+            return;
+
+        var location = new PointF(x, y);
+        var args = MakeDesktopTouchArgs(TouchActionType.Wheel, location, clientW, clientH);
+
+        // No sign flip here, unlike the browser: a negative delta (toward the user) is the direction
+        // DrawnUI expects for scrolling content down.
+        args.Wheel = new WheelEventArgs
+        {
+            Delta = delta,
+            Scale = 1f,
+            Center = location,
+        };
+
+        OnGestureEvent(TouchActionType.Wheel, args, TouchActionResult.Wheel);
+    }
+
     private void ScheduleDesktopLongPress(TouchActionEventArgs downArgs)
     {
         CancelDesktopLongPress();
