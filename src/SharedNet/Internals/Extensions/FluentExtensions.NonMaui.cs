@@ -32,28 +32,6 @@ namespace DrawnUi.Draw
         #region GRID
 
 
-#if BROWSER
-
-        public static T WithColumn<T>(this T view, int column) where T : SkiaControl
-        {
-            Grid.SetColumn(view, column);
-            return view;
-        }
-
-        public static SkiaLayout WithColumnDefinitions(this SkiaLayout grid, string columnDefinitions)
-        {
-            var columns = new ColumnDefinitionCollection();
-
-            foreach (var segment in columnDefinitions.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            {
-                columns.Add(new ColumnDefinition(ParseGridLength(segment)));
-            }
-
-            grid.ColumnDefinitions = columns;
-            return grid;
-        }
-
-#else
         /// <summary>
         /// Sets the Grid.Row attached property for the control
         /// </summary>
@@ -125,11 +103,11 @@ namespace DrawnUi.Draw
                 if (token == "*")
                     len = GridLength.Star;
                 else if (token.EndsWith("*"))
-                    len = new GridLength(double.Parse(token[..^1]), GridUnitType.Star);
+                    len = new GridLength(double.Parse(token[..^1], System.Globalization.CultureInfo.InvariantCulture), GridUnitType.Star);
                 else if (token.Equals("Auto", System.StringComparison.OrdinalIgnoreCase))
                     len = GridLength.Auto;
                 else
-                    len = new GridLength(double.Parse(token), GridUnitType.Absolute);
+                    len = new GridLength(double.Parse(token, System.Globalization.CultureInfo.InvariantCulture), GridUnitType.Absolute);
                 cols.Add(new ColumnDefinition(len));
             }
             grid.ColumnDefinitions = cols;
@@ -153,11 +131,11 @@ namespace DrawnUi.Draw
                 if (token == "*")
                     len = GridLength.Star;
                 else if (token.EndsWith("*"))
-                    len = new GridLength(double.Parse(token[..^1]), GridUnitType.Star);
+                    len = new GridLength(double.Parse(token[..^1], System.Globalization.CultureInfo.InvariantCulture), GridUnitType.Star);
                 else if (token.Equals("Auto", System.StringComparison.OrdinalIgnoreCase))
                     len = GridLength.Auto;
                 else
-                    len = new GridLength(double.Parse(token), GridUnitType.Absolute);
+                    len = new GridLength(double.Parse(token, System.Globalization.CultureInfo.InvariantCulture), GridUnitType.Absolute);
                 rows.Add(new RowDefinition(len));
             }
             grid.RowDefinitions = rows;
@@ -199,10 +177,54 @@ namespace DrawnUi.Draw
             return view;
         }
 
-#endif
 
 
 
+
+        #endregion
+
+        #region THICKNESS
+
+        public static Thickness WithTop(this Thickness existing, double value)
+        {
+            return new Thickness
+            {
+                Top = value,
+                Bottom = existing.Bottom,
+                Left = existing.Left,
+                Right = existing.Right
+            };
+        }
+        public static Thickness WithBottom(this Thickness existing, double value)
+        {
+            return new Thickness
+            {
+                Top = existing.Top,
+                Bottom = value,
+                Left = existing.Left,
+                Right = existing.Right
+            };
+        }
+        public static Thickness WithLeft(this Thickness existing, double value)
+        {
+            return new Thickness
+            {
+                Top = existing.Top,
+                Bottom = existing.Bottom,
+                Left = value,
+                Right = existing.Right
+            };
+        }
+        public static Thickness WithRight(this Thickness existing, double value)
+        {
+            return new Thickness
+            {
+                Top = existing.Top,
+                Bottom = existing.Bottom,
+                Left = existing.Left,
+                Right = value
+            };
+        }
 
         #endregion
 
