@@ -1,5 +1,39 @@
 const observers = new WeakMap();
 
+// SkiaSharp.Views.Blazor resizes the canvas bitmap the moment it learns a new size
+// (SKHtmlCanvas.requestAnimationFrame(renderLoop, width, height) writes canvas.width/height) and
+// draws on the NEXT animation frame. A new size arrives from a ResizeObserver, which the browser runs
+// after this frame's animation callbacks and before painting, so that frame was painted with the
+// freshly cleared bitmap: a one-frame blank after every resize (seen when a window resize settles).
+// When a call really changes the bitmap size, draw right away in a microtask, still before the
+// browser paints. Calls with an unchanged size (every normal frame) are untouched.
+let skiaCanvasPatch = null;
+
+function patchSkiaCanvasResize() {
+    skiaCanvasPatch ??= import(new URL('./_content/SkiaSharp.Views.Blazor/SKHtmlCanvas.js', document.baseURI).href)
+        .then(({ SKHtmlCanvas }) => {
+            const proto = SKHtmlCanvas?.prototype;
+            if (!proto || proto.requestAnimationFrame.drawnUiResizePatch) return;
+            const original = proto.requestAnimationFrame;
+            const patched = function (renderLoop, width, height) {
+                const canvas = this.htmlCanvas;
+                const resized = !!(width && height && canvas && (canvas.width !== width || canvas.height !== height));
+                original.call(this, renderLoop, width, height);
+                if (!resized) return;
+                queueMicrotask(() => {
+                    if (!this.htmlCanvas || !this.renderFrameCallback) return;   // disposed meanwhile
+                    if (this.glInfo) SKHtmlCanvas.getGL().makeContextCurrent(this.glInfo.context);
+                    if (typeof this.renderFrameCallback === 'function') this.renderFrameCallback();
+                    else this.renderFrameCallback.invokeMethod('Invoke');
+                });
+            };
+            patched.drawnUiResizePatch = true;
+            proto.requestAnimationFrame = patched;
+        })
+        .catch(() => { /* SkiaSharp not present or its layout changed: keep its own behavior */ });
+    return skiaCanvasPatch;
+}
+
 function isElementFullscreen(element, simulatedFullscreen) {
     return simulatedFullscreen === true || document.fullscreenElement === element || document.webkitFullscreenElement === element;
 }
@@ -57,70 +91,25 @@ export function isMobileBrowser() {
     return isMobileBrowserCore();
 }
 
-function showSnapshot(element, state) {
-    if (state.snapshotImg) return;
-    const canvas = element.querySelector('canvas');
-    if (!canvas || !state.allowSnapshot) return;
-    let dataUrl;
-    try {
-        dataUrl = canvas.toDataURL('image/png');
-    } catch {
-        return;
-    }
-    const img = document.createElement('img');
-    img.src = dataUrl;
-    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:10;opacity:1;transition:opacity 0.2s ease;pointer-events:none;';
-    element.style.position = element.style.position || 'relative';
-    element.appendChild(img);
-    state.snapshotImg = img;
-}
-
-function fadeSnapshot(state) {
-    const img = state.snapshotImg;
-    if (!img) return;
-    state.snapshotImg = null;
-    img.style.opacity = '0';
-    setTimeout(() => img.parentNode && img.parentNode.removeChild(img), 220);
-}
-
+// allowSnapshot is kept for the .NET caller's signature: the resize snapshot overlay it enabled is gone,
+// the canvas now follows its host live instead of freezing at the old size until resizing stops.
 export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     detachCanvasHost(element);
-
-    let resizeTimer = null;
-    let resizePending = false;
-    let hasFirstSize = false;
-    let hasFirstPaint = false;
+    patchSkiaCanvasResize();
 
     const state = {
         resizeObserver: null,
         onFullscreenChange: null,
         onSimulatedFullscreen: null,
         simulatedFullscreen: false,
-        snapshotImg: null,
         mutationObserver: null,
-        allowSnapshot: allowSnapshot === true,
-        get resizeTimer() { return resizeTimer; },
-        clearTimer() { clearTimeout(resizeTimer); resizeTimer = null; }
     };
 
+    // The browser delivers ResizeObserver callbacks at most once per frame, so passing every size on
+    // keeps the canvas at the real size during a window drag (as the desktop heads do) without flooding.
     const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
-            const box = entry.contentRect;
-            const w = box.width;
-            const h = box.height;
-
-            if (hasFirstSize && hasFirstPaint && !resizePending) {
-                resizePending = true;
-                showSnapshot(element, state);
-            }
-
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                resizePending = false;
-                fadeSnapshot(state);
-                notifySize(entry.target, dotNetRef, w, h);
-                hasFirstPaint = true;
-            }, 80);
+            notifySize(entry.target, dotNetRef, entry.contentRect.width, entry.contentRect.height);
         }
     });
 
@@ -153,7 +142,6 @@ export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     const rect = element.getBoundingClientRect();
     notifySize(element, dotNetRef, rect.width, rect.height);
     notifyFullscreen(element, dotNetRef, state.simulatedFullscreen);
-    hasFirstSize = true;
 }
 
 export function detachCanvasHost(element) {
@@ -162,8 +150,6 @@ export function detachCanvasHost(element) {
         return;
     }
 
-    state.clearTimer();
-    fadeSnapshot(state);
     state.resizeObserver.disconnect();
     state.mutationObserver?.disconnect();
     document.removeEventListener('fullscreenchange', state.onFullscreenChange);

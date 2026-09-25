@@ -174,7 +174,7 @@ byte and strips the indentation of the closing `"""`, so compiler error columns
 line up with what you wrote.
 
 It also buys syntax highlighting in Monaco-based editors such as
-[DrawnUI Fiddle](https://fiddle.drawnui.net/app). Monaco's bundled `csharp`
+[DrawnUI Fiddle](https://drawfiddle.com/app). Monaco's bundled `csharp`
 tokenizer has a rule for `@"` — a verbatim shader is painted as one flat string
 — but no rule for `"""`, so the raw-literal body falls through to ordinary code
 tokenization and `float`, `return`, numbers and `//` comments all get coloured.

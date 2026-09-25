@@ -498,8 +498,28 @@ namespace DrawnUi.Draw
                     }
                 }
 
+                // Pool full and nothing for this height: take a free cell parked under another height.
+                // Without this, cells returned at old heights (rows resized, scale changed) sit unreachable
+                // while every new height gets null and the list draws nothing.
+                view ??= PopAnyHeight();
+
                 return view;
             }
+        }
+
+        SkiaControl PopAnyHeight()
+        {
+            foreach (var stack in _heightPools.Values)
+            {
+                while (stack.Count > 0)
+                {
+                    var view = stack.Pop();
+                    if (!view.IsDisposed)
+                        return view;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

@@ -44,6 +44,6 @@ Agents that understand [llms.txt](https://drawnui.net/llms.txt) can discover and
 | [drawnui-opentk](https://drawnui.net/skills/drawnui-opentk/SKILL.md) | OpenTK desktop apps: `DrawnUiWindow`, `CanvasHost` GL overlays, window chrome, Linux fixes |
 | [drawnui-net-harness](https://drawnui.net/skills/drawnui-net-harness/SKILL.md) | Headless testing and repros — render frames and simulate gestures with no device or GPU |
 | [skmech](https://drawnui.net/skills/skmech/SKILL.md) | SkiaSharp `SKMesh` custom mesh drawing with SkSL. Bundle: also fetch [references/api-overview.md](https://drawnui.net/skills/skmech/references/api-overview.md) and [references/examples.md](https://drawnui.net/skills/skmech/references/examples.md) |
-| [drawnui-fiddle](https://fiddle.drawnui.net/skills/drawnui-fiddle/SKILL.md) | Driving the in-browser [Fiddle](https://fiddle.drawnui.net) programmatically via its `window.fiddle` API |
+| [drawnui-fiddle](https://drawfiddle.com/skills/drawnui-fiddle/SKILL.md) | Driving the in-browser [Fiddle](https://drawfiddle.com) programmatically via its `window.fiddle` API |
 
 Load `drawnui` for everything, then add whichever ones match the target head and the kind of code you are writing.

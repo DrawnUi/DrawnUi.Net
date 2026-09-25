@@ -7,7 +7,7 @@
 
 DrawnUI is a rendering and UI composition engine for .NET, powered by [SkiaSharp](https://github.com/mono/SkiaSharp) with gestures, layouts, effects and animations running with hardware acceleration.
 
-🤩 [Fiddle in browser](https://fiddle.drawnui.net) 👈
+🤩 [Fiddle in browser](https://drawfiddle.com) 👈
 
 Supported hosts:
 
@@ -54,10 +54,18 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 👉 [Docs and Samples](https://drawnui.net)   
 🤖 [AI skills](https://drawnui.net/llms.txt)   
-🤩 [Fiddle](https://fiddle.drawnui.net)   
+🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.19
+## What's New 1.10.6.20
+
+  * **Potentially breaking, but inevitable:** templated layouts now default to `MeasureItemsStrategy="MeasureAll"`. The old default, `MeasureFirst`, was half applied: the first load measured every row, but items added, removed or replaced later took the first row's height, so lists with rows of different heights went wrong after their first change. `MeasureFirst` could not be fixed without breaking those lists, so the default moved to the strategy that is correct for any content. Lists whose rows really are all the same height set `MeasureFirst` explicitly and keep adds and removes measure-free.
+  * `MeasureFirst` now measures only the first row, as documented. A templated `Column`/`Row` without `Split` used to measure every row on each full layout.
+  * Fixed a recycled list drawing nothing after its row heights changed (the rendering scale changed, a resize reflowed text): views parked under the old heights were never reused.
+  * Fixed a templated layout growing by its own padding every time a cell changed size.
+  * `DrawnUi.Blazor`: the canvas follows the window live while you resize it and no longer shows a blank frame when the resize ends.
+
+ ### 1.10.6.19
 
   * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and even React. Each builds and runs as-is, with the whole UI in one method to replace..
   * Emoji and symbols now draw on `DrawnUi.Web` (pure WASM): add them with `fonts.AddEmojis()` and `fonts.AddSymbols()`, the subsets DrawnUi.Blazor already ships. A browser has no system fonts, so without them those glyphs were blank.

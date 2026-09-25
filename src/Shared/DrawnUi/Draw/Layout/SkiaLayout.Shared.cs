@@ -1347,7 +1347,7 @@ namespace DrawnUi.Draw
             nameof(MeasureItemsStrategy),
             typeof(MeasuringStrategy),
             typeof(SkiaLayout),
-            MeasuringStrategy.MeasureFirst,
+            MeasuringStrategy.MeasureAll,
             propertyChanged: NeedUpdateItemsSource);
 
         public MeasuringStrategy MeasureItemsStrategy

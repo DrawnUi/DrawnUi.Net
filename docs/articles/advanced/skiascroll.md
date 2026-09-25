@@ -34,14 +34,13 @@ DrawnUi.Maui’s SkiaScroll control provides high-performance, flexible scrollin
 
 ## Virtualization for Large Data Sets
 
-Enable virtualization for smooth performance with thousands of items:
+Virtualization is on by default (`Virtualisation="Enabled"` is the default of every control), so a templated list draws only the cells in the viewport, even with thousands of items:
 
 ```xml
-<draw:SkiaScroll Virtualisation="Enabled" Orientation="Vertical">
+<draw:SkiaScroll Orientation="Vertical">
     <draw:SkiaLayout
         Type="Column"
-        ItemsSource="{Binding LargeItemCollection}"
-        Virtualisation="Enabled">
+        ItemsSource="{Binding LargeItemCollection}">
         <draw:SkiaLayout.ItemTemplate>
             <DataTemplate>
                 <draw:SkiaLabel Text="{Binding Title}" />
@@ -53,7 +52,8 @@ Enable virtualization for smooth performance with thousands of items:
 
 - `Virtualisation` on SkiaScroll controls viewport-based rendering.
 - `Virtualisation` on SkiaLayout controls the strategy (Enabled, Disabled).
-- Combine with `RecyclingTemplate` for template reuse.
+- `RecyclingTemplate="Enabled"` (default) re-binds a small pool of cells as items scroll in and out; `Disabled` keeps one view per item.
+- `MeasureItemsStrategy` decides how rows get measured: `MeasureAll` (default) for rows of any height, `MeasureFirst` when every row has the same height, `MeasureVisible` for thousands of uneven rows. See [Scrolling Lists](../controls/lists.md).
 - Use `VirtualisationInflated` to control how much content outside the viewport is still rendered.
 
 ## Custom Headers, Footers, and Overlays
@@ -143,7 +143,7 @@ float y = myScroll.ViewportOffsetY;
 ```
 
 ## Performance Tips
-- Enable virtualization for large lists
+- Keep virtualization on for large lists (it is the default) and pick `MeasureItemsStrategy` from your rows
 - Use `Cache="Operations"` for static or rarely-changing content
 - Avoid nesting too many scrolls; prefer flat layouts
 - Use SkiaLabelFps to monitor performance

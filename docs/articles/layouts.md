@@ -199,13 +199,14 @@ For Grid layouts with `ItemsSource` and `Split`, use `Invert` to control fill di
 **Key Properties:**
 - `ItemsSource`: The data collection to bind to
 - `ItemTemplate`: DataTemplate defining how each item should be rendered
-- `RecycleTemplate`: Controls view recycling behavior
+- `RecyclingTemplate`: Controls view recycling behavior
+- `MeasureItemsStrategy`: How items get measured: `MeasureAll` (default) for items of any size, `MeasureFirst` when every item has the same size, `MeasureVisible` for thousands of uneven rows
 - `Split`: Number of columns for multi-column data-bound layouts
 - `Invert`: Controls fill direction for Grid layouts with ItemsSource
 
-**RecycleTemplate Behavior:**
-- `RecycleTemplate="true"` (default): Reuses views for performance with large lists
-- `RecycleTemplate="false"`: Creates a new view for each item, equivalent to .NET MAUI's `BindableLayout`
+**RecyclingTemplate Behavior:**
+- `RecyclingTemplate="Enabled"` (default): Reuses views for performance with large lists
+- `RecyclingTemplate="Disabled"`: Creates a new view for each item, equivalent to .NET MAUI's `BindableLayout`
 
 ## Grid-Specific Properties
 
@@ -239,7 +240,7 @@ Decorators can be customized through gradient properties:
 
 - Use appropriate `UseCache` values based on content complexity
 - If you cache the whole layout cells would be created just once, can be used for small-medium layouts inside scroll. 
-- When using `ItemsSource` control whether you need to recycle cells or use RecycleTemplate="Disabled".
+- When using `ItemsSource` control whether you need to recycle cells or use `RecyclingTemplate="Disabled"`.
 
 ## Safe Insets
 

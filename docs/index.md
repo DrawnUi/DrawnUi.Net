@@ -18,7 +18,7 @@ description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazo
       Hardware-accelerated <strong>rendering engine</strong> for .NET, including MAUI, Blazor, and OpenTK, powered by SkiaSharp
     </p>
     <div class="hero-buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
-      <a href="https://fiddle.drawnui.net" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
+      <a href="https://drawfiddle.com" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
         🔨 Fiddle
       </a>
       <a href="https://github.com/DrawnUi/DrawnUi.Net" class="hero-btn hero-btn-secondary" style="background: rgba(255,255,255,0.12); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; border: 2px solid rgba(255,255,255,0.22); backdrop-filter: blur(2px); display: inline-block; min-width: 160px; text-align: center;">
@@ -369,7 +369,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 - **2D/3D transforms** and visual effects
 - **Custom shaders** and filters
 
-😃 <a href="https://fiddle.drawnui.net" target="_blank" rel="noopener noreferrer">Don't miss the Fiddle!</a>
+😃 <a href="https://drawfiddle.com" target="_blank" rel="noopener noreferrer">Don't miss the Fiddle!</a>
 
 ### 👨‍💻 **Familiar Yet Powerful**
 - **MAUI/WFP-like** properties for layout etc
@@ -416,7 +416,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
   <p style="margin-bottom: 20px; ">Teach your coding agent DrawnUI</p>
   <a href="articles/ai-skills.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">AI Skills →</a><br>
   <a href="/llms.txt" style="color: #4299e1; text-decoration: none; font-weight: 600;">llms.txt →</a><br>
-  <a href="https://fiddle.drawnui.net" style="color: #4299e1; text-decoration: none; font-weight: 600;">Fiddle →</a>
+  <a href="https://drawfiddle.com" style="color: #4299e1; text-decoration: none; font-weight: 600;">Fiddle →</a>
 </div>
 
 <div style="padding: 25px; border: 2px solid #4a5568; border-radius: 12px; transition: all 0.3s;">

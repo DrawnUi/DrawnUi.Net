@@ -14,7 +14,7 @@ SkiaScroll is the core scrolling container in DrawnUi.Maui, providing smooth scr
     WidthRequest="400"
     HeightRequest="600">
     
-    <DrawUi:SkiaLayout LayoutType="Column" Spacing="10">
+    <DrawUi:SkiaLayout Type="Column" Spacing="10">
         <DrawUi:SkiaLabel Text="Item 1" />
         <DrawUi:SkiaLabel Text="Item 2" />
         <DrawUi:SkiaLabel Text="Item 3" />
@@ -79,7 +79,7 @@ The zoom properties control the behavior:
 | `HeaderBehind` | bool | If true, header appears behind scrollable content |
 | `ViewportOffsetX` | float | Horizontal scroll position |
 | `ViewportOffsetY` | float | Vertical scroll position |
-| `UseVirtual` | bool | Enables virtualization for large content |
+| `UseVirtual` | bool | Read-only. True for scrolls that draw their content themselves instead of a measured `Content` tree (`VirtualScroll`, wheel pickers); templated lists virtualize through their layout instead |
 | `ScrollWidthRequest` | float | Width of the scrollable area |
 | `ScrollHeightRequest` | float | Height of the scrollable area |
 | `RespondsToGestures` | bool | Default true. Set false and the scroll ignores pan, fling and mouse wheel; scrolling by code (`ScrollTo...`, offsets) keeps working. Prefer it over `Orientation="Neither"` when the scroll must stay scrollable from code |
@@ -117,7 +117,7 @@ SkiaScroll supports header and footer elements that can behave in special ways:
         </DrawUi:SkiaShape>
     </DrawUi:SkiaScroll.Header>
     
-    <DrawUi:SkiaLayout LayoutType="Column" Spacing="10">
+    <DrawUi:SkiaLayout Type="Column" Spacing="10">
         <!-- Content items -->
     </DrawUi:SkiaLayout>
     
@@ -149,14 +149,13 @@ myScroll.ScrollToView(targetElement, true); // Animated scroll to element
 
 ### Virtualization
 
-For large content sets, you can enable virtualization to improve performance:
+Virtualization is on by default: a templated layout inside a `SkiaScroll` draws only the cells in the viewport (`Virtualisation="Enabled"` is the default of every control), and `RecyclingTemplate="Enabled"` (also the default) re-binds a small pool of cells as items scroll in and out.
 
 ```xml
-<DrawUi:SkiaScroll UseVirtual="True" Orientation="Vertical">
-    <DrawUi:SkiaLayout 
-        LayoutType="Column" 
-        ItemsSource="{Binding LargeItemCollection}"
-        VirtualizationMode="Enabled">
+<DrawUi:SkiaScroll Orientation="Vertical">
+    <DrawUi:SkiaLayout
+        Type="Column"
+        ItemsSource="{Binding LargeItemCollection}">
         <DrawUi:SkiaLayout.ItemTemplate>
             <DataTemplate>
                 <DrawUi:SkiaLabel Text="{Binding Title}" />
@@ -165,6 +164,8 @@ For large content sets, you can enable virtualization to improve performance:
     </DrawUi:SkiaLayout>
 </DrawUi:SkiaScroll>
 ```
+
+How rows get measured is `MeasureItemsStrategy` on the layout: `MeasureAll` (default) measures every item, so rows of any height come out exact; `MeasureFirst` measures one row and gives every row its size, for lists whose rows all share one height; `MeasureVisible` measures what is on screen and the rest in background, for thousands of uneven rows. See [Scrolling Lists](lists.md) to pick a setup.
 
 ### Pull-to-Refresh
 
@@ -177,7 +178,7 @@ SkiaScroll supports pull-to-refresh functionality:
         <DrawUi:RefreshIndicator />
     </DrawUi:SkiaScroll.RefreshIndicator>
     
-    <DrawUi:SkiaLayout LayoutType="Column">
+    <DrawUi:SkiaLayout Type="Column">
         <!-- Content items -->
     </DrawUi:SkiaLayout>
     
@@ -208,7 +209,7 @@ SkiaScrollLooped extends SkiaScroll to provide infinite, looped scrolling capabi
     WidthRequest="400"
     HeightRequest="200">
     
-    <DrawUi:SkiaLayout LayoutType="Row" Spacing="10">
+    <DrawUi:SkiaLayout Type="Row" Spacing="10">
         <DrawUi:SkiaImage Source="image1.png" WidthRequest="400" HeightRequest="200" />
         <DrawUi:SkiaImage Source="image2.png" WidthRequest="400" HeightRequest="200" />
         <DrawUi:SkiaImage Source="image3.png" WidthRequest="400" HeightRequest="200" />
@@ -274,7 +275,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
     HeightRequest="300"
     SnapToChildren="Center">
     
-    <DrawUi:SkiaLayout LayoutType="Row" Spacing="20" Padding="20,0">
+    <DrawUi:SkiaLayout Type="Row" Spacing="20" Padding="20,0">
         <!-- Card 1 -->
         <DrawUi:SkiaShape Type="Rectangle" BackgroundColor="White" CornerRadius="16"
                    WidthRequest="300" HeightRequest="250">
@@ -282,7 +283,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
                 <DrawUi:SkiaShadow Color="#40000000" BlurRadius="10" Offset="0,4" />
             </DrawUi:SkiaShape.Shadows>
             
-            <DrawUi:SkiaLayout LayoutType="Column" Padding="20">
+            <DrawUi:SkiaLayout Type="Column" Padding="20">
                 <DrawUi:SkiaLabel Text="Card 1" FontSize="24" TextColor="#333333" />
                 <DrawUi:SkiaLabel Text="Swipe to see more cards" FontSize="16" TextColor="#666666" />
             </DrawUi:SkiaLayout>
@@ -295,7 +296,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
                 <DrawUi:SkiaShadow Color="#40000000" BlurRadius="10" Offset="0,4" />
             </DrawUi:SkiaShape.Shadows>
             
-            <DrawUi:SkiaLayout LayoutType="Column" Padding="20">
+            <DrawUi:SkiaLayout Type="Column" Padding="20">
                 <DrawUi:SkiaLabel Text="Card 2" FontSize="24" TextColor="#333333" />
                 <DrawUi:SkiaLabel Text="Swipe to see more cards" FontSize="16" TextColor="#666666" />
             </DrawUi:SkiaLayout>
@@ -308,7 +309,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
                 <DrawUi:SkiaShadow Color="#40000000" BlurRadius="10" Offset="0,4" />
             </DrawUi:SkiaShape.Shadows>
             
-            <DrawUi:SkiaLayout LayoutType="Column" Padding="20">
+            <DrawUi:SkiaLayout Type="Column" Padding="20">
                 <DrawUi:SkiaLabel Text="Card 3" FontSize="24" TextColor="#333333" />
                 <DrawUi:SkiaLabel Text="Swipe to see more cards" FontSize="16" TextColor="#666666" />
             </DrawUi:SkiaLayout>
@@ -327,7 +328,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
     HeightRequest="400"
     SnapToChildren="Center">
     
-    <DrawUi:SkiaLayout LayoutType="Row">
+    <DrawUi:SkiaLayout Type="Row">
         <DrawUi:SkiaImage Source="image1.jpg" WidthRequest="400" HeightRequest="400" />
         <DrawUi:SkiaImage Source="image2.jpg" WidthRequest="400" HeightRequest="400" />
         <DrawUi:SkiaImage Source="image3.jpg" WidthRequest="400" HeightRequest="400" />
@@ -399,7 +400,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
     </DrawUi:SkiaScroll.RefreshIndicator>
     
     <DrawUi:SkiaLayout 
-        LayoutType="Column" 
+        Type="Column" 
         Spacing="12" 
         Padding="16"
         ItemsSource="{Binding FeedItems}">
@@ -410,7 +411,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
                         <DrawUi:SkiaShadow Color="#20000000" BlurRadius="4" Offset="0,2" />
                     </DrawUi:SkiaShape.Shadows>
                     
-                    <DrawUi:SkiaLayout LayoutType="Column" Padding="16">
+                    <DrawUi:SkiaLayout Type="Column" Padding="16">
                         <DrawUi:SkiaLabel Text="{Binding Title}" FontSize="18" TextColor="#333333" />
                         <DrawUi:SkiaLabel Text="{Binding Description}" FontSize="14" TextColor="#666666" />
                     </DrawUi:SkiaLayout>
@@ -534,9 +535,9 @@ public class MyScrollBar : SkiaLayout, IScrollBar
 ### Virtualization
 
 For optimal performance with large datasets:
-- Enable `UseVirtual="True"` on SkiaScroll
-- Use `VirtualizationMode="Enabled"` on inner SkiaLayout
-- Consider `RecyclingTemplate="Enabled"` for template reuse
+- Keep the defaults: `Virtualisation="Enabled"` and `RecyclingTemplate="Enabled"` on the templated layout
+- Pick `MeasureItemsStrategy` from your rows: `MeasureAll` (default) for any heights, `MeasureFirst` when every row has the same height, `MeasureVisible` for thousands of uneven rows
+- See [Scrolling Lists](lists.md) for the full strategy picker
 
 ### Content Size
 
