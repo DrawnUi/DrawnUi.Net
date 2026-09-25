@@ -240,6 +240,24 @@ Two layers must BOTH be on, or handlers never fire: (1) canvas host input mode, 
 - Debug/profiling toggles: `Super.EnableRenderingStats`, `canvasView.FPS`/`FrameTime`, `control.DebugShowBounds`, `Super.ShowInvalidatedAreas`, `Super.MaxFps = 30` (iOS battery/heat cap).
 - `Super.DisplayException(this, e)` renders an exception on the canvas — wrap `InitializeComponent()`/build code in it during development.
 
+## New Project Templates — start every new app from these
+
+Do not hand-write a new DrawnUI app's csproj/startup/host from memory: copy the starter template for the target head from the DrawnUi repo `tpls/` folder (local checkout, else `https://github.com/DrawnUi/DrawnUi.Net/tree/main/tpls`). Each one builds and runs as-is and already carries the fiddly per-head plumbing (asset copy rules, WebGL link flags, GL context versions, icons, full-window CSS).
+
+| Head | Template | UI lives in | Fonts registered in | Assets folder |
+|---|---|---|---|---|
+| .NET MAUI (Android, iOS, Mac, Windows) | `tpls/MAUI/EmptyCode` | `MainPage.cs` | `MauiProgram.cs` | `Resources/Raw` (+ `Resources/Fonts`) |
+| WPF (Windows desktop) | `tpls/WPF/EmptyCode` | `MainWindow.cs` | `App.xaml.cs` | `Resources/Raw` (+ `Resources/Fonts`), copied next to the exe |
+| OpenTK (Windows + Linux, one project) | `tpls/OpenTK/EmptyCode` | `MainWindow.cs` (static) | `Program.cs` | `Resources/Raw` (+ `Resources/Fonts`), copied next to the exe |
+| Blazor WebAssembly | `tpls/Blazor/EmptyCode` | `MainPage.razor.cs` | `Program.cs` | `wwwroot` |
+| Pure .NET WebAssembly (`DrawnUi.Web`, no Blazor) | `tpls/Wasm/EmptyCode` | `MainPage.cs` | `Program.cs` | `wwwroot` |
+
+- Shared contract: the whole UI is `CreateMainContent()` between `// <fiddle:content>` markers — a method body returning one `SkiaControl`, exactly a DrawFiddle snippet. Replace that body with the app; keep the host code around it.
+- Assets are addressed by bare file name (`Source = "drawnui.svg"`) on every head; fonts use the aliases `FontText` / `FontTextTitle` (OpenSans).
+- To start: copy the folder, rename `EmptyCode` (folder, csproj, namespace) to the app name, change the `DrawnApp` title, then bump the DrawnUi package version in the csproj to the latest on NuGet (templates pin whatever was current when they were last touched).
+- Web heads need the `wasm-tools` workload (Skia is linked into `dotnet.native.wasm`); WPF/OpenTK need nothing extra; Linux needs `libglfw3 libgl1`.
+- DrawFiddle's **Export .NET** button produces these same templates with the snippet already spliced in.
+
 ## Invalidation & Custom Controls
 
 - `Update()` = redraw + invalidate own cache; `Repaint()` = redraw WITHOUT destroying cache (position/transform changes); `InvalidateMeasure()` = size/layout recalc; if a parent refuses to refresh, `Parent?.Invalidate()`.
