@@ -1046,11 +1046,13 @@
     private void OnA11yFocus(AccessibilityNode node)
     {
         KeyboardFocusNode = node.Source;
+        node.Source?.OnAccessibilityFocused(true); // a text field takes the caret, same as the Windows heads
         _ = InvokeAsync(StateHasChanged); // the Tab stop of its group moves with it (tabindex)
     }
 
     private void OnA11yBlur(AccessibilityNode node)
     {
+        node.Source?.OnAccessibilityFocused(false); // Tab left the element: a text field releases the caret
         if (ReferenceEquals(KeyboardFocusNode, node.Source))
             KeyboardFocusNode = null;
     }

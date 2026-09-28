@@ -322,6 +322,57 @@ public class KeyboardAccessibilityTests
         Assert.Equal(252, node.Rect.Top, 1);
     }
 
+    /// <summary>
+    /// A text field is a Tab stop without a Tapped handler; Tab-in (OnAccessibilityFocused) and Enter give it the caret
+    /// and FocusedChild / IsFocused, keys belong to the text while editing (a surrounding group does not move), Tab-out
+    /// releases it.
+    /// </summary>
+    [Fact]
+    public void Editor_IsATabStop_TakesTheCaret_AndKeepsItsKeys()
+    {
+        using var host = new HeadlessCanvasHost(400, 300);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaEditor editor = null;
+        SkiaButton next = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaStack
+            {
+                AccessibilityRole = Aria.RoleList,
+                Children =
+                {
+                    new SkiaEditor { WidthRequest = 200, HeightRequest = 40, MaxLines = 1 }.Assign(out editor),
+                    new SkiaButton("next") { WidthRequest = 100, HeightRequest = 40, AccessibilityRole = Aria.RoleButton }.Assign(out next),
+                }
+            }
+        };
+        host.AdvanceFrames(4);
+
+        Assert.True(editor.AccessibilityCanInteract);
+        Assert.Contains(host.Canvas.AccessibilityManager.Snapshot, n => n.Role == Aria.RoleTextBox && n.CanInteract);
+
+        editor.OnAccessibilityFocused(true); // Tab arrived
+        host.AdvanceFrames(2);
+        Assert.True(editor.IsFocused);
+        Assert.Same(editor, host.Canvas.FocusedChild);
+
+        host.Canvas.AccessibilityManager.NotifyFocused(editor);
+        Assert.True(SkiaAccessibilityManager.Key(editor, InputKey.ArrowDown)); // the text keeps it
+        host.AdvanceFrames(3);
+        Assert.Same(editor, host.Canvas.AccessibilityManager.FocusedNode); // the list did not move
+
+        editor.OnAccessibilityFocused(false); // Tab left
+        host.AdvanceFrames(2);
+        Assert.False(editor.IsFocused);
+        Assert.Null(host.Canvas.FocusedChild);
+
+        Assert.True(SkiaAccessibilityManager.Activate(editor)); // Enter on the field starts editing
+        host.AdvanceFrames(2);
+        Assert.True(editor.IsFocused);
+    }
+
     private class LabelCell : SkiaLayout
     {
         protected override void OnBindingContextChanged()

@@ -875,7 +875,14 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 if (Clipboard.ContainsText())
                     Canvas.HandleDesktopTextInput(Clipboard.GetText().Replace("\r\n", "\n"));
                 break;
-            case Key.Tab: Canvas.HandleDesktopTextInput("    "); break;
+            case Key.Tab:
+                // Tab leaves the field and moves on, Shift+Tab goes back, like a native text box: continue from
+                // the field even when a click focused it; past either end WPF moves focus out of the element
+                EnsurePeer()?.NotifyFocusChanged(editor);
+                editor.OnAccessibilityFocused(false);
+                if (!HandleAccessibilityKey(e))
+                    return;
+                break;
             default: return;
         }
 
