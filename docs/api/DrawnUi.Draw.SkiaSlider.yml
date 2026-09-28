@@ -53,6 +53,8 @@ items:
   - DrawnUi.Draw.SkiaSlider.MinProperty
   - DrawnUi.Draw.SkiaSlider.MoveEndThumbHere(System.Double)
   - DrawnUi.Draw.SkiaSlider.MoveStartThumbHere(System.Double)
+  - DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaSlider.OnAccessibilityKey(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.SkiaSlider.OnDisposing
   - DrawnUi.Draw.SkiaSlider.OnEndChanged
   - DrawnUi.Draw.SkiaSlider.OnLayoutChanged
@@ -626,6 +628,9 @@ items:
   - DrawnUi.Draw.SkiaControl.GetGesturePositionInsideChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckChildGestureHit(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckHovered(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.IsPointerOver
+  - DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelow
   - DrawnUi.Draw.SkiaControl.UpdateLocks
@@ -808,12 +813,15 @@ items:
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
   - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.RenderedFrame
+  - DrawnUi.Draw.SkiaControl.WasInLastFrame
   - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLive
   - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
-  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
   - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+  - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -1446,6 +1454,77 @@ items:
     content.vb: Protected Overrides Function DefaultAccessibilityCanInteract() As Boolean
   overridden: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
   overload: DrawnUi.Draw.SkiaSlider.DefaultAccessibilityCanInteract*
+- uid: DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated
+  id: OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaSlider
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaSlider.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAccessibilityActivated
+    path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
+    startLine: 21
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    A slider has no activation: Enter / Space from keyboard navigation leave the value alone
+
+    (the base synthesizes a tap at the center, which would jump the value to the middle).
+  example: []
+  syntax:
+    content: public override void OnAccessibilityActivated()
+    content.vb: Public Overrides Sub OnAccessibilityActivated()
+  overridden: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  overload: DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated*
+- uid: DrawnUi.Draw.SkiaSlider.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.SkiaSlider.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  id: OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.SkiaSlider
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityKey(InputKey)
+  nameWithType: SkiaSlider.OnAccessibilityKey(InputKey)
+  fullName: DrawnUi.Draw.SkiaSlider.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAccessibilityKey
+    path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
+    startLine: 30
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Keyboard adjustment while the slider holds keyboard focus: Right / Up increase and Left / Down decrease by
+
+    <xref href="DrawnUi.Draw.SkiaSlider.Step" data-throw-if-not-resolved="false"></xref> (a hundredth of the range when Step is 0), PageUp / PageDown move a tenth of the range,
+
+    Home / End go to <xref href="DrawnUi.Draw.SkiaSlider.Min" data-throw-if-not-resolved="false"></xref> / <xref href="DrawnUi.Draw.SkiaSlider.Max" data-throw-if-not-resolved="false"></xref>. A ranged slider moves its <xref href="DrawnUi.Draw.SkiaSlider.End" data-throw-if-not-resolved="false"></xref> thumb, which stops at <xref href="DrawnUi.Draw.SkiaSlider.Start" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public override bool OnAccessibilityKey(InputKey key)
+    parameters:
+    - id: key
+      type: DrawnUi.Draw.InputKey
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function OnAccessibilityKey(key As InputKey) As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  overload: DrawnUi.Draw.SkiaSlider.OnAccessibilityKey*
 - uid: DrawnUi.Draw.SkiaSlider.#ctor
   commentId: M:DrawnUi.Draw.SkiaSlider.#ctor
   id: '#ctor'
@@ -1464,7 +1543,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 17
+    startLine: 71
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1493,7 +1572,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 25
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1531,7 +1610,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RebuildDefaultContent
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 51
+    startLine: 105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1569,7 +1648,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 62
+    startLine: 116
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1595,7 +1674,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 81
+    startLine: 135
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1626,7 +1705,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Trail
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 101
+    startLine: 155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1653,7 +1732,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StyleContentCreated
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 112
+    startLine: 166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1691,7 +1770,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultStyleContent
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 121
+    startLine: 175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1717,7 +1796,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateCupertinoStyleContent
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 244
+    startLine: 298
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1748,7 +1827,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaterialPalettePrimary
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 404
+    startLine: 458
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1779,7 +1858,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaterialPaletteTrack
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 411
+    startLine: 465
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1810,7 +1889,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterialStyleContent
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 427
+    startLine: 481
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1845,7 +1924,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateWindowsStyleContent
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 545
+    startLine: 599
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1880,7 +1959,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateMaterialAppearance
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 673
+    startLine: 727
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1911,7 +1990,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateWindowsAppearance
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 702
+    startLine: 756
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1942,7 +2021,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetThumbCenterOffset
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 752
+    startLine: 806
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1978,7 +2057,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateTrailGeometry
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 771
+    startLine: 825
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2015,7 +2094,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateDefaultAppearance
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 789
+    startLine: 843
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2048,7 +2127,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Darken
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 823
+    startLine: 877
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2089,7 +2168,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyThumbColor
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 832
+    startLine: 886
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2123,7 +2202,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThumbColorProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 917
+    startLine: 971
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2150,7 +2229,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThumbColor
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 925
+    startLine: 979
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2184,7 +2263,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrailStartOffsetProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 931
+    startLine: 985
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2211,7 +2290,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrailStartOffset
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 939
+    startLine: 993
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2247,7 +2326,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrailEndOffsetProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 945
+    startLine: 999
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2274,7 +2353,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrailEndOffset
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 953
+    startLine: 1007
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2310,7 +2389,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CupertinoTrackHeightProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 961
+    startLine: 1015
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2337,7 +2416,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CupertinoTrackHeight
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 967
+    startLine: 1021
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2368,7 +2447,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CupertinoThumbDiameterProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 973
+    startLine: 1027
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2395,7 +2474,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CupertinoThumbDiameter
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 979
+    startLine: 1033
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2426,7 +2505,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrackColorProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 985
+    startLine: 1039
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2453,7 +2532,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrackColor
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 992
+    startLine: 1046
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2487,7 +2566,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrackSelectedColorProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 998
+    startLine: 1052
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2514,7 +2593,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrackSelectedColor
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1006
+    startLine: 1060
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2548,7 +2627,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CupertinoThumbBorderWidthProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1012
+    startLine: 1066
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2575,7 +2654,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CupertinoThumbBorderWidth
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1018
+    startLine: 1072
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2606,7 +2685,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1030
+    startLine: 1084
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2635,7 +2714,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: moreHotspotSize
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1035
+    startLine: 1089
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2664,7 +2743,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: lastTouchX
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1037
+    startLine: 1091
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2691,7 +2770,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: touchArea
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1042
+    startLine: 1096
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2720,7 +2799,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningStartOffsetPts
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1044
+    startLine: 1098
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2747,7 +2826,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1046
+    startLine: 1100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2776,7 +2855,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1053
+    startLine: 1107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2811,7 +2890,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClickOnTrailEnabledProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1276
+    startLine: 1330
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2838,7 +2917,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClickOnTrailEnabled
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1280
+    startLine: 1334
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2867,7 +2946,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableRangeProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1286
+    startLine: 1340
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2894,7 +2973,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableRange
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1289
+    startLine: 1343
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2923,7 +3002,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1295
+    startLine: 1349
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2950,7 +3029,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1304
+    startLine: 1358
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2981,7 +3060,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SliderHeightProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1310
+    startLine: 1364
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3008,7 +3087,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SliderHeight
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1313
+    startLine: 1367
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3037,7 +3116,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MinProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1319
+    startLine: 1373
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3064,7 +3143,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Min
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1322
+    startLine: 1376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3093,7 +3172,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1328
+    startLine: 1382
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3120,7 +3199,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Max
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1331
+    startLine: 1385
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3149,7 +3228,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1337
+    startLine: 1391
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3176,7 +3255,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Start
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1345
+    startLine: 1399
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3207,7 +3286,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1377
+    startLine: 1431
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3234,7 +3313,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: End
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1389
+    startLine: 1443
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3265,7 +3344,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartThumbXProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1403
+    startLine: 1457
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3292,7 +3371,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartThumbX
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1406
+    startLine: 1460
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3321,7 +3400,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndThumbXProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1412
+    startLine: 1466
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3348,7 +3427,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndThumbX
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1415
+    startLine: 1469
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3377,7 +3456,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StepProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1421
+    startLine: 1475
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3404,7 +3483,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Step
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1424
+    startLine: 1478
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3433,7 +3512,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RangeMinProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1430
+    startLine: 1484
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3460,7 +3539,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RangeMin
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1433
+    startLine: 1487
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3489,7 +3568,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ValueStringFormatProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1439
+    startLine: 1493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3516,7 +3595,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ValueStringFormat
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1443
+    startLine: 1497
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3545,7 +3624,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MinMaxStringFormatProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1449
+    startLine: 1503
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3572,7 +3651,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MinMaxStringFormat
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1453
+    startLine: 1507
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3601,7 +3680,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AvailableWidthAdjustmentProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1459
+    startLine: 1513
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3628,7 +3707,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AvailableWidthAdjustment
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1465
+    startLine: 1519
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3659,7 +3738,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1471
+    startLine: 1525
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3686,7 +3765,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Orientation
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1479
+    startLine: 1533
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3717,7 +3796,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IgnoreWrongDirectionProperty
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1485
+    startLine: 1539
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3744,7 +3823,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IgnoreWrongDirection
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1494
+    startLine: 1548
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3775,7 +3854,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1504
+    startLine: 1558
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3811,7 +3890,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnEndChanged
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1578
+    startLine: 1632
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3837,7 +3916,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStartChanged
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1583
+    startLine: 1637
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3863,7 +3942,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1588
+    startLine: 1642
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3892,7 +3971,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartChanged
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1596
+    startLine: 1650
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3919,7 +3998,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndChanged
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1597
+    startLine: 1651
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3946,7 +4025,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdjustToStepValue
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1599
+    startLine: 1653
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3984,7 +4063,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RecalculateValues
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1608
+    startLine: 1662
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4010,7 +4089,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveEndThumbHere
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1624
+    startLine: 1678
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4042,7 +4121,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveStartThumbHere
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1638
+    startLine: 1692
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4074,7 +4153,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPressed
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1737
+    startLine: 1791
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4103,7 +4182,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ConvertOffsetsToValues
     path: ../src/Shared/DrawnUi/Controls/Slider/SkiaSlider.cs
-    startLine: 1842
+    startLine: 1896
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -15326,6 +15405,69 @@ references:
     name: SkiaGesturesParameters
     href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  name: CheckPointerOver(SkiaGesturesParameters)
+  nameWithType: SkiaControl.CheckPointerOver(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsPointerOver
+  commentId: P:DrawnUi.Draw.SkiaControl.IsPointerOver
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPointerOver
+  name: IsPointerOver
+  nameWithType: SkiaControl.IsPointerOver
+  fullName: DrawnUi.Draw.SkiaControl.IsPointerOver
+- uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  name: OnPointerOver(bool)
+  nameWithType: SkiaControl.OnPointerOver(bool)
+  fullName: DrawnUi.Draw.SkiaControl.OnPointerOver(bool)
+  nameWithType.vb: SkiaControl.OnPointerOver(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnPointerOver(Boolean)
+  name.vb: OnPointerOver(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   commentId: F:DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   parent: DrawnUi.Draw.SkiaControl
@@ -17924,6 +18066,32 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.RenderedFrame
+  commentId: P:DrawnUi.Draw.SkiaControl.RenderedFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderedFrame
+  name: RenderedFrame
+  nameWithType: SkiaControl.RenderedFrame
+  fullName: DrawnUi.Draw.SkiaControl.RenderedFrame
+- uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+  commentId: M:DrawnUi.Draw.SkiaControl.WasInLastFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  name: WasInLastFrame()
+  nameWithType: SkiaControl.WasInLastFrame()
+  fullName: DrawnUi.Draw.SkiaControl.WasInLastFrame()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   parent: DrawnUi.Draw.SkiaControl
@@ -17964,25 +18132,6 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
   - name: (
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
-  name: OnAccessibilityActivated()
-  nameWithType: SkiaControl.OnAccessibilityActivated()
-  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-    name: OnAccessibilityActivated
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-    name: OnAccessibilityActivated
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
-  - name: (
-  - name: )
 - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
   parent: DrawnUi.Draw.SkiaControl
@@ -18013,6 +18162,51 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  name: CanReceiveGesture(TouchActionResult)
+  nameWithType: SkiaControl.CanReceiveGesture(TouchActionResult)
+  fullName: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaControl.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -43021,6 +43215,99 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated*
+  commentId: Overload:DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated
+  href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider_OnAccessibilityActivated
+  name: OnAccessibilityActivated
+  nameWithType: SkiaSlider.OnAccessibilityActivated
+  fullName: DrawnUi.Draw.SkiaSlider.OnAccessibilityActivated
+- uid: DrawnUi.Draw.SkiaSlider.Step
+  commentId: P:DrawnUi.Draw.SkiaSlider.Step
+  href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider_Step
+  name: Step
+  nameWithType: SkiaSlider.Step
+  fullName: DrawnUi.Draw.SkiaSlider.Step
+- uid: DrawnUi.Draw.SkiaSlider.Min
+  commentId: P:DrawnUi.Draw.SkiaSlider.Min
+  href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider_Min
+  name: Min
+  nameWithType: SkiaSlider.Min
+  fullName: DrawnUi.Draw.SkiaSlider.Min
+- uid: DrawnUi.Draw.SkiaSlider.Max
+  commentId: P:DrawnUi.Draw.SkiaSlider.Max
+  href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider_Max
+  name: Max
+  nameWithType: SkiaSlider.Max
+  fullName: DrawnUi.Draw.SkiaSlider.Max
+- uid: DrawnUi.Draw.SkiaSlider.End
+  commentId: P:DrawnUi.Draw.SkiaSlider.End
+  href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider_End
+  name: End
+  nameWithType: SkiaSlider.End
+  fullName: DrawnUi.Draw.SkiaSlider.End
+- uid: DrawnUi.Draw.SkiaSlider.Start
+  commentId: P:DrawnUi.Draw.SkiaSlider.Start
+  href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider_Start
+  name: Start
+  nameWithType: SkiaSlider.Start
+  fullName: DrawnUi.Draw.SkiaSlider.Start
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  name: OnAccessibilityKey(InputKey)
+  nameWithType: SkiaControl.OnAccessibilityKey(InputKey)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaSlider.OnAccessibilityKey*
+  commentId: Overload:DrawnUi.Draw.SkiaSlider.OnAccessibilityKey
+  href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  name: OnAccessibilityKey
+  nameWithType: SkiaSlider.OnAccessibilityKey
+  fullName: DrawnUi.Draw.SkiaSlider.OnAccessibilityKey
+- uid: DrawnUi.Draw.InputKey
+  commentId: T:DrawnUi.Draw.InputKey
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.InputKey.html
+  name: InputKey
+  nameWithType: InputKey
+  fullName: DrawnUi.Draw.InputKey
 - uid: DrawnUi.Draw.SkiaSlider.#ctor*
   commentId: Overload:DrawnUi.Draw.SkiaSlider.#ctor
   href: DrawnUi.Draw.SkiaSlider.html#DrawnUi_Draw_SkiaSlider__ctor

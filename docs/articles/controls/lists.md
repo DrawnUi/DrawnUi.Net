@@ -90,6 +90,24 @@ A templated list is reordered through its data: `ObservableCollection.Move(from,
 
 `SkiaScroll.ScrollToIndex(index, animate)` speaks your data's indices — with the built-in window engaged, jumping to a non-resident item rebases the window around the target automatically.
 
+## Keyboard
+
+Give the list a group role and every cell a role and a label: the list becomes one Tab stop and the arrow keys walk all its items, recycled cells that are not on screen included (they are scrolled in and then focused).
+
+```csharp
+new SkiaStack
+{
+    AccessibilityRole = Aria.RoleList,
+    ItemsSource = Items,
+    ItemTemplate = new DataTemplate(() => new ContactCell()),
+}
+
+// in the cell: AccessibilityRole = Aria.RoleButton in the constructor,
+// AccessibilityLabel = the item's text in SetContent
+```
+
+Without a role on the cells the list has no items to walk and Tab never reaches it. See [Accessibility: arrow-key groups](../advanced/accessibility.md#arrow-key-groups-lists).
+
 ## Going deeper
 
 - [Recycled Cells: Advanced Performance Techniques](../advanced/recycled-cells.md) — cell design, `SkiaDynamicDrawnCell`, per-layer caching inside cells.

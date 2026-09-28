@@ -94,6 +94,10 @@ Icon support is planned. The `IconPosition` property exists, but icon rendering 
 
 ---
 
+### Accessibility and keyboard
+
+A `SkiaButton` becomes an accessibility node when you give it a role: `AccessibilityRole = Aria.RoleButton` (its `Text` is the label), or `SkiaButton.DefaultAccessibilityRole = Aria.RoleButton` once at startup for every button. Then Tab reaches it and Enter or Space presses it; a disabled button (`IsDisabled`) is skipped. Buttons in a container with `AccessibilityRole = Aria.RoleToolbar` are one Tab stop, the arrow keys move between them. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
+
 ## API XML Documentation
 
 > The following methods in SkiaButton have been updated with XML documentation in the codebase:

@@ -310,6 +310,65 @@ namespace DrawnUi.Draw
             }
         }
 
+        public static readonly BindableProperty ShowScrollBarsOnHoverProperty = BindableProperty.Create(
+            nameof(ShowScrollBarsOnHover),
+            typeof(bool),
+            typeof(SkiaScroll),
+            true,
+            propertyChanged: (b, o, n) => (b as SkiaScroll)?.UpdateScrollBarsHold());
+
+        /// <summary>
+        /// Auto-hiding scroll bars fade in and stay while the mouse or pen is over the scroll, including over its
+        /// content, and hide as usual once it leaves. Touch never hovers, so it changes nothing there. Default is true.
+        /// </summary>
+        public bool ShowScrollBarsOnHover
+        {
+            get { return (bool)GetValue(ShowScrollBarsOnHoverProperty); }
+            set { SetValue(ShowScrollBarsOnHoverProperty, value); }
+        }
+
+        public static readonly BindableProperty KeepScrollBarsVisibleProperty = BindableProperty.Create(
+            nameof(KeepScrollBarsVisible),
+            typeof(bool),
+            typeof(SkiaScroll),
+            false,
+            propertyChanged: (b, o, n) => (b as SkiaScroll)?.UpdateScrollBarsHold());
+
+        /// <summary>
+        /// Keeps auto-hiding scroll bars visible while true, e.g. while an item of the list is selected.
+        /// They also stay visible on their own while the mouse is over the scroll (<see cref="ShowScrollBarsOnHover"/>)
+        /// and while keyboard focus is on a control inside it.
+        /// </summary>
+        public bool KeepScrollBarsVisible
+        {
+            get { return (bool)GetValue(KeepScrollBarsVisibleProperty); }
+            set { SetValue(KeepScrollBarsVisibleProperty, value); }
+        }
+
+        private bool _keyboardFocusInside;
+
+        /// <summary>Set by the canvas when its keyboard focus node (<see cref="DrawnView.KeyboardFocusNode"/>) enters or leaves this scroll.</summary>
+        internal void SetKeyboardFocusInside(bool inside)
+        {
+            _keyboardFocusInside = inside;
+            UpdateScrollBarsHold();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPointerOver(bool value)
+        {
+            base.OnPointerOver(value);
+            UpdateScrollBarsHold();
+        }
+
+        /// <summary>Tells the scroll bars whether to stay visible: mouse over the scroll, keyboard focus inside it, or <see cref="KeepScrollBarsVisible"/>.</summary>
+        protected virtual void UpdateScrollBarsHold()
+        {
+            var hold = KeepScrollBarsVisible || _keyboardFocusInside || (ShowScrollBarsOnHover && IsPointerOver);
+            InternalScrollBar?.SetKeepVisible(hold);
+            InternalScrollBarHorizontal?.SetKeepVisible(hold);
+        }
+
         public static readonly BindableProperty ScrollBarsVisibilityProperty = BindableProperty.Create(
             nameof(ScrollBarsVisibility),
             typeof(ScrollBarVisibility),
@@ -422,6 +481,7 @@ namespace DrawnUi.Draw
 
             InternalScrollBar = indicator;
             _scrollBarLastProgress = float.MinValue; //force push to the new indicator
+            UpdateScrollBarsHold();
 
             if (indicator is SkiaControl newControl)
             {
@@ -446,6 +506,7 @@ namespace DrawnUi.Draw
 
             InternalScrollBarHorizontal = indicator;
             _scrollBarHLastProgress = float.MinValue;
+            UpdateScrollBarsHold();
 
             if (indicator is SkiaControl newControl)
             {

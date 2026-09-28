@@ -277,6 +277,13 @@ public class DrawnUiWindow : GameWindow
         _gestures.OnMouseUp(e, MousePosition, ClientSize, MouseState);
     }
 
+    protected override void OnMouseLeave()
+    {
+        base.OnMouseLeave();
+        if (_surface == null) return;
+        _gestures.OnMouseLeave();
+    }
+
     protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         base.OnMouseWheel(e);

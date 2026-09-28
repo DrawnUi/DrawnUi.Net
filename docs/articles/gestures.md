@@ -319,6 +319,14 @@ Per head:
 Selectable text in the accessibility overlay (when the app opts a label in) belongs to the browser: a right click on
 selected text shows the browser's own copy menu, never a DrawnUI `ContextMenu`.
 
+## Hover and pointer-over
+
+A control shows hover feedback by calling `CheckHovered(args)` at the top of its `ProcessGestures` and reacting in `OnHover(bool)` (`IsHovered`). Hover belongs to one control at a time: a button inside a list takes it from the list.
+
+To know that the mouse is anywhere inside a container, call `CheckPointerOver(args)` in its `ProcessGestures` and react in `OnPointerOver(bool)`. `IsPointerOver` stays true for every control under the pointer, the container and the button inside it. `SkiaScroll` uses it to show its auto-hiding scroll bars on hover.
+
+Touch never hovers. On WPF and OpenTK both end when the mouse leaves the window; on MAUI, Blazor and the WebAssembly head they end at the next pointer move over the canvas.
+
 ## Gesture locking and propagation
 
 Use `LockChildrenGestures` when a parent layout should decide which gestures reach nested controls.

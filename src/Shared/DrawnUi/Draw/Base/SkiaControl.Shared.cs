@@ -1852,6 +1852,7 @@ namespace DrawnUi.Draw
             switch (LockChildrenGestures)
             {
                 case LockTouch.Enabled:
+                case LockTouch.PassNone:
                     return true;
 
                 case LockTouch.Disabled:
@@ -2447,6 +2448,37 @@ namespace DrawnUi.Draw
             //for iOS todo
 
 #endif
+        }
+
+        /// <summary>
+        /// Opt-in pointer-over tracking: call at the top of <see cref="ProcessGestures"/>. Unlike
+        /// <see cref="CheckHovered"/>, which gives hover to one control at a time, every control under the pointer
+        /// stays <see cref="IsPointerOver"/>: a scroll keeps it while a button inside it is hovered.
+        /// </summary>
+        public void CheckPointerOver(SkiaGesturesParameters args)
+        {
+            if (args.Type == TouchActionResult.Pointer)
+                Superview?.ReportPointerOver(this);
+        }
+
+        /// <summary>
+        /// True while a mouse or pen hovers this control or its children, for controls that call
+        /// <see cref="CheckPointerOver"/>. Touch never sets it.
+        /// </summary>
+        public bool IsPointerOver { get; private set; }
+
+        internal void SetPointerOver(bool value)
+        {
+            if (IsPointerOver == value)
+                return;
+
+            IsPointerOver = value;
+            OnPointerOver(value);
+        }
+
+        /// <summary>Called when <see cref="IsPointerOver"/> changes.</summary>
+        protected virtual void OnPointerOver(bool value)
+        {
         }
 
         public virtual ISkiaGestureListener ProcessGestures(
@@ -5131,13 +5163,75 @@ namespace DrawnUi.Draw
 
         public bool IsAccessibilityElement => AccessibilityRole is { } role && role != DrawnUi.Models.Aria.RolePresentation;
 
-        public SKRect GetAccessibilityPixelRect() =>
-            VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
+        /// <summary>
+        /// Canvas rect of the control as it is on screen now, in pixels: the last drawn box moved by every cache
+        /// blit and scroll offset above it (<see cref="GetSelfDrawingPosition"/>). Empty when the last frame did not
+        /// draw it (<see cref="WasInLastFrame"/>), e.g. scrolled out of a virtualized layout: its last drawn box is
+        /// where it used to be. The render node's hitbox is not used: inside a cached parent it keeps the position of
+        /// the cache recording, so moved content reported where it used to be (wrong Tab order, focus ring, scroll-into-view).
+        /// </summary>
+        public SKRect GetAccessibilityPixelRect()
+        {
+            if (LastDrawnAt.Width <= 0 || LastDrawnAt.Height <= 0 || !WasInLastFrame())
+                return SKRect.Empty;
+
+            var rect = SKRect.Create(GetSelfDrawingPosition(), LastDrawnAt.Size);
+
+            // translation, rotation and scale of the control and of its ancestors, innermost first as they draw;
+            // each matrix works in its control's drawing space, offset from the screen by position - LastDrawnAt
+            for (var control = this; control != null; control = control.Parent as SkiaControl)
+            {
+                var matrix = control.RenderTransformMatrix;
+                if (matrix.IsIdentity)
+                    continue;
+
+                var position = control == this ? rect.Location : control.GetSelfDrawingPosition();
+                var dx = position.X - control.LastDrawnAt.Left;
+                var dy = position.Y - control.LastDrawnAt.Top;
+                rect.Offset(-dx, -dy);
+                rect = matrix.MapRect(rect);
+                rect.Offset(dx, dy);
+            }
+
+            return rect;
+        }
+
+        /// <summary>Superview frame in which this control last rendered, drawn or blitted from its cache.</summary>
+        public long RenderedFrame { get; private set; }
+
+        // frame in which one of the children last rendered: for a control drawing from its cache, the cache recording
+        private long _childrenRenderedFrame;
+
+        /// <summary>
+        /// True when the last canvas frame showed this control: every ancestor drew it in its latest pass over its
+        /// children, live or into the cache it is blitted from. False for a control a layout stopped drawing
+        /// (scrolled out of a virtualized layout, hidden page), whose position properties keep the last drawn values.
+        /// </summary>
+        public bool WasInLastFrame()
+        {
+            var control = this;
+            while (control.Parent is SkiaControl parent)
+            {
+                if (control.RenderedFrame < parent._childrenRenderedFrame)
+                    return false;
+                control = parent;
+            }
+
+            // the top control was rendered by the canvas in its latest frame (or the one in progress)
+            var frame = Superview?.FrameNumber ?? 0;
+            return control.RenderedFrame >= frame - 1;
+        }
 
         private bool? _accessibilityCanInteract;
+
+        /// <summary>
+        /// Whether keyboard navigation and assistive technology may focus and use this node: the explicit value, else
+        /// the class default, and in both cases only while a tap could reach the control (<see cref="CanReceiveGesture"/>),
+        /// so Tab, Enter / Space and screen-reader Invoke never use a control the pointer cannot.
+        /// </summary>
         public bool AccessibilityCanInteract
         {
-            get => _accessibilityCanInteract ?? DefaultAccessibilityCanInteract();
+            get => (_accessibilityCanInteract ?? DefaultAccessibilityCanInteract()) && CanReceiveGesture(TouchActionResult.Tapped);
             set
             {
                 if (_accessibilityCanInteract != value)
@@ -5208,6 +5302,38 @@ namespace DrawnUi.Draw
         }
 
         public virtual void OnAccessibilityFocused(bool focused) { }
+
+        /// <summary>
+        /// Keyboard navigation hands this control the keys it may use while it holds keyboard focus
+        /// (arrows, Home, End, PageUp, PageDown). Return true when the key was used; the default uses none.
+        /// </summary>
+        public virtual bool OnAccessibilityKey(InputKey key) => false;
+
+        /// <summary>
+        /// Whether a pointer gesture of this kind would reach this control, by the same rules the gesture dispatch
+        /// applies: the control and every ancestor draw, none of them is InputTransparent, no ancestor keeps this gesture
+        /// from its children (<see cref="LockChildrenGestures"/>), and the control accepts input (<see cref="AcceptsInput"/>).
+        /// Opacity does not count, as for the pointer: hide a control from input with InputTransparent or IsVisible.
+        /// Keyboard navigation uses it: Tapped for Tab and Enter / Space, Panning for the arrow keys.
+        /// </summary>
+        public bool CanReceiveGesture(TouchActionResult gesture)
+        {
+            if (!CanDraw || InputTransparent || !AcceptsInput())
+                return false;
+
+            var parent = Parent as SkiaControl;
+            while (parent != null)
+            {
+                if (!parent.CanDraw || parent.InputTransparent || parent.CheckChildrenGesturesLocked(gesture))
+                    return false;
+                parent = parent.Parent as SkiaControl;
+            }
+
+            return true;
+        }
+
+        /// <summary>False while the control ignores gestures itself, e.g. a disabled button. Default true.</summary>
+        protected virtual bool AcceptsInput() => true;
 
         /// <summary>
         /// Called automatically on first layout. Call manually when label, hint, or state changes.
@@ -5360,6 +5486,9 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void ArrangeCache(SKRect destination, float widthRequest, float heightRequest, float scale)
         {
+            // kept on screen from the parent's composite cache this frame, as if drawn (WasInLastFrame)
+            RenderedFrame = Superview?.FrameNumber ?? RenderedFrame;
+
             Arrange(destination, widthRequest, heightRequest, scale);
 
             // Keep the gesture transform matrix in sync with the new position. RenderTransformMatrix is
@@ -7050,6 +7179,11 @@ namespace DrawnUi.Draw
             Superview = context.Context.Superview;
             RenderingScale = context.Scale;
             NeedUpdate = false;
+
+            var frame = Superview?.FrameNumber ?? 0;
+            RenderedFrame = frame;
+            if (Parent is SkiaControl renderingParent)
+                renderingParent._childrenRenderedFrame = frame;
 
             VisualLayer = null;
 

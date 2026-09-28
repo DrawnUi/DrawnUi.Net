@@ -67,7 +67,7 @@ public class EditorPage : SkiaLayer
                                     new SkiaButton("Clear") { BackgroundColor = Color.Parse("#495057"), FontSize = 13 }.OnTapped(me => _editor.Text = ""),
                                 },
                             },
-                            new SkiaLabel("The WPF element forwards keys to the focused drawn editor: arrows, Shift+arrows select, Home / End, Backspace / Delete, Ctrl+A / C / X / V (system clipboard), Tab inserts spaces; text arrives through WPF TextInput so IME composition and dead keys work.")
+                            new SkiaLabel("The WPF element forwards keys to the focused drawn editor: arrows, Shift+arrows select, Home / End, Backspace / Delete, Ctrl+A / C / X / V (system clipboard); Tab and Shift+Tab leave the field; text arrives through WPF TextInput so IME composition and dead keys work.")
                             {
                                 FontSize = 12, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
                             }),

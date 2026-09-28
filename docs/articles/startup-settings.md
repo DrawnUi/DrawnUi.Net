@@ -111,6 +111,7 @@ Call `Build()` once before creating any DrawnUI canvases or windows. `BuildAsync
   - Enables keyboard handling via `KeyboardManager`.
   - MAUI: desktop support on Windows and Mac Catalyst.
   - Blazor: browser keyboard events are forwarded to the same API.
+  - The manager sees every key before the canvas, also the keys keyboard navigation uses: listen for Escape there to close a panel.
 
 - Startup (Action<IServiceProvider>)
   - Called after DrawnUI is initialized and the MAUI App is created, useful for one-time setup that needs DI services.

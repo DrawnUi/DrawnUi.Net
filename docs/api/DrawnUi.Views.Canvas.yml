@@ -201,6 +201,13 @@ items:
   - DrawnUi.Views.DrawnView.SetPauseStateOfAllAnimatorsByParent(DrawnUi.Draw.SkiaControl,System.Boolean)
   - DrawnUi.Views.DrawnView.ExecutePostAnimators(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Views.DrawnView.PostAnimators
+  - DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.DrawnView.CommitPointerOver
+  - DrawnUi.Views.DrawnView.ClearPointerOver
+  - DrawnUi.Views.DrawnView.KeyboardFocusNode
+  - DrawnUi.Views.DrawnView.KeyboardFocusColor
+  - DrawnUi.Views.DrawnView.WheelDeltaPerNotch
+  - DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Views.DrawnView.AnimatingControls
   - DrawnUi.Views.DrawnView.FrameTimeInterpolator
   - DrawnUi.Views.DrawnView.LastFrameTimeNanos
@@ -1692,7 +1699,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasHover
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 755
+    startLine: 760
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1723,7 +1730,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SignalInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 785
+    startLine: 790
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1758,7 +1765,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tapped
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 800
+    startLine: 805
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1785,7 +1792,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGestureEvent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 817
+    startLine: 822
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1825,7 +1832,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BreakLine
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 896
+    startLine: 903
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1851,7 +1858,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreaks
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 901
+    startLine: 908
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1878,7 +1885,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 904
+    startLine: 911
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1907,7 +1914,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayRippleAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 909
+    startLine: 916
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1945,7 +1952,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayShimmerAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 915
+    startLine: 922
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1985,7 +1992,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeLastGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 928
+    startLine: 935
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2014,7 +2021,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayNanosBetweenGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 929
+    startLine: 936
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2043,7 +2050,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CollectGarbage
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 931
+    startLine: 938
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2075,7 +2082,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 948
+    startLine: 955
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2111,7 +2118,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColorProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 961
+    startLine: 968
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2138,7 +2145,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 967
+    startLine: 974
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2167,7 +2174,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAroundProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 973
+    startLine: 980
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2194,7 +2201,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAround
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 979
+    startLine: 986
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2223,7 +2230,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 993
+    startLine: 1000
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2250,7 +2257,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Gestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 999
+    startLine: 1006
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2279,7 +2286,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1007
+    startLine: 1014
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2306,7 +2313,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1023
+    startLine: 1030
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2335,7 +2342,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1033
+    startLine: 1040
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2365,7 +2372,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1043
+    startLine: 1050
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2393,7 +2400,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1053
+    startLine: 1060
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2421,7 +2428,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1058
+    startLine: 1065
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2452,7 +2459,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGesturePositionInsideControl
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1163
+    startLine: 1170
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2499,7 +2506,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViewCoordinatesRecursive
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1208
+    startLine: 1215
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4201,6 +4208,115 @@ references:
   name: PostAnimators
   nameWithType: DrawnView.PostAnimators
   fullName: DrawnUi.Views.DrawnView.PostAnimators
+- uid: DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportPointerOver_DrawnUi_Draw_SkiaControl_
+  name: ReportPointerOver(SkiaControl)
+  nameWithType: DrawnView.ReportPointerOver(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
+    name: ReportPointerOver
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportPointerOver_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
+    name: ReportPointerOver
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportPointerOver_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.CommitPointerOver
+  commentId: M:DrawnUi.Views.DrawnView.CommitPointerOver
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CommitPointerOver
+  name: CommitPointerOver()
+  nameWithType: DrawnView.CommitPointerOver()
+  fullName: DrawnUi.Views.DrawnView.CommitPointerOver()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.CommitPointerOver
+    name: CommitPointerOver
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CommitPointerOver
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.CommitPointerOver
+    name: CommitPointerOver
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CommitPointerOver
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ClearPointerOver
+  commentId: M:DrawnUi.Views.DrawnView.ClearPointerOver
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClearPointerOver
+  name: ClearPointerOver()
+  nameWithType: DrawnView.ClearPointerOver()
+  fullName: DrawnUi.Views.DrawnView.ClearPointerOver()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ClearPointerOver
+    name: ClearPointerOver
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClearPointerOver
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ClearPointerOver
+    name: ClearPointerOver
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClearPointerOver
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.KeyboardFocusNode
+  commentId: P:DrawnUi.Views.DrawnView.KeyboardFocusNode
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_KeyboardFocusNode
+  name: KeyboardFocusNode
+  nameWithType: DrawnView.KeyboardFocusNode
+  fullName: DrawnUi.Views.DrawnView.KeyboardFocusNode
+- uid: DrawnUi.Views.DrawnView.KeyboardFocusColor
+  commentId: F:DrawnUi.Views.DrawnView.KeyboardFocusColor
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_KeyboardFocusColor
+  name: KeyboardFocusColor
+  nameWithType: DrawnView.KeyboardFocusColor
+  fullName: DrawnUi.Views.DrawnView.KeyboardFocusColor
+- uid: DrawnUi.Views.DrawnView.WheelDeltaPerNotch
+  commentId: P:DrawnUi.Views.DrawnView.WheelDeltaPerNotch
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_WheelDeltaPerNotch
+  name: WheelDeltaPerNotch
+  nameWithType: DrawnView.WheelDeltaPerNotch
+  fullName: DrawnUi.Views.DrawnView.WheelDeltaPerNotch
+- uid: DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
+  commentId: M:DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DrawKeyboardFocus_DrawnUi_Draw_DrawingContext_
+  name: DrawKeyboardFocus(DrawingContext)
+  nameWithType: DrawnView.DrawKeyboardFocus(DrawingContext)
+  fullName: DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
+    name: DrawKeyboardFocus
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DrawKeyboardFocus_DrawnUi_Draw_DrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
+    name: DrawKeyboardFocus
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_DrawKeyboardFocus_DrawnUi_Draw_DrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: )
 - uid: DrawnUi.Views.DrawnView.AnimatingControls
   commentId: P:DrawnUi.Views.DrawnView.AnimatingControls
   parent: DrawnUi.Views.DrawnView

@@ -53,7 +53,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: For different children sizes
+  summary: For different children sizes. Default.
   example: []
   syntax:
     content: MeasureAll = 0
@@ -77,11 +77,14 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureFirst
     path: ../src/Shared/DrawnUi/Internals/Enums/MeasuringStrategy.cs
-    startLine: 12
+    startLine: 13
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Best for equal item sizes
+  summary: >-
+    Best for equal item sizes: only the first item is measured, every other row takes its size,
+
+    and Add/Remove/Replace/Move are applied arithmetically without measuring.
   example: []
   syntax:
     content: MeasureFirst = 1
@@ -105,7 +108,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureVisible
     path: ../src/Shared/DrawnUi/Internals/Enums/MeasuringStrategy.cs
-    startLine: 17
+    startLine: 18
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

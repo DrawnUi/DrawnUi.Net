@@ -174,8 +174,6 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         Focusable = true;
         FocusVisualStyle = null;
 
-        // keyboard focus ring of the accessibility node in focus, above the GPU child
-        AddVisualChild(_focusRing);
         Canvas.AccessibilityManager.Changed += OnAccessibilityChanged;
         Canvas.AccessibilityManager.FocusChanged += OnAccessibilityFocusChanged;
         Canvas.AccessibilityManager.LiveRegionUpdated += OnAccessibilityLiveRegion;
@@ -261,7 +259,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     }
 
     /// <inheritdoc/>
-    protected override int VisualChildrenCount => _gpuView != null ? 2 : 1;
+    protected override int VisualChildrenCount => _gpuView != null ? 1 : 0;
 
     /// <inheritdoc/>
     protected override Visual GetVisualChild(int index)
@@ -269,24 +267,12 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         if (_gpuView != null && index == 0)
             return _gpuView;
 
-        if (index == (_gpuView != null ? 1 : 0))
-            return _focusRing;
-
         throw new ArgumentOutOfRangeException(nameof(index));
     }
 
     #region Accessibility
 
-    private readonly DrawingVisual _focusRing = new();
     private DrawnUiElementAutomationPeer _peer;
-    private static readonly Pen FocusPen = CreateFocusPen();
-
-    private static Pen CreateFocusPen()
-    {
-        var pen = new Pen(new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x6E, 0xA8, 0xFE)), 2);
-        pen.Freeze();
-        return pen;
-    }
 
     /// <inheritdoc/>
     protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() =>
@@ -312,17 +298,17 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
     private void OnAccessibilityLiveRegion(ISkiaAccessibilityNode node) => Dispatcher.BeginInvoke(() => _peer?.NotifyLiveRegion(node));
 
-    /// <summary>Redraws the keyboard focus ring around the accessibility node in focus.</summary>
+    // the ring shows once the keyboard was used, never at launch or after a click (a tapped button takes focus too)
+    private bool _keyboardNavigating;
+
+    /// <summary>
+    /// Hands the node in keyboard focus to the canvas (<c>DrawnView.KeyboardFocusNode</c>), which draws the focus ring
+    /// where the node is drawn and keeps the scroll bars around it visible, same as MAUI Windows.
+    /// </summary>
     internal void InvalidateFocusRing()
     {
-        using var dc = _focusRing.RenderOpen();
-        var focused = _peer?.FocusedPeer;
-        if (focused == null || !IsKeyboardFocused)
-            return;
-
-        var rect = focused.LocalRect;
-        rect.Inflate(2, 2);
-        dc.DrawRoundedRectangle(null, FocusPen, rect, 6, 6);
+        var focused = _peer?.FocusedPeer?.Source;
+        Canvas.KeyboardFocusNode = IsKeyboardFocused && _keyboardNavigating ? focused : null;
     }
 
     /// <inheritdoc/>
@@ -333,7 +319,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         InvalidateFocusRing();
     }
 
-    /// <summary>Tab / Shift+Tab walk the interactive nodes, Enter / Space activate, Escape leaves.</summary>
+    /// <summary>Tab / Shift+Tab walk the interactive nodes, Enter / Space activate, Escape leaves, other keys go to the node (slider arrows).</summary>
     private bool HandleAccessibilityKey(KeyEventArgs e)
     {
         var peer = EnsurePeer();
@@ -343,6 +329,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         switch (e.Key)
         {
             case Key.Tab:
+                _keyboardNavigating = true;
                 var moved = peer.MoveFocus(!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift));
                 InvalidateFocusRing();
                 return moved; // false past either end: WPF moves focus out of the canvas
@@ -357,7 +344,14 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 return true;
         }
 
-        return false;
+        // arrows / Home / End / PageUp / PageDown go to the node in focus (a slider steps its value), else move focus
+        // between the items of the list around it; the keyboard is in use, so the ring shows
+        if (!SkiaAccessibilityManager.Key(peer.FocusedPeer?.Source, KeyboardManager.MapKey(e.Key)))
+            return false;
+
+        _keyboardNavigating = true;
+        InvalidateFocusRing();
+        return true;
     }
 
     #endregion
@@ -632,6 +626,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _peer?.ClearVirtualFocus(); // the pointer takes over from keyboard navigation
+        _keyboardNavigating = false;
         InvalidateFocusRing();
         Focus();
         CaptureMouse();
@@ -656,6 +651,13 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         var point = ToCanvasPixels(_lastPointer);
         var pointer = _pointerDown ? DescribePointer(_pressedButton, AppoMobi.Gestures.MouseButtonState.Pressed, e) : null;
         Canvas.HandleDesktopPointerMove(point.X, point.Y, _pointerDown, ClientPixelWidth, ClientPixelHeight, pointer);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnMouseLeave(MouseEventArgs e)
+    {
+        base.OnMouseLeave(e);
+        Canvas.HandleDesktopPointerLeave(); // hover and pointer-over end when the mouse leaves the element
     }
 
     /// <inheritdoc/>
@@ -727,6 +729,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _peer?.ClearVirtualFocus();
+        _keyboardNavigating = false;
         InvalidateFocusRing();
         Focus();
         CaptureTouch(e.TouchDevice);
@@ -872,7 +875,14 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 if (Clipboard.ContainsText())
                     Canvas.HandleDesktopTextInput(Clipboard.GetText().Replace("\r\n", "\n"));
                 break;
-            case Key.Tab: Canvas.HandleDesktopTextInput("    "); break;
+            case Key.Tab:
+                // Tab leaves the field and moves on, Shift+Tab goes back, like a native text box: continue from
+                // the field even when a click focused it; past either end WPF moves focus out of the element
+                EnsurePeer()?.NotifyFocusChanged(editor);
+                editor.OnAccessibilityFocused(false);
+                if (!HandleAccessibilityKey(e))
+                    return;
+                break;
             default: return;
         }
 

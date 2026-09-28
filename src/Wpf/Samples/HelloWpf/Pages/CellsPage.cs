@@ -44,6 +44,7 @@ public class CellsPage : SkiaLayer
                 Content = new SkiaStack
                 {
                     ItemsSource = Items,
+                    AccessibilityRole = DrawnUi.Models.Aria.RoleList, // keyboard group: one Tab stop, arrows walk all items
                     ItemTemplate = new DataTemplate(() => new ContactCell(OnCellTapped)),
                     RecyclingTemplate = RecyclingTemplate.Enabled,
                     MeasureItemsStrategy = MeasuringStrategy.MeasureFirst,
@@ -52,9 +53,10 @@ public class CellsPage : SkiaLayer
                 }.Assign(out _feed),
             }.Fill().Assign(out _scroll),
 
-            // jump toolbar: wraps on narrow windows
+            // jump toolbar: wraps on narrow windows; a keyboard group: one Tab stop, arrows move between the buttons
             new SkiaWrap
             {
+                AccessibilityRole = DrawnUi.Models.Aria.RoleToolbar,
                 Spacing = 6,
                 Margin = new Thickness(8, 0, 8, 36),
                 HorizontalOptions = LayoutOptions.Center,
@@ -92,6 +94,7 @@ public class CellsPage : SkiaLayer
             FontSize = 12,
             BackgroundColor = Color.Parse("#0D6EFD"),
             WidthRequest = 104,
+            AccessibilityRole = DrawnUi.Models.Aria.RoleButton,
         }.OnTapped(me => action());
 
     private void Jump(int index, RelativePositionType option = RelativePositionType.Start)

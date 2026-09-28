@@ -318,7 +318,7 @@ namespace DrawnUi.Draw
                 bool shift = Microsoft.UI.Input.InputKeyboardSource
                     .GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift)
                     .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
-                bool moved = Superview?.HandleEditorA11yTabOut(!shift) ?? false;
+                bool moved = Superview?.HandleEditorA11yTabOut(this, !shift) ?? false;
                 e.Handled = moved; // if past boundary, let WinUI Tab continue naturally
                 return;
             }
@@ -444,29 +444,5 @@ namespace DrawnUi.Draw
             return uniqueId;
         }
 
-        public override void OnAccessibilityActivated()
-        {
-            // Do NOT call base — base injects a synthetic Tapped gesture which SkiaEditor
-            // ignores for focus (only Down opens the keyboard). Set native focus directly.
-            if (Superview != null)
-                Superview.FocusedChild = this;
-            SetFocusInternal(true);
-        }
-
-        public override void OnAccessibilityFocused(bool focused)
-        {
-            if (focused)
-            {
-                // Tab arrived — activate cursor + native input sink.
-                if (Superview != null)
-                    Superview.FocusedChild = this;
-                SetFocusInternal(true);
-            }
-            else
-            {
-                // Tab left — hide cursor, release native input.
-                SetFrameworkFocus(false);
-            }
-        }
     }
 }

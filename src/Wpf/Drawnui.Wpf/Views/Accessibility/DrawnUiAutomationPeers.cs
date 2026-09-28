@@ -51,7 +51,10 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
     internal bool MoveFocus(bool forward)
     {
         EnsureChildren();
-        var focusable = _children.Where(p => p.Source?.AccessibilityCanInteract == true).ToList();
+        // a group of items (Aria.RoleList etc. on a container) is one Tab stop, the arrow keys move inside it
+        var manager = _element.Canvas?.AccessibilityManager;
+        var focusable = _children.Where(p => p.Source?.AccessibilityCanInteract == true
+                                             && manager?.IsTabStop(p.Source) != false).ToList();
         if (focusable.Count == 0)
             return false;
 
@@ -73,7 +76,7 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
             return;
 
         FocusedPeer.RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
-        FocusedPeer.Source.OnAccessibilityActivated();
+        SkiaAccessibilityManager.Activate(FocusedPeer.Source);
     }
 
     /// <summary>The engine reported a focus change (a control took focus by pointer).</summary>
@@ -86,6 +89,8 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
 
         var previous = FocusedPeer;
         FocusedPeer = peer;
+        if (peer?.Source is SkiaControl control)
+            SkiaScroll.EnsureVisible(control);
         previous?.RaisePropertyChangedEvent(AutomationElementIdentifiers.HasKeyboardFocusProperty, true, false);
         peer?.RaisePropertyChangedEvent(AutomationElementIdentifiers.HasKeyboardFocusProperty, false, true);
         peer?.RaiseAutomationEvent(AutomationEvents.AutomationFocusChanged);
@@ -105,6 +110,8 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
         // lets input controls (SkiaEditor) take / release their input sink on Tab-in / Tab-out
         previous?.Source?.OnAccessibilityFocused(false);
         peer.Source?.OnAccessibilityFocused(true);
+        if (peer.Source is SkiaControl control)
+            SkiaScroll.EnsureVisible(control); // same as MAUI Windows: the node Tab lands on scrolls into view
 
         previous?.RaisePropertyChangedEvent(AutomationElementIdentifiers.HasKeyboardFocusProperty, true, false);
         peer.RaisePropertyChangedEvent(AutomationElementIdentifiers.HasKeyboardFocusProperty, false, true);
@@ -279,7 +286,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
             return;
 
         RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
-        _parent.Element.Dispatcher.BeginInvoke(source.OnAccessibilityActivated);
+        _parent.Element.Dispatcher.BeginInvoke(() => SkiaAccessibilityManager.Activate(source));
     }
 
     /// <inheritdoc/>

@@ -5,6 +5,7 @@ items:
   id: Aria
   parent: DrawnUi.Models
   children:
+  - DrawnUi.Models.Aria.IsCompositeRole(System.String)
   - DrawnUi.Models.Aria.IsInteractiveRole(System.String)
   - DrawnUi.Models.Aria.LiveAssertive
   - DrawnUi.Models.Aria.LivePolite
@@ -14,6 +15,7 @@ items:
   - DrawnUi.Models.Aria.RoleCheckbox
   - DrawnUi.Models.Aria.RoleComboBox
   - DrawnUi.Models.Aria.RoleDialog
+  - DrawnUi.Models.Aria.RoleGrid
   - DrawnUi.Models.Aria.RoleGroup
   - DrawnUi.Models.Aria.RoleHeading
   - DrawnUi.Models.Aria.RoleImg
@@ -23,6 +25,7 @@ items:
   - DrawnUi.Models.Aria.RoleListItem
   - DrawnUi.Models.Aria.RoleMain
   - DrawnUi.Models.Aria.RoleMenu
+  - DrawnUi.Models.Aria.RoleMenuBar
   - DrawnUi.Models.Aria.RoleMenuItem
   - DrawnUi.Models.Aria.RoleMenuItemCheckbox
   - DrawnUi.Models.Aria.RoleMenuItemRadio
@@ -31,6 +34,7 @@ items:
   - DrawnUi.Models.Aria.RolePresentation
   - DrawnUi.Models.Aria.RoleProgressBar
   - DrawnUi.Models.Aria.RoleRadio
+  - DrawnUi.Models.Aria.RoleRadioGroup
   - DrawnUi.Models.Aria.RoleRegion
   - DrawnUi.Models.Aria.RoleScrollBar
   - DrawnUi.Models.Aria.RoleSearchBox
@@ -44,6 +48,7 @@ items:
   - DrawnUi.Models.Aria.RoleTabPanel
   - DrawnUi.Models.Aria.RoleText
   - DrawnUi.Models.Aria.RoleTextBox
+  - DrawnUi.Models.Aria.RoleToolbar
   - DrawnUi.Models.Aria.RoleTooltip
   langs:
   - csharp
@@ -1198,6 +1203,163 @@ items:
   nameWithType.vb: Aria.IsInteractiveRole(String)
   fullName.vb: DrawnUi.Models.Aria.IsInteractiveRole(String)
   name.vb: IsInteractiveRole(String)
+- uid: DrawnUi.Models.Aria.RoleGrid
+  commentId: F:DrawnUi.Models.Aria.RoleGrid
+  id: RoleGrid
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: RoleGrid
+  nameWithType: Aria.RoleGrid
+  fullName: DrawnUi.Models.Aria.RoleGrid
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RoleGrid
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 136
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: A grid of items navigated in two dimensions (rows and columns of cells).
+  example: []
+  syntax:
+    content: public static readonly string RoleGrid
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly RoleGrid As String
+- uid: DrawnUi.Models.Aria.RoleToolbar
+  commentId: F:DrawnUi.Models.Aria.RoleToolbar
+  id: RoleToolbar
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: RoleToolbar
+  nameWithType: Aria.RoleToolbar
+  fullName: DrawnUi.Models.Aria.RoleToolbar
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RoleToolbar
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 139
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: A row of commands, usually buttons.
+  example: []
+  syntax:
+    content: public static readonly string RoleToolbar
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly RoleToolbar As String
+- uid: DrawnUi.Models.Aria.RoleRadioGroup
+  commentId: F:DrawnUi.Models.Aria.RoleRadioGroup
+  id: RoleRadioGroup
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: RoleRadioGroup
+  nameWithType: Aria.RoleRadioGroup
+  fullName: DrawnUi.Models.Aria.RoleRadioGroup
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RoleRadioGroup
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 142
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: Container of <xref href="DrawnUi.Models.Aria.RoleRadio" data-throw-if-not-resolved="false"></xref> elements, one of them checked.
+  example: []
+  syntax:
+    content: public static readonly string RoleRadioGroup
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly RoleRadioGroup As String
+- uid: DrawnUi.Models.Aria.RoleMenuBar
+  commentId: F:DrawnUi.Models.Aria.RoleMenuBar
+  id: RoleMenuBar
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: RoleMenuBar
+  nameWithType: Aria.RoleMenuBar
+  fullName: DrawnUi.Models.Aria.RoleMenuBar
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RoleMenuBar
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 145
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: A horizontal menu, container of <xref href="DrawnUi.Models.Aria.RoleMenuItem" data-throw-if-not-resolved="false"></xref> elements.
+  example: []
+  syntax:
+    content: public static readonly string RoleMenuBar
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly RoleMenuBar As String
+- uid: DrawnUi.Models.Aria.IsCompositeRole(System.String)
+  commentId: M:DrawnUi.Models.Aria.IsCompositeRole(System.String)
+  id: IsCompositeRole(System.String)
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: IsCompositeRole(string?)
+  nameWithType: Aria.IsCompositeRole(string?)
+  fullName: DrawnUi.Models.Aria.IsCompositeRole(string?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsCompositeRole
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 152
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: >-
+    Roles of containers whose items keyboard navigation walks with the arrow keys, one Tab stop for the whole group:
+
+    <xref href="DrawnUi.Models.Aria.RoleList" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Models.Aria.RoleListBox" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Models.Aria.RoleGrid" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Models.Aria.RoleToolbar" data-throw-if-not-resolved="false"></xref>,
+
+    <xref href="DrawnUi.Models.Aria.RoleRadioGroup" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Models.Aria.RoleTabList" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Models.Aria.RoleMenu" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Models.Aria.RoleMenuBar" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static bool IsCompositeRole(string? role)
+    parameters:
+    - id: role
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsCompositeRole(role As String) As Boolean
+  overload: DrawnUi.Models.Aria.IsCompositeRole*
+  nameWithType.vb: Aria.IsCompositeRole(String)
+  fullName.vb: DrawnUi.Models.Aria.IsCompositeRole(String)
+  name.vb: IsCompositeRole(String)
 - uid: DrawnUi.Models.Aria.LivePolite
   commentId: F:DrawnUi.Models.Aria.LivePolite
   id: LivePolite
@@ -1216,7 +1378,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LivePolite
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 141
+    startLine: 161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1248,7 +1410,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LiveAssertive
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 147
+    startLine: 167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1628,3 +1790,51 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Models.Aria.RoleRadio
+  commentId: F:DrawnUi.Models.Aria.RoleRadio
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleRadio
+  name: RoleRadio
+  nameWithType: Aria.RoleRadio
+  fullName: DrawnUi.Models.Aria.RoleRadio
+- uid: DrawnUi.Models.Aria.RoleMenuItem
+  commentId: F:DrawnUi.Models.Aria.RoleMenuItem
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleMenuItem
+  name: RoleMenuItem
+  nameWithType: Aria.RoleMenuItem
+  fullName: DrawnUi.Models.Aria.RoleMenuItem
+- uid: DrawnUi.Models.Aria.RoleGrid
+  commentId: F:DrawnUi.Models.Aria.RoleGrid
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleGrid
+  name: RoleGrid
+  nameWithType: Aria.RoleGrid
+  fullName: DrawnUi.Models.Aria.RoleGrid
+- uid: DrawnUi.Models.Aria.RoleToolbar
+  commentId: F:DrawnUi.Models.Aria.RoleToolbar
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleToolbar
+  name: RoleToolbar
+  nameWithType: Aria.RoleToolbar
+  fullName: DrawnUi.Models.Aria.RoleToolbar
+- uid: DrawnUi.Models.Aria.RoleRadioGroup
+  commentId: F:DrawnUi.Models.Aria.RoleRadioGroup
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleRadioGroup
+  name: RoleRadioGroup
+  nameWithType: Aria.RoleRadioGroup
+  fullName: DrawnUi.Models.Aria.RoleRadioGroup
+- uid: DrawnUi.Models.Aria.RoleTabList
+  commentId: F:DrawnUi.Models.Aria.RoleTabList
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleTabList
+  name: RoleTabList
+  nameWithType: Aria.RoleTabList
+  fullName: DrawnUi.Models.Aria.RoleTabList
+- uid: DrawnUi.Models.Aria.RoleMenuBar
+  commentId: F:DrawnUi.Models.Aria.RoleMenuBar
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleMenuBar
+  name: RoleMenuBar
+  nameWithType: Aria.RoleMenuBar
+  fullName: DrawnUi.Models.Aria.RoleMenuBar
+- uid: DrawnUi.Models.Aria.IsCompositeRole*
+  commentId: Overload:DrawnUi.Models.Aria.IsCompositeRole
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_IsCompositeRole_System_String_
+  name: IsCompositeRole
+  nameWithType: Aria.IsCompositeRole
+  fullName: DrawnUi.Models.Aria.IsCompositeRole

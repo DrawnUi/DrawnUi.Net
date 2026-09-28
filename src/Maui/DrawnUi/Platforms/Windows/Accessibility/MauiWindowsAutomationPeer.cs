@@ -42,8 +42,13 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
     // Which virtual peer currently holds keyboard focus (null = none).
     internal DrawnUiVirtualAutomationPeer? FocusedPeer { get; private set; }
 
+    // Refresh the children now: keyboard navigation walks them, and without an AT client traversing
+    // nobody else calls GetChildrenCore, so Tab kept the list of the first snapshot forever.
     internal void NotifyStructureChanged()
-        => RaiseStructureChangedEvent(AutomationStructureChangeType.ChildrenInvalidated, null);
+    {
+        GetChildrenCore();
+        RaiseStructureChangedEvent(AutomationStructureChangeType.ChildrenInvalidated, null);
+    }
 
     internal void ClearVirtualFocus()
     {
@@ -58,7 +63,10 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         if (_cachedChildren.Count == 0)
             return false;
 
-        var focusable = _cachedChildren.Where(p => p.Source?.AccessibilityCanInteract == true).ToList();
+        // a group of items (Aria.RoleList etc. on a container) is one Tab stop, the arrow keys move inside it
+        var manager = _host.A11yManager;
+        var focusable = _cachedChildren.Where(p => p.Source?.AccessibilityCanInteract == true
+                                                   && manager?.IsTabStop(p.Source) != false).ToList();
         if (focusable.Count == 0)
             focusable = _cachedChildren;
 
@@ -66,7 +74,13 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         int next    = forward ? current + 1 : current - 1;
 
         if (next < 0 || next >= focusable.Count)
+        {
+            // past either end: leave the canvas' nodes, the next Tab starts over (WPF parity)
+            FocusedPeer?.Source?.OnAccessibilityFocused(false);
+            FocusedPeer?.RaisePropertyChangedEvent(AutomationElementIdentifiers.HasKeyboardFocusProperty, true, false);
+            FocusedPeer = null;
             return false;
+        }
 
         var prev = FocusedPeer;
         FocusedPeer = focusable[next];
@@ -96,7 +110,7 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         if (FocusedPeer?.Source != null)
         {
             FocusedPeer.RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
-            FocusedPeer.Source.OnAccessibilityActivated();
+            SkiaAccessibilityManager.Activate(FocusedPeer.Source);
             // Re-announce focused element so Narrator says the button name/role after invocation.
             FocusedPeer.RaiseAutomationEvent(AutomationEvents.AutomationFocusChanged);
         }
@@ -177,6 +191,14 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
                 list.Add(peer);
             }
         }
+        // forget peers whose node left the snapshot, they hold the removed controls (same rule as WPF)
+        if (_peerCache.Count > list.Count * 2 + 16)
+        {
+            var alive = new HashSet<ISkiaAccessibilityNode>(list.Where(p => p.Source != null).Select(p => p.Source!));
+            foreach (var dead in _peerCache.Keys.Where(k => !alive.Contains(k)).ToList())
+                _peerCache.Remove(dead);
+        }
+
         _cachedChildren = list;
         return [.. list];
     }
@@ -326,7 +348,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
             RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                source.OnAccessibilityActivated();
+                SkiaAccessibilityManager.Activate(source);
                 RaiseAutomationEvent(AutomationEvents.AutomationFocusChanged);
             });
         }

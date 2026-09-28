@@ -42,6 +42,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.CursorPosition
   - DrawnUi.Draw.SkiaEditor.CursorPositionProperty
   - DrawnUi.Draw.SkiaEditor.CutSelection
+  - DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract
   - DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel
   - DrawnUi.Draw.SkiaEditor.DefaultAccessibilityRole
   - DrawnUi.Draw.SkiaEditor.DeleteSelection
@@ -86,6 +87,9 @@ items:
   - DrawnUi.Draw.SkiaEditor.MoveCursorTo(System.Double,System.Double)
   - DrawnUi.Draw.SkiaEditor.MoveInternalCursor
   - DrawnUi.Draw.SkiaEditor.NormalizeEditorLineBreaks(System.String)
+  - DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated
+  - DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused(System.Boolean)
+  - DrawnUi.Draw.SkiaEditor.OnAccessibilityKey(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.SkiaEditor.OnControlCreated
   - DrawnUi.Draw.SkiaEditor.OnCreatingLabel(DrawnUi.Draw.SkiaLabel)
   - DrawnUi.Draw.SkiaEditor.OnCursorMoved
@@ -750,6 +754,9 @@ items:
   - DrawnUi.Draw.SkiaControl.GetGesturePositionInsideChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckChildGestureHit(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckHovered(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.IsPointerOver
+  - DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelow
   - DrawnUi.Draw.SkiaControl.UpdateLocks
@@ -927,18 +934,19 @@ items:
   - DrawnUi.Draw.SkiaControl.AccessibilityChanged
   - DrawnUi.Draw.SkiaControl.AccessibilityId
   - DrawnUi.Draw.SkiaControl.AccessibilityRole
-  - DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLabel
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
   - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.RenderedFrame
+  - DrawnUi.Draw.SkiaControl.WasInLastFrame
   - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLive
   - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
-  - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-  - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+  - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -4560,6 +4568,141 @@ items:
     content.vb: Protected Overrides Function DefaultAccessibilityLabel() As String
   overridden: DrawnUi.Draw.SkiaControl.DefaultAccessibilityLabel
   overload: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel*
+- uid: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract
+  id: DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaEditor.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DefaultAccessibilityCanInteract
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1937
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: A text field is a Tab stop by default, like a native text box, with no Tapped handler needed.
+  example: []
+  syntax:
+    content: protected override bool DefaultAccessibilityCanInteract()
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function DefaultAccessibilityCanInteract() As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  overload: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract*
+- uid: DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused(System.Boolean)
+  id: OnAccessibilityFocused(System.Boolean)
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityFocused(bool)
+  nameWithType: SkiaEditor.OnAccessibilityFocused(bool)
+  fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAccessibilityFocused
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1943
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Keyboard navigation reached the field (Tab) or left it: take the caret and the input sink like a native
+
+    text box, so typing goes into it, or release them.
+  example: []
+  syntax:
+    content: public override void OnAccessibilityFocused(bool focused)
+    parameters:
+    - id: focused
+      type: System.Boolean
+    content.vb: Public Overrides Sub OnAccessibilityFocused(focused As Boolean)
+  overridden: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+  overload: DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused*
+  nameWithType.vb: SkiaEditor.OnAccessibilityFocused(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused(Boolean)
+  name.vb: OnAccessibilityFocused(Boolean)
+- uid: DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated
+  id: OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaEditor.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAccessibilityActivated
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1961
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Enter / Space on the field while it has no caret start editing; while editing they are text. The base synthetic
+
+    Tapped would not do it: only Down opens the editor.
+  example: []
+  syntax:
+    content: public override void OnAccessibilityActivated()
+    content.vb: Public Overrides Sub OnAccessibilityActivated()
+  overridden: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  overload: DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated*
+- uid: DrawnUi.Draw.SkiaEditor.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.SkiaEditor.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  id: OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityKey(InputKey)
+  nameWithType: SkiaEditor.OnAccessibilityKey(InputKey)
+  fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAccessibilityKey
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1968
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: 'While editing, arrows, Home / End and PageUp / PageDown belong to the text: they never move a surrounding group.'
+  example: []
+  syntax:
+    content: public override bool OnAccessibilityKey(InputKey key)
+    parameters:
+    - id: key
+      type: DrawnUi.Draw.InputKey
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function OnAccessibilityKey(key As InputKey) As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  overload: DrawnUi.Draw.SkiaEditor.OnAccessibilityKey*
 - uid: DrawnUi.Draw.SkiaEditor.FontSizeProperty
   commentId: F:DrawnUi.Draw.SkiaEditor.FontSizeProperty
   id: FontSizeProperty
@@ -4578,7 +4721,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1958
+    startLine: 1992
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4605,7 +4748,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1962
+    startLine: 1996
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4634,7 +4777,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1968
+    startLine: 2002
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4661,7 +4804,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1975
+    startLine: 2009
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4690,7 +4833,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1981
+    startLine: 2015
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4717,7 +4860,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1988
+    startLine: 2022
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4746,7 +4889,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1995
+    startLine: 2029
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4773,7 +4916,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2002
+    startLine: 2036
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4802,7 +4945,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2008
+    startLine: 2042
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4829,7 +4972,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2010
+    startLine: 2044
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4858,7 +5001,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2016
+    startLine: 2050
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4885,7 +5028,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2020
+    startLine: 2054
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4914,7 +5057,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2026
+    startLine: 2060
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4941,7 +5084,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2033
+    startLine: 2067
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4970,7 +5113,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradientProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2040
+    startLine: 2074
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4997,7 +5140,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradient
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2047
+    startLine: 2081
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5026,7 +5169,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2053
+    startLine: 2087
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5053,7 +5196,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2060
+    startLine: 2094
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5082,7 +5225,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradientProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2067
+    startLine: 2101
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5109,7 +5252,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradient
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2075
+    startLine: 2109
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5138,7 +5281,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLengthProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2082
+    startLine: 2116
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5165,7 +5308,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLength
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2097
+    startLine: 2131
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5194,7 +5337,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2103
+    startLine: 2137
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5221,7 +5364,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2110
+    startLine: 2144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5250,7 +5393,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2116
+    startLine: 2150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5277,7 +5420,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderText
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2123
+    startLine: 2157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5306,7 +5449,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2129
+    startLine: 2163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5333,7 +5476,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2136
+    startLine: 2170
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5362,7 +5505,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2142
+    startLine: 2176
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5389,7 +5532,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2149
+    startLine: 2183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5418,7 +5561,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2171
+    startLine: 2205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5445,7 +5588,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2173
+    startLine: 2207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5474,7 +5617,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2179
+    startLine: 2213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5501,7 +5644,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2187
+    startLine: 2221
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5537,7 +5680,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionGo
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2199
+    startLine: 2233
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5564,7 +5707,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionNext
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2200
+    startLine: 2234
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5591,7 +5734,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSend
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2201
+    startLine: 2235
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5618,7 +5761,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSearch
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2202
+    startLine: 2236
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5645,7 +5788,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionDone
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2203
+    startLine: 2237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5672,7 +5815,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorPositionNative
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2210
+    startLine: 2244
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5706,7 +5849,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposePlatform
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2215
+    startLine: 2249
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5732,7 +5875,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusNative
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2220
+    startLine: 2254
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5764,7 +5907,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateNativePosition
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2225
+    startLine: 2259
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5790,7 +5933,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyKeyboardType
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2230
+    startLine: 2264
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -18380,6 +18523,69 @@ references:
     name: SkiaGesturesParameters
     href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  name: CheckPointerOver(SkiaGesturesParameters)
+  nameWithType: SkiaControl.CheckPointerOver(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsPointerOver
+  commentId: P:DrawnUi.Draw.SkiaControl.IsPointerOver
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPointerOver
+  name: IsPointerOver
+  nameWithType: SkiaControl.IsPointerOver
+  fullName: DrawnUi.Draw.SkiaControl.IsPointerOver
+- uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  name: OnPointerOver(bool)
+  nameWithType: SkiaControl.OnPointerOver(bool)
+  fullName: DrawnUi.Draw.SkiaControl.OnPointerOver(bool)
+  nameWithType.vb: SkiaControl.OnPointerOver(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnPointerOver(Boolean)
+  name.vb: OnPointerOver(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   commentId: F:DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   parent: DrawnUi.Draw.SkiaControl
@@ -20919,25 +21125,6 @@ references:
   name: AccessibilityRole
   nameWithType: SkiaControl.AccessibilityRole
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityRole
-- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
-  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
-  name: DefaultAccessibilityCanInteract()
-  nameWithType: SkiaControl.DefaultAccessibilityCanInteract()
-  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
-    name: DefaultAccessibilityCanInteract
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
-    name: DefaultAccessibilityCanInteract
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
-  - name: (
-  - name: )
 - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   parent: DrawnUi.Draw.SkiaControl
@@ -20997,6 +21184,32 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.RenderedFrame
+  commentId: P:DrawnUi.Draw.SkiaControl.RenderedFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderedFrame
+  name: RenderedFrame
+  nameWithType: SkiaControl.RenderedFrame
+  fullName: DrawnUi.Draw.SkiaControl.RenderedFrame
+- uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+  commentId: M:DrawnUi.Draw.SkiaControl.WasInLastFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  name: WasInLastFrame()
+  nameWithType: SkiaControl.WasInLastFrame()
+  fullName: DrawnUi.Draw.SkiaControl.WasInLastFrame()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   parent: DrawnUi.Draw.SkiaControl
@@ -21037,55 +21250,50 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityUnregistered
   - name: (
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-  parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
-  name: OnAccessibilityActivated()
-  nameWithType: SkiaControl.OnAccessibilityActivated()
-  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-    name: OnAccessibilityActivated
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
-    name: OnAccessibilityActivated
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
-  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+- uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityFocused_System_Boolean_
-  name: OnAccessibilityFocused(bool)
-  nameWithType: SkiaControl.OnAccessibilityFocused(bool)
-  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(bool)
-  nameWithType.vb: SkiaControl.OnAccessibilityFocused(Boolean)
-  fullName.vb: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(Boolean)
-  name.vb: OnAccessibilityFocused(Boolean)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  name: CanReceiveGesture(TouchActionResult)
+  nameWithType: SkiaControl.CanReceiveGesture(TouchActionResult)
+  fullName: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
-    name: OnAccessibilityFocused
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityFocused_System_Boolean_
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
   - name: (
-  - uid: System.Boolean
-    name: bool
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
-    name: OnAccessibilityFocused
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityFocused_System_Boolean_
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
   - name: (
-  - uid: System.Boolean
-    name: Boolean
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaControl.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -47705,6 +47913,131 @@ references:
   name: DefaultAccessibilityLabel
   nameWithType: SkiaEditor.DefaultAccessibilityLabel
   fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel
+- uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract()
+  nameWithType: SkiaControl.DefaultAccessibilityCanInteract()
+  fullName: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
+    name: DefaultAccessibilityCanInteract
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_DefaultAccessibilityCanInteract
+  name: DefaultAccessibilityCanInteract
+  nameWithType: SkiaEditor.DefaultAccessibilityCanInteract
+  fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityFocused_System_Boolean_
+  name: OnAccessibilityFocused(bool)
+  nameWithType: SkiaControl.OnAccessibilityFocused(bool)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(bool)
+  nameWithType.vb: SkiaControl.OnAccessibilityFocused(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(Boolean)
+  name.vb: OnAccessibilityFocused(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+    name: OnAccessibilityFocused
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityFocused_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+    name: OnAccessibilityFocused
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityFocused_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_OnAccessibilityFocused_System_Boolean_
+  name: OnAccessibilityFocused
+  nameWithType: SkiaEditor.OnAccessibilityFocused
+  fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  name: OnAccessibilityActivated()
+  nameWithType: SkiaControl.OnAccessibilityActivated()
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
+    name: OnAccessibilityActivated
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_OnAccessibilityActivated
+  name: OnAccessibilityActivated
+  nameWithType: SkiaEditor.OnAccessibilityActivated
+  fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  name: OnAccessibilityKey(InputKey)
+  nameWithType: SkiaControl.OnAccessibilityKey(InputKey)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.OnAccessibilityKey*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.OnAccessibilityKey
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  name: OnAccessibilityKey
+  nameWithType: SkiaEditor.OnAccessibilityKey
+  fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityKey
+- uid: DrawnUi.Draw.InputKey
+  commentId: T:DrawnUi.Draw.InputKey
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.InputKey.html
+  name: InputKey
+  nameWithType: InputKey
+  fullName: DrawnUi.Draw.InputKey
 - uid: DrawnUi.Draw.SkiaEditor.FontSize*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.FontSize
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_FontSize

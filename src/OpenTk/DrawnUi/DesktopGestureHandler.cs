@@ -37,6 +37,9 @@ public class DesktopGestureHandler
         _canvas.HandleDesktopPointerMove(mousePos.X, mousePos.Y, isButtonDown && _pressed != null, clientSize.X, clientSize.Y, pointer);
     }
 
+    /// <summary>The cursor left the window: hover and pointer-over end.</summary>
+    public void OnMouseLeave() => _canvas.HandleDesktopPointerLeave();
+
     public void OnMouseUp(MouseButtonEventArgs e, Vector2 mousePos, Vector2i clientSize, MouseState? mouseState = null)
     {
         if (_pressed != e.Button) return;

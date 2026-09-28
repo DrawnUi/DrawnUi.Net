@@ -420,6 +420,128 @@ namespace DrawnUi.Views
         /// </summary>
         public List<IOverlayEffect> PostAnimators { get; } = new(128);
 
+        #region Pointer over
+
+        private HashSet<SkiaControl> _pointerOver = new();
+        private HashSet<SkiaControl> _pointerOverNext = new();
+
+        /// <summary>
+        /// A control that opted in (<see cref="SkiaControl.CheckPointerOver"/>) was reached by the pointer event being
+        /// processed. Unlike hover, any number of controls can be under the pointer at once: a scroll and the button inside it.
+        /// </summary>
+        public void ReportPointerOver(SkiaControl control) => _pointerOverNext.Add(control);
+
+        /// <summary>
+        /// Call after a hover pointer event went through the tree: controls it no longer reached get
+        /// <see cref="SkiaControl.IsPointerOver"/> false, the ones it reached for the first time true.
+        /// </summary>
+        public void CommitPointerOver()
+        {
+            if (_pointerOver.Count == 0 && _pointerOverNext.Count == 0)
+                return;
+
+            foreach (var control in _pointerOver)
+            {
+                if (!_pointerOverNext.Contains(control))
+                    control.SetPointerOver(false);
+            }
+
+            foreach (var control in _pointerOverNext)
+            {
+                if (!_pointerOver.Contains(control))
+                    control.SetPointerOver(true);
+            }
+
+            (_pointerOver, _pointerOverNext) = (_pointerOverNext, _pointerOver);
+            _pointerOverNext.Clear();
+        }
+
+        /// <summary>The pointer left the canvas: nothing is under it anymore.</summary>
+        public void ClearPointerOver()
+        {
+            _pointerOverNext.Clear();
+            CommitPointerOver();
+        }
+
+        #endregion
+
+        private ISkiaAccessibilityNode _keyboardFocusNode;
+        private SKPaint _keyboardFocusPaint;
+
+        /// <summary>
+        /// Accessibility node that keyboard navigation (Tab) moved to, set by the head (MAUI Windows, WPF, Blazor).
+        /// The canvas outlines it on top of every frame, following it while it scrolls (heads with their own outline
+        /// override <see cref="DrawKeyboardFocus"/>), and every <see cref="SkiaScroll"/> around it keeps its scroll bars
+        /// visible. Null hides both. Pointer input clears it, keyboard focus itself stays with the accessibility layer.
+        /// </summary>
+        public ISkiaAccessibilityNode KeyboardFocusNode
+        {
+            get => _keyboardFocusNode;
+            set
+            {
+                if (ReferenceEquals(_keyboardFocusNode, value))
+                    return;
+
+                var previous = _keyboardFocusNode;
+                _keyboardFocusNode = value;
+                if (value != null)
+                    AccessibilityManager.NoteFocus(value); // the next Tab into its group lands here
+                SetKeyboardFocusInScrolls(previous, false);
+                SetKeyboardFocusInScrolls(value, true);
+                Update();
+            }
+        }
+
+        private static void SetKeyboardFocusInScrolls(ISkiaAccessibilityNode node, bool inside)
+        {
+            var parent = (node as SkiaControl)?.Parent;
+            while (parent is SkiaControl control)
+            {
+                if (control is SkiaScroll scroll)
+                    scroll.SetKeyboardFocusInside(inside);
+                parent = control.Parent;
+            }
+        }
+
+        /// <summary>Color of the keyboard focus ring, see <see cref="KeyboardFocusNode"/>. Same blue as the WPF head.</summary>
+        public static SKColor KeyboardFocusColor = SKColor.Parse("#6EA8FE");
+
+        /// <summary>
+        /// The <c>Wheel.Delta</c> one mouse-wheel notch produces on this head. A scroll moves by the event's share of a
+        /// notch, so a precision touchpad or a free-spinning wheel, which send many small events, scroll as far as the
+        /// fingers moved. Set by the head: MAUI Windows 0.3, the WPF / OpenTK desktop path 120, the browser heads 100
+        /// (CSS pixels). 0 when the units are not known: every event then scrolls one line.
+        /// </summary>
+        public float WheelDeltaPerNotch { get; set; } =
+#if WINDOWS
+            120f / 400f; // MAUI Windows: the gestures layer divides MouseWheelDelta (120 a notch) by 400
+#else
+            0f;
+#endif
+
+        /// <summary>
+        /// Draws the keyboard focus ring around <see cref="KeyboardFocusNode"/> at its visible position (caches and
+        /// scroll offsets included): 2pt stroke, 2pt outside the control, 6pt corners, like the WPF head.
+        /// </summary>
+        protected virtual void DrawKeyboardFocus(DrawingContext context)
+        {
+            var node = _keyboardFocusNode; // set from the UI thread
+            if (node == null || !node.AccessibilityCanInteract) // no ring on a control the pointer cannot use right now
+                return;
+
+            var rect = node.GetAccessibilityPixelRect(); // empty when not on screen
+            if (rect.IsEmpty)
+                return;
+
+            var scale = context.Scale;
+            rect.Inflate(2 * scale, 2 * scale);
+
+            _keyboardFocusPaint ??= new SKPaint { Style = SKPaintStyle.Stroke, IsAntialias = true };
+            _keyboardFocusPaint.Color = KeyboardFocusColor;
+            _keyboardFocusPaint.StrokeWidth = 2 * scale;
+            context.Context.Canvas.DrawRoundRect(rect, 6 * scale, 6 * scale, _keyboardFocusPaint);
+        }
+
         List<Guid> _listRemoveAnimators = new(512);
 
         /// <summary>
@@ -846,6 +968,8 @@ namespace DrawnUi.Views
                     SurfaceCacheManager.Dispose();
 
                     PaintSystem?.Dispose();
+
+                    _keyboardFocusPaint?.Dispose();
 
                     DestroySkiaView();
 
@@ -1453,6 +1577,8 @@ namespace DrawnUi.Views
 
         public virtual void OnDisposing()
         {
+            _timerResetFocus?.Dispose();
+
             if (_visibilityParent != null)
             {
                 //_visibilityParent.PropertyChanged -= OnParentVisibilityCheck;
@@ -1973,6 +2099,11 @@ namespace DrawnUi.Views
                         }
 
                         var postExecuted = ExecutePostAnimators(context);
+
+                        if (_keyboardFocusNode != null)
+                        {
+                            DrawKeyboardFocus(context);
+                        }
 
                         //Kick to redraw if need animate
                         if (executed + postExecuted > 0)
@@ -2595,7 +2726,7 @@ namespace DrawnUi.Views
             }
         }
 
-        private static RestartingTimer<object> _timerResetFocus;
+        private RestartingTimer<object> _timerResetFocus;
 
         public void ResetFocusWithDelay(int ms)
         {
@@ -2603,14 +2734,18 @@ namespace DrawnUi.Views
             {
                 _timerResetFocus = new(TimeSpan.FromMilliseconds(ms), (arg) =>
                 {
-                    if (FocusedChild == null)
+                    // a drawn node holding keyboard focus (Tab out of an editor) keeps the keyboard on the canvas
+                    if (FocusedChild == null && KeyboardFocusNode == null)
                     {
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
                             try
                             {
 #if WINDOWS
-                                Super.SetFocus(IntPtr.Zero); // Removes focus from all
+                                // only an editor's text box still holding the keyboard is cleared: focus that already
+                                // moved on (Tab to the canvas or past the last node to the next element) stays
+                                if (NativeInputHasFocus())
+                                    Super.SetFocus(IntPtr.Zero); // Removes focus from all
 #elif ANDROID
                                 ResetFocus();
 #elif BROWSER

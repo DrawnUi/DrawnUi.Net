@@ -1051,6 +1051,16 @@ public partial class SkiaScroll
         _orderedReissues = 0;
     }
 
+    /// <summary>Index of the pending ScrollToIndex order (local to a windowed source), -1 when none.</summary>
+    internal int PendingScrollToIndex => OrderedScrollToIndex.Index;
+
+    /// <summary>Drops the pending ScrollToIndex order when it is still the one for <paramref name="index"/>.</summary>
+    internal void CancelScrollToIndex(int index)
+    {
+        if (OrderedScrollToIndex.IsSet && OrderedScrollToIndex.Index == index)
+            ClearOrderedScrollToIndex();
+    }
+
     public bool OrderedScrollToIndexIsSet
     {
         get
@@ -1342,8 +1352,11 @@ public partial class SkiaScroll
             if (p is SkiaScroll scroll)
             {
                 var scale = (float)scroll.RenderingScale;
+                // both rects where they are on screen now (a scroll inside a cached panel is blitted, its DrawingRect is not)
                 var r = control.GetAccessibilityPixelRect();
-                var v = scroll.DrawingRect;
+                if (r.IsEmpty)
+                    return;
+                var v = SKRect.Create(scroll.GetSelfDrawingPosition(), scroll.LastDrawnAt.Size);
                 float dx = 0, dy = 0;
                 if (r.Top < v.Top) dy = (v.Top - r.Top) / scale + paddingPts;
                 else if (r.Bottom > v.Bottom) dy = -((r.Bottom - v.Bottom) / scale + paddingPts);

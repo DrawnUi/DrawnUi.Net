@@ -658,7 +658,9 @@ namespace DrawnUi.Controls
             {
                 if (!hitContent)
                 {
-                    if (AutoClose && IsOpen && !InTransition)
+                    // a press outside closes it; hover and wheel outside do not
+                    if (AutoClose && IsOpen && !InTransition
+                        && (args.Type == TouchActionResult.Down || args.Type == TouchActionResult.Tapped))
                     {
                         IsOpen = false;
                     }

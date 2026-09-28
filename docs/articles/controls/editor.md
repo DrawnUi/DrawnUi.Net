@@ -153,6 +153,10 @@ On multiline editors the confirm key inserts a newline instead of submitting, re
 | `CommandOnFocusChanged` | `bool` (focus state) | Executed on focus change |
 | `CommandOnTextChanged` | `string` (current text) | Executed on every keystroke |
 
+## Keyboard navigation
+
+An editor is a Tab stop by default. Tab into it and it takes the caret, so typing goes into it; `IsFocused` and the canvas `FocusedChild` are set exactly as after a click. Tab and Shift+Tab leave the field and move on from it, also after a click into it (no tab characters), and while editing the arrows, Home / End and Enter work on the text. The next control keeps the keyboard, so Enter or Space presses a button reached this way. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
+
 ## Programmatic focus
 
 ```csharp

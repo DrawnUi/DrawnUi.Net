@@ -19,6 +19,12 @@ await builder.UseDrawnUiAsync(new DrawnUiStartupSettings { UseDesktopKeyboard = 
 
 `UseDrawnUiAsync`: builds host → `Super.Services` → inits `SkiaFontManager` + `SkiaImageManager` (async) → `Super.Init()` → attaches `KeyboardManager` when `UseDesktopKeyboard`. Host the tree in Razor: `<Canvas Content="@RootControl" RenderingMode="@RenderingModeType.Accelerated" Gestures="@GesturesMode.Enabled" />`.
 
+## Accessibility overlay and keyboard
+
+- Each node of the accessibility snapshot is an invisible element over the canvas; interactive ones are focusable. Inside an arrow-key group (a container with `Aria.RoleList`, `RoleToolbar`...) only the group's current item has `tabindex=0`, the rest `-1`.
+- Enter / Space activate, the arrow keys go to the node and then to its group (the engine moves DOM focus to the next item's element); the element's CSS outline is the focus ring, the canvas draws none.
+- An element that has a role takes the pointer from the canvas: that control gets no hover.
+
 ## Shared-project pattern + BROWSER symbol
 
 - Shared code compiles into each head from a shared-source project (`.shproj`/`.projitems`) — never a class library (base types differ per head package).

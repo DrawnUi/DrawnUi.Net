@@ -1934,6 +1934,40 @@ namespace DrawnUi.Draw
         protected override string? DefaultAccessibilityLabel()
             => !string.IsNullOrEmpty(Text) ? Text : (string.IsNullOrEmpty(PlaceholderText) ? null : PlaceholderText);
 
+        /// <summary>A text field is a Tab stop by default, like a native text box, with no Tapped handler needed.</summary>
+        protected override bool DefaultAccessibilityCanInteract() => true;
+
+        /// <summary>
+        /// Keyboard navigation reached the field (Tab) or left it: take the caret and the input sink like a native
+        /// text box, so typing goes into it, or release them.
+        /// </summary>
+        public override void OnAccessibilityFocused(bool focused)
+        {
+            if (focused)
+            {
+                if (Superview != null)
+                    Superview.FocusedChild = this; // sets IsFocused too
+                SetFocusInternal(true);
+            }
+            else
+            {
+                SetFrameworkFocus(false);
+            }
+        }
+
+        /// <summary>
+        /// Enter / Space on the field while it has no caret start editing; while editing they are text. The base synthetic
+        /// Tapped would not do it: only Down opens the editor.
+        /// </summary>
+        public override void OnAccessibilityActivated()
+        {
+            if (!IsFocused)
+                OnAccessibilityFocused(true);
+        }
+
+        /// <summary>While editing, arrows, Home / End and PageUp / PageDown belong to the text: they never move a surrounding group.</summary>
+        public override bool OnAccessibilityKey(InputKey key) => IsFocused;
+
         private static void OnControlTextChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
             if (bindable is SkiaEditor control)

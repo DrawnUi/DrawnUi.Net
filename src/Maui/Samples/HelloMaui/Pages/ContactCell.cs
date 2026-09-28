@@ -28,6 +28,7 @@ public class ContactCell : SkiaDynamicDrawnCell
         BackgroundColor = Color.Parse("#111827");
         UseCache = SkiaCacheType.Image; // one bitmap per cell, blitted while scrolling
         AnimationTapped = SkiaTouchAnimation.Ripple;
+        AccessibilityRole = DrawnUi.Models.Aria.RoleButton; // a node: Tab / arrows reach it, Enter taps it
 
         Children = new List<SkiaControl>
         {
@@ -89,6 +90,7 @@ public class ContactCell : SkiaDynamicDrawnCell
 
         _initials.Text = $"{i % 100}";
         _title.Text = $"Contact {i}";
+        AccessibilityLabel = $"Contact {i}";
         _subtitle.Text = $"Recycled drawn cell #{i} — scroll me fast";
     }
 }

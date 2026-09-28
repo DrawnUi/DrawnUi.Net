@@ -137,21 +137,26 @@
             {
                 @if (node.CanInteract)
                 {
-                    <div role="@node.Role"
+                    <div @key="node.Id"
+                         @ref="_a11yElements[node.Id]"
+                         role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
                          aria-pressed="@(node.IsPressed?.ToString().ToLower())"
-                         tabindex="0"
+                         tabindex="@(AccessibilityManager.IsTabStop(node.Source) ? 0 : -1)"
                          class="xaml-a11y-element xaml-a11y-interactive"
                          style="@A11yNodeStyle(node)"
                          @onclick="() => OnA11yActivated(node)"
-                         @onkeydown="(e) => OnA11yKeyDown(e, node)">
+                         @onkeydown="(e) => OnA11yKeyDown(e, node)"
+                         @onfocus="() => OnA11yFocus(node)"
+                         @onblur="() => OnA11yBlur(node)">
                             @node.Label
                     </div>
                 }
                 else
                 {
-                    <div role="@node.Role"
+                    <div @key="node.Id"
+                         role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
                          class="xaml-a11y-element"
@@ -276,6 +281,20 @@
             _reportedAutoCanvasWidth = AutoCanvasWidth;
             _reportedAutoCanvasHeight = AutoCanvasHeight;
             AccessibilityManager.Changed += OnA11yChanged;
+            AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
+        }
+
+        if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
+        {
+            _pendingA11yFocusId = null;
+            try
+            {
+                await element.FocusAsync();
+            }
+            catch
+            {
+                // the element left the overlay before it could take focus
+            }
         }
 
         // Resizing the html canvas resets its drawing buffer (blank), and under UpdateModeType.Dynamic
@@ -995,6 +1014,7 @@
         _resizeCallbackRef?.Dispose();
 
         AccessibilityManager.Changed -= OnA11yChanged;
+        AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
 
         OnDisposing();
     }
@@ -1007,13 +1027,48 @@
 
     private void OnA11yActivated(AccessibilityNode node)
     {
-        node.Source?.OnAccessibilityActivated();
+        SkiaAccessibilityManager.Activate(node.Source);
+    }
+
+    private readonly Dictionary<int, ElementReference> _a11yElements = new();
+    private int? _pendingA11yFocusId;
+
+    // list navigation (arrow keys) moved keyboard focus to another node: move DOM focus to its overlay element
+    // once the overlay rendered the new snapshot
+    private void OnA11yKeyboardFocusRequested(ISkiaAccessibilityNode node)
+    {
+        _pendingA11yFocusId = node.AccessibilityId;
+        _accessibilityNodes = AccessibilityManager.Snapshot;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
+    private void OnA11yFocus(AccessibilityNode node)
+    {
+        KeyboardFocusNode = node.Source;
+        node.Source?.OnAccessibilityFocused(true); // a text field takes the caret, same as the Windows heads
+        _ = InvokeAsync(StateHasChanged); // the Tab stop of its group moves with it (tabindex)
+    }
+
+    private void OnA11yBlur(AccessibilityNode node)
+    {
+        node.Source?.OnAccessibilityFocused(false); // Tab left the element: a text field releases the caret
+        if (ReferenceEquals(KeyboardFocusNode, node.Source))
+            KeyboardFocusNode = null;
+    }
+
+    /// <summary>The overlay element's CSS outline is the focus ring on Blazor, the canvas draws none.</summary>
+    protected override void DrawKeyboardFocus(DrawingContext context)
+    {
     }
 
     private void OnA11yKeyDown(KeyboardEventArgs e, AccessibilityNode node)
     {
         if (e.Key is "Enter" or " ")
-            node.Source?.OnAccessibilityActivated();
+            SkiaAccessibilityManager.Activate(node.Source);
+        else if (e.Key is "ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Home" or "End" or "PageUp" or "PageDown"
+                 && Enum.TryParse(e.Key, out InputKey key))
+            SkiaAccessibilityManager.Key(node.Source, key); // e.g. a slider steps its value, same as the Windows heads
     }
 
     private static string A11yNodeStyle(AccessibilityNode node)

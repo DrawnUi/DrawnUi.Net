@@ -615,6 +615,9 @@ items:
   - DrawnUi.Draw.SkiaControl.GetGesturePositionInsideChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckChildGestureHit(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckHovered(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.IsPointerOver
+  - DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
   - DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelow
@@ -799,12 +802,17 @@ items:
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
   - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.RenderedFrame
+  - DrawnUi.Draw.SkiaControl.WasInLastFrame
   - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLive
   - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
   - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -14409,6 +14417,69 @@ references:
     name: SkiaGesturesParameters
     href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  name: CheckPointerOver(SkiaGesturesParameters)
+  nameWithType: SkiaControl.CheckPointerOver(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsPointerOver
+  commentId: P:DrawnUi.Draw.SkiaControl.IsPointerOver
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPointerOver
+  name: IsPointerOver
+  nameWithType: SkiaControl.IsPointerOver
+  fullName: DrawnUi.Draw.SkiaControl.IsPointerOver
+- uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  name: OnPointerOver(bool)
+  nameWithType: SkiaControl.OnPointerOver(bool)
+  fullName: DrawnUi.Draw.SkiaControl.OnPointerOver(bool)
+  nameWithType.vb: SkiaControl.OnPointerOver(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnPointerOver(Boolean)
+  name.vb: OnPointerOver(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   parent: DrawnUi.Draw.SkiaControl
@@ -17037,6 +17108,32 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.RenderedFrame
+  commentId: P:DrawnUi.Draw.SkiaControl.RenderedFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderedFrame
+  name: RenderedFrame
+  nameWithType: SkiaControl.RenderedFrame
+  fullName: DrawnUi.Draw.SkiaControl.RenderedFrame
+- uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+  commentId: M:DrawnUi.Draw.SkiaControl.WasInLastFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  name: WasInLastFrame()
+  nameWithType: SkiaControl.WasInLastFrame()
+  fullName: DrawnUi.Draw.SkiaControl.WasInLastFrame()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   parent: DrawnUi.Draw.SkiaControl
@@ -17126,6 +17223,76 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  name: OnAccessibilityKey(InputKey)
+  nameWithType: SkiaControl.OnAccessibilityKey(InputKey)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  name: CanReceiveGesture(TouchActionResult)
+  nameWithType: SkiaControl.CanReceiveGesture(TouchActionResult)
+  fullName: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaControl.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility

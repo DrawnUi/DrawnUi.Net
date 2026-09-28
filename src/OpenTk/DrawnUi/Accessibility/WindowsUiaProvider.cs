@@ -166,7 +166,7 @@ internal sealed class VirtualElementProvider
     {
         var source = _node.Source;
         if (source != null)
-            MainThread.BeginInvokeOnMainThread(() => source.OnAccessibilityActivated());
+            MainThread.BeginInvokeOnMainThread(() => SkiaAccessibilityManager.Activate(source));
     }
 
     public object? GetPropertyValue(int propertyId) => propertyId switch

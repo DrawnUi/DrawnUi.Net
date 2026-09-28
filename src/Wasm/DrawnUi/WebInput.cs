@@ -177,7 +177,8 @@ public static partial class WebInput
     /// Called by JS when a mouse wheel / trackpad scroll occurs.
     /// Mirrors the Net <c>GestureRobot.WheelScroll</c> contract: emits a
     /// <see cref="TouchActionType.Wheel"/> gesture carrying <see cref="WheelEventArgs"/>.
-    /// SkiaScroll uses only the sign of <c>Wheel.Delta</c> for scrolling; zoom controls
+    /// SkiaScroll scrolls by the event's share of a notch, 100 CSS pixels (the canvas'
+    /// <c>WheelDeltaPerNotch</c>), so a touchpad scrolls as far as the fingers moved; zoom controls
     /// use its magnitude. Browser <c>deltaY &gt; 0</c> (scroll down) maps to a negative
     /// Delta so content scrolls down (DrawnUI decreases ViewportOffsetY when scrolling down).
     /// </summary>
@@ -210,6 +211,8 @@ public static partial class WebInput
             Center = location,
         };
 
+        if (TargetCanvas != null)
+            TargetCanvas.WheelDeltaPerNotch = 100; // pixels after the deltaMode conversion: 100 a mouse notch in Chrome and Edge
         TargetCanvas?.OnGestureEvent(TouchActionType.Wheel, args, TouchActionResult.Wheel);
         return TargetCanvas?.LastInputUsed ?? false; // Gestures="Enabled": the page scrolls unless a control used it
     }
