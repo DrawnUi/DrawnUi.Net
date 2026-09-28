@@ -54,6 +54,13 @@ public interface ISkiaAccessibilityNode
     void OnAccessibilityActivated();
 
     /// <summary>
+    /// Called by the platform a11y layer for a key pressed while this node holds keyboard focus
+    /// (arrows, Home, End, PageUp, PageDown). Return true when the node used the key, e.g. a slider stepping its value.
+    /// Default implementation returns false.
+    /// </summary>
+    bool OnAccessibilityKey(InputKey key);
+
+    /// <summary>
     /// Registers or updates this node in the superview's <c>SkiaAccessibilityManager</c>.
     /// Called automatically on first layout; call manually when label/hint/state changes at runtime.
     /// </summary>

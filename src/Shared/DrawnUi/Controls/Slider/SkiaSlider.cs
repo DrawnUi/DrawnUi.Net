@@ -15,6 +15,60 @@ public class SkiaSlider : SkiaLayout
 
     protected override bool DefaultAccessibilityCanInteract() => RespondsToGestures;
 
+    /// <summary>
+    /// A slider has no activation: Enter / Space from keyboard navigation leave the value alone
+    /// (the base synthesizes a tap at the center, which would jump the value to the middle).
+    /// </summary>
+    public override void OnAccessibilityActivated()
+    {
+    }
+
+    /// <summary>
+    /// Keyboard adjustment while the slider holds keyboard focus: Right / Up increase and Left / Down decrease by
+    /// <see cref="Step"/> (a hundredth of the range when Step is 0), PageUp / PageDown move a tenth of the range,
+    /// Home / End go to <see cref="Min"/> / <see cref="Max"/>. A ranged slider moves its <see cref="End"/> thumb, which stops at <see cref="Start"/>.
+    /// </summary>
+    public override bool OnAccessibilityKey(InputKey key)
+    {
+        if (!RespondsToGestures)
+            return false;
+
+        var range = Max - Min;
+        var small = Step > 0 ? Step : range / 100.0;
+        var large = Math.Max(small, range / 10.0);
+        var low = EnableRange ? Start : Min;
+
+        double value;
+        switch (key)
+        {
+            case InputKey.ArrowRight:
+            case InputKey.ArrowUp:
+                value = End + small;
+                break;
+            case InputKey.ArrowLeft:
+            case InputKey.ArrowDown:
+                value = End - small;
+                break;
+            case InputKey.PageUp:
+                value = End + large;
+                break;
+            case InputKey.PageDown:
+                value = End - large;
+                break;
+            case InputKey.Home:
+                value = low;
+                break;
+            case InputKey.End:
+                value = Max;
+                break;
+            default:
+                return false;
+        }
+
+        End = Math.Clamp(value, low, Max);
+        return true;
+    }
+
     public SkiaSlider()
     {
         

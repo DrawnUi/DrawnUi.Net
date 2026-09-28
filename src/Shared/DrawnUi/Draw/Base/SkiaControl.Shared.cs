@@ -5131,8 +5131,46 @@ namespace DrawnUi.Draw
 
         public bool IsAccessibilityElement => AccessibilityRole is { } role && role != DrawnUi.Models.Aria.RolePresentation;
 
-        public SKRect GetAccessibilityPixelRect() =>
-            VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
+        /// <summary>
+        /// Canvas rect of the control as it is on screen now, in pixels: the last drawn box moved by every cache
+        /// blit and scroll offset above it (<see cref="GetSelfDrawingPosition"/>). Empty when the last frame did not
+        /// draw it (<see cref="WasInLastFrame"/>), e.g. scrolled out of a virtualized layout: its last drawn box is
+        /// where it used to be. The render node's hitbox is not used: inside a cached parent it keeps the position of
+        /// the cache recording, so moved content reported where it used to be (wrong Tab order, focus ring, scroll-into-view).
+        /// </summary>
+        public SKRect GetAccessibilityPixelRect()
+        {
+            if (LastDrawnAt.Width <= 0 || LastDrawnAt.Height <= 0 || !WasInLastFrame())
+                return SKRect.Empty;
+
+            return SKRect.Create(GetSelfDrawingPosition(), LastDrawnAt.Size);
+        }
+
+        /// <summary>Superview frame in which this control last rendered, drawn or blitted from its cache.</summary>
+        public long RenderedFrame { get; private set; }
+
+        // frame in which one of the children last rendered: for a control drawing from its cache, the cache recording
+        private long _childrenRenderedFrame;
+
+        /// <summary>
+        /// True when the last canvas frame showed this control: every ancestor drew it in its latest pass over its
+        /// children, live or into the cache it is blitted from. False for a control a layout stopped drawing
+        /// (scrolled out of a virtualized layout, hidden page), whose position properties keep the last drawn values.
+        /// </summary>
+        public bool WasInLastFrame()
+        {
+            var control = this;
+            while (control.Parent is SkiaControl parent)
+            {
+                if (control.RenderedFrame < parent._childrenRenderedFrame)
+                    return false;
+                control = parent;
+            }
+
+            // the top control was rendered by the canvas in its latest frame (or the one in progress)
+            var frame = Superview?.FrameNumber ?? 0;
+            return control.RenderedFrame >= frame - 1;
+        }
 
         private bool? _accessibilityCanInteract;
         public bool AccessibilityCanInteract
@@ -5208,6 +5246,12 @@ namespace DrawnUi.Draw
         }
 
         public virtual void OnAccessibilityFocused(bool focused) { }
+
+        /// <summary>
+        /// Keyboard navigation hands this control the keys it may use while it holds keyboard focus
+        /// (arrows, Home, End, PageUp, PageDown). Return true when the key was used; the default uses none.
+        /// </summary>
+        public virtual bool OnAccessibilityKey(InputKey key) => false;
 
         /// <summary>
         /// Called automatically on first layout. Call manually when label, hint, or state changes.
@@ -7050,6 +7094,11 @@ namespace DrawnUi.Draw
             Superview = context.Context.Superview;
             RenderingScale = context.Scale;
             NeedUpdate = false;
+
+            var frame = Superview?.FrameNumber ?? 0;
+            RenderedFrame = frame;
+            if (Parent is SkiaControl renderingParent)
+                renderingParent._childrenRenderedFrame = frame;
 
             VisualLayer = null;
 

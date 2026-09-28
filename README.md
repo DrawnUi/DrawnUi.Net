@@ -57,7 +57,13 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.20
+## What's New, next release
+
+  * Keyboard navigation on .NET MAUI Windows now works like WPF: a focus ring drawn on the canvas that follows the control while it scrolls, Escape leaves the drawn controls, and Tab walks the current screen (it kept the controls of the first screen it saw). Like native Windows, the ring shows only after the keyboard was used, on WPF too.
+  * Sliders work from the keyboard on MAUI Windows, WPF and Blazor: arrows step by `Step`, PageUp / PageDown move a tenth of the range, Home / End go to the ends. Enter / Space no longer jump the value to the middle. Custom controls take keys with `OnAccessibilityKey(InputKey)`.
+  * Accessibility positions are where the control is on screen. Inside cached containers and scrolled content they stayed where the cache was recorded, which broke Tab order, screen reader outlines and scroll-into-view. Controls a virtualized list stopped drawing leave the accessibility tree, rows read left to right, and the tree follows scrolling.
+
+ ### 1.10.6.20
 
   * **Potentially breaking, but inevitable:** templated layouts now default to `MeasureItemsStrategy="MeasureAll"`. The old default, `MeasureFirst`, was half applied: the first load measured every row, but items added, removed or replaced later took the first row's height, so lists with rows of different heights went wrong after their first change. `MeasureFirst` could not be fixed without breaking those lists, so the default moved to the strategy that is correct for any content. Lists whose rows really are all the same height set `MeasureFirst` explicitly and keep adds and removes measure-free.
   * `MeasureFirst` now measures only the first row, as documented. A templated `Column`/`Row` without `Split` used to measure every row on each full layout.

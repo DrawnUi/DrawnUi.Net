@@ -312,12 +312,15 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
     private void OnAccessibilityLiveRegion(ISkiaAccessibilityNode node) => Dispatcher.BeginInvoke(() => _peer?.NotifyLiveRegion(node));
 
+    // the ring shows once the keyboard was used, never at launch or after a click (a tapped button takes focus too)
+    private bool _keyboardNavigating;
+
     /// <summary>Redraws the keyboard focus ring around the accessibility node in focus.</summary>
     internal void InvalidateFocusRing()
     {
         using var dc = _focusRing.RenderOpen();
         var focused = _peer?.FocusedPeer;
-        if (focused == null || !IsKeyboardFocused)
+        if (focused == null || !IsKeyboardFocused || !_keyboardNavigating)
             return;
 
         var rect = focused.LocalRect;
@@ -333,7 +336,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         InvalidateFocusRing();
     }
 
-    /// <summary>Tab / Shift+Tab walk the interactive nodes, Enter / Space activate, Escape leaves.</summary>
+    /// <summary>Tab / Shift+Tab walk the interactive nodes, Enter / Space activate, Escape leaves, other keys go to the node (slider arrows).</summary>
     private bool HandleAccessibilityKey(KeyEventArgs e)
     {
         var peer = EnsurePeer();
@@ -343,6 +346,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         switch (e.Key)
         {
             case Key.Tab:
+                _keyboardNavigating = true;
                 var moved = peer.MoveFocus(!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift));
                 InvalidateFocusRing();
                 return moved; // false past either end: WPF moves focus out of the canvas
@@ -357,7 +361,8 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 return true;
         }
 
-        return false;
+        // arrows / Home / End / PageUp / PageDown go to the node in focus, e.g. a slider steps its value
+        return peer.FocusedPeer?.Source?.OnAccessibilityKey(KeyboardManager.MapKey(e.Key)) == true;
     }
 
     #endregion
@@ -632,6 +637,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _peer?.ClearVirtualFocus(); // the pointer takes over from keyboard navigation
+        _keyboardNavigating = false;
         InvalidateFocusRing();
         Focus();
         CaptureMouse();
@@ -727,6 +733,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _peer?.ClearVirtualFocus();
+        _keyboardNavigating = false;
         InvalidateFocusRing();
         Focus();
         CaptureTouch(e.TouchDevice);

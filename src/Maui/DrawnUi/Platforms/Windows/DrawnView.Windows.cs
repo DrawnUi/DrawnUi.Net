@@ -179,6 +179,7 @@ namespace DrawnUi.Views
                 return;
 
             // Focus left the DrawnUI area entirely — clean up virtual peer.
+            KeyboardFocusNode = null;
             var peer = _a11yHost?.A11yPeer as DrawnUi.Draw.DrawnUiAutomationPeer;
             if (peer == null) return;
             peer.FocusedPeer?.Source?.OnAccessibilityFocused(false);
@@ -218,17 +219,34 @@ namespace DrawnUi.Views
 
                 bool moved = peer.MoveFocusToNext(!shift);
                 System.Diagnostics.Debug.WriteLine($"[A11y-KEY] Tab moved={moved} newFocusedPeer={(peer.FocusedPeer == null ? "NULL" : peer.FocusedPeer.Role)}");
+                KeyboardFocusNode = peer.FocusedPeer?.Source;
                 if (moved)
                 {
                     e.Handled = true; // consume Tab; don't let XAML move focus away
                 }
                 // if not moved (past end/beginning) let XAML Tab continue to next element
             }
+            else if (peer.FocusedPeer == null)
+            {
+                // no drawn node holds keyboard focus: the key is not ours (the app still gets it from KeyboardManager)
+            }
             else if (key == Windows.System.VirtualKey.Enter || key == Windows.System.VirtualKey.Space)
             {
                 System.Diagnostics.Debug.WriteLine($"[A11y-KEY] Enter/Space — activating focusedPeer={(peer.FocusedPeer == null ? "NULL" : peer.FocusedPeer.Role)}");
                 peer.ActivateFocused();
                 e.Handled = true;
+            }
+            else if (key == Windows.System.VirtualKey.Escape)
+            {
+                // leave the drawn nodes, like WPF: the ring goes away, the next Tab starts over
+                peer.FocusedPeer.Source?.OnAccessibilityFocused(false);
+                peer.ClearVirtualFocus();
+                KeyboardFocusNode = null;
+                e.Handled = true;
+            }
+            else if (peer.FocusedPeer.Source?.OnAccessibilityKey(KeyboardManager.MapToMaui(key)) == true)
+            {
+                e.Handled = true; // arrows / Home / End / PageUp / PageDown used by the node, e.g. a slider
             }
         }
 
@@ -257,12 +275,19 @@ namespace DrawnUi.Views
             // Auto-focus first child only for keyboard (Tab directly) or when we redirected
             // Tab from the outer ContentPanel. For pointer clicks, virtual focus is set by
             // NotifyAccessibilityFocused from the element that was clicked.
+            // Tab must really be down: the focus a window hands out at launch arrives here too (as Keyboard
+            // or through the ContentPanel redirect), and it must not select a node or show the ring.
             var fe = sender as Microsoft.UI.Xaml.FrameworkElement;
-            bool isTabEntry = fe?.FocusState == Microsoft.UI.Xaml.FocusState.Keyboard || _focusingCanvasFromTab;
+            bool isTabEntry = (fe?.FocusState == Microsoft.UI.Xaml.FocusState.Keyboard || _focusingCanvasFromTab)
+                              && Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Tab)
+                                  .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
             _focusingCanvasFromTab = false;
 
             if (isTabEntry && peer.FocusedPeer == null)
+            {
                 peer.MoveFocusToNext(forward: true);
+                KeyboardFocusNode = peer.FocusedPeer?.Source;
+            }
             else if (peer.FocusedPeer != null)
                 peer.FocusedPeer.RaiseAutomationEvent(
                     Microsoft.UI.Xaml.Automation.Peers.AutomationEvents.AutomationFocusChanged);
@@ -287,6 +312,7 @@ namespace DrawnUi.Views
             // Focus truly left the DrawnUI area — deactivate any active input control.
             peer.FocusedPeer?.Source?.OnAccessibilityFocused(false);
             peer.ClearVirtualFocus();
+            KeyboardFocusNode = null;
         }
 
         // Called by SkiaEditor when Tab is pressed inside the hidden TextBox.
@@ -308,6 +334,7 @@ namespace DrawnUi.Views
             bool moved = peer.MoveFocusToNext(forward);
             if (!moved)
                 peer.ClearVirtualFocus();
+            KeyboardFocusNode = peer.FocusedPeer?.Source;
 
             return moved;
         }

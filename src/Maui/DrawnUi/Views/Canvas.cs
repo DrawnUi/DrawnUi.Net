@@ -836,6 +836,8 @@ public class Canvas : DrawnView, IGestureListener
 
         if (touchAction == TouchActionResult.Down)
         {
+            KeyboardFocusNode = null; // the pointer takes over from keyboard navigation, as on WPF
+
             if (AttachedTouchEffect != null)
             {
                 AttachedTouchEffect.WIllLock = ShareLockState.Initial;

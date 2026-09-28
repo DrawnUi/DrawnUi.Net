@@ -1342,8 +1342,11 @@ public partial class SkiaScroll
             if (p is SkiaScroll scroll)
             {
                 var scale = (float)scroll.RenderingScale;
+                // both rects where they are on screen now (a scroll inside a cached panel is blitted, its DrawingRect is not)
                 var r = control.GetAccessibilityPixelRect();
-                var v = scroll.DrawingRect;
+                if (r.IsEmpty)
+                    return;
+                var v = SKRect.Create(scroll.GetSelfDrawingPosition(), scroll.LastDrawnAt.Size);
                 float dx = 0, dy = 0;
                 if (r.Top < v.Top) dy = (v.Top - r.Top) / scale + paddingPts;
                 else if (r.Bottom > v.Bottom) dy = -((r.Bottom - v.Bottom) / scale + paddingPts);

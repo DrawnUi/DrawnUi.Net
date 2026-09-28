@@ -10,8 +10,8 @@ Drawn controls do not have accessibility turned on by default on purpose to let 
 |---|---|---|---|
 | Blazor | Available | Invisible ARIA overlay positioned over the canvas | Accessible today, with one important hover limitation described below |
 | OpenTK Windows | Available | UIA virtual fragment providers on the native OpenTK / GLFW window | Narrator and NVDA can read and activate drawn controls |
-| .NET MAUI Windows | Available | UIA virtual fragment providers on the WinUI 3 `DesktopChildSiteBridge` | Narrator and NVDA can read and activate drawn controls |
-| WPF | Available (preview) | WPF `AutomationPeer`s: the canvas is a pane, every snapshot node a virtual peer with Invoke / Toggle patterns | Tab / Shift+Tab walk interactive nodes with a focus ring, Enter / Space activate; verified with a UI Automation client |
+| .NET MAUI Windows | Available | UIA virtual fragment providers on the WinUI 3 `DesktopChildSiteBridge` | Narrator and NVDA can read and activate drawn controls; [keyboard navigation](#keyboard-navigation) with a focus ring drawn on the canvas |
+| WPF | Available (preview) | WPF `AutomationPeer`s: the canvas is a pane, every snapshot node a virtual peer with Invoke / Toggle patterns | [Keyboard navigation](#keyboard-navigation) with a focus ring; verified with a UI Automation client |
 | OpenTK Linux | Incoming | AT-SPI bridge on the native OpenTK window | Planned, not shipped yet |
 | .NET MAUI iOS / macCatalyst | Incoming | Virtual `UIAccessibilityElement` container | Planned, not shipped yet |
 | .NET MAUI Android | Incoming | Virtual nodes via `ExploreByTouchHelper` | Planned, not shipped yet |
@@ -40,7 +40,7 @@ public record AccessibilityNode(
     SKRect Rect, bool CanInteract, bool? IsPressed)
 ```
 
-`Rect` is in device-independent pixels, sorted in top-to-left reading order.
+`Rect` is in device-independent pixels, where the control is on screen now: inside cached containers and scrolled content too. The array is in reading order: rows top to bottom, each row left to right (controls whose tops are within half the smaller height share a row, so a row of vertically centered controls of different heights reads left to right). Only controls the last frame drew are in it, live or inside a cached parent that is blitted; a control a virtualized layout stopped drawing (scrolled out, a recycled cell back in the pool) leaves the snapshot until it is drawn again.
 
 ### Registration lifecycle
 
@@ -48,7 +48,7 @@ public record AccessibilityNode(
 - `NotifyAccessibility()` registers on the first call and marks the snapshot dirty afterwards. Call it manually when you change accessibility props at runtime.
 - Detaching a control from the tree or disposing it unregisters it together with all its registered descendants.
 
-The manager rebuilds its snapshot at most once per `MinUpdateIntervalMs` (default 1000 ms) at the end of rendering, so it stays cheap at high frame rates, and raises `Changed` after each rebuild.
+The manager rebuilds its snapshot at most once per `MinUpdateIntervalMs` (default 1000 ms) at the end of a drawn frame, so it stays cheap at high frame rates and follows scrolling and animations. It raises `Changed` only when the snapshot differs, and costs nothing while no control is registered.
 
 ### Roles
 
@@ -105,6 +105,27 @@ new GameSwitch()
 ```
 
 `WithAccessibilityToggle` keeps `AccessibilityIsPressed` in sync with toggle state, which is important for screen readers announcing switches and similar controls.
+
+## Keyboard navigation
+
+.NET MAUI Windows, WPF and Blazor walk the snapshot from the keyboard. The keys are the same on every head:
+
+| Key | Action |
+|---|---|
+| Tab / Shift+Tab | Next / previous interactive node (`AccessibilityCanInteract`), in snapshot order. Past either end focus leaves the canvas, the next Tab starts over. |
+| Enter / Space | `OnAccessibilityActivated()`: a synthesized tap on the node. Switches and checkboxes toggle, buttons fire. A `SkiaSlider` ignores it. |
+| Arrows, PageUp / PageDown, Home / End | `OnAccessibilityKey(InputKey)` on the node. `SkiaSlider`: Right / Up and Left / Down step by `Step` (a hundredth of the range when `Step` is 0), PageUp / PageDown move a tenth of the range, Home / End go to `Min` / `Max`; a ranged slider moves `End`, which stops at `Start`. |
+| Escape | Leaves the drawn nodes: no node is focused and the ring goes away (Windows heads). |
+
+A node that gets keyboard focus is scrolled into view (`SkiaScroll.EnsureVisible`) inside every enclosing `SkiaScroll`.
+
+**Focus ring.** It appears only after the keyboard was used, never at launch or after a click, like native Windows focus visuals. WPF draws it with WPF; .NET MAUI Windows draws it on the canvas on top of every frame (`DrawnView.KeyboardFocusNode`, color `DrawnView.KeyboardFocusColor`), so it follows the control while it scrolls. Pointer input hides it.
+
+**Your own keys.** Keys the drawn nodes do not use (and Escape too) still reach `KeyboardManager.KeyDown`, for example to close a panel. On .NET MAUI enable it with `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`; the manager listens to the window before the canvas, so it gets every key while the canvas has focus.
+
+**Custom controls.** Override `OnAccessibilityKey(InputKey key)` and return true for the keys the control used; override `OnAccessibilityActivated()` when a tap in the middle is not the right activation.
+
+**What Tab can reach.** Only nodes in the snapshot, that is controls drawn in the last frame. Content inside a cached container is drawn into its cache as a whole, so every node in it is reachable and scrolls into view. Without a cache a virtualized layout draws only what is in the viewport, and a recycled templated list realizes only the cells near it: Tab walks the visible cells and then leaves the list. For a list the keyboard must reach fully, cache its content (`UseCache = Image` on the scroll content, when the list is small), or handle arrow keys on the list yourself and call `ScrollToIndex`.
 
 ## Implementation in deep
 

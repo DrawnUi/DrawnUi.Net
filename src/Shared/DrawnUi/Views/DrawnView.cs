@@ -420,6 +420,53 @@ namespace DrawnUi.Views
         /// </summary>
         public List<IOverlayEffect> PostAnimators { get; } = new(128);
 
+        private ISkiaAccessibilityNode _keyboardFocusNode;
+        private SKPaint _keyboardFocusPaint;
+
+        /// <summary>
+        /// Accessibility node that keyboard navigation (Tab) moved to, on heads that draw the focus ring on the canvas
+        /// (MAUI Windows). The canvas outlines it on top of every frame, following it while it scrolls; null hides the ring.
+        /// Pointer input hides the ring, keyboard focus itself stays with the accessibility layer.
+        /// </summary>
+        public ISkiaAccessibilityNode KeyboardFocusNode
+        {
+            get => _keyboardFocusNode;
+            set
+            {
+                if (ReferenceEquals(_keyboardFocusNode, value))
+                    return;
+
+                _keyboardFocusNode = value;
+                Update();
+            }
+        }
+
+        /// <summary>Color of the keyboard focus ring, see <see cref="KeyboardFocusNode"/>. Same blue as the WPF head.</summary>
+        public static SKColor KeyboardFocusColor = SKColor.Parse("#6EA8FE");
+
+        /// <summary>
+        /// Draws the keyboard focus ring around <see cref="KeyboardFocusNode"/> at its visible position (caches and
+        /// scroll offsets included): 2pt stroke, 2pt outside the control, 6pt corners, like the WPF head.
+        /// </summary>
+        protected virtual void DrawKeyboardFocus(DrawingContext context)
+        {
+            var node = _keyboardFocusNode; // set from the UI thread
+            if (node == null)
+                return;
+
+            var rect = node.GetAccessibilityPixelRect(); // empty when not on screen
+            if (rect.IsEmpty)
+                return;
+
+            var scale = context.Scale;
+            rect.Inflate(2 * scale, 2 * scale);
+
+            _keyboardFocusPaint ??= new SKPaint { Style = SKPaintStyle.Stroke, IsAntialias = true };
+            _keyboardFocusPaint.Color = KeyboardFocusColor;
+            _keyboardFocusPaint.StrokeWidth = 2 * scale;
+            context.Context.Canvas.DrawRoundRect(rect, 6 * scale, 6 * scale, _keyboardFocusPaint);
+        }
+
         List<Guid> _listRemoveAnimators = new(512);
 
         /// <summary>
@@ -846,6 +893,8 @@ namespace DrawnUi.Views
                     SurfaceCacheManager.Dispose();
 
                     PaintSystem?.Dispose();
+
+                    _keyboardFocusPaint?.Dispose();
 
                     DestroySkiaView();
 
@@ -1973,6 +2022,11 @@ namespace DrawnUi.Views
                         }
 
                         var postExecuted = ExecutePostAnimators(context);
+
+                        if (_keyboardFocusNode != null)
+                        {
+                            DrawKeyboardFocus(context);
+                        }
 
                         //Kick to redraw if need animate
                         if (executed + postExecuted > 0)
