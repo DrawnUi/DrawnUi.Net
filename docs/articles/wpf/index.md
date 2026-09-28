@@ -199,7 +199,7 @@ Things that are not obvious from the API and shaped the implementation. They mat
 - **The first GPU frame is pre-rendered on the CPU.** ANGLE start-up plus the first GPU frame block the UI thread for a few hundred milliseconds; one software frame is shown first and the GPU takes over on the next tick.
 - **Assets load relative to the executable.** `SkiaFontManager` and the image loader combine the path with `AppContext.BaseDirectory`, so fonts, images, Lottie and `.sksl` files need `CopyToOutputDirectory`; a bare `Content` item in a WinExe project is not copied and the asset fails silently at runtime.
 - **The head is not the MAUI Windows head.** A `net*-windows` target makes the SDK define `WINDOWS`, which shared DrawnUI code reads as "MAUI WinUI". `DrawnUi.Wpf` and `DrawnUi.Wpf.Game` strip that define (and `ONPLATFORM`) in their project files; an app project needs nothing.
-- **Mouse wheel notches accumulate.** A notch arriving while the previous wheel scroll animates adds onto that scroll's destination, so a fast spin travels the full distance. This is shared engine behaviour since 1.10.6.18 and was found here, because the desktop wheel is the main way to scroll on WPF.
+- **Mouse wheel notches accumulate.** A notch arriving while the previous wheel scroll animates adds onto that scroll's destination, so a fast spin travels the full distance. Each event scrolls its share of a notch (its delta / 120), so a precision touchpad, which sends many small events, scrolls as far as the fingers moved. This is shared engine behaviour since 1.10.6.18 and was found here, because the desktop wheel is the main way to scroll on WPF.
 
 ---
 
