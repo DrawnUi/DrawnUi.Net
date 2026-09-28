@@ -280,6 +280,48 @@ public class KeyboardAccessibilityTests
         Assert.Contains(manager.Snapshot, n => n.Label == "item 25");
     }
 
+
+    /// <summary>
+    /// A small templated list whose stack is Image-cached draws every cell into the cache, so every cell is a node
+    /// keyboard navigation reaches, and focusing one below the fold scrolls it into view.
+    /// </summary>
+    [Fact]
+    public void RecycledCellsInCachedStack_AllReachable_AndScrollIntoView()
+    {
+        using var host = new HeadlessCanvasHost(300, 300, background: Colors.Black);
+        var manager = host.Canvas.AccessibilityManager;
+        manager.MinUpdateIntervalMs = 0;
+        SkiaScroll scroll = null;
+        SkiaStack stack = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaStack
+            {
+                UseCache = SkiaCacheType.Image,
+                Spacing = 0,
+                RecyclingTemplate = RecyclingTemplate.Enabled,
+                MeasureItemsStrategy = MeasuringStrategy.MeasureFirst,
+                ItemsSource = Enumerable.Range(0, 20).Select(i => $"item {i}").ToList(),
+                ItemTemplate = new DataTemplate(() => new LabelCell { HeightRequest = 40, HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleButton, AccessibilityCanInteract = true })
+            }.Assign(out stack)
+        }.Assign(out scroll);
+        host.AdvanceFrames(4);
+
+        Assert.Equal(20, manager.Snapshot.Length);
+
+        var cell = stack.ChildrenFactory.GetCellsInUse().First(c => (string)c.BindingContext == "item 15");
+        SkiaScroll.EnsureVisible(cell, 0);
+        host.AdvanceFrames(4);
+
+        // cell 15 spans 600..640: its bottom lands 8pt above the viewport bottom (300)
+        _out.WriteLine($"offset {scroll.ViewportOffsetY}");
+        Assert.Equal(-348, scroll.ViewportOffsetY, 1);
+        var node = Assert.Single(manager.Snapshot, n => n.Label == "item 15");
+        Assert.Equal(252, node.Rect.Top, 1);
+    }
+
     private class LabelCell : SkiaLayout
     {
         protected override void OnBindingContextChanged()
