@@ -67,6 +67,7 @@ SkiaDrawer is a versatile control that provides a sliding panel (drawer) with an
 | `IsOpen` | bool | Controls whether the drawer is open or closed |
 | `AmplitudeSize` | double | Optional override for drawer movement calculation |
 | `RespondsToGestures` | bool | Default true. False: the drawer cannot be dragged open or closed, only `IsOpen` from code moves it |
+| `AutoClose` | bool | Default false. True: a click or tap inside the drawer's area but outside its content closes the open drawer. Moving the mouse or the wheel there does not |
 
 ### Drawer Direction
 

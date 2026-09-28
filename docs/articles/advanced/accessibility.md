@@ -40,7 +40,7 @@ public record AccessibilityNode(
     SKRect Rect, bool CanInteract, bool? IsPressed)
 ```
 
-`Rect` is in device-independent pixels, where the control is on screen now: inside cached containers and scrolled content too. The array is in reading order: rows top to bottom, each row left to right (controls whose tops are within half the smaller height share a row, so a row of vertically centered controls of different heights reads left to right). Only controls the last frame drew are in it, live or inside a cached parent that is blitted; a control a virtualized layout stopped drawing (scrolled out, a recycled cell back in the pool) leaves the snapshot until it is drawn again.
+`Rect` is in device-independent pixels, where the control is on screen now: inside cached containers and scrolled content too, and with the translation, rotation and scale of the control and its parents (a panel slid in with `TranslationX` reports where it is shown). The array is in reading order: rows top to bottom, each row left to right (controls whose tops are within half the smaller height share a row, so a row of vertically centered controls of different heights reads left to right). Only controls the last frame drew are in it, live or inside a cached parent that is blitted; a control a virtualized layout stopped drawing (scrolled out, a recycled cell back in the pool) leaves the snapshot until it is drawn again.
 
 ### Registration lifecycle
 

@@ -57,56 +57,26 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New, next release
+## What's New 1.10.6.21
 
-  * Keyboard navigation on .NET MAUI Windows now works like WPF: a focus ring drawn on the canvas that follows the control while it scrolls, Escape leaves the drawn controls, and Tab walks the current screen (it kept the controls of the first screen it saw). Like native Windows, the ring shows only after the keyboard was used, on WPF too.
-  * Sliders work from the keyboard on MAUI Windows, WPF and Blazor: arrows step by `Step`, PageUp / PageDown move a tenth of the range, Home / End go to the ends. Enter / Space no longer jump the value to the middle. Custom controls take keys with `OnAccessibilityKey(InputKey)`.
-  * Auto-hiding scroll bars show while the mouse is over the scroll (`SkiaScroll.ShowScrollBarsOnHover`, default on; touch is unaffected), while keyboard focus is on a control inside it, and while `KeepScrollBarsVisible` is set. A bar that had never been scrolled now knows its size, so hovering shows it right. New `SkiaControl.IsPointerOver`: unlike hover, which one control holds at a time, it stays true for every control under the pointer. WPF and OpenTK now end hover when the mouse leaves the window.
-  * Arrow-key groups: a container with `AccessibilityRole = Aria.RoleList` (or `RoleGrid`, `RoleToolbar`, `RoleRadioGroup`...) is one Tab stop, and the arrow keys move between its items by index like a native list, Home / End and PageUp / PageDown included. Recycled cells that are not realized yet are scrolled in and focused, so the keyboard reaches every item of a long list. MAUI Windows, WPF and Blazor.
-  * Keyboard navigation uses the pointer's rules: a control that is `InputTransparent` (or inside an `InputTransparent` group), disabled, or under `LockChildrenGestures` is no Tab stop, is not activated and ignores the arrow keys, on every head. Opacity alone does not count, as for the pointer.
-  * Text fields are Tab stops on MAUI Windows, WPF and Blazor: Tab into a `SkiaEditor` and it takes the caret, as after a click. Tab and Shift+Tab leave it, and the next control keeps the keyboard, so Enter presses a button right away.
-  * When a focused control lets go of focus and nothing else takes it, each canvas now resets focus by itself (on Android and iOS this closes the soft keyboard). Apps with several canvases used to reset the first canvas that ever had focus instead. On Windows the reset takes focus only from the canvas' own text field, so focus that Tab moved on stays.
-  * Accessibility positions are where the control is on screen. Inside cached containers and scrolled content they stayed where the cache was recorded, which broke Tab order, screen reader outlines and scroll-into-view. Controls a virtualized list stopped drawing leave the accessibility tree, rows read left to right, and the tree follows scrolling.
-
- ### 1.10.6.20
-
-  * **Potentially breaking, but inevitable:** templated layouts now default to `MeasureItemsStrategy="MeasureAll"`. The old default, `MeasureFirst`, was half applied: the first load measured every row, but items added, removed or replaced later took the first row's height, so lists with rows of different heights went wrong after their first change. `MeasureFirst` could not be fixed without breaking those lists, so the default moved to the strategy that is correct for any content. Lists whose rows really are all the same height set `MeasureFirst` explicitly and keep adds and removes measure-free.
-  * `MeasureFirst` now measures only the first row, as documented. A templated `Column`/`Row` without `Split` used to measure every row on each full layout.
-  * Fixed a recycled list drawing nothing after its row heights changed (the rendering scale changed, a resize reflowed text): views parked under the old heights were never reused.
-  * Fixed a templated layout growing by its own padding every time a cell changed size.
-  * `DrawnUi.Blazor`: the canvas follows the window live while you resize it and no longer shows a blank frame when the resize ends.
-
- ### 1.10.6.19
-
-  * New `tpls/` folder with starter projects for every head: MAUI, WPF, OpenTK (Windows and Linux), Blazor WASM, pure .NET WASM and even React. Each builds and runs as-is, with the whole UI in one method to replace..
-  * Emoji and symbols now draw on `DrawnUi.Web` (pure WASM): add them with `fonts.AddEmojis()` and `fonts.AddSymbols()`, the subsets DrawnUi.Blazor already ships. A browser has no system fonts, so without them those glyphs were blank.
-  * Images and SVGs with a relative source (`"drawnui.svg"`) now load on `DrawnUi.Web`, and http sources now load on OpenTK. Both heads lacked an `HttpClient`.
-  * Fixed `DrawnUi.Web` failing to link when referenced as a NuGet package (`undefined symbol: InterceptBrowserObjects`).
-  * The mouse wheel scrolls on `DrawnUi.OpenTk`.
-  * An OpenTK window now keeps drawing while you resize it.
-  * Mouse wheel: a fast spin travels farther than a slow one. Each notch used to restart the scroll animation and throw away the rest of the previous notch, so spinning faster scrolled less. All heads.
-  * `DrawnUi.Wpf` startup options: `Super.UseDrawnUi().WithSettings(new DrawnUiStartupSettings { ... })`, same settings class as MAUI — window size, desktop keyboard feeding `KeyboardManager`, logger, one-time startup action.
-  * `DrawnUi.Wpf` accelerated rendering is smooth: no more mixed or torn frames during scrolls and animations, and animations advance by the frame's presentation time instead of a jittery clock sample.
-  * New addon `DrawnUi.Wpf.Game`, so the WPF head runs `DrawnGame` like every other head, with a `WpfPong` sample.
-  * New sample `MauiPong`: every head now ships the Hello + Pong pair (MAUI, WPF, OpenTK, Blazor, WASM).
-  * `SkiaLabel` no longer clips the descenders (g, j, p, q, y) of its last line — glyph ink reaching past the line box is now part of the label's cached surface.
-  * Fixed a `SkiaScroll` jumping to the top when a control below the fold (a slider in a scrolled list) started its own drag: a transient measure made the scroll think its content no longer overflowed.
-  * `ViewsAdapter.GetCellsInUse()`: all realized cells of a templated layout, for app code that needs the live rows (drag-to-reorder, refreshing a row's look). Recycled cells never appear in `Views`.
+  * **Your app works without a mouse.** On MAUI Windows, WPF and Blazor, people can now use a drawn app from the keyboard the way they use native apps:
+    * Tab and Shift+Tab move from control to control in reading order, and a focus ring shows where you are. It appears only once you press a key, never after a click, and it stays on the control while it scrolls. Escape leaves the drawn controls.
+    * Enter or Space presses a button and flips a switch or a checkbox. Sliders move with the arrow keys, PageUp / PageDown and Home / End.
+    * Text fields are Tab stops: Tab into a `SkiaEditor` and you can type at once. Tab again moves on, and Enter presses the next button right away.
+    * Lists feel native. Give a list, grid or toolbar a role (`Aria.RoleList`, `RoleGrid`, `RoleToolbar`...) and it becomes a single Tab stop whose items you walk with the arrow keys, Home / End and PageUp / PageDown. This works in a recycled list of 100 000 rows too: rows that do not exist yet are scrolled in when you reach them.
+    * Controls people should not use are skipped: disabled ones, `InputTransparent` ones and those inside a layout that locks its children's gestures.
+    * Screen readers and the focus ring see each control where it really is on screen: inside cached and scrolled content, and moved, rotated or scaled with transforms. Rows a virtualized list is not drawing leave the accessibility tree.
+    * Your own controls can take keys by overriding `OnAccessibilityKey`.
+  * Apps with several canvases: each canvas now clears its own focus when nothing takes it (on Android and iOS this closes the soft keyboard). It used to be the first canvas that ever had focus.
+  * An open `SkiaDrawer` with `AutoClose` no longer closes when the mouse only moves over the area outside its panel; a click there still closes it.
+  * Auto-hiding scroll bars show while the mouse is over the scroll or the keyboard is inside it (`ShowScrollBarsOnHover`, on by default; `KeepScrollBarsVisible` keeps them up). New `IsPointerOver` is true for every control under the mouse, not just the one holding hover.
 
  ### Previously
 
-  * Fluent `.Initialize(me => ...)` runs once when the control gets its parent, not at its first measure, so it also runs for controls created invisible or outside the viewport.
-  * `SkiaScrollBar.IsDraggable`: desktop behavior, drag the thumb or press the track to jump there; `HideDurationSecs` controls the auto-hide fade. Off by default, the bar stays display-only.
-  * Changing `ControlStyle` after a control was measured rebuilds its default content, so switching platform looks at runtime works; sizes pinned by the previous style are released, user-set values stay.
-  * Lazy observers (`ObserveProperty`, `ObserveProperties`, `Observe`) resolve their target at first measure again — they missed fields assigned with `.Assign(out ...)`, which drew slider thumbs off the track.
-  * `SkiaViewSwitcher` can pop pages pushed while no tab is selected, and stays quiet when `SelectedIndex` is set before its children exist.
-  * `SkiaScroll` ignores gestures when `Orientation` is `Neither`, so drags and the wheel reach the parent scroll ([#347](https://github.com/taublast/DrawnUi/issues/347)).
-  * `SkiaScroll` keeps its offset through provisional measures (a star row inside a `SkiaGrid`), including after an overscroll bounce; `ScrollToIndex` on a Split layout takes an item index; LoadMore distances are points, not pixels.
-  * `SkiaCheckbox` takes its own colours before the check animation shows a frame; the Windows look lost the slider thumb shadow and uses 1.5 pt borders.
-  * Android: a `Canvas` kept alive and moved to another window (a cached page shown in a new dialog) no longer stays blank, and two memory leaks around canvas re-attach are fixed. `Super.SetWhiteTextStatusBar()` works under MAUI 10.
-  * `DrawnUi.Maui.MapsUi` passes the Android 16 KB page-size check — desktop native packages no longer ship inside the APK.
-  * `SkiaEditor` puts fast-typed characters in the right place, centers its text, and no longer leaks the native entry on iOS.
-  * New samples and docs: `HelloMaui` (19 pages via `SkiaShell`), plus docs and AI skills at [https://drawnui.net](https://drawnui.net).
+  * **Potentially breaking:** templated layouts default to `MeasureItemsStrategy="MeasureAll"`, correct for rows of any height. Lists whose rows are really all the same height set `MeasureFirst` explicitly, which now measures only the first row as documented.
+  * Fluent `.Initialize(me => ...)` runs once when the control gets its parent, so it also runs for controls created invisible or outside the viewport.
+  * Changing `ControlStyle` at runtime rebuilds the control's default look, so platform styles can be switched live.
+  * `SkiaScrollBar.IsDraggable` gives desktop scroll bars you can drag or click on the track; `HideDurationSecs` sets how they fade out.
  
 ---
 MIT | Free to use and customize
