@@ -561,6 +561,9 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
     protected override bool DefaultAccessibilityCanInteract() => !IsDisabled;
 
+    /// <summary>A disabled button ignores taps, so keyboard navigation skips it too.</summary>
+    protected override bool AcceptsInput() => !IsDisabled;
+
     public virtual void ApplyProperties()
     {
         NotifyAccessibility(); // Text / IsDisabled feed the node defaults

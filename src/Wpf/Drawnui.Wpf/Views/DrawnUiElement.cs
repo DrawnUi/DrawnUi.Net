@@ -345,7 +345,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         }
 
         // arrows / Home / End / PageUp / PageDown go to the node in focus, e.g. a slider steps its value
-        return peer.FocusedPeer?.Source?.OnAccessibilityKey(KeyboardManager.MapKey(e.Key)) == true;
+        return SkiaAccessibilityManager.Key(peer.FocusedPeer?.Source, KeyboardManager.MapKey(e.Key));
     }
 
     #endregion

@@ -107,7 +107,7 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         if (FocusedPeer?.Source != null)
         {
             FocusedPeer.RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
-            FocusedPeer.Source.OnAccessibilityActivated();
+            SkiaAccessibilityManager.Activate(FocusedPeer.Source);
             // Re-announce focused element so Narrator says the button name/role after invocation.
             FocusedPeer.RaiseAutomationEvent(AutomationEvents.AutomationFocusChanged);
         }
@@ -345,7 +345,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
             RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                source.OnAccessibilityActivated();
+                SkiaAccessibilityManager.Activate(source);
                 RaiseAutomationEvent(AutomationEvents.AutomationFocusChanged);
             });
         }

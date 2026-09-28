@@ -73,7 +73,7 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
             return;
 
         FocusedPeer.RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
-        FocusedPeer.Source.OnAccessibilityActivated();
+        SkiaAccessibilityManager.Activate(FocusedPeer.Source);
     }
 
     /// <summary>The engine reported a focus change (a control took focus by pointer).</summary>
@@ -283,7 +283,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
             return;
 
         RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);
-        _parent.Element.Dispatcher.BeginInvoke(source.OnAccessibilityActivated);
+        _parent.Element.Dispatcher.BeginInvoke(() => SkiaAccessibilityManager.Activate(source));
     }
 
     /// <inheritdoc/>

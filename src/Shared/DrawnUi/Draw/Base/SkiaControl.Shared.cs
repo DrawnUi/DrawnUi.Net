@@ -5204,9 +5204,15 @@ namespace DrawnUi.Draw
         }
 
         private bool? _accessibilityCanInteract;
+
+        /// <summary>
+        /// Whether keyboard navigation and assistive technology may focus and use this node: the explicit value, else
+        /// the class default, and in both cases only while a tap could reach the control (<see cref="CanReceiveGesture"/>),
+        /// so Tab, Enter / Space and screen-reader Invoke never use a control the pointer cannot.
+        /// </summary>
         public bool AccessibilityCanInteract
         {
-            get => _accessibilityCanInteract ?? DefaultAccessibilityCanInteract();
+            get => (_accessibilityCanInteract ?? DefaultAccessibilityCanInteract()) && CanReceiveGesture(TouchActionResult.Tapped);
             set
             {
                 if (_accessibilityCanInteract != value)
@@ -5283,6 +5289,32 @@ namespace DrawnUi.Draw
         /// (arrows, Home, End, PageUp, PageDown). Return true when the key was used; the default uses none.
         /// </summary>
         public virtual bool OnAccessibilityKey(InputKey key) => false;
+
+        /// <summary>
+        /// Whether a pointer gesture of this kind would reach this control, by the same rules the gesture dispatch
+        /// applies: the control and every ancestor draw, none of them is InputTransparent, no ancestor keeps this gesture
+        /// from its children (<see cref="LockChildrenGestures"/>), and the control accepts input (<see cref="AcceptsInput"/>).
+        /// Opacity does not count, as for the pointer: hide a control from input with InputTransparent or IsVisible.
+        /// Keyboard navigation uses it: Tapped for Tab and Enter / Space, Panning for the arrow keys.
+        /// </summary>
+        public bool CanReceiveGesture(TouchActionResult gesture)
+        {
+            if (!CanDraw || InputTransparent || !AcceptsInput())
+                return false;
+
+            var parent = Parent as SkiaControl;
+            while (parent != null)
+            {
+                if (!parent.CanDraw || parent.InputTransparent || parent.CheckChildrenGesturesLocked(gesture))
+                    return false;
+                parent = parent.Parent as SkiaControl;
+            }
+
+            return true;
+        }
+
+        /// <summary>False while the control ignores gestures itself, e.g. a disabled button. Default true.</summary>
+        protected virtual bool AcceptsInput() => true;
 
         /// <summary>
         /// Called automatically on first layout. Call manually when label, hint, or state changes.

@@ -511,7 +511,7 @@ namespace DrawnUi.Views
         protected virtual void DrawKeyboardFocus(DrawingContext context)
         {
             var node = _keyboardFocusNode; // set from the UI thread
-            if (node == null)
+            if (node == null || !node.AccessibilityCanInteract) // no ring on a control the pointer cannot use right now
                 return;
 
             var rect = node.GetAccessibilityPixelRect(); // empty when not on screen

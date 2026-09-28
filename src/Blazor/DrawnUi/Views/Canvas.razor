@@ -1011,7 +1011,7 @@
 
     private void OnA11yActivated(AccessibilityNode node)
     {
-        node.Source?.OnAccessibilityActivated();
+        SkiaAccessibilityManager.Activate(node.Source);
     }
 
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
@@ -1031,10 +1031,10 @@
     private void OnA11yKeyDown(KeyboardEventArgs e, AccessibilityNode node)
     {
         if (e.Key is "Enter" or " ")
-            node.Source?.OnAccessibilityActivated();
+            SkiaAccessibilityManager.Activate(node.Source);
         else if (e.Key is "ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Home" or "End" or "PageUp" or "PageDown"
                  && Enum.TryParse(e.Key, out InputKey key))
-            node.Source?.OnAccessibilityKey(key); // e.g. a slider steps its value, same as the Windows heads
+            SkiaAccessibilityManager.Key(node.Source, key); // e.g. a slider steps its value, same as the Windows heads
     }
 
     private static string A11yNodeStyle(AccessibilityNode node)

@@ -52,6 +52,31 @@ namespace DrawnUi.Views
 
         public ISkiaAccessibilityNode? FocusedNode { get; private set; }
 
+        /// <summary>
+        /// Enter / Space from keyboard navigation or a screen reader's Invoke: activates the node only while a tap
+        /// could reach it (<see cref="ISkiaAccessibilityNode.AccessibilityCanInteract"/>), the rule every head applies.
+        /// </summary>
+        public static bool Activate(ISkiaAccessibilityNode? node)
+        {
+            if (node == null || !node.AccessibilityCanInteract)
+                return false;
+
+            node.OnAccessibilityActivated();
+            return true;
+        }
+
+        /// <summary>
+        /// Arrow keys, Home / End, PageUp / PageDown for the node in keyboard focus: delivered only while a pan could
+        /// reach it (<see cref="SkiaControl.CanReceiveGesture"/>), so a slider the pointer cannot drag does not step either.
+        /// </summary>
+        public static bool Key(ISkiaAccessibilityNode? node, InputKey key)
+        {
+            if (node == null || node is SkiaControl control && !control.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult.Panning))
+                return false;
+
+            return node.OnAccessibilityKey(key);
+        }
+
         public void NotifyFocused(ISkiaAccessibilityNode? node)
         {
             if (ReferenceEquals(FocusedNode, node)) return;

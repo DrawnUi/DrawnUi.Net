@@ -244,7 +244,7 @@ namespace DrawnUi.Views
                 KeyboardFocusNode = null;
                 e.Handled = true;
             }
-            else if (peer.FocusedPeer.Source?.OnAccessibilityKey(KeyboardManager.MapToMaui(key)) == true)
+            else if (SkiaAccessibilityManager.Key(peer.FocusedPeer.Source, KeyboardManager.MapToMaui(key)))
             {
                 e.Handled = true; // arrows / Home / End / PageUp / PageDown used by the node, e.g. a slider
             }
