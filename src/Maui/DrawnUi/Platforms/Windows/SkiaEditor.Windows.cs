@@ -318,7 +318,7 @@ namespace DrawnUi.Draw
                 bool shift = Microsoft.UI.Input.InputKeyboardSource
                     .GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift)
                     .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
-                bool moved = Superview?.HandleEditorA11yTabOut(!shift) ?? false;
+                bool moved = Superview?.HandleEditorA11yTabOut(this, !shift) ?? false;
                 e.Handled = moved; // if past boundary, let WinUI Tab continue naturally
                 return;
             }

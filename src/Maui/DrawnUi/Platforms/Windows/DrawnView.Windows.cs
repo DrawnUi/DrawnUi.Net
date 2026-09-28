@@ -328,7 +328,7 @@ namespace DrawnUi.Views
 
         // Called by SkiaEditor when Tab is pressed inside the hidden TextBox.
         // Deactivates the editor, returns WinUI focus to the canvas, and advances virtual UIA focus.
-        internal bool HandleEditorA11yTabOut(bool forward)
+        internal bool HandleEditorA11yTabOut(SkiaEditor editor, bool forward)
         {
             var peer = _a11yHost?.A11yPeer as DrawnUi.Draw.DrawnUiAutomationPeer;
             var canvasElem = GetCanvasPlatformElement();
@@ -341,6 +341,10 @@ namespace DrawnUi.Views
             }
 
             if (peer == null) return false;
+
+            // continue from this field even when a click focused it (a click does not move virtual focus), like WPF
+            if (!ReferenceEquals(peer.FocusedPeer?.Source, editor))
+                peer.NotifyFocusChanged(editor);
 
             bool moved = peer.MoveFocusToNext(forward);
             if (!moved)
