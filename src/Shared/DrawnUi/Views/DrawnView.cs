@@ -2719,7 +2719,8 @@ namespace DrawnUi.Views
             {
                 _timerResetFocus = new(TimeSpan.FromMilliseconds(ms), (arg) =>
                 {
-                    if (FocusedChild == null)
+                    // a drawn node holding keyboard focus (Tab out of an editor) keeps the keyboard on the canvas
+                    if (FocusedChild == null && KeyboardFocusNode == null)
                     {
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
