@@ -137,7 +137,8 @@
             {
                 @if (node.CanInteract)
                 {
-                    <div role="@node.Role"
+                    <div @key="node.Id"
+                         role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
                          aria-pressed="@(node.IsPressed?.ToString().ToLower())"
@@ -145,13 +146,16 @@
                          class="xaml-a11y-element xaml-a11y-interactive"
                          style="@A11yNodeStyle(node)"
                          @onclick="() => OnA11yActivated(node)"
-                         @onkeydown="(e) => OnA11yKeyDown(e, node)">
+                         @onkeydown="(e) => OnA11yKeyDown(e, node)"
+                         @onfocus="() => OnA11yFocus(node)"
+                         @onblur="() => OnA11yBlur(node)">
                             @node.Label
                     </div>
                 }
                 else
                 {
-                    <div role="@node.Role"
+                    <div @key="node.Id"
+                         role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
                          class="xaml-a11y-element"
@@ -1008,6 +1012,20 @@
     private void OnA11yActivated(AccessibilityNode node)
     {
         node.Source?.OnAccessibilityActivated();
+    }
+
+    // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
+    private void OnA11yFocus(AccessibilityNode node) => KeyboardFocusNode = node.Source;
+
+    private void OnA11yBlur(AccessibilityNode node)
+    {
+        if (ReferenceEquals(KeyboardFocusNode, node.Source))
+            KeyboardFocusNode = null;
+    }
+
+    /// <summary>The overlay element's CSS outline is the focus ring on Blazor, the canvas draws none.</summary>
+    protected override void DrawKeyboardFocus(DrawingContext context)
+    {
     }
 
     private void OnA11yKeyDown(KeyboardEventArgs e, AccessibilityNode node)

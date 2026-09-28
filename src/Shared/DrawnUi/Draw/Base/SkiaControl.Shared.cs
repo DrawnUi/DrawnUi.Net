@@ -2449,6 +2449,37 @@ namespace DrawnUi.Draw
 #endif
         }
 
+        /// <summary>
+        /// Opt-in pointer-over tracking: call at the top of <see cref="ProcessGestures"/>. Unlike
+        /// <see cref="CheckHovered"/>, which gives hover to one control at a time, every control under the pointer
+        /// stays <see cref="IsPointerOver"/>: a scroll keeps it while a button inside it is hovered.
+        /// </summary>
+        public void CheckPointerOver(SkiaGesturesParameters args)
+        {
+            if (args.Type == TouchActionResult.Pointer)
+                Superview?.ReportPointerOver(this);
+        }
+
+        /// <summary>
+        /// True while a mouse or pen hovers this control or its children, for controls that call
+        /// <see cref="CheckPointerOver"/>. Touch never sets it.
+        /// </summary>
+        public bool IsPointerOver { get; private set; }
+
+        internal void SetPointerOver(bool value)
+        {
+            if (IsPointerOver == value)
+                return;
+
+            IsPointerOver = value;
+            OnPointerOver(value);
+        }
+
+        /// <summary>Called when <see cref="IsPointerOver"/> changes.</summary>
+        protected virtual void OnPointerOver(bool value)
+        {
+        }
+
         public virtual ISkiaGestureListener ProcessGestures(
             SkiaGesturesParameters args,
             GestureEventProcessingInfo apply)

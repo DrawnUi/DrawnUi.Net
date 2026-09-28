@@ -113,6 +113,8 @@ private async void OnRefreshing(object sender, EventArgs e)
 
 For a custom bar, assign `ScrollBar` / `ScrollBarHorizontal` directly (shows regardless of the flag) — set `SkiaScrollBar.Dock="Start"` for RTL or a 180-rotated (inverted chat) scroll, `IsDraggable="True"` for desktop thumb drag and track press (with `GrabPadding` widening the hit area of a thin bar), `HideDelaySecs` / `HideDurationSecs` to tune the auto-hide — or implement `IScrollBar` on any `SkiaControl` for a fully custom indicator. See [Scroll Controls](../controls/scroll.md#scroll-bar-indicator) for the full property table, the draggable bar example and the `IScrollBar` example.
 
+An auto-hiding bar also shows while the mouse is over the scroll (`ShowScrollBarsOnHover`, default true), while keyboard focus is inside it, and while `KeepScrollBarsVisible` is true. See [Scroll Controls](../controls/scroll.md#showing-an-auto-hidden-bar-without-scrolling).
+
 `Orientation="Neither"` locks the scroll in place: no pan, no fling, and the mouse wheel is left for a parent scroll.
 
 ## Infinite and Looped Scrolling

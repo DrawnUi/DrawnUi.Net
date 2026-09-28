@@ -62,6 +62,19 @@ public partial class Canvas
         _desktopPreviousArgs = args;
     }
 
+    /// <summary>
+    /// The mouse left the canvas: hover and pointer-over end. Desktop heads call it from their window's
+    /// mouse-leave event, so a hovered control or a scroll showing its bars on hover lets go.
+    /// </summary>
+    public void HandleDesktopPointerLeave()
+    {
+        lock (LockIterateListeners)
+        {
+            HasHover = null;
+            ClearPointerOver();
+        }
+    }
+
     public void HandleDesktopPointerUp(float x, float y, float clientW, float clientH, PointerData? pointer = null)
     {
         CancelDesktopLongPress();

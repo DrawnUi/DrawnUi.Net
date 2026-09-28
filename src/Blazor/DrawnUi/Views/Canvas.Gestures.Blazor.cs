@@ -224,6 +224,11 @@ public partial class Canvas : IGestureListener
             {
                 HasHover = null;
             }
+
+            if (_checkHover)
+            {
+                CommitPointerOver();
+            }
         }
     }
 

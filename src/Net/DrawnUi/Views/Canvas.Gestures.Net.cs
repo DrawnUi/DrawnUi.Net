@@ -189,6 +189,11 @@ public partial class Canvas
             {
                 HasHover = null;
             }
+
+            if (_checkHover)
+            {
+                CommitPointerOver();
+            }
         }
     }
 

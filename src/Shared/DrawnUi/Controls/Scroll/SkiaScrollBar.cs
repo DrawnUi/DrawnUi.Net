@@ -245,6 +245,43 @@ public class SkiaScrollBar : SkiaLayout, IScrollBar
     public virtual void SetScrollProgress(ScrollOrientation orientation, float progress, float thumbSizeRatio,
         float overscrollPts, bool isScrolling)
     {
+        if (!ApplyScrollProgress(orientation, progress, thumbSizeRatio, overscrollPts))
+            return;
+
+        _ctsHide?.Cancel();
+        Opacity = 1;
+
+        if (!isScrolling)
+        {
+            ScheduleHide();
+        }
+
+        Update();
+    }
+
+    private (ScrollOrientation Orientation, float Progress, float Ratio, float Overscroll)? _pendingProgress;
+
+    /// <inheritdoc/>
+    protected override void OnLayoutChanged()
+    {
+        base.OnLayoutChanged();
+
+        // the scroll pushed its state before the bar was measured and does not push it again until something
+        // changes: take the geometry now, so a bar shown by hover or keyboard focus before any scroll is right
+        if (_pendingProgress is { } p && ApplyScrollProgress(p.Orientation, p.Progress, p.Ratio, p.Overscroll))
+        {
+            if (_keepVisible)
+                _ = this.FadeToAsync(1, 150);
+            Update();
+        }
+    }
+
+    /// <summary>Thumb size and position; false when there is nothing to show or the bar is not measured yet.</summary>
+    private bool ApplyScrollProgress(ScrollOrientation orientation, float progress, float thumbSizeRatio,
+        float overscrollPts)
+    {
+        _pendingProgress = null;
+
         if (orientation != _orientation)
         {
             _orientation = orientation;
@@ -257,7 +294,7 @@ public class SkiaScrollBar : SkiaLayout, IScrollBar
             _hasTravel = false;
             _ctsHide?.Cancel();
             Opacity = 0;
-            return;
+            return false;
         }
 
         var track = orientation == ScrollOrientation.Horizontal
@@ -265,7 +302,10 @@ public class SkiaScrollBar : SkiaLayout, IScrollBar
             : (float)MeasuredSize.Units.Height;
 
         if (track <= 0)
-            return;
+        {
+            _pendingProgress = (orientation, progress, thumbSizeRatio, overscrollPts);
+            return false;
+        }
 
         var thumbLen = Math.Max((float)MinThumbSize, track * thumbSizeRatio);
 
@@ -298,17 +338,45 @@ public class SkiaScrollBar : SkiaLayout, IScrollBar
             _thumb.TranslationY = offset;
         }
 
+        return true;
+    }
+
+    private bool _keepVisible;
+
+    /// <summary>
+    /// While true the bar stays visible: it fades in and does not auto-hide. False starts the usual
+    /// <see cref="HideDelaySecs"/> countdown. The owning SkiaScroll holds the bar while the mouse is over it,
+    /// keyboard focus is inside it or its KeepScrollBarsVisible is set.
+    /// </summary>
+    public virtual void SetKeepVisible(bool keep)
+    {
+        if (_keepVisible == keep)
+            return;
+
+        _keepVisible = keep;
         _ctsHide?.Cancel();
-        Opacity = 1;
 
-        if (AutoHide && !isScrolling)
+        if (!_hasTravel)
+            return; // content fits the viewport, nothing to show
+
+        if (keep)
         {
-            var cts = _ctsHide = new CancellationTokenSource();
-            Tasks.StartDelayed(TimeSpan.FromSeconds(HideDelaySecs), cts.Token,
-                async () => { await this.FadeToAsync(0, (uint)Math.Max(0, HideDurationSecs * 1000)); });
+            _ = this.FadeToAsync(1, 150);
         }
+        else
+        {
+            ScheduleHide();
+        }
+    }
 
-        Update();
+    private void ScheduleHide()
+    {
+        if (!AutoHide || _keepVisible)
+            return;
+
+        var cts = _ctsHide = new CancellationTokenSource();
+        Tasks.StartDelayed(TimeSpan.FromSeconds(HideDelaySecs), cts.Token,
+            async () => { await this.FadeToAsync(0, (uint)Math.Max(0, HideDurationSecs * 1000)); });
     }
 
     /// <summary>

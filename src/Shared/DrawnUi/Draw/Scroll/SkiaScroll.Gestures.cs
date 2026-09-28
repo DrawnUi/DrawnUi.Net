@@ -219,6 +219,9 @@ public partial class SkiaScroll
             Super.Log($"[SCROLL] {this.Tag} Got {args.Type} touches {args.Event.NumberOfTouches} {VelocityY}..");
         }
 
+        if (ShowScrollBarsOnHover)
+            CheckPointerOver(args);
+
         var consumedDefault = BlockGesturesBelow ? this : null;
 
         if (LockGesturesUntilDown)

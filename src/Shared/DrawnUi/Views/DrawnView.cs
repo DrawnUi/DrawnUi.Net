@@ -420,13 +420,59 @@ namespace DrawnUi.Views
         /// </summary>
         public List<IOverlayEffect> PostAnimators { get; } = new(128);
 
+        #region Pointer over
+
+        private HashSet<SkiaControl> _pointerOver = new();
+        private HashSet<SkiaControl> _pointerOverNext = new();
+
+        /// <summary>
+        /// A control that opted in (<see cref="SkiaControl.CheckPointerOver"/>) was reached by the pointer event being
+        /// processed. Unlike hover, any number of controls can be under the pointer at once: a scroll and the button inside it.
+        /// </summary>
+        public void ReportPointerOver(SkiaControl control) => _pointerOverNext.Add(control);
+
+        /// <summary>
+        /// Call after a hover pointer event went through the tree: controls it no longer reached get
+        /// <see cref="SkiaControl.IsPointerOver"/> false, the ones it reached for the first time true.
+        /// </summary>
+        public void CommitPointerOver()
+        {
+            if (_pointerOver.Count == 0 && _pointerOverNext.Count == 0)
+                return;
+
+            foreach (var control in _pointerOver)
+            {
+                if (!_pointerOverNext.Contains(control))
+                    control.SetPointerOver(false);
+            }
+
+            foreach (var control in _pointerOverNext)
+            {
+                if (!_pointerOver.Contains(control))
+                    control.SetPointerOver(true);
+            }
+
+            (_pointerOver, _pointerOverNext) = (_pointerOverNext, _pointerOver);
+            _pointerOverNext.Clear();
+        }
+
+        /// <summary>The pointer left the canvas: nothing is under it anymore.</summary>
+        public void ClearPointerOver()
+        {
+            _pointerOverNext.Clear();
+            CommitPointerOver();
+        }
+
+        #endregion
+
         private ISkiaAccessibilityNode _keyboardFocusNode;
         private SKPaint _keyboardFocusPaint;
 
         /// <summary>
-        /// Accessibility node that keyboard navigation (Tab) moved to, on heads that draw the focus ring on the canvas
-        /// (MAUI Windows). The canvas outlines it on top of every frame, following it while it scrolls; null hides the ring.
-        /// Pointer input hides the ring, keyboard focus itself stays with the accessibility layer.
+        /// Accessibility node that keyboard navigation (Tab) moved to, set by the head (MAUI Windows, WPF, Blazor).
+        /// The canvas outlines it on top of every frame, following it while it scrolls (heads with their own outline
+        /// override <see cref="DrawKeyboardFocus"/>), and every <see cref="SkiaScroll"/> around it keeps its scroll bars
+        /// visible. Null hides both. Pointer input clears it, keyboard focus itself stays with the accessibility layer.
         /// </summary>
         public ISkiaAccessibilityNode KeyboardFocusNode
         {
@@ -436,8 +482,22 @@ namespace DrawnUi.Views
                 if (ReferenceEquals(_keyboardFocusNode, value))
                     return;
 
+                var previous = _keyboardFocusNode;
                 _keyboardFocusNode = value;
+                SetKeyboardFocusInScrolls(previous, false);
+                SetKeyboardFocusInScrolls(value, true);
                 Update();
+            }
+        }
+
+        private static void SetKeyboardFocusInScrolls(ISkiaAccessibilityNode node, bool inside)
+        {
+            var parent = (node as SkiaControl)?.Parent;
+            while (parent is SkiaControl control)
+            {
+                if (control is SkiaScroll scroll)
+                    scroll.SetKeyboardFocusInside(inside);
+                parent = control.Parent;
             }
         }
 

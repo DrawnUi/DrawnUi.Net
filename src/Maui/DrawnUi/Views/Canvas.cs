@@ -747,6 +747,11 @@ public class Canvas : DrawnView, IGestureListener
             {
                 this.HasHover = null;
             }
+
+            if (_checkHover)
+            {
+                CommitPointerOver();
+            }
         }
     }
 

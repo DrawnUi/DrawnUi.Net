@@ -117,9 +117,9 @@ new GameSwitch()
 | Arrows, PageUp / PageDown, Home / End | `OnAccessibilityKey(InputKey)` on the node. `SkiaSlider`: Right / Up and Left / Down step by `Step` (a hundredth of the range when `Step` is 0), PageUp / PageDown move a tenth of the range, Home / End go to `Min` / `Max`; a ranged slider moves `End`, which stops at `Start`. |
 | Escape | Leaves the drawn nodes: no node is focused and the ring goes away (Windows heads). |
 
-A node that gets keyboard focus is scrolled into view (`SkiaScroll.EnsureVisible`) inside every enclosing `SkiaScroll`.
+A node that gets keyboard focus is scrolled into view (`SkiaScroll.EnsureVisible`) inside every enclosing `SkiaScroll`, on WPF too.
 
-**Focus ring.** It appears only after the keyboard was used, never at launch or after a click, like native Windows focus visuals. WPF draws it with WPF; .NET MAUI Windows draws it on the canvas on top of every frame (`DrawnView.KeyboardFocusNode`, color `DrawnView.KeyboardFocusColor`), so it follows the control while it scrolls. Pointer input hides it.
+**Focus ring.** It appears only after the keyboard was used, never at launch or after a click, like native Windows focus visuals. .NET MAUI Windows and WPF draw it on the canvas on top of every frame (`DrawnView.KeyboardFocusNode`, color `DrawnView.KeyboardFocusColor`), so it follows the control while it scrolls; Blazor keeps the CSS outline of its overlay element. Pointer input hides it. Every `SkiaScroll` around the focused control keeps its auto-hiding scroll bars visible while the focus is there.
 
 **Your own keys.** Keys the drawn nodes do not use (and Escape too) still reach `KeyboardManager.KeyDown`, for example to close a panel. On .NET MAUI enable it with `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`; the manager listens to the window before the canvas, so it gets every key while the canvas has focus.
 

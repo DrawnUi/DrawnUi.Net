@@ -493,6 +493,28 @@ new SkiaScroll
 
 A bar set on a `SkiaScroll` is `IsParentIndependent`: its thumb resizing (overscroll squash, content growth) never re-measures the scroll or the layout around it.
 
+### Showing an auto-hidden bar without scrolling
+
+An auto-hiding bar also fades in and stays visible, without any scrolling, while:
+
+- the mouse or pen is over the scroll, including over buttons and other content inside it. `ShowScrollBarsOnHover` on `SkiaScroll`, default `true`; touch never hovers, so phones and tablets are unaffected;
+- keyboard focus is on a control inside the scroll (Tab navigation, see [Accessibility](../advanced/accessibility.md#keyboard-navigation));
+- `KeepScrollBarsVisible` is `true`, for your own reasons, for example while an item of the list is selected.
+
+Once none of them holds it, the bar hides after `HideDelaySecs` as usual. A bar only shows when there is something to scroll.
+
+```csharp
+new SkiaScroll
+{
+    ScrollBarsVisibility = ScrollBarVisibility.Vertical,
+    ShowScrollBarsOnHover = true,                       // default
+    KeepScrollBarsVisible = viewModel.HasSelection,     // bindable
+    Content = /* items */,
+}
+```
+
+On .NET MAUI, Blazor and the pure WebAssembly head, leaving the canvas straight from the scroll (out of the window, or onto a native control next to the canvas) does not end the hover: the bar stays until the mouse comes back over the canvas. On WPF and OpenTK leaving the window ends it.
+
 ### Draggable bar (desktop)
 
 Set `IsDraggable` on your `SkiaScrollBar` instance (there is no flag for it on `SkiaScroll`, auto-created bars stay display-only). A gesture that starts on the bar, thumb or track, belongs to the bar until the pointer goes up: dragging the thumb scrolls, pressing the track jumps there with the thumb centered under the pointer. An auto-hidden bar shows again the moment it is grabbed.
@@ -527,6 +549,9 @@ public class MyScrollBar : SkiaLayout, IScrollBar
         // overscrollPts: current overscroll distance
         // isScrolling: user panning or animation running
     }
+
+    // optional: the scroll asks the bar to stay visible (mouse over it, keyboard focus inside it)
+    public void SetKeepVisible(bool keep) { }
 }
 ```
 

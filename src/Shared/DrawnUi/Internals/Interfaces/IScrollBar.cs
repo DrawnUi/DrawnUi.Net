@@ -28,4 +28,13 @@ public interface IScrollBar : IDrawnBase
     /// <param name="isScrolling">Whether the user is panning or a scroll animation is running.</param>
     void SetScrollProgress(ScrollOrientation orientation, float progress, float thumbSizeRatio,
         float overscrollPts, bool isScrolling);
+
+    /// <summary>
+    /// The scroll owner asks an auto-hiding bar to stay visible (true) while the mouse is over the scroll, keyboard
+    /// focus is inside it or SkiaScroll.KeepScrollBarsVisible is set, and lets it hide again (false).
+    /// Default implementation ignores it.
+    /// </summary>
+    void SetKeepVisible(bool keep)
+    {
+    }
 }
