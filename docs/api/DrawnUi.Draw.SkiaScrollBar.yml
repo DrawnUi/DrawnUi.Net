@@ -18,7 +18,9 @@ items:
   - DrawnUi.Draw.SkiaScrollBar.InitializeDefaultContent(System.Boolean)
   - DrawnUi.Draw.SkiaScrollBar.IsDraggable
   - DrawnUi.Draw.SkiaScrollBar.MinThumbSize
+  - DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged
   - DrawnUi.Draw.SkiaScrollBar.OnWillDisposeWithChildren
+  - DrawnUi.Draw.SkiaScrollBar.SetKeepVisible(System.Boolean)
   - DrawnUi.Draw.SkiaScrollBar.SetScrollProgress(Microsoft.Maui.ScrollOrientation,System.Single,System.Single,System.Single,System.Boolean)
   - DrawnUi.Draw.SkiaScrollBar.Thickness
   - DrawnUi.Draw.SkiaScrollBar.ThumbColor
@@ -241,7 +243,6 @@ items:
   - DrawnUi.Draw.SkiaLayout.GetCacheDebugInfo
   - DrawnUi.Draw.SkiaLayout.OnPrintDebug
   - DrawnUi.Draw.SkiaLayout.OnLayoutReady
-  - DrawnUi.Draw.SkiaLayout.OnLayoutChanged
   - DrawnUi.Draw.SkiaLayout.OnAppearing
   - DrawnUi.Draw.SkiaLayout.OnDisappearing
   - DrawnUi.Draw.SkiaLayout.OnAppeared
@@ -568,6 +569,9 @@ items:
   - DrawnUi.Draw.SkiaControl.GetGesturePositionInsideChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckChildGestureHit(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.CheckHovered(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Draw.SkiaControl.IsPointerOver
+  - DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
   - DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelowProperty
   - DrawnUi.Draw.SkiaControl.BlockGesturesBelow
@@ -754,12 +758,17 @@ items:
   - DrawnUi.Draw.SkiaControl.AccessibilityHint
   - DrawnUi.Draw.SkiaControl.IsAccessibilityElement
   - DrawnUi.Draw.SkiaControl.GetAccessibilityPixelRect
+  - DrawnUi.Draw.SkiaControl.RenderedFrame
+  - DrawnUi.Draw.SkiaControl.WasInLastFrame
   - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
   - DrawnUi.Draw.SkiaControl.AccessibilityLive
   - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
   - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
+  - DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -1819,6 +1828,76 @@ items:
   nameWithType.vb: SkiaScrollBar.SetScrollProgress(ScrollOrientation, Single, Single, Single, Boolean)
   fullName.vb: DrawnUi.Draw.SkiaScrollBar.SetScrollProgress(Microsoft.Maui.ScrollOrientation, Single, Single, Single, Boolean)
   name.vb: SetScrollProgress(ScrollOrientation, Single, Single, Single, Boolean)
+- uid: DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged
+  commentId: M:DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged
+  id: OnLayoutChanged
+  parent: DrawnUi.Draw.SkiaScrollBar
+  langs:
+  - csharp
+  - vb
+  name: OnLayoutChanged()
+  nameWithType: SkiaScrollBar.OnLayoutChanged()
+  fullName: DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnLayoutChanged
+    path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+    startLine: 264
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: DrawingRect size changed
+  example: []
+  syntax:
+    content: protected override void OnLayoutChanged()
+    content.vb: Protected Overrides Sub OnLayoutChanged()
+  overridden: DrawnUi.Draw.SkiaLayout.OnLayoutChanged
+  overload: DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged*
+- uid: DrawnUi.Draw.SkiaScrollBar.SetKeepVisible(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaScrollBar.SetKeepVisible(System.Boolean)
+  id: SetKeepVisible(System.Boolean)
+  parent: DrawnUi.Draw.SkiaScrollBar
+  langs:
+  - csharp
+  - vb
+  name: SetKeepVisible(bool)
+  nameWithType: SkiaScrollBar.SetKeepVisible(bool)
+  fullName: DrawnUi.Draw.SkiaScrollBar.SetKeepVisible(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SetKeepVisible
+    path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
+    startLine: 350
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    While true the bar stays visible: it fades in and does not auto-hide. False starts the usual
+
+    <xref href="DrawnUi.Draw.SkiaScrollBar.HideDelaySecs" data-throw-if-not-resolved="false"></xref> countdown. The owning SkiaScroll holds the bar while the mouse is over it,
+
+    keyboard focus is inside it or its KeepScrollBarsVisible is set.
+  example: []
+  syntax:
+    content: public virtual void SetKeepVisible(bool keep)
+    parameters:
+    - id: keep
+      type: System.Boolean
+    content.vb: Public Overridable Sub SetKeepVisible(keep As Boolean)
+  overload: DrawnUi.Draw.SkiaScrollBar.SetKeepVisible*
+  implements:
+  - DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
+  nameWithType.vb: SkiaScrollBar.SetKeepVisible(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaScrollBar.SetKeepVisible(Boolean)
+  name.vb: SetKeepVisible(Boolean)
 - uid: DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
   commentId: M:DrawnUi.Draw.SkiaScrollBar.BeginDrag(System.Single,System.Single)
   id: BeginDrag(System.Single,System.Single)
@@ -1837,7 +1916,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BeginDrag
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 318
+    startLine: 386
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1880,7 +1959,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDragProgress
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 350
+    startLine: 418
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1921,7 +2000,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/DrawnUi/Controls/Scroll/SkiaScrollBar.cs
-    startLine: 360
+    startLine: 428
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5527,25 +5606,6 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.OnLayoutReady
     name: OnLayoutReady
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnLayoutReady
-  - name: (
-  - name: )
-- uid: DrawnUi.Draw.SkiaLayout.OnLayoutChanged
-  commentId: M:DrawnUi.Draw.SkiaLayout.OnLayoutChanged
-  parent: DrawnUi.Draw.SkiaLayout
-  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnLayoutChanged
-  name: OnLayoutChanged()
-  nameWithType: SkiaLayout.OnLayoutChanged()
-  fullName: DrawnUi.Draw.SkiaLayout.OnLayoutChanged()
-  spec.csharp:
-  - uid: DrawnUi.Draw.SkiaLayout.OnLayoutChanged
-    name: OnLayoutChanged
-    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnLayoutChanged
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SkiaLayout.OnLayoutChanged
-    name: OnLayoutChanged
-    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnLayoutChanged
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.OnAppearing
@@ -13264,6 +13324,69 @@ references:
     name: SkiaGesturesParameters
     href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  name: CheckPointerOver(SkiaGesturesParameters)
+  nameWithType: SkiaControl.CheckPointerOver(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CheckPointerOver(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CheckPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CheckPointerOver_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsPointerOver
+  commentId: P:DrawnUi.Draw.SkiaControl.IsPointerOver
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPointerOver
+  name: IsPointerOver
+  nameWithType: SkiaControl.IsPointerOver
+  fullName: DrawnUi.Draw.SkiaControl.IsPointerOver
+- uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  name: OnPointerOver(bool)
+  nameWithType: SkiaControl.OnPointerOver(bool)
+  fullName: DrawnUi.Draw.SkiaControl.OnPointerOver(bool)
+  nameWithType.vb: SkiaControl.OnPointerOver(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnPointerOver(Boolean)
+  name.vb: OnPointerOver(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnPointerOver(System.Boolean)
+    name: OnPointerOver
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnPointerOver_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   parent: DrawnUi.Draw.SkiaControl
@@ -15954,6 +16077,32 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityPixelRect
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.RenderedFrame
+  commentId: P:DrawnUi.Draw.SkiaControl.RenderedFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderedFrame
+  name: RenderedFrame
+  nameWithType: SkiaControl.RenderedFrame
+  fullName: DrawnUi.Draw.SkiaControl.RenderedFrame
+- uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+  commentId: M:DrawnUi.Draw.SkiaControl.WasInLastFrame
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  name: WasInLastFrame()
+  nameWithType: SkiaControl.WasInLastFrame()
+  fullName: DrawnUi.Draw.SkiaControl.WasInLastFrame()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.WasInLastFrame
+    name: WasInLastFrame
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WasInLastFrame
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   parent: DrawnUi.Draw.SkiaControl
@@ -16043,6 +16192,76 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  name: OnAccessibilityKey(InputKey)
+  nameWithType: SkiaControl.OnAccessibilityKey(InputKey)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+    name: OnAccessibilityKey
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  name: CanReceiveGesture(TouchActionResult)
+  nameWithType: SkiaControl.CanReceiveGesture(TouchActionResult)
+  fullName: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
+    name: CanReceiveGesture
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CanReceiveGesture_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaControl.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -41219,6 +41438,68 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
+- uid: DrawnUi.Draw.SkiaLayout.OnLayoutChanged
+  commentId: M:DrawnUi.Draw.SkiaLayout.OnLayoutChanged
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnLayoutChanged
+  name: OnLayoutChanged()
+  nameWithType: SkiaLayout.OnLayoutChanged()
+  fullName: DrawnUi.Draw.SkiaLayout.OnLayoutChanged()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.OnLayoutChanged
+    name: OnLayoutChanged
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnLayoutChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.OnLayoutChanged
+    name: OnLayoutChanged
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_OnLayoutChanged
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_OnLayoutChanged
+  name: OnLayoutChanged
+  nameWithType: SkiaScrollBar.OnLayoutChanged
+  fullName: DrawnUi.Draw.SkiaScrollBar.OnLayoutChanged
+- uid: DrawnUi.Draw.SkiaScrollBar.SetKeepVisible*
+  commentId: Overload:DrawnUi.Draw.SkiaScrollBar.SetKeepVisible
+  href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_SetKeepVisible_System_Boolean_
+  name: SetKeepVisible
+  nameWithType: SkiaScrollBar.SetKeepVisible
+  fullName: DrawnUi.Draw.SkiaScrollBar.SetKeepVisible
+- uid: DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
+  commentId: M:DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
+  parent: DrawnUi.Draw.IScrollBar
+  isExternal: true
+  href: DrawnUi.Draw.IScrollBar.html#DrawnUi_Draw_IScrollBar_SetKeepVisible_System_Boolean_
+  name: SetKeepVisible(bool)
+  nameWithType: IScrollBar.SetKeepVisible(bool)
+  fullName: DrawnUi.Draw.IScrollBar.SetKeepVisible(bool)
+  nameWithType.vb: IScrollBar.SetKeepVisible(Boolean)
+  fullName.vb: DrawnUi.Draw.IScrollBar.SetKeepVisible(Boolean)
+  name.vb: SetKeepVisible(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
+    name: SetKeepVisible
+    href: DrawnUi.Draw.IScrollBar.html#DrawnUi_Draw_IScrollBar_SetKeepVisible_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
+    name: SetKeepVisible
+    href: DrawnUi.Draw.IScrollBar.html#DrawnUi_Draw_IScrollBar_SetKeepVisible_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaScrollBar.GrabPadding
   commentId: P:DrawnUi.Draw.SkiaScrollBar.GrabPadding
   href: DrawnUi.Draw.SkiaScrollBar.html#DrawnUi_Draw_SkiaScrollBar_GrabPadding

@@ -18,6 +18,7 @@ items:
   - DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
   - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityFocused(System.Boolean)
+  - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityUnregistered
   langs:
   - csharp
@@ -371,6 +372,44 @@ items:
     content: void OnAccessibilityActivated()
     content.vb: Sub OnAccessibilityActivated()
   overload: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated*
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  id: OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: OnAccessibilityKey(InputKey)
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityKey(InputKey)
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAccessibilityKey
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 60
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Called by the platform a11y layer for a key pressed while this node holds keyboard focus
+
+    (arrows, Home, End, PageUp, PageDown). Return true when the node used the key, e.g. a slider stepping its value.
+
+    Default implementation returns false.
+  example: []
+  syntax:
+    content: bool OnAccessibilityKey(InputKey key)
+    parameters:
+    - id: key
+      type: DrawnUi.Draw.InputKey
+    return:
+      type: System.Boolean
+    content.vb: Function OnAccessibilityKey(key As InputKey) As Boolean
+  overload: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey*
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
   commentId: M:DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
   id: NotifyAccessibility
@@ -389,7 +428,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyAccessibility
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 59
+    startLine: 66
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -420,7 +459,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityUnregistered
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 62
+    startLine: 69
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -448,7 +487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyAccessibilityFocused
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 68
+    startLine: 75
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -485,7 +524,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityFocused
     path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
-    startLine: 76
+    startLine: 83
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -840,6 +879,19 @@ references:
   name: OnAccessibilityActivated
   nameWithType: ISkiaAccessibilityNode.OnAccessibilityActivated
   fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityActivated
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey*
+  commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_OnAccessibilityKey_DrawnUi_Draw_InputKey_
+  name: OnAccessibilityKey
+  nameWithType: ISkiaAccessibilityNode.OnAccessibilityKey
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.OnAccessibilityKey
+- uid: DrawnUi.Draw.InputKey
+  commentId: T:DrawnUi.Draw.InputKey
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.InputKey.html
+  name: InputKey
+  nameWithType: InputKey
+  fullName: DrawnUi.Draw.InputKey
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility*
   commentId: Overload:DrawnUi.Draw.ISkiaAccessibilityNode.NotifyAccessibility
   href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_NotifyAccessibility

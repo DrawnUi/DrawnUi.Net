@@ -5,6 +5,7 @@ items:
   id: IScrollBar
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
   - DrawnUi.Draw.IScrollBar.SetScrollProgress(Microsoft.Maui.ScrollOrientation,System.Single,System.Single,System.Single,System.Boolean)
   langs:
   - csharp
@@ -128,6 +129,45 @@ items:
   nameWithType.vb: IScrollBar.SetScrollProgress(ScrollOrientation, Single, Single, Single, Boolean)
   fullName.vb: DrawnUi.Draw.IScrollBar.SetScrollProgress(Microsoft.Maui.ScrollOrientation, Single, Single, Single, Boolean)
   name.vb: SetScrollProgress(ScrollOrientation, Single, Single, Single, Boolean)
+- uid: DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
+  commentId: M:DrawnUi.Draw.IScrollBar.SetKeepVisible(System.Boolean)
+  id: SetKeepVisible(System.Boolean)
+  parent: DrawnUi.Draw.IScrollBar
+  langs:
+  - csharp
+  - vb
+  name: SetKeepVisible(bool)
+  nameWithType: IScrollBar.SetKeepVisible(bool)
+  fullName: DrawnUi.Draw.IScrollBar.SetKeepVisible(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SetKeepVisible
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/IScrollBar.cs
+    startLine: 36
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The scroll owner asks an auto-hiding bar to stay visible (true) while the mouse is over the scroll, keyboard
+
+    focus is inside it or SkiaScroll.KeepScrollBarsVisible is set, and lets it hide again (false).
+
+    Default implementation ignores it.
+  example: []
+  syntax:
+    content: void SetKeepVisible(bool keep)
+    parameters:
+    - id: keep
+      type: System.Boolean
+    content.vb: Sub SetKeepVisible(keep As Boolean)
+  overload: DrawnUi.Draw.IScrollBar.SetKeepVisible*
+  nameWithType.vb: IScrollBar.SetKeepVisible(Boolean)
+  fullName.vb: DrawnUi.Draw.IScrollBar.SetKeepVisible(Boolean)
+  name.vb: SetKeepVisible(Boolean)
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -1159,3 +1199,9 @@ references:
     name: Maui
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui
+- uid: DrawnUi.Draw.IScrollBar.SetKeepVisible*
+  commentId: Overload:DrawnUi.Draw.IScrollBar.SetKeepVisible
+  href: DrawnUi.Draw.IScrollBar.html#DrawnUi_Draw_IScrollBar_SetKeepVisible_System_Boolean_
+  name: SetKeepVisible
+  nameWithType: IScrollBar.SetKeepVisible
+  fullName: DrawnUi.Draw.IScrollBar.SetKeepVisible
