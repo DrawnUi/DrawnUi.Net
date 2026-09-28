@@ -116,4 +116,26 @@ public class KeyboardInputEligibilityTests
 
         Assert.False(underLock.AccessibilityCanInteract);
     }
+
+    /// <summary>
+    /// LockTouch.PassNone passes nothing below, as its name says: like Enabled, a child is no Tab stop and takes no keys.
+    /// </summary>
+    [Fact]
+    public void PassNone_LocksChildren_LikeEnabled()
+    {
+        using var host = new HeadlessCanvasHost(400, 300);
+        SkiaSwitch child = null;
+        SkiaLayout layer = null;
+        host.Canvas.Content = new SkiaLayout
+        {
+            LockChildrenGestures = LockTouch.PassNone,
+            Children = { new SkiaSwitch { WidthRequest = 60, HeightRequest = 30 }.Assign(out child) }
+        }.Assign(out layer);
+        host.AdvanceFrames(4);
+
+        Assert.False(child.AccessibilityCanInteract);
+
+        layer.LockChildrenGestures = LockTouch.Disabled;
+        Assert.True(child.AccessibilityCanInteract);
+    }
 }

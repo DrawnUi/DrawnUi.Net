@@ -1852,6 +1852,7 @@ namespace DrawnUi.Draw
             switch (LockChildrenGestures)
             {
                 case LockTouch.Enabled:
+                case LockTouch.PassNone:
                     return true;
 
                 case LockTouch.Disabled:
@@ -5174,7 +5175,25 @@ namespace DrawnUi.Draw
             if (LastDrawnAt.Width <= 0 || LastDrawnAt.Height <= 0 || !WasInLastFrame())
                 return SKRect.Empty;
 
-            return SKRect.Create(GetSelfDrawingPosition(), LastDrawnAt.Size);
+            var rect = SKRect.Create(GetSelfDrawingPosition(), LastDrawnAt.Size);
+
+            // translation, rotation and scale of the control and of its ancestors, innermost first as they draw;
+            // each matrix works in its control's drawing space, offset from the screen by position - LastDrawnAt
+            for (var control = this; control != null; control = control.Parent as SkiaControl)
+            {
+                var matrix = control.RenderTransformMatrix;
+                if (matrix.IsIdentity)
+                    continue;
+
+                var position = control == this ? rect.Location : control.GetSelfDrawingPosition();
+                var dx = position.X - control.LastDrawnAt.Left;
+                var dy = position.Y - control.LastDrawnAt.Top;
+                rect.Offset(-dx, -dy);
+                rect = matrix.MapRect(rect);
+                rect.Offset(dx, dy);
+            }
+
+            return rect;
         }
 
         /// <summary>Superview frame in which this control last rendered, drawn or blitted from its cache.</summary>
@@ -5467,6 +5486,9 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void ArrangeCache(SKRect destination, float widthRequest, float heightRequest, float scale)
         {
+            // kept on screen from the parent's composite cache this frame, as if drawn (WasInLastFrame)
+            RenderedFrame = Superview?.FrameNumber ?? RenderedFrame;
+
             Arrange(destination, widthRequest, heightRequest, scale);
 
             // Keep the gesture transform matrix in sync with the new position. RenderTransformMatrix is
