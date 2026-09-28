@@ -1564,6 +1564,8 @@ namespace DrawnUi.Views
 
         public virtual void OnDisposing()
         {
+            _timerResetFocus?.Dispose();
+
             if (_visibilityParent != null)
             {
                 //_visibilityParent.PropertyChanged -= OnParentVisibilityCheck;
@@ -2711,7 +2713,7 @@ namespace DrawnUi.Views
             }
         }
 
-        private static RestartingTimer<object> _timerResetFocus;
+        private RestartingTimer<object> _timerResetFocus;
 
         public void ResetFocusWithDelay(int ms)
         {
@@ -2727,7 +2729,10 @@ namespace DrawnUi.Views
                             try
                             {
 #if WINDOWS
-                                Super.SetFocus(IntPtr.Zero); // Removes focus from all
+                                // only an editor's text box still holding the keyboard is cleared: focus that already
+                                // moved on (Tab to the canvas or past the last node to the next element) stays
+                                if (NativeInputHasFocus())
+                                    Super.SetFocus(IntPtr.Zero); // Removes focus from all
 #elif ANDROID
                                 ResetFocus();
 #elif BROWSER

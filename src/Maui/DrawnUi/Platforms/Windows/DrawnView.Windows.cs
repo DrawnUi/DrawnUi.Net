@@ -318,6 +318,14 @@ namespace DrawnUi.Views
             KeyboardFocusNode = null;
         }
 
+        /// <summary>
+        /// True while a native text input of this canvas (a SkiaEditor's hidden TextBox) holds WinUI keyboard focus.
+        /// </summary>
+        internal bool NativeInputHasFocus()
+            => _outerElem?.XamlRoot is { } root
+               && Microsoft.UI.Xaml.Input.FocusManager.GetFocusedElement(root) is Microsoft.UI.Xaml.Controls.TextBox box
+               && IsDescendantOf(box, _outerElem);
+
         // Called by SkiaEditor when Tab is pressed inside the hidden TextBox.
         // Deactivates the editor, returns WinUI focus to the canvas, and advances virtual UIA focus.
         internal bool HandleEditorA11yTabOut(bool forward)
