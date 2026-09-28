@@ -118,6 +118,10 @@ WPF-style system: there is no free X/Y — the layout computes position and stam
   - `SpriteWidth`/`SpriteHeight`/`SpriteIndex` crop ONE static frame out of a sheet. For animated sheets use `SkiaSprite` (`Columns`/`Rows`/`FramesPerSecond`).
 - `SkiaLabel`: lightweight text; `Spans` of `TextSpan` (per-span `Tapped`, `AutoFont` for emoji), `AutoSize=TextToView`, `FontWeight` 100–900.
 - `SkiaRichLabel`: markdown + automatic font fallback for emoji/CJK (ex-SkiaMarkdownLabel); `LinkTapped`/`CommandLinkTapped`.
+  - **Localized apps:** `SkiaRichLabel` for translated CJK text, plain `SkiaLabel` for numbers and Latin-only readouts (a plain label picks ONE font per label from the first glyph). `MarkdownEnabled=false` for non-markdown text.
+  - **No `~~strikethrough~~`** (verified 2026-09-28): the markdown parser runs `CommonMarkConverter.Parse(text)` with default settings (StrikethroughTilde off), so `~~$59.99~~` renders the tildes literally on every head. Strike with a `TextSpan { Strikeout = true }` span, or draw it: the label plus a thin `SkiaShape` (HeightRequest 1.5, HorizontalOptions Fill, VerticalOptions Center) in a size-to-content `SkiaLayout` (verified on Windows, FiltersCamera offer sheet).
+  - Check each bundled font covers the target script before enabling a language; swap fonts per language by registering them under the same aliases at startup, so views stay unchanged.
+  - Every bundled font ships to every user: subset CJK fonts to a common set PLUS every character in your resource strings, or new strings show boxes. CJK has no capitals or word spaces — check sizes and wrapping in the real UI.
 
 ### Wider control catalog (details: `docs/articles/controls/*.md`)
 
