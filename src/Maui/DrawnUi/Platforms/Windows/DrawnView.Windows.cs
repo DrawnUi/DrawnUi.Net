@@ -246,7 +246,10 @@ namespace DrawnUi.Views
             }
             else if (SkiaAccessibilityManager.Key(peer.FocusedPeer.Source, KeyboardManager.MapToMaui(key)))
             {
-                e.Handled = true; // arrows / Home / End / PageUp / PageDown used by the node, e.g. a slider
+                // arrows / Home / End / PageUp / PageDown used by the node (a slider) or its list (focus moves to
+                // another item at the next frame end); the keyboard is in use, so the ring shows
+                KeyboardFocusNode ??= peer.FocusedPeer.Source;
+                e.Handled = true;
             }
         }
 

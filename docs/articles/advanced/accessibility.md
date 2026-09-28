@@ -114,7 +114,7 @@ new GameSwitch()
 |---|---|
 | Tab / Shift+Tab | Next / previous interactive node (`AccessibilityCanInteract`), in snapshot order. Past either end focus leaves the canvas, the next Tab starts over. |
 | Enter / Space | `OnAccessibilityActivated()`: a synthesized tap on the node. Switches and checkboxes toggle, buttons fire. A `SkiaSlider` ignores it. |
-| Arrows, PageUp / PageDown, Home / End | `OnAccessibilityKey(InputKey)` on the node. `SkiaSlider`: Right / Up and Left / Down step by `Step` (a hundredth of the range when `Step` is 0), PageUp / PageDown move a tenth of the range, Home / End go to `Min` / `Max`; a ranged slider moves `End`, which stops at `Start`. |
+| Arrows, PageUp / PageDown, Home / End | `OnAccessibilityKey(InputKey)` on the node first. `SkiaSlider`: Right / Up and Left / Down step by `Step` (a hundredth of the range when `Step` is 0), PageUp / PageDown move a tenth of the range, Home / End go to `Min` / `Max`; a ranged slider moves `End`, which stops at `Start`. Keys the node does not use move focus inside its [arrow-key group](#arrow-key-groups-lists). |
 | Escape | Leaves the drawn nodes: no node is focused and the ring goes away (Windows heads). |
 
 A node that gets keyboard focus is scrolled into view (`SkiaScroll.EnsureVisible`) inside every enclosing `SkiaScroll`, on WPF too.
@@ -127,7 +127,33 @@ A node that gets keyboard focus is scrolled into view (`SkiaScroll.EnsureVisible
 
 **Custom controls.** Override `OnAccessibilityKey(InputKey key)` and return true for the keys the control used; override `OnAccessibilityActivated()` when a tap in the middle is not the right activation.
 
-**What Tab can reach.** Only nodes in the snapshot, that is controls drawn in the last frame. Content inside a cached container is drawn into its cache as a whole, so every node in it is reachable and scrolls into view. Without a cache a virtualized layout draws only what is in the viewport, and a recycled templated list realizes only the cells near it: Tab walks the visible cells and then leaves the list. For a list the keyboard must reach fully, cache its content (`UseCache = Image` on the scroll content, when the list is small), or handle arrow keys on the list yourself and call `ScrollToIndex`.
+### Arrow-key groups (lists)
+
+Mark a container as a group of items with a composite role and keyboard navigation treats it like a native list:
+
+```csharp
+new SkiaScroll
+{
+    Content = new SkiaStack
+    {
+        AccessibilityRole = Aria.RoleList,          // the group
+        ItemsSource = Presets,
+        ItemTemplate = new DataTemplate(() => new PresetCell()), // each cell: a role and a label
+        RecyclingTemplate = RecyclingTemplate.Enabled,
+    }
+}
+```
+
+- The group roles are `Aria.RoleList`, `RoleListBox`, `RoleGrid`, `RoleToolbar`, `RoleRadioGroup`, `RoleTabList`, `RoleMenu` and `RoleMenuBar`, on any layout: `SkiaStack`, `SkiaRow`, `SkiaWrap`, `SkiaGrid`, a templated layout or plain children.
+- **One Tab stop.** Tab enters the group on the item that had focus last there (the first item on the first visit), plus the controls inside that item (a remove button on a card), and the next Tab leaves the group. Shift+Tab the same way back.
+- **Arrows move by item index**, not by screen position: Down / Up in a `Column`, Right / Left in a `Row`, all four in a `Wrap`, a `Grid` or a `Split` layout (Up / Down by one row). Home / End go to the first / last item, PageDown / PageUp by one viewport of the scroll around the group. No wrap at the ends.
+- **The control first.** A focused control that uses the key keeps it: a slider inside an item steps its value, the group does not move.
+- **Recycled cells.** An item whose cell is not realized is scrolled in (`ScrollToIndex`, when the group is the scroll's `Content`) and focused once drawn, so the arrows walk the whole list, a large windowed `ItemsSource` included. Focus lands on the item itself when it is a node, else on its first interactive node.
+- Items the pointer cannot use are skipped (see above). A container without a group role leaves the arrow keys alone.
+
+`SkiaAccessibilityManager.TryFindGroup(control, ...)` and `IsTabStop(node)` expose the rules to custom heads.
+
+**What Tab can reach.** Only nodes in the snapshot, that is controls drawn in the last frame. Content inside a cached container is drawn into its cache as a whole, so every node in it is reachable and scrolls into view. Without a cache a virtualized layout draws only what is in the viewport, and a recycled templated list realizes only the cells near it. Give such a list a group role: the arrow keys then reach every item (see [Arrow-key groups](#arrow-key-groups-lists)).
 
 ## Implementation in deep
 

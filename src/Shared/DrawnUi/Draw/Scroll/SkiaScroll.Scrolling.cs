@@ -1051,6 +1051,16 @@ public partial class SkiaScroll
         _orderedReissues = 0;
     }
 
+    /// <summary>Index of the pending ScrollToIndex order (local to a windowed source), -1 when none.</summary>
+    internal int PendingScrollToIndex => OrderedScrollToIndex.Index;
+
+    /// <summary>Drops the pending ScrollToIndex order when it is still the one for <paramref name="index"/>.</summary>
+    internal void CancelScrollToIndex(int index)
+    {
+        if (OrderedScrollToIndex.IsSet && OrderedScrollToIndex.Index == index)
+            ClearOrderedScrollToIndex();
+    }
+
     public bool OrderedScrollToIndexIsSet
     {
         get

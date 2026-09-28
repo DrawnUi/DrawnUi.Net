@@ -63,7 +63,10 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         if (_cachedChildren.Count == 0)
             return false;
 
-        var focusable = _cachedChildren.Where(p => p.Source?.AccessibilityCanInteract == true).ToList();
+        // a group of items (Aria.RoleList etc. on a container) is one Tab stop, the arrow keys move inside it
+        var manager = _host.A11yManager;
+        var focusable = _cachedChildren.Where(p => p.Source?.AccessibilityCanInteract == true
+                                                   && manager?.IsTabStop(p.Source) != false).ToList();
         if (focusable.Count == 0)
             focusable = _cachedChildren;
 

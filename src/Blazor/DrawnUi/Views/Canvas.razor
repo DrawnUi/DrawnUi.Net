@@ -138,11 +138,12 @@
                 @if (node.CanInteract)
                 {
                     <div @key="node.Id"
+                         @ref="_a11yElements[node.Id]"
                          role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
                          aria-pressed="@(node.IsPressed?.ToString().ToLower())"
-                         tabindex="0"
+                         tabindex="@(AccessibilityManager.IsTabStop(node.Source) ? 0 : -1)"
                          class="xaml-a11y-element xaml-a11y-interactive"
                          style="@A11yNodeStyle(node)"
                          @onclick="() => OnA11yActivated(node)"
@@ -280,6 +281,20 @@
             _reportedAutoCanvasWidth = AutoCanvasWidth;
             _reportedAutoCanvasHeight = AutoCanvasHeight;
             AccessibilityManager.Changed += OnA11yChanged;
+            AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
+        }
+
+        if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
+        {
+            _pendingA11yFocusId = null;
+            try
+            {
+                await element.FocusAsync();
+            }
+            catch
+            {
+                // the element left the overlay before it could take focus
+            }
         }
 
         // Resizing the html canvas resets its drawing buffer (blank), and under UpdateModeType.Dynamic
@@ -999,6 +1014,7 @@
         _resizeCallbackRef?.Dispose();
 
         AccessibilityManager.Changed -= OnA11yChanged;
+        AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
 
         OnDisposing();
     }
@@ -1014,8 +1030,24 @@
         SkiaAccessibilityManager.Activate(node.Source);
     }
 
+    private readonly Dictionary<int, ElementReference> _a11yElements = new();
+    private int? _pendingA11yFocusId;
+
+    // list navigation (arrow keys) moved keyboard focus to another node: move DOM focus to its overlay element
+    // once the overlay rendered the new snapshot
+    private void OnA11yKeyboardFocusRequested(ISkiaAccessibilityNode node)
+    {
+        _pendingA11yFocusId = node.AccessibilityId;
+        _accessibilityNodes = AccessibilityManager.Snapshot;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
-    private void OnA11yFocus(AccessibilityNode node) => KeyboardFocusNode = node.Source;
+    private void OnA11yFocus(AccessibilityNode node)
+    {
+        KeyboardFocusNode = node.Source;
+        _ = InvokeAsync(StateHasChanged); // the Tab stop of its group moves with it (tabindex)
+    }
 
     private void OnA11yBlur(AccessibilityNode node)
     {

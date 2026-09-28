@@ -484,6 +484,8 @@ namespace DrawnUi.Views
 
                 var previous = _keyboardFocusNode;
                 _keyboardFocusNode = value;
+                if (value != null)
+                    AccessibilityManager.NoteFocus(value); // the next Tab into its group lands here
                 SetKeyboardFocusInScrolls(previous, false);
                 SetKeyboardFocusInScrolls(value, true);
                 Update();

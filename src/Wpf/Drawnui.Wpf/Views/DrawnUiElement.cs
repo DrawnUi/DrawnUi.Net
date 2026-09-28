@@ -344,8 +344,14 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 return true;
         }
 
-        // arrows / Home / End / PageUp / PageDown go to the node in focus, e.g. a slider steps its value
-        return SkiaAccessibilityManager.Key(peer.FocusedPeer?.Source, KeyboardManager.MapKey(e.Key));
+        // arrows / Home / End / PageUp / PageDown go to the node in focus (a slider steps its value), else move focus
+        // between the items of the list around it; the keyboard is in use, so the ring shows
+        if (!SkiaAccessibilityManager.Key(peer.FocusedPeer?.Source, KeyboardManager.MapKey(e.Key)))
+            return false;
+
+        _keyboardNavigating = true;
+        InvalidateFocusRing();
+        return true;
     }
 
     #endregion

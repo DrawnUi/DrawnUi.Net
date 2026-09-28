@@ -133,6 +133,26 @@ namespace DrawnUi.Models
             or "slider" or "spinbutton" or "textbox" or "searchbox" or "combobox" or "listbox" or "option" or "tab"
             or "menuitem" or "menuitemcheckbox" or "menuitemradio" or "scrollbar";
 
+        /// <summary>A grid of items navigated in two dimensions (rows and columns of cells).</summary>
+        public static readonly string RoleGrid = "grid";
+
+        /// <summary>A row of commands, usually buttons.</summary>
+        public static readonly string RoleToolbar = "toolbar";
+
+        /// <summary>Container of <see cref="RoleRadio"/> elements, one of them checked.</summary>
+        public static readonly string RoleRadioGroup = "radiogroup";
+
+        /// <summary>A horizontal menu, container of <see cref="RoleMenuItem"/> elements.</summary>
+        public static readonly string RoleMenuBar = "menubar";
+
+        /// <summary>
+        /// Roles of containers whose items keyboard navigation walks with the arrow keys, one Tab stop for the whole group:
+        /// <see cref="RoleList"/>, <see cref="RoleListBox"/>, <see cref="RoleGrid"/>, <see cref="RoleToolbar"/>,
+        /// <see cref="RoleRadioGroup"/>, <see cref="RoleTabList"/>, <see cref="RoleMenu"/>, <see cref="RoleMenuBar"/>.
+        /// </summary>
+        public static bool IsCompositeRole(string? role) => role is "list" or "listbox" or "grid" or "toolbar"
+            or "radiogroup" or "tablist" or "menu" or "menubar";
+
         // ── Live region settings ───────────────────────────────────────────────
 
         /// <summary>
