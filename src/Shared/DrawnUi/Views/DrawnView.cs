@@ -509,7 +509,8 @@ namespace DrawnUi.Views
         /// <summary>
         /// The <c>Wheel.Delta</c> one mouse-wheel notch produces on this head. A scroll moves by the event's share of a
         /// notch, so a precision touchpad or a free-spinning wheel, which send many small events, scroll as far as the
-        /// fingers moved. 0 when the head's units are not known: every event then scrolls one line.
+        /// fingers moved. Set by the head: MAUI Windows 0.3, the WPF / OpenTK desktop path 120, the browser heads 100
+        /// (CSS pixels). 0 when the units are not known: every event then scrolls one line.
         /// </summary>
         public float WheelDeltaPerNotch { get; set; } =
 #if WINDOWS

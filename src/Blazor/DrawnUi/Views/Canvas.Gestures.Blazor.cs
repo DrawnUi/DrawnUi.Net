@@ -105,7 +105,9 @@ public partial class Canvas : IGestureListener
                     var forChild = true;
                     if (args.Type != TouchActionResult.Up)
                     {
-                        var hitPoint = args.Type == TouchActionResult.Pointer
+                        // hover and wheel hit where the mouse is: a wheel event's StartingLocation is the last press,
+                        // so it scrolled whatever was clicked last, or nothing before the first click
+                        var hitPoint = args.Type == TouchActionResult.Pointer || args.Type == TouchActionResult.Wheel
                             ? args.Event.Location
                             : args.Event.StartingLocation;
 
@@ -255,6 +257,9 @@ public partial class Canvas : IGestureListener
         }
 
         //Console.WriteLine($"CANVAS {RenderingScale:F1}/{args1.Scale:F1} touch: {touchAction} {args1.Location}");
+
+        if (touchAction == TouchActionResult.Wheel)
+            WheelDeltaPerNotch = 100; // the browser's deltaY in CSS pixels: 100 a mouse notch in Chrome and Edge
 
         if (touchAction == TouchActionResult.Tapped)
         {
