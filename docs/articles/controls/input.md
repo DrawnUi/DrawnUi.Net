@@ -80,6 +80,10 @@ The selected trail is anchored under the thumb centers automatically for any thu
 - `EndChanged`: Raised when the value (`End`) changes. Signature: `EventHandler<double>`
 - `StartChanged`: Raised when the range start (`Start`) changes. Signature: `EventHandler<double>`
 
+### Keyboard
+
+A slider is an accessibility node by default (role slider, its value as the label). With keyboard focus, Right / Up and Left / Down step the value by `Step` (a hundredth of the range when `Step` is 0), PageUp / PageDown move a tenth of the range, Home / End go to `Min` / `Max`. A ranged slider moves `End`, which stops at `Start`. Enter and Space do nothing. `EndChanged` fires as for a drag. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
+
 ### Customizing (XAML subclass)
 
 Subclass `SkiaSlider` and provide your own content: a child tagged `"Trail"` hosting the track, a `SliderTrail` tagged `"SelectedTrail"`, and a `SliderThumb` named/tagged `"EndThumb"` (plus `"StartThumb"` for range). See `Sandbox/Views/Controls/DrawnSlider.xaml` (visual reskin) and `SliderColor.xaml` (gradient color-picker slider) for working examples. User-provided content is never overridden by the built-in style logic.

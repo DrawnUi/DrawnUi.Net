@@ -624,6 +624,39 @@ public override void OnWillDisposeWithChildren()
 
 Set on a child whose size changes at runtime (status labels, send bar, chat entry) so its remeasure does not propagate up and force the parent to remeasure. Needs an explicit size on the child; unnecessary when the parent has Fill or an explicit size.
 
+## Accessibility and keyboard in code-behind
+
+Lists and bars the keyboard should walk: a group role on the container, a role and a label on every item (`using DrawnUi.Models;` for `Aria`).
+
+```csharp
+new SkiaStack
+{
+    AccessibilityRole = Aria.RoleList,          // one Tab stop, arrows walk the items
+    ItemsSource = Items,
+    ItemTemplate = new DataTemplate(() => new PresetCell()),
+}
+
+public class PresetCell : SkiaDynamicDrawnCell
+{
+    public PresetCell()
+    {
+        AccessibilityRole = Aria.RoleButton;    // a node: Tab / arrows reach it, Enter taps it
+        this.OnTapped(me => Select(me.BindingContext));
+    }
+
+    protected override void SetContent(object ctx)
+    {
+        base.SetContent(ctx);
+        if (ctx is Preset preset)
+            AccessibilityLabel = preset.Title;
+    }
+}
+```
+
+- A `SkiaButton` needs an explicit `AccessibilityRole = Aria.RoleButton`; a row of them goes in a container with `Aria.RoleToolbar`.
+- To hide a part of a recycled cell from the pointer and the keyboard, use `Opacity = 0` plus `InputTransparent = true`: opacity alone still takes input.
+- Rules: `drawnui` skill, keyboard bullets.
+
 ## XAML → Code-Behind Porting
 
 Check platform availability first — some controls are MAUI-only on other heads (`SkiaMauiElement`, `SkiaCamera`; verify others by grepping the class in `src/Shared/Shared.projitems` and the target head's csproj excludes).

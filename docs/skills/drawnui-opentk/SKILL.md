@@ -69,7 +69,7 @@ Your `GameWindow` subclass owns rendering; DrawnUI composites as a transparent o
 
 ## Input
 
-- `DrawnUiWindow` auto-routes mouse (all buttons + wheel) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (backspace/delete/enter/arrows/home/end/Ctrl+A/Tab→4 spaces) built in. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
+- `DrawnUiWindow` auto-routes mouse (all buttons + wheel + leaving the window, which ends hover; a `CanvasHost` app calls `host.Gestures.OnMouseLeave()` itself) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (backspace/delete/enter/arrows/home/end/Ctrl+A/Tab→4 spaces) built in. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
 - Custom controls layered behind a `SkiaEditor`: return `null` from `ProcessGestures` on Up when you didn't capture on Down, or you steal the editor's focus.
 
 ## Window niceties

@@ -54,6 +54,8 @@ The manager rebuilds its snapshot at most once per `MinUpdateIntervalMs` (defaul
 
 Use the constants from `DrawnUi.Models.Aria` instead of raw strings: `RoleButton`, `RoleLink`, `RoleCheckbox`, `RoleRadio`, `RoleSwitch`, `RoleSlider`, `RoleTextbox`, `RoleTab`, `RoleMenuitem`, `RoleText`, `RoleHeading`, `RoleImg`, `RoleList`, `RoleProgressbar`, `RoleDialog`, `RoleAlert`, `RoleGroup`, `RoleNavigation` and more.
 
+Container roles make an [arrow-key group](#arrow-key-groups-lists), one Tab stop whose items the arrow keys walk: `RoleList`, `RoleListBox`, `RoleGrid`, `RoleToolbar`, `RoleRadioGroup`, `RoleTabList`, `RoleMenu`, `RoleMenuBar`.
+
 ## Accessibility Props
 
 Accessibility metadata is exposed directly on `SkiaControl`.
@@ -69,7 +71,7 @@ control.AccessibilityIsPressed = false;
 - `AccessibilityRole` enables accessibility for the control
 - `AccessibilityLabel` is the main spoken label
 - `AccessibilityHint` gives extra context for assistive technology
-- `AccessibilityCanInteract` marks the node as interactive
+- `AccessibilityCanInteract` marks the node as interactive, while the pointer could use the control (see [Only controls the pointer can use](#keyboard-navigation))
 - `AccessibilityIsPressed` maps toggle state when applicable
 
 `IsAccessibilityElement` is computed from `AccessibilityRole != null`. Setting the role back to `null` removes the control from the accessibility tree.

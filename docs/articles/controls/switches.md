@@ -124,6 +124,10 @@ SkiaCheckbox shares most properties with SkiaSwitch, both inheriting from SkiaTo
   - Event signature: `EventHandler<bool>`
   - The bool parameter indicates the new toggle state
 
+### Keyboard and accessibility
+
+`SkiaSwitch`, `SkiaCheckbox` and `SkiaRadioButton` are accessibility nodes by default: give them an `AccessibilityLabel`. Tab reaches them, Enter or Space toggles a switch or a checkbox and selects a radio button, and the checked state is reported to screen readers. Put radio buttons in a container with `AccessibilityRole = Aria.RoleRadioGroup` to make them one Tab stop, the arrow keys then move between them. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
+
 ## SkiaRadioButton
 
 `SkiaRadioButton` is a specialized toggle control for selecting one option from a group of mutually exclusive options. It's subclassed from SkiaToggle and provides radio button functionality.
