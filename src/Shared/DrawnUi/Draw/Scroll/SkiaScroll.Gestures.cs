@@ -177,18 +177,23 @@ public partial class SkiaScroll
         var offsetY = ViewportOffsetY;
         var offsetX = ViewportOffsetX;
 
+        // The event's share of a notch where the head reports real units: a precision touchpad sends many
+        // small events, each moves only its part of a line. Unknown units: one line per event.
+        var perNotch = Superview?.WheelDeltaPerNotch ?? 0;
+        var lines = perNotch > 0 ? value / perNotch : Math.Sign(value);
+
         // A notch arriving while the previous wheel scroll is still animating adds onto that scroll's
         // destination, not onto the barely-moved current offset: a fast spin travels N lines instead of
         // restarting from where the interrupted move got to (same rule as the React engine).
         if (this.Orientation == ScrollOrientation.Vertical)
         {
             var baseY = _scrollerY != null && _scrollerY.IsRunning ? (float)_scrollerY.mMaxValue : offsetY;
-            offsetY = baseY + WheelLineSize * Math.Sign(value);
+            offsetY = baseY + WheelLineSize * lines;
         }
         else if (this.Orientation == ScrollOrientation.Horizontal)
         {
             var baseX = _scrollerX != null && _scrollerX.IsRunning ? (float)_scrollerX.mMaxValue : offsetX;
-            offsetX = baseX + WheelLineSize * Math.Sign(value);
+            offsetX = baseX + WheelLineSize * lines;
         }
 
         var clamped = ClampOffsetHard(offsetX, offsetY);

@@ -114,6 +114,8 @@ public partial class Canvas
         if (delta == 0)
             return;
 
+        WheelDeltaPerNotch = 120; // this entry point takes Windows units: a touchpad sends fractions of 120
+
         var location = new PointF(x, y);
         var args = MakeDesktopTouchArgs(TouchActionType.Wheel, location, clientW, clientH);
 

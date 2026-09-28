@@ -177,7 +177,8 @@ public static partial class WebInput
     /// Called by JS when a mouse wheel / trackpad scroll occurs.
     /// Mirrors the Net <c>GestureRobot.WheelScroll</c> contract: emits a
     /// <see cref="TouchActionType.Wheel"/> gesture carrying <see cref="WheelEventArgs"/>.
-    /// SkiaScroll uses only the sign of <c>Wheel.Delta</c> for scrolling; zoom controls
+    /// SkiaScroll uses only the sign of <c>Wheel.Delta</c> for scrolling here (the canvas'
+    /// <c>WheelDeltaPerNotch</c> stays 0 on the browser heads); zoom controls
     /// use its magnitude. Browser <c>deltaY &gt; 0</c> (scroll down) maps to a negative
     /// Delta so content scrolls down (DrawnUI decreases ViewportOffsetY when scrolling down).
     /// </summary>

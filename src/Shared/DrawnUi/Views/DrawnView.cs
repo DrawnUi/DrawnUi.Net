@@ -507,6 +507,18 @@ namespace DrawnUi.Views
         public static SKColor KeyboardFocusColor = SKColor.Parse("#6EA8FE");
 
         /// <summary>
+        /// The <c>Wheel.Delta</c> one mouse-wheel notch produces on this head. A scroll moves by the event's share of a
+        /// notch, so a precision touchpad or a free-spinning wheel, which send many small events, scroll as far as the
+        /// fingers moved. 0 when the head's units are not known: every event then scrolls one line.
+        /// </summary>
+        public float WheelDeltaPerNotch { get; set; } =
+#if WINDOWS
+            120f / 400f; // MAUI Windows: the gestures layer divides MouseWheelDelta (120 a notch) by 400
+#else
+            0f;
+#endif
+
+        /// <summary>
         /// Draws the keyboard focus ring around <see cref="KeyboardFocusNode"/> at its visible position (caches and
         /// scroll offsets included): 2pt stroke, 2pt outside the control, 6pt corners, like the WPF head.
         /// </summary>
