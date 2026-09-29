@@ -29,7 +29,7 @@ SkiaLabel is the primary text rendering control in DrawnUi.Maui, rendering text 
 | `FontAttributes` | FontAttributes | Bold/Italic/None |
 | `HorizontalTextAlignment` | DrawTextAlignment | Text horizontal alignment (Start, Center, End, Fill) |
 | `VerticalTextAlignment` | DrawTextAlignment | Text vertical alignment (Start, Center, End) |
-| `LineBreakMode` | LineBreakMode | How text should wrap or truncate |
+| `LineBreakMode` | LineBreakMode | How text should wrap or truncate. `WordWrap` breaks at spaces and between Chinese and Japanese characters (a line never starts with 、。」ー or small kana), and breaks a word wider than the line, like a long URL, by characters |
 | `MaxLines` | int | Maximum number of lines to display |
 | `StrokeColor` | Color | Outline color |
 | `StrokeWidth` | double | Outline width |
