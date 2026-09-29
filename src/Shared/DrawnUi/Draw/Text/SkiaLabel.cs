@@ -1840,6 +1840,36 @@ namespace DrawnUi.Draw
                     width = 0;
                 }
 
+                // largest index after 'from' where text may break (CJK) and text[..index] still fits, -1 when none fits
+                int FitAtBreak(string text, int from, float limit)
+                {
+                    var breaks = new List<int>();
+                    for (var i = from + 1; i < text.Length; i++)
+                    {
+                        if (CanBreakInsideWord(text, i))
+                            breaks.Add(i);
+                    }
+
+                    var best = -1;
+                    int lo = 0, hi = breaks.Count - 1;
+                    while (lo <= hi)
+                    {
+                        var mid = (lo + hi) / 2;
+                        var fitsWidth = MeasureLineGlyphsProbe(paint, font, text.Substring(0, breaks[mid]), needsShaping, scale).Width;
+                        if (fitsWidth - limit > 1)
+                        {
+                            hi = mid - 1;
+                        }
+                        else
+                        {
+                            best = breaks[mid];
+                            lo = mid + 1;
+                        }
+                    }
+
+                    return best;
+                }
+
                 void AddEmptyLineInternal()
                 {
                     totalHeight = AddEmptyLine(result, span, totalHeight, MeasuredLineHeight,
@@ -1905,6 +1935,21 @@ namespace DrawnUi.Draw
                         //need break word,
                         if (severalWords && LineBreakMode != LineBreakMode.NoWrap)
                         {
+                            // Chinese / Japanese have no spaces: the word fills the rest of the line up to its last
+                            // break opportunity that fits, the remainder goes to the next line
+                            var joined = textLine.Length - word.Length;
+                            var fitsJoined = HasCjk(word) ? FitAtBreak(textLine, joined, limitWidth) : -1;
+                            if (fitsJoined > joined)
+                            {
+                                if (!AddLine(textLine.Substring(0, fitsJoined), textLine))
+                                {
+                                    break; //was last allowed line
+                                }
+
+                                PostponeToNextLine(textLine.Substring(fitsJoined));
+                                continue;
+                            }
+
                             //cannot add this word
                             if (!AddLine(lineResult, textLine))
                             {
@@ -1915,10 +1960,25 @@ namespace DrawnUi.Draw
                             continue;
                         }
 
-                        if (LineBreakMode == LineBreakMode.WordWrap || LineBreakMode == LineBreakMode.NoWrap)
+                        if (LineBreakMode == LineBreakMode.NoWrap)
                         {
                             //silly add
                             AddLine(textLine);
+                            continue;
+                        }
+
+                        // a word wider than the line: Chinese / Japanese break at the last opportunity that fits;
+                        // other words (a long URL) fall through to the break by characters below, WordWrap
+                        // included (CSS overflow-wrap: break-word)
+                        var fitsAlone = HasCjk(textLine) ? FitAtBreak(textLine, 0, limitWidth) : -1;
+                        if (fitsAlone > 0)
+                        {
+                            if (!AddLine(textLine.Substring(0, fitsAlone), textLine))
+                            {
+                                break; //was last allowed line
+                            }
+
+                            PostponeToNextLine(textLine.Substring(fitsAlone));
                             continue;
                         }
 
@@ -2064,6 +2124,64 @@ namespace DrawnUi.Draw
             }
 
             return ret;
+        }
+
+        // a line never starts with these (closing punctuation, small kana, the long vowel mark): JIS X 4051 kinsoku
+        const string NoBreakBefore = "、。，．・：；？！゛゜ヽヾゝゞ々〻ー」』）〕］｝〉》】〗〙〟｠»’”‐゠–〜～ぁぃぅぇぉっゃゅょゎゕゖァィゥェォッャュョヮヵヶㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ｡｣､･ｰｧｨｩｪｫｬｭｮｯ)]},.!?:;%";
+
+        // a line never ends with these (opening brackets and quotes)
+        const string NoBreakAfter = "「『（〔［｛〈《【〖〘〝｟«‘“｢([{";
+
+        /// <summary>
+        /// Whether a line may break between <paramref name="text"/>[index - 1] and [index] inside a space-free run:
+        /// next to a Chinese or Japanese character (ideographs, kana, CJK punctuation, full-width forms), never before
+        /// closing punctuation, small kana or the long vowel mark, never after an opening bracket, never inside a
+        /// surrogate pair. Korean keeps breaking at spaces only.
+        /// </summary>
+        public static bool CanBreakInsideWord(string text, int index)
+        {
+            if (index <= 0 || index >= text.Length)
+                return false;
+
+            var before = text[index - 1];
+            var after = text[index];
+            if (char.IsHighSurrogate(before) || char.IsLowSurrogate(after))
+                return false;
+
+            if (!IsCjkAt(text, index - 1) && !IsCjkAt(text, index))
+                return false;
+
+            return NoBreakBefore.IndexOf(after) < 0 && NoBreakAfter.IndexOf(before) < 0;
+        }
+
+        /// <summary>True when the text holds a Chinese or Japanese character, so it has break opportunities without spaces.</summary>
+        public static bool HasCjk(string text)
+        {
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (IsCjkAt(text, i))
+                    return true;
+            }
+
+            return false;
+        }
+
+        static bool IsCjkAt(string text, int i)
+        {
+            var c = text[i];
+            int cp = c;
+            if (char.IsHighSurrogate(c) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
+                cp = char.ConvertToUtf32(c, text[i + 1]);
+            else if (char.IsLowSurrogate(c) && i > 0 && char.IsHighSurrogate(text[i - 1]))
+                cp = char.ConvertToUtf32(text[i - 1], c);
+
+            return cp >= 0x3000 && cp <= 0x312F     // CJK punctuation, hiragana, katakana, bopomofo
+                   || cp >= 0x3190 && cp <= 0x33FF  // kanbun, strokes, katakana extension, enclosed and compatibility
+                   || cp >= 0x3400 && cp <= 0x4DBF  // ideographs extension A
+                   || cp >= 0x4E00 && cp <= 0x9FFF  // ideographs
+                   || cp >= 0xF900 && cp <= 0xFAFF  // compatibility ideographs
+                   || cp >= 0xFF00 && cp <= 0xFFEF  // full-width and half-width forms
+                   || cp >= 0x20000 && cp <= 0x3FFFF; // ideographs extensions B and later
         }
 
         List<string> SplitLineToWords(string line, char space)
