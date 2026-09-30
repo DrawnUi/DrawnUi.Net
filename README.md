@@ -57,7 +57,11 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.21
+## What's New 1.10.6.22
+
+  * Japanese and Chinese text wraps: `WordWrap` breaks between characters and keeps closing punctuation and small kana off the start of a line, so a translated sentence no longer runs past the edge on one line. A word wider than the line, like a long URL, now breaks by characters too.
+
+ ### Previously
 
   * **Your app works without a mouse.** On MAUI Windows, WPF and Blazor, people can now use a drawn app from the keyboard the way they use native apps:
     * Tab and Shift+Tab move from control to control in reading order, and a focus ring shows where you are. It appears only once you press a key, never after a click, and it stays on the control while it scrolls. Escape leaves the drawn controls.
@@ -68,13 +72,9 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * Your own controls can take keys by overriding `OnAccessibilityKey`.
   * Apps with several canvases: each canvas now clears its own focus when nothing takes it (on Android and iOS this closes the soft keyboard). It used to be the first canvas that ever had focus.
   * Touchpads scroll smoothly on MAUI Windows, WPF, OpenTK, Blazor and WebAssembly. A short swipe used to jump 10-15 rows, because every small event a touchpad sends counted as a full mouse-wheel notch. Now each event scrolls its share of a notch; a mouse wheel still moves one line a notch, and a fast spin still adds up.
-  * Japanese and Chinese text wraps: `WordWrap` breaks between characters and keeps closing punctuation and small kana off the start of a line, so a translated sentence no longer runs past the edge on one line. A word wider than the line, like a long URL, now breaks by characters too.
   * Blazor: the mouse wheel scrolls the drawn scroll under the mouse. It used to scroll the one you clicked last, and nothing before your first click.
   * An open `SkiaDrawer` with `AutoClose` no longer closes when the mouse only moves over the area outside its panel; a click there still closes it.
   * Auto-hiding scroll bars will now appear while the mouse is over the scroll or the keyboard is inside it (`ShowScrollBarsOnHover`, on by default; `KeepScrollBarsVisible` keeps them up). New `IsPointerOver` is true for every control under the mouse, not just the one holding hover.
-
- ### Previously
-
   * **Potentially breaking:** templated layouts default to `MeasureItemsStrategy="MeasureAll"`, correct for rows of any height. Lists whose rows are really all the same height set `MeasureFirst` explicitly, which now measures only the first row as documented.
   * Fluent `.Initialize(me => ...)` runs once when the control gets its parent, so it also runs for controls created invisible or outside the viewport.
   * Changing `ControlStyle` at runtime rebuilds the control's default look, so platform styles can be switched live.
