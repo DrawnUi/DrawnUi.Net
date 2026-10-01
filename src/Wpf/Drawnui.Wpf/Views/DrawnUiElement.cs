@@ -164,6 +164,9 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
         EnsureSuperInitialized();
 
+        // Copy of a selected SkiaLabel text goes to the Windows clipboard, on the UI thread.
+        Super.SetClipboardText ??= text => Dispatcher.Invoke(() => Clipboard.SetText(text));
+
         Canvas = createCanvas() ?? throw new InvalidOperationException("The canvas factory returned null");
         Canvas.Gestures = Gestures;
 

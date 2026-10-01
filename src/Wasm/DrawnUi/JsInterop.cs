@@ -25,6 +25,12 @@ public static partial class JsInterop
     public static double DevicePixelRatio { get; private set; } = 1.0;
 
     /// <summary>
+    /// Puts text on the browser clipboard (navigator.clipboard.writeText).
+    /// </summary>
+    [JSImport("globalThis.navigator.clipboard.writeText")]
+    public static partial Task WriteClipboardText(string text);
+
+    /// <summary>
     /// Initialize the canvas and get its dimensions
     /// </summary>
     [JSImport("initCanvas", "drawnui-web")]

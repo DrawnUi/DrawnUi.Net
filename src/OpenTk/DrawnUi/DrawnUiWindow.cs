@@ -56,6 +56,9 @@ public class DrawnUiWindow : GameWindow
 
         Super.Init();
 
+        // Copy of a selected SkiaLabel text goes to the system clipboard (GLFW, window thread).
+        Super.SetClipboardText ??= text => MainThread.BeginInvokeOnMainThread(() => ClipboardString = text);
+
         _windowThreadId = Environment.CurrentManagedThreadId;
         MainThread.Configure(
             action => _mainThreadActions.Enqueue(action),
@@ -317,6 +320,11 @@ public class DrawnUiWindow : GameWindow
             case Keys.Right: _canvas.DesktopEditorMoveCursor(1, shift); break;
             case Keys.Home: _canvas.DesktopEditorMoveToStart(shift); break;
             case Keys.End: _canvas.DesktopEditorMoveToEnd(shift); break;
+            // this window feeds no KeyboardManager, so a selectable label gets its copy keys here
+            case Keys.A when ctrl && _canvas.FocusedChild is SkiaLabel { AccessibilityTextSelectable: true } label:
+                label.SelectAll(); break;
+            case Keys.C when ctrl && _canvas.FocusedChild is SkiaLabel { AccessibilityTextSelectable: true } label:
+                label.CopySelection(); break;
             case Keys.A when ctrl: _canvas.DesktopEditorSelectAll(); break;
             case Keys.Tab: _canvas.HandleDesktopTextInput("    "); break;
         }

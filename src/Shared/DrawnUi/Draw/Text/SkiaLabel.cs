@@ -101,6 +101,10 @@ namespace DrawnUi.Draw
 
             DisposeFallbackRuns();
 
+            AttachSelectionKeys(false);
+            _selectionPaint?.Dispose();
+            _selectionPaint = null;
+
             CleanAllocations();
 
             base.OnDisposing();
@@ -352,7 +356,16 @@ namespace DrawnUi.Draw
                 }
 
                 if (Lines != null)
+                {
                     DrawLines(ctx.WithDestination(rectForChildren), PaintDefault, FontDefault, SKPoint.Empty, Lines);
+
+                    if (AccessibilityTextSelectable)
+                    {
+                        _linesOrigin = new SKPoint(ctx.Destination.Left, ctx.Destination.Top);
+                        if (_selectionLength > 0)
+                            DrawTextSelection(ctx);
+                    }
+                }
             }
         }
 
@@ -3855,6 +3868,8 @@ namespace DrawnUi.Draw
 
         protected virtual void OnTextChanged()
         {
+            if (_selectionLength > 0)
+                ClearSelection();
             InvalidateText();
         }
 
@@ -4281,14 +4296,31 @@ namespace DrawnUi.Draw
             return this;
         }
 
-        public new virtual bool SetFrameworkFocus(bool focus)
+        /// <summary>
+        /// A selectable label (<see cref="AccessibilityTextSelectable"/>) takes the canvas focus while text is selected and
+        /// drops the selection when the focus moves elsewhere; other labels keep the base behavior.
+        /// </summary>
+        public override bool SetFrameworkFocus(bool focus)
         {
-            return false;
+            if (!AccessibilityTextSelectable)
+                return base.SetFrameworkFocus(focus);
+
+            if (!focus)
+                ClearSelection();
+            AttachSelectionKeys(focus);
+            return true;
         }
 
         public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args,
             GestureEventProcessingInfo apply)
         {
+            if (AccessibilityTextSelectable)
+            {
+                var consumed = ProcessTextSelection(args, apply);
+                if (consumed != null)
+                    return consumed;
+            }
+
             if (args.Type == TouchActionResult.Tapped)
             {
                 //apply transfroms
@@ -4319,6 +4351,512 @@ namespace DrawnUi.Draw
             }
 
             return base.ProcessGestures(args, apply);
+        }
+
+        #endregion
+
+        #region TEXT SELECTION
+
+        public static readonly BindableProperty AccessibilityTextSelectableProperty = BindableProperty.Create(
+            nameof(AccessibilityTextSelectable),
+            typeof(bool),
+            typeof(SkiaLabel),
+            false,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is not SkiaLabel label)
+                    return;
+                if ((bool)n)
+                {
+                    label.NeedsGlyphPositions = true; // caret-precise hit testing and highlight
+                    label.InvalidateText();
+                }
+                else
+                {
+                    label.ClearSelection();
+                }
+            });
+
+        /// <summary>
+        /// The text can be selected and copied, as DrawnUi.React's property of the same name. Mouse: drag, double click
+        /// for a word. Touch: long press picks a word, keep the finger down and drag to extend, a Copy button appears.
+        /// Ctrl+C (Cmd+C) copies and Ctrl+A selects all while the label holds the selection; a click elsewhere drops it.
+        /// The label takes the pointer for this, so a mouse press on it no longer reaches controls under it.
+        /// Off by default and free when off. Copying goes through <see cref="Super.SetClipboardText"/>.
+        /// </summary>
+        public bool AccessibilityTextSelectable
+        {
+            get => (bool)GetValue(AccessibilityTextSelectableProperty);
+            set => SetValue(AccessibilityTextSelectableProperty, value);
+        }
+
+        /// <summary>
+        /// Highlight drawn over selected text.
+        /// </summary>
+        public static SKColor TextSelectionColor = new(13, 110, 253, 90);
+
+        /// <summary>
+        /// Caption of the Copy button shown over a touch selection.
+        /// </summary>
+        public static string CopyButtonText = "Copy";
+
+        int _selectionStart;
+        int _selectionLength;
+        int _anchorStart;
+        int _anchorEnd;
+        bool _selecting;
+        bool _touchSelection;
+        bool _copyPressed;
+        bool _selectionKeysAttached;
+        long _lastClickMs;
+        SKPoint _lastClickPoint;
+        SKRect _copyButton;
+        SKPoint _linesOrigin;
+        TextLine[] _mappedLines;
+        string _selectionSource = string.Empty;
+        int[] _lineStarts = Array.Empty<int>();
+        SKPaint _selectionPaint;
+
+        /// <summary>
+        /// Start of the selection in <see cref="SelectedText"/>'s source: the label's text when the lines are taken
+        /// from it verbatim, else the drawn lines (markdown, spans) joined.
+        /// </summary>
+        public int SelectionStart => _selectionStart;
+
+        /// <summary>
+        /// Length of the selection, 0 when nothing is selected.
+        /// </summary>
+        public int SelectionLength => _selectionLength;
+
+        /// <summary>
+        /// The selected text, empty when nothing is selected.
+        /// </summary>
+        public string SelectedText
+        {
+            get
+            {
+                if (_selectionLength <= 0)
+                    return string.Empty;
+                EnsureSelectionMap();
+                var start = Math.Clamp(_selectionStart, 0, _selectionSource.Length);
+                var length = Math.Clamp(_selectionLength, 0, _selectionSource.Length - start);
+                return _selectionSource.Substring(start, length);
+            }
+        }
+
+        /// <summary>
+        /// Selects a range of the text (see <see cref="SelectionStart"/> for what the indexes count).
+        /// </summary>
+        public void Select(int start, int length)
+        {
+            EnsureSelectionMap();
+            start = Math.Clamp(start, 0, _selectionSource.Length);
+            length = Math.Clamp(length, 0, _selectionSource.Length - start);
+            if (start == _selectionStart && length == _selectionLength)
+                return;
+            _selectionStart = start;
+            _selectionLength = length;
+            Update();
+        }
+
+        /// <summary>
+        /// Selects all of the text.
+        /// </summary>
+        public void SelectAll()
+        {
+            EnsureSelectionMap();
+            Select(0, _selectionSource.Length);
+        }
+
+        /// <summary>
+        /// Drops the selection.
+        /// </summary>
+        public void ClearSelection()
+        {
+            _selecting = false;
+            _copyPressed = false;
+            if (_selectionLength == 0 && !_touchSelection)
+                return;
+            _selectionLength = 0;
+            _touchSelection = false;
+            Update();
+        }
+
+        /// <summary>
+        /// Puts the selected text on the clipboard through <see cref="Super.SetClipboardText"/>. False when nothing is selected.
+        /// </summary>
+        public bool CopySelection()
+        {
+            var text = SelectedText;
+            if (string.IsNullOrEmpty(text))
+                return false;
+            Super.SetClipboardText?.Invoke(text);
+            return true;
+        }
+
+        void AttachSelectionKeys(bool attach)
+        {
+            if (attach == _selectionKeysAttached)
+                return;
+            _selectionKeysAttached = attach;
+            if (attach)
+                KeyboardManager.KeyDown += OnSelectionKeyDown;
+            else
+                KeyboardManager.KeyDown -= OnSelectionKeyDown;
+        }
+
+        void OnSelectionKeyDown(object sender, InputKey key)
+        {
+            if (!KeyboardManager.IsControlPressed && !KeyboardManager.IsMetaPressed)
+                return;
+            if (key == InputKey.KeyC)
+                CopySelection();
+            else if (key == InputKey.KeyA)
+                SelectAll();
+        }
+
+        void ClaimSelectionFocus()
+        {
+            Superview?.ReportFocus(this, this);
+            AttachSelectionKeys(true);
+        }
+
+        /// <summary>
+        /// Maps the drawn lines onto a source string: the label's text when every line is found in it in order (spaces
+        /// dropped at wraps are then copied too), else the lines joined, a new line between paragraphs.
+        /// </summary>
+        void EnsureSelectionMap()
+        {
+            var lines = Lines;
+            if (ReferenceEquals(lines, _mappedLines) && lines != null)
+                return;
+            _mappedLines = lines;
+            if (lines == null || lines.Length == 0)
+            {
+                _lineStarts = Array.Empty<int>();
+                _selectionSource = string.Empty;
+                return;
+            }
+
+            var starts = new int[lines.Length];
+            var source = TextInternal ?? string.Empty;
+            var position = 0;
+            var verbatim = true;
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var value = lines[i].Value ?? string.Empty;
+                var at = source.IndexOf(value, position, StringComparison.Ordinal);
+                if (at < 0)
+                {
+                    verbatim = false;
+                    break;
+                }
+                starts[i] = at;
+                position = at + value.Length;
+            }
+
+            if (!verbatim)
+            {
+                var sb = new StringBuilder();
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    if (i > 0)
+                        sb.Append(lines[i].IsNewParagraph ? "\n" : "");
+                    starts[i] = sb.Length;
+                    sb.Append(lines[i].Value);
+                }
+                source = sb.ToString();
+            }
+
+            _lineStarts = starts;
+            _selectionSource = source;
+        }
+
+        /// <summary>
+        /// X of the caret slot <paramref name="slot"/> in a line, relative to the line's left edge.
+        /// </summary>
+        static float SlotX(TextLine line, LineGlyph[] glyphs, int slot)
+            => slot < glyphs.Length ? glyphs[slot].Position : line.Width;
+
+        /// <summary>
+        /// Text index under a point given in the space the lines were drawn in.
+        /// </summary>
+        int IndexAt(SKPoint point)
+        {
+            EnsureSelectionMap();
+            var lines = Lines;
+            if (lines == null || lines.Length == 0)
+                return 0;
+
+            var lineIndex = lines.Length - 1;
+            for (var i = 0; i < lines.Length; i++)
+            {
+                if (point.Y <= lines[i].Bounds.Bottom)
+                {
+                    lineIndex = i;
+                    break;
+                }
+            }
+
+            var line = lines[lineIndex];
+            var glyphs = GetLineGlyphs(line);
+            var x = point.X - line.Bounds.Left;
+            var slots = Math.Min(glyphs.Length, (line.Value ?? string.Empty).Length);
+            var best = 0;
+            var bestDistance = float.MaxValue;
+            for (var slot = 0; slot <= slots; slot++)
+            {
+                var distance = Math.Abs(SlotX(line, glyphs, slot) - x);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    best = slot;
+                }
+            }
+
+            return _lineStarts[lineIndex] + best;
+        }
+
+        (int Start, int End) WordAt(int index)
+        {
+            EnsureSelectionMap();
+            var text = _selectionSource;
+            if (text.Length == 0)
+                return (0, 0);
+            index = Math.Clamp(index, 0, text.Length - 1);
+            bool IsWord(char c) => char.IsLetterOrDigit(c) || c == '_' || c == '\'';
+            if (!IsWord(text[index]) && index > 0 && IsWord(text[index - 1]))
+                index--;
+            if (!IsWord(text[index]))
+                return (index, index + 1);
+            var start = index;
+            while (start > 0 && IsWord(text[start - 1]))
+                start--;
+            var end = index + 1;
+            while (end < text.Length && IsWord(text[end]))
+                end++;
+            return (start, end);
+        }
+
+        /// <summary>
+        /// The gesture point in the space the lines were drawn in.
+        /// </summary>
+        SKPoint SelectionPoint(GestureEventProcessingInfo apply)
+        {
+            var offset = TranslateInputCoords(apply.ChildOffset, true);
+            return new SKPoint(apply.MappedLocation.X + offset.X - DrawingRect.Left + _linesOrigin.X,
+                apply.MappedLocation.Y + offset.Y - DrawingRect.Top + _linesOrigin.Y);
+        }
+
+        void SelectBetween(int index)
+        {
+            var start = Math.Min(_anchorStart, index);
+            var end = Math.Max(_anchorEnd, index);
+            Select(start, end - start);
+        }
+
+        /// <summary>
+        /// Pointer handling of <see cref="AccessibilityTextSelectable"/>; null lets the gesture go on as usual.
+        /// </summary>
+        protected virtual ISkiaGestureListener ProcessTextSelection(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
+        {
+            var point = SelectionPoint(apply);
+            var mouse = args.Event?.Pointer?.DeviceType == PointerDeviceType.Mouse;
+
+            switch (args.Type)
+            {
+                case TouchActionResult.Down:
+                    if (_touchSelection && _selectionLength > 0 && _copyButton.Contains(point))
+                    {
+                        _copyPressed = true;
+                        return this;
+                    }
+
+                    if (!mouse)
+                        return null; // touch: a long press selects, a drag keeps scrolling
+
+                    var index = IndexAt(point);
+                    var now = Environment.TickCount64;
+                    var second = now - _lastClickMs < 450
+                                 && SKPoint.Distance(point, _lastClickPoint) < 8 * RenderingScale;
+                    _lastClickMs = second ? 0 : now;
+                    _lastClickPoint = point;
+                    (_anchorStart, _anchorEnd) = second ? WordAt(index) : (index, index);
+                    _touchSelection = false;
+                    _selecting = true;
+                    Select(_anchorStart, _anchorEnd - _anchorStart);
+                    ClaimSelectionFocus();
+                    return this;
+
+                case TouchActionResult.LongPressing:
+                    if (mouse)
+                        return _selecting ? this : null;
+                    (_anchorStart, _anchorEnd) = WordAt(IndexAt(point));
+                    _touchSelection = true;
+                    _selecting = true;
+                    Select(_anchorStart, _anchorEnd - _anchorStart);
+                    ClaimSelectionFocus();
+                    return this;
+
+                case TouchActionResult.Panning:
+                    if (!_selecting)
+                        return null;
+                    SelectBetween(IndexAt(point));
+                    return this;
+
+                case TouchActionResult.Up:
+                    if (_copyPressed)
+                    {
+                        _copyPressed = false;
+                        if (_copyButton.Contains(point))
+                        {
+                            CopySelection();
+                            ClearSelection();
+                        }
+                        return this;
+                    }
+
+                    if (_selecting)
+                    {
+                        _selecting = false;
+                        return this;
+                    }
+                    return null;
+
+                case TouchActionResult.Tapped:
+                    if (_selectionLength <= 0)
+                        return null; // nothing selected: span links still get their tap
+                    if (!mouse)
+                        ClearSelection(); // a tap drops a touch selection
+                    // a click that selected (double click) is ours: unconsumed, the canvas would read it as a tap on
+                    // empty space and take the focus, and with it the selection
+                    return this;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Draws the selection over the lines just drawn, and the Copy button of a touch selection.
+        /// </summary>
+        protected virtual void DrawTextSelection(DrawingContext ctx)
+        {
+            EnsureSelectionMap();
+            var lines = Lines;
+            if (lines == null || _lineStarts.Length != lines.Length)
+                return;
+
+            _selectionPaint ??= new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
+            _selectionPaint.Color = TextSelectionColor;
+
+            var canvas = ctx.Context.Canvas;
+            var start = _selectionStart;
+            var end = _selectionStart + _selectionLength;
+            var first = SKRect.Empty;
+            var last = SKRect.Empty;
+
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                var lineStart = _lineStarts[i];
+                var lineEnd = lineStart + (line.Value ?? string.Empty).Length;
+                var a = Math.Max(start, lineStart);
+                var b = Math.Min(end, lineEnd);
+                var continues = end > lineEnd && i < lines.Length - 1;
+                if (a > b || a == b && !continues)
+                    continue;
+
+                var glyphs = GetLineGlyphs(line);
+                var x0 = SlotX(line, glyphs, a - lineStart);
+                var x1 = continues && b == lineEnd ? line.Width : SlotX(line, glyphs, b - lineStart);
+                var rect = new SKRect(line.Bounds.Left + x0, line.Bounds.Top, line.Bounds.Left + Math.Max(x1, x0 + ctx.Scale),
+                    line.Bounds.Bottom);
+                canvas.DrawRect(rect, _selectionPaint);
+
+                if (first.IsEmpty)
+                    first = rect;
+                last = rect;
+            }
+
+            _copyButton = SKRect.Empty;
+            if (!_touchSelection || first.IsEmpty)
+                return;
+
+            // Copy button inside the label (its cache clips and its hit box is the label): above the selection, else below
+            // it, else beside it on the same line, overlapping only when none fits
+            var font = FontDefault;
+            var fontSize = font.Size;
+            font.Size = 14 * ctx.Scale;
+            var textWidth = font.MeasureText(CopyButtonText);
+            var height = 32 * ctx.Scale;
+            var width = textWidth + 28 * ctx.Scale;
+            var gap = 6 * ctx.Scale;
+            var bounds = ctx.Destination;
+            var centered = Math.Clamp(first.MidX - width / 2, bounds.Left, Math.Max(bounds.Left, bounds.Right - width));
+            var middle = Math.Clamp(first.MidY - height / 2, bounds.Top, Math.Max(bounds.Top, bounds.Bottom - height));
+            if (first.Top - gap - height >= bounds.Top)
+                _copyButton = SKRect.Create(centered, first.Top - gap - height, width, height);
+            else if (last.Bottom + gap + height <= bounds.Bottom)
+                _copyButton = SKRect.Create(centered, last.Bottom + gap, width, height);
+            else if (first.Right + gap + width <= bounds.Right)
+                _copyButton = SKRect.Create(first.Right + gap, middle, width, height);
+            else if (first.Left - gap - width >= bounds.Left)
+                _copyButton = SKRect.Create(first.Left - gap - width, middle, width, height);
+            else
+                _copyButton = SKRect.Create(centered, Math.Max(bounds.Top, bounds.Bottom - height), width, height);
+
+            _selectionPaint.Color = new SKColor(33, 37, 41, 235);
+            canvas.DrawRoundRect(_copyButton, height / 2, height / 2, _selectionPaint);
+            _selectionPaint.Color = SKColors.White;
+            canvas.DrawText(CopyButtonText, _copyButton.MidX - textWidth / 2,
+                _copyButton.MidY - (font.Metrics.Ascent + font.Metrics.Descent) / 2, SKTextAlign.Left, font, _selectionPaint);
+            font.Size = fontSize;
+        }
+
+        /// <summary>
+        /// The glyphs of a drawn line with line-relative X, one slot per UTF-16 code unit, so a slot index is a text index
+        /// within the line. A single span of one-unit glyphs is returned as is.
+        /// </summary>
+        public static LineGlyph[] GetLineGlyphs(TextLine line)
+        {
+            if (line?.Spans == null || line.Spans.Count == 0)
+                return Array.Empty<LineGlyph>();
+
+            if (line.Spans.Count == 1)
+            {
+                var only = line.Spans[0].Glyphs ?? Array.Empty<LineGlyph>();
+                var simple = true;
+                for (var i = 0; i < only.Length; i++)
+                {
+                    if (only[i].Length > 1)
+                    {
+                        simple = false;
+                        break;
+                    }
+                }
+                if (simple)
+                    return only;
+            }
+
+            var result = new List<LineGlyph>();
+            var spanOffsetX = 0f;
+            foreach (var span in line.Spans)
+            {
+                var glyphs = span.Glyphs;
+                if (glyphs != null)
+                {
+                    foreach (var g in glyphs)
+                    {
+                        var abs = LineGlyph.Move(g, spanOffsetX + g.Position);
+                        var units = Math.Max(1, g.Length);
+                        for (var u = 0; u < units; u++)
+                            result.Add(abs);
+                    }
+                }
+                spanOffsetX += span.Size.Width;
+            }
+
+            return result.ToArray();
         }
 
         #endregion

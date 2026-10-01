@@ -57,6 +57,21 @@ public partial class KeyboardManager
         }
     }
 
+    /// <summary>
+    /// Command (Mac) / Windows key held.
+    /// </summary>
+    public static bool IsMetaPressed
+    {
+        get
+        {
+            return IsLeftMetaDown || IsRightMetaDown;
+        }
+    }
+
+    static bool IsLeftMetaDown { get; set; }
+
+    static bool IsRightMetaDown { get; set; }
+
     static bool IsLeftShiftDown { get; set; }
 
     static bool IsRightShiftDown { get; set; }
@@ -99,6 +114,16 @@ public partial class KeyboardManager
         if (key == InputKey.ControlRight)
         {
             IsRightControlDown = state;
+        }
+        else
+        if (key == InputKey.MetaLeft)
+        {
+            IsLeftMetaDown = state;
+        }
+        else
+        if (key == InputKey.MetaRight)
+        {
+            IsRightMetaDown = state;
         }
     }
 

@@ -190,6 +190,25 @@ SkiaLabel provides the ability to render text in a monospaced style, regardless 
 
 - `MonoForDigits`: Use mono width for digits (e.g. "8")
 
+### Selectable text
+
+A label can let people select and copy its text. It is off by default, turn it on with `AccessibilityTextSelectable`:
+
+```csharp
+new SkiaLabel("You can select and copy this paragraph.")
+{
+    AccessibilityTextSelectable = true,
+}
+```
+
+- Mouse: drag over the text to select it, double click selects a word. Ctrl+C (Cmd+C on Mac) copies, Ctrl+A selects the whole text.
+- Touch: a long press selects a word, then drag to extend it. A Copy button appears next to the selection.
+- A click or tap anywhere else clears the selection.
+- From code: `Select(start, length)`, `SelectAll()`, `ClearSelection()`, `CopySelection()`, `SelectedText`, `SelectionStart`, `SelectionLength`.
+- Look: the static `SkiaLabel.TextSelectionColor` and `SkiaLabel.CopyButtonText`.
+
+Copying goes through `Super.SetClipboardText`, which every head fills (MAUI, WPF, OpenTK, Blazor, WebAssembly); set it yourself to route copies elsewhere. On .NET MAUI Windows the Ctrl+C / Ctrl+A keys need `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`. A selectable label takes the mouse press for itself, so a parent does not get a drag that starts on its text.
+
 ### Performance Considerations
 
 - For static text, set `Cache="Image"` to render once and cache as bitmap

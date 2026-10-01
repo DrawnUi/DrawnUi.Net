@@ -287,9 +287,9 @@ function setupInputHandlers() {
     // aspect-locked / centered / letterboxed canvas); harmless when it is at 0,0.
     const relX = e => e.clientX - canvas.getBoundingClientRect().left;
     const relY = e => e.clientY - canvas.getBoundingClientRect().top;
-    canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, relX(e), relY(e), e.button, e.buttons));
-    canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, relX(e), relY(e), e.buttons));
-    canvas.addEventListener('pointerup', e => { onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
+    canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse'));
+    canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, relX(e), relY(e), e.buttons, e.pointerType ?? 'mouse'));
+    canvas.addEventListener('pointerup', e => { onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse'); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
     canvas.addEventListener('pointercancel', e => { onPointerCancel?.(e.pointerId); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
     // Gestures="Enabled" shares the wheel with the page: the default is prevented only when a control used it
     canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); if (!_shareInput || used) e.preventDefault(); }, { passive: false });

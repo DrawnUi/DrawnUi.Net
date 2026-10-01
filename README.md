@@ -62,6 +62,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * Japanese and Chinese text wraps: `WordWrap` breaks between characters and keeps closing punctuation and small kana off the start of a line, so a translated sentence no longer runs past the edge on one line. A word wider than the line, like a long URL, now breaks by characters too.
   * A symbol or emoji inside ordinary text shows up: a `SkiaLabel` draws each glyph its font does not have with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its font. `FontFamilyFallback` can now list several fonts, like `"FontSymbols, FontEmoji"`. Before, such a glyph was dropped unless it had its own span.
   * Markdown in `SkiaRichLabel` understands `~~strikethrough~~`.
+  * Selectable text: set `AccessibilityTextSelectable` on a `SkiaLabel` and people can select its text and copy it. Drag or double click with the mouse, then Ctrl+C (Cmd+C on Mac); long press with a finger, then tap the Copy button. Off by default.
   * Image preloading has priorities: `PreloadImages(urls, LoadPriority.Low)` waits behind the images on screen. Network images load a few at a time (`MaxParallelLoads`), and `RunningCount` / `QueuedCount` show the line. `RemoveFromCache` drops one image. Same on every head.
   * `SkiaCarousel.ScrollTo(index, animate)` moves to a slide, and with `animate: false` it jumps there at once.
   * `SkiaLottie` and `SkiaSprite` tell you when their file is loaded (`Success`) or could not be (`Error`), like `SkiaGif`.

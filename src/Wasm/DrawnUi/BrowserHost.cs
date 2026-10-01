@@ -35,6 +35,9 @@ public static partial class BrowserHost
         if (Uri.TryCreate(JsInterop.GetBaseUrl(), UriKind.Absolute, out var baseUri))
             SkiaImageManager.HttpBaseAddress = baseUri;
 
+        // Copy of a selected SkiaLabel text goes to the browser clipboard.
+        Super.SetClipboardText ??= text => _ = JsInterop.WriteClipboardText(text);
+
         // Wire DOM input listeners + read the element's CSS size / device pixel ratio.
         JsInterop.InitCanvas(0, 0);
         JsInterop.UpdateCanvasSize();

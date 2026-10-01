@@ -24,6 +24,11 @@ public sealed class GestureRobot
         _scale = host.Scale <= 0 ? 1f : host.Scale;
     }
 
+    /// <summary>
+    /// Device the events report (mouse, touch, pen); null sends no pointer data, as before.
+    /// </summary>
+    public PointerDeviceType? Device { get; set; }
+
     /// <summary>Single tap at the given point (no movement): Down → Tapped → Up.</summary>
     public void Tap(double x, double y, double frameMs = 16.0)
     {
@@ -245,6 +250,8 @@ public sealed class GestureRobot
             StartingLocation = startingPixel,
             IsInsideView = true
         };
+        if (Device != null)
+            args.Pointer = new PointerData { DeviceType = Device.Value, Button = MouseButton.Left };
         return args;
     }
 

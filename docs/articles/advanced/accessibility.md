@@ -74,6 +74,8 @@ control.AccessibilityIsPressed = false;
 - `AccessibilityCanInteract` marks the node as interactive, while the pointer could use the control (see [Only controls the pointer can use](#keyboard-navigation))
 - `AccessibilityIsPressed` maps toggle state when applicable
 
+`SkiaLabel.AccessibilityTextSelectable` lets people select and copy a label's text with the mouse, touch and Ctrl+C, see [Selectable text](../controls/text.md#selectable-text).
+
 `IsAccessibilityElement` is computed from `AccessibilityRole != null`. Setting the role back to `null` removes the control from the accessibility tree.
 
 Can set them from code-behind or XAML where it is supported.
