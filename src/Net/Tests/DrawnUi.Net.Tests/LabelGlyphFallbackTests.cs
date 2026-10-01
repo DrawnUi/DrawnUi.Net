@@ -10,6 +10,7 @@ namespace DrawnUi.Net.Tests;
 /// A plain SkiaLabel draws a glyph its font lacks with the first FontFamilyFallback font that has it,
 /// the rest of the text keeps the label's font. FontFamilyFallback can list several aliases.
 /// </summary>
+[Collection("FontRegistration")] // registers fonts: never in parallel with another class that does
 public class LabelGlyphFallbackTests
 {
     private static string RepoFile(string relative)

@@ -10,6 +10,7 @@ namespace DrawnUi.Net.Tests;
 /// Japanese and Chinese have no spaces: WordWrap must break between ideographs and kana (never before 、。ー」 or small
 /// kana, never after 「), and a Latin word wider than the line (a URL) breaks by characters instead of overflowing.
 /// </summary>
+[Collection("FontRegistration")] // registers fonts: never in parallel with another class that does
 public class LabelCjkWrapTests
 {
     private readonly ITestOutputHelper _out;
