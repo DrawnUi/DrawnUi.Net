@@ -2803,6 +2803,10 @@ else
                                 || MeasureItemsStrategy == MeasuringStrategy.MeasureVisible
                                 || (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && !child.WasMeasured)
                                 || GetSizeKey(child.MeasuredSize.Pixels) != GetSizeKey(cell.Measured.Pixels)
+                                // A Wrap has no size key (main axis only, 0 here): compare the whole size, or a
+                                // recycled view, measured for its slot only on the template instance, is never
+                                // measured and never drawn
+                                || Type == LayoutType.Wrap && !CompareSize(child.MeasuredSize.Pixels, cell.Measured.Pixels, 1f)
                                 || InvalidatedChildrenInternal.Contains(child)
                                )
                             {
