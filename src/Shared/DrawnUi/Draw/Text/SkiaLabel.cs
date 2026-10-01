@@ -99,6 +99,8 @@ namespace DrawnUi.Draw
                 }
             }
 
+            DisposeFallbackRuns();
+
             CleanAllocations();
 
             base.OnDisposing();
@@ -1121,25 +1123,32 @@ namespace DrawnUi.Draw
 
                     UpdateFontMetrics(PaintDefault, FontDefault);
 
-                    if (Spans.Count == 0)
+                    if (Spans.Count == 0
+                        && (GliphsInvalidated || _fallbackRuns != null && _fallbackRunsCharacter != FallbackCharacter))
+                    {
+                        if (GliphsInvalidated)
+                            Glyphs = GetGlyphs(TextInternal, FontDefault.Typeface);
+                        BuildFallbackRuns();
+                    }
+
+                    var layoutSpans = Spans.Count > 0 ? (IList<TextSpan>)Spans : _fallbackRuns;
+
+                    if (layoutSpans == null)
                     {
                         bool needsShaping = false;
                         string text = null;
-
-                        if (GliphsInvalidated)
-                        {
-                            Glyphs = GetGlyphs(TextInternal, FontDefault.Typeface);
-                        }
 
                         if (AutoFont && Glyphs != null && Glyphs.Count > 0)
                         {
                             var first = Glyphs[0].Symbol;
                             SKTypeface matchedFace = null;
-                            if (TypeFaceFallback != null)
+                            foreach (var fallback in TypeFaceFallbacks)
                             {
-                                var fallbackGlyph = GetGlyphs(char.ConvertFromUtf32(first), TypeFaceFallback).First();
-                                if (fallbackGlyph.IsAvailable)
-                                    matchedFace = TypeFaceFallback;
+                                if (GetGlyphs(char.ConvertFromUtf32(first), fallback).First().IsAvailable)
+                                {
+                                    matchedFace = fallback;
+                                    break;
+                                }
                             }
                             matchedFace ??= SkiaFontManager.MatchCharacter(first);
                             if (matchedFace != null)
@@ -1197,9 +1206,9 @@ namespace DrawnUi.Draw
                         TextLine previousSpanLastLine = null;
 
                         // Instead of Spans.ToList(), iterate directly:
-                        for (int i = 0; i < Spans.Count; i++)
+                        for (int i = 0; i < layoutSpans.Count; i++)
                         {
-                            var span = Spans[i];
+                            var span = layoutSpans[i];
                             if (string.IsNullOrEmpty(span.Text))
                                 continue;
 
@@ -1257,7 +1266,7 @@ namespace DrawnUi.Draw
 
                         // Last sanity pass if we don't keep spaces on line breaks
                         int totalLines = mergedLines.Count;
-                        if (!KeepSpacesOnLineBreaks && Spans.Count > 0 && totalLines > 1)
+                        if (!KeepSpacesOnLineBreaks && totalLines > 1)
                         {
                             // Avoid LINQ .Count(), use Count property
                             for (int i = 0; i < totalLines - 1; i++) // do not process last line
@@ -1391,7 +1400,7 @@ namespace DrawnUi.Draw
         private Dictionary<WordKey, float>? _wordCache;
 
         private bool IsComplexMeasuring =>
-            Spans.Count > 0 ||
+            Spans.Count > 0 || _fallbackRuns != null ||
             CharacterSpacing != 1f ||
             HorizontalTextAlignment == DrawTextAlignment.FillWordsFull ||
             HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull ||
@@ -1549,7 +1558,7 @@ namespace DrawnUi.Draw
             // Check if we need character spacing or alignment adjustments
             bool requiresComplexMeasuring =
                 NeedsGlyphPositions ||
-                Spans.Count > 0 ||
+                Spans.Count > 0 || _fallbackRuns != null ||
                 CharacterSpacing != 1f ||
                 HorizontalTextAlignment == DrawTextAlignment.FillWordsFull ||
                 HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull ||
@@ -3037,18 +3046,159 @@ namespace DrawnUi.Draw
 
         protected string _fontFamily;
         protected string _fontFamilyFallback;
+
+        /// <summary>
+        /// The first font of <see cref="FontFamilyFallback"/>, null when none is set.
+        /// </summary>
         protected SKTypeface TypeFaceFallback;
+
+        /// <summary>
+        /// The fonts of <see cref="FontFamilyFallback"/>, in the order they are tried.
+        /// </summary>
+        protected SKTypeface[] TypeFaceFallbacks = Array.Empty<SKTypeface>();
 
         public static readonly BindableProperty FontFamilyFallbackProperty = BindableProperty.Create(nameof(FontFamilyFallback),
             typeof(string), typeof(SkiaLabel), string.Empty, propertyChanged: NeedUpdateFont);
 
         /// <summary>
-        /// When a glyph is not found in the current font will try this first before asking system to match a compatible font.
+        /// Fonts for the glyphs the label's own font does not have: one alias, or several separated by commas,
+        /// tried in order ("FontSymbols, FontEmoji"). A plain label draws each missing glyph with the first of them
+        /// that has it, the rest of the text keeps its font; SkiaRichLabel tries them before asking the system.
+        /// With <see cref="AutoFont"/> the whole label switches to the font of its first glyph instead.
         /// </summary>
         public string FontFamilyFallback
         {
             get { return (string)GetValue(FontFamilyFallbackProperty); }
             set { SetValue(FontFamilyFallbackProperty, value); }
+        }
+
+        /// <summary>
+        /// Font runs of a plain label (no <see cref="Spans"/>) whose text has glyphs missing from its font that a
+        /// <see cref="FontFamilyFallback"/> font has: the label is laid out and drawn as these spans, each in the font
+        /// that has its glyphs. Null when every glyph is in the label's font or no fallback is set.
+        /// </summary>
+        List<TextSpan> _fallbackRuns;
+
+        char _fallbackRunsCharacter;
+
+        void DisposeFallbackRuns()
+        {
+            if (_fallbackRuns == null)
+                return;
+
+            foreach (var span in _fallbackRuns)
+                DisposeObject(span);
+            _fallbackRuns = null;
+        }
+
+        /// <summary>
+        /// Emoji sequence parts that must stay in the font of the glyph before them: joiner, variation selectors,
+        /// skin tones, keycap, tags.
+        /// </summary>
+        static bool JoinsPreviousGlyph(int symbol) =>
+            symbol == 0x200D || symbol == 0x20E3
+            || symbol >= 0xFE00 && symbol <= 0xFE0F
+            || symbol >= 0x1F3FB && symbol <= 0x1F3FF
+            || symbol >= 0xE0020 && symbol <= 0xE007F;
+
+        void BuildFallbackRuns()
+        {
+            DisposeFallbackRuns();
+
+            if (AutoFont || TypeFaceFallbacks.Length == 0 || Glyphs == null)
+                return;
+
+            var missing = false;
+            foreach (var glyph in Glyphs)
+            {
+                if (!glyph.IsAvailable)
+                {
+                    missing = true;
+                    break;
+                }
+            }
+
+            if (!missing)
+                return;
+
+            var text = TextInternal;
+            var mainFace = FontDefault.Typeface;
+            var fallbackGlyphs = new List<UsedGlyph>[TypeFaceFallbacks.Length];
+            for (var k = 0; k < fallbackGlyphs.Length; k++)
+                fallbackGlyphs[k] = GetGlyphs(text, TypeFaceFallbacks[k]);
+
+            var italic = (FontAttributes & FontAttributes.Italic) != 0;
+            var bold = (FontAttributes & FontAttributes.Bold) != 0;
+            var runs = new List<TextSpan>();
+            var sb = new StringBuilder();
+            SKTypeface runFace = null;
+            var runShape = false;
+
+            void Flush()
+            {
+                if (sb.Length == 0)
+                    return;
+
+                var span = new TextSpan
+                {
+                    Text = sb.ToString(),
+                    TypeFace = runFace,
+                    NeedShape = runShape,
+                    IsBold = bold,
+                    IsItalic = italic,
+                };
+                span.Parent = this; // last: the span reads FallbackCharacter from it
+                runs.Add(span);
+                sb.Clear();
+                runShape = false;
+            }
+
+            for (var i = 0; i < Glyphs.Count; i++)
+            {
+                var glyph = Glyphs[i];
+                var face = mainFace;
+                var replace = false;
+
+                if (runFace != null && runFace != mainFace && JoinsPreviousGlyph(glyph.Symbol))
+                {
+                    face = runFace;
+                }
+                else if (!glyph.IsAvailable)
+                {
+                    face = null;
+                    for (var k = 0; k < fallbackGlyphs.Length; k++)
+                    {
+                        if (i < fallbackGlyphs[k].Count && fallbackGlyphs[k][i].IsAvailable)
+                        {
+                            face = TypeFaceFallbacks[k];
+                            break;
+                        }
+                    }
+
+                    if (face == null)
+                    {
+                        face = mainFace;
+                        replace = true;
+                    }
+                }
+
+                if (face != runFace)
+                    Flush();
+                runFace = face;
+
+                if (replace)
+                    sb.Append(FallbackCharacter);
+                else
+                    sb.Append(glyph.GetGlyphText());
+
+                if (face != mainFace && UnicodeNeedsShaping(glyph.Symbol))
+                    runShape = true;
+            }
+
+            Flush();
+
+            _fallbackRuns = runs;
+            _fallbackRunsCharacter = FallbackCharacter;
         }
 
         protected virtual void UpdateFont()
@@ -3068,14 +3218,14 @@ namespace DrawnUi.Draw
                     _fontFamilyFallback = FontFamilyFallback;
                     _fontWeight = FontWeight;
 
-                    if (!string.IsNullOrEmpty(FontFamilyFallback))
-                    {
-                        TypeFaceFallback = SkiaFontManager.Instance.GetFont(FontFamilyFallback);
-                    }
-                    else
-                    {
-                        TypeFaceFallback = null;
-                    }
+                    TypeFaceFallbacks = string.IsNullOrEmpty(FontFamilyFallback)
+                        ? Array.Empty<SKTypeface>()
+                        : FontFamilyFallback
+                            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                            .Select(alias => SkiaFontManager.Instance.GetFont(alias))
+                            .Where(face => face != null)
+                            .ToArray();
+                    TypeFaceFallback = TypeFaceFallbacks.Length > 0 ? TypeFaceFallbacks[0] : null;
 
                     var replaceFont = SkiaFontManager.Instance.GetFont(_fontFamily, _fontWeight);
 

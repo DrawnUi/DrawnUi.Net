@@ -11,7 +11,7 @@ public class PlayFramesLoadEventsTests
     private static string RepoFile(string relative)
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, ".git")))
+        while (dir != null && !Path.Exists(Path.Combine(dir.FullName, ".git"))) // a worktree has a .git file
             dir = dir.Parent;
         return Path.Combine(dir!.FullName, relative);
     }

@@ -245,11 +245,13 @@ public partial class SkiaRichLabel : SkiaLabel
             if (!isStandardSymbol && !glyph.IsAvailable)
             {
                 SKTypeface newTypeFace = null;
-                if (TypeFaceFallback != null)
+                foreach (var fallback in TypeFaceFallbacks)
                 {
-                    var fallbackGlyph = SkiaLabel.GetGlyphs(glyphText, TypeFaceFallback).First();
-                    if (fallbackGlyph.IsAvailable)
-                        newTypeFace = TypeFaceFallback;
+                    if (SkiaLabel.GetGlyphs(glyphText, fallback).First().IsAvailable)
+                    {
+                        newTypeFace = fallback;
+                        break;
+                    }
                 }
                 newTypeFace ??= SkiaFontManager.MatchCharacter(codePoint);
                 if (newTypeFace != null && newTypeFace != currentTypeFace)
