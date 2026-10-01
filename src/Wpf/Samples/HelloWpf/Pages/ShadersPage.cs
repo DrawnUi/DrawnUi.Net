@@ -50,6 +50,7 @@ half4 main(float2 fragCoord) {
     private static readonly string[] Transitions = { "cube", "fade", "swirl", "doorway", "bounce", "waterdrop", "pixelize", "windowslice", "crosszoom", "pagecurl", "morph", "heart", "kaleidoscope", "wind" };
     private static readonly string[] Photos = { "images/hugrobot2.jpg", "images/8.jpg", "images/dungeon.jpg", "images/nebula.jpg" };
     private static readonly Color Muted = Color.Parse("#ADB5BD");
+    private const string Symbols = "FontSymbols,FontSymbols2";
 
     private SkiaLabel _error;
     private SkiaLabel _carouselTitle;
@@ -68,8 +69,7 @@ half4 main(float2 fragCoord) {
     private readonly SkiaShaderEffect _blit;
     private readonly List<SkiaValueAnimator> _animators = new();
     private string _transition = "cube";
-    private string _fromIndex;
-    private string _toIndex;
+    private string _fromTo = "";
     private double _strength = 0.01;
     private bool _running = true;
     private bool _blitOn;
@@ -106,19 +106,7 @@ half4 main(float2 fragCoord) {
                         new SkiaLabel("Shaders") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
                         new SkiaLabel("") { FontSize = 12, TextColor = Color.Parse("#FF6B6B"), HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _error),
 
-                        // No per-glyph fallback on the C# engine: the arrow gets a span in the symbols face.
-                        // Spans skip TextTransform and FontAttributes, so PaintCarouselTitle uppercases the
-                        // text and every span is bold, like the other card titles.
-                        Card(new SkiaLabel
-                            {
-                                FontSize = 12, TextColor = Color.Parse("#6EA8FE"), HorizontalOptions = LayoutOptions.Fill,
-                                Spans =
-                                {
-                                    new TextSpan { IsBold = true },
-                                    new TextSpan { IsBold = true, FontFamily = "FontSymbols" },
-                                    new TextSpan { IsBold = true },
-                                },
-                            }.Assign(out _carouselTitle),
+                        Card(Title(CarouselTitle()).Assign(out _carouselTitle).Adapt(me => me.FontFamilyFallback = Symbols),
                             new SkiaShaderCarousel
                             {
                                 HeightRequest = 280,
@@ -132,9 +120,8 @@ half4 main(float2 fragCoord) {
                             .Assign(out _carousel)
                             .Adapt(me => me.FromToChanged += (_, _) =>
                             {
-                                _fromIndex = $"{me.TransitionFromIndex}";
-                                _toIndex = $"{me.TransitionToIndex}";
-                                PaintCarouselTitle();
+                                _fromTo = $" · {me.TransitionFromIndex} → {me.TransitionToIndex}";
+                                _carouselTitle.Text = CarouselTitle();
                             }),
                             new SkiaWrap
                             {
@@ -156,15 +143,9 @@ half4 main(float2 fragCoord) {
 
                         Card(Title("SkiaShaderEffect on a SkiaImage — ShaderSource=\"shaders/ripples.sksl\" (Sandbox MultiRippleWithTouchEffect) · tap to ripple"),
                             new SkiaImage { Source = "images/hugrobot2.jpg", Aspect = TransformAspect.AspectCover, HorizontalOptions = LayoutOptions.Fill, HeightRequest = 260, UseCache = SkiaCacheType.Image, VisualEffects = { ripple } },
-                            new SkiaLabel
+                            new SkiaLabel("The effect is an ISkiaGestureProcessor: every Down starts a ripple at the touch point, animated 0→1 over 4.5 s through Parent.AnimateRangeAsync and passed as the origins[10] / progresses[10] array uniforms; iImage1 is the image's own cache, iImage2 (SecondarySource) the reflection texture.")
                             {
-                                FontSize = 12, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
-                                Spans =
-                                {
-                                    new TextSpan { Text = "The effect is an ISkiaGestureProcessor: every Down starts a ripple at the touch point, animated 0" },
-                                    new TextSpan { Text = "→", FontFamily = "FontSymbols" },
-                                    new TextSpan { Text = "1 over 4.5 s through Parent.AnimateRangeAsync and passed as the origins[10] / progresses[10] array uniforms; iImage1 is the image's own cache, iImage2 (SecondarySource) the reflection texture." },
-                                },
+                                FontFamilyFallback = Symbols, FontSize = 12, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
                             }),
 
                         Card(Title(WaveTitle()).Assign(out _waveTitle),
@@ -211,14 +192,7 @@ half4 main(float2 fragCoord) {
         _error.IsVisible = true;
     }
 
-    private void PaintCarouselTitle()
-    {
-        var spans = _carouselTitle.Spans;
-        var head = $"SkiaShaderCarousel — TransitionShader=\"shaders/transitions/{_transition}.sksl\" · IsLooped · LinearSpeedMs=750".ToUpperInvariant();
-        spans[0].Text = _fromIndex == null ? head : $"{head} · {_fromIndex} ";
-        spans[1].Text = _fromIndex == null ? "" : "→";
-        spans[2].Text = _fromIndex == null ? "" : $" {_toIndex}";
-    }
+    private string CarouselTitle() => $"SkiaShaderCarousel — TransitionShader=\"shaders/transitions/{_transition}.sksl\" · IsLooped · LinearSpeedMs=750{_fromTo}";
 
     private string WaveTitle() => $"Inline ShaderCode + SetUniform(\"strength\", {_strength}) + iTime · {(_running ? "animating" : "paused")}";
 
@@ -230,7 +204,7 @@ half4 main(float2 fragCoord) {
         _carousel.TransitionShader = $"shaders/transitions/{transition}.sksl";
         for (var i = 0; i < _transitionButtons.Count; i++)
             _transitionButtons[i].BackgroundColor = Color.Parse(Transitions[i] == transition ? "#533483" : "#495057");
-        PaintCarouselTitle();
+        _carouselTitle.Text = CarouselTitle();
     }
 
     private void SetStrength(double strength)

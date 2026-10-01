@@ -14,7 +14,7 @@ public class TextPage : SkiaLayer
         # Heading 1
         ## Heading 2
         ### Heading 3
-        A paragraph with **bold**, *italic*, ~~strikethrough~~ (strikethrough is not parsed by the C# SkiaRichLabel yet), `inline code` and a [tappable link](https://drawnui.net).
+        A paragraph with **bold**, *italic*, ~~strikethrough~~, `inline code` and a [tappable link](https://drawnui.net).
         Soft line breaks stay inside the paragraph.
 
         - Bullet item with **bold**
@@ -170,48 +170,34 @@ public class TextPage : SkiaLayer
                                 },
                             }),
 
-                        // C# engine semantics differ from the React page here: FontFamilyFallback names ONE
-                        // face, and a label (AutoFont) or a span (AutoFindFont) switches to it as a whole when
-                        // its first glyph is missing from the main font — there is no per-glyph mixing, a
-                        // missing glyph inside latin text is dropped. So symbols live in labels of their own.
-                        // TODO(shared): per-glyph fallback like the React engine.
-                        Card("FontFamilyFallback + AutoFont — a label of symbols switches to the fallback face as a whole",
-                            Glyphs("Arrows · FontSymbols", "← ↑ → ↓ ⇒ ⇔", "FontSymbols"),
-                            Glyphs("Math · FontSymbols", "∑ ∞ ≈ ≠ ≤ ≥ √", "FontSymbols"),
-                            Glyphs("Misc · FontSymbols2", "♥ ★ ✓ ✗ ⚠", "FontSymbols2"),
-                            // No fallback alias: AutoFont then matches a system face — Segoe UI Emoji on
-                            // Windows. The React demo's Noto Color Emoji (COLR/SVG) draws blank in SkiaSharp here.
-                            Glyphs("Emoji · system font", "😀 😎 🤖 😂 👍 🙌", null),
-                            new SkiaLabel("Without a fallback the same arrow → and emoji 😀 are dropped (no per-glyph fallback on the C# engine)")
+                        Card("FontFamilyFallback — symbols and emoji the text font lacks",
+                            new SkiaLabel("Arrows ← ↑ → ↓ ⇒ ⇔  math ∑ ∞ ≈ ≠ ≤ ≥ √  misc ♥ ★ ✓ ✗ ⚠ via FontFamilyFallback=\"FontSymbols,FontSymbols2\"")
+                            {
+                                FontSize = 16, TextColor = Body, FontFamilyFallback = "FontSymbols,FontSymbols2", HorizontalOptions = LayoutOptions.Fill,
+                            },
+                            // No FontEmoji face on this head (the COLRv1 Noto subset draws nothing through SkiaSharp on
+                            // Windows, see App.xaml.cs): AutoFont switches the label to the system face of its first
+                            // glyph, Segoe UI Emoji, so the emoji get a label of their own.
+                            new SkiaRow
+                            {
+                                Spacing = 8,
+                                Children = new List<SkiaControl>
+                                {
+                                    new SkiaLabel("Emoji") { FontSize = 16, TextColor = Body, VerticalOptions = LayoutOptions.Center },
+                                    new SkiaLabel("😀 😎 🤖 😂 👍 🙌") { FontSize = 16, TextColor = Body, AutoFont = true, VerticalOptions = LayoutOptions.Center },
+                                    new SkiaLabel("via the system font (AutoFont=true picks Segoe UI Emoji)") { FontSize = 16, TextColor = Body, VerticalOptions = LayoutOptions.Center },
+                                },
+                            },
+                            // A glyph no font has becomes FallbackCharacter, a space by default.
+                            new SkiaLabel("Without a fallback the same arrow → and emoji 😀 are drawn as blank spaces")
                             {
                                 FontSize = 16, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
                             }),
 
                         Card("FontAttributes / FontWeight (weights registered via ConfigureFonts)",
                             new SkiaLabel("Regular 400 — the family default") { FontSize = 16, TextColor = Body },
-                            // The arrow gets its own span in the symbols face (no per-glyph fallback in a C# SkiaLabel).
-                            // Spans inherit the label's typeface, size and color but not its FontAttributes,
-                            // so each span repeats IsBold / IsItalic.
-                            new SkiaLabel
-                            {
-                                FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Bold,
-                                Spans =
-                                {
-                                    new TextSpan { Text = "FontAttributes=Bold ", IsBold = true },
-                                    new TextSpan { Text = "→", FontFamily = "FontSymbols", IsBold = true },
-                                    new TextSpan { Text = " nearest registered weight (600 Semibold)", IsBold = true },
-                                },
-                            },
-                            new SkiaLabel
-                            {
-                                FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Italic,
-                                Spans =
-                                {
-                                    new TextSpan { Text = "FontAttributes=Italic ", IsItalic = true },
-                                    new TextSpan { Text = "→", FontFamily = "FontSymbols", IsItalic = true },
-                                    new TextSpan { Text = " synthetic skew when no italic face", IsItalic = true },
-                                },
-                            },
+                            new SkiaLabel("FontAttributes=Bold → nearest registered weight (600 Semibold)") { FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Bold, FontFamilyFallback = "FontSymbols,FontSymbols2" },
+                            new SkiaLabel("FontAttributes=Italic → synthetic skew when no italic face") { FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Italic, FontFamilyFallback = "FontSymbols,FontSymbols2" },
                             new SkiaLabel("FontAttributes=BoldItalic") { FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Bold | FontAttributes.Italic },
                             new SkiaLabel("FontWeight=600 explicit") { FontSize = 16, TextColor = Body, FontWeight = 600 }),
 
@@ -263,17 +249,6 @@ public class TextPage : SkiaLayer
                     },
                 }.Concat(content).ToList(),
             },
-        },
-    };
-
-    /// <summary>Caption + a symbols-only label that AutoFont switches to the given fallback face.</summary>
-    private static SkiaControl Glyphs(string caption, string symbols, string fallback) => new SkiaRow
-    {
-        Spacing = 12,
-        Children = new List<SkiaControl>
-        {
-            new SkiaLabel(caption) { FontSize = 13, TextColor = Muted, WidthRequest = 170, VerticalOptions = LayoutOptions.Center },
-            new SkiaLabel(symbols) { FontSize = 18, TextColor = Body, AutoFont = true, FontFamilyFallback = fallback },
         },
     };
 

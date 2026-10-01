@@ -26,18 +26,13 @@ public class PongPage : SkiaLayer
 
         Children = new List<SkiaControl>
         {
-            // No per-glyph fallback on the C# engine: the arrows get a span in the symbols face.
-            new SkiaLabel
+            new SkiaLabel("← → or drag to move, tap / Space to serve · first to 7")
             {
+                FontFamilyFallback = "FontSymbols,FontSymbols2",
                 FontSize = 13,
                 TextColor = Color.Parse("#ADB5BD"),
                 HorizontalOptions = LayoutOptions.Center,
                 Margin = new Thickness(12, 8, 12, 0),
-                Spans =
-                {
-                    new TextSpan { Text = "← →", FontFamily = "FontSymbols" },
-                    new TextSpan { Text = " or drag to move, tap / Space to serve · first to 7" },
-                },
             },
             new RescalingLayout
             {

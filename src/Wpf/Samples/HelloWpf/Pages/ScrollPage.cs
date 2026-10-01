@@ -153,15 +153,9 @@ public class ScrollPage : SkiaLayer
                                             Type = ShapeType.Rectangle, CornerRadius = 20, BackgroundColor = Color.Parse("#0D6EFD"), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, WidthRequest = 160, HeightRequest = 36,
                                             Children =
                                             {
-                                                // No per-glyph fallback on the C# engine: the symbol gets a span in the symbols face.
-                                                new SkiaLabel
+                                                new SkiaLabel("↻ refresh")
                                                 {
-                                                    FontSize = 14, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
-                                                    Spans =
-                                                    {
-                                                        new TextSpan { Text = "↻", FontFamily = "FontSymbols" },
-                                                        new TextSpan { Text = " refresh" },
-                                                    },
+                                                    FontFamilyFallback = "FontSymbols,FontSymbols2", FontSize = 14, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
                                                 },
                                             },
                                         },

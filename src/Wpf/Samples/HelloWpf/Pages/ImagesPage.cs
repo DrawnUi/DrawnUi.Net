@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DrawnUi.Draw;
 using DrawnUi.Views;
 using SkiaSharp;
@@ -19,6 +20,15 @@ public class ImagesPage : SkiaLayer
         TransformAspect.AspectFitFill, TransformAspect.Fill, TransformAspect.Fit,
         TransformAspect.FitFill, TransformAspect.Cover, TransformAspect.None,
     };
+
+    /// <summary>
+    /// Preload queue demo: 8 distinct urls of the same photo (query string = own cache entry). MaxParallelLoads
+    /// limits network loads only; these are local files, read at once, so running / queued stay 0 on this head.
+    /// </summary>
+    private static readonly List<string> PreloadSources =
+        Enumerable.Range(0, 8).Select(i => $"images/glass2.jpg?queue={i}").ToList();
+
+    private SkiaLabel _queueStatus;
 
     /// <summary>Builds the page.</summary>
     public ImagesPage()
@@ -69,18 +79,7 @@ public class ImagesPage : SkiaLayer
                             MaximumWidthRequest = 720,
                             Children = new List<SkiaControl>
                             {
-                                // No per-glyph fallback on the C# engine: the arrow gets a span in the symbols face.
-                                Tile(new SkiaLabel
-                                {
-                                    FontSize = 12,
-                                    TextColor = Color.Parse("#94A3B8"),
-                                    Spans =
-                                    {
-                                        new TextSpan { Text = "PaintColorFilter = CreateColorMatrix (R" },
-                                        new TextSpan { Text = "↔", FontFamily = "FontSymbols" },
-                                        new TextSpan { Text = "B)" },
-                                    },
-                                }, new FilterImage
+                                Tile("PaintColorFilter = CreateColorMatrix (R↔B)", new FilterImage
                                 {
                                     Source = Photo,
                                     WidthRequest = 160,
@@ -124,6 +123,14 @@ public class ImagesPage : SkiaLayer
                             me.TileOffsetY = (me.TileOffsetY + 40 * dt) % 64;
                         }, repeat: -1),
 
+                        Heading("SkiaImageManager preload queue · idle", 20).Assign(out _queueStatus),
+                        new SkiaButton("PreloadImages(8 urls, Low)")
+                        {
+                            BackgroundColor = Color.Parse("#0D6EFD"),
+                            FontSize = 13,
+                            HorizontalOptions = LayoutOptions.Center,
+                        }.OnTapped(me => PreloadQueue()),
+
                         Heading("Alignment inside the box", 20),
                         new SkiaWrap
                         {
@@ -141,6 +148,42 @@ public class ImagesPage : SkiaLayer
                 },
             }.Fill(),
         };
+    }
+
+    /// <summary>
+    /// Drops the 8 urls from the cache, preloads them at Low priority and shows the queue every ~10 ms
+    /// (running / queued / peak), then the total time.
+    /// </summary>
+    private async void PreloadQueue()
+    {
+        var manager = SkiaImageManager.Instance;
+        foreach (var source in PreloadSources)
+            manager.RemoveFromCache(source);
+
+        var peak = 0;
+        var done = false; // read and written on the UI thread only: a late tick never overwrites the result
+        var clock = Stopwatch.StartNew();
+
+        using (new System.Threading.Timer(_ =>
+               {
+                   int running = manager.RunningCount, queued = manager.QueuedCount;
+                   peak = Math.Max(peak, running);
+                   DrawnUi.MainThread.BeginInvokeOnMainThread(() =>
+                   {
+                       if (!done)
+                           _queueStatus.Text = $"SkiaImageManager preload queue · running {running} · queued {queued} · peak {peak}";
+                   });
+               }, null, 0, 10))
+        {
+            await manager.PreloadImages(PreloadSources, LoadPriority.Low);
+        }
+
+        var elapsed = clock.ElapsedMilliseconds;
+        DrawnUi.MainThread.BeginInvokeOnMainThread(() =>
+        {
+            done = true;
+            _queueStatus.Text = $"SkiaImageManager preload queue · {PreloadSources.Count} loaded in {elapsed} ms · peak in flight {peak} (MaxParallelLoads={SkiaImageManager.MaxParallelLoads})";
+        });
     }
 
     private static SkiaLabel Heading(string text, double size, double top = 12) => new(text)
@@ -170,14 +213,21 @@ public class ImagesPage : SkiaLayer
         },
     };
 
-    private static SkiaControl Tile(string caption, SkiaControl visual) =>
-        Tile(new SkiaLabel(caption) { FontSize = 12, TextColor = Color.Parse("#94A3B8") }, visual);
-
-    private static SkiaControl Tile(SkiaLabel caption, SkiaControl visual) => new SkiaStack
+    /// <summary>Image with its caption below; captions may carry symbols (↔), drawn per glyph from the fallback faces.</summary>
+    private static SkiaControl Tile(string caption, SkiaControl visual) => new SkiaStack
     {
         Spacing = 4,
         WidthRequest = 160,
-        Children = new List<SkiaControl> { visual, caption },
+        Children = new List<SkiaControl>
+        {
+            visual,
+            new SkiaLabel(caption)
+            {
+                FontSize = 12,
+                TextColor = Color.Parse("#94A3B8"),
+                FontFamilyFallback = "FontSymbols,FontSymbols2",
+            },
+        },
     };
 
     private static SkiaControl Aligned(TransformAspect aspect, DrawImageAlignment horizontal, DrawImageAlignment vertical) =>
