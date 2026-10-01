@@ -132,16 +132,7 @@ public class ShapesPage : SkiaLayer
                                     endX: 1, endY: 0),
                             }.Center()),
 
-                            // No per-glyph fallback on the C# engine: the arrow gets a span in the symbols face.
-                            Demo(new SkiaLabel
-                            {
-                                Spans =
-                                {
-                                    new TextSpan { Text = "SkiaLabel FillGradient " },
-                                    new TextSpan { Text = "→", FontFamily = "FontSymbols" },
-                                    new TextSpan { Text = " glyphs (GradientByLines)" },
-                                },
-                            }, new SkiaLabel("Gradient text, line by line")
+                            Demo("SkiaLabel FillGradient → glyphs (GradientByLines)", new SkiaLabel("Gradient text, line by line")
                             {
                                 FontSize = 18,
                                 FontFamily = "FontTextBold",
@@ -433,34 +424,31 @@ public class ShapesPage : SkiaLayer
         Children = children,
     };
 
-    /// <summary>One labeled swatch: the demo shape centered on a card.</summary>
-    private static SkiaControl Demo(string title, SkiaControl content) => Demo(new SkiaLabel(title), content);
-
-    /// <summary>Same swatch with a prebuilt title label (e.g. spans for a symbol); size, color and alignment are set here.</summary>
-    private static SkiaControl Demo(SkiaLabel title, SkiaControl content)
+    /// <summary>One labeled swatch: the demo shape centered on a card. Titles may carry symbols (→),
+    /// drawn per glyph from the fallback faces.</summary>
+    private static SkiaControl Demo(string title, SkiaControl content) => new SkiaStack
     {
-        title.FontSize = 13;
-        title.TextColor = Color.Parse("#ADB5BD");
-        title.HorizontalOptions = LayoutOptions.Center;
-
-        return new SkiaStack
+        Spacing = 8,
+        WidthRequest = 150,
+        Children = new List<SkiaControl>
         {
-            Spacing = 8,
-            WidthRequest = 150,
-            Children = new List<SkiaControl>
+            new SkiaShape
             {
-                new SkiaShape
-                {
-                    WidthRequest = 150,
-                    HeightRequest = 110,
-                    BackgroundColor = Color.Parse("#2B3035"),
-                    CornerRadius = 8,
-                    Children = new List<SkiaControl> { content },
-                },
-                title,
+                WidthRequest = 150,
+                HeightRequest = 110,
+                BackgroundColor = Color.Parse("#2B3035"),
+                CornerRadius = 8,
+                Children = new List<SkiaControl> { content },
             },
-        };
-    }
+            new SkiaLabel(title)
+            {
+                FontSize = 13,
+                TextColor = Color.Parse("#ADB5BD"),
+                HorizontalOptions = LayoutOptions.Center,
+                FontFamilyFallback = "FontSymbols,FontSymbols2",
+            },
+        },
+    };
 
     private static SkiaShape Beveled(BevelType type, double depth) => new SkiaShape
     {

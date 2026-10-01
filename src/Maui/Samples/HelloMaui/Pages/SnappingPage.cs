@@ -140,8 +140,8 @@ public class SnappingPage : SkiaLayer
                                 {
                                     new SkiaButton("← Prev") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoPrev()),
                                     new SkiaButton("Next →") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoNext()),
-                                    new SkiaButton("SelectedIndex = 2") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.SelectedIndex = 2),
-                                    new SkiaButton("Index 0, no anim") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => { _carousel.SelectedIndex = 0; _carousel.ApplyIndex(true); }),
+                                    new SkiaButton("ScrollTo(2)") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.ScrollTo(2)),
+                                    new SkiaButton("ScrollTo(0, no anim)") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.ScrollTo(0, false)),
                                     new SkiaButton("Set index 3") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.SelectedIndex = 3),
                                 },
                             },
@@ -230,16 +230,10 @@ public class SnappingPage : SkiaLayer
                                 {
                                     new SkiaButton("Prev") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _loop.GoPrev()),
                                     new SkiaButton("Next") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _loop.GoNext()),
-                                    new SkiaLabel
+                                    new SkiaLabel("Wraps last → first both ways (virtual anchors); LinearSpeedMs=350 = one slide per 350 ms without Bounces; cells are recycled through ItemTemplate.")
                                     {
                                         FontSize = 12, TextColor = Muted, VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Fill,
-                                        // No per-glyph fallback in a C# SkiaLabel: the arrow gets its own span in the symbols face.
-                                        Spans =
-                                        {
-                                            new TextSpan { Text = "Wraps last " },
-                                            new TextSpan { Text = "→", FontFamily = "FontSymbols" },
-                                            new TextSpan { Text = " first both ways (virtual anchors); LinearSpeedMs=350 = one slide per 350 ms without Bounces; cells are recycled through ItemTemplate." },
-                                        },
+                                        FontFamilyFallback = "FontSymbols,FontSymbols2",
                                     },
                                 },
                             }),

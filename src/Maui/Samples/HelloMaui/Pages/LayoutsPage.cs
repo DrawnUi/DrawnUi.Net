@@ -114,6 +114,15 @@ public class LayoutsPage : SkiaLayer
     private readonly List<SkiaButton> _splitButtons = new();
     private SkiaButton _dynamicButton;
 
+    private SkiaLayer _composite;
+    private SkiaShape _spinner;
+    private SkiaLabel _compositeTitle;
+    private IDispatcherTimer _spinTimer;
+    private readonly SKPaint _outlinePaint = new() { Style = SKPaintStyle.Stroke, Color = SKColors.White, IsAntialias = true };
+    private IReadOnlyList<SkiaControl> _outlined;
+    private (SKRect Rect, float Radius)[] _outlines = Array.Empty<(SKRect, float)>();
+    private volatile string _compositeInfo;
+
     /// <summary>Builds the page.</summary>
     public LayoutsPage()
     {
@@ -326,7 +335,8 @@ public class LayoutsPage : SkiaLayer
                             }),
 
                         Heading("Caching · UseCache=ImageComposite", 20),
-                        Card("SkiaLayer UseCache=\"ImageComposite\" · 24 cached shapes + 1 rotating · only the dirty child (and what it overlaps) is re-recorded each frame",
+                        Card(null,
+                            new SkiaLabel(CompositeTitle("…")) { FontSize = 12, TextColor = Color.Parse("#6EA8FE"), FontAttributes = FontAttributes.Bold, TextTransform = TextTransform.Uppercase }.Assign(out _compositeTitle),
                             new SkiaLayer
                             {
                                 UseCache = SkiaCacheType.ImageComposite, HeightRequest = 150, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Color.Parse("#212529"),
@@ -340,10 +350,17 @@ public class LayoutsPage : SkiaLayer
                                     {
                                         Type = ShapeType.Rectangle, CornerRadius = 4, WidthRequest = 44, HeightRequest = 44, BackgroundColor = Color.Parse("#FFC107"),
                                         Margin = new Thickness(12 + 5 * 52 + 46 - 22, 12 + 40 + 15 - 22, 0, 0), UseCache = SkiaCacheType.Operations, ZIndex = 5,
-                                    }.AnimateRotation(0, 360, seconds: 2.4, repeat: -1))
+                                    }.Assign(out _spinner))
                                     .ToList(),
-                            },
-                            new SkiaLabel("The spinning child invalidates itself every frame; the composite parent re-records it plus the siblings its old and new bounds overlap, and blits the rest from its cache surface. (The React page also outlines the repainted children from LastCompositeRecord — that diagnostic is not exposed on the C# engine.)")
+                            }
+                            .Assign(out _composite)
+                            // post-effects pass: drawn over the layer after it blitted its cache, never recorded into it
+                            .WhenPainted((ctx, _) =>
+                            {
+                                DrawRedrawnOutlines(ctx);
+                                return false;
+                            }),
+                            new SkiaLabel("White outlines = the children the last record repainted (the rotating one + every sibling its old and new bounds overlap); the others are kept in the cache surface untouched. Setting Rotation (any transform) or calling Repaint() on the spinning child marks it dirty in the composite parent (C# DirtyChildrenTracker); own content / measure changes record fully.")
                             {
                                 FontSize = 12, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
                             }),
@@ -389,6 +406,61 @@ public class LayoutsPage : SkiaLayer
         };
 
         RefreshChipsChrome();
+
+        // the React page's 40 ms interval: 6° per tick, then the title shows what the last record redrew
+        _spinTimer = Application.Current.Dispatcher.CreateTimer();
+        _spinTimer.Interval = TimeSpan.FromMilliseconds(40);
+        _spinTimer.Tick += (_, _) =>
+        {
+            _spinner.Rotation = (_spinner.Rotation + 6) % 360;
+            if (_compositeInfo != null)
+                _compositeTitle.Text = CompositeTitle(_compositeInfo);
+        };
+        _spinTimer.Start();
+    }
+
+    /// <inheritdoc/>
+    public override void OnDisposing()
+    {
+        _spinTimer?.Stop();
+        _spinTimer = null;
+        DisposeObject(_outlinePaint);
+        base.OnDisposing();
+    }
+
+    private static string CompositeTitle(string info) => $"SkiaLayer UseCache=\"ImageComposite\" · 24 shapes + 1 rotating · {info}";
+
+    /// <summary>
+    /// Overlay of the composite layer, on the rendering thread right after the layer drew: outlines the children
+    /// its last record repainted. <see cref="SkiaControl.LastCompositeRecord"/> is read only here, on the thread
+    /// that sets it; the UI timer gets an immutable string.
+    /// </summary>
+    private void DrawRedrawnOutlines(DrawingContext ctx)
+    {
+        var layer = _composite.DrawingRect;
+        var record = _composite.LastCompositeRecord;
+        if (!ReferenceEquals(record.Redrawn, _outlined))
+        {
+            // a new record: its children were arranged with the layer this frame, so keep their rects relative to it
+            // (blit-only frames, e.g. while scrolling, move the layer but not the children)
+            _outlined = record.Redrawn;
+            _outlines = record.Redrawn.Select(c =>
+            {
+                var rect = c.DrawingRect;
+                rect.Offset(-layer.Left, -layer.Top);
+                return (rect, c == _spinner ? 4f : 6f);
+            }).ToArray();
+            _compositeInfo = $"last record: {(record.Partial ? "partial" : "full")} · {record.Redrawn.Count} of {_composite.Views.Count} children redrawn";
+        }
+
+        _outlinePaint.StrokeWidth = 2 * ctx.Scale;
+        foreach (var (rect, radius) in _outlines)
+        {
+            var r = rect;
+            r.Offset(layer.Left, layer.Top);
+            r.Inflate(-ctx.Scale, -ctx.Scale); // stroke inside the child's box, like a SkiaShape stroke
+            ctx.Context.Canvas.DrawRoundRect(r, radius * ctx.Scale, radius * ctx.Scale, _outlinePaint);
+        }
     }
 
     private static List<Chip> MakeChips(int count) =>

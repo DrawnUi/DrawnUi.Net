@@ -49,14 +49,16 @@ public class AnimationsPage : SkiaLayer
                                 Spacing = 16,
                                 Children = new List<SkiaControl>
                                 {
-                                    new SkiaLottie { Source = "lottie/shield.json", WidthRequest = 160, HeightRequest = 160, Repeat = -1, SpeedRatio = 1 }
+                                    new SkiaLottie { WidthRequest = 160, HeightRequest = 160, Repeat = -1, SpeedRatio = 1 }
                                         .Assign(out _lottie)
                                         .Adapt(me =>
                                         {
-                                            // No Success/Error events on SkiaLottie (SkiaGif has them): Started fires once
-                                            // the file is parsed and playback begins, which is the load signal here.
-                                            me.Started += (_, _) => LottieStatus($"loaded, {Frames(me)} frames, playing");
+                                            me.Success += (_, _) => LottieStatus($"loaded, {Frames(me)} frames, playing");
+                                            me.Error += (_, e) => LottieStatus($"error: {e.Message}");
+                                            me.Started += (_, _) => LottieStatus("Started");
                                             me.Finished += (_, _) => LottieStatus("Finished");
+                                            // after subscribing: a cached or local Lottie loads while Source is being set
+                                            me.Source = "lottie/shield.json";
                                         }),
                                     new SkiaStack
                                     {
