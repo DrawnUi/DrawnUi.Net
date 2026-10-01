@@ -129,10 +129,10 @@ public class SpritesPage : SkiaLayer
                                 HorizontalOptions = LayoutOptions.Center,
                                 Children = new List<SkiaControl>
                                 {
-                                    new SkiaButton("Left") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(-1, 0)),
-                                    new SkiaButton("Up") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, -1)),
-                                    new SkiaButton("Down") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, 1)),
-                                    new SkiaButton("Right") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(1, 0)),
+                                    new SkiaButton("← Left") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(-1, 0)),
+                                    new SkiaButton("↑ Up") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, -1)),
+                                    new SkiaButton("↓ Down") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, 1)),
+                                    new SkiaButton("Right →") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(1, 0)),
                                     new SkiaButton("Attack (Space)") { BackgroundColor = Color.Parse("#D63384"), FontSize = 13 }.OnTapped(me => Attack()),
                                 },
                             },

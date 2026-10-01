@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Windows;
 using DrawnUi.Draw;
 using DrawnUi.Wpf;
@@ -17,6 +18,11 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // Numbers in captions and status lines read the same on every machine and as in the React demo
+        // ("0.005", never "0,005" on a comma-decimal Windows locale).
+        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
         Super.UseDrawnUi()
             // Same set as the React demo's main.tsx. This head has no AddSymbols()/AddEmojis(), so the
             // Noto subsets it ships are registered by hand under the aliases FontFamilyFallback expects.
@@ -24,10 +30,13 @@ public partial class App : Application
                 .AddFont("fonts/OpenSans-Regular.ttf", "FontText")
                 .AddFont("fonts/OpenSans-Semibold.ttf", "FontText", DrawnUi.Draw.FontWeight.SemiBold) // FontAttributes=Bold / FontWeight=600 pick this face
                 .AddFont("fonts/OpenSans-Semibold.ttf", "FontTextBold")
+                .AddFont("fonts/Orbitron-Regular.ttf", "FontGame") // Pong score and messages, as in the .NET Pong samples
                 .AddFont("fonts/NotoSansMathSymbols-Subset.ttf", "FontSymbols")
                 .AddFont("fonts/NotoSansSymbols2-Subset.ttf", "FontSymbols2"))
-            // No emoji font: the React demo's Noto Color Emoji subset is a COLR/SVG colour font that
-            // SkiaSharp on Windows draws as nothing. AutoFont picks the system Segoe UI Emoji instead.
+            // No FontEmoji: the hello apps' NotoColorEmoji-Subset.ttf is a COLRv1 font, and SkiaSharp on
+            // Windows (DirectWrite font manager) finds its glyphs but draws zero pixels (measured
+            // 2026-10-01, SkiaSharp 4.148), so registering it would make emoji vanish. Emoji resolve to
+            // the system Segoe UI Emoji through AutoFont / font-run fallback instead.
             // Without this every control that leaves FontFamily empty draws in Skia's built-in face,
             // on this head as on the others. A SkiaLabel style does not reach button captions,
             // because SkiaButton pushes its own FontFamily onto its label — so style buttons too.
@@ -47,5 +56,9 @@ public partial class App : Application
             // Same settings class as a MAUI app: keys pressed anywhere in the window reach KeyboardManager.
             .WithSettings(new DrawnUiStartupSettings { UseDesktopKeyboard = true })
             .Build();
+
+        // Every label is read as text, every button is a button, as in the React demo.
+        SkiaLabel.DefaultAccessibilityRole = DrawnUi.Models.Aria.RoleText;
+        SkiaButton.DefaultAccessibilityRole = DrawnUi.Models.Aria.RoleButton;
     }
 }

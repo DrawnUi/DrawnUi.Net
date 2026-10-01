@@ -232,13 +232,28 @@ public class ShellPage : SkiaLayer
             }.Fill(),
         };
 
+        // The root shell outlives this page: named handlers, removed in OnDisposing.
         _shell.Navigated += OnShellChanged;
-        _shell.RouteChanged += (_, _) => PaintState();
+        _shell.RouteChanged += OnShellRouteChanged;
+        _shell.ToastsChanged += OnShellToastsChanged;
         PaintState();
         PaintCancel();
     }
 
     private void OnShellChanged(object sender, ShellNavigatedArgs e) => PaintState();
+
+    private void OnShellRouteChanged(object sender, string route) => PaintState();
+
+    private void OnShellToastsChanged(object sender, EventArgs e) => MainThread.BeginInvokeOnMainThread(PaintState);
+
+    /// <inheritdoc/>
+    public override void OnDisposing()
+    {
+        _shell.Navigated -= OnShellChanged;
+        _shell.RouteChanged -= OnShellRouteChanged;
+        _shell.ToastsChanged -= OnShellToastsChanged;
+        base.OnDisposing();
+    }
 
     private void SetExtra(string extra)
     {
@@ -346,12 +361,17 @@ public class ShellPage : SkiaLayer
                 Children = new List<SkiaControl>
                 {
                     new SkiaLabel(name) { FontSize = 22, FontFamily = "FontTextBold", TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
+                    // Navigated fires on every push, also a push of the same route with new arguments
                     new SkiaLabel(TabState()) { FontSize = 12, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center }
-                        .Adapt(me => _tabs.RouteChanged += (_, _) => me.Text = TabState()),
+                        .Adapt(me =>
+                        {
+                            _tabs.RouteChanged += (_, _) => me.Text = TabState();
+                            _tabs.Navigated += (_, _) => me.Text = TabState();
+                        }),
                     new SkiaWrap
                     {
                         Spacing = 8,
-                        HorizontalOptions = LayoutOptions.Fill,
+                        HorizontalOptions = LayoutOptions.Center,
                         Children = new List<SkiaControl>
                         {
                             new SkiaButton("Push detail") { BackgroundColor = Color.Parse("#212529"), FontSize = 13 }.OnTapped(me => _ = _tabs.GoToAsync("detail")),
@@ -370,7 +390,7 @@ public class ShellPage : SkiaLayer
         if (_tabs == null)
             return "";
 
-        var args = _tabs.Arguments.Count > 0 ? " · Arguments {" + string.Join(", ", _tabs.Arguments.Select(a => $"{a.Key}: {a.Value}")) + "}" : "";
+        var args = _tabs.Arguments.Count > 0 ? " · Arguments " + System.Text.Json.JsonSerializer.Serialize(_tabs.Arguments) : "";
         return $"Tab {_tabs.SelectedTab} · stack [{string.Join(", ", _tabs.NavigationStack)}]{args}";
     }
 

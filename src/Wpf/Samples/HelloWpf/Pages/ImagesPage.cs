@@ -37,7 +37,7 @@ public class ImagesPage : SkiaLayer
                     Padding = new Thickness(16),
                     Children = new List<SkiaControl>
                     {
-                        Heading("SkiaImage · Aspect", 24),
+                        Heading("SkiaImage · Aspect", 24, top: 0),
                         new SkiaLabel("Same photo in a 220×120 box. Overflow is clipped to the box.")
                         {
                             FontSize = 13,
@@ -61,7 +61,7 @@ public class ImagesPage : SkiaLayer
                             Children = BuildEffects(),
                         },
 
-                        Heading("Custom filters · PaintColorFilter / PaintImageFilter", 20),
+                        Heading("Custom filters · AddEffect = Custom + PaintColorFilter / PaintImageFilter", 20),
                         new SkiaWrap
                         {
                             Spacing = 16,
@@ -69,7 +69,18 @@ public class ImagesPage : SkiaLayer
                             MaximumWidthRequest = 720,
                             Children = new List<SkiaControl>
                             {
-                                Tile("PaintColorFilter = CreateColorMatrix (R↔B)", new FilterImage
+                                // No per-glyph fallback on the C# engine: the arrow gets a span in the symbols face.
+                                Tile(new SkiaLabel
+                                {
+                                    FontSize = 12,
+                                    TextColor = Color.Parse("#94A3B8"),
+                                    Spans =
+                                    {
+                                        new TextSpan { Text = "PaintColorFilter = CreateColorMatrix (R" },
+                                        new TextSpan { Text = "↔", FontFamily = "FontSymbols" },
+                                        new TextSpan { Text = "B)" },
+                                    },
+                                }, new FilterImage
                                 {
                                     Source = Photo,
                                     WidthRequest = 160,
@@ -105,11 +116,12 @@ public class ImagesPage : SkiaLayer
                             WidthRequest = 400,
                             HeightRequest = 160,
                             BackgroundColor = Colors.Black,
-                        }.Animate(6, (me, animator, value, dt) =>
+                        }.Animate(1, (me, animator, value, dt) =>
                         {
-                            // Same drift as the React page's interval, but on the frame clock.
-                            me.TileOffsetX = value * 480;
-                            me.TileOffsetY = value * 240;
+                            // The React page's endless drift (4 px per 50 ms, Y = X / 2) on the frame clock:
+                            // accumulated per frame and wrapped at the 64 px tile, so it never resets visibly.
+                            me.TileOffsetX = (me.TileOffsetX + 80 * dt) % 64;
+                            me.TileOffsetY = (me.TileOffsetY + 40 * dt) % 64;
                         }, repeat: -1),
 
                         Heading("Alignment inside the box", 20),
@@ -131,12 +143,12 @@ public class ImagesPage : SkiaLayer
         };
     }
 
-    private static SkiaLabel Heading(string text, double size) => new(text)
+    private static SkiaLabel Heading(string text, double size, double top = 12) => new(text)
     {
         FontSize = size,
         TextColor = Colors.White,
         HorizontalOptions = LayoutOptions.Center,
-        Margin = new Thickness(0, 12, 0, 0),
+        Margin = new Thickness(0, top, 0, 0),
     };
 
     private static SkiaControl AspectTile(TransformAspect aspect) => new SkiaStack
@@ -158,15 +170,14 @@ public class ImagesPage : SkiaLayer
         },
     };
 
-    private static SkiaControl Tile(string caption, SkiaControl visual) => new SkiaStack
+    private static SkiaControl Tile(string caption, SkiaControl visual) =>
+        Tile(new SkiaLabel(caption) { FontSize = 12, TextColor = Color.Parse("#94A3B8") }, visual);
+
+    private static SkiaControl Tile(SkiaLabel caption, SkiaControl visual) => new SkiaStack
     {
         Spacing = 4,
         WidthRequest = 160,
-        Children = new List<SkiaControl>
-        {
-            visual,
-            new SkiaLabel(caption) { FontSize = 12, TextColor = Color.Parse("#94A3B8") },
-        },
+        Children = new List<SkiaControl> { visual, caption },
     };
 
     private static SkiaControl Aligned(TransformAspect aspect, DrawImageAlignment horizontal, DrawImageAlignment vertical) =>
@@ -220,7 +231,7 @@ public class ImagesPage : SkiaLayer
                 i.HorizontalOffset = -40;
                 i.Aspect = TransformAspect.AspectFit;
             }),
-            Effect("HSL Gamma=0.6 Sat=1 Bright=0.5", i =>
+            Effect("HSL Gamma=0.6 (hue) Sat=1 Bright=0.5", i =>
             {
                 i.AddEffect = SkiaImageEffect.HSL;
                 i.BackgroundColor = Colors.White;
@@ -246,7 +257,7 @@ public class FilterImage : SkiaImage
     private SKColorFilter _colorFilter;
     private SKImageFilter _imageFilter;
 
-    /// <summary>Colour filter applied to the image paint.</summary>
+    /// <summary>Color filter applied to the image paint.</summary>
     public SKColorFilter ColorFilter
     {
         get => _colorFilter;

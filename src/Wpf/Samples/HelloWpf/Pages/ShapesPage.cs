@@ -20,8 +20,13 @@ public class ShapesPage : SkiaLayer
         0.5, 0.76, 0.19, 1.0, 0.31, 0.61, 0.0, 0.38, 0.38, 0.38,
     };
 
-    /// <summary>Builds the page.</summary>
-    public ShapesPage()
+    /// <summary>Builds the page without a shell: the ContextMenu demo then shows no toast.</summary>
+    public ShapesPage() : this(null)
+    {
+    }
+
+    /// <summary>Builds the page; <paramref name="shell"/> shows the ContextMenu demo's toast.</summary>
+    public ShapesPage(SkiaShell shell)
     {
         HorizontalOptions = LayoutOptions.Fill;
         VerticalOptions = LayoutOptions.Fill;
@@ -39,6 +44,39 @@ public class ShapesPage : SkiaLayer
                     {
                         Title("SkiaShape", 24),
                         Caption("Stroke is drawn inside the bounds; children are clipped to the shape."),
+
+                        Title("ContextMenu", 20),
+                        new SkiaLabel("A right click, long press or the Menu key over the shape reaches its ContextMenu handler, which takes the request by returning true. Elsewhere on the canvas the app's own handler answers with the library versions.")
+                        {
+                            FontSize = 13,
+                            TextColor = Colors.LightGray,
+                            HorizontalOptions = LayoutOptions.Center,
+                            HorizontalTextAlignment = DrawTextAlignment.Center,
+                            MaximumWidthRequest = 680,
+                        },
+                        Row(new List<SkiaControl>
+                        {
+                            Demo("ContextMenu -> toast", new SkiaShape
+                            {
+                                Type = ShapeType.Rectangle,
+                                CornerRadius = 12,
+                                WidthRequest = 120,
+                                HeightRequest = 70,
+                                BackgroundColor = Color.Parse("#0D6EFD"),
+                                Children = new List<SkiaControl>
+                                {
+                                    new SkiaLabel("right-click me")
+                                    {
+                                        FontSize = 13,
+                                        TextColor = Colors.White,
+                                    }.Center(),
+                                },
+                            }.Center().OnContextMenu((me, e) =>
+                            {
+                                shell?.ShowToast($"ContextMenu at {e.Local.X:0}, {e.Local.Y:0} pt ({e.Source})", 3000);
+                                return true;
+                            })),
+                        }),
 
                         Title("FillGradient / StrokeGradient", 20),
                         Row(new List<SkiaControl>
@@ -75,8 +113,8 @@ public class ShapesPage : SkiaLayer
                                 Type = ShapeType.Circle,
                                 WidthRequest = 80,
                                 LockRatio = 1,
-                                // A sweep turns about its centre, so it needs one — at the default
-                                // (0,0) every angle samples the same colour and it renders flat.
+                                // A sweep turns about its center, so it needs one — at the default
+                                // (0,0) every angle samples the same color and it renders flat.
                                 FillGradient = Gradient(GradientType.Sweep,
                                     new[] { "#E94560", "#FFC107", "#20C997", "#0D6EFD", "#E94560" },
                                     startX: 0.5f, startY: 0.5f),
@@ -94,7 +132,16 @@ public class ShapesPage : SkiaLayer
                                     endX: 1, endY: 0),
                             }.Center()),
 
-                            Demo("SkiaLabel FillGradient → glyphs", new SkiaLabel("Gradient text, line by line")
+                            // No per-glyph fallback on the C# engine: the arrow gets a span in the symbols face.
+                            Demo(new SkiaLabel
+                            {
+                                Spans =
+                                {
+                                    new TextSpan { Text = "SkiaLabel FillGradient " },
+                                    new TextSpan { Text = "→", FontFamily = "FontSymbols" },
+                                    new TextSpan { Text = " glyphs (GradientByLines)" },
+                                },
+                            }, new SkiaLabel("Gradient text, line by line")
                             {
                                 FontSize = 18,
                                 FontFamily = "FontTextBold",
@@ -104,7 +151,7 @@ public class ShapesPage : SkiaLayer
                                 FillGradient = Gradient(GradientType.Linear, new[] { "#FFC107", "#D63384" }, angle: 90),
                             }.Center()),
 
-                            Demo("Label: background + gradient text", new SkiaLabel("bg + text")
+                            Demo("Label: BackgroundColor + FillGradient = both", new SkiaLabel("bg + text")
                             {
                                 FontSize = 16,
                                 TextColor = Colors.White,
@@ -120,7 +167,7 @@ public class ShapesPage : SkiaLayer
                         {
                             Demo("BevelType=Bevel · Depth 4", Beveled(BevelType.Bevel, 4)),
                             Demo("BevelType=Emboss · Depth 4", Beveled(BevelType.Emboss, 4)),
-                            Demo("Circle · Bevel, coloured edges", new SkiaShape
+                            Demo("Circle · Bevel, colored edges", new SkiaShape
                             {
                                 Type = ShapeType.Circle,
                                 BackgroundColor = Color.Parse("#0D6EFD"),
@@ -155,7 +202,7 @@ public class ShapesPage : SkiaLayer
                                 BevelType = BevelType.Bevel,
                                 Bevel = new SkiaBevel { Depth = 3, Opacity = 0.7 },
                             }.Center()),
-                            Demo("Sharp rectangle · Bevel", new SkiaShape
+                            Demo("Sharp rectangle · Bevel, Opacity 1", new SkiaShape
                             {
                                 Type = ShapeType.Rectangle,
                                 BackgroundColor = Color.Parse("#6C757D"),
@@ -181,7 +228,7 @@ public class ShapesPage : SkiaLayer
                                     new() { X = 0, Y = 4, Blur = 6, Opacity = 0.5, Color = Colors.Black },
                                 },
                             }.Center()),
-                            Demo("Coloured, offset X", new SkiaShape
+                            Demo("Colored, offset X", new SkiaShape
                             {
                                 Type = ShapeType.Circle,
                                 BackgroundColor = Color.Parse("#FFC107"),
@@ -205,7 +252,7 @@ public class ShapesPage : SkiaLayer
                                     new() { X = 0, Y = 6, Blur = 4, Opacity = 0.6, Color = Colors.Black },
                                 },
                             }.Center()),
-                            Demo("Hollow + shadow", new SkiaShape
+                            Demo("ShadowOnly + hollow ClipBackgroundColor", new SkiaShape
                             {
                                 Type = ShapeType.Rectangle,
                                 CornerRadius = 12,
@@ -386,29 +433,34 @@ public class ShapesPage : SkiaLayer
         Children = children,
     };
 
-    /// <summary>One labelled swatch: the demo shape centred on a card.</summary>
-    private static SkiaControl Demo(string title, SkiaControl content) => new SkiaStack
+    /// <summary>One labeled swatch: the demo shape centered on a card.</summary>
+    private static SkiaControl Demo(string title, SkiaControl content) => Demo(new SkiaLabel(title), content);
+
+    /// <summary>Same swatch with a prebuilt title label (e.g. spans for a symbol); size, color and alignment are set here.</summary>
+    private static SkiaControl Demo(SkiaLabel title, SkiaControl content)
     {
-        Spacing = 8,
-        WidthRequest = 150,
-        Children = new List<SkiaControl>
+        title.FontSize = 13;
+        title.TextColor = Color.Parse("#ADB5BD");
+        title.HorizontalOptions = LayoutOptions.Center;
+
+        return new SkiaStack
         {
-            new SkiaShape
+            Spacing = 8,
+            WidthRequest = 150,
+            Children = new List<SkiaControl>
             {
-                WidthRequest = 150,
-                HeightRequest = 110,
-                BackgroundColor = Color.Parse("#2B3035"),
-                CornerRadius = 8,
-                Children = new List<SkiaControl> { content },
+                new SkiaShape
+                {
+                    WidthRequest = 150,
+                    HeightRequest = 110,
+                    BackgroundColor = Color.Parse("#2B3035"),
+                    CornerRadius = 8,
+                    Children = new List<SkiaControl> { content },
+                },
+                title,
             },
-            new SkiaLabel(title)
-            {
-                FontSize = 13,
-                TextColor = Color.Parse("#ADB5BD"),
-                HorizontalOptions = LayoutOptions.Center,
-            },
-        },
-    };
+        };
+    }
 
     private static SkiaShape Beveled(BevelType type, double depth) => new SkiaShape
     {

@@ -70,7 +70,7 @@ public class KeyboardPage : SkiaLayer
                                     },
                                 },
                                 new SkiaLabel("Last key: waiting") { FontSize = 16, TextColor = Color.Parse("#41495A"), HorizontalOptions = LayoutOptions.Fill }.Assign(out _last),
-                                new SkiaLabel("Modifiers: shift False, ctrl False, alt False") { FontSize = 14, TextColor = Color.Parse("#636F80"), HorizontalOptions = LayoutOptions.Fill }.Assign(out _modifiers),
+                                new SkiaLabel("Modifiers: shift false, ctrl false, alt false") { FontSize = 14, TextColor = Color.Parse("#636F80"), HorizontalOptions = LayoutOptions.Fill }.Assign(out _modifiers),
                                 new SkiaLabel("KeyChar (printable, no Ctrl/Alt): \"\"") { FontSize = 14, TextColor = Color.Parse("#636F80"), HorizontalOptions = LayoutOptions.Fill }.Assign(out _chars),
                                 new SkiaStack
                                 {
@@ -122,11 +122,14 @@ public class KeyboardPage : SkiaLayer
     {
         _hero.Text = "Keyboard probe live";
         _last.Text = $"Last key: {phase} {key}";
-        _modifiers.Text = $"Modifiers: shift {KeyboardManager.IsShiftPressed}, ctrl {KeyboardManager.IsControlPressed}, alt {KeyboardManager.IsAltPressed}";
+        _modifiers.Text = $"Modifiers: shift {Lower(KeyboardManager.IsShiftPressed)}, ctrl {Lower(KeyboardManager.IsControlPressed)}, alt {Lower(KeyboardManager.IsAltPressed)}";
         _events.Insert(0, $"{phase} {key}");
         if (_events.Count > 5)
             _events.RemoveAt(5);
         for (var i = 0; i < _history.Count; i++)
             _history[i].Text = i < _events.Count ? _events[i] : Waiting;
     }
+
+    /// <summary>Prints a bool the way the React demo does (true / false, not True / False).</summary>
+    private static string Lower(bool value) => value ? "true" : "false";
 }

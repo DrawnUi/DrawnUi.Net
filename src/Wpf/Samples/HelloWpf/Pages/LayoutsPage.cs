@@ -110,6 +110,8 @@ public class LayoutsPage : SkiaLayer
     private int _split = 3;
     private bool _dynamic;
     private SkiaWrap _chips;
+    private SkiaRow _chipsRow;
+    private SkiaGrid _chipsGrid;
     private SkiaLabel _chipsTitle;
     private readonly List<SkiaButton> _splitButtons = new();
     private SkiaButton _dynamicButton;
@@ -370,7 +372,7 @@ public class LayoutsPage : SkiaLayer
                                     .ToList(),
                             }),
                         Card("SkiaRow ItemsSource (same cells, laid out horizontally, every item realized)",
-                            new SkiaRow { Spacing = 8, ItemsSource = MakeChips(5), ItemTemplate = new DataTemplate(() => new ChipCell()) }),
+                            new SkiaRow { Spacing = 8, ItemsSource = MakeChips(Math.Min(5, _count)), ItemTemplate = new DataTemplate(() => new ChipCell()) }.Assign(out _chipsRow)),
                         Card("SkiaDecoratedGrid ItemsSource · Split=4 · ColumnSpacing / RowSpacing 1 · gradient lines in the spacing",
                             new SkiaDecoratedGrid
                             {
@@ -380,9 +382,9 @@ public class LayoutsPage : SkiaLayer
                         Card("SkiaGrid ItemsSource · Split=3 · Invert (column-major)",
                             new SkiaGrid
                             {
-                                ItemsSource = MakeChips(10), ItemTemplate = new DataTemplate(() => new ChipCell()), Split = 3, Invert = true,
+                                ItemsSource = MakeChips(_count), ItemTemplate = new DataTemplate(() => new ChipCell()), Split = 3, Invert = true,
                                 ColumnDefinitions = Cols("*,*,*"), ColumnSpacing = 8, RowSpacing = 8,
-                            }),
+                            }.Assign(out _chipsGrid)),
                     },
                 },
             }.Fill(),
@@ -411,13 +413,17 @@ public class LayoutsPage : SkiaLayer
     private void SetCount(int count)
     {
         _count = count;
-        _chips.ItemsSource = MakeChips(count);
+        // One list drives the Wrap, the Grid and the Row (first 5), as in the React page.
+        var items = MakeChips(count);
+        _chips.ItemsSource = items;
+        _chipsGrid.ItemsSource = items;
+        _chipsRow.ItemsSource = items.Take(5).ToList();
         RefreshChipsChrome();
     }
 
     private void RefreshChipsChrome()
     {
-        _chipsTitle.Text = $"SkiaWrap ItemsSource ({_count} recycled ChipCell) · Split={_split} · DynamicColumns={_dynamic}";
+        _chipsTitle.Text = $"SkiaWrap ItemsSource ({_count} recycled ChipCell) · Split={_split} · DynamicColumns={(_dynamic ? "true" : "false")}";
         var values = new[] { 0, 2, 3, 4 };
         for (var i = 0; i < _splitButtons.Count; i++)
             _splitButtons[i].BackgroundColor = Color.Parse(values[i] == _split ? "#533483" : "#495057");

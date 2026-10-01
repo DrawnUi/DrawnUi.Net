@@ -199,6 +199,9 @@ public class SkiaShell : SkiaLayer
     /// <summary>Raised when the top route changes (push, pop, tab switch).</summary>
     public event EventHandler<string> RouteChanged;
 
+    /// <summary>Raised when a toast is added or removed, so a UI showing <see cref="ToastsCount"/> can refresh.</summary>
+    public event EventHandler ToastsChanged;
+
     /// <summary>Creates the shell.</summary>
     public SkiaShell()
     {
@@ -1153,6 +1156,7 @@ public class SkiaShell : SkiaLayer
         var entry = new Overlay { Layer = layer, Content = content };
         _toasts.Add(entry);
         AddSubView(layer);
+        ToastsChanged?.Invoke(this, EventArgs.Empty);
 
         await WaitForLayout(layer);
         var height = layer.DrawingRect.Height / Math.Max(1, layer.RenderingScale);
@@ -1186,6 +1190,7 @@ public class SkiaShell : SkiaLayer
         _toasts.Remove(toast);
         RemoveSubView(toast.Layer);
         toast.Layer.Dispose();
+        ToastsChanged?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion
