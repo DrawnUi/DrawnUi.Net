@@ -48,6 +48,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\DrawnUi\DrawnUi.Maui.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Maui.Game\DrawnUi.Maui.Game.csproj" />
     </ItemGroup>
+
+    <!-- The Pong page hosts the shared game, the same code as every Pong sample. -->
+    <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
 
 </Project>

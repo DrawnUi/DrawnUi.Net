@@ -61,7 +61,7 @@ public class EditorPage : SkiaLayer
                                 {
                                     new SkiaButton("Focus") { BackgroundColor = Color.Parse("#0D6EFD"), FontSize = 13 }.OnTapped(me => _editor.IsFocused = true),
                                     new SkiaButton("SelectAll()") { BackgroundColor = Color.Parse("#495057"), FontSize = 13 }.OnTapped(me => _editor.SelectAll()),
-                                    new SkiaButton("InsertAtCursor(arrow)") { BackgroundColor = Color.Parse("#495057"), FontSize = 13 }.OnTapped(me => _editor.InsertAtCursor("→")),
+                                    new SkiaButton("InsertAtCursor('🙂')") { BackgroundColor = Color.Parse("#495057"), FontSize = 13 }.OnTapped(me => _editor.InsertAtCursor("🙂")),
                                     new SkiaButton("Set Text") { BackgroundColor = Color.Parse("#495057"), FontSize = 13 }.OnTapped(me => _editor.Text = "Hello from code"),
                                     new SkiaButton("Clear") { BackgroundColor = Color.Parse("#495057"), FontSize = 13 }.OnTapped(me => _editor.Text = ""),
                                 },
@@ -98,7 +98,7 @@ public class EditorPage : SkiaLayer
                             }),
 
                         Card(Title("Multiline — MaxLines=4: Enter inserts a line, the box scrolls to the caret"),
-                            new SkiaEditor { MaxLines = 4, PlaceholderText = "Write a few lines… wrapping, arrows, Shift+arrows select, double tap selects a word", FontSize = 15, HorizontalOptions = LayoutOptions.Fill }),
+                            new SkiaEditor { MaxLines = 4, PlaceholderText = "Write a few lines… wrapping, arrows, Shift+arrows select, double tap / long press selects a word", FontSize = 15, HorizontalOptions = LayoutOptions.Fill }),
 
                         Card(Title("Multiline + AutoHeight — MaxLines=-1: the editor grows with the text"),
                             new SkiaEditor { MaxLines = -1, AutoHeight = true, PlaceholderText = "Grows as you type", FontSize = 15, Text = "First line\nSecond line", HorizontalOptions = LayoutOptions.Fill }),

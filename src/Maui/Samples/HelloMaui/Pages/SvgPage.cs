@@ -85,7 +85,7 @@ public class SvgPage : SkiaLayer
                                 StarAt(128),
                             },
                         },
-                        new SkiaLabel("Rasterized at the displayed pixel size, re-rasterized only when that size changes.")
+                        new SkiaLabel("Parsed once into an SKPicture and drawn as vectors at the displayed size, so it stays sharp at any scale.")
                         {
                             FontSize = 12,
                             TextColor = Color.Parse("#94A3B8"),

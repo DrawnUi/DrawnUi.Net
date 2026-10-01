@@ -13,7 +13,7 @@ public class TextPage : SkiaLayer
         # Heading 1
         ## Heading 2
         ### Heading 3
-        A paragraph with **bold**, *italic*, ~~strikethrough~~ (TODO: not parsed by SkiaRichLabel on C# yet, React does), `inline code` and a [tappable link](https://drawnui.net).
+        A paragraph with **bold**, *italic*, ~~strikethrough~~ (strikethrough is not parsed by the C# SkiaRichLabel yet), `inline code` and a [tappable link](https://drawnui.net).
         Soft line breaks stay inside the paragraph.
 
         - Bullet item with **bold**
@@ -188,8 +188,29 @@ public class TextPage : SkiaLayer
 
                         Card("FontAttributes / FontWeight (weights registered via ConfigureFonts)",
                             new SkiaLabel("Regular 400 — the family default") { FontSize = 16, TextColor = Body },
-                            new SkiaLabel("FontAttributes=Bold → nearest registered weight (600 Semibold)") { FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Bold, FontFamilyFallback = "FontSymbols" },
-                            new SkiaLabel("FontAttributes=Italic → synthetic skew when no italic face") { FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Italic, FontFamilyFallback = "FontSymbols" },
+                            // The arrow gets its own span in the symbols face (no per-glyph fallback in a C# SkiaLabel).
+                            // Spans inherit the label's typeface, size and color but not its FontAttributes,
+                            // so each span repeats IsBold / IsItalic.
+                            new SkiaLabel
+                            {
+                                FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Bold,
+                                Spans =
+                                {
+                                    new TextSpan { Text = "FontAttributes=Bold ", IsBold = true },
+                                    new TextSpan { Text = "→", FontFamily = "FontSymbols", IsBold = true },
+                                    new TextSpan { Text = " nearest registered weight (600 Semibold)", IsBold = true },
+                                },
+                            },
+                            new SkiaLabel
+                            {
+                                FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Italic,
+                                Spans =
+                                {
+                                    new TextSpan { Text = "FontAttributes=Italic ", IsItalic = true },
+                                    new TextSpan { Text = "→", FontFamily = "FontSymbols", IsItalic = true },
+                                    new TextSpan { Text = " synthetic skew when no italic face", IsItalic = true },
+                                },
+                            },
                             new SkiaLabel("FontAttributes=BoldItalic") { FontSize = 16, TextColor = Body, FontAttributes = FontAttributes.Bold | FontAttributes.Italic },
                             new SkiaLabel("FontWeight=600 explicit") { FontSize = 16, TextColor = Body, FontWeight = 600 }),
 

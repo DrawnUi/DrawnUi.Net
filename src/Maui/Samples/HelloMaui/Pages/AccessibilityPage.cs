@@ -24,6 +24,7 @@ public class AccessibilityPage : SkiaLayer
     private string _lastActivated = "-";
     private IDispatcherTimer _timer;
 
+    private SkiaAccessibilityManager _manager;
     /// <summary>Builds the page.</summary>
     public AccessibilityPage()
     {
@@ -56,18 +57,18 @@ public class AccessibilityPage : SkiaLayer
                                 FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill,
                             }),
 
-                        Card("Buttons — AccessibilityRole opts a SkiaButton in: label from Text, hint, disabled",
+                        Card("Buttons — label from Text, hint, custom label, disabled",
                             new SkiaWrap
                             {
                                 Spacing = 8,
                                 Children = new List<SkiaControl>
                                 {
-                                    new SkiaButton("Tapped 0×") { AccessibilityRole = Aria.RoleButton, BackgroundColor = Color.Parse("#0D6EFD"), AccessibilityHint = "Increments the counter" }
+                                    new SkiaButton("Tapped 0×") { BackgroundColor = Color.Parse("#0D6EFD"), AccessibilityHint = "Increments the counter" }
                                         .Assign(out _counter)
                                         .OnTapped(me => { _count++; _counter.Text = $"Tapped {_count}×"; Activated("counter"); }),
-                                    new SkiaButton("★") { AccessibilityRole = Aria.RoleButton, FontSize = 18, FontFamily = "FontSymbols2", BackgroundColor = Color.Parse("#6610F2"), WidthRequest = 48, AccessibilityLabel = "Favorite", AccessibilityHint = "Icon-only button: AccessibilityLabel replaces the glyph" }
+                                    new SkiaButton("★") { FontSize = 18, FontFamily = "FontSymbols2", BackgroundColor = Color.Parse("#6610F2"), WidthRequest = 48, AccessibilityLabel = "Favorite", AccessibilityHint = "Icon-only button: AccessibilityLabel replaces the glyph" }
                                         .OnTapped(me => Activated("favorite")),
-                                    new SkiaButton("Disabled") { AccessibilityRole = Aria.RoleButton, BackgroundColor = Color.Parse("#495057"), IsDisabled = true, AccessibilityHint = "IsDisabled: not activatable" },
+                                    new SkiaButton("Disabled") { BackgroundColor = Color.Parse("#495057"), IsDisabled = true, AccessibilityHint = "IsDisabled: no tab stop, not activatable" },
                                 },
                             }),
 
@@ -77,7 +78,7 @@ public class AccessibilityPage : SkiaLayer
                                 Spacing = 8,
                                 Children = new List<SkiaControl>
                                 {
-                                    new SkiaButton("Sound: on") { AccessibilityRole = Aria.RoleButton, BackgroundColor = Color.Parse("#20C997"), AccessibilityLabel = "Sound", AccessibilityIsPressed = true }
+                                    new SkiaButton("Sound: on") { BackgroundColor = Color.Parse("#20C997"), AccessibilityLabel = "Sound", AccessibilityIsPressed = true }
                                         .Assign(out _sound)
                                         .OnTapped(me =>
                                         {
@@ -87,7 +88,7 @@ public class AccessibilityPage : SkiaLayer
                                             _sound.AccessibilityIsPressed = _soundOn;
                                             Activated("sound");
                                         }),
-                                    new SkiaButton("Dark: off") { AccessibilityRole = Aria.RoleButton, BackgroundColor = Color.Parse("#495057"), AccessibilityLabel = "Dark mode", AccessibilityIsPressed = false }
+                                    new SkiaButton("Dark: off") { BackgroundColor = Color.Parse("#495057"), AccessibilityLabel = "Dark mode", AccessibilityIsPressed = false }
                                         .Assign(out _dark)
                                         .OnTapped(me =>
                                         {
@@ -140,8 +141,8 @@ public class AccessibilityPage : SkiaLayer
                             },
                             new SkiaLabel("The yellow circle is decorative: AccessibilityRole=Aria.RolePresentation keeps it out of the tree.") { FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill }),
 
-                        Card("Labels — opt in per control",
-                            new SkiaLabel("This label is a node: AccessibilityRole=Aria.RoleText.") { FontSize = 14, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleText },
+                        Card("Labels — read by default, opted out per control",
+                            new SkiaLabel("This label is announced: SkiaLabel.DefaultAccessibilityRole = Aria.RoleText was set once at startup.") { FontSize = 14, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill },
                             new SkiaLabel("This one is visible but hidden from assistive technology (RolePresentation).") { FontSize = 14, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RolePresentation },
                             new SkiaLabel("Heading level text") { FontSize = 16, FontFamily = "FontTextBold", TextColor = Colors.White, AccessibilityRole = Aria.RoleHeading }),
 
@@ -155,20 +156,40 @@ public class AccessibilityPage : SkiaLayer
             }.Fill(),
         };
 
-        // live view of the engine's accessibility snapshot; focus is not part of the snapshot, hence the poll
+        // live view of the engine's accessibility snapshot: refreshed on SkiaAccessibilityManager.Changed (see OnLayoutReady),
+        // and polled because focus is not part of the snapshot
         _timer = Application.Current.Dispatcher.CreateTimer();
         _timer.Interval = TimeSpan.FromMilliseconds(300);
         _timer.Tick += (_, _) => RefreshSnapshot();
         _timer.Start();
     }
 
+    /// <summary>Laid out inside a canvas: its accessibility manager is reachable now, subscribe once.</summary>
+    protected override void OnLayoutReady()
+    {
+        base.OnLayoutReady();
+
+        if (_manager != null)
+            return;
+
+        _manager = Superview?.AccessibilityManager;
+        if (_manager != null)
+            _manager.Changed += OnSnapshotChanged;
+    }
+
     /// <inheritdoc/>
     public override void OnDisposing()
     {
+        if (_manager != null)
+            _manager.Changed -= OnSnapshotChanged;
+        _manager = null;
         _timer?.Stop();
         _timer = null;
         base.OnDisposing();
     }
+
+    /// <summary>Raised from the frame that rebuilt the snapshot: hop to the UI thread.</summary>
+    private void OnSnapshotChanged() => MainThread.BeginInvokeOnMainThread(RefreshSnapshot);
 
     private void Activated(string what)
     {

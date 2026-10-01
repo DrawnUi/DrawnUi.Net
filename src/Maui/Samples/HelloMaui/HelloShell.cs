@@ -1,3 +1,4 @@
+using System.Reflection;
 using DrawnUi.Controls;
 using DrawnUi.Views;
 using HelloMaui.Pages;
@@ -38,6 +39,7 @@ public class HelloShell : SkiaShell
         ["sprites"] = typeof(PageHost<SpritesPage>),
         ["transforms"] = typeof(PageHost<TransformsPage>),
         ["reorder"] = typeof(PageHost<ReorderPage>),
+        ["pong"] = typeof(PageHost<PongPage>),
         ["a11y"] = typeof(PageHost<AccessibilityPage>),
     };
 
@@ -52,7 +54,7 @@ public class HelloShell : SkiaShell
         foreach (var route in Routes)
             RegisterRoute(route.Key, route.Value);
 
-        Content = new Canvas
+        var canvas = new Canvas
         {
             Gestures = GesturesMode.Enabled,
             RenderingMode = RenderingModeType.Accelerated,
@@ -61,15 +63,60 @@ public class HelloShell : SkiaShell
             VerticalOptions = LayoutOptions.Fill,
             Content = new SkiaLayer
             {
-                Tag = "ShellLayout",
                 Children = new List<SkiaControl>
                 {
-                    new SkiaControl { Tag = "RootLayout" }, // replaced by the "root" route
+                    new SkiaLayer
+                    {
+                        Tag = "ShellLayout",
+                        Children = new List<SkiaControl>
+                        {
+                            new SkiaControl { Tag = "RootLayout" }, // replaced by the "root" route
+                        },
+                    }.Fill(),
+#if DEBUG
+                    // debug builds only, like the React demo's dev-server counter
+                    new SkiaLabelFps
+                    {
+                        Margin = new Thickness(0, 0, 4, 24),
+                        VerticalOptions = LayoutOptions.End,
+                        HorizontalOptions = LayoutOptions.End,
+                        Rotation = -45,
+                        BackgroundColor = Color.Parse("#8B0000"),
+                        TextColor = Colors.White,
+                        ZIndex = 110,
+                    },
+#endif
                 },
-            }.Fill(),
+            }.Fill()
+            // a right click (long press, Menu key) that no control took shows the library versions
+            .OnContextMenu((me, e) =>
+            {
+                ShowToast($"DrawnUi.Maui {VersionOf(typeof(Canvas))} · SkiaSharp {VersionOf(typeof(SKCanvas))}", 3000);
+                return true;
+            }),
         };
 
+        // The Images page photo (also the Shell backdrop and the Scroll header), warmed once the first
+        // screen is drawn so the first visit to Images shows it at once instead of black tiles.
+        EventHandler<SkiaDrawingContext> preload = null;
+        preload = (_, _) =>
+        {
+            canvas.WasDrawn -= preload;
+            _ = Task.Run(() => SkiaImageManager.Instance.PreloadImages(new List<string> { "images/baboon.jpg" }));
+        };
+        canvas.WasDrawn += preload;
+
+        Content = canvas;
+
         Initialize("root");
+    }
+
+    private static string VersionOf(Type type)
+    {
+        var version = type.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+                      ?? type.Assembly.GetName().Version?.ToString() ?? "?";
+        var plus = version.IndexOf('+');
+        return plus > 0 ? version[..plus] : version;
     }
 
     /// <summary>Title of a sample page type, from the catalog.</summary>
@@ -118,7 +165,7 @@ public class RootScreen : SkiaLayer
 public class PageHost<T> : SkiaLayer where T : SkiaControl, new()
 {
     /// <summary>Nav bar height in points.</summary>
-    public const double NavBarHeight = 52;
+    public const double NavBarHeight = 56;
 
     /// <summary>Builds the host and its page.</summary>
     public PageHost()
@@ -139,7 +186,7 @@ public class PageHost<T> : SkiaLayer where T : SkiaControl, new()
             new SkiaLayer
             {
                 HeightRequest = NavBarHeight,
-                BackgroundColor = Color.Parse("#1A1D20"),
+                BackgroundColor = HelloShell.PageBackground,
                 UseCache = SkiaCacheType.Image,
                 Children = new List<SkiaControl>
                 {
