@@ -110,6 +110,16 @@ For emoji rendering, use the `AutoFont` property:
 
 This ensures proper emoji rendering by finding and using appropriate fonts.
 
+#### Fallback fonts
+
+Without spans, name the fonts to use for glyphs the label's own font does not have. Each missing glyph is drawn with the first of them that has it, the rest of the text keeps the label's font:
+
+```xml
+<draw:SkiaLabel Text="Rating ★★★★☆ → 4/5" FontFamilyFallback="FontSymbols, FontSymbols2" />
+```
+
+A glyph that none of the fonts has becomes `FallbackCharacter`. With `AutoFont="True"` the whole label switches to the font of its first glyph instead.
+
 ### Text Effects
 
 SkiaLabel supports various text effects:

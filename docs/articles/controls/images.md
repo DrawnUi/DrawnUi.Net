@@ -491,7 +491,12 @@ await SkiaImageManager.Instance.PreloadImages(new List<string>
     "Images/image2.jpg",
     "Images/image3.jpg"
 });
+
+// Same, with a priority: Low waits behind the images on screen (Normal), High goes first
+await SkiaImageManager.Instance.PreloadImages(urls, LoadPriority.Low);
 ```
+
+Network images load `SkiaImageManager.MaxParallelLoads` at a time and the others wait in line by priority; files on disk or in the app package load at once. `RunningCount` and `QueuedCount` tell how many network loads run and wait right now, and `RemoveFromCache(url)` drops one image so the next load reads it again.
 
 #### Managing Memory Usage
 
