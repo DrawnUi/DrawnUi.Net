@@ -66,7 +66,17 @@ public partial class SkiaImageManager : IDisposable
         }
     }
 
-    public virtual async Task PreloadImages(IList<string> list, CancellationTokenSource cancel = default)
+    /// <summary>
+    /// Loads the images into the cache at <see cref="LoadPriority.Low"/>, all queued at once.
+    /// </summary>
+    public virtual Task PreloadImages(IList<string> list, CancellationTokenSource cancel = default)
+        => PreloadImages(list, LoadPriority.Low, cancel);
+
+    /// <summary>
+    /// Loads the images into the cache at the given priority, all queued at once: network loads run
+    /// <see cref="MaxParallelLoads"/> at a time. Completes when every image is loaded or failed.
+    /// </summary>
+    public virtual async Task PreloadImages(IList<string> list, LoadPriority priority, CancellationTokenSource cancel = default)
     {
         CancellationTokenSource localCancel = null;
         try
@@ -84,7 +94,7 @@ public partial class SkiaImageManager : IDisposable
                 {
                     if (!cancel.IsCancellationRequested)
                     {
-                        tasks.Add(Preload(source, cancel));
+                        tasks.Add(Preload(source, cancel, priority));
                     }
                 }
 
@@ -246,24 +256,47 @@ public partial class SkiaImageManager : IDisposable
         });
     }
 
-    private SemaphoreSlim semaphoreLoad = CreateSemaphoreForLocalFiles();
+    /// <summary>
+    /// How many network image loads run at once; the others wait in line by <see cref="LoadPriority"/>.
+    /// Local files are not limited. Applies from the next load.
+    /// </summary>
+    public static int MaxParallelLoads { get; set; } = DefaultMaxParallelLoads();
 
-    static SemaphoreSlim CreateSemaphoreForLocalFiles()
+    static int DefaultMaxParallelLoads()
     {
 #if IOS
         if (DeviceInfo.DeviceType == DeviceType.Virtual)
         {
-            return new SemaphoreSlim(5, 5);
+            return 5;
         }
 #endif
 
 #if ANDROID
         //since we dont use http factory on android..
         //Android HTTP Connection Pool: Default limit is ~5 connections per host
-        return new(5, 5);
+        return 5;
 #else
-        return new(10, 10);
+        return 10;
 #endif
+    }
+
+    private readonly ImageLoadQueue semaphoreLoad = new(() => MaxParallelLoads);
+
+    /// <summary>
+    /// Network image loads running now, at most <see cref="MaxParallelLoads"/>.
+    /// </summary>
+    public int RunningCount => semaphoreLoad.RunningCount;
+
+    /// <summary>
+    /// Image loads not started yet: waiting in the queue or for a free network slot.
+    /// </summary>
+    public int QueuedCount
+    {
+        get
+        {
+            lock (lockObject)
+                return _queue.Count + semaphoreLoad.QueuedCount;
+        }
     }
 
     private readonly object lockObject = new object();
@@ -310,6 +343,11 @@ public partial class SkiaImageManager : IDisposable
         public CancellationTokenSource Cancel { get; init; }
         public TaskCompletionSource<SKBitmap> Task { get; init; }
 
+        /// <summary>
+        /// Place in line for a network slot.
+        /// </summary>
+        public LoadPriority Priority { get; init; } = LoadPriority.Normal;
+
         public void Dispose()
         {
             if (_ownsCancel)
@@ -321,7 +359,8 @@ public partial class SkiaImageManager : IDisposable
 
     private readonly SortedDictionary<LoadPriority, Queue<QueueItem>> _priorityQueue = new();
 
-    private readonly PriorityQueue<QueueItem, LoadPriority> _queue = new();
+    // highest priority first: LoadPriority.High has the largest value
+    private readonly PriorityQueue<QueueItem, LoadPriority> _queue = new(Comparer<LoadPriority>.Create((a, b) => b.CompareTo(a)));
 
     private readonly ConcurrentDictionary<string, Task<SKBitmap>> _trackLoadingBitmapsUris = new();
     private readonly ConcurrentDictionary<string, ConcurrentStack<QueueItem>> _pendingLoadsLow = new();
@@ -410,7 +449,7 @@ public partial class SkiaImageManager : IDisposable
             TraceLog($"ImageLoadManager: Not found cached UriImageSource {uri}");
 
             // 2 put to queue
-            var tuple = new QueueItem(source, token, tcs);
+            var tuple = new QueueItem(source, token, tcs) { Priority = priority };
 
             if (uri == null)
             {
@@ -485,7 +524,7 @@ public partial class SkiaImageManager : IDisposable
             try
             {
                 if (useSemaphore)
-                    await semaphoreLoad.WaitAsync();
+                    await semaphoreLoad.WaitAsync(queueItem.Priority);
 
                 TraceLog($"ImageLoadManager: LoadImageOnPlatformAsync {queueItem.Source}");
 
@@ -721,10 +760,11 @@ public partial class SkiaImageManager : IDisposable
                     continue;
                 }
 
+                var freeSlots = MaxParallelLoads - semaphoreLoad.RunningCount;
                 QueueItem queueItem = GetPendingItemLoadsForPriority(LoadPriority.High);
-                if (queueItem == null && semaphoreLoad.CurrentCount > 1)
+                if (queueItem == null && freeSlots > 1)
                     queueItem = GetPendingItemLoadsForPriority(LoadPriority.Normal);
-                if (queueItem == null && semaphoreLoad.CurrentCount > 7)
+                if (queueItem == null && freeSlots > 7)
                     queueItem = GetPendingItemLoadsForPriority(LoadPriority.Low);
 
                 // If we didn't find a task in pendingLoads, try the main queue.
@@ -811,6 +851,22 @@ public partial class SkiaImageManager : IDisposable
     }
 
     /// <summary>
+    /// Drops the image from the cache, so the next load reads it again. Returns false when it was not cached.
+    /// </summary>
+    public bool RemoveFromCache(string uri)
+    {
+        if (_cachingProvider == null || string.IsNullOrWhiteSpace(uri))
+            return false;
+
+        uri = GetCacheKey(uri);
+        if (!_cachingProvider.Exists(uri))
+            return false;
+
+        _cachingProvider.Remove(uri);
+        return true;
+    }
+
+    /// <summary>
     /// Return bitmap from cache if existing, respects the `ReuseBitmaps` flag.
     /// </summary>
     /// <param name="url"></param>
@@ -838,7 +894,15 @@ public partial class SkiaImageManager : IDisposable
         return _cachingProvider.Get<SKBitmap>(GetCacheKey(url))?.Value;
     }
 
-    public async Task Preload(ImageSource source, CancellationTokenSource cts)
+    /// <summary>
+    /// Loads the image into the cache at <see cref="LoadPriority.Low"/>.
+    /// </summary>
+    public Task Preload(ImageSource source, CancellationTokenSource cts) => Preload(source, cts, LoadPriority.Low);
+
+    /// <summary>
+    /// Loads the image into the cache at the given priority.
+    /// </summary>
+    public async Task Preload(ImageSource source, CancellationTokenSource cts, LoadPriority priority)
     {
         if (source.IsEmpty)
         {
@@ -863,11 +927,14 @@ public partial class SkiaImageManager : IDisposable
         }
 
         var tcs = new TaskCompletionSource<SKBitmap>();
-        var tuple = new QueueItem(source, cts, tcs);
+        var tuple = new QueueItem(source, cts, tcs) { Priority = priority };
 
         try
         {
-            _queue.Enqueue(tuple, LoadPriority.Low);
+            lock (lockObject)
+            {
+                _queue.Enqueue(tuple, priority);
+            }
 
             // Await the loading to ensure it's completed before returning
             await tcs.Task;
@@ -902,8 +969,6 @@ public partial class SkiaImageManager : IDisposable
     public void Dispose()
     {
         IsDisposed = true;
-
-        semaphoreLoad?.Dispose();
 
         Connectivity.Current.ConnectivityChanged -= OnConnectivityChanged;
     }
@@ -949,7 +1014,9 @@ public partial class SkiaImageManager : IDisposable
             }
             else
             {
-                using var stream = await FileSystem.OpenAppPackageFileAsync(filename);  // Pass cancellation token
+                // a query ("glass2.jpg?queue=3") is not part of the file name: it only makes a separate cache entry
+                var query = filename.IndexOf('?');
+                using var stream = await FileSystem.OpenAppPackageFileAsync(query > 0 ? filename[..query] : filename);
                 using var reader = new StreamReader(stream);
                 bitmap = SKBitmap.Decode(stream);
             }

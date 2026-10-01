@@ -377,6 +377,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainSaturationEffect.cs" />
     <!-- Images -->
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\LoadedImageSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\ImageLoadQueue.cs" />
     <!-- SkiaLabel partials (pure logic, no MAUI deps) -->
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.EmojiData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.ObjectPools.cs" />

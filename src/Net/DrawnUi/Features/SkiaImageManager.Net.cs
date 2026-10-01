@@ -25,10 +25,33 @@ public class SkiaImageManager : IDisposable
     public static SkiaImageManager Instance => _instance ??= new SkiaImageManager();
 
     /// <summary>
+    /// How many network image loads run at once; the others wait in line by <see cref="LoadPriority"/>.
+    /// Files found on disk are not limited. Applies from the next load.
+    /// </summary>
+    public static int MaxParallelLoads { get; set; } = 8;
+
+    /// <summary>
     /// Limits concurrent HTTP image loads to avoid memory/CPU pressure from many simultaneous
     /// decode operations. Browser fetch is non-blocking so without this all requests fire at once.
     /// </summary>
-    private static readonly SemaphoreSlim _loadSemaphore = new(8, 8);
+    private static readonly ImageLoadQueue NetworkQueue = new(() => MaxParallelLoads);
+
+    /// <summary>
+    /// Priority of the managed load running in this async flow, read by the network queue.
+    /// </summary>
+    private static readonly AsyncLocal<LoadPriority?> LoadingPriority = new();
+
+    private static LoadPriority CurrentPriority => LoadingPriority.Value ?? LoadPriority.Normal;
+
+    /// <summary>
+    /// Network image loads running now, at most <see cref="MaxParallelLoads"/>.
+    /// </summary>
+    public int RunningCount => NetworkQueue.RunningCount;
+
+    /// <summary>
+    /// Network image loads waiting for a free slot.
+    /// </summary>
+    public int QueuedCount => NetworkQueue.QueuedCount;
 
     /// <summary>
     /// Opens a fully-buffered stream for any source (local asset or URL).
@@ -58,7 +81,7 @@ public class SkiaImageManager : IDisposable
 
         var httpClient = GetHttpClient();
 
-        await _loadSemaphore.WaitAsync(cancel);
+        await NetworkQueue.WaitAsync(CurrentPriority, cancel);
         try
         {
             using var httpStream = await httpClient.GetStreamAsync(source, cancel);
@@ -69,7 +92,7 @@ public class SkiaImageManager : IDisposable
         }
         finally
         {
-            _loadSemaphore.Release();
+            NetworkQueue.Release();
         }
     }
 
@@ -175,11 +198,17 @@ public class SkiaImageManager : IDisposable
             if (cached != null)
                 return Task.FromResult(cached);
 
-            var task = _inFlight.GetOrAdd(cacheKey, _ => LoadAndCacheAsync(source, cacheKey, token.Token));
+            var task = _inFlight.GetOrAdd(cacheKey, _ => LoadAndCacheAsync(source, cacheKey, priority, token.Token));
             return AwaitTrackedLoadAsync(cacheKey, task, token.Token);
         }
 
-        return LoadImageOnPlatformAsync(source, token.Token);
+        return LoadWithPriorityAsync(source, priority, token.Token);
+    }
+
+    private static async Task<SKBitmap> LoadWithPriorityAsync(ImageSource source, LoadPriority priority, CancellationToken cancel)
+    {
+        LoadingPriority.Value = priority; // async method: flows into this load only, the caller's value is kept
+        return await LoadImageOnPlatformAsync(source, cancel);
     }
 
     private async Task<SKBitmap> LoadWhenUnlockedAsync(ImageSource source, CancellationTokenSource token, LoadPriority priority)
@@ -227,8 +256,9 @@ public class SkiaImageManager : IDisposable
         }
     }
 
-    private async Task<SKBitmap> LoadAndCacheAsync(ImageSource source, string cacheKey, CancellationToken cancellationToken)
+    private async Task<SKBitmap> LoadAndCacheAsync(ImageSource source, string cacheKey, LoadPriority priority, CancellationToken cancellationToken)
     {
+        LoadingPriority.Value = priority;
         var bitmap = await LoadImageOnPlatformAsync(source, cancellationToken);
         if (bitmap == null)
             return null;
@@ -236,11 +266,19 @@ public class SkiaImageManager : IDisposable
         return bitmap;
     }
 
-    public async Task Preload(ImageSource source, CancellationTokenSource cts)
+    /// <summary>
+    /// Loads the image into the cache at <see cref="LoadPriority.Low"/>.
+    /// </summary>
+    public Task Preload(ImageSource source, CancellationTokenSource cts) => Preload(source, cts, LoadPriority.Low);
+
+    /// <summary>
+    /// Loads the image into the cache at the given priority.
+    /// </summary>
+    public async Task Preload(ImageSource source, CancellationTokenSource cts, LoadPriority priority)
     {
         if (source == null || source.IsEmpty)
             return;
-        await LoadImageManagedAsync(source, cts);
+        await LoadImageManagedAsync(source, cts, priority);
     }
 
     public virtual async Task PreloadImage(ImageSource source, CancellationTokenSource cancel = default)
@@ -256,16 +294,35 @@ public class SkiaImageManager : IDisposable
             await Preload(FrameworkImageSourceConverter.FromInvariantString(source), cancel ?? localCancel);
     }
 
-    public virtual async Task PreloadImages(IList<string> list, CancellationTokenSource cancel = default)
+    /// <summary>
+    /// Loads the images into the cache at <see cref="LoadPriority.Low"/>, all queued at once.
+    /// </summary>
+    public virtual Task PreloadImages(IList<string> list, CancellationTokenSource cancel = default)
+        => PreloadImages(list, LoadPriority.Low, cancel);
+
+    /// <summary>
+    /// Loads the images into the cache at the given priority, all queued at once: network loads run
+    /// <see cref="MaxParallelLoads"/> at a time. Completes when every image is loaded or failed.
+    /// </summary>
+    public virtual async Task PreloadImages(IList<string> list, LoadPriority priority, CancellationTokenSource cancel = default)
     {
         if (list == null || list.Count == 0)
             return;
         using var localCancel = cancel == null ? new CancellationTokenSource() : null;
+        var cts = cancel ?? localCancel;
+        var tasks = new List<Task>(list.Count);
         foreach (var source in list)
         {
-            if ((cancel ?? localCancel).IsCancellationRequested)
-                break;
-            await PreloadImage(source, cancel ?? localCancel);
+            if (!string.IsNullOrWhiteSpace(source))
+                tasks.Add(Preload(FrameworkImageSourceConverter.FromInvariantString(source), cts, priority));
+        }
+
+        try
+        {
+            await Task.WhenAll(tasks);
+        }
+        catch (OperationCanceledException)
+        {
         }
     }
 
@@ -316,6 +373,16 @@ public class SkiaImageManager : IDisposable
             return false;
         _cache[uri] = new CacheEntry(bitmap, DateTimeOffset.UtcNow.AddSeconds(cacheLongevitySecs));
         return true;
+    }
+
+    /// <summary>
+    /// Drops the image from the cache, so the next load reads it again. Returns false when it was not cached.
+    /// </summary>
+    public bool RemoveFromCache(string uri)
+    {
+        if (string.IsNullOrWhiteSpace(uri))
+            return false;
+        return _cache.TryRemove(GetCacheKey(uri), out _);
     }
 
     public SKBitmap GetFromCache(string url)
@@ -371,17 +438,26 @@ public class SkiaImageManager : IDisposable
             if (filename.StartsWith(NativeFilePrefix, StringComparison.OrdinalIgnoreCase))
                 filename = filename.Substring(NativeFilePrefix.Length);
 
-            if (File.Exists(filename))
+            var local = IsAbsoluteUrl(filename) ? null : ResolveLocalFile(filename);
+            if (local != null)
             {
-                await using var stream = File.OpenRead(filename);
+                await using var stream = File.OpenRead(local);
                 return SKBitmap.Decode(stream);
             }
 
             var client = GetHttpClient();
             if (client != null)
             {
-                var bytes = await client.GetByteArrayAsync(filename, cancel);
-                return SKBitmap.Decode(bytes);
+                await NetworkQueue.WaitAsync(CurrentPriority, cancel);
+                try
+                {
+                    var bytes = await client.GetByteArrayAsync(filename, cancel);
+                    return SKBitmap.Decode(bytes);
+                }
+                finally
+                {
+                    NetworkQueue.Release();
+                }
             }
         }
         catch (OperationCanceledException) { }
@@ -429,8 +505,16 @@ public class SkiaImageManager : IDisposable
             var client = GetHttpClient();
             if (client == null)
                 return null;
-            var bytes = await client.GetByteArrayAsync(uri, cancel);
-            return SKBitmap.Decode(bytes);
+            await NetworkQueue.WaitAsync(CurrentPriority, cancel);
+            try
+            {
+                var bytes = await client.GetByteArrayAsync(uri, cancel);
+                return SKBitmap.Decode(bytes);
+            }
+            finally
+            {
+                NetworkQueue.Release();
+            }
         }
         catch (OperationCanceledException) { }
         catch (Exception e) { Super.Log(e); }
@@ -501,8 +585,12 @@ public class SkiaImageManager : IDisposable
 
     // Resolve a local asset path: as-is (CWD-relative) or relative to the executable's directory (where
     // Content/CopyToOutputDirectory assets land). Null when no local file exists (e.g. WASM, or a URL).
+    // A query ("glass2.jpg?queue=3") is not part of the file name: it only makes a separate cache entry.
     private static string ResolveLocalFile(string source)
     {
+        var query = source.IndexOf('?');
+        if (query > 0)
+            source = source[..query];
         if (File.Exists(source))
             return source;
         var combined = Path.Combine(AppContext.BaseDirectory, source);
