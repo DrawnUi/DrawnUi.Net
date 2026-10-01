@@ -60,6 +60,20 @@ public partial class SkiaControl
     }
 
     /// <summary>
+    /// What an <see cref="SkiaCacheType.ImageComposite"/> cache redrew the last time it was recorded.
+    /// </summary>
+    /// <param name="Partial">True when only the changed children, and the ones they overlap, were redrawn over the
+    /// previous image; false for a full redraw (first record, size change, cache invalidated).</param>
+    /// <param name="Redrawn">The children painted by that record.</param>
+    public readonly record struct CompositeRecord(bool Partial, IReadOnlyList<SkiaControl> Redrawn);
+
+    /// <summary>
+    /// The last record of this control's <see cref="SkiaCacheType.ImageComposite"/> cache: full or partial, and which
+    /// children it redrew. For diagnostics and demos; set on the rendering thread when the cache is recorded.
+    /// </summary>
+    public CompositeRecord LastCompositeRecord { get; protected set; } = new(false, Array.Empty<SkiaControl>());
+
+    /// <summary>
     /// Find intersections between changed children and DrawingRect,
     /// add intersecting ones to DirtyChildrenInternal and set IsRenderingWithComposition = true if any.
     /// </summary>
@@ -153,11 +167,14 @@ public partial class SkiaControl
 
                     count++;
                 }
+
+                LastCompositeRecord = new(true, DirtyChildrenInternal.ToArray());
             }
             else
             {
                 //Debug.WriteLine("[ImageComposite] was rebuild");
                 IsRenderingWithComposition = false;
+                LastCompositeRecord = new(false, Views.ToArray());
             }
         }
         else

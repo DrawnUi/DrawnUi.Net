@@ -123,7 +123,18 @@ namespace DrawnUi.Draw
             set { SetValue(OpacityProperty, value); }
         }
 
-        public virtual double Rotation { get; set; }
+        public static readonly BindableProperty RotationProperty = BindableProperty.Create(nameof(Rotation),
+            typeof(double), typeof(SkiaControl),
+            0.0);
+
+        /// <summary>
+        /// Rotation in degrees around AnchorX / AnchorY. Bindable, so a change repaints the control like the other transforms.
+        /// </summary>
+        public virtual double Rotation
+        {
+            get { return (double)GetValue(RotationProperty); }
+            set { SetValue(RotationProperty, value); }
+        }
 
         public static readonly BindableProperty RotationXProperty = BindableProperty.Create(nameof(RotationX),
             typeof(double), typeof(SkiaControl),
