@@ -60,6 +60,13 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 ## What's New 1.10.6.22
 
   * Japanese and Chinese text wraps: `WordWrap` breaks between characters and keeps closing punctuation and small kana off the start of a line, so a translated sentence no longer runs past the edge on one line. A word wider than the line, like a long URL, now breaks by characters too.
+  * A symbol or emoji inside ordinary text shows up: a `SkiaLabel` draws each glyph its font does not have with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its font. `FontFamilyFallback` can now list several fonts, like `"FontSymbols, FontEmoji"`. Before, such a glyph was dropped unless it had its own span.
+  * Markdown in `SkiaRichLabel` understands `~~strikethrough~~`.
+  * Image preloading has priorities: `PreloadImages(urls, LoadPriority.Low)` waits behind the images on screen. Network images load a few at a time (`MaxParallelLoads`), and `RunningCount` / `QueuedCount` show the line. `RemoveFromCache` drops one image. Same on every head.
+  * `SkiaCarousel.ScrollTo(index, animate)` moves to a slide, and with `animate: false` it jumps there at once.
+  * `SkiaLottie` and `SkiaSprite` tell you when their file is loaded (`Success`) or could not be (`Error`), like `SkiaGif`.
+  * `LastCompositeRecord` shows what an `ImageComposite` cache redrew last time: only the children that changed, or everything.
+  * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. It used to wait for something else to redraw.
 
  ### Previously
 
