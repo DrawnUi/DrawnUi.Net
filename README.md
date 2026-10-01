@@ -67,6 +67,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * `SkiaLottie` and `SkiaSprite` tell you when their file is loaded (`Success`) or could not be (`Error`), like `SkiaGif`.
   * `LastCompositeRecord` shows what an `ImageComposite` cache redrew last time: only the children that changed, or everything.
   * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. It used to wait for something else to redraw.
+  * A `.WhenPainted` overlay keeps drawing after its control was hidden and shown again. Before, hiding removed it for good, so a page pushed in a MAUI `SkiaShell` lost its overlays.
 
  ### Previously
 
