@@ -663,6 +663,23 @@ public class SkiaLottie : AnimatedFramesRenderer
 
     private object lockSource = new();
 
+    /// <summary>
+    /// Raised with the source once its animation is loaded and applied (TotalFrames is valid).
+    /// A cached or local animation can load while Source is being set, so subscribe before setting Source.
+    /// </summary>
+    public event EventHandler<string> Success;
+
+    /// <summary>
+    /// Raised when the source could not be loaded or parsed.
+    /// </summary>
+    public event EventHandler<Exception> Error;
+
+    void ApplyLoaded(Animation animation, string source)
+    {
+        SetAnimation(animation, true);
+        Success?.Invoke(this, source);
+    }
+
     public virtual void ReloadSource()
     {
         if (string.IsNullOrEmpty(Source))
@@ -672,40 +689,42 @@ public class SkiaLottie : AnimatedFramesRenderer
 
         lock (lockSource)
         {
+            var source = Source;
             string json = null;
             Animation animation = null;
 
-            if (CachedAnimations.TryGetValue(Source, out json))
+            if (CachedAnimations.TryGetValue(source, out json))
             {
                 animation = CreateAnimation(json);
             }
 
             if (animation != null)
             {
-                SetAnimation(animation, true);
+                ApplyLoaded(animation, source);
                 return;
             }
 
-            var type = GetSourceType(Source);
+            var type = GetSourceType(source);
 
             switch (type)
             {
                 case SourceType.Url:
-                    _ = LoadAndApplySourceAsync(Source);
+                    _ = LoadAndApplySourceAsync(source);
                     break;
                 default:
 #if BROWSER || DRAWNUI_NET
-                    _ = LoadAndApplySourceAsync(Source);
+                    _ = LoadAndApplySourceAsync(source);
                     break;
 #else
-                    json = LoadLocalJson(Source);
+                    json = LoadLocalJson(source);
                     animation = CreateAnimation(json);
                     if (animation != null)
                     {
-                        SetAnimation(animation, true);
+                        ApplyLoaded(animation, source);
                         return;
                     }
 
+                    Error?.Invoke(this, new Exception($"Failed to load source {source}"));
                     break;
 #endif
             }
@@ -719,16 +738,18 @@ public class SkiaLottie : AnimatedFramesRenderer
             var animation = await LoadSource(source);
             if (animation != null)
             {
-                SetAnimation(animation, true);
+                ApplyLoaded(animation, source);
             }
             else
             {
                 Super.Log($"[SkiaLottie] Async load returned null for {source}");
+                Error?.Invoke(this, new Exception($"Failed to load source {source}"));
             }
         }
         catch (Exception e)
         {
             Super.Log($"[SkiaLottie] Async load failed for {source}: {e}");
+            Error?.Invoke(this, new Exception($"Failed to load source {source}", e));
         }
     }
 

@@ -366,33 +366,38 @@ public partial class SkiaSprite : AnimatedFramesRenderer
 
         lock (lockSource)
         {
-            var type = GetSourceType(Source);
+            var source = Source;
+            var type = GetSourceType(source);
 
-            switch (type)
+            Tasks.StartDelayedAsync(TimeSpan.FromMilliseconds(1), async () =>
             {
-                case SourceType.Url:
-                    Tasks.StartDelayedAsync(TimeSpan.FromMilliseconds(1), async () =>
-                    {
-                        var bitmap = await LoadSourceAsync(Source);
-                        if (bitmap != null)
-                        {
-                            SetSpriteSheet(bitmap, true);
-                        }
-                    });
-                    break;
-                default:
-                    Tasks.StartDelayedAsync(TimeSpan.FromMilliseconds(1), async () =>
-                    {
-                        var bitmap = await LoadLocalImageAsync(Source);
-                        if (bitmap != null)
-                        {
-                            SetSpriteSheet(bitmap, true);
-                        }
-                    });
-                    break;
-            }
+                var bitmap = type == SourceType.Url
+                    ? await LoadSourceAsync(source)
+                    : await LoadLocalImageAsync(source);
+                if (source != Source)
+                    return; // Source changed meanwhile, its own load applies
+                if (bitmap != null)
+                {
+                    SetSpriteSheet(bitmap, true);
+                    Success?.Invoke(this, source);
+                }
+                else
+                {
+                    Error?.Invoke(this, new Exception($"Failed to load source {source}"));
+                }
+            });
         }
     }
+
+    /// <summary>
+    /// Raised with the source once the spritesheet is loaded and applied (TotalFrames and frame size are valid).
+    /// </summary>
+    public event EventHandler<string> Success;
+
+    /// <summary>
+    /// Raised when the spritesheet could not be loaded or decoded.
+    /// </summary>
+    public event EventHandler<Exception> Error;
 
     /// <summary>
     /// Loads a spritesheet image from a source URL, using cache when available
