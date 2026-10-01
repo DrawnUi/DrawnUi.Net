@@ -1643,6 +1643,35 @@ public class SkiaCarousel : SnappingLayout
         }
     }
 
+    /// <summary>
+    /// Moves to the slide at <paramref name="index"/>, clamped to the existing slides. Animated it does what setting
+    /// <see cref="SelectedIndex"/> does; with <paramref name="animate"/> false it jumps there at once.
+    /// For the slide already selected it snaps back to it, without raising <see cref="SelectedIndexChanged"/>.
+    /// </summary>
+    public void ScrollTo(int index, bool animate = true)
+    {
+        index = Math.Clamp(index, 0, Math.Max(0, MaxIndex));
+        InterruptSnapping();
+
+        if (index == SelectedIndex)
+        {
+            ApplyIndex(!animate);
+            return;
+        }
+
+        _applyIndexInstant = !animate;
+        try
+        {
+            SelectedIndex = index;
+        }
+        finally
+        {
+            _applyIndexInstant = false;
+        }
+    }
+
+    bool _applyIndexInstant;
+
     public virtual void GoPrev()
     {
         if (SelectedIndex > 0)
@@ -1691,7 +1720,7 @@ public class SkiaCarousel : SnappingLayout
         }
         else
         {
-            ApplyIndex();
+            ApplyIndex(_applyIndexInstant);
         }
 
         if (DynamicSize && SelectedIndex >= 0)
