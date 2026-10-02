@@ -276,12 +276,12 @@ public class LayoutsPage : SkiaLayer
                                 ColumnDefinitions = Cols("*, 2*, Auto"), RowDefinitions = Rows("Auto, 60"), ColumnSpacing = 8, RowSpacing = 8,
                                 Children = new List<SkiaControl>
                                 {
-                                    Cell("*", "#0D6EFD", 0, 0),
-                                    Cell("2*", "#6610F2", 1, 0),
-                                    Cell("Auto (this label)", "#D63384", 2, 0),
-                                    Cell("Row 1 = 60pt", "#20C997", 0, 1),
-                                    Cell("Column 1", "#FD7E14", 1, 1),
-                                    Cell("Auto", "#DC3545", 2, 1),
+                                    GridCell("*", "#0D6EFD", 0, 0),
+                                    GridCell("2*", "#6610F2", 1, 0),
+                                    GridCell("Auto (this label)", "#D63384", 2, 0),
+                                    GridCell("Row 1 = 60pt", "#20C997", 0, 1),
+                                    GridCell("Column 1", "#FD7E14", 1, 1),
+                                    GridCell("Auto", "#DC3545", 2, 1),
                                 },
                             }),
                         Card("ColumnSpan / RowSpan",
@@ -290,11 +290,11 @@ public class LayoutsPage : SkiaLayer
                                 ColumnDefinitions = Cols("*, *, *"), RowDefinitions = Rows("48, 48, 48"), ColumnSpacing = 6, RowSpacing = 6,
                                 Children = new List<SkiaControl>
                                 {
-                                    Cell("ColumnSpan=2", "#0D6EFD", 0, 0, columnSpan: 2),
-                                    Cell("RowSpan=2", "#6610F2", 2, 0, rowSpan: 2),
-                                    Cell("0,1", "#20C997", 0, 1),
-                                    Cell("1,1", "#FD7E14", 1, 1),
-                                    Cell("ColumnSpan=3", "#D63384", 0, 2, columnSpan: 3),
+                                    GridCell("ColumnSpan=2", "#0D6EFD", 0, 0, columnSpan: 2),
+                                    GridCell("RowSpan=2", "#6610F2", 2, 0, rowSpan: 2),
+                                    GridCell("0,1", "#20C997", 0, 1),
+                                    GridCell("1,1", "#FD7E14", 1, 1),
+                                    GridCell("ColumnSpan=3", "#D63384", 0, 2, columnSpan: 3),
                                 },
                             }),
                         Card("Implicit tracks: no definitions, children reference Column/Row (DefaultColumnDefinition = Auto)",
@@ -543,7 +543,7 @@ public class LayoutsPage : SkiaLayer
     };
 
     /// <summary>A coloured cell with a centred caption, placed in a grid cell.</summary>
-    private static SkiaControl Cell(string text, string color, int column, int row, int columnSpan = 1, int rowSpan = 1) => At(new SkiaShape
+    private static SkiaControl GridCell(string text, string color, int column, int row, int columnSpan = 1, int rowSpan = 1) => At(new SkiaShape
     {
         Type = ShapeType.Rectangle, CornerRadius = 6, BackgroundColor = Color.Parse(color),
         HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,

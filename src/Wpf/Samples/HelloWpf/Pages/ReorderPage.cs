@@ -44,7 +44,7 @@ public class ReorderPage : SkiaLayer, IDragHost
         ("Kiswahili (Kenya)", "sw-KE"), ("Afrikaans (Suid-Afrika)", "af-ZA"),
     };
 
-    private const float RowSpacing = 6;
+    private const float RowGap = 6;
     private const float StatusHeight = 58;
     /// <summary>How long the released ghost takes to glide into its slot.</summary>
     private const float DropSeconds = 0.14f;
@@ -102,7 +102,7 @@ public class ReorderPage : SkiaLayer, IDragHost
                     ItemTemplate = new DataTemplate(() => new ReorderCell(this)),
                     RecyclingTemplate = RecyclingTemplate.Enabled,
                     MeasureItemsStrategy = MeasuringStrategy.MeasureFirst,
-                    Spacing = RowSpacing,
+                    Spacing = RowGap,
                     Padding = new Thickness(12, 8),
                     HorizontalOptions = LayoutOptions.Fill,
                 }.Assign(out _rows),
@@ -193,10 +193,10 @@ public class ReorderPage : SkiaLayer, IDragHost
     }
 
     /// <summary>The ghost is hidden between drags, so it is the overlay that always carries the current scale.</summary>
-    private float Scale() => _overlay.RenderingScale > 0 ? _overlay.RenderingScale : 1;
+    private float PixelScale() => _overlay.RenderingScale > 0 ? _overlay.RenderingScale : 1;
 
     /// <summary>Point coordinates inside the overlay, which is where the ghost is laid out.</summary>
-    private float ToGhostSpace(float pixels, bool top) => (pixels - (top ? _overlay.DrawingRect.Top : _overlay.DrawingRect.Left)) / Scale();
+    private float ToGhostSpace(float pixels, bool top) => (pixels - (top ? _overlay.DrawingRect.Top : _overlay.DrawingRect.Left)) / PixelScale();
 
     /// <summary>Rebinds nothing, just re-applies each row's look: used when the list did not change but a row's state did.</summary>
     private void RefreshRows()
@@ -259,7 +259,7 @@ public class ReorderPage : SkiaLayer, IDragHost
     public ReorderItem Dragging => _dragging;
 
     /// <inheritdoc/>
-    public float Spacing => RowSpacing;
+    float IDragHost.Spacing => RowGap;
 
     /// <inheritdoc/>
     public void Lift(ReorderItem item, int index, float pointerY)
@@ -270,13 +270,13 @@ public class ReorderPage : SkiaLayer, IDragHost
 
         _drop?.Stop();
         _drop = null;
-        _grabOffset = (pointerY - rect.Value.Top) / Scale();
+        _grabOffset = (pointerY - rect.Value.Top) / PixelScale();
         _dragging = item;
         _ghostTitle.Text = item.Title;
         _ghostBadge.Text = item.Tag;
         _ghost.StrokeColor = Color.Parse(item.Color);
-        _ghost.WidthRequest = rect.Value.Width / Scale();
-        _ghost.HeightRequest = rect.Value.Height / Scale();
+        _ghost.WidthRequest = rect.Value.Width / PixelScale();
+        _ghost.HeightRequest = rect.Value.Height / PixelScale();
         _ghost.Left = ToGhostSpace(rect.Value.Left, false);
         _ghost.Top = ToGhostSpace(rect.Value.Top, true);
         _ghost.IsVisible = true;
@@ -296,7 +296,7 @@ public class ReorderPage : SkiaLayer, IDragHost
     }
 
     /// <inheritdoc/>
-    public void Drop(int index)
+    void IDragHost.Drop(int index)
     {
         if (_dragging == null)
         {
