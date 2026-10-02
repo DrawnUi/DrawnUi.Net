@@ -109,7 +109,9 @@ public partial class Canvas
     /// <param name="delta">Wheel delta in the Windows convention: +120 per notch away from the user, -120 toward.</param>
     /// <param name="clientW">Canvas width in pixels.</param>
     /// <param name="clientH">Canvas height in pixels.</param>
-    public void HandleDesktopWheel(float x, float y, int delta, float clientW, float clientH)
+    /// <param name="horizontal">A horizontal wheel event: <paramref name="delta"/> is along X, positive toward the
+    /// left (the start), like a vertical wheel turned away from the user.</param>
+    public void HandleDesktopWheel(float x, float y, int delta, float clientW, float clientH, bool horizontal = false)
     {
         if (delta == 0)
             return;
@@ -126,6 +128,7 @@ public partial class Canvas
             Delta = delta,
             Scale = 1f,
             Center = location,
+            IsHorizontal = horizontal,
         };
 
         OnGestureEvent(TouchActionType.Wheel, args, TouchActionResult.Wheel);

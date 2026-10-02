@@ -172,8 +172,14 @@ public partial class SkiaScroll
     /// </summary>
     /// <param name="value">In point how much to scroll</param>
     /// <param name="position">Reserved</param>
-    void ApplyWheelScroll(float value, SKPoint position)
+    /// <param name="horizontal">The event is along the X axis (a tilting wheel, the sideways part of a two-finger
+    /// touchpad swipe): a vertical scroll leaves it, a horizontal one takes both axes.</param>
+    /// <returns>True when this scroll used the event.</returns>
+    bool ApplyWheelScroll(float value, SKPoint position, bool horizontal)
     {
+        if (horizontal && Orientation == ScrollOrientation.Vertical)
+            return false;
+
         var offsetY = ViewportOffsetY;
         var offsetX = ViewportOffsetX;
 
@@ -203,6 +209,7 @@ public partial class SkiaScroll
         // overshot the end of a swipe. Only a notch glides (same rule as the React and Rust engines).
         var instant = perNotch > 0 && Math.Abs(value) < perNotch / 2;
         ScrollTo(clamped.X, clamped.Y, instant ? 0 : AutoScrollingSpeedMs, false);
+        return true;
     }
 
     /// <summary>
@@ -375,7 +382,7 @@ public partial class SkiaScroll
         var hadNumberOfTouches = lastNumberOfTouches;
         lastNumberOfTouches = args.Event.NumberOfTouches;
 
-        if (args.Type == TouchActionResult.Wheel && !ZoomLocked)
+        if (args.Type == TouchActionResult.Wheel && !ZoomLocked && args.Event.Wheel?.IsHorizontal != true)
         {
             IsUserFocused = true;
             //Debug.WriteLine($"Wheel: {args.Event.Wheel.Scale}");
@@ -707,8 +714,10 @@ public partial class SkiaScroll
                     var position = new SKPoint((point.X - DrawingRect.Left) / RenderingScale,
                         (point.Y - DrawingRect.Top) / RenderingScale);
 
-                    ApplyWheelScroll(args.Event.Wheel.Delta, position);
-                    consumed = this;
+                    if (ApplyWheelScroll(args.Event.Wheel.Delta, position, args.Event.Wheel.IsHorizontal))
+                    {
+                        consumed = this;
+                    }
                     break;
             }
         }

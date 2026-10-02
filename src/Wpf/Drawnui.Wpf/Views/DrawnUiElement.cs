@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using AppoMobi.Gestures;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -213,6 +214,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _running = true;
+        AttachWindowMessages(true);
 
         Super.Screen.Density = (float)DpiScale;
 
@@ -379,6 +381,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _running = false;
+        AttachWindowMessages(false);
         CompositionTarget.Rendering -= OnCompositionRendering;
         ReleaseSurface();
     }
@@ -781,6 +784,38 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         var point = ToCanvasPixels(e.GetPosition(this));
         Canvas.HandleDesktopWheel(point.X, point.Y, e.Delta, ClientPixelWidth, ClientPixelHeight);
         e.Handled = KeepInput; // an unused wheel goes on to a hosting ScrollViewer unless locked
+    }
+
+    private const int WM_MOUSEHWHEEL = 0x020E;
+    private HwndSource _hwndSource;
+
+    /// <summary>
+    /// WPF raises no event for the horizontal wheel (a tilting wheel, the sideways part of a two-finger touchpad
+    /// swipe): it is read from the window's messages and passed on as a horizontal wheel event.
+    /// </summary>
+    private IntPtr OnWindowMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg != WM_MOUSEHWHEEL || InputDisabled || !IsVisible)
+            return IntPtr.Zero;
+
+        var screen = new WpfPoint((short)(lParam.ToInt64() & 0xFFFF), (short)((lParam.ToInt64() >> 16) & 0xFFFF));
+        var local = PointFromScreen(screen);
+        if (local.X < 0 || local.Y < 0 || local.X > ActualWidth || local.Y > ActualHeight)
+            return IntPtr.Zero;
+
+        // Windows reports it positive to the right; the wheel delta is positive toward the start (left)
+        var delta = (short)((wParam.ToInt64() >> 16) & 0xFFFF);
+        var point = ToCanvasPixels(local);
+        Canvas.HandleDesktopWheel(point.X, point.Y, -delta, ClientPixelWidth, ClientPixelHeight, true);
+        handled = KeepInput;
+        return IntPtr.Zero;
+    }
+
+    private void AttachWindowMessages(bool attach)
+    {
+        _hwndSource?.RemoveHook(OnWindowMessage);
+        _hwndSource = attach ? PresentationSource.FromVisual(this) as HwndSource : null;
+        _hwndSource?.AddHook(OnWindowMessage);
     }
 
     /// <summary>

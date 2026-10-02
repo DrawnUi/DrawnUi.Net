@@ -50,11 +50,15 @@ public class DesktopGestureHandler
 
     /// <summary>
     /// GLFW reports the wheel in notches (+1 away from the user, fractions on precision touchpads);
-    /// the canvas takes the Windows convention of 120 per notch.
+    /// the canvas takes the Windows convention of 120 per notch. A touchpad swipe reports both axes: the
+    /// dominant one goes on, X as a horizontal wheel event (GLFW gives it positive to the left, the same
+    /// "toward the start" sign as Y).
     /// </summary>
     public void OnMouseWheel(MouseWheelEventArgs e, Vector2 mousePos, Vector2i clientSize)
     {
-        _canvas.HandleDesktopWheel(mousePos.X, mousePos.Y, (int)MathF.Round(e.OffsetY * 120), clientSize.X, clientSize.Y);
+        var horizontal = MathF.Abs(e.OffsetX) > MathF.Abs(e.OffsetY);
+        var offset = horizontal ? e.OffsetX : e.OffsetY;
+        _canvas.HandleDesktopWheel(mousePos.X, mousePos.Y, (int)MathF.Round(offset * 120), clientSize.X, clientSize.Y, horizontal);
     }
 
     /// <summary>

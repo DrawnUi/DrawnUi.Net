@@ -93,4 +93,71 @@ public class WheelTouchpadTests
         }
         Assert.Equal(share * 15, furthest, 0.5);
     }
+
+    private static (HeadlessCanvasHost host, SkiaScroll outer, SkiaScroll inner) NestedScene()
+    {
+        var host = new HeadlessCanvasHost(300, 400);
+        SkiaScroll outer = null, inner = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            Orientation = ScrollOrientation.Horizontal,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaRow
+            {
+                Children =
+                {
+                    new SkiaScroll
+                    {
+                        WidthRequest = 300,
+                        HeightRequest = 400,
+                        Content = new SkiaControl { HeightRequest = 20000, WidthRequest = 300 },
+                    }.Assign(out inner),
+                    new SkiaControl { WidthRequest = 3000, HeightRequest = 400 },
+                }
+            },
+        }.Assign(out outer);
+        host.AdvanceFrames(4);
+        return (host, outer, inner);
+    }
+
+    [Fact]
+    public void HorizontalEvents_LeaveAVerticalList_ReachTheHorizontalScroll()
+    {
+        var (host, outer, inner) = NestedScene();
+        using var _ = host;
+
+        // toward the end (right), as Windows reports a swipe to the right after the sign flip
+        for (var i = 0; i < 10; i++)
+        {
+            host.Canvas.HandleDesktopWheel(150, 200, -12, 300, 400, horizontal: true);
+            host.RenderFrame(16);
+        }
+        host.AdvanceFrames(30);
+
+        _out.WriteLine($"inner y {inner.ViewportOffsetY} outer x {outer.ViewportOffsetX}");
+        Assert.Equal(0, inner.ViewportOffsetY, 0.5);
+        Assert.Equal(-SkiaScroll.WheelLineSize, outer.ViewportOffsetX, 1);
+    }
+
+    [Fact]
+    public void VerticalWheel_StillScrollsAHorizontalScroll()
+    {
+        var host = new HeadlessCanvasHost(300, 400);
+        using var _ = host;
+        SkiaScroll scroll = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            Orientation = ScrollOrientation.Horizontal,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaControl { WidthRequest = 20000, HeightRequest = 400 },
+        }.Assign(out scroll);
+        host.AdvanceFrames(4);
+
+        host.Canvas.HandleDesktopWheel(150, 200, -120, 300, 400);
+        host.AdvanceFrames(60);
+
+        Assert.Equal(-SkiaScroll.WheelLineSize, scroll.ViewportOffsetX, 1);
+    }
 }
