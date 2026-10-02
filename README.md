@@ -77,7 +77,6 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * Touchpad scrolling follows your fingers on MAUI Windows, WPF and OpenTK. Small touchpad steps move the content at once, and only a mouse-wheel notch glides. Before, every small step started a slow glide, so the content was late and bounced past the end of a swipe.
     * A fast swipe scrolls smoothly. Before, the content could stand still and then jump when wheel events came quickly.
     * Sideways scrolling works: on MAUI Windows, WPF and OpenTK, a sideways swipe or a tilted wheel scrolls a horizontal `SkiaScroll`, and a vertical list ignores it. Before, a diagonal swipe made a vertical list jump up and down.
-    * MAUI Mac Catalyst: two-finger trackpad scrolling scrolls a `SkiaScroll`. Before, it did nothing.
     * This needs AppoMobi gestures 3.11.4 (`WheelEventArgs.IsHorizontal`), which this version references.
   * **Drawing and caching**
     * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. Before, it waited for something else to redraw.
