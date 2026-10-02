@@ -303,7 +303,7 @@ namespace UnitTests
         // ---- Wrap ----
 
         [Fact]
-        public void Wrap_FillXChild_FillsRestOfRow()
+        public void Wrap_FillXChild_TakesALineOfItsOwn()
         {
             var a = Box(50, 20);
             var b = Panel(10, 20, LayoutOptions.Fill);
@@ -312,10 +312,10 @@ namespace UnitTests
             stack.CommitInvalidations();
             stack.Measure(400, float.PositiveInfinity, 1);
 
-            Assert.Equal(20, stack.MeasuredSize.Pixels.Height); // one row (was two: Fill child measured full width, broke row)
-            Assert.Equal(b.Destination.Top, a.Destination.Top, 0.5f);
-            Assert.Equal(50, b.Destination.Left, 0.5f);
-            Assert.True(b.Destination.Width >= 340, $"fill child width {b.Destination.Width}");
+            // measured with the whole line (React MeasureWrap, Nick 2026-10-02): after the box it does not fit
+            Assert.True(b.Destination.Top >= a.Destination.Bottom - 0.5f, $"fill child top {b.Destination.Top}");
+            Assert.Equal(0, b.Destination.Left, 0.5f);
+            Assert.True(b.Destination.Width >= 390, $"fill child width {b.Destination.Width}");
         }
 
         [Fact]

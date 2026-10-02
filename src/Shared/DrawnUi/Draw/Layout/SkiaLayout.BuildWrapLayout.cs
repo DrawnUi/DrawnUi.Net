@@ -295,13 +295,10 @@ public partial class SkiaLayout
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
                 ScaledSize MeasureCellInternal()
                 {
-                    // A Fill-X child fills the REST of the row (flex-fill, 1.9.7.4 semantic): measured with the
-                    // remaining width, not the full row width — that made it never fit and always break to
-                    // its own row.
-                    if (!useFixedSplitSize && child.NeedFillX)
-                    {
-                        rectFitChild.Right = rectForChild.Right;
-                    }
+                    // A Fill-X child is measured with the whole line width (StartColumn), like any other child: after
+                    // siblings it does not fit, takes a line of its own, and the next child starts a new line (React
+                    // MeasureWrap; Nick 2026-10-02). It used to get the rest of its line (1.9.7.4 flex-fill), which
+                    // squeezed a panel into the strip left beside wide siblings.
 
                     if (_layout.IsTemplated)
                     {
