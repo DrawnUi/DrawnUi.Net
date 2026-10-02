@@ -79,6 +79,10 @@ Real browser fullscreen targets the canvas host element (`.xaml-canvas`), not th
 
 CSS under `wwwroot/css/` resolves urls relative to that folder (`../Images/...`).
 
+## WebGL context loss (GPU reset, driver update, too many canvases)
+
+Handled since 1.10.6.22 on Blazor and pure Wasm: the canvas host prevents the default on `webglcontextlost` (else the browser never gives the context back) and draws no frames while lost; on `webglcontextrestored` the same WebGL object gets a new Emscripten GL handle, the lost Skia context is abandoned without GL calls and the next frame draws everything on a new one (GPU caches fail the context check and are made again). The console shows `DrawnUI: WebGL context lost` / `restored`. Test: `canvas.getContext('webgl2').getExtension('WEBGL_lose_context')`, `loseContext()`, then `restoreContext()`. Older builds stayed blank until a reload.
+
 ## Canvas blink on first tap (auto-height Canvas) — FIXED 2026-09-07
 
 Symptom: `<Canvas>` with no `HeightRequest`, blank flash on the FIRST tap only, never after; other pages (fixed `HeightRequest`) fine. NOT context loss, NOT element recreation — the same `<canvas>` is RESIZED once (host 790.4 -> 755.2px, buffer 987 -> 943), and any width/height write clears the drawing buffer.
