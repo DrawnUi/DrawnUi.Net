@@ -145,6 +145,7 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
         if (manager == null)
             return null;
 
+        manager.RefreshIfStale(_element.Canvas.RenderingScale); // a reader never gets the nodes of a page that left
         var snapshot = manager.Snapshot;
         var list = new List<DrawnUiVirtualAutomationPeer>(snapshot.Length);
         for (var i = 0; i < snapshot.Length; i++)

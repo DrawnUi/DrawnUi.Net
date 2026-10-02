@@ -181,6 +181,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         Canvas.AccessibilityManager.Changed += OnAccessibilityChanged;
         Canvas.AccessibilityManager.FocusChanged += OnAccessibilityFocusChanged;
         Canvas.AccessibilityManager.LiveRegionUpdated += OnAccessibilityLiveRegion;
+        Canvas.AccessibilityManager.RebuildSkipped += OnAccessibilityRebuildSkipped;
 
         Super.HotReload += OnHotReload;
 
@@ -285,6 +286,30 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
     private DrawnUiElementAutomationPeer EnsurePeer() =>
         _peer ?? System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(this) as DrawnUiElementAutomationPeer;
+
+    private System.Windows.Threading.DispatcherTimer _a11yRefresh;
+
+    /// <summary>
+    /// The snapshot went stale inside its rebuild interval: rebuild it once the interval is over, even when no frame
+    /// comes (the canvas went idle after a page opened). A one-shot timer and the rebuild itself, never a frame;
+    /// rendering runs on this thread, so the rebuild reads the tree safely.
+    /// </summary>
+    private void OnAccessibilityRebuildSkipped(long remainingMs) => Dispatcher.BeginInvoke(() =>
+    {
+        if (_a11yRefresh == null)
+        {
+            _a11yRefresh = new System.Windows.Threading.DispatcherTimer(System.Windows.Threading.DispatcherPriority.Background, Dispatcher);
+            _a11yRefresh.Tick += (_, _) =>
+            {
+                _a11yRefresh.Stop();
+                Canvas?.AccessibilityManager.RefreshIfStale(Canvas.RenderingScale); // raises Changed when it differs
+            };
+        }
+
+        _a11yRefresh.Stop();
+        _a11yRefresh.Interval = TimeSpan.FromMilliseconds(Math.Max(1, remainingMs) + 16);
+        _a11yRefresh.Start();
+    });
 
     private void OnAccessibilityChanged() => Dispatcher.BeginInvoke(() =>
     {
@@ -402,6 +427,8 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         _running = false;
         Super.HotReload -= OnHotReload;
         CompositionTarget.Rendering -= OnCompositionRendering;
+        _a11yRefresh?.Stop();
+        Canvas.AccessibilityManager.RebuildSkipped -= OnAccessibilityRebuildSkipped;
 
         if (_window != null)
         {

@@ -43,6 +43,15 @@ namespace DrawnUi.Views
         public AccessibilityNode[] Snapshot { get; private set; } = [];
 
         public event Action? Changed;
+
+        /// <summary>
+        /// The rate limit skipped a rebuild: frames moved or changed nodes and the snapshot is stale until the next
+        /// frame end after the interval. Raised once per stale period, on the rendering thread, with the milliseconds
+        /// left until a rebuild may run. A head whose canvas can go idle right after a change (a page that just opened)
+        /// calls <see cref="RefreshIfStale"/> then, on its rendering thread, so assistive technology never keeps the
+        /// previous page's nodes: no frame is drawn for it.
+        /// </summary>
+        public event Action<long>? RebuildSkipped;
         public event Action<ISkiaAccessibilityNode?>? FocusChanged;
 
         /// <summary>
@@ -553,7 +562,11 @@ namespace DrawnUi.Views
             var now = Environment.TickCount64;
             if (now - _lastRebuildTick < MinUpdateIntervalMs)
             {
-                _stale = true;
+                if (!_stale)
+                {
+                    _stale = true;
+                    RebuildSkipped?.Invoke(MinUpdateIntervalMs - (now - _lastRebuildTick));
+                }
                 return;
             }
 
