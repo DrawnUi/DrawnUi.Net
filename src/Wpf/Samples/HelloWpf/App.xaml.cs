@@ -32,11 +32,11 @@ public partial class App : Application
                 .AddFont("fonts/OpenSans-Semibold.ttf", "FontTextBold")
                 .AddFont("fonts/Orbitron-Regular.ttf", "FontGame") // Pong score and messages, as in the .NET Pong samples
                 .AddFont("fonts/NotoSansMathSymbols-Subset.ttf", "FontSymbols")
-                .AddFont("fonts/NotoSansSymbols2-Subset.ttf", "FontSymbols2"))
-            // No FontEmoji: the hello apps' NotoColorEmoji-Subset.ttf is a COLRv1 font, and SkiaSharp on
-            // Windows (DirectWrite font manager) finds its glyphs but draws zero pixels (measured
-            // 2026-10-01, SkiaSharp 4.148), so registering it would make emoji vanish. Emoji resolve to
-            // the system Segoe UI Emoji through AutoFont / font-run fallback instead.
+                .AddFont("fonts/NotoSansSymbols2-Subset.ttf", "FontSymbols2")
+                // The web heads' Noto emoji subset flattened to COLRv0 (dev/fonts/colrv0_emoji.py): SkiaSharp
+                // on Windows draws text through DirectWrite, which renders COLRv0 but draws the COLRv1
+                // original as nothing (measured 2026-10-02, SkiaSharp 4.148).
+                .AddFont("fonts/NotoColorEmoji-Subset-COLRv0.ttf", "FontEmoji"))
             // Without this every control that leaves FontFamily empty draws in Skia's built-in face,
             // on this head as on the others. A SkiaLabel style does not reach button captions,
             // because SkiaButton pushes its own FontFamily onto its label — so style buttons too.

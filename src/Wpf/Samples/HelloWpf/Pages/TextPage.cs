@@ -175,18 +175,9 @@ public class TextPage : SkiaLayer
                             {
                                 FontSize = 16, TextColor = Body, FontFamilyFallback = "FontSymbols,FontSymbols2", HorizontalOptions = LayoutOptions.Fill,
                             },
-                            // No FontEmoji face on this head (the COLRv1 Noto subset draws nothing through SkiaSharp on
-                            // Windows, see App.xaml.cs): AutoFont switches the label to the system face of its first
-                            // glyph, Segoe UI Emoji, so the emoji get a label of their own.
-                            new SkiaRow
+                            new SkiaLabel("Emoji 😀 😎 🤖 😂 👍 🙌 via FontFamilyFallback=\"FontEmoji\" (Noto Color Emoji faces + hands subset)")
                             {
-                                Spacing = 8,
-                                Children = new List<SkiaControl>
-                                {
-                                    new SkiaLabel("Emoji") { FontSize = 16, TextColor = Body, VerticalOptions = LayoutOptions.Center },
-                                    new SkiaLabel("😀 😎 🤖 😂 👍 🙌") { FontSize = 16, TextColor = Body, AutoFont = true, VerticalOptions = LayoutOptions.Center },
-                                    new SkiaLabel("via the system font (AutoFont=true picks Segoe UI Emoji)") { FontSize = 16, TextColor = Body, VerticalOptions = LayoutOptions.Center },
-                                },
+                                FontSize = 16, TextColor = Body, FontFamilyFallback = "FontEmoji", HorizontalOptions = LayoutOptions.Fill,
                             },
                             // A glyph no font has becomes FallbackCharacter, a space by default.
                             new SkiaLabel("Without a fallback the same arrow → and emoji 😀 are drawn as blank spaces")

@@ -26,12 +26,15 @@ public class LabelGlyphFallbackTests
         SkiaFontManager.Instance.RegisterFont("FallbackTestText", RepoFile(@"Tests\PreviewTests\Resources\Fonts\OpenSans-Regular.ttf"));
         SkiaFontManager.Instance.RegisterFont("FallbackTestMath", RepoFile(@"src\Blazor\DrawnUi\wwwroot\fonts\NotoSansMathSymbols-Subset.ttf"));
         SkiaFontManager.Instance.RegisterFont("FallbackTestSym2", RepoFile(@"src\Blazor\DrawnUi\wwwroot\fonts\NotoSansSymbols2-Subset.ttf"));
+        SkiaFontManager.Instance.RegisterFont("FallbackTestEmoji", RepoFile(@"src\Wpf\Samples\HelloWpf\fonts\NotoColorEmoji-Subset-COLRv0.ttf"));
         SkiaFontManager.Instance.Initialize();
     }
 
-    private static SkiaLabel Render(string text, string fallback)
+    private static SkiaLabel Render(string text, string fallback) => Render(text, fallback, out _);
+
+    private static SkiaLabel Render(string text, string fallback, out HeadlessCanvasHost host)
     {
-        var host = new HeadlessCanvasHost(500, 200, scale: 1f, background: Colors.Black);
+        host = new HeadlessCanvasHost(500, 200, scale: 1f, background: Colors.Black);
         var label = new SkiaLabel
         {
             Text = text,
@@ -80,5 +83,17 @@ public class LabelGlyphFallbackTests
         var label = Render("Total and done", "FallbackTestMath");
 
         Assert.All(Assert.Single(label.Lines).Spans, s => Assert.Null(s.Span));
+    }
+
+    [Fact]
+    public void ColrV0Emoji_DrawnInColor() // the hello apps' FontEmoji on Windows: the COLRv1 original draws 0 px there
+    {
+        var label = Render("😀 🙂", "FallbackTestEmoji", out var host);
+
+        var emoji = Assert.Single(label.Lines).Spans.First(s => s.Text.Contains("😀"));
+        Assert.Equal(Face("FallbackTestEmoji").FamilyName, emoji.Span.TypeFace.FamilyName);
+        using var bitmap = SKBitmap.FromImage(host.Snapshot());
+        var colored = bitmap.Pixels.Count(c => Math.Max(c.Red, Math.Max(c.Green, c.Blue)) - Math.Min(c.Red, Math.Min(c.Green, c.Blue)) > 40);
+        Assert.True(colored > 200, $"colored px: {colored}");
     }
 }

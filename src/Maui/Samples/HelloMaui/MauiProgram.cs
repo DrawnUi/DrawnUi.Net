@@ -32,8 +32,12 @@ public static class MauiProgram
                 fonts.AddFont("Orbitron-Regular.ttf", "FontGame"); // Pong score and messages, as in the .NET Pong samples
                 fonts.AddFont("NotoSansMathSymbols-Subset.ttf", "FontSymbols");
                 fonts.AddFont("NotoSansSymbols2-Subset.ttf", "FontSymbols2");
-                // No FontEmoji, as HelloWpf: the hello apps' NotoColorEmoji-Subset.ttf is COLRv1, which SkiaSharp
-                // on Windows finds but draws empty (measured 2026-10-01); emoji come from the system font.
+#if WINDOWS
+                // As HelloWpf: the web heads' Noto emoji subset flattened to COLRv0 (dev/fonts/colrv0_emoji.py),
+                // since SkiaSharp on Windows draws the COLRv1 original as nothing (measured 2026-10-02).
+                // Other platforms have no FontEmoji yet (not measured): emoji come from the system font.
+                fonts.AddFont("NotoColorEmoji-Subset-COLRv0.ttf", "FontEmoji");
+#endif
             });
 
         // Every label is read as text, every button is a button, as in the React demo.

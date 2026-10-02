@@ -174,9 +174,15 @@ public class TextPage : SkiaLayer
                             {
                                 FontSize = 16, TextColor = Body, FontFamilyFallback = "FontSymbols,FontSymbols2", HorizontalOptions = LayoutOptions.Fill,
                             },
-                            // No FontEmoji face in this app (the COLRv1 Noto subset draws nothing through SkiaSharp on
-                            // Windows, see MauiProgram.cs): AutoFont switches the label to the system emoji face of its
-                            // first glyph (Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji), so the emoji get a label of their own.
+#if WINDOWS
+                            new SkiaLabel("Emoji 😀 😎 🤖 😂 👍 🙌 via FontFamilyFallback=\"FontEmoji\" (Noto Color Emoji faces + hands subset)")
+                            {
+                                FontSize = 16, TextColor = Body, FontFamilyFallback = "FontEmoji", HorizontalOptions = LayoutOptions.Fill,
+                            },
+#else
+                            // No FontEmoji face on this platform yet (see MauiProgram.cs): AutoFont switches the label to
+                            // the system emoji face of its first glyph (Apple Color Emoji, Noto Color Emoji), so the emoji
+                            // get a label of their own.
                             new SkiaRow
                             {
                                 Spacing = 8,
@@ -187,6 +193,7 @@ public class TextPage : SkiaLayer
                                     new SkiaLabel("via the system font (AutoFont=true picks the system emoji font)") { FontSize = 16, TextColor = Body, VerticalOptions = LayoutOptions.Center },
                                 },
                             },
+#endif
                             // A glyph no font has becomes FallbackCharacter, a space by default.
                             new SkiaLabel("Without a fallback the same arrow → and emoji 😀 are drawn as blank spaces")
                             {
