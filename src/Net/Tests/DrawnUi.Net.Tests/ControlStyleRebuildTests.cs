@@ -53,6 +53,50 @@ public class ControlStyleRebuildTests
         Assert.True(progress.TrailPart is { IsDisposed: false } && IsInside(progress.TrailPart, progress), "ProgressTrail points at the old part");
     }
 
+    [Fact]
+    public void Progress_KeepsItsFill_ThroughTheLiveCardCycle()
+    {
+        using var host = new HeadlessCanvasHost(300, 120, background: Colors.Black);
+        var progress = new ProbeProgress { Value = 65, WidthRequest = 200 };
+        host.Canvas.Content = progress;
+        host.AdvanceFrames(3);
+
+        foreach (var style in new[] { PrebuiltControlStyle.Windows, PrebuiltControlStyle.Cupertino, PrebuiltControlStyle.Material, PrebuiltControlStyle.Material3, PrebuiltControlStyle.Unset })
+        {
+            progress.ControlStyle = style;
+            host.AdvanceFrames(4);
+            var trail = (ProgressTrail)progress.TrailPart;
+            var track = progress.TrackPart;
+            Assert.True(track.Width > 0, $"{style}: track not laid out");
+            Assert.True(Math.Abs(trail.XPosEnd - track.Width * 0.65) < 1, $"{style}: fill {trail.XPosEnd} of {track.Width}");
+        }
+    }
+
+    [Theory]
+    [InlineData(PrebuiltControlStyle.Cupertino)]
+    [InlineData(PrebuiltControlStyle.Material)]
+    [InlineData(PrebuiltControlStyle.Material3)]
+    [InlineData(PrebuiltControlStyle.Windows)]
+    public void SwitchAndCheckbox_TakeTheNewStyleColors(PrebuiltControlStyle style)
+    {
+        using var host = new HeadlessCanvasHost(300, 120, background: Colors.Black);
+        var live = new SkiaSwitch { IsToggled = true };
+        var fresh = new SkiaSwitch { IsToggled = true, ControlStyle = style };
+        var liveBox = new SkiaCheckbox { IsToggled = true };
+        var freshBox = new SkiaCheckbox { IsToggled = true, ControlStyle = style };
+        host.Canvas.Content = new SkiaStack { Children = { live, fresh, liveBox, freshBox } };
+        host.AdvanceFrames(3);
+
+        live.ControlStyle = style;
+        liveBox.ControlStyle = style;
+        host.AdvanceFrames(3);
+
+        Assert.Equal(fresh.ColorFrameOn, live.ColorFrameOn);
+        Assert.Equal(fresh.ColorFrameOff, live.ColorFrameOff);
+        Assert.Equal(freshBox.ColorFrameOn, liveBox.ColorFrameOn);
+        Assert.Equal(freshBox.ColorCheckOn, liveBox.ColorCheckOn);
+    }
+
     private class ProbeProgress : SkiaProgress
     {
         public SkiaControl TrackPart => Track;
