@@ -198,7 +198,11 @@ public partial class SkiaScroll
 
         var clamped = ClampOffsetHard(offsetX, offsetY);
 
-        ScrollTo(clamped.X, clamped.Y, AutoScrollingSpeedMs, false);
+        // An event under half a notch (a precision touchpad, a free-spinning or high-resolution wheel) moves at
+        // once: easing each of a stream of small events kept the content behind the fingers, and SpringOut
+        // overshot the end of a swipe. Only a notch glides (same rule as the React and Rust engines).
+        var instant = perNotch > 0 && Math.Abs(value) < perNotch / 2;
+        ScrollTo(clamped.X, clamped.Y, instant ? 0 : AutoScrollingSpeedMs, false);
     }
 
     /// <summary>

@@ -9,7 +9,8 @@ namespace DrawnUi.Net.Tests;
 /// <summary>
 /// Mouse wheel on the desktop heads (WPF, OpenTK: Windows units, 120 a notch): a scroll moves by the event's share of
 /// a notch. A precision touchpad sends many small events and must scroll as far as the fingers moved, not a full line
-/// per event; mouse notches keep one line each and a fast spin still adds up.
+/// per event; mouse notches keep one line each and a fast spin still adds up. An event under half a notch moves at once
+/// (easing each one kept the content behind the fingers and SpringOut overshot the end of a swipe); notches glide.
 /// </summary>
 public class WheelTouchpadTests
 {
@@ -65,5 +66,31 @@ public class WheelTouchpadTests
         var spin = Travel(host, scroll, -120, 8, 40);
         _out.WriteLine($"spin travel {spin}");
         Assert.Equal(8 * SkiaScroll.WheelLineSize, spin, 1);
+    }
+
+    [Fact]
+    public void TouchpadEvents_MoveAtOnce_NoOvershoot()
+    {
+        var (host, scroll) = Scene();
+        using var _ = host;
+        var start = scroll.ViewportOffsetY;
+        var share = SkiaScroll.WheelLineSize * 10 / 120f; // an event of 10 Windows units
+
+        for (var i = 1; i <= 15; i++)
+        {
+            host.Canvas.HandleDesktopWheel(150, 200, -10, 300, 400);
+            host.RenderFrame(16);
+            var moved = start - scroll.ViewportOffsetY;
+            _out.WriteLine($"event {i}: moved {moved:0.0}");
+            Assert.Equal(share * i, moved, 0.5);
+        }
+
+        var furthest = 0f;
+        for (var i = 0; i < 60; i++)
+        {
+            host.RenderFrame(16);
+            furthest = Math.Max(furthest, start - scroll.ViewportOffsetY);
+        }
+        Assert.Equal(share * 15, furthest, 0.5);
     }
 }
