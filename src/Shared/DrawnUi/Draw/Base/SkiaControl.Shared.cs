@@ -2500,8 +2500,6 @@ namespace DrawnUi.Draw
                 Super.Log($"[BASE] {this.Tag} Got {args.Type}.. {Uid}");
             }
 
-            var consumedDefault = BlockGesturesBelow ? this as ISkiaGestureListener : null;
-
             // Save the parent-space MappedLocation before any HasTransform inversion.
             // Used for two things: (1) hit-testing against HitRects which are in parent drawing space,
             // and (2) as the base for dispatchML = parentSpaceML + (thisOffset - dispatchOffset),
@@ -2555,9 +2553,9 @@ namespace DrawnUi.Draw
                 }
             }
 
-            // Same rule on both dispatch paths below: a gesture this control keeps from its children ends here.
-            if (CheckChildrenGesturesLocked(args.Type))
-                return consumedDefault;
+            // Same rule on both dispatch paths below: a gesture this control keeps from its children skips them,
+            // the control itself still gets its Tapped / LongPressing / ContextMenu.
+            var childrenLocked = CheckChildrenGesturesLocked(args.Type);
 
             if (UsesRenderingTree && RenderTree != null)
             {
@@ -2579,7 +2577,7 @@ namespace DrawnUi.Draw
                 //apply = RenderTree.OffsetGestures(apply);
 
                 //if previously having input didn't keep it
-                if (consumed == null || args.Type == TouchActionResult.Up)
+                if (!childrenLocked && (consumed == null || args.Type == TouchActionResult.Up))
                 {
                     var asSpan = RenderTree.AsSpans();
 
@@ -2735,8 +2733,8 @@ namespace DrawnUi.Draw
 
                         ISkiaGestureListener breakForChild = null;
 
-                        if (consumed == null ||
-                            args.Type == TouchActionResult.Up) // !GestureListeners.Contains(consumed))
+                        if (!childrenLocked && (consumed == null ||
+                            args.Type == TouchActionResult.Up)) // !GestureListeners.Contains(consumed))
                             foreach (var listener in GestureListeners.GetListeners())
                             {
                                 if (listener == null || !listener.CanDraw || listener.InputTransparent ||

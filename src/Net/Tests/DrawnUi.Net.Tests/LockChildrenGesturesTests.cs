@@ -9,7 +9,8 @@ namespace DrawnUi.Net.Tests;
 /// <summary>
 /// LockChildrenGestures applies on both gesture dispatch paths: the render-tree path (layouts, the default)
 /// and the live-children fallback (controls without a rendering tree, e.g. SkiaScroll). A locked gesture
-/// type never reaches a child, an unlocked one does, and the parent ends up with the same result either way.
+/// type never reaches a child, an unlocked one does, and the locked control itself still gets its Tapped:
+/// "lock the children, handle the tap on the card" works. Both paths give the same result.
 /// </summary>
 public class LockChildrenGesturesTests
 {
@@ -19,7 +20,7 @@ public class LockChildrenGesturesTests
         public override bool UsesRenderingTree => false;
     }
 
-    private record Result(int ChildDowns, int ChildTaps, int ChildPans, int ParentTaps);
+    private record Result(int ChildDowns, int ChildTaps, int ChildPans, int ParentTapsOnChild, int ParentTapsOnEmpty);
 
     private static Result Run(LockTouch lockTouch, bool renderTree)
     {
@@ -29,6 +30,8 @@ public class LockChildrenGesturesTests
 
         var parent = renderTree ? new SkiaLayer() : new FallbackLayer();
         parent.LockChildrenGestures = lockTouch;
+        parent.HorizontalOptions = LayoutOptions.Fill;
+        parent.VerticalOptions = LayoutOptions.Fill;
         parent.Children.Add(new SkiaShape
         {
             WidthRequest = 200,
@@ -49,10 +52,17 @@ public class LockChildrenGesturesTests
         host.AdvanceFrames(4);
 
         robot.Tap(100, 100);
+        host.AdvanceFrames(2);
+        var parentTapsOnChild = parentTaps;
+
+        robot.Tap(300, 250);
+        host.AdvanceFrames(2);
+        var parentTapsOnEmpty = parentTaps - parentTapsOnChild;
+
         robot.Pan(100, 150, 100, 50, durationMs: 160, steps: 8);
         host.AdvanceFrames(2);
 
-        return new Result(childDowns, childTaps, childPans, parentTaps);
+        return new Result(childDowns, childTaps, childPans, parentTapsOnChild, parentTapsOnEmpty);
     }
 
     [Theory]
@@ -69,6 +79,10 @@ public class LockChildrenGesturesTests
         Assert.Equal(tapReachesChild ? 1 : 0, tree.ChildTaps);
         Assert.Equal(panReachesChild, tree.ChildPans > 0);
         Assert.Equal(panReachesChild, tree.ChildDowns > 0);
+
+        // the locked control keeps the tap its child did not get, over the child and over empty space
+        Assert.Equal(tapReachesChild ? 0 : 1, tree.ParentTapsOnChild);
+        Assert.Equal(1, tree.ParentTapsOnEmpty);
 
         Assert.Equal(fallback, tree);
     }
