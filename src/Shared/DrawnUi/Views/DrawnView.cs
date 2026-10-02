@@ -492,6 +492,55 @@ namespace DrawnUi.Views
             }
         }
 
+        /// <summary>
+        /// Keyboard navigation for a head with no accessibility layer of its own (MAUI Mac Catalyst), with the rules of
+        /// the MAUI Windows and WPF layers: Tab / Shift+Tab walk the Tab stops (<see cref="SkiaAccessibilityManager.NextTabStop"/>)
+        /// from the node in focus (the keyboard's, else the last one tapped), Enter / Space activate it, Escape leaves the
+        /// drawn nodes, arrows / Home / End / PageUp / PageDown go to the node, else to its group. True when the key was used.
+        /// </summary>
+        public bool HandleKeyboardNavigation(InputKey key, bool shift)
+        {
+            var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+
+            if (key == InputKey.Tab)
+            {
+                var next = AccessibilityManager.NextTabStop(current, !shift);
+                if (!ReferenceEquals(current, next))
+                {
+                    current?.OnAccessibilityFocused(false);
+                    next?.OnAccessibilityFocused(true);
+                }
+                if (next is SkiaControl control)
+                    SkiaScroll.EnsureVisible(control);
+                KeyboardFocusNode = next;
+                AccessibilityManager.NotifyFocused(next);
+                return true;
+            }
+
+            if (current == null)
+                return false; // no drawn node in focus: the key is not ours (the app still gets it from KeyboardManager)
+
+            switch (key)
+            {
+                case InputKey.Enter:
+                case InputKey.Space:
+                    SkiaAccessibilityManager.Activate(current);
+                    return true;
+
+                case InputKey.Escape:
+                    current.OnAccessibilityFocused(false);
+                    KeyboardFocusNode = null;
+                    AccessibilityManager.NotifyFocused(null);
+                    return true;
+            }
+
+            if (!SkiaAccessibilityManager.Key(current, key))
+                return false;
+
+            KeyboardFocusNode ??= current; // the keyboard is in use: the ring shows
+            return true;
+        }
+
         private static void SetKeyboardFocusInScrolls(ISkiaAccessibilityNode node, bool inside)
         {
             var parent = (node as SkiaControl)?.Parent;

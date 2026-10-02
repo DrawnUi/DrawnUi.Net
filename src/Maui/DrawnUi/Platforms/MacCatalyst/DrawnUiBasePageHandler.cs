@@ -54,6 +54,8 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                 {
                     var mapped = KeyboardManager.MapToMaui((int)press.Type);
                     KeyboardManager.KeyboardPressed(mapped);
+                    if (mapped != InputKey.Tab) // Tab comes through the key commands below
+                        FindKeyboardCanvas()?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
 
                     consumed = true;
                 }
@@ -75,6 +77,85 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                     KeyboardManager.KeyboardReleased(mapped);
                     //Trace.WriteLine($"[KEY] {press.Type}/{(int)press.Type} => {mapped}");
                 }
+        }
+
+        // Tab never reaches PressesBegan either: the system focus navigation takes it unless a key command asks for
+        // priority. Tab and Shift+Tab walk the drawn accessibility nodes, as on MAUI Windows and WPF.
+        private UIKeyCommand[] _tabCommands;
+
+        /// <summary>
+        /// Tab and Shift+Tab, ahead of the system focus navigation, when the page tracks the keyboard.
+        /// </summary>
+        public override UIKeyCommand[] KeyCommands
+        {
+            get
+            {
+                if (!TracksKeyboard || !OperatingSystem.IsMacCatalystVersionAtLeast(15))
+                    return base.KeyCommands;
+
+                if (_tabCommands == null)
+                {
+                    var forward = UIKeyCommand.Create((NSString)"\t", 0, new ObjCRuntime.Selector("drawnUiTab:"));
+                    var backward = UIKeyCommand.Create((NSString)"\t", UIKeyModifierFlags.Shift,
+                        new ObjCRuntime.Selector("drawnUiShiftTab:"));
+                    forward.WantsPriorityOverSystemBehavior = true;
+                    backward.WantsPriorityOverSystemBehavior = true;
+                    _tabCommands = base.KeyCommands is { Length: > 0 } own ? [..own, forward, backward] : [forward, backward];
+                }
+
+                return _tabCommands;
+            }
+        }
+
+        [Export("drawnUiTab:")]
+        void OnTabCommand(UIKeyCommand command) => OnTab(false);
+
+        [Export("drawnUiShiftTab:")]
+        void OnShiftTabCommand(UIKeyCommand command) => OnTab(true);
+
+        void OnTab(bool shift)
+        {
+            KeyboardManager.KeyboardPressed(InputKey.Tab); // the app still gets Tab, as on the other platforms
+            KeyboardManager.KeyboardReleased(InputKey.Tab);
+            FindKeyboardCanvas()?.HandleKeyboardNavigation(InputKey.Tab, shift);
+        }
+
+        /// <summary>
+        /// The canvas keyboard navigation works on: the one holding keyboard focus, else the one holding a focused node,
+        /// else the first visible canvas of the page. The walk stops at each canvas, it never enters the drawn tree.
+        /// </summary>
+        DrawnView FindKeyboardCanvas()
+        {
+            DrawnView withFocus = null, first = null;
+            Collect(_page as Microsoft.Maui.IVisualTreeElement);
+            return withFocus ?? first;
+
+            bool Collect(Microsoft.Maui.IVisualTreeElement element)
+            {
+                if (element is DrawnView canvas)
+                {
+                    if (!canvas.IsVisible)
+                        return false;
+                    if (canvas.KeyboardFocusNode != null)
+                    {
+                        withFocus = canvas;
+                        return true;
+                    }
+                    if (canvas.AccessibilityManager.FocusedNode != null)
+                        withFocus ??= canvas;
+                    first ??= canvas;
+                    return false;
+                }
+
+                if (element == null)
+                    return false;
+                foreach (var child in element.GetVisualChildren())
+                {
+                    if (Collect(child))
+                        return true;
+                }
+                return false;
+            }
         }
 
         // Cmd+C and Cmd+A never reach PressesBegan on a Mac: the Edit menu takes them and sends copy: / selectAll:
@@ -120,7 +201,11 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
             KeyboardManager.KeyboardReleased(InputKey.MetaLeft);
         }
 
+        private readonly IView _page;
+
         public CustomView(IView page, IMauiContext mauiContext) : base(page, mauiContext)
-        { }
+        {
+            _page = page;
+        }
     }
 }

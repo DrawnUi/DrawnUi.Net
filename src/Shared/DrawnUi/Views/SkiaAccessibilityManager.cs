@@ -181,6 +181,28 @@ namespace DrawnUi.Views
             return stopItem == null || ReferenceEquals(item, stopItem);
         }
 
+        /// <summary>
+        /// The Tab stop after <paramref name="from"/> in reading order (<see cref="IsTabStop"/>, interactive nodes only),
+        /// or the one before it for Shift+Tab. Null past either end: keyboard focus leaves the drawn nodes and the next
+        /// Tab starts over. From a node that is not a stop it starts at the first / last stop. The order the MAUI Windows
+        /// and WPF accessibility peers walk, for heads that have no such layer (MAUI Mac Catalyst).
+        /// </summary>
+        public ISkiaAccessibilityNode? NextTabStop(ISkiaAccessibilityNode? from, bool forward)
+        {
+            var stops = new List<ISkiaAccessibilityNode>();
+            foreach (var n in Snapshot)
+            {
+                if (n.Source is { AccessibilityCanInteract: true } source && IsTabStop(source))
+                    stops.Add(source);
+            }
+
+            var current = from == null ? -1 : stops.IndexOf(from);
+            if (current < 0)
+                current = forward ? -1 : stops.Count;
+            var next = forward ? current + 1 : current - 1;
+            return next >= 0 && next < stops.Count ? stops[next] : null;
+        }
+
         private bool IsInSnapshot(SkiaControl control)
         {
             foreach (var n in Snapshot)
