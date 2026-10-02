@@ -2840,7 +2840,9 @@ namespace DrawnUi.Draw
                 }
             }
 
-            if (BlockGesturesBelow && consumed == null && args.Type != TouchActionResult.Up)
+            // LockTouch.Enabled also marks the gestures it keeps from children as consumed by this control
+            if ((BlockGesturesBelow || childrenLocked && LockChildrenGestures == LockTouch.Enabled)
+                && consumed == null && args.Type != TouchActionResult.Up)
             {
                 consumed = this as ISkiaGestureListener;
             }

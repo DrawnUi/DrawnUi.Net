@@ -10,7 +10,8 @@ namespace DrawnUi.Net.Tests;
 /// LockChildrenGestures applies on both gesture dispatch paths: the render-tree path (layouts, the default)
 /// and the live-children fallback (controls without a rendering tree, e.g. SkiaScroll). A locked gesture
 /// type never reaches a child, an unlocked one does, and the locked control itself still gets its Tapped:
-/// "lock the children, handle the tap on the card" works. Both paths give the same result.
+/// "lock the children, handle the tap on the card" works. Enabled also consumes what it locks, so a control stacked
+/// below gets nothing; PassNone only locks the children. Both paths give the same result.
 /// </summary>
 public class LockChildrenGesturesTests
 {
@@ -83,6 +84,73 @@ public class LockChildrenGesturesTests
         // the locked control keeps the tap its child did not get, over the child and over empty space
         Assert.Equal(tapReachesChild ? 0 : 1, tree.ParentTapsOnChild);
         Assert.Equal(1, tree.ParentTapsOnEmpty);
+
+        Assert.Equal(fallback, tree);
+    }
+
+    private record SiblingResult(int Downs, int Taps, int Pans);
+
+    /// <summary>
+    /// A sibling stacked under the locked layer: taps over the layer's child and over its empty space, then a pan
+    /// over its empty space. The locked layer has no handlers of its own.
+    /// </summary>
+    private static SiblingResult RunSibling(LockTouch lockTouch, bool renderTree)
+    {
+        using var host = new HeadlessCanvasHost(400, 300);
+        var robot = new GestureRobot(host);
+        int downs = 0, taps = 0, pans = 0;
+
+        var locked = renderTree ? new SkiaLayer() : new FallbackLayer();
+        locked.LockChildrenGestures = lockTouch;
+        locked.HorizontalOptions = LayoutOptions.Fill;
+        locked.VerticalOptions = LayoutOptions.Fill;
+        locked.Children.Add(new SkiaShape { WidthRequest = 200, HeightRequest = 200, BackgroundColor = Colors.Red }
+            .WithGestures((me, args, apply) => me));
+
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaShape { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill, BackgroundColor = Colors.Blue }
+                    .WithGestures((me, args, apply) =>
+                    {
+                        switch (args.Type)
+                        {
+                            case TouchActionResult.Down: downs++; break;
+                            case TouchActionResult.Tapped: taps++; break;
+                            case TouchActionResult.Panning: pans++; break;
+                        }
+                        return me;
+                    }),
+                locked,
+            }
+        };
+        host.AdvanceFrames(4);
+
+        robot.Tap(100, 100);
+        robot.Tap(300, 250);
+        robot.Pan(300, 250, 300, 150, durationMs: 160, steps: 8);
+        host.AdvanceFrames(2);
+
+        return new SiblingResult(downs, taps, pans);
+    }
+
+    [Theory]
+    [InlineData(LockTouch.Disabled, 1)]
+    [InlineData(LockTouch.Enabled, 0)]
+    [InlineData(LockTouch.PassNone, 2)]
+    [InlineData(LockTouch.PassTap, 1)]
+    [InlineData(LockTouch.PassTapAndLongPress, 1)]
+    public void Enabled_ConsumesForItself_SiblingBelowGetsNothing(LockTouch lockTouch, int siblingTaps)
+    {
+        var tree = RunSibling(lockTouch, renderTree: true);
+        var fallback = RunSibling(lockTouch, renderTree: false);
+
+        Assert.Equal(siblingTaps, tree.Taps);
+        var reachesBelow = lockTouch != LockTouch.Enabled;
+        Assert.Equal(reachesBelow, tree.Downs > 0);
+        Assert.Equal(reachesBelow, tree.Pans > 0);
 
         Assert.Equal(fallback, tree);
     }
