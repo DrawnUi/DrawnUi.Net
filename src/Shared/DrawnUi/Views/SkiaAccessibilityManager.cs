@@ -32,6 +32,7 @@ namespace DrawnUi.Views
         private readonly ConcurrentDictionary<ISkiaAccessibilityNode, byte> _nodes = new();
         private readonly List<(ISkiaAccessibilityNode Node, SKRect Rect)> _sortBuffer = new();
         private volatile bool _dirty;
+        private volatile bool _stale; // frames were drawn since the last rebuild, the rate limit skipped them
         private long _lastRebuildTick;
 
         /// <summary>
@@ -550,14 +551,35 @@ namespace DrawnUi.Views
             if (!_dirty && _nodes.IsEmpty) return;
 
             var now = Environment.TickCount64;
-            if (now - _lastRebuildTick < MinUpdateIntervalMs) return;
+            if (now - _lastRebuildTick < MinUpdateIntervalMs)
+            {
+                _stale = true;
+                return;
+            }
 
             Rebuild(scale);
+        }
+
+        /// <summary>
+        /// Rebuilds the snapshot now when frames were drawn since the last rebuild (the <see cref="MinUpdateIntervalMs"/>
+        /// rate limit skipped them), so keyboard navigation never walks the nodes of a page that just left the screen
+        /// while the canvas sits idle. Free when the snapshot is current, draws no frame. Call it on the thread that
+        /// renders the canvas. True when the snapshot changed.
+        /// </summary>
+        public bool RefreshIfStale(float scale)
+        {
+            if (!_stale)
+                return false;
+
+            var before = Snapshot;
+            Rebuild(scale);
+            return !ReferenceEquals(before, Snapshot);
         }
 
         private void Rebuild(float scale)
         {
             _dirty = false;
+            _stale = false;
             _lastRebuildTick = Environment.TickCount64;
 
             _sortBuffer.Clear();

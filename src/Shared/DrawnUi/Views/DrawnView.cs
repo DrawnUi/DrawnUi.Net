@@ -504,6 +504,7 @@ namespace DrawnUi.Views
 
             if (key == InputKey.Tab)
             {
+                AccessibilityManager.RefreshIfStale(RenderingScale);
                 var next = AccessibilityManager.NextTabStop(current, !shift);
                 if (!ReferenceEquals(current, next))
                 {

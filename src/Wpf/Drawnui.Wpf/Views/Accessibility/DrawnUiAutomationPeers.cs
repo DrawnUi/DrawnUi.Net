@@ -50,9 +50,16 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
     /// <summary>Moves virtual focus; false when past either end, so WPF Tab navigation continues.</summary>
     internal bool MoveFocus(bool forward)
     {
+        var canvas = _element.Canvas;
+        var manager = canvas?.AccessibilityManager;
+
+        // the snapshot is rebuilt at most once a second at a frame end: when the canvas went idle right after a change
+        // (a page just opened), walk the current nodes, not the ones of the page that left (rendering runs on this thread)
+        if (manager != null && manager.RefreshIfStale(canvas.RenderingScale))
+            GetChildrenCore();
+
         EnsureChildren();
         // a group of items (Aria.RoleList etc. on a container) is one Tab stop, the arrow keys move inside it
-        var manager = _element.Canvas?.AccessibilityManager;
         var focusable = _children.Where(p => p.Source?.AccessibilityCanInteract == true
                                              && manager?.IsTabStop(p.Source) != false).ToList();
         if (focusable.Count == 0)

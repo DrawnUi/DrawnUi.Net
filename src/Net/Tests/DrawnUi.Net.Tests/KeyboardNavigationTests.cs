@@ -92,6 +92,28 @@ public class KeyboardNavigationTests
     }
 
     [Fact]
+    public void Tab_WalksTheNewContent_WhenTheSnapshotRebuildWasSkipped()
+    {
+        var (host, buttons, _) = Build(_ => { });
+        using var _ = host;
+        var canvas = host.Canvas;
+        Assert.Contains(canvas.AccessibilityManager.Snapshot, n => n.Label == "a"); // first page in the snapshot
+
+        // the rate limit holds the next rebuild back, as when a page opens and the canvas goes idle within a second
+        canvas.AccessibilityManager.MinUpdateIntervalMs = 1_000_000;
+        SkiaButton next = null;
+        canvas.Content = new SkiaStack
+        {
+            Children = { new SkiaButton("next page") { HeightRequest = 40, AccessibilityRole = Aria.RoleButton }.Assign(out next) }
+        };
+        host.AdvanceFrames(3);
+        Assert.DoesNotContain(canvas.AccessibilityManager.Snapshot, n => n.Label == "next page"); // stale
+
+        Press(host, InputKey.Tab);
+        Assert.Same(next, canvas.KeyboardFocusNode); // not a button of the page that left
+    }
+
+    [Fact]
     public void EnterAndSpaceActivate_EscapeLeaves_KeysWithoutFocusAreNotUsed()
     {
         var log = new List<string>();
