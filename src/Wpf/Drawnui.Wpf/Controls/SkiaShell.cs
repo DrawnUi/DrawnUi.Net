@@ -466,6 +466,7 @@ public class SkiaShell : SkiaLayer
         if (root != null)
         {
             root.ZIndex = 0;
+            root.IsVisible = _stacks[tab].Count == 0; // covered by pushed pages: hidden, see SetPageBelowVisible
             if (tab == _selectedTab)
                 SendAppearing(root);
             container.AddSubView(root);
@@ -585,6 +586,10 @@ public class SkiaShell : SkiaLayer
                 await host.TranslateToAsync(0, 0, (uint)PagesAnimationSpeed, Easing.CubicOut);
             }
 
+            // the covered page is hidden, as SkiaViewSwitcher does on the other heads: it is not drawn, and Tab or a
+            // screen reader no longer reaches its controls under the new page
+            SetPageBelowVisible(stack, false);
+
             OnLayersChanged();
             NotifyNavigated(route, NavigationSource.Push, view);
         }
@@ -608,6 +613,7 @@ public class SkiaShell : SkiaLayer
         try
         {
             SendDisappearing(entry.View);
+            SetPageBelowVisible(stack, true); // shown before the top page slides off it
             if (animated)
                 await entry.Host.TranslateToAsync(CanvasWidthPoints(), 0, (uint)PagesAnimationSpeed, Easing.CubicIn);
 
@@ -623,6 +629,14 @@ public class SkiaShell : SkiaLayer
         {
             _navigating = false;
         }
+    }
+
+    /// <summary>Shows or hides the page under the top one of <paramref name="stack"/>: the page pushed before it, else the tab root.</summary>
+    private void SetPageBelowVisible(List<PageEntry> stack, bool visible)
+    {
+        var below = stack.Count >= 2 ? stack[^2].Host : _tabRoots[_selectedTab];
+        if (below != null)
+            below.IsVisible = visible;
     }
 
     /// <summary>Closes the top popup, else the top modal, else pops the top page — the MAUI GoBack order.</summary>
