@@ -75,6 +75,7 @@ public class RootPage : SkiaLayer
                 FontFamily = "FontTextBold",
                 TextColor = Colors.White,
                 HorizontalOptions = LayoutOptions.Center,
+                HorizontalTextAlignment = DrawTextAlignment.Center,
                 AccessibilityRole = Aria.RoleHeading,
             },
             new SkiaLabel("A UI rendering engine on top of SkiaSharp: layouts, controls, gestures, effects and animations")

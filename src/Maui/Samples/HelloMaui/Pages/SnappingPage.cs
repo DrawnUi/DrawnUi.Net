@@ -186,7 +186,7 @@ public class SnappingPage : SkiaLayer
                                 }.Adapt(d => _dots.Add(d))).ToList(),
                             },
                             new SkiaLabel { FontSize = 13, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill }.Assign(out _status),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 8,
                                 VerticalOptions = LayoutOptions.Center,
@@ -223,7 +223,7 @@ public class SnappingPage : SkiaLayer
                             }
                             .Assign(out _loop)
                             .Adapt(me => me.SelectedIndexChanged += (_, i) => _loopTitle.Text = $"IsLooped + ItemsSource/ItemTemplate (12 recycled cells) · SelectedIndex={i}"),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 8,
                                 Children = new List<SkiaControl>

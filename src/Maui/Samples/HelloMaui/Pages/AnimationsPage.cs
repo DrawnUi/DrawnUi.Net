@@ -44,7 +44,7 @@ public class AnimationsPage : SkiaLayer
                         new SkiaLabel("Lottie & GIF") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
 
                         Card(Title("SkiaLottie — Source=\"lottie/shield.json\" Repeat=-1 · loading…").Assign(out _lottieTitle),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 16,
                                 Children = new List<SkiaControl>
@@ -78,7 +78,7 @@ public class AnimationsPage : SkiaLayer
                                                     new SkiaButton("GoToEnd") { BackgroundColor = Color.Parse("#6C757D"), FontSize = 13 }.OnTapped(me => { _lottie.Stop(); _lottie.GoToEnd(); }),
                                                 },
                                             },
-                                            new SkiaRow
+                                            new SkiaWrap
                                             {
                                                 Spacing = 8,
                                                 Children = new List<SkiaControl>
@@ -100,7 +100,7 @@ public class AnimationsPage : SkiaLayer
                             }),
 
                         Card(Title("ColorTint / Colors — colors replaced in the JSON before parsing (ApplyTint)"),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 12,
                                 Children = new List<SkiaControl>
@@ -113,7 +113,7 @@ public class AnimationsPage : SkiaLayer
                             }),
 
                         Card(Title("IsOn toggle — AutoPlay=false, DefaultFrame=0 / DefaultFrameWhenOn=-1 · IsOn=False").Assign(out _toggleTitle),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 16,
                                 Children = new List<SkiaControl>
@@ -136,7 +136,7 @@ public class AnimationsPage : SkiaLayer
                             }),
 
                         Card(Title("SkiaGif — Source=\"images/banana.gif\" Aspect=AspectFitFill · loading…").Assign(out _gifTitle),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 16,
                                 Children = new List<SkiaControl>

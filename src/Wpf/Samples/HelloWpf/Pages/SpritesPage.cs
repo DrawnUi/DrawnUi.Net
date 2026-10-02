@@ -50,7 +50,7 @@ public class SpritesPage : SkiaLayer
                         new SkiaLabel("Sprites") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
 
                         Card(Title(SpriteTitle()).Assign(out _spriteTitle),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 16,
                                 HorizontalOptions = LayoutOptions.Fill,

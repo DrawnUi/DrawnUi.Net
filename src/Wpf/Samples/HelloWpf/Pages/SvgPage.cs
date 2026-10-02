@@ -54,7 +54,7 @@ public class SvgPage : SkiaLayer
                             HorizontalOptions = LayoutOptions.Center,
                             Margin = new Thickness(0, 12, 0, 0),
                         },
-                        new SkiaRow
+                        new SkiaWrap
                         {
                             Spacing = 24,
                             HorizontalOptions = LayoutOptions.Center,

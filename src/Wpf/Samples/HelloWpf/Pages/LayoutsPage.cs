@@ -185,7 +185,7 @@ public class LayoutsPage : SkiaLayer
                             }),
 
                         Card("IsClippedToBounds — a child larger than its parent",
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 24,
                                 Children = new List<SkiaControl>
