@@ -160,4 +160,28 @@ public class WheelTouchpadTests
 
         Assert.Equal(-SkiaScroll.WheelLineSize, scroll.ViewportOffsetX, 1);
     }
+
+    [Fact]
+    public void FastSwipe_EventBeforeEveryFrame_MovesEveryFrame()
+    {
+        var (host, scroll) = Scene();
+        using var _ = host;
+        var start = scroll.ViewportOffsetY;
+        var previous = 0f;
+        var stalls = 0;
+
+        // a fast trackpad swipe: an event over half a notch (glide path) before every frame
+        for (var i = 1; i <= 20; i++)
+        {
+            host.Canvas.HandleDesktopWheel(150, 200, -72, 300, 400);
+            host.RenderFrame(16);
+            var moved = start - scroll.ViewportOffsetY;
+            _out.WriteLine($"frame {i}: moved {moved:0.0} of {SkiaScroll.WheelLineSize * 72 / 120f * i:0.0} arrived");
+            if (i > 1 && moved <= previous + 0.5f) // the first glide starts at its first frame; restarted ones must move
+                stalls++;
+            previous = moved;
+        }
+
+        Assert.Equal(0, stalls);
+    }
 }

@@ -208,7 +208,22 @@ public partial class SkiaScroll
         // once: easing each of a stream of small events kept the content behind the fingers, and SpringOut
         // overshot the end of a swipe. Only a notch glides (same rule as the React and Rust engines).
         var instant = perNotch > 0 && Math.Abs(value) < perNotch / 2;
+
+        // A restarted glide starts at its first frame, drawn at progress 0: events arriving before every frame (a
+        // fast trackpad swipe, a free-spinning wheel) restarted it each time, and the content stood still, then
+        // jumped. Count a restarted glide from the last frame the previous one drew, so the next frame already
+        // shows a frame of progress (same rule as DrawnUi.Rust dfe36fe).
+        var scroller = Orientation == ScrollOrientation.Horizontal ? _scrollerX : _scrollerY;
+        var lastTick = scroller != null && scroller.IsRunning ? scroller.LastFrameTimeNanos : 0;
+
         ScrollTo(clamped.X, clamped.Y, instant ? 0 : AutoScrollingSpeedMs, false);
+
+        if (!instant && lastTick > 0 && scroller.IsRunning)
+        {
+            scroller.StartFrameTimeNanos = lastTick;
+            scroller.LastFrameTimeNanos = lastTick;
+        }
+
         return true;
     }
 
