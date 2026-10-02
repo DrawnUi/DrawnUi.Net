@@ -93,12 +93,7 @@ public sealed class GestureRobot
             prev = move;
         }
 
-        Advance(dt + holdMs);
-        if (holdMs > 0)
-        {
-            // VelocityAccumulator ages samples by REAL time: sleep so the release sees a stale window -> ~zero velocity
-            System.Threading.Thread.Sleep((int)holdMs);
-        }
+        Advance(dt + holdMs); // the virtual clock ages the samples: the release sees a stale window -> ~zero velocity
         var up = MakeArgs(id, TouchActionType.Released, toPx, fromPx);
         up.IsInContact = false;
         TouchActionEventArgs.FillDistanceInfo(up, prev);
@@ -257,10 +252,23 @@ public sealed class GestureRobot
 
     private void Send(TouchActionType type, TouchActionEventArgs args, TouchActionResult result, double frameMs)
     {
-        _host.Canvas.OnGestureEvent(type, args, result);
-        // Gesture delivery is queued in ExecuteBeforeDraw and flushed on the next frame.
-        _host.RenderFrame(frameMs);
+        // velocity samples are timed by this robot's clock, not the wall clock: a flick is the same however long
+        // the machine took to render it (the engine judges a sample's age against the clock it was taken with)
+        var previous = VelocityAccumulator.ClockOverrideNanos;
+        VelocityAccumulator.ClockOverrideNanos = _clockNanos ??= () => _clock.Ticks * 100;
+        try
+        {
+            _host.Canvas.OnGestureEvent(type, args, result);
+            // Gesture delivery is queued in ExecuteBeforeDraw and flushed on the next frame.
+            _host.RenderFrame(frameMs);
+        }
+        finally
+        {
+            VelocityAccumulator.ClockOverrideNanos = previous;
+        }
     }
+
+    private Func<long> _clockNanos;
 
     private void Advance(double ms) => _clock = _clock.AddMilliseconds(ms);
 

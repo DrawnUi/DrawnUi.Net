@@ -24,10 +24,17 @@ public struct ScrollToIndexOrder
 
 public class VelocityAccumulator
 {
-    private List<(Vector2 velocity, DateTime time)> velocities = new List<(Vector2 velocity, DateTime time)>();
+    private readonly List<(Vector2 velocity, long time)> velocities = new(MaxSampleSize);
     private const double Threshold = 10.0; // Minimum significant movement
     private const int MaxSampleSize = 5; // Number of samples for weighted average
-    private const int ConsiderationTimeframeMs = 150; // Timeframe in ms for velocity consideration
+    private const long ConsiderationTimeframeNanos = 150_000_000; // 150 ms: samples older than this at release are ignored
+
+    /// <summary>
+    /// Clock of the gestures processed on this thread, in nanoseconds; null = the real one
+    /// (<see cref="Super.GetCurrentTimeNanos"/>). Set by the headless GestureRobot to its virtual clock while it
+    /// sends events, so a simulated flick has the same velocity however long the machine took to render it.
+    /// </summary>
+    [ThreadStatic] internal static Func<long> ClockOverrideNanos;
 
     public void Clear()
     {
@@ -46,23 +53,33 @@ public class VelocityAccumulator
     /// </param>
     public void CaptureVelocity(Vector2 velocity, long arrivedTimeNanos = 0)
     {
-        var time = arrivedTimeNanos > 0
-            ? DateTime.UtcNow.AddTicks(-(Super.GetCurrentTimeNanos() - arrivedTimeNanos) / 100)
-            : DateTime.UtcNow;
+        var clock = ClockOverrideNanos;
+        var time = clock != null ? clock()
+            : arrivedTimeNanos > 0 ? arrivedTimeNanos
+            : Super.GetCurrentTimeNanos();
         if (velocities.Count == MaxSampleSize) velocities.RemoveAt(0);
         velocities.Add((velocity, time));
     }
 
     public Vector2 CalculateFinalVelocity(float clampAbsolute = 0)
     {
-        var now = DateTime.UtcNow;
-        var relevantVelocities = velocities.Where(v => (now - v.time).TotalMilliseconds <= ConsiderationTimeframeMs).ToList();
-        if (!relevantVelocities.Any()) return Vector2.Zero;
+        var now = ClockOverrideNanos?.Invoke() ?? Super.GetCurrentTimeNanos();
 
-        // Calculate weighted average for both X and Y components
-        float weightedSumX = relevantVelocities.Select((v, i) => v.velocity.X * (i + 1)).Sum();
-        float weightedSumY = relevantVelocities.Select((v, i) => v.velocity.Y * (i + 1)).Sum();
-        var weightSum = Enumerable.Range(1, relevantVelocities.Count).Sum();
+        // weighted average of the recent samples, the newest weighing most (weights 1..n in sample order)
+        float weightedSumX = 0, weightedSumY = 0;
+        var weight = 0;
+        var weightSum = 0;
+        foreach (var (velocity, time) in velocities)
+        {
+            if (now - time > ConsiderationTimeframeNanos)
+                continue;
+            weight++;
+            weightSum += weight;
+            weightedSumX += velocity.X * weight;
+            weightedSumY += velocity.Y * weight;
+        }
+
+        if (weight == 0) return Vector2.Zero;
 
         if (clampAbsolute != 0)
         {
