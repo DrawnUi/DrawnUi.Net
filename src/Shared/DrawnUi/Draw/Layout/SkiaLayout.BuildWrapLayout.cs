@@ -335,8 +335,8 @@ public partial class SkiaLayout
                     return MeasureCell(rectFitChild, cell, child, scale);
                 }
 
-                //we know we will not fit in advance
-                if (child.WidthRequestWithMargins * scale > rectFitChild.Width)
+                //we know we will not fit in advance (an empty line is never broken: a new one is no wider)
+                if (child.WidthRequestWithMargins * scale > rectFitChild.Width && column > 0)
                 {
                     BreakRow();
                     remainingSize = rectForChild.Width;
@@ -352,10 +352,15 @@ public partial class SkiaLayout
                 {
                     //add logic for col row
 
-                    //check we are within bounds
-                    var fitsH = cell.Measured.Pixels.Width <= remainingSize && !cell.Measured.WidthCut;
+                    // WidthCut says the content is wider than the measured box. For a content-sized child that means
+                    // the line squeezed it, so it moves to a new line; a child of fixed or Fill width keeps its box,
+                    // whose content may overflow it on purpose (an unclipped child pushed out by a negative margin
+                    // used to send every such box to a line of its own). An empty line is never broken: a new one is
+                    // no wider, it only left a blank line above.
+                    var fitsH = cell.Measured.Pixels.Width <= remainingSize
+                                && !(child.NeedAutoWidth && cell.Measured.WidthCut);
 
-                    if (!fitsH && !useFixedSplitSize)
+                    if (!fitsH && !useFixedSplitSize && column > 0)
                     {
                         BreakRow();
                         measured = MeasureCellInternal();
