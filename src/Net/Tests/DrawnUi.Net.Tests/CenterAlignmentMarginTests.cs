@@ -10,7 +10,8 @@ namespace DrawnUi.Net.Tests;
 /// A horizontally centered control with an asymmetric margin, in a cell barely wider than it
 /// (ArtOfFoto timer settings: trash icon, Margin right 12, in a 32pt grid column). The centered box
 /// overflowed the cell before the margin shift was applied and got truncated, clipping the glyph.
-/// The arranged size must stay the measured one, like the vertical Center path.
+/// The arranged size must not drop below the measured one, like the vertical Center path. It may gain one
+/// pixel: when the free space around a centered child is odd, the child takes that pixel (ca4b076e, 1.10.6.16).
 /// </summary>
 public class CenterAlignmentMarginTests
 {
@@ -44,6 +45,7 @@ public class CenterAlignmentMarginTests
 
         for (int i = 0; i < 3; i++) host.RenderFrame(16);
 
-        Assert.Equal(13, icon.DrawingRect.Width);
+        // 32 - 13 = 19 free pixels, odd: the center rule gives the child the odd pixel
+        Assert.InRange(icon.DrawingRect.Width, 13, 14);
     }
 }
