@@ -53,11 +53,21 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                 foreach (UIPress press in presses)
                 {
                     var mapped = KeyboardManager.MapToMaui((int)press.Type);
-                    KeyboardManager.KeyboardPressed(mapped);
-                    if (mapped != InputKey.Tab) // Tab comes through the key commands below
-                        FindKeyboardCanvas()?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
-
                     consumed = true;
+                    if (mapped == InputKey.Tab)
+                    {
+                        Console.WriteLine("[A11yTab] PressesBegan Tab"); //todo TEMP remove
+                        var shift = press.Key?.ModifierFlags.HasFlag(UIKeyModifierFlags.Shift) ?? KeyboardManager.IsShiftPressed;
+                        if (TakeTab())
+                        {
+                            KeyboardManager.KeyboardPressed(mapped);
+                            NavigateTab(shift);
+                        }
+                        continue;
+                    }
+
+                    KeyboardManager.KeyboardPressed(mapped);
+                    FindKeyboardCanvas()?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
                 }
 
                 if (consumed) return;
@@ -79,9 +89,31 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                 }
         }
 
-        // Tab never reaches PressesBegan either: the system focus navigation takes it unless a key command asks for
-        // priority. Tab and Shift+Tab walk the drawn accessibility nodes, as on MAUI Windows and WPF.
+        // Tab and Shift+Tab walk the drawn accessibility nodes, as on MAUI Windows and WPF. With Full Keyboard Access on,
+        // the system focus navigation takes Tab before PressesBegan unless a key command asks for priority; with it off,
+        // Tab reaches PressesBegan. Both paths are taken, one Tab is used once.
         private UIKeyCommand[] _tabCommands;
+        private long _lastTabMs = -1000;
+
+        /// <summary>
+        /// True for the first delivery of a Tab press: the key command and PressesBegan can both deliver the same one,
+        /// within the same run loop pass, while key repeat comes 30 ms apart at the fastest.
+        /// </summary>
+        bool TakeTab()
+        {
+            var now = Environment.TickCount64;
+            if (now - _lastTabMs < 15)
+                return false;
+            _lastTabMs = now;
+            return true;
+        }
+
+        void NavigateTab(bool shift)
+        {
+            var canvas = FindKeyboardCanvas();
+            var used = canvas?.HandleKeyboardNavigation(InputKey.Tab, shift);
+            Console.WriteLine($"[A11yTab] canvas={(canvas == null ? "NULL" : "ok")} used={used} focus={canvas?.KeyboardFocusNode?.AccessibilityLabel}"); //todo TEMP remove
+        }
 
         /// <summary>
         /// Tab and Shift+Tab, ahead of the system focus navigation, when the page tracks the keyboard.
@@ -90,6 +122,7 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
         {
             get
             {
+                Console.WriteLine("[A11yTab] KeyCommands queried"); //todo TEMP remove
                 if (!TracksKeyboard || !OperatingSystem.IsMacCatalystVersionAtLeast(15))
                     return base.KeyCommands;
 
@@ -115,9 +148,12 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
 
         void OnTab(bool shift)
         {
+            Console.WriteLine("[A11yTab] key command"); //todo TEMP remove
+            if (!TakeTab())
+                return;
             KeyboardManager.KeyboardPressed(InputKey.Tab); // the app still gets Tab, as on the other platforms
             KeyboardManager.KeyboardReleased(InputKey.Tab);
-            FindKeyboardCanvas()?.HandleKeyboardNavigation(InputKey.Tab, shift);
+            NavigateTab(shift);
         }
 
         /// <summary>
