@@ -32,6 +32,7 @@ class SKHtmlCanvasView {
         this.htmlCanvas = htmlCanvas;
         this.renderFrameCallback = renderFrameCallback; // C# [JSExport] function
         this.glInfo = null;        // { context, fboId, stencil, sample, depth } or null for raster
+        this.contextLost = false;  // WebGL context lost, no frames until the browser restores it
         this.renderLoopEnabled = false;
         this.renderLoopRequest = 0;
     }
@@ -49,7 +50,7 @@ class SKHtmlCanvasView {
             this.htmlCanvas.height = height;
         }
 
-        if (this.renderLoopRequest !== 0)
+        if (this.renderLoopRequest !== 0 || this.contextLost)
             return;
 
         this.renderLoopRequest = window.requestAnimationFrame(() => {
@@ -141,7 +142,7 @@ function createWebGLContext(htmlCanvas) {
  * Initialize a GPU (WebGL) canvas view. Returns GL info or null on failure.
  * Mirrors SKHtmlCanvas.initGL.
  */
-export function initGL(elementId, callback) {
+export function initGL(elementId, callback, restoredCallback) {
     const canvasEl = document.getElementById(elementId);
     if (!canvasEl) {
         console.error(`Canvas element "${elementId}" not found`);
@@ -174,6 +175,32 @@ export function initGL(elementId, callback) {
         sample: 0,
         depth: GLctx.getParameter(GLctx.DEPTH_BITS),
     };
+
+    // A lost context (GPU reset, driver update, too many contexts) comes back only if the loss is
+    // prevented. On restore the same WebGL object gets a new Emscripten handle (fresh extensions and
+    // object tables), C# abandons its Skia context, and the next frame draws everything again.
+    canvasEl.addEventListener('webglcontextlost', (e) => {
+        e.preventDefault();
+        view.contextLost = true;
+        if (view.renderLoopRequest !== 0) {
+            window.cancelAnimationFrame(view.renderLoopRequest);
+            view.renderLoopRequest = 0;
+        }
+        console.warn('DrawnUI.Web: WebGL context lost');
+    });
+    canvasEl.addEventListener('webglcontextrestored', () => {
+        const GL = getGL();
+        const old = GL.getContext(view.glInfo.context);
+        const gl = old.GLctx, attributes = old.attributes;
+        GL.deleteContext(view.glInfo.context); // before registering: it clears canvas.GLctxObject
+        const handle = GL.registerContext(gl, attributes);
+        GL.makeContextCurrent(handle);
+        view.glInfo.context = handle;
+        view.contextLost = false;
+        if (restoredCallback) restoredCallback();
+        console.warn('DrawnUI.Web: WebGL context restored');
+        view.requestAnimationFrame();
+    });
 
     console.log(`DrawnUI.Web GL init: fbo=${view.glInfo.fboId} stencil=${view.glInfo.stencil} depth=${view.glInfo.depth}`);
     return view.glInfo;
