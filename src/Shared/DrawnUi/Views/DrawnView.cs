@@ -73,6 +73,20 @@ namespace DrawnUi.Views
 #endif
         }
 
+        /// <summary>
+        /// Asks for one more frame, also from inside a draw. There <see cref="Update"/> is skipped on the desktop heads
+        /// (WPF, OpenTK, Wasm: honouring every update a control raises while painting would redraw continuously), so the
+        /// request is kept the way animators keep theirs: the frame ends dirty and the next one is scheduled. For controls
+        /// that wait on something only a later frame brings (a ScrollToIndex held until its target is measured).
+        /// </summary>
+        public void RequestNextFrame()
+        {
+            if (IsRendering)
+                IsDirty = true;
+            else
+                Update();
+        }
+
         public bool IsUsingHardwareAcceleration
         {
             get
@@ -252,8 +266,8 @@ namespace DrawnUi.Views
                 AnimatingControls.TryAdd(animator.Uid, animator);
             }
 
-
-            Update();
+            // also when started from inside a draw (a ScrollTo issued by a held ScrollToIndex): its first tick needs a frame
+            RequestNextFrame();
         }
 
         public void RemoveAnimator(Guid uid)

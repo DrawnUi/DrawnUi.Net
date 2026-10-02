@@ -102,6 +102,35 @@ public class WindowJumpTests
         return top;
     }
 
+    /// <summary>
+    /// A real host draws only when something asked for a frame (WPF, OpenTK, Wasm). The jump into a rebased window
+    /// waits for the new window's measure pass, retrying every frame; a desktop canvas used to drop that request when
+    /// it was made inside a draw, so after one frame nothing came: END showed the window's first items, MIDDLE Contact
+    /// 49937 instead of 50001 (HelloWpf Recycled cells, reported 2026-09-28). The scroll animation the jump then starts
+    /// from inside the draw needs its first frame the same way.
+    /// </summary>
+    [Fact]
+    public void Jumps_Land_WhenFramesComeOnlyOnRequest()
+    {
+        var (host, scroll, feed) = Scene();
+        using var _ = host;
+
+        int Run(int index, RelativePositionType option)
+        {
+            scroll.ScrollToIndex(index, true, option);
+            for (var i = 0; i < 300 && host.NeedsFrame; i++)
+                host.RenderFrame(16);
+            return TopItem(scroll, feed);
+        }
+
+        Assert.Equal(1, Run(0, RelativePositionType.Start));
+        Run(Count - 1, RelativePositionType.End);
+        Assert.Equal(Count, feed.LastVisibleIndex + 1);
+        Assert.Equal(Middle + 1, Run(Middle, RelativePositionType.Start));
+        Assert.Equal(1, Run(0, RelativePositionType.Start));
+        Assert.Equal(Middle + 1, Run(Middle, RelativePositionType.Start));
+    }
+
     [Theory]
     [InlineData(false, 1f, 430, 760)]
     [InlineData(true, 1f, 430, 760)]
