@@ -56,7 +56,6 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                     consumed = true;
                     if (mapped == InputKey.Tab)
                     {
-                        Console.WriteLine("[A11yTab] PressesBegan Tab"); //todo TEMP remove
                         var shift = press.Key?.ModifierFlags.HasFlag(UIKeyModifierFlags.Shift) ?? KeyboardManager.IsShiftPressed;
                         if (TakeTab())
                         {
@@ -67,9 +66,7 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                     }
 
                     KeyboardManager.KeyboardPressed(mapped);
-                    var keyCanvas = FindKeyboardCanvas();
-                    var keyUsed = keyCanvas?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
-                    Console.WriteLine($"[A11yKey] {mapped} used={keyUsed} focus={keyCanvas?.KeyboardFocusNode?.AccessibilityLabel ?? "(none)"}"); //todo TEMP remove
+                    FindKeyboardCanvas()?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
                 }
 
                 if (consumed) return;
@@ -110,12 +107,7 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
             return true;
         }
 
-        void NavigateTab(bool shift)
-        {
-            var canvas = FindKeyboardCanvas();
-            var used = canvas?.HandleKeyboardNavigation(InputKey.Tab, shift);
-            Console.WriteLine($"[A11yTab] canvas={(canvas == null ? "NULL" : "ok")} used={used} focus={canvas?.KeyboardFocusNode?.AccessibilityLabel ?? "(none)"}"); //todo TEMP remove
-        }
+        void NavigateTab(bool shift) => FindKeyboardCanvas()?.HandleKeyboardNavigation(InputKey.Tab, shift);
 
         /// <summary>
         /// Tab and Shift+Tab, ahead of the system focus navigation, when the page tracks the keyboard.
@@ -124,7 +116,6 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
         {
             get
             {
-                Console.WriteLine("[A11yTab] KeyCommands queried"); //todo TEMP remove
                 if (!TracksKeyboard || !OperatingSystem.IsMacCatalystVersionAtLeast(15))
                     return base.KeyCommands;
 
@@ -150,7 +141,6 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
 
         void OnTab(bool shift)
         {
-            Console.WriteLine("[A11yTab] key command"); //todo TEMP remove
             if (!TakeTab())
                 return;
             KeyboardManager.KeyboardPressed(InputKey.Tab); // the app still gets Tab, as on the other platforms
