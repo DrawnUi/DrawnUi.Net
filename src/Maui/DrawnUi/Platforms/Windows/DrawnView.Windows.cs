@@ -111,6 +111,11 @@ namespace DrawnUi.Views
                 canvasElem.GotFocus += OnCanvasGotFocus;
                 canvasElem.LostFocus -= OnCanvasLostFocus;
                 canvasElem.LostFocus += OnCanvasLostFocus;
+                canvasElem.ContextRequested -= OnCanvasContextRequested;
+                canvasElem.ContextRequested += OnCanvasContextRequested;
+                _pointerKindHandler ??= OnCanvasPointerPressedKind;
+                canvasElem.RemoveHandler(UIElement.PointerPressedEvent, _pointerKindHandler);
+                canvasElem.AddHandler(UIElement.PointerPressedEvent, _pointerKindHandler, true); // also when the gestures layer handled it
             }
 
             // DrawnView extends ContentView — MAUI wraps it in a ContentPanel which may
@@ -197,6 +202,63 @@ namespace DrawnUi.Views
                 current = VisualTreeHelper.GetParent(current);
             }
             return false;
+        }
+
+        private Microsoft.UI.Xaml.Input.PointerEventHandler _pointerKindHandler;
+        private AppoMobi.Gestures.PointerDeviceType _lastPointerDevice = AppoMobi.Gestures.PointerDeviceType.Mouse;
+
+        private void OnCanvasPointerPressedKind(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _lastPointerDevice = e.Pointer.PointerDeviceType switch
+            {
+                Microsoft.UI.Input.PointerDeviceType.Touch => AppoMobi.Gestures.PointerDeviceType.Touch,
+                Microsoft.UI.Input.PointerDeviceType.Pen => AppoMobi.Gestures.PointerDeviceType.Pen,
+                _ => AppoMobi.Gestures.PointerDeviceType.Mouse,
+            };
+        }
+
+        /// <summary>
+        /// Right click, Shift+F10, the Menu key, touch or pen press-and-hold: routed to <c>SkiaControl.ContextMenu</c>
+        /// like a tap (deepest child first), as on WPF and the web heads. A right click still does what it did before;
+        /// the request is marked handled when a control took it. The keyboard aims at the node in keyboard focus.
+        /// </summary>
+        private void OnCanvasContextRequested(UIElement sender, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs e)
+        {
+            var scale = RenderingScale;
+            AppoMobi.Gestures.PointerDeviceType? device = null;
+            System.Drawing.PointF location;
+            if (e.TryGetPosition(sender, out var point))
+            {
+                location = new System.Drawing.PointF((float)point.X * scale, (float)point.Y * scale);
+                device = _lastPointerDevice;
+            }
+            else
+            {
+                var rect = (KeyboardFocusNode ?? AccessibilityManager.FocusedNode)?.GetAccessibilityPixelRect() ?? SKRect.Empty;
+                if (rect.IsEmpty)
+                    return; // keyboard request with no drawn node in focus: nothing to aim at
+                location = new System.Drawing.PointF(rect.MidX, rect.MidY);
+            }
+
+            var args = new AppoMobi.Gestures.TouchActionEventArgs(0, AppoMobi.Gestures.TouchActionType.ContextMenu, location, null, scale)
+            {
+                IsInsideView = true,
+                StartingLocation = location,
+            };
+            if (device.HasValue) // no pointer = keyboard: that is how SkiaControl derives ContextMenuSource
+            {
+                args.Pointer = new AppoMobi.Gestures.PointerData
+                {
+                    Button = AppoMobi.Gestures.MouseButton.Right,
+                    ButtonNumber = 2,
+                    State = AppoMobi.Gestures.MouseButtonState.Released,
+                    DeviceType = device.Value,
+                };
+            }
+
+            OnGestureEvent(AppoMobi.Gestures.TouchActionType.ContextMenu, args, AppoMobi.Gestures.TouchActionResult.ContextMenu);
+            if (args.Handled)
+                e.Handled = true;
         }
 
         private void OnCanvasKeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
