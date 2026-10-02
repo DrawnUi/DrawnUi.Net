@@ -7281,9 +7281,12 @@ namespace DrawnUi.Draw
                 //UpdateSizeRequest();
             }
             else if (UsesCacheDoubleBuffering
-                     && RenderObject != null)
+                     && RenderObject is { Picture: null })
             {
-                //todo make this account for new API which extends renderobject bounds to match visualeffects
+                // Image caches only: their Bounds is the control's rect plus effect margins, like DirtyRegion.
+                // A picture cache (Operations / OperationsFull, double-buffered under Super.Multithreaded) keeps
+                // its record destination, the canvas clip for OperationsFull: the sizes never matched, and every
+                // draw destroyed the cache and baked it again.
                 if (!CompareRectsSize(DirtyRegion, RenderObject.Bounds, 0.5f))
                 {
                     InvalidateMeasure();

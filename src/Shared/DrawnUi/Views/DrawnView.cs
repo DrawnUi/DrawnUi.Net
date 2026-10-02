@@ -930,6 +930,14 @@ namespace DrawnUi.Views
 
         public event EventHandler ViewDisposing;
 
+        private int _offscreenBakesInFlight;
+
+        /// <summary>An offscreen (double-buffered) bake of one of this canvas's controls started painting.</summary>
+        internal void OffscreenBakeStarted() => Interlocked.Increment(ref _offscreenBakesInFlight);
+
+        /// <summary>An offscreen bake of one of this canvas's controls finished painting.</summary>
+        internal void OffscreenBakeEnded() => Interlocked.Decrement(ref _offscreenBakesInFlight);
+
         protected virtual void WillDispose()
         {
             IsDisposing = true;
@@ -956,6 +964,13 @@ namespace DrawnUi.Views
                     IsDisposed = true;
 
                     GestureListeners.Clear();
+
+                    // Offscreen bakes paint this canvas's controls on worker threads. Mark the tree as disposing so
+                    // no new bake starts, then let the running ones finish before the controls and their paints
+                    // are freed (freeing them under a painting bake crashed natively).
+                    foreach (var child in Views.ToList())
+                        child?.OnWillDisposeWithChildren();
+                    SpinWait.SpinUntil(() => Volatile.Read(ref _offscreenBakesInFlight) == 0, 1000);
 
                     ClearChildren();
 

@@ -876,6 +876,8 @@ public partial class SkiaControl
     {
         var was = _recordingOffscreenBake;
         _recordingOffscreenBake = true;
+        var canvas = Superview;
+        canvas?.OffscreenBakeStarted();
         try
         {
             return CreateRenderingObject(clone, recordArea, RenderObjectPreparing, UsingCacheType,
@@ -883,6 +885,7 @@ public partial class SkiaControl
         }
         finally
         {
+            canvas?.OffscreenBakeEnded();
             _recordingOffscreenBake = was;
         }
     }

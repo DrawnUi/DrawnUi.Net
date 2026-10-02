@@ -275,6 +275,44 @@ public class OffscreenBakeTests
         }
     }
 
+    /// <summary>Paints slowly inside its bake and records whether it was disposed meanwhile.</summary>
+    private sealed class SlowPaintShape : SkiaShape
+    {
+        public readonly ManualResetEventSlim Painting = new(false);
+        public volatile bool DisposedWhilePainting;
+        public volatile bool PaintEnded;
+
+        protected override void Paint(DrawingContext ctx)
+        {
+            Painting.Set();
+            Thread.Sleep(200);
+            DisposedWhilePainting |= IsDisposed;
+            base.Paint(ctx);
+            PaintEnded = true;
+        }
+    }
+
+    [Fact]
+    public void CanvasDisposedDuringABake_WaitsForItBeforeFreeingTheControls()
+    {
+        var host = new HeadlessCanvasHost(200, 200, scale: 1f, background: Colors.Black);
+        var shape = new SlowPaintShape
+        {
+            UseCache = SkiaCacheType.ImageDoubleBuffered,
+            BackgroundColor = Colors.SteelBlue,
+            WidthRequest = 100,
+            HeightRequest = 100,
+        };
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { shape } };
+        host.RenderFrame();
+        Assert.True(shape.Painting.Wait(2000), "the bake never started");
+
+        host.Dispose(); // while the bake is painting
+
+        Assert.True(SpinWait.SpinUntil(() => shape.PaintEnded, 2000));
+        Assert.False(shape.DisposedWhilePainting, "the control was disposed under a painting bake");
+    }
+
     [Fact]
     public void GpuCachedChild_PaintsLiveInsideABake()
     {
@@ -314,11 +352,56 @@ public class MultithreadedCollection
 
 /// <summary>
 /// Super.Multithreaded (experimental, off by default) bakes every cache off the frame thread; an OperationsFull
-/// control there must still paint at its own place, not at its record area (the canvas clip).
+/// control there must still paint at its own place, not at its record area (the canvas clip), and once baked it
+/// must keep its cache (a size check against the clip destroyed it after every draw and baked it again).
 /// </summary>
 [Collection("Multithreaded")]
 public class MultithreadedOperationsFullTests
 {
+    private sealed class CountingLayout : SkiaLayout
+    {
+        public int Created;
+
+        protected override void OnCacheCreated()
+        {
+            Interlocked.Increment(ref Created);
+            base.OnCacheCreated();
+        }
+    }
+
+    [Fact]
+    public void OperationsFull_Nested_BakedOnce_KeepsItsCache()
+    {
+        var was = Super.Multithreaded;
+        Super.Multithreaded = true;
+        try
+        {
+            using var host = new HeadlessCanvasHost(300, 300, scale: 1f, background: Colors.Black);
+            var shape = new CountingLayout
+            {
+                UseCache = SkiaCacheType.OperationsFull,
+                BackgroundColor = Colors.Orange,
+                WidthRequest = 60,
+                HeightRequest = 60,
+                Margin = new Thickness(150, 150, 0, 0),
+            };
+            host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { shape } };
+
+            for (var i = 0; i < 40; i++)
+            {
+                host.RenderFrame();
+                Thread.Sleep(10);
+            }
+
+            Assert.NotNull(shape.RenderObject);
+            Assert.Equal(1, shape.Created);
+        }
+        finally
+        {
+            Super.Multithreaded = was;
+        }
+    }
+
     [Fact]
     public void OperationsFull_BakedOffThread_PaintsAtTheControl()
     {

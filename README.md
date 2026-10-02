@@ -73,6 +73,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * `ImageDoubleBuffered` caches use less memory and CPU: an image rendered in the background that a newer one replaced before it was shown goes back to the pool at once instead of waiting for the garbage collector, a background render that throws is not repeated in an endless loop, and a control being disposed no longer takes a render that finishes after it.
   * `ImageDoubleBuffered` shows what it should: a control that keeps changing shows its new look as each background render finishes (before, if a render took longer than a frame, it kept the old look until the changes stopped). A cell waiting for its first render shows its placeholder until the render is ready, not only for one frame. The placeholder is no longer painted over a cell's existing image after its `BindingContext` changes. A GPU-cached control inside an `ImageDoubleBuffered` parent paints directly, because the GPU cannot be used from the background thread.
   * `UseCache = SkiaCacheType.Auto` works like `Image`.
+  * Closing a canvas while one of its controls is being rendered in the background no longer crashes: the canvas waits for that render to finish before it frees its controls.
   * Blazor and WebAssembly: a GPU canvas comes back by itself when the browser loses its WebGL context (a GPU reset, a driver update, too many canvases open). It used to stay blank until the page was reloaded.
 
  ### Previously
