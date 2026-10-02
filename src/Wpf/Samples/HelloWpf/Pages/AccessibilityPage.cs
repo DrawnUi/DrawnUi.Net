@@ -58,6 +58,16 @@ public class AccessibilityPage : SkiaLayer
                                 FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill,
                             }),
 
+                        Card("AccessibilityTextSelectable — selectable, copyable text (opt-in)",
+                            new SkiaLabel("This paragraph is drawn on the canvas and its text can be selected: drag over it with the mouse (double click picks a word) or long press it with a finger and drag on, then copy with Ctrl+C or the Copy button. Off by default: a press on selectable text goes to the selection, not to the control under it, so it is never turned on for buttons, carousels or anything gesture-driven.")
+                            {
+                                FontSize = 14, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill, AccessibilityTextSelectable = true,
+                            },
+                            new SkiaLabel("This one is a normal label: exposed to screen readers, not selectable.")
+                            {
+                                FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill,
+                            }),
+
                         Card("Buttons — label from Text, hint, custom label, disabled",
                             new SkiaWrap
                             {
