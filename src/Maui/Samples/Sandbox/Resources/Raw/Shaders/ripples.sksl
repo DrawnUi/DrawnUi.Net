@@ -91,7 +91,9 @@ half4 main(float2 fragCoord)
     vec2 viewingDirection = normalize(vec2(reflectionAngleX, reflectionAngleY));
 
     // Calculate Fresnel effect
-    float fresnelEffect = pow(1.0 - dot(normalize(combinedDisplacement), viewingDirection), 3.0);
+    // normalize() of a zero vector (no ripple running) is NaN: x86 max() hid it, ARM drew black
+    float dispLen = length(combinedDisplacement);
+    float fresnelEffect = dispLen > 0.0 ? pow(1.0 - dot(combinedDisplacement / dispLen, viewingDirection), 3.0) : 1.0;
 
     // Adapt reflection intensity with Fresnel effect
     float reflectionFactor = fresnelEffect * clamp(length(combinedDisplacement) / amplitude, 0.0, 1.0);
