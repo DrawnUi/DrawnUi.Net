@@ -59,25 +59,34 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.22
 
-  * Japanese and Chinese text wraps: `WordWrap` breaks between characters and keeps closing punctuation and small kana off the start of a line, so a translated sentence no longer runs past the edge on one line. A word wider than the line, like a long URL, now breaks by characters too.
-  * A symbol or emoji inside ordinary text shows up: a `SkiaLabel` draws each glyph its font does not have with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its font. `FontFamilyFallback` can now list several fonts, like `"FontSymbols, FontEmoji"`. Before, such a glyph was dropped unless it had its own span.
-  * Markdown in `SkiaRichLabel` understands `~~strikethrough~~`.
-  * Selectable text: set `AccessibilityTextSelectable` on a `SkiaLabel` and people can select its text and copy it. Drag or double click with the mouse, then Ctrl+C (Cmd+C on Mac); long press with a finger, then tap the Copy button. Off by default.
-  * Image preloading has priorities: `PreloadImages(urls, LoadPriority.Low)` waits behind the images on screen. Network images load a few at a time (`MaxParallelLoads`), and `RunningCount` / `QueuedCount` show the line. `RemoveFromCache` drops one image. Same on every head.
-  * `SkiaCarousel.ScrollTo(index, animate)` moves to a slide, and with `animate: false` it jumps there at once.
-  * `SkiaLottie` and `SkiaSprite` tell you when their file is loaded (`Success`) or could not be (`Error`), like `SkiaGif`.
-  * `LastCompositeRecord` shows what an `ImageComposite` cache redrew last time: only the children that changed, or everything.
-  * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. It used to wait for something else to redraw.
-  * A `SkiaWrap` filled from `ItemsSource` with recycled cells (the default) draws its items. Before, it kept their space empty.
-  * **Changed:** in a `SkiaWrap`, a child with `HorizontalOptions = Fill` (and no `WidthRequest`) is measured with the whole line width, as in DrawnUI for React and Rust: after other children it takes a line of its own, and the children after it start the next line. It used to take the rest of its line, which squeezed a panel into the strip left beside wide siblings. To keep something beside the other children, give it a width or use a `SkiaRow`.
-  * A `.WhenPainted` overlay keeps drawing after its control was hidden and shown again. Before, hiding removed it for good, so a page pushed in a MAUI `SkiaShell` lost its overlays.
-  * `ImageDoubleBuffered` caches use less memory and CPU: an image rendered in the background that a newer one replaced before it was shown goes back to the pool at once instead of waiting for the garbage collector, a background render that throws is not repeated in an endless loop, and a control being disposed no longer takes a render that finishes after it.
-  * `ImageDoubleBuffered` shows what it should: a control that keeps changing shows its new look as each background render finishes (before, if a render took longer than a frame, it kept the old look until the changes stopped). A cell waiting for its first render shows its placeholder until the render is ready, not only for one frame. The placeholder is no longer painted over a cell's existing image after its `BindingContext` changes. A GPU-cached control inside an `ImageDoubleBuffered` parent paints directly, because the GPU cannot be used from the background thread.
-  * `UseCache = SkiaCacheType.Auto` works like `Image`.
-  * Touchpad scrolling follows the fingers on MAUI Windows, WPF and OpenTK: a small wheel event (under half a notch) moves the scroll at once, and only a mouse-wheel notch glides. Before, each small event started its own 400 ms glide, so the content lagged behind the fingers and sprang past the end of a swipe.
-  * Sideways scrolling with a touchpad or a tilting wheel: on MAUI Windows, WPF and OpenTK it scrolls a horizontal `SkiaScroll` and no longer moves a vertical list (the sideways part of a diagonal swipe used to step it up and down). On MAUI Mac Catalyst a two-finger trackpad scroll now scrolls a `SkiaScroll`; before, it did nothing. Uses `WheelEventArgs.IsHorizontal` from AppoMobi gestures 3.11.4.
-  * Closing a canvas while one of its controls is being rendered in the background no longer crashes: the canvas waits for that render to finish before it frees its controls.
-  * Blazor and WebAssembly: a GPU canvas comes back by itself when the browser loses its WebGL context (a GPU reset, a driver update, too many canvases open). It used to stay blank until the page was reloaded.
+  * **Text**
+    * Japanese and Chinese text wraps properly. Lines break between characters, and closing punctuation and small kana never start a line. A very long word, like a URL, also breaks when it is wider than the line.
+    * Symbols and emoji inside normal text show up. A `SkiaLabel` draws each character its font is missing with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its own font. `FontFamilyFallback` can list several fonts, for example `"FontSymbols, FontEmoji"`.
+    * `SkiaRichLabel` markdown supports `~~strikethrough~~`.
+    * People can select and copy text: turn it on with `AccessibilityTextSelectable` on a `SkiaLabel`. With a mouse, drag or double-click, then press Ctrl+C (Cmd+C on Mac). With a finger, long press, then tap Copy.
+  * **Images and animations**
+    * Image preloading has priorities: `PreloadImages(urls, LoadPriority.Low)` waits until the images on screen are loaded. Network images load a few at a time (`MaxParallelLoads`), and `RunningCount` / `QueuedCount` show how many are loading and waiting. `RemoveFromCache` removes one image.
+    * `SkiaLottie` and `SkiaSprite` raise `Success` when their file is loaded and `Error` when it fails, like `SkiaGif`.
+    * `SkiaCarousel.ScrollTo(index, animate)` goes to a slide; with `animate: false` it jumps there at once.
+  * **Layout**
+    * **Changed:** in a `SkiaWrap`, a child with `HorizontalOptions = Fill` and no `WidthRequest` gets a whole line, as in DrawnUI for React and Rust. After other children it moves to a new line, and the next children start below it. Before, it was squeezed into the space left on the current line. To keep it next to the others, give it a width or use a `SkiaRow`.
+    * In a `SkiaWrap`, a box with a fixed size stays on its line even when its content sticks out of it on purpose (an unclipped child with a negative margin). Before, each such box went to a line of its own, with an empty line above the first one.
+    * A `SkiaWrap` with recycled cells from `ItemsSource` (the default) draws its items. Before, it left their space empty.
+  * **Scrolling with a touchpad or a mouse wheel**
+    * Touchpad scrolling follows your fingers on MAUI Windows, WPF and OpenTK. Small touchpad steps move the content at once, and only a mouse-wheel notch glides. Before, every small step started a slow glide, so the content was late and bounced past the end of a swipe.
+    * A fast swipe scrolls smoothly. Before, the content could stand still and then jump when wheel events came quickly.
+    * Sideways scrolling works: on MAUI Windows, WPF and OpenTK, a sideways swipe or a tilted wheel scrolls a horizontal `SkiaScroll`, and a vertical list ignores it. Before, a diagonal swipe made a vertical list jump up and down.
+    * MAUI Mac Catalyst: two-finger trackpad scrolling scrolls a `SkiaScroll`. Before, it did nothing.
+    * This needs AppoMobi gestures 3.11.4 (`WheelEventArgs.IsHorizontal`), which this version references.
+  * **Drawing and caching**
+    * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. Before, it waited for something else to redraw.
+    * A `.WhenPainted` overlay keeps drawing after its control is hidden and shown again. Before, hiding removed it for good, so a page pushed in a MAUI `SkiaShell` lost its overlays.
+    * `LastCompositeRecord` shows what an `ImageComposite` cache redrew last time: only the changed children, or everything.
+    * `ImageDoubleBuffered` is more reliable. A control that changes all the time still updates on screen, even when its background render takes longer than a frame; before, it kept its old look until the changes stopped. A cell shows its placeholder until its first image is ready, and never over an image it already has; before, the placeholder showed for one frame and then left a hole. Images that were replaced before they were shown go back to the pool at once, and a render that fails is not repeated forever. A GPU-cached control inside an `ImageDoubleBuffered` parent draws directly, because the GPU cannot be used from the background thread.
+    * `UseCache = SkiaCacheType.Auto` works like `Image`.
+  * **Stability**
+    * Closing a canvas while one of its controls is still being rendered in the background no longer crashes: the canvas waits for that render to finish first.
+    * Blazor and WebAssembly: a GPU canvas recovers by itself when the browser loses its WebGL context (a GPU reset, a driver update, too many canvases open). Before, it stayed blank until the page was reloaded.
 
  ### Previously
 
