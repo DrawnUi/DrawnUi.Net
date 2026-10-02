@@ -67,7 +67,9 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                     }
 
                     KeyboardManager.KeyboardPressed(mapped);
-                    FindKeyboardCanvas()?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
+                    var keyCanvas = FindKeyboardCanvas();
+                    var keyUsed = keyCanvas?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
+                    Console.WriteLine($"[A11yKey] {mapped} used={keyUsed} focus={keyCanvas?.KeyboardFocusNode?.AccessibilityLabel ?? "(none)"}"); //todo TEMP remove
                 }
 
                 if (consumed) return;
@@ -112,7 +114,7 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
         {
             var canvas = FindKeyboardCanvas();
             var used = canvas?.HandleKeyboardNavigation(InputKey.Tab, shift);
-            Console.WriteLine($"[A11yTab] canvas={(canvas == null ? "NULL" : "ok")} used={used} focus={canvas?.KeyboardFocusNode?.AccessibilityLabel}"); //todo TEMP remove
+            Console.WriteLine($"[A11yTab] canvas={(canvas == null ? "NULL" : "ok")} used={used} focus={canvas?.KeyboardFocusNode?.AccessibilityLabel ?? "(none)"}"); //todo TEMP remove
         }
 
         /// <summary>
