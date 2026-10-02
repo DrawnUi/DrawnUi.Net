@@ -6,9 +6,13 @@ namespace DrawnUi.Draw
 
         public static SKTypeface DefaultTypeface => SKTypeface.CreateDefault();
 
-        private readonly Dictionary<string, SKTypeface> _fonts = new(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<string, string> _fontSources = new(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<string, List<int>> _registeredWeights = new(StringComparer.OrdinalIgnoreCase);
+        // Concurrent: fonts can be registered (or loaded on Initialize) while another thread renders and looks them up.
+        // Reads stay lock-free; a plain Dictionary read during a write could return nothing or throw.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, SKTypeface> _fonts = new(StringComparer.OrdinalIgnoreCase);
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, string> _fontSources = new(StringComparer.OrdinalIgnoreCase);
+        // Weights per family: replaced as a whole on change (copy on write), so a reader never sees a list being edited.
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, int[]> _registeredWeights = new(StringComparer.OrdinalIgnoreCase);
+        private readonly object _registerLock = new();
         private readonly SemaphoreSlim _loadSemaphore = new(1, 1);
         private static SKFontManager _manager;
 
@@ -109,7 +113,7 @@ namespace DrawnUi.Draw
             }
 
             var text = char.ConvertFromUtf32(symbol);
-            foreach (var typeface in Instance._fonts.Values)
+            foreach (var typeface in Instance._fonts.Values) // a snapshot: safe while fonts are added
             {
                 var glyphs = typeface?.GetGlyphs(text);
                 if (glyphs != null && glyphs.Any(glyph => glyph != 0))
@@ -128,16 +132,12 @@ namespace DrawnUi.Draw
                 return;
             }
 
-            if (!Instance._registeredWeights.TryGetValue(alias, out var list))
-            {
-                list = new List<int>();
-                Instance._registeredWeights[alias] = list;
-            }
-
             var value = (int)weight;
-            if (!list.Contains(value))
+            lock (Instance._registerLock)
             {
-                list.Add(value);
+                var list = Instance._registeredWeights.TryGetValue(alias, out var existing) ? existing : Array.Empty<int>();
+                if (Array.IndexOf(list, value) < 0)
+                    Instance._registeredWeights[alias] = [..list, value];
             }
         }
 
@@ -148,9 +148,14 @@ namespace DrawnUi.Draw
                 return alias;
             }
 
-            if (Instance._registeredWeights.TryGetValue(alias, out var registeredWeights) && registeredWeights.Count > 0)
+            if (Instance._registeredWeights.TryGetValue(alias, out var registeredWeights) && registeredWeights.Length > 0)
             {
-                var closestRegisteredWeight = registeredWeights.OrderBy(value => Math.Abs(value - weight)).First();
+                var closestRegisteredWeight = registeredWeights[0]; // the first of equally close weights, as OrderBy gave
+                for (var i = 1; i < registeredWeights.Length; i++)
+                {
+                    if (Math.Abs(registeredWeights[i] - weight) < Math.Abs(closestRegisteredWeight - weight))
+                        closestRegisteredWeight = registeredWeights[i];
+                }
                 return GetAlias(alias, GetWeightEnum(closestRegisteredWeight));
             }
 
@@ -173,6 +178,12 @@ namespace DrawnUi.Draw
         }
 
         private void TryLoadFont(string alias, string sourceUrl)
+        {
+            lock (_registerLock) // one load per alias when two threads register or initialize at once
+                TryLoadFontLocked(alias, sourceUrl);
+        }
+
+        private void TryLoadFontLocked(string alias, string sourceUrl)
         {
             if (_fonts.ContainsKey(alias))
                 return;
