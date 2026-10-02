@@ -111,11 +111,6 @@ namespace DrawnUi.Views
                 canvasElem.GotFocus += OnCanvasGotFocus;
                 canvasElem.LostFocus -= OnCanvasLostFocus;
                 canvasElem.LostFocus += OnCanvasLostFocus;
-                canvasElem.ContextRequested -= OnCanvasContextRequested;
-                canvasElem.ContextRequested += OnCanvasContextRequested;
-                _pointerKindHandler ??= OnCanvasPointerPressedKind;
-                canvasElem.RemoveHandler(UIElement.PointerPressedEvent, _pointerKindHandler);
-                canvasElem.AddHandler(UIElement.PointerPressedEvent, _pointerKindHandler, true); // also when the gestures layer handled it
             }
 
             // DrawnView extends ContentView — MAUI wraps it in a ContentPanel which may
@@ -130,6 +125,19 @@ namespace DrawnUi.Views
                 _outerElem.GotFocus  += OnOuterGotFocus;
                 _outerElem.LostFocus -= OnOuterLostFocus;
                 _outerElem.LostFocus += OnOuterLostFocus;
+            }
+
+            // Context requests on the OUTER element: the gestures layer captures the pointer on it at press, so a right
+            // click's request starts there and bubbles up, never down to the canvas element; a keyboard request (Menu
+            // key, Shift+F10) starts at the focused canvas element and bubbles up to it too. One handler sees both.
+            var contextElem = _outerElem ?? canvasElem;
+            if (contextElem != null)
+            {
+                contextElem.ContextRequested -= OnCanvasContextRequested;
+                contextElem.ContextRequested += OnCanvasContextRequested;
+                _pointerKindHandler ??= OnCanvasPointerPressedKind;
+                contextElem.RemoveHandler(UIElement.PointerPressedEvent, _pointerKindHandler);
+                contextElem.AddHandler(UIElement.PointerPressedEvent, _pointerKindHandler, true); // also when the gestures layer handled it
             }
 
             // Snapshot may already have elements — force a rebuild on next frame
@@ -227,7 +235,8 @@ namespace DrawnUi.Views
             var scale = RenderingScale;
             AppoMobi.Gestures.PointerDeviceType? device = null;
             System.Drawing.PointF location;
-            if (e.TryGetPosition(sender, out var point))
+            // positions in the canvas element's own space (the request may arrive on the outer wrapper)
+            if (e.TryGetPosition(GetCanvasPlatformElement() ?? sender, out var point))
             {
                 location = new System.Drawing.PointF((float)point.X * scale, (float)point.Y * scale);
                 device = _lastPointerDevice;

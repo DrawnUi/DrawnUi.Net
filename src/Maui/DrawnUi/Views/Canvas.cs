@@ -820,7 +820,7 @@ public class Canvas : DrawnView, IGestureListener
     /// <param name="type"></param>
     /// <param name="args1"></param>
     /// <param name="touchAction"></param>
-    public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
+    public override void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
     {
         //Debug.WriteLine($"[Canvas] {touchAction} {args1.Location}");
 
