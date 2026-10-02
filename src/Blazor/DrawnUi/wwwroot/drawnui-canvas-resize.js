@@ -8,14 +8,20 @@ const observers = new WeakMap();
 // When a call really changes the bitmap size, draw right away in a microtask, still before the
 // browser paints. Calls with an unchanged size (every normal frame) are untouched.
 let skiaCanvasPatch = null;
+let skiaHtmlCanvas = null;
 
 function patchSkiaCanvasResize() {
     skiaCanvasPatch ??= import(new URL('./_content/SkiaSharp.Views.Blazor/SKHtmlCanvas.js', document.baseURI).href)
         .then(({ SKHtmlCanvas }) => {
+            skiaHtmlCanvas = SKHtmlCanvas;
             const proto = SKHtmlCanvas?.prototype;
             if (!proto || proto.requestAnimationFrame.drawnUiResizePatch) return;
             const original = proto.requestAnimationFrame;
             const patched = function (renderLoop, width, height) {
+                if (this.drawnUiContextLost) {   // no frames on a lost WebGL context, see onContextLost
+                    if (renderLoop !== undefined) this.renderLoopEnabled = renderLoop;
+                    return;
+                }
                 const canvas = this.htmlCanvas;
                 const resized = !!(width && height && canvas && (canvas.width !== width || canvas.height !== height));
                 original.call(this, renderLoop, width, height);
@@ -32,6 +38,38 @@ function patchSkiaCanvasResize() {
         })
         .catch(() => { /* SkiaSharp not present or its layout changed: keep its own behavior */ });
     return skiaCanvasPatch;
+}
+
+// A lost WebGL context (GPU reset, driver update, too many contexts) comes back only if the loss is
+// prevented. While it is lost SkiaSharp's canvas draws nothing. On restore the same WebGL object gets a
+// new Emscripten GL handle (fresh extensions and object tables), .NET drops the lost Skia context
+// (Canvas.OnWebGLContextRestored), then frames resume and draw everything again.
+function onContextLost(e) {
+    e.preventDefault();
+    const view = e.target.SKHtmlCanvas;
+    if (!view) return;
+    view.drawnUiContextLost = true;
+    if (view.renderLoopRequest !== 0) {
+        window.cancelAnimationFrame(view.renderLoopRequest);
+        view.renderLoopRequest = 0;
+    }
+    console.warn('DrawnUI: WebGL context lost');
+}
+
+async function onContextRestored(e, dotNetRef) {
+    const view = e.target.SKHtmlCanvas;
+    if (!view?.glInfo) return;
+    const GL = skiaHtmlCanvas?.getGL() ?? globalThis.SkiaSharpGL;
+    const old = GL.getContext(view.glInfo.context);
+    const gl = old.GLctx, attributes = old.attributes;
+    GL.deleteContext(view.glInfo.context); // before registering: it clears canvas.GLctxObject
+    const handle = GL.registerContext(gl, attributes);
+    GL.makeContextCurrent(handle);
+    view.glInfo.context = handle;
+    await dotNetRef.invokeMethodAsync('OnWebGLContextRestored');
+    view.drawnUiContextLost = false;
+    console.warn('DrawnUI: WebGL context restored');
+    view.requestAnimationFrame();
 }
 
 function isElementFullscreen(element, simulatedFullscreen) {
@@ -103,6 +141,8 @@ export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
         onSimulatedFullscreen: null,
         simulatedFullscreen: false,
         mutationObserver: null,
+        onContextLost,
+        onContextRestored: (e) => onContextRestored(e, dotNetRef),
     };
 
     // The browser delivers ResizeObserver callbacks at most once per frame, so passing every size on
@@ -138,6 +178,9 @@ export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
     document.addEventListener('drawnui-simulated-fullscreen', onSimulatedFullscreen);
+    // capture: the events do not bubble, and the canvas inside the host may be replaced
+    element.addEventListener('webglcontextlost', state.onContextLost, true);
+    element.addEventListener('webglcontextrestored', state.onContextRestored, true);
 
     const rect = element.getBoundingClientRect();
     notifySize(element, dotNetRef, rect.width, rect.height);
@@ -155,6 +198,8 @@ export function detachCanvasHost(element) {
     document.removeEventListener('fullscreenchange', state.onFullscreenChange);
     document.removeEventListener('webkitfullscreenchange', state.onFullscreenChange);
     document.removeEventListener('drawnui-simulated-fullscreen', state.onSimulatedFullscreen);
+    element.removeEventListener('webglcontextlost', state.onContextLost, true);
+    element.removeEventListener('webglcontextrestored', state.onContextRestored, true);
     observers.delete(element);
 }
 

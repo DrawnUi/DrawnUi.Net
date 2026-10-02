@@ -114,6 +114,25 @@ namespace DrawnUi.Draw
         }
 
         public GRContext GRContext => Context;
+
+        /// <summary>
+        /// After the browser restored a lost WebGL context: abandons the lost Skia context without GL calls
+        /// and clears SKGLView's GL objects, so its next frame makes a new context, render target and
+        /// surface. GPU caches made on the old context then fail the context check and are made again.
+        /// </summary>
+        public void ResetGLContext()
+        {
+            GRContext?.AbandonContext(false);
+            _surface = null;
+            foreach (var name in new[] { "canvas", "surface", "renderTarget", "context", "glInterface" })
+            {
+                var field = typeof(SKGLView).GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
+                if (name != "canvas") // owned by the surface
+                    (field?.GetValue(this) as IDisposable)?.Dispose();
+                field?.SetValue(this, null);
+            }
+        }
+
         private bool _newFrameReady;
 
         SKSurface _surface;

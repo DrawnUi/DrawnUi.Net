@@ -394,6 +394,17 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>
+    /// Called by drawnui-canvas-resize.js once the browser gave back a lost WebGL context: the GPU view
+    /// drops its lost Skia context, and the next frame draws everything on a new one.
+    /// </summary>
+    [JSInvokable]
+    public void OnWebGLContextRestored()
+    {
+        (CanvasView as SkiaViewAccelerated)?.ResetGLContext();
+        Update();
+    }
+
     [JSInvokable]
     public async Task OnFullscreenChanged(bool isFullscreen)
     {
