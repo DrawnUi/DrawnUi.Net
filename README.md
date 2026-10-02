@@ -81,6 +81,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * **Scrolling with a touchpad or a mouse wheel**
     * Touchpad scrolling follows your fingers on MAUI Windows, WPF and OpenTK. Small touchpad steps move the content at once, and only a mouse-wheel notch glides. Before, every small step started a slow glide, so the content was late and bounced past the end of a swipe.
     * A fast swipe scrolls smoothly. Before, the content could stand still and then jump when wheel events came quickly.
+    * A swipe's fling speed is measured with a steady clock, so a change of the computer's time during a swipe cannot change the fling, and lifting the finger no longer allocates memory.
     * Sideways scrolling works: on MAUI Windows, WPF and OpenTK, a sideways swipe or a tilted wheel scrolls a horizontal `SkiaScroll`, and a vertical list ignores it. Before, a diagonal swipe made a vertical list jump up and down.
     * This needs AppoMobi gestures 3.11.4 or later (`WheelEventArgs.IsHorizontal`); this version references 3.11.5.
   * **Drawing and caching**
@@ -89,6 +90,8 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * `LastCompositeRecord` shows what an `ImageComposite` cache redrew last time: only the changed children, or everything.
     * `ImageDoubleBuffered` is more reliable. A control that changes all the time still updates on screen, even when its background render takes longer than a frame; before, it kept its old look until the changes stopped. A cell shows its placeholder until its first image is ready, and never over an image it already has; before, the placeholder showed for one frame and then left a hole. Images that were replaced before they were shown go back to the pool at once, and a render that fails is not repeated forever. A GPU-cached control inside an `ImageDoubleBuffered` parent draws directly, because the GPU cannot be used from the background thread.
     * `UseCache = SkiaCacheType.Auto` works like `Image`.
+    * With `Super.Multithreaded` on, an `Operations` or `OperationsFull` cache is no longer redrawn on every frame. Before, it was thrown away and drawn again each time.
+    * WPF, OpenTK and WebAssembly: an animation started while a frame is being drawn starts at once. Before, it waited for the next touch or mouse move. `DrawnView.RequestNextFrame()` asks for one more frame from anywhere, also from inside a draw.
   * **Keyboard and accessibility**
     * MAUI Mac Catalyst: Tab and Shift+Tab move between the drawn controls with a focus ring, and the arrow keys move inside a group (a list, a toolbar, a grid), as on MAUI Windows and WPF.
     * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
@@ -97,6 +100,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * **Stability**
     * Closing a canvas while one of its controls is still being rendered in the background no longer crashes: the canvas waits for that render to finish first.
     * WPF and OpenTK: registering a font while the canvas draws is safe. Before, a label could be drawn with the default font for a moment, or the app could stop with an error.
+    * Headless tests (`DrawnUi.Testing`): a `GestureRobot` swipe gives the same fling however busy the machine is. Before, a slow test run could see no fling at all.
     * Blazor and WebAssembly: a GPU canvas recovers by itself when the browser loses its WebGL context (a GPU reset, a driver update, too many canvases open). Before, it stayed blank until the page was reloaded.
 
  ### Previously
