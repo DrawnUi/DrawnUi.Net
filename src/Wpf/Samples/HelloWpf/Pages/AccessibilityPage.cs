@@ -83,10 +83,11 @@ public class AccessibilityPage : SkiaLayer
                                 },
                             }),
 
-                        Card("Toggles — AccessibilityIsPressed",
+                        Card("Toggles — AccessibilityIsPressed, in a toolbar",
                             new SkiaRow
                             {
                                 Spacing = 8,
+                                AccessibilityRole = Aria.RoleToolbar, // one Tab stop, Left / Right move between the toggles
                                 Children = new List<SkiaControl>
                                 {
                                     new SkiaButton("Sound: on") { BackgroundColor = Color.Parse("#20C997"), AccessibilityLabel = "Sound", AccessibilityIsPressed = true }
@@ -152,6 +153,25 @@ public class AccessibilityPage : SkiaLayer
                             },
                             new SkiaLabel("The yellow circle is decorative: AccessibilityRole=Aria.RolePresentation keeps it out of the tree.") { FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill }),
 
+                        Card("Keyboard groups — one Tab stop, the arrow keys inside",
+                            new SkiaLabel("A container with a composite role (Aria.RoleList, RoleToolbar, RoleGrid...) is one Tab stop: the arrow keys move between its items, Home and End go to the first and the last, Enter or Space activates. Tab comes back to the item it left.") { FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill },
+                            new SkiaLabel("Fruits — a list: Up and Down") { FontSize = 13, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill },
+                            new SkiaStack
+                            {
+                                Spacing = 6,
+                                AccessibilityRole = Aria.RoleList,
+                                AccessibilityLabel = "Fruits",
+                                Children = new[] { "Apple", "Banana", "Cherry", "Date" }.Select(name => GroupItem(name, -1)).ToList(),
+                            },
+                            new SkiaLabel("Numbers — a grid: all four arrows") { FontSize = 13, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill },
+                            new SkiaWrap
+                            {
+                                Spacing = 6,
+                                AccessibilityRole = Aria.RoleGrid,
+                                AccessibilityLabel = "Numbers",
+                                Children = Enumerable.Range(1, 12).Select(i => GroupItem(i.ToString(), 56)).ToList(),
+                            }),
+
                         Card("Labels — read by default, opted out per control",
                             new SkiaLabel("This label is announced: SkiaLabel.DefaultAccessibilityRole = Aria.RoleText was set once at startup.") { FontSize = 14, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill },
                             new SkiaLabel("This one is visible but hidden from assistive technology (RolePresentation).") { FontSize = 14, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RolePresentation },
@@ -215,6 +235,25 @@ public class AccessibilityPage : SkiaLayer
 
         _snapshot.Text = $"Nodes in the snapshot: {manager.Snapshot.Length} · focused: {manager.FocusedNode?.AccessibilityLabel ?? "none"} · last activated: {_lastActivated}";
     }
+
+    /// <summary>An item of a keyboard group: a SkiaShape button that reports itself as activated.</summary>
+    private SkiaControl GroupItem(string text, double width) => new SkiaShape
+    {
+        Type = ShapeType.Rectangle,
+        CornerRadius = 6,
+        BackgroundColor = Color.Parse("#373B3E"),
+        WidthRequest = width,
+        HeightRequest = 36,
+        HorizontalOptions = width < 0 ? LayoutOptions.Fill : LayoutOptions.Start,
+        AnimationTapped = SkiaTouchAnimation.Ripple,
+        AccessibilityRole = Aria.RoleButton,
+        AccessibilityCanInteract = true,
+        AccessibilityLabel = text,
+        Children = new List<SkiaControl>
+        {
+            new SkiaLabel(text) { FontSize = 14, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RolePresentation },
+        },
+    }.OnTapped(me => Activated(text));
 
     private static SkiaControl Card(string title, params SkiaControl[] content) => new SkiaShape
     {
