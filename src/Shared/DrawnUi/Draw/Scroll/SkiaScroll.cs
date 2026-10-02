@@ -3446,7 +3446,7 @@ namespace DrawnUi.Draw
                     SetScrollOffset(DrawingRect, posX, posY, zoomedScale, context.Scale, false);
                 }
 
-                if (UsingCacheType != SkiaCacheType.None)
+                if (UsingCacheType != SkiaCacheType.None && !PaintsLiveInOffscreenBake)
                 {
                     var destination = DrawingRect;
                     var recordArea = destination;
