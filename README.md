@@ -70,6 +70,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. It used to wait for something else to redraw.
   * A `SkiaWrap` filled from `ItemsSource` with recycled cells (the default) draws its items. Before, it kept their space empty.
   * A `.WhenPainted` overlay keeps drawing after its control was hidden and shown again. Before, hiding removed it for good, so a page pushed in a MAUI `SkiaShell` lost its overlays.
+  * `ImageDoubleBuffered` caches use less memory and CPU: an image rendered in the background that a newer one replaced before it was shown goes back to the pool at once instead of waiting for the garbage collector, a background render that throws is not repeated in an endless loop, and a control being disposed no longer takes a render that finishes after it.
 
  ### Previously
 

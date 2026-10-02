@@ -251,7 +251,7 @@ public sealed class GestureRobot
             IsInsideView = true
         };
         if (Device != null)
-            args.Pointer = new PointerData { DeviceType = Device.Value, Button = MouseButton.Left };
+            args.Pointer = new PointerData { DeviceType = Device.Value, Button = AppoMobi.Gestures.MouseButton.Left };
         return args;
     }
 

@@ -49,6 +49,7 @@ public partial class SkiaControl
     /// <summary>Cancels any scheduled/in-flight offscreen render for this control without scheduling a new one.</summary>
     public void CancelOffscreenRendering()
     {
+        Interlocked.Increment(ref _offscreenRenderGeneration); // bakes in flight or queued no longer publish
         try
         {
             _offscreenRenderCts?.Cancel();
@@ -547,7 +548,7 @@ public partial class SkiaControl
             {
                 //hardware context might change if we returned from background..
                 if (hardware.GRContext == null || cache.Surface.Context == null
-                                               || (int)hardware.GRContext.Handle != (int)cache.Surface.Context.Handle)
+                                               || hardware.GRContext.Handle != cache.Surface.Context.Handle)
                 {
                     CacheValidity = CacheValidityType.GraphicContextMismatch;
                     return false;
@@ -993,17 +994,8 @@ public partial class SkiaControl
 
                             // Publish ONLY if a newer bake hasn't been scheduled since this one started.
                             // Superseded => a fresher RenderObject is (or will be) set by the newer bake;
-                            // overwriting it here is the stale-text revert. Skip the swap (the double-buffer's
-                            // back surface is reused by the next bake — no leak, no dispose-of-shared hazard).
-                            if (!IsOffscreenRenderSuperseded(bakeGeneration))
-                            {
-                                RenderObjectPreparing = prepared;
-                                if (prepared != null)
-                                {
-                                    RenderObject = prepared;
-                                    _renderObjectPreparing = null;
-                                }
-                            }
+                            // overwriting it here is the stale-text revert.
+                            PublishOffscreenBake(prepared, bakeGeneration);
                         }
                         finally
                         {
@@ -1024,6 +1016,34 @@ public partial class SkiaControl
 
             return false;
         }
+    }
+
+    /// <summary>
+    /// Swaps a finished offscreen bake in as <see cref="RenderObject"/>, unless a newer bake or
+    /// <see cref="CancelOffscreenRendering"/> came after it: then nobody will draw it, so its surface goes back
+    /// to the pool and the object is disposed now instead of waiting for the GC.
+    /// </summary>
+    void PublishOffscreenBake(CachedObject prepared, long generation)
+    {
+        if (!IsOffscreenRenderSuperseded(generation))
+        {
+            RenderObjectPreparing = prepared;
+            if (prepared != null)
+            {
+                RenderObject = prepared;
+                _renderObjectPreparing = null;
+            }
+
+            return;
+        }
+
+        if (prepared == null || ReferenceEquals(prepared, RenderObjectPreparing))
+            return;
+
+        if (prepared.Surface != null && !ReferenceEquals(prepared.Surface, RenderObjectPreparing?.Surface))
+            ReturnSurface(prepared.Surface);
+        prepared.Surface = null;
+        DisposeObject(prepared);
     }
 
     /// <summary>
@@ -1217,16 +1237,13 @@ public partial class SkiaControl
                 try
                 {
                     action.Invoke();
-
-                    if (_offscreenCacheRenderingQueue.Count > 0)
-                        action = _offscreenCacheRenderingQueue.Pop();
-                    else
-                        break;
                 }
                 catch (Exception e)
                 {
                     Super.Log(e);
                 }
+
+                action = _offscreenCacheRenderingQueue.Pop(); // a throwing action is not run again
             }
         }
         finally
@@ -1409,6 +1426,7 @@ public partial class SkiaControl
     {
         //use cloned struct in another thread
         _offscreenBakeBusy = true;
+        long bakeGeneration = Interlocked.Increment(ref _offscreenRenderGeneration);
         PushToOffscreenRendering(() =>
         {
             try
@@ -1418,12 +1436,7 @@ public partial class SkiaControl
                     UsingCacheType,
                     (ctx) => { PaintWithEffects(ctx); });
 
-                RenderObjectPreparing = prepared;
-                if (prepared != null)
-                {
-                    RenderObject = prepared;
-                    _renderObjectPreparing = null;
-                }
+                PublishOffscreenBake(prepared, bakeGeneration);
             }
             finally
             {

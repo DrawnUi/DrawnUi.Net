@@ -144,8 +144,7 @@ public class KeyboardAccessibilityTests
         using var bitmap = SKBitmap.FromImage(image);
         var top = bitmap.GetPixel(70, 58);
         var left = bitmap.GetPixel(18, 80);
-        var layoutSlot = bitmap.GetPixel(70, 308);
-        _out.WriteLine($"top {top} left {left} layoutSlot {layoutSlot}");
+        _out.WriteLine($"top {top} left {left}");
         Assert.True(Near(top, ring), $"no ring above the button: {top}");
         Assert.True(Near(left, ring), $"no ring left of the button: {left}");
 
