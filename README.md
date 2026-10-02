@@ -71,6 +71,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * **Layout**
     * **Changed:** in a `SkiaWrap`, a child with `HorizontalOptions = Fill` and no `WidthRequest` gets a whole line, as in DrawnUI for React and Rust. After other children it moves to a new line, and the next children start below it. Before, it was squeezed into the space left on the current line. To keep it next to the others, give it a width or use a `SkiaRow`.
     * In a `SkiaWrap`, a box with a fixed size stays on its line even when its content sticks out of it on purpose (an unclipped child with a negative margin). Before, each such box went to a line of its own, with an empty line above the first one.
+    * In a `SkiaWrap`, children whose widths add up to exactly the width of the line share it at every screen scale, for example two cards that are each half the line minus the spacing. Before, the second one usually went to a new line, so a two-column list showed one column on most screens.
     * A `SkiaWrap` with recycled cells from `ItemsSource` (the default) draws its items. Before, it left their space empty.
   * **Scrolling with a touchpad or a mouse wheel**
     * Touchpad scrolling follows your fingers on MAUI Windows, WPF and OpenTK. Small touchpad steps move the content at once, and only a mouse-wheel notch glides. Before, every small step started a slow glide, so the content was late and bounced past the end of a swipe.

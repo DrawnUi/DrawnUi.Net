@@ -27,6 +27,9 @@ public partial class SkiaLayout
             float maxHeight = 0.0f;
             float currentLineWidth = 0.0f;
             float currentLineRealWidth = 0.0f;
+            // the line's width before pixel rounding (children and spacing are rounded one by one, so the rounded sum
+            // can pass the line by a pixel or two when the children fit it exactly)
+            float currentLineExactWidth = 0.0f;
 
             // for autosize
             float maxWidth = 0.0f;
@@ -37,7 +40,6 @@ public partial class SkiaLayout
             var cellsToLayoutLater = new List<ControlInStack>();
 
             var available = rectForChildrenPixels;
-            available.Inflate(-1, -1); //fix pixels roundings
 
             var maxAvailableSpace = available.Width;
             float sizePerChunk = maxAvailableSpace;
@@ -72,6 +74,7 @@ public partial class SkiaLayout
                 maxHeight = 0.0f;
                 currentLineWidth = 0f;
                 currentLineRealWidth = 0f;
+                currentLineExactWidth = 0f;
 
                 rectForChild.Left = isRtl ? rectForChildrenPixels.Right : 0;  //reset to start
 
@@ -169,6 +172,8 @@ public partial class SkiaLayout
 
                 currentLineWidth += add;
                 currentLineRealWidth += add;
+                if (column > 0)
+                    currentLineExactWidth += (float)(_layout.Spacing * scale);
 
                 if (useFixedSplitSize)
                 {
@@ -335,6 +340,21 @@ public partial class SkiaLayout
                     return MeasureCell(rectFitChild, cell, child, scale);
                 }
 
+                // The child's width before pixel rounding: a fixed-width child is its request (when the measure only
+                // rounded it), any other child its measured pixels.
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                float ExactWidth()
+                {
+                    var width = cell.Measured.Pixels.Width;
+                    if (child.WidthRequest >= 0)
+                    {
+                        var requested = (float)(child.WidthRequestWithMargins * scale);
+                        if (Math.Abs(requested - width) <= 0.5f)
+                            return requested;
+                    }
+                    return width;
+                }
+
                 //we know we will not fit in advance (an empty line is never broken: a new one is no wider)
                 if (child.WidthRequestWithMargins * scale > rectFitChild.Width && column > 0)
                 {
@@ -357,7 +377,11 @@ public partial class SkiaLayout
                     // whose content may overflow it on purpose (an unclipped child pushed out by a negative margin
                     // used to send every such box to a line of its own). An empty line is never broken: a new one is
                     // no wider, it only left a blank line above.
-                    var fitsH = cell.Measured.Pixels.Width <= remainingSize
+                    // The fit is decided on sizes before pixel rounding, as React does: two cards of (line - spacing) / 2
+                    // fit their line at any scale, though each one rounded up could pass it by a pixel (the arrange clamps
+                    // that pixel at the line end).
+                    var exactRemaining = remainingSize + currentLineWidth - currentLineExactWidth;
+                    var fitsH = ExactWidth() <= exactRemaining + 0.01f
                                 && !(child.NeedAutoWidth && cell.Measured.WidthCut);
 
                     if (!fitsH && !useFixedSplitSize && column > 0)
@@ -372,6 +396,7 @@ public partial class SkiaLayout
                     }
 
                     structure.Add(cell, column, row);
+                    currentLineExactWidth += ExactWidth();
                     FinalizeColumn(cell.Measured.Pixels.Width, cell.Measured.Pixels.Height);
 
                     cellsToLayoutLater.Add(cell);
