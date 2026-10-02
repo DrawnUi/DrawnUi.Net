@@ -2555,6 +2555,10 @@ namespace DrawnUi.Draw
                 }
             }
 
+            // Same rule on both dispatch paths below: a gesture this control keeps from its children ends here.
+            if (CheckChildrenGesturesLocked(args.Type))
+                return consumedDefault;
+
             if (UsesRenderingTree && RenderTree != null)
             {
                 var hadInputConsumed = consumed;
@@ -2719,9 +2723,6 @@ namespace DrawnUi.Draw
                 {
                     try
                     {
-                        if (CheckChildrenGesturesLocked(args.Type))
-                            return consumedDefault;
-
                         // No RenderTree to descend (a cached control blits without repainting its subtree,
                         // so nested layouts never build their tree). Fall back to iterating live children —
                         // but map the point the SAME way the tree path does: transformed MappedLocation plus
