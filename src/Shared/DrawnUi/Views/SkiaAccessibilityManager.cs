@@ -577,7 +577,8 @@ namespace DrawnUi.Views
         /// Rebuilds the snapshot now when frames were drawn since the last rebuild (the <see cref="MinUpdateIntervalMs"/>
         /// rate limit skipped them), so keyboard navigation never walks the nodes of a page that just left the screen
         /// while the canvas sits idle. Free when the snapshot is current, draws no frame. Call it on the thread that
-        /// renders the canvas. True when the snapshot changed.
+        /// renders the canvas, or on any thread when rebuilds are rare (it is serialized; MAUI Windows renders on a worker).
+        /// True when the snapshot changed.
         /// </summary>
         public bool RefreshIfStale(float scale)
         {
@@ -589,7 +590,16 @@ namespace DrawnUi.Views
             return !ReferenceEquals(before, Snapshot);
         }
 
+        // a head may rebuild a stale snapshot off its rendering thread (MAUI Windows renders on a worker): one at a time
+        private readonly object _rebuildLock = new();
+
         private void Rebuild(float scale)
+        {
+            lock (_rebuildLock)
+                RebuildLocked(scale);
+        }
+
+        private void RebuildLocked(float scale)
         {
             _dirty = false;
             _stale = false;

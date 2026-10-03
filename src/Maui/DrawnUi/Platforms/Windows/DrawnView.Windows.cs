@@ -88,6 +88,8 @@ namespace DrawnUi.Views
             host.A11yGetOrigin = getOrigin;
             host.A11yGetScale  = () => (float)RenderingScale;
             AccessibilityManager.Changed          += OnA11ySnapshotChanged;
+            AccessibilityManager.RebuildSkipped   -= OnA11yRebuildSkipped;
+            AccessibilityManager.RebuildSkipped   += OnA11yRebuildSkipped;
             AccessibilityManager.FocusChanged     += OnA11yFocusChanged;
             AccessibilityManager.LiveRegionUpdated += OnA11yLiveRegionUpdated;
 
@@ -465,6 +467,22 @@ namespace DrawnUi.Views
             });
         }
 
+        private System.Threading.Timer _a11yRefresh;
+
+        /// <summary>
+        /// The snapshot went stale inside its rebuild interval: rebuild it once the interval is over, even when no frame
+        /// comes (the canvas went idle after a page opened), so Narrator and Tab never keep the previous page's nodes.
+        /// A one-shot timer and the rebuild itself, never a frame; the rebuild is serialized with the render thread's.
+        /// </summary>
+        private void OnA11yRebuildSkipped(long remainingMs)
+        {
+            var due = Math.Max(1, remainingMs) + 16;
+            if (_a11yRefresh == null)
+                _a11yRefresh = new System.Threading.Timer(_ => AccessibilityManager.RefreshIfStale(RenderingScale), null, due, System.Threading.Timeout.Infinite);
+            else
+                _a11yRefresh.Change(due, System.Threading.Timeout.Infinite);
+        }
+
         private void OnA11ySnapshotChanged()
         {
             var host = _a11yHost;
@@ -521,6 +539,9 @@ namespace DrawnUi.Views
         private void TeardownWindowsAccessibility()
         {
             AccessibilityManager.Changed          -= OnA11ySnapshotChanged;
+            AccessibilityManager.RebuildSkipped   -= OnA11yRebuildSkipped;
+            _a11yRefresh?.Dispose();
+            _a11yRefresh = null;
             AccessibilityManager.FocusChanged     -= OnA11yFocusChanged;
             AccessibilityManager.LiveRegionUpdated -= OnA11yLiveRegionUpdated;
             var canvasElem = GetCanvasPlatformElement();

@@ -174,6 +174,7 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
         if (manager == null || getScale == null)
             return base.GetChildrenCore() ?? [];
 
+        manager.RefreshIfStale(getScale()); // a reader never gets the nodes of a page that left
         var snap = manager.Snapshot;
         var list = new List<DrawnUiVirtualAutomationPeer>(snap.Length);
         for (int i = 0; i < snap.Length; i++)
