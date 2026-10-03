@@ -13,15 +13,23 @@ public partial class KeyboardManager
         window.PreviewKeyUp += (sender, args) =>
         {
             var mapped = MapToMaui(args.Key);
-            KeyboardReleased(mapped);
+            KeyboardReleased(mapped, IsTextField(args.OriginalSource));
 
             //Trace.WriteLine($"[KEY] {args.Key} => {mapped}");
         };
         window.PreviewKeyDown += (sender, args) =>
         {
             var mapped = MapToMaui(args.Key);
-            KeyboardPressed(mapped);
+            KeyboardPressed(mapped, IsTextField(args.OriginalSource));
         };
+    }
+
+    /// <summary>A native text field has the key: reported, not for drawn controls (see IsKeyForOtherElement).</summary>
+    static bool IsTextField(object source)
+    {
+        return source is Microsoft.UI.Xaml.Controls.TextBox
+            or Microsoft.UI.Xaml.Controls.RichEditBox
+            or Microsoft.UI.Xaml.Controls.PasswordBox;
     }
 
     /// <summary>

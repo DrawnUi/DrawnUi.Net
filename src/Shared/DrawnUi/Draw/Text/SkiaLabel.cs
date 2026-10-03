@@ -4507,6 +4507,9 @@ namespace DrawnUi.Draw
 
         void OnSelectionKeyDown(object sender, InputKey key)
         {
+            // Ctrl+C in a page input or a native text field is that field's copy, not this selection's
+            if (KeyboardManager.IsKeyForOtherElement)
+                return;
             if (!KeyboardManager.IsControlPressed && !KeyboardManager.IsMetaPressed)
                 return;
             if (key == InputKey.KeyC)

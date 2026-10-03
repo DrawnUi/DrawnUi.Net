@@ -492,6 +492,14 @@ const PREVENT_DEFAULT_KEYS = new Set([
     'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space',
 ]);
 
+// DrawnUI only observes keys: a page element that has focus (an input, a textarea, a button...) keeps its
+// keys, so Space types and the arrows move its caret. The page only stops scrolling when the key belongs
+// to nobody else: its target is the page itself or a canvas.
+function keyIsForDrawnUi(e) {
+    const t = e.target;
+    return !t || t === document.body || t === document.documentElement || t === window || t.tagName === 'CANVAS';
+}
+
 let keyboardAttached = false;
 function setupKeyboardHandlers() {
     if (keyboardAttached) return;
@@ -499,12 +507,14 @@ function setupKeyboardHandlers() {
     // Window-level: the WebGL canvas can't hold focus for key events.
     window.addEventListener('keydown', e => {
         if (e.repeat) return;
-        if (PREVENT_DEFAULT_KEYS.has(e.code)) e.preventDefault();
-        onKeyDown?.(e.code);
+        const forDrawnUi = keyIsForDrawnUi(e);
+        if (PREVENT_DEFAULT_KEYS.has(e.code) && forDrawnUi) e.preventDefault();
+        onKeyDown?.(e.code, !forDrawnUi);
     });
     window.addEventListener('keyup', e => {
-        if (PREVENT_DEFAULT_KEYS.has(e.code)) e.preventDefault();
-        onKeyUp?.(e.code);
+        const forDrawnUi = keyIsForDrawnUi(e);
+        if (PREVENT_DEFAULT_KEYS.has(e.code) && forDrawnUi) e.preventDefault();
+        onKeyUp?.(e.code, !forDrawnUi);
     });
 }
 

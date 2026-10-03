@@ -12,25 +12,67 @@ public partial class KeyboardManager
 
     public static event EventHandler<string> KeyChar;
 
-    public static void KeyboardChar(string ch)
+    /// <summary>
+    /// True while <see cref="KeyDown"/>, <see cref="KeyUp"/> or <see cref="KeyChar"/> is raised for a key that a focused
+    /// element outside DrawnUI receives: a page input next to the canvas, a native text field. Every key is reported,
+    /// but such a key is not for drawn controls: observe it, never act on it as typing or a shortcut. Drawn editors and
+    /// text selection ignore it.
+    /// </summary>
+    public static bool IsKeyForOtherElement { get; private set; }
+
+    public static void KeyboardChar(string ch) => KeyboardChar(ch, false);
+
+    /// <param name="ch">The typed text.</param>
+    /// <param name="forOtherElement">The key goes to a focused element outside DrawnUI, see <see cref="IsKeyForOtherElement"/>.</param>
+    public static void KeyboardChar(string ch, bool forOtherElement)
     {
-        KeyChar?.Invoke(null, ch);
+        IsKeyForOtherElement = forOtherElement;
+        try
+        {
+            KeyChar?.Invoke(null, ch);
+        }
+        finally
+        {
+            IsKeyForOtherElement = false;
+        }
     }
 
-    public static void KeyboardPressed(InputKey key)
+    public static void KeyboardPressed(InputKey key) => KeyboardPressed(key, false);
+
+    /// <param name="key">The key.</param>
+    /// <param name="forOtherElement">The key goes to a focused element outside DrawnUI, see <see cref="IsKeyForOtherElement"/>.</param>
+    public static void KeyboardPressed(InputKey key, bool forOtherElement)
     {
         CheckAndApplyModifiers(key, true);
 
-        //Debug.WriteLine($"[KEY UP] {key}");
-
-        KeyDown?.Invoke(null, key);
+        IsKeyForOtherElement = forOtherElement;
+        try
+        {
+            KeyDown?.Invoke(null, key);
+        }
+        finally
+        {
+            IsKeyForOtherElement = false;
+        }
     }
 
-    public static void KeyboardReleased(InputKey key)
+    public static void KeyboardReleased(InputKey key) => KeyboardReleased(key, false);
+
+    /// <param name="key">The key.</param>
+    /// <param name="forOtherElement">The key goes to a focused element outside DrawnUI, see <see cref="IsKeyForOtherElement"/>.</param>
+    public static void KeyboardReleased(InputKey key, bool forOtherElement)
     {
         CheckAndApplyModifiers(key, false);
 
-        KeyUp?.Invoke(null, key);
+        IsKeyForOtherElement = forOtherElement;
+        try
+        {
+            KeyUp?.Invoke(null, key);
+        }
+        finally
+        {
+            IsKeyForOtherElement = false;
+        }
     }
 
     public static bool IsShiftPressed

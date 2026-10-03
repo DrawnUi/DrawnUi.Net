@@ -44,18 +44,20 @@ public partial class KeyboardManager
 
     public static void AttachToKeyboard(Activity activity) 
     {
-        _listener = new(activity, (code, e) =>
+        _listener = new(activity, (view, code, e) =>
         {
             var mapped = MapToMaui(code);
+            // a text field has the key: reported, not for drawn controls (see IsKeyForOtherElement)
+            var textField = view is Android.Widget.EditText;
 
             if (e.Action == KeyEventActions.Down)
             {
-                KeyboardPressed(mapped);
+                KeyboardPressed(mapped, textField);
             }
             else
             if (e.Action == KeyEventActions.Up)
             {
-                KeyboardReleased(mapped);
+                KeyboardReleased(mapped, textField);
             }
 
         });
@@ -178,9 +180,9 @@ public partial class KeyboardManager
     public class KeysListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalFocusChangeListener, View.IOnKeyListener
     {
         readonly Activity _activity;
-        readonly Action<Keycode, KeyEvent> _callback;
+        readonly Action<View, Keycode, KeyEvent> _callback;
 
-        public KeysListener(Activity activity, Action<Keycode, KeyEvent> callback)
+        public KeysListener(Activity activity, Action<View, Keycode, KeyEvent> callback)
         {
             _callback = callback;
             _activity = activity;
@@ -210,7 +212,7 @@ public partial class KeyboardManager
         /// </summary>
         public bool OnKey(View v, Keycode keyCode, KeyEvent e)
         {
-            _callback?.Invoke(keyCode, e);
+            _callback?.Invoke(v, keyCode, e);
             return false;
         }
 

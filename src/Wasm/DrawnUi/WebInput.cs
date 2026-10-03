@@ -232,21 +232,22 @@ public static partial class WebInput
 
     /// <summary>
     /// Called by JS on keydown. <paramref name="code"/> is the DOM <c>KeyboardEvent.code</c>
-    /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>.
+    /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>. <paramref name="forOtherElement"/>:
+    /// a page element outside the canvas has the key, see <see cref="KeyboardManager.IsKeyForOtherElement"/>.
     /// </summary>
     [JSExport]
-    public static void OnKeyDown(string code)
+    public static void OnKeyDown(string code, bool forOtherElement)
     {
-        KeyboardManager.KeyboardPressed(MapCode(code));
+        KeyboardManager.KeyboardPressed(MapCode(code), forOtherElement);
     }
 
     /// <summary>
     /// Called by JS on keyup. See <see cref="OnKeyDown"/> for the code contract.
     /// </summary>
     [JSExport]
-    public static void OnKeyUp(string code)
+    public static void OnKeyUp(string code, bool forOtherElement)
     {
-        KeyboardManager.KeyboardReleased(MapCode(code));
+        KeyboardManager.KeyboardReleased(MapCode(code), forOtherElement);
     }
 
     private static InputKey MapCode(string? code)

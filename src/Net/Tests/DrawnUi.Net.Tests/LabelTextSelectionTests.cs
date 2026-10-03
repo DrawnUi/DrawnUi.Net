@@ -130,6 +130,43 @@ public class LabelTextSelectionTests
         }
     }
 
+    /// <summary>
+    /// Ctrl+C typed into a field outside DrawnUI (a page input, a native text box) is that field's copy: the drawn
+    /// selection must not overwrite the clipboard (GitHub #231 class). The key is still reported, flagged.
+    /// </summary>
+    [Fact]
+    public void CtrlC_ForAnotherElement_DoesNotCopy()
+    {
+        var previous = Super.SetClipboardText;
+        string copied = null;
+        Super.SetClipboardText = text => copied = text;
+        var flags = new List<bool>();
+        EventHandler<InputKey> watch = (s, k) => flags.Add(KeyboardManager.IsKeyForOtherElement);
+        KeyboardManager.KeyDown += watch;
+        try
+        {
+            var (host, label, robot) = Create(true, PointerDeviceType.Mouse);
+            using var _ = host;
+            var inside = At(label, 2);
+            robot.Tap(inside.X, inside.Y);
+            robot.Tap(inside.X, inside.Y);
+
+            KeyboardManager.KeyboardPressed(InputKey.ControlLeft, true);
+            KeyboardManager.KeyboardPressed(InputKey.KeyC, true);
+            KeyboardManager.KeyboardReleased(InputKey.KeyC, true);
+            KeyboardManager.KeyboardReleased(InputKey.ControlLeft, true);
+
+            Assert.Null(copied);
+            Assert.Equal(new[] { true, true }, flags);
+            Assert.False(KeyboardManager.IsKeyForOtherElement);
+        }
+        finally
+        {
+            KeyboardManager.KeyDown -= watch;
+            Super.SetClipboardText = previous;
+        }
+    }
+
     [Fact]
     public void ClickOnEmptySpace_DropsTheSelection()
     {

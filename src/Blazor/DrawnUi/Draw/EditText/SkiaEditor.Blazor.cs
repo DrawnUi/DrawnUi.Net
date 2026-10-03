@@ -88,6 +88,10 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
 
     private void OnKeyDown(object? sender, InputKey key)
     {
+        // a page element next to the canvas has the keyboard (an input, a button): its keys are not typing here
+        if (KeyboardManager.IsKeyForOtherElement)
+            return;
+
         var shift = KeyboardManager.IsShiftPressed;
         var ctrl = KeyboardManager.IsControlPressed;
         var alt = KeyboardManager.IsAltPressed;
@@ -138,6 +142,9 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
 
     private void OnKeyChar(object? sender, string ch)
     {
+        if (KeyboardManager.IsKeyForOtherElement)
+            return;
+
         StubTypeText(ch);
     }
 
