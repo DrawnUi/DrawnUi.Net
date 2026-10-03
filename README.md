@@ -77,6 +77,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * In a `SkiaWrap`, a box with a fixed size stays on its line even when its content sticks out of it on purpose (an unclipped child with a negative margin). Before, each such box went to a line of its own, with an empty line above the first one.
     * In a `SkiaWrap`, children whose widths add up to exactly the width of the line share it at every screen scale, for example two cards that are each half the line minus the spacing. Before, the second one usually went to a new line, so a two-column list showed one column on most screens.
     * A `SkiaWrap` with recycled cells from `ItemsSource` (the default) draws its items. Before, it left their space empty.
+    * In a `SkiaStack` or `SkiaRow`, a child pulled over the one before it with a negative margin (for example `AddMarginTop` equal to minus its height) is drawn. Before, it was not drawn at all.
     * WPF, OpenTK and WebAssembly: `ScrollToIndex` to an item far away in a big recycled list lands on that item. Before, it could stop at the first rows around it (a jump to the middle of 100 000 items showed item 49 937 instead of 50 001), until the next touch or mouse move.
   * **Scrolling with a touchpad or a mouse wheel**
     * Touchpad scrolling follows your fingers on MAUI Windows, WPF and OpenTK. Small touchpad steps move the content at once, and only a mouse-wheel notch glides. Before, every small step started a slow glide, so the content was late and bounced past the end of a swipe.
@@ -95,7 +96,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * **Keyboard and accessibility**
     * MAUI Mac Catalyst: Tab and Shift+Tab move between the drawn controls with a focus ring, and the arrow keys move inside a group (a list, a toolbar, a grid), as on MAUI Windows and WPF.
     * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
-    * WPF: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
+    * WPF and MAUI Windows: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
     * MAUI Windows: a right click, Shift+F10 or the Menu key reaches `SkiaControl.ContextMenu`, as on WPF and in the browser.
   * **Stability**
     * Closing a canvas while one of its controls is still being rendered in the background no longer crashes: the canvas waits for that render to finish first.
