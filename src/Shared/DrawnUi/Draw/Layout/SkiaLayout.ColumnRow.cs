@@ -2375,8 +2375,15 @@ else
                         continue;
                     }
 
-                    if (cell.WasMeasured && cell.Destination == SKRect.Empty || cell.Measured.Pixels.Width < 1 ||
-                        cell.Measured.Pixels.Height < 1)
+                    // The control draws in its slot minus its margins: a negative margin (a child pulled over its
+                    // neighbour, AddMarginTop = -height) leaves an empty slot for a control that still draws its full
+                    // size. Visibility follows what is drawn, or such a child was never drawn. Zero margins: the slot.
+                    var margins = cell.View != null ? cell.View.Margins : default;
+                    float mL = (float)(margins.Left * ctx.Scale), mT = (float)(margins.Top * ctx.Scale),
+                        mR = (float)(margins.Right * ctx.Scale), mB = (float)(margins.Bottom * ctx.Scale);
+
+                    if (cell.WasMeasured && cell.Destination == SKRect.Empty || cell.Measured.Pixels.Width - mL - mR < 1 ||
+                        cell.Measured.Pixels.Height - mT - mB < 1)
                     {
                         cell.IsVisible = false;
                     }
@@ -2396,7 +2403,8 @@ else
 
                         offsetOthers += cell.OffsetOthers;
 
-                        var insideViewport = cell.Drawn.IntersectsWith(visibilityArea.Pixels);
+                        var insideViewport = new SKRect(cell.Drawn.Left + mL, cell.Drawn.Top + mT,
+                            cell.Drawn.Right - mR, cell.Drawn.Bottom - mB).IntersectsWith(visibilityArea.Pixels);
 
                         if (firstVisibleIndex >= 0 && !insideViewport)
                         {
@@ -2901,7 +2909,11 @@ else
                         {
                             bool willDraw = true;
 
-                            if (child.MeasuredSize.Pixels.Width >= 1 && child.MeasuredSize.Pixels.Height >= 1)
+                            // the control's own size, margins taken out: a negative margin can leave an empty slot
+                            // for a control that draws its full size (see PASS 1)
+                            var childMargins = child.Margins;
+                            if (child.MeasuredSize.Pixels.Width - (float)((childMargins.Left + childMargins.Right) * ctx.Scale) >= 1
+                                && child.MeasuredSize.Pixels.Height - (float)((childMargins.Top + childMargins.Bottom) * ctx.Scale) >= 1)
                             {
                                 destinationRect = GetStackChildDrawRect(index, x, y, cell);
 
