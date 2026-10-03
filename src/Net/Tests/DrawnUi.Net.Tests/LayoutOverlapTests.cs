@@ -39,6 +39,65 @@ public class LayoutOverlapTests
         Assert.Equal(SKColors.Red, PixelAt(host, 2, 2));
     }
 
+    private static (HeadlessCanvasHost host, SkiaShape green, SkiaShape red) OverlapColumn(int zGreen, int zRed, SkiaCacheType cache = SkiaCacheType.Image)
+    {
+        var host = new HeadlessCanvasHost(200, 300, scale: 1f, background: Colors.White);
+        SkiaShape green = null, red = null;
+        host.Canvas.Content = new SkiaLayout
+        {
+            Type = LayoutType.Column,
+            BackgroundColor = Colors.Black,
+            Spacing = 0,
+            UseCache = cache,
+            Children = new List<SkiaControl>
+            {
+                new SkiaShape { ZIndex = zGreen, BackgroundColor = Colors.Green, HeightRequest = 100, LockRatio = 1 }.Assign(out green),
+                new SkiaShape { ZIndex = zRed, AddMarginTop = -100, BackgroundColor = Colors.Red, HeightRequest = 100, LockRatio = 1 }.Assign(out red),
+                new SkiaShape { BackgroundColor = Colors.Blue, HeightRequest = 100, LockRatio = -1 },
+            }
+        };
+        host.AdvanceFrames(3);
+        return (host, green, red);
+    }
+
+    /// <summary>
+    /// A stack honours ZIndex (as MAUI layouts do): the higher one is drawn on top whatever the child order; equal
+    /// ZIndex keeps the child order. Before, stacks drew in child order only.
+    /// </summary>
+    [Theory]
+    [InlineData(1, 0, SkiaCacheType.Image, "green")]
+    [InlineData(1, 0, SkiaCacheType.None, "green")]
+    [InlineData(0, -1, SkiaCacheType.Image, "green")]
+    [InlineData(0, 1, SkiaCacheType.Image, "red")]
+    [InlineData(0, 0, SkiaCacheType.Image, "red")]
+    [InlineData(2, 2, SkiaCacheType.Image, "red")]
+    public void Column_DrawsByZIndex(int zGreen, int zRed, SkiaCacheType cache, string onTop)
+    {
+        var (host, _, _) = OverlapColumn(zGreen, zRed, cache);
+        using var _ = host;
+        Assert.Equal(onTop == "green" ? SKColors.Green : SKColors.Red, PixelAt(host, 50, 50));
+        Assert.Equal(SKColors.Blue, PixelAt(host, 50, 150));
+    }
+
+    /// <summary>A tap over overlapping stack children reaches the one drawn on top.</summary>
+    [Theory]
+    [InlineData(1, 0, "green")]
+    [InlineData(0, 1, "red")]
+    public void Column_TapReachesTheChildOnTop(int zGreen, int zRed, string expected)
+    {
+        var (host, green, red) = OverlapColumn(zGreen, zRed);
+        using var _ = host;
+        var tapped = "";
+        green.OnTapped(me => tapped += "green");
+        red.OnTapped(me => tapped += "red");
+        host.AdvanceFrames(2);
+
+        new GestureRobot(host).Tap(50, 50);
+        host.AdvanceFrames(2);
+
+        Assert.Equal(expected, tapped);
+    }
+
     /// <summary>
     /// A column child pulled over the previous one by a negative margin (AddMarginTop = -its height) leaves an empty slot
     /// but still draws its full size, over the previous child. The column used to judge visibility by the slot, so it

@@ -14,6 +14,38 @@ namespace DrawnUi.Draw
         /// <param name="scale"></param>
         public record SecondPassArrange(ControlInStack Cell, SkiaControl Child, float Scale);
 
+        /// <summary>A child drawn after the stack loop, in ZIndex order (see DrawStack).</summary>
+        private readonly record struct ZOrderedDraw(SkiaControl Control, SKRect Destination, int Index, bool Draw);
+
+        private readonly List<ZOrderedDraw> _zOrderedDraws = new();
+        private bool _zIndexScanned;
+        private bool _childrenUseZIndex;
+
+        /// <summary>
+        /// Whether a child sets a ZIndex. Scanned once and cached until the views list is invalidated (a child's ZIndex
+        /// changed, children added or removed), so a stack without ZIndex pays nothing per frame.
+        /// </summary>
+        protected bool ChildrenUseZIndex()
+        {
+            if (!_zIndexScanned)
+            {
+                var uses = false;
+                foreach (var view in Views)
+                {
+                    if (view.ZIndex != 0)
+                    {
+                        uses = true;
+                        break;
+                    }
+                }
+
+                _childrenUseZIndex = uses;
+                _zIndexScanned = true;
+            }
+
+            return _childrenUseZIndex;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected float GetSpacingForIndex(int forIndex, float scale)
         {
@@ -2602,6 +2634,14 @@ else
             bool hadAdjustments = false;
             bool wasVisible = false;
             var index = -1;
+
+            // ZIndex: a stack draws its children in order unless one sets a ZIndex; then every drawn child is drawn
+            // after the loop, in stable ZIndex order (MAUI layouts honour ZIndex too), and enters the hit tree in that
+            // order so a tap reaches the child drawn on top. Positions and the rest of the loop stay as they are.
+            // Templated lists and plane bakes keep their order.
+            var zOrdered = !IsTemplated && !IsPlaneBakePass && ChildrenUseZIndex();
+            if (zOrdered)
+                _zOrderedDraws.Clear();
             var cellsToRelease = new List<SkiaControl>();
             int countRendered = 0;
             Vector2 offsetOthers = Vector2.Zero;
@@ -2908,6 +2948,7 @@ else
                         if (child.IsVisible)
                         {
                             bool willDraw = true;
+                            bool pendingDraw = false; // drawn after the loop, in ZIndex order
 
                             // the control's own size, margins taken out: a negative margin can leave an empty slot
                             // for a control that draws its full size (see PASS 1)
@@ -2941,8 +2982,13 @@ else
 
                                         if (willDraw)
                                         {
-                                            DrawChild(ctx.WithDestination(destinationRect), child);
-                                            countRendered++;
+                                            if (zOrdered)
+                                                pendingDraw = true;
+                                            else
+                                            {
+                                                DrawChild(ctx.WithDestination(destinationRect), child);
+                                                countRendered++;
+                                            }
                                         }
                                     }
                                     else
@@ -2967,8 +3013,13 @@ else
 
                                     if (willDraw)
                                     {
-                                        DrawChild(ctx.WithDestination(destinationRect), child);
-                                        countRendered++;
+                                        if (zOrdered)
+                                            pendingDraw = true;
+                                        else
+                                        {
+                                            DrawChild(ctx.WithDestination(destinationRect), child);
+                                            countRendered++;
+                                        }
                                     }
                                 }
 
@@ -2981,12 +3032,15 @@ else
                                 {
                                     drawn++;
 
-                                    tree.Add(new SkiaControlWithRect(control,
-                                        destinationRect,
-                                        control.CreateHitRect(),
-                                        index,
-                                        control.ContextIndex, // freeze index
-                                        control.BindingContext)); // freeze binding context
+                                    if (zOrdered)
+                                        _zOrderedDraws.Add(new ZOrderedDraw(control, destinationRect, index, pendingDraw));
+                                    else
+                                        tree.Add(new SkiaControlWithRect(control,
+                                            destinationRect,
+                                            control.CreateHitRect(),
+                                            index,
+                                            control.ContextIndex, // freeze index
+                                            control.BindingContext)); // freeze binding context
                                 }
                             }
                         }
@@ -3028,6 +3082,43 @@ else
                     // visible "wrong Top" flicker. OffsetOthers is set only on the remeasure frame and cleared by
                     // PASS 1 next frame, and the restack fixes positions from then on, so this never double-shifts.
                     offsetOthers += cell.OffsetOthers;
+                }
+
+                if (zOrdered && _zOrderedDraws.Count > 0)
+                {
+                    // stable insertion sort by ZIndex: no allocation, near linear when few children set one
+                    var span = CollectionsMarshal.AsSpan(_zOrderedDraws);
+                    for (var i = 1; i < span.Length; i++)
+                    {
+                        var item = span[i];
+                        var z = item.Control.ZIndex;
+                        var j = i - 1;
+                        while (j >= 0 && span[j].Control.ZIndex > z)
+                        {
+                            span[j + 1] = span[j];
+                            j--;
+                        }
+                        span[j + 1] = item;
+                    }
+
+                    foreach (var item in span)
+                    {
+                        var control = item.Control;
+                        if (item.Draw)
+                        {
+                            DrawChild(ctx.WithDestination(item.Destination), control);
+                            countRendered++;
+                        }
+
+                        tree.Add(new SkiaControlWithRect(control,
+                            item.Destination,
+                            control.CreateHitRect(),
+                            item.Index,
+                            control.ContextIndex, // freeze index
+                            control.BindingContext)); // freeze binding context
+                    }
+
+                    _zOrderedDraws.Clear();
                 }
 
                 OnAfterDrawingVisibleChildren(ctx, structure, visibleElements);
