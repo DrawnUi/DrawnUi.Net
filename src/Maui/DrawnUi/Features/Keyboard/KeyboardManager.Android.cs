@@ -117,7 +117,8 @@ public partial class KeyboardManager
 
             case Keycode.CapsLock: return InputKey.CapsLock;
             case Keycode.Insert: return InputKey.Insert;
-            case Keycode.Del: return InputKey.Delete;
+            case Keycode.Del: return InputKey.Backspace; // Android's DEL is the backspace key
+            case Keycode.ForwardDel: return InputKey.Delete;
             // Android doesn’t have a dedicated Print Screen key in most cases.
             case Keycode.Home: return InputKey.Home;
             case Keycode.MoveEnd: return InputKey.End;
@@ -133,7 +134,6 @@ public partial class KeyboardManager
             case Keycode.CtrlRight: return InputKey.ControlRight;
             case Keycode.Enter: return InputKey.Enter;
             case Keycode.Tab: return InputKey.Tab;
-            case Keycode.Back: return InputKey.Backspace;
 
             case Keycode.F1: return InputKey.F1;
             case Keycode.F2: return InputKey.F2;
@@ -205,19 +205,12 @@ public partial class KeyboardManager
         }
 
         /// <summary>
-        /// You have to return `true` if the key was handled. We will return `true` always in this implementation.
+        /// Observes the key and never consumes it (returns false), like the other platforms: the focused view still
+        /// gets it, so a text field keeps its backspace (keyboard suggestions, IME composing) and Back still goes back.
         /// </summary>
-        /// <param name="v"></param>
-        /// <param name="keyCode"></param>
-        /// <param name="e"></param>
-        /// <returns></returns>
         public bool OnKey(View v, Keycode keyCode, KeyEvent e)
         {
-            if (_callback != null)
-            {
-                _callback.Invoke(keyCode, e);
-                return true;
-            }
+            _callback?.Invoke(keyCode, e);
             return false;
         }
 
