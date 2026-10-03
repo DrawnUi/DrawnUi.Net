@@ -9211,6 +9211,11 @@ namespace DrawnUi.Draw
         /// </summary>
         public List<SkiaControl> Views { get; } = new();
 
+        /// <summary>
+        /// Added through its parent's <c>Children</c> collection, not as an internal subview of the parent.
+        /// </summary>
+        internal bool IsChildrenItem;
+
         public virtual void DisposeChildren()
         {
             foreach (var child in Views.ToList())
@@ -9565,6 +9570,8 @@ namespace DrawnUi.Draw
             {
                 if (subView != null)
                 {
+                    subView.IsChildrenItem = add;
+
                     if (add)
                     {
                         AddSubView(subView);
@@ -9654,24 +9661,11 @@ namespace DrawnUi.Draw
             if (HasItemTemplate)
                 return;
 
-            switch (e.Action)
+            if (ChildrenCollectionSync.Apply(Views, sender as IList<SkiaControl> ?? Children, e,
+                    child => AddOrRemoveView(child, true), child => AddOrRemoveView(child, false)))
             {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (SkiaControl newChildren in e.NewItems)
-                    {
-                        AddOrRemoveView(newChildren, true);
-                    }
-
-                    break;
-
-                case NotifyCollectionChangedAction.Reset:
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (SkiaControl oldChildren in e.OldItems ?? Array.Empty<SkiaControl>())
-                    {
-                        AddOrRemoveView(oldChildren, false);
-                    }
-
-                    break;
+                InvalidateViewsList();
+                Invalidate();
             }
 
             Update();
