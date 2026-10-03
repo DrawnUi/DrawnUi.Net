@@ -346,7 +346,8 @@ namespace UnitTests
             stack.Measure(412, float.PositiveInfinity, 1);
 
             Assert.Equal(75, a.Destination.Left, 0.5f);
-            Assert.Equal(285, b.Destination.Left, 0.5f);
+            // chunks of (412 - 10) / 2 = 201 (the line keeps its full width since 6cc876f4): 211 + 75.5
+            Assert.Equal(286, b.Destination.Left, 0.5f);
         }
 
         // ---- Templated main-axis Fill cells are auto-sized ----
