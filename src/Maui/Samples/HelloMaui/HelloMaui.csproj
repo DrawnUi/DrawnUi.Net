@@ -35,7 +35,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#212529" />
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FEFEFE" />
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#212529" BaseSize="128,128" />
         <MauiFont Include="Resources\Fonts\*" />
         <!-- Registered on Windows only (MauiProgram.cs) -->
