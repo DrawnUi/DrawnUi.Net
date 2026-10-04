@@ -5,7 +5,7 @@ using DrawnUi.Draw;
 namespace DrawnUi
 {
     /// <summary>
-    /// C# Hot Reload handler for the WPF head, the same pattern as the MAUI and WebAssembly heads.
+    /// C# Hot Reload handler for the desktop .NET heads (WPF, OpenTK), the same pattern as the MAUI and WebAssembly heads.
     /// The runtime calls <see cref="UpdateApplication"/> for every metadata delta (Visual Studio /
     /// Rider Hot Reload, <c>dotnet watch</c>); the burst one edit produces is debounced into a single
     /// <see cref="Super.HotReload"/>. The runtime only applies deltas during development, so this
@@ -38,7 +38,7 @@ namespace DrawnUi.Draw
     {
         /// <summary>
         /// Raised (debounced, on a timer thread) after C# Hot Reload applied an edit. Rebuild
-        /// code-behind UI from here: <c>DrawnUiElement.ContentBuilder</c> and <c>SkiaShell</c>
+        /// code-behind UI from here: WPF <c>DrawnUiElement.ContentBuilder</c> and <c>SkiaShell</c>
         /// already do. Marshal to the UI thread yourself when handling it directly.
         /// </summary>
         public static event Action<Type[]> HotReload;
