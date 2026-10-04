@@ -59,6 +59,8 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## What's New 1.10.6.22
 
+  * **Rendering**
+    * Android: hardware-accelerated canvases (`RenderingMode = Accelerated`) draw with Vulkan. On a phone with a Mali-G57 GPU this takes about 11% less CPU per frame than OpenGL, at the same frame rate. Devices without Vulkan 1.1 (or older than Android 7) keep OpenGL, and when Vulkan fails to start on a device, DrawnUI switches the canvas to OpenGL by itself. To always use OpenGL, set `UseVulkan = false` in the settings you pass to `UseDrawnUi`.
   * **Text**
     * Japanese and Chinese text wraps properly. Lines break between characters, and closing punctuation and small kana never start a line. A very long word, like a URL, also breaks when it is wider than the line.
     * Symbols and emoji inside normal text show up. A `SkiaLabel` draws each character its font is missing with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its own font. `FontFamilyFallback` can list several fonts, for example `"FontSymbols, FontEmoji"`.
