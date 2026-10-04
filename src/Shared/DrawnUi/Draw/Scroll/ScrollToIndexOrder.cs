@@ -28,6 +28,7 @@ public class VelocityAccumulator
     private const double Threshold = 10.0; // Minimum significant movement
     private const int MaxSampleSize = 5; // Number of samples for weighted average
     private const long ConsiderationTimeframeNanos = 150_000_000; // 150 ms: samples older than this at release are ignored
+    private const long BurstNanos = 1_000_000;
 
     /// <summary>
     /// Clock of the gestures processed on this thread, in nanoseconds; null = the real one
@@ -57,6 +58,14 @@ public class VelocityAccumulator
         var time = clock != null ? clock()
             : arrivedTimeNanos > 0 ? arrivedTimeNanos
             : Super.GetCurrentTimeNanos();
+        // the same burst of input (moves under 1 ms apart, WSLg / X11 sends them in pairs): one sample, the latest.
+        // Its first move carries only part of the burst's distance and would drag the release low.
+        if (velocities.Count > 0 && time - velocities[^1].time is >= 0 and < BurstNanos)
+        {
+            velocities[^1] = (velocity, velocities[^1].time);
+            return;
+        }
+
         if (velocities.Count == MaxSampleSize) velocities.RemoveAt(0);
         velocities.Add((velocity, time));
     }

@@ -100,6 +100,54 @@ public sealed class GestureRobot
         Send(TouchActionType.Released, up, TouchActionResult.Up, dt);
     }
 
+    /// <summary>
+    /// Drives the desktop pointer path, <see cref="DrawnUi.Views.Canvas.HandleDesktopPointerDown"/> / Move / Up, as the
+    /// OpenTK and WPF windows call it, on this robot's clock: every event at its own time, in ms after the press, so
+    /// recorded input is replayed exactly, bursts included. The first point is the press, the last a move; the release
+    /// follows <paramref name="releaseAfterMs"/> later at the last point. Points in points; a frame is rendered after
+    /// each event.
+    /// </summary>
+    public void DesktopDrag(IReadOnlyList<(double Ms, double X, double Y)> path, double releaseAfterMs = 0, double frameMs = 16.0)
+    {
+        if (path.Count < 2)
+            throw new ArgumentException("A press and at least one move", nameof(path));
+
+        var canvas = _host.Canvas;
+        var width = (float)(canvas.WidthRequest * _scale);
+        var height = (float)(canvas.HeightRequest * _scale);
+        var pointer = Device != null
+            ? new PointerData { DeviceType = Device.Value, Button = AppoMobi.Gestures.MouseButton.Left }
+            : null;
+        var start = _clock;
+
+        void At(double ms, Action send)
+        {
+            _clock = start.AddMilliseconds(ms);
+            var previous = VelocityAccumulator.ClockOverrideNanos;
+            VelocityAccumulator.ClockOverrideNanos = _clockNanos ??= () => _clock.Ticks * 100;
+            try
+            {
+                send();
+                _host.RenderFrame(frameMs);
+            }
+            finally
+            {
+                VelocityAccumulator.ClockOverrideNanos = previous;
+            }
+        }
+
+        var first = ToPixels(path[0].X, path[0].Y);
+        At(path[0].Ms, () => canvas.HandleDesktopPointerDown(first.X, first.Y, width, height, pointer));
+        for (var i = 1; i < path.Count; i++)
+        {
+            var px = ToPixels(path[i].X, path[i].Y);
+            At(path[i].Ms, () => canvas.HandleDesktopPointerMove(px.X, px.Y, true, width, height, pointer));
+        }
+
+        var last = ToPixels(path[^1].X, path[^1].Y);
+        At(path[^1].Ms + releaseAfterMs, () => canvas.HandleDesktopPointerUp(last.X, last.Y, width, height, pointer));
+    }
+
     /// <summary>Convenience overload taking raw coordinates.</summary>
     public void Pan(double fromX, double fromY, double toX, double toY, double durationMs = 200, int steps = 12)
         => Pan(new PointF((float)fromX, (float)fromY), new PointF((float)toX, (float)toY), durationMs, steps);

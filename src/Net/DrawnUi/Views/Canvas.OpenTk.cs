@@ -10,6 +10,13 @@ public partial class Canvas
     private System.Threading.CancellationTokenSource? _desktopLongPressCts;
     private const long DesktopPointerId = 1;
 
+    // The pressed pointer's recent positions (time ns, pixels), for the move velocity: see DesktopMoveVelocity.
+    private readonly List<(long Time, PointF Location)> _desktopTrail = new(16);
+    private long _desktopPressTime;
+    private const long BurstNanos = 1_000_000;        // moves closer than this are one position
+    private const long VelocityWindowNanos = 16_000_000;
+    private const long NoVelocityAfterPressNanos = 4_000_000;
+
     public void ConnectDesktopDrawable(ISkiaDrawable drawable)
     {
         AttachCanvasView(drawable);
@@ -30,6 +37,9 @@ public partial class Canvas
         args.Distance = new TouchActionEventArgs.DistanceInfo();
         _desktopPointerDownArgs = args;
         _desktopPreviousArgs = args;
+        _desktopPressTime = DesktopClockNanos();
+        _desktopTrail.Clear();
+        _desktopTrail.Add((_desktopPressTime, location));
         ScheduleDesktopLongPress(args);
         OnGestureEvent(TouchActionType.Pressed, args, TouchActionResult.Down);
     }
@@ -42,7 +52,14 @@ public partial class Canvas
         args.Pointer = pointer;
 
         if (_desktopPreviousArgs != null)
+        {
             TouchActionEventArgs.FillDistanceInfo(args, _desktopPreviousArgs);
+            if (actionType == TouchActionType.Moved && _desktopPointerDownArgs != null)
+            {
+                args.Distance.Velocity = DesktopMoveVelocity(DesktopClockNanos(), location);
+                args.Distance.TotalVelocity = _desktopPreviousArgs.Distance.TotalVelocity.Add(args.Distance.Velocity);
+            }
+        }
 
         if (actionType == TouchActionType.Pointer)
         {
@@ -97,7 +114,74 @@ public partial class Canvas
         OnGestureEvent(TouchActionType.Released, args, TouchActionResult.Up);
         _desktopPointerDownArgs = null;
         _desktopPreviousArgs = null;
+        _desktopTrail.Clear();
     }
+
+    /// <summary>
+    /// The pressed pointer's velocity at a move, pixels per second: its displacement over the last 16 ms, the position
+    /// 16 ms back interpolated between the recent ones. Dividing each move by the gap to the previous one, as before,
+    /// breaks where moves arrive in bursts (WSLg / X11: two moves 0.01 ms apart every ~15 ms): the second move of a
+    /// pair measured millions of px/s and every fling left at the velocity limit, about twice as far as on Windows.
+    /// Moves under 1 ms apart are one position (the burst keeps its first time, takes the last position). When the
+    /// previous move is already 16 ms or more old, the move's own velocity is used, so evenly spaced input measures
+    /// as before. No velocity in the first 4 ms after the press. Same rules as DrawnUi.Rust (gestures.rs, 6d525f7).
+    /// </summary>
+    private PointF DesktopMoveVelocity(long now, PointF location)
+    {
+        var trail = _desktopTrail;
+        if (trail.Count > 0 && now - trail[^1].Time < BurstNanos)
+            trail[^1] = (trail[^1].Time, location);
+        else
+            trail.Add((now, location));
+
+        // positions older than the window are only needed as the one before it
+        while (trail.Count > 2 && trail[1].Time <= now - VelocityWindowNanos * 3)
+            trail.RemoveAt(0);
+
+        if (trail.Count < 2)
+            return PointF.Empty;
+
+        var (time, position) = trail[^1];
+        if (time - _desktopPressTime < NoVelocityAfterPressNanos)
+            return PointF.Empty;
+
+        var previous = trail[^2];
+        var target = time - VelocityWindowNanos;
+        PointF from;
+        long fromTime;
+        if (previous.Time <= target)
+        {
+            from = previous.Location;
+            fromTime = previous.Time;
+        }
+        else
+        {
+            // the newest position at or before the target, then interpolate toward the next one
+            var i = trail.Count - 2;
+            while (i > 0 && trail[i].Time > target)
+                i--;
+            if (trail[i].Time > target)
+            {
+                from = trail[i].Location; // the press is newer than the window: measure from the press
+                fromTime = trail[i].Time;
+            }
+            else
+            {
+                var (t0, p0) = trail[i];
+                var (t1, p1) = trail[i + 1];
+                var k = t1 > t0 ? (float)(target - t0) / (t1 - t0) : 1f;
+                from = new PointF(p0.X + (p1.X - p0.X) * k, p0.Y + (p1.Y - p0.Y) * k);
+                fromTime = target;
+            }
+        }
+
+        var seconds = (time - fromTime) / 1_000_000_000f;
+        return seconds > 0
+            ? new PointF((position.X - from.X) / seconds, (position.Y - from.Y) / seconds)
+            : PointF.Empty;
+    }
+
+    private static long DesktopClockNanos() => VelocityAccumulator.ClockOverrideNanos?.Invoke() ?? Super.GetCurrentTimeNanos();
 
     /// <summary>
     /// Mouse wheel entry point for the desktop heads (OpenTK, WPF), mirroring the browser heads
