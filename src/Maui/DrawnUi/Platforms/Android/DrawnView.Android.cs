@@ -8,6 +8,12 @@ namespace DrawnUi.Views
 {
     public partial class DrawnView
     {
+        /// <summary>Vulkan failed on this canvas: a new accelerated canvas view, which now gets OpenGL.</summary>
+        internal void RecreateCanvasView()
+        {
+            if (Handler != null && IsUsingHardwareAcceleration)
+                CreateSkiaView();
+        }
 
         private bool IsElementVisibleInParentChain(View element)
         {
