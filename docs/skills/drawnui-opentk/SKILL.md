@@ -64,8 +64,9 @@ Your `GameWindow` subclass owns rendering; DrawnUI composites as a transparent o
 ## Update modes (power profile)
 
 - Rule: `Constant` ONLY for dynamic games (something moves every frame anyway); every other app/tool gets `Dynamic` + `UpdateFrequency = 0` — animations still run at full rate while active, an idle window stops rendering.
-- `UpdateMode.Constant` — VSync on, renders every frame. Dynamic games.
-- `UpdateMode.Dynamic` — VSync off, renders only when dirty, sleeps via `GLFW.WaitEventsTimeout(1/MaxFps)`. Pair with `GameWindowSettings { UpdateFrequency = 0 }` for low-power tools/editors/launchers.
+- `UpdateMode.Constant` — VSync on, renders every frame. Dynamic games. Where the driver accepts VSync but does not wait for it (WSLg software GL), the window notices it on the first 60 frames (median under half the refresh period) and paces frames itself on a refresh grid.
+- `UpdateMode.Dynamic` — VSync off, renders only when dirty, frames on a refresh grid (next slot = last slot + period, animations step with the slot), sleeps via `GLFW.WaitEventsTimeout`. Pair with `GameWindowSettings { UpdateFrequency = 0 }` for low-power tools/editors/launchers.
+- Refresh period: GLFW reports whole hertz (59 for a 59.95 Hz panel, pacing 16.95 ms behind the display); on Windows `DrawnUiWindow` takes DWM's exact composition rate. `Super.MaxFps` = the rounded rate.
 
 ## Input
 
@@ -88,7 +89,7 @@ Source strings (`"Images/x.gif"`, `"Lottie/x.json"`) resolve relative to the out
 - EGL "Arguments are inconsistent" → bundled `libglfw.so.3` is an EGL build; symlink system GLX `libglfw3` over it.
 - `GLXBadFBConfig` → request OpenGL 3.3 on Linux (Mesa D3D12 lacks 4.6).
 - D3D12 "Removing Device" + segfault on WSLg → keep `WindowState = WindowState.Normal`.
-- Uncapped FPS (Mesa ignores swap interval) → `DrawnUiWindow` soft-caps automatically; a custom `GameWindow` must set `UpdateFrequency` itself.
+- Uncapped FPS (Mesa / WSLg ignores the swap interval) → `DrawnUiWindow` paces both update modes on a refresh grid (Constant: after it measures that vsync is ignored; Dynamic: always). A custom `GameWindow` / `CanvasHost` app must pace itself (`UpdateFrequency` or its own timer).
 - **Run the Linux build from Windows (no .NET SDK in WSL needed)**, verified 2026-09-25: reference `SkiaSharp.NativeAssets.Linux`, `dotnet publish -c Release -r linux-x64 --self-contained -o out\linux` on Windows, copy into the WSL file system + `chmod +x` (the bundled GLFW 3.4 ran fine on WSLg/Ubuntu 22.04, trimmed single-file included; symlink the system `libglfw.so.3` only if the EGL error appears), then `wsl -e bash -c "cd ~/myapp && DISPLAY=:0 ./MyApp"`. Traps: `nohup ./MyApp &` inside `wsl -e bash -c` is killed when the command returns, so run the whole `wsl` command as a background job with the app in its foreground; the window appears as a Windows window titled `MyApp (Ubuntu-...)` (a `[WARN:COPY MODE]` prefix = WSLg copy presentation, still runs); Windows-simulated mouse/wheel input reaches it; default NAT networking hides Windows `localhost` services; `LocalApplicationData` = `~/.local/share`. The WSLg window rect includes a ~35 px shadow, so scripted edge drags must target the visible border. Docs: `docs/articles/opentk/faq.md`.
 - **Resize / wheel semantics per OS** (DrawnUiWindow, 2026-09-25): Windows/macOS block the render loop in the OS modal size loop, so `DrawnUiWindow` renders from `OnResize` there (live redraw while dragging an edge); Linux keeps looping during resize, so it only repaints via the normal loop. `OnRefresh` (expose/uncover) renders on every OS. The mouse wheel goes `OnMouseWheel` → `DesktopGestureHandler.OnMouseWheel` (GLFW notch × 120) → `Canvas.HandleDesktopWheel`; `CanvasHost` apps forward `OnMouseWheel` themselves.
 
@@ -138,6 +139,8 @@ The fastest way to run shared DrawnUI code on desktop: a tiny OpenTK head over y
 
 ## Samples (in-repo)
 
+- `src/OpenTk/Samples/HelloOpenTk` — the DrawnUI Hello app (20 screens, `drawnui-hello-app` skill): `DrawnUiWindow` + `Dynamic`, `SkiaShell`, pages shared in spirit with HelloWpf (copied, WPF timers ported to a window-thread `UiTimer`), assets linked from HelloWpf, a window subclass feeding `KeyboardManager`. Linux: `pwsh dev\hello-opentk-linux.ps1` (publish linux-x64 on Windows, copy into WSL, start on X11; `-NoBuild` to restart). `SkiaShell` and `Super.HotReload` are shared by the .NET desktop heads (WPF, OpenTK).
+- Not wired in `DrawnUiWindow` yet: keyboard navigation (Tab / arrow groups; Tab types four spaces into a focused editor), Up / Down in a multiline editor, Ctrl+C / X / V for editors.
 - `src/OpenTk/Samples/OpenTkPong` — fully-drawn game: `DrawnUiWindow` + `Constant`, `RescalingCanvas`, DWM chrome, key mapper, single-file publish. Shares game code with MAUI/Web heads via `Pong.Shared.projitems`.
 - `src/OpenTk/Samples/OpenTkGpuHost` — event-driven low-power UI: `Dynamic` + `UpdateFrequency=0`.
 - `src/OpenTk/Samples/OpenTkOverlay` — mixed host: custom `GameWindow` + `CanvasHost`, raw GL cube + transparent overlay with `SkiaBackdrop` glass + `SkiaEditor`.

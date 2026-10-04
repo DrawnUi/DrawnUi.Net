@@ -87,6 +87,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * Touchpad scrolling follows your fingers on MAUI Windows, WPF and OpenTK. Small touchpad steps move the content at once, and only a mouse-wheel notch glides. Before, every small step started a slow glide, so the content was late and bounced past the end of a swipe.
     * A fast swipe scrolls smoothly. Before, the content could stand still and then jump when wheel events came quickly.
     * A swipe's fling speed is measured with a steady clock, so a change of the computer's time during a swipe cannot change the fling, and lifting the finger no longer allocates memory.
+    * WPF and OpenTK: a drag released on Linux (WSLg, X11) flings as far as on Windows. Mouse moves can arrive there in pairs a hundredth of a millisecond apart, which made every fling start at the speed limit, about twice as far. A move's speed is now measured over the last 16 ms.
     * Sideways scrolling works: on MAUI Windows, WPF and OpenTK, a sideways swipe or a tilted wheel scrolls a horizontal `SkiaScroll`, and a vertical list ignores it. Before, a diagonal swipe made a vertical list jump up and down.
     * This needs AppoMobi gestures 3.11.4 or later (`WheelEventArgs.IsHorizontal`); this version references 3.11.5.
     * WPF and OpenTK: dragging content with the mouse and letting go flings it the same distance on every system. Some systems hand the app its mouse moves in bursts (Linux under WSL sends two moves at almost the same moment); there every fling used to start at full speed and went about twice as far as on Windows.
@@ -107,6 +108,11 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
     * WPF and MAUI Windows: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
     * MAUI Windows: a right click, Shift+F10 or the Menu key reaches `SkiaControl.ContextMenu`, as on WPF and in the browser.
+  * **OpenTK and Linux**
+    * Smooth frames where the graphics driver ignores vsync, like Linux under WSL: a `Constant` window notices it in its first second and spaces frames one screen refresh apart, and a `Dynamic` window always does. Before, a game ran at hundreds of frames a second there and movement stuttered.
+    * On Windows, frames follow the screen's exact refresh rate. A 59.95 Hz screen used to get 59 frames a second, a little behind the display.
+    * `SkiaShell` and C# Hot Reload work on OpenTK too. They were in the WPF package only.
+    * New sample `HelloOpenTk`: the DrawnUI Hello app, all 20 screens, on OpenTK for Windows and Linux. `dev/hello-opentk-linux.ps1` builds it for Linux on Windows and runs it in WSL.
   * **Stability**
     * Closing a canvas while one of its controls is still being rendered in the background no longer crashes: the canvas waits for that render to finish first.
     * WPF and OpenTK: registering a font while the canvas draws is safe. Before, a label could be drawn with the default font for a moment, or the app could stop with an error.
