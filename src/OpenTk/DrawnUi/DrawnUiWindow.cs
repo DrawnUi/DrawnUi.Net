@@ -22,7 +22,7 @@ public class DrawnUiWindow : GameWindow
     private GRBackendRenderTarget? _renderTarget;
     private SKSurface? _surface;
     private GpuDrawable? _drawable;
-    private long _lastRenderTicks;
+    private FramePacing? _pacing;
 
     private bool _firstFrameDone;
 
@@ -72,17 +72,24 @@ public class DrawnUiWindow : GameWindow
         _drawable = new GpuDrawable();
         _canvas.ConnectDesktopDrawable(_drawable);
 
-        Super.MaxFps = GetPrimaryMonitorRefreshRate();
+        // GLFW gives whole hertz, 59 for a 59.95 Hz panel: frames paced 16.95 ms apart would fall behind the display,
+        // so on Windows the compositor's exact rate is used
+        double refreshRate = GetPrimaryMonitorRefreshRate();
+        if (OperatingSystem.IsWindows() && WindowChrome.TryGetRefreshRate(out var exact))
+            refreshRate = exact;
+        Super.MaxFps = (int)Math.Round(refreshRate);
 
         if (UpdateMode == UpdateModeType.Constant)
         {
-            // Hardware VSync is the sole pacemaker — no software timer needed.
+            // VSync paces the frames; where the driver ignores it (WSLg's software GL) the window paces them itself.
             VSync = VSyncMode.On;
+            _pacing = new FramePacing(refreshRate, alwaysOn: false);
         }
         else
         {
-            // Event-driven: wake the GLFW loop from the DrawnUI software timer.
+            // Event-driven: wake the GLFW loop from the DrawnUI software timer, frames one refresh apart.
             VSync = VSyncMode.Off;
+            _pacing = new FramePacing(refreshRate, alwaysOn: true);
             Super.EnsureFrameLoopStarted();
             Super.OnFrame += OnSuperFrame;
         }
@@ -188,37 +195,29 @@ public class DrawnUiWindow : GameWindow
         if (_grContext == null || _surface == null || _drawable == null || ClientSize.X <= 0 || ClientSize.Y <= 0)
             return;
 
-        if (UpdateMode == UpdateModeType.Constant)
+        if (UpdateMode != UpdateModeType.Constant && _canvas.WasRendered && !_canvas.IsDirty)
         {
-            // Render unconditionally — VSync already caps the rate.
-            RenderDrawnUi();
+            // nothing to draw: sleep until an event or the DrawnUI timer wakes the loop
+            GLFW.WaitEventsTimeout(1.0 / Super.MaxFps);
+            return;
         }
-        else
+
+        // Constant: every frame, VSync keeps the pace unless the driver ignores it. Dynamic: frames one refresh
+        // apart. Either way a paced frame waits for its slot on the refresh grid.
+        if (_pacing?.Hold(Stopwatch.GetTimestamp()) is { } due)
         {
-            var frameInterval = 1.0 / Super.MaxFps;
-
-            if (_canvas.WasRendered && !_canvas.IsDirty)
-            {
-                GLFW.WaitEventsTimeout(frameInterval);
-                return;
-            }
-
-            var now = Stopwatch.GetTimestamp();
-            var elapsed = (now - _lastRenderTicks) / (double)Stopwatch.Frequency;
-            if (elapsed < frameInterval)
-            {
-                GLFW.WaitEventsTimeout(frameInterval - elapsed);
-                return;
-            }
-            _lastRenderTicks = Stopwatch.GetTimestamp();
-
-            RenderDrawnUi();
+            GLFW.WaitEventsTimeout(Math.Max(0, due - Stopwatch.GetTimestamp()) / (double)Stopwatch.Frequency);
+            return;
         }
+
+        RenderDrawnUi();
     }
 
     protected virtual void RenderDrawnUi()
     {
-        var frameTime = GetFrameTimestampNanos();
+        // a paced frame: animations step with its slot on the refresh grid, not with the moment the wake-up came
+        var slot = _pacing?.Frame(Stopwatch.GetTimestamp());
+        var frameTime = slot is { } ticks ? (long)(1_000_000_000.0 * ticks / Stopwatch.Frequency) : GetFrameTimestampNanos();
         _drawable!.CanvasSize = new SKSize(ClientSize.X, ClientSize.Y);
         _drawable.SignalFrame(frameTime);
 
