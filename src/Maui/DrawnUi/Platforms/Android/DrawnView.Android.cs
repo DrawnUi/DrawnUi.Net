@@ -288,6 +288,7 @@ namespace DrawnUi.Views
         protected virtual void DisposePlatform()
         {
             Super.OnFrame -= OnFrame;
+            ReleaseAccessibility();
         }
 
         public virtual void SetupRenderingLoop()
@@ -306,6 +307,7 @@ namespace DrawnUi.Views
         protected virtual void DisposePlatform()
         {
             Looper?.Dispose();
+            ReleaseAccessibility();
         }
 
         public virtual void SetupRenderingLoop()
