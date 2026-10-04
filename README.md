@@ -89,6 +89,11 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * A swipe's fling speed is measured with a steady clock, so a change of the computer's time during a swipe cannot change the fling, and lifting the finger no longer allocates memory.
     * Sideways scrolling works: on MAUI Windows, WPF and OpenTK, a sideways swipe or a tilted wheel scrolls a horizontal `SkiaScroll`, and a vertical list ignores it. Before, a diagonal swipe made a vertical list jump up and down.
     * This needs AppoMobi gestures 3.11.4 or later (`WheelEventArgs.IsHorizontal`); this version references 3.11.5.
+    * WPF and OpenTK: dragging content with the mouse and letting go flings it the same distance on every system. Some systems hand the app its mouse moves in bursts (Linux under WSL sends two moves at almost the same moment); there every fling used to start at full speed and went about twice as far as on Windows.
+  * **OpenTK**
+    * Motion stays smooth where the graphics driver ignores vsync (for example Linux under WSL): `DrawnUiWindow` spaces frames one screen refresh apart itself. Before, a game drew hundreds of frames a second there and moved unevenly. Where vsync works, nothing changes.
+    * Apps that redraw only when needed (`UpdateMode.Dynamic`) run at the screen's exact refresh rate, 59.95 Hz screens included. Before, they ran a little slower.
+    * New sample: `HelloOpenTk`, the DrawnUI Hello app with its 20 screens on OpenTK, for Windows and Linux (`dev/hello-opentk-linux.ps1` runs it in WSL).
   * **Drawing and caching**
     * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. Before, it waited for something else to redraw.
     * A `.WhenPainted` overlay keeps drawing after its control is hidden and shown again. Before, hiding removed it for good, so a page pushed in a MAUI `SkiaShell` lost its overlays.
