@@ -61,6 +61,14 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
   * **Rendering**
     * Android: hardware-accelerated canvases (`RenderingMode = Accelerated`) draw with Vulkan. On a phone with a Mali-G57 GPU this takes about 11% less CPU per frame than OpenGL, at the same frame rate. Devices without Vulkan 1.1 (or older than Android 7) keep OpenGL, and when Vulkan fails to start on a device, DrawnUI switches the canvas to OpenGL by itself. To always use OpenGL, set `UseVulkan = false` in the settings you pass to `UseDrawnUi`.
+
+      Measured on a Blackview BV8800 (Mali-G57 GPU, 90 Hz screen), Release build, flinging a list of 100 000 recycled cells, two runs per API:
+
+      | Per frame | Vulkan | OpenGL ES | Vulkan better by |
+      |---|---|---|---|
+      | App CPU | 16.6 ms | 18.7 ms | 11% less CPU |
+      | Render thread CPU | 9.7 ms | 11.1 ms | 13% less CPU |
+      | Frame rate | 70.5 FPS | 69 FPS | the same: both keep up with the screen |
   * **Text**
     * Japanese and Chinese text wraps properly. Lines break between characters, and closing punctuation and small kana never start a line. A very long word, like a URL, also breaks when it is wider than the line.
     * Symbols and emoji inside normal text show up. A `SkiaLabel` draws each character its font is missing with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its own font. `FontFamilyFallback` can list several fonts, for example `"FontSymbols, FontEmoji"`.
