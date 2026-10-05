@@ -6490,7 +6490,9 @@ namespace DrawnUi.Draw
             );
         }
 
-        public static SKRect ContractPixelsRect(SKRect rect, float scale, Thickness amount)
+        // in: passed by reference. On arm64, .NET 10's Mono LLVM AOT reads a float struct argument that no longer fits
+        // the FP registers v0-v7 at the wrong stack offset (garbage pointer bits as widths in Release builds with LLVM)
+        public static SKRect ContractPixelsRect(SKRect rect, float scale, in Thickness amount)
         {
             return new SKRect(
                 rect.Left + (float)((float)amount.Left * scale),
@@ -6508,7 +6510,7 @@ namespace DrawnUi.Draw
         /// for — a button label then clipped its last glyph. Taking the smaller of the two can only give
         /// content more room than before, never less, so existing layouts cannot shrink.
         /// </summary>
-        public static SKRect ContractPixelsRectForContent(SKRect rect, float scale, Thickness amount)
+        public static SKRect ContractPixelsRectForContent(SKRect rect, float scale, in Thickness amount)
         {
             static float Reserve(double inset, float scale)
             {
@@ -6524,7 +6526,7 @@ namespace DrawnUi.Draw
             );
         }
 
-        public static SKRect ExpandPixelsRect(SKRect rect, float scale, Thickness amount)
+        public static SKRect ExpandPixelsRect(SKRect rect, float scale, in Thickness amount)
         {
             return new SKRect(
                 rect.Left - (float)((float)amount.Left * scale),

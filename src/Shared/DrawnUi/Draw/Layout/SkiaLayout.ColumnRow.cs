@@ -1528,8 +1528,10 @@ else
         /// <summary>
         /// Create measurement rectangle for child
         /// </summary>
+        // in: passed by reference. On arm64, .NET 10's Mono LLVM AOT reads a float struct argument that no longer fits
+        // the FP registers v0-v7 at the wrong stack offset (garbage pointer bits as widths in Release builds with LLVM)
         private SKRect CreateChildMeasureRect(SKRect rectForChild, float widthPerColumn, ControlInStack cell,
-            bool hasFillHandling, float spacePerFillChild, SkiaControl[] nonTemplated, SKRect rectForChildrenPixels)
+            bool hasFillHandling, float spacePerFillChild, SkiaControl[] nonTemplated, in SKRect rectForChildrenPixels)
         {
             var rectFitChild = new SKRect(rectForChild.Left, rectForChild.Top,
                 rectForChild.Left + widthPerColumn, rectForChild.Bottom);
