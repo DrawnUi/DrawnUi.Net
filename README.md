@@ -114,6 +114,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * With `Super.Multithreaded` on, an `Operations` or `OperationsFull` cache is no longer redrawn on every frame. Before, it was thrown away and drawn again each time.
     * WPF, OpenTK and WebAssembly: an animation started while a frame is being drawn starts at once. Before, it waited for the next touch or mouse move. `DrawnView.RequestNextFrame()` asks for one more frame from anywhere, also from inside a draw.
   * **Keyboard and accessibility**
+    * MAUI Android: TalkBack reads drawn controls. Each control with an accessibility role is its own item: touch it to hear it, swipe right or left to move between items in reading order, double tap to press it. Before, TalkBack saw the whole canvas as one empty view. TalkBack reads the same labels, roles and hints as Narrator on MAUI Windows, and nothing runs while no screen reader is on.
     * MAUI Mac Catalyst: Tab and Shift+Tab move between the drawn controls with a focus ring, and the arrow keys move inside a group (a list, a toolbar, a grid), as on MAUI Windows and WPF.
     * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
     * WPF and MAUI Windows: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
