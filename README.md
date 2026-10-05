@@ -69,6 +69,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
       | App CPU | 16.6 ms | 18.7 ms | 11% less CPU |
       | Render thread CPU | 9.7 ms | 11.1 ms | 13% less CPU |
       | Frame rate | 70.5 FPS | 69 FPS | the same: both keep up with the screen |
+    * Android Release builds with LLVM (`EnableLLVM`): controls inside a `SkiaRow` are drawn again. On arm64, .NET 10's LLVM build passed one of the Row's measuring rectangles wrongly, so some Row children got no width and disappeared (a title, icons on cards, wheel pickers). Libraries built against an older DrawnUI that call `ContractPixelsRect`, `ContractPixelsRectForContent` or `ExpandPixelsRect` need a rebuild.
   * **Text**
     * Japanese and Chinese text wraps properly. Lines break between characters, and closing punctuation and small kana never start a line. A very long word, like a URL, also breaks when it is wider than the line.
     * Symbols and emoji inside normal text show up. A `SkiaLabel` draws each character its font is missing with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its own font. `FontFamilyFallback` can list several fonts, for example `"FontSymbols, FontEmoji"`.
