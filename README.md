@@ -60,7 +60,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 ## What's New 1.10.6.22
 
   * **Rendering**
-    * Android: hardware-accelerated canvases (`RenderingMode = Accelerated`) draw with Vulkan. On a phone with a Mali-G57 GPU this takes about 11% less CPU per frame than OpenGL, at the same frame rate. Devices without Vulkan 1.1 (or older than Android 7) keep OpenGL, and when Vulkan fails to start on a device, DrawnUI switches the canvas to OpenGL by itself. To always use OpenGL, set `UseVulkan = false` in the settings you pass to `UseDrawnUi`.
+    * Android: hardware-accelerated canvases (`RenderingMode = Accelerated`) draw with Vulkan. On a phone with a Mali-G57 GPU this takes about 11% less CPU per frame than OpenGL, at the same frame rate. Devices without Vulkan 1.1 (or older than Android 7) keep OpenGL, and so do Android emulators and devices whose system draws its own UI with OpenGL (the emulator's Vulkan cannot draw Skia: images crashed the app or the emulator). When Vulkan fails to start on a device, DrawnUI switches the canvas to OpenGL by itself. To always use OpenGL, set `UseVulkan = false` in the settings you pass to `UseDrawnUi`.
 
       Measured on a Blackview BV8800 (Mali-G57 GPU, 90 Hz screen), Release build, flinging a list of 100 000 recycled cells, two runs per API:
 
