@@ -84,6 +84,16 @@ internal sealed unsafe class VulkanGpu : IDisposable
         if (Build.VERSION.SdkInt < BuildVersionCodes.N)
             return false;
 
+        // where the system draws its own UI with OpenGL, or runs as an emulator, Vulkan is not used: the Android
+        // emulator pins HWUI to OpenGL (ro.boot.debug.hwui.renderer=skiagl) because its Vulkan cannot render Skia
+        // (image uploads crash in its mapped memory, HWUI itself draws black on it), and Flutter turns it off there too
+        var renderer = Vk.SystemProperty("debug.hwui.renderer");
+        if (renderer is "skiagl" or "opengl" || Vk.SystemProperty("ro.kernel.qemu") == "1" || Vk.SystemProperty("ro.boot.qemu") == "1")
+        {
+            Super.Log($"[Vulkan] not used: the system renders with {(string.IsNullOrEmpty(renderer) ? "an emulator" : renderer)} here");
+            return false;
+        }
+
         var appName = Marshal.StringToHGlobalAnsi("DrawnUI");
         var extensions = AllocStrings(InstanceExtensions);
         try

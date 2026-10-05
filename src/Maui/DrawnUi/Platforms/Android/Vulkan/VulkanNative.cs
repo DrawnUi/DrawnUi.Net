@@ -324,6 +324,16 @@ internal static unsafe class Vk
         uint memoryBarrierCount, IntPtr memoryBarriers, uint bufferBarrierCount, IntPtr bufferBarriers, uint imageBarrierCount, ImageMemoryBarrier* imageBarriers);
     [DllImport(Lib)] public static extern int vkQueueSubmit(IntPtr queue, uint submitCount, SubmitInfo* submits, ulong fence);
 
+    [DllImport("libc.so")] private static extern int __system_property_get([MarshalAs(UnmanagedType.LPStr)] string name, byte* value);
+
+    /// <summary>An Android system property, empty when it is not set.</summary>
+    public static string SystemProperty(string name)
+    {
+        var value = stackalloc byte[92]; // PROP_VALUE_MAX
+        var length = __system_property_get(name, value);
+        return length > 0 ? Marshal.PtrToStringUTF8((IntPtr)value, length) : string.Empty;
+    }
+
     [DllImport("libandroid.so")] public static extern IntPtr ANativeWindow_fromSurface(IntPtr env, IntPtr surface);
     [DllImport("libandroid.so")] public static extern void ANativeWindow_release(IntPtr window);
 }
