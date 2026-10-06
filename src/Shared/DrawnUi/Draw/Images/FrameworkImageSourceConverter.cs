@@ -37,11 +37,33 @@ namespace DrawnUi.Infrastructure.Xaml
                 assembly = Assembly.GetCallingAssembly();
             }
 
+            return FromResource(resourceName, assembly, url);
+        }
+
+        /// <summary>
+        /// Embedded resource "AssemblyName.resourceName" of <paramref name="assembly"/>; <paramref name="url"/> is the cache key.
+        /// </summary>
+        public static ImageSource FromResource(string resourceName, Assembly assembly, string url)
+        {
             var fullPath = $"{assembly.GetName().Name}.{resourceName}";
 
             //Trace.WriteLine($"[StreamFromResourceUrl] loading {fullPath}..");
 
             return FromStream(() => assembly.GetManifestResourceStream(fullPath), url, fullPath);
+        }
+
+        /// <summary>
+        /// Embedded resource for a plain file path, used by SkiaImage.UseAssembly: "Images/logo.png" in assembly "MyApp"
+        /// loads resource "MyApp.Images.logo.png", same as "resource://Images.logo.png?assembly=MyApp".
+        /// </summary>
+        /// <param name="path">File path inside the project, folders separated by '/', '\' or '.'.</param>
+        /// <param name="assembly">An <see cref="Assembly"/>, or an assembly name loaded with <see cref="Assembly.Load(AssemblyName)"/>.</param>
+        public static ImageSource FromAssembly(string path, object assembly)
+        {
+            var asm = assembly as Assembly ?? Assembly.Load(new AssemblyName(assembly.ToString()));
+            var resourceName = path.Replace('\\', '.').Replace('/', '.').TrimStart('.');
+
+            return FromResource(resourceName, asm, $"resource://{resourceName}?assembly={asm.GetName().Name}");
         }
 
         public static ImageSource FromInvariantString(string value)

@@ -9693,6 +9693,7 @@ namespace DrawnUi.Draw
             switch (stretch)
             {
                 case TransformAspect.None:
+                case TransformAspect.Tile: // natural size, the control repeats it
                     break;
 
                 case TransformAspect.Fit:

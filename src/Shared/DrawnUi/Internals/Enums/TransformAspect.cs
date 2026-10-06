@@ -47,7 +47,9 @@
         AspectCover,
 
         /// <summary>
-        /// TODO very soon!
+        /// Repeats the image at its natural size (one source pixel per device pixel, like None) across the whole
+        /// viewport, starting from the aligned position of one copy. Drawn by SkiaImage and its subclasses;
+        /// other controls lay it out like None.
         /// </summary>
         Tile,
     }

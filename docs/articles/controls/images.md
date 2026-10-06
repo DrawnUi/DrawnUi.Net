@@ -29,7 +29,7 @@ SkiaImage is the core image control in DrawnUI, providing efficient image loadin
 | `Aspect` | TransformAspect | AspectCover | How the image scales to fit (AspectFit, AspectFill, etc.) |
 | `HorizontalAlignment` | DrawImageAlignment | Center | Horizontal positioning of the image |
 | `VerticalAlignment` | DrawImageAlignment | Center | Vertical positioning of the image |
-| `UseAssembly` | object | null | Declared but not read by the loader. For embedded files use a `resource://` source, see [Loading from Different Sources](#loading-from-different-sources) |
+| `UseAssembly` | object | null | An `Assembly` or an assembly name. A plain file path in `Source` then loads as an embedded resource of that assembly, see [Loading from Different Sources](#loading-from-different-sources) |
 
 #### Loading & Performance
 | Property | Type | Default | Description |
@@ -65,15 +65,15 @@ SkiaImage is the core image control in DrawnUI, providing efficient image loadin
 #### Sprite Sheets
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `SpriteWidth`/`SpriteHeight` | double | 0.0 | Declared, not drawn by SkiaImage yet |
-| `SpriteIndex` | int | -1 | Declared, not drawn by SkiaImage yet |
+| `SpriteWidth`/`SpriteHeight` | double | 0.0 | Size of one cell of a sprite sheet, in source pixels. When both are above 0 the image shows one cell |
+| `SpriteIndex` | int | -1 | Cell to show, counted from 0 left to right, then top to bottom. Outside the sheet (the default -1 too) nothing is drawn |
 
 #### Gradient Overlay
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `UseGradient` | bool | false | Declared, not drawn by SkiaImage yet |
-| `StartColor` | Color | DarkGray | Declared, not drawn by SkiaImage yet |
-| `EndColor` | Color | Gray | Declared, not drawn by SkiaImage yet |
+| `UseGradient` | bool | false | Colors the image with a top to bottom gradient, keeping its transparency |
+| `StartColor` | Color | DarkGray | Gradient color at the top |
+| `EndColor` | Color | Gray | Gradient color at the bottom |
 
 #### State Properties (Read-only)
 | Property | Type | Description |
@@ -103,7 +103,7 @@ The `Aspect` property controls how the image is sized and positioned within its 
 | `AspectFitFill` | Enlarges to fit the viewport if smaller and reduces size if larger, all while respecting aspect ratio | Maintains proportions |
 | `Cover` | Stretches to the exact viewport size, scaling up or down, without respecting aspect ratio | May distort proportions |
 | `AspectCover` | **Default.** Covers viewport respecting aspect, scales both up and down as needed | May crop portions, maintains aspect |
-| `Tile` | Not implemented yet, draws like `None`. Use `SkiaImageTiles` to repeat an image | - |
+| `Tile` | Repeats the image at its natural size across the whole control | Pattern starts from one copy placed by the alignment |
 
 #### Rescaling Quality
 
@@ -140,10 +140,16 @@ This fills the entire control with the image, possibly cropping parts that don't
 This stretches the image to fill the control exactly, potentially distorting the image proportions.
 
 ```xml
-<!-- Tile the image -->
+<!-- Tile the image at its natural size -->
+<draw:SkiaImage Source="pattern.png" Aspect="Tile" />
+```
+This repeats the image to fill the entire control. Perfect for background patterns. Like `None`, the natural size is one source pixel per screen pixel: a 64 px image repeats every 32 points at a rendering scale of 2. The pattern starts from one copy placed by `HorizontalAlignment` and `VerticalAlignment` (centered by default) and runs out from it in every direction. `ZoomX`/`ZoomY` and the offsets move and scale that copy, and with it the whole pattern.
+
+```xml
+<!-- Tiles of a size you choose, each tile drawn with its own aspect -->
 <draw:SkiaImageTiles Source="pattern.png" TileWidth="64" TileHeight="64" />
 ```
-This repeats the image to fill the entire control. Perfect for background patterns.
+`SkiaImageTiles` sets the tile size in points and draws the image into each tile with `TileAspect`.
 
 ```xml
 <!-- High-quality rescaling for photos -->
@@ -173,7 +179,7 @@ This would fit the image within bounds while aligning it to the bottom-left corn
 - **For user photos or content images**: `AspectFit` ensures the entire image is visible
 - **For backgrounds or covers**: `AspectCover` (default) ensures no empty space is visible
 - **For thumbnails and cards**: `AspectCover` provides consistent sizing
-- **For patterns and textures**: `SkiaImageTiles` repeats the image seamlessly
+- **For patterns and textures**: `Tile` repeats the image at its natural size; `SkiaImageTiles` repeats it at a tile size you choose
 - **For icons that need exact sizing**: `Fill` stretches to exact dimensions
 - **For pixel-perfect graphics**: `None` maintains original size and quality
 
@@ -200,7 +206,8 @@ SkiaImage supports various built-in effects through the `AddEffect` property. Ef
 | Effect | Description | Additional Properties |
 |--------|-------------|----------------------|
 | `None` | No effect applied | - |
-| `BlackAndWhite` | Converts to grayscale | - |
+| `BlackAndWhite` | Converts to grayscale (NTSC weights 0.2989, 0.587, 0.114) | - |
+| `Grayscale` | Converts to grayscale (weights 0.21, 0.72, 0.07) | - |
 | `Pastel` | Applies pastel color effect | - |
 | `Tint` | Applies color tint | `ColorTint`, `EffectBlendMode` |
 | `Darken` | Darkens the image | `Darken` (amount) |
@@ -293,13 +300,36 @@ For more complex effects, use the VisualEffects collection:
 </draw:SkiaImage>
 ```
 
-### Gradient Overlays
+### Gradient Tint
 
-`UseGradient`, `StartColor` and `EndColor` exist on SkiaImage but are not drawn yet. To fade an image, put a layer with a `FillGradient` over it (see [Gradients](../advanced/gradients.md)).
+With `UseGradient="True"` the image is painted with a vertical gradient from `StartColor` at the top to `EndColor` at the bottom. The image keeps only its transparency, so this is made for icons and shapes on a transparent background:
+
+```xml
+<draw:SkiaImage
+    Source="icon.png"
+    Aspect="AspectFit"
+    UseGradient="True"
+    StartColor="Orange"
+    EndColor="Red" />
+```
+
+The gradient runs over the visible part of the image: the icon itself with `AspectFit`, the control with a cropping aspect, the whole control with `Tile`. `AddEffect` filters still apply on top of it. To fade a photo instead, put a layer with a `FillGradient` over it (see [Gradients](../advanced/gradients.md)).
 
 ### Sprite Sheets
 
-`SpriteWidth`, `SpriteHeight` and `SpriteIndex` exist on SkiaImage but are not drawn yet. Use `SkiaSprite` to show and animate frames of a sprite sheet, see [Sprite Controls](sprites.md).
+To show one cell of a sprite sheet, give the cell size in source pixels and the cell index:
+
+```xml
+<!-- 64x64 cells, the 6th one -->
+<draw:SkiaImage
+    Source="sheet.png"
+    SpriteWidth="64"
+    SpriteHeight="64"
+    SpriteIndex="5"
+    Aspect="AspectFit" />
+```
+
+Cells are numbered from 0, left to right, then top to bottom. Partial cells at the right and bottom edges do not count. The cell is laid out as if it were the whole image: `Aspect`, alignment, zoom and auto-size all use the cell size, and `Aspect="Tile"` repeats the cell. An index outside the sheet, the default -1 included, draws nothing. Neighbor cells never bleed in at the cell edges, whatever `RescalingQuality` is. To animate the frames of a sheet use `SkiaSprite`, see [Sprite Controls](sprites.md).
 
 ### Preview Images
 
@@ -345,6 +375,9 @@ Control how and when images are loaded:
 <!-- From embedded resource: resource://<path inside the assembly>?assembly=<assembly name> -->
 <draw:SkiaImage Source="resource://Images.embedded-image.png?assembly=MyApp" />
 
+<!-- Same embedded resource with a plain path: UseAssembly takes an assembly name or an Assembly -->
+<draw:SkiaImage UseAssembly="MyApp" Source="Images/embedded-image.png" />
+
 <!-- From stream (in code-behind) -->
 ```
 
@@ -356,6 +389,8 @@ myImage.SetSource(async (cancellationToken) =>
     return stream;
 });
 ```
+
+With `UseAssembly`, the folders of the plain path become dots, so `Images/embedded-image.png` in `MyApp` loads the resource `MyApp.Images.embedded-image.png` (the default name of a file marked `EmbeddedResource`, as long as the root namespace is the assembly name). Urls and `resource://` sources are not affected. Set `UseAssembly` before `Source`, or the image loads a second time. In code you can pass the assembly itself: `UseAssembly = typeof(App).Assembly`.
 
 ### Caching Strategies
 
