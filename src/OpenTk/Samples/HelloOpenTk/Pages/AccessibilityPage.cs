@@ -9,8 +9,8 @@ namespace HelloOpenTk.Pages;
 /// <summary>
 /// Accessibility snippet: the same AccessibilityRole / Label / Hint / IsPressed / Live properties as
 /// the other heads feed the engine's <see cref="SkiaAccessibilityManager"/> snapshot. Ported from the
-/// React demo's AccessibilityPage.tsx. On Windows the OpenTK window publishes the snapshot to UI Automation
-/// (WindowsUiaProvider) for screen readers.
+/// React demo's AccessibilityPage.tsx. The OpenTK window publishes the snapshot to screen readers: UI Automation on Windows
+/// (WindowsUiaProvider), AT-SPI on Linux (LinuxAtSpiProvider).
 /// </summary>
 public class AccessibilityPage : SkiaLayer
 {
@@ -52,7 +52,7 @@ public class AccessibilityPage : SkiaLayer
 
                         Card("Accessibility snapshot (Canvas.AccessibilityManager)",
                             new SkiaLabel("Nodes in the snapshot: … · focused: none · last activated: -") { FontSize = 14, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }.Assign(out _snapshot),
-                            new SkiaLabel("OpenTK head: on Windows every node is published to UI Automation under the window (role, name, help text, live regions), so screen readers read it. Keyboard navigation (Tab, arrow groups) is not wired to this window yet.")
+                            new SkiaLabel("OpenTK head: every node is published to UI Automation on Windows and to AT-SPI on Linux (role, name, help text, value, live regions), so Narrator and Orca read it. Tab, the arrow keys in groups, Enter and Space work as on the other desktop heads.")
                             {
                                 FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill,
                             }),
@@ -177,7 +177,7 @@ public class AccessibilityPage : SkiaLayer
                             new SkiaLabel("Heading level text") { FontSize = 16, FontFamily = "FontTextBold", TextColor = Colors.White, AccessibilityRole = Aria.RoleHeading }),
 
                         Card("How it works",
-                            new SkiaLabel("• Controls with an AccessibilityRole register with the canvas' SkiaAccessibilityManager; the snapshot is rebuilt at most once per second from the arranged rects.\n• Same property names on every head: AccessibilityRole, AccessibilityLabel, AccessibilityHint, AccessibilityCanInteract, AccessibilityIsPressed, AccessibilityLive.\n• Blazor / React mirror the snapshot into an aria overlay; WPF and OpenTK (Windows) publish it to UI Automation.")
+                            new SkiaLabel("• Controls with an AccessibilityRole register with the canvas' SkiaAccessibilityManager; the snapshot is rebuilt at most once per second from the arranged rects.\n• Same property names on every head: AccessibilityRole, AccessibilityLabel, AccessibilityHint, AccessibilityCanInteract, AccessibilityIsPressed, AccessibilityLive.\n• Blazor / React mirror the snapshot into an aria overlay; WPF and OpenTK publish it to UI Automation, OpenTK on Linux to AT-SPI.")
                             {
                                 FontSize = 13, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill,
                             }),

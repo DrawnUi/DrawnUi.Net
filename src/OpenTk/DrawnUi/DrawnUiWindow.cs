@@ -32,6 +32,7 @@ public class DrawnUiWindow : GameWindow
     private nint _oldWndProc;
     private nint _hwnd;
     private WindowsUiaProvider? _uiaProvider;
+    private LinuxAtSpiProvider? _atSpiProvider;
 
     // Constant: render every VSync frame (games).
     // Dynamic:  render only when dirty, sleep via GLFW between frames (apps).
@@ -115,6 +116,35 @@ public class DrawnUiWindow : GameWindow
                 }
             }
         }
+
+        if (OperatingSystem.IsLinux())
+        {
+            // Orca: the snapshot on the AT-SPI bus, once assistive technology turns it on
+            _atSpiProvider = new LinuxAtSpiProvider(_canvas.AccessibilityManager, () => (float)_canvas.RenderingScale, () => Title);
+            UpdateAtSpiWindow();
+            _atSpiProvider.SetActive(IsFocused);
+            _atSpiProvider.Start();
+        }
+    }
+
+    // the client area on screen, for the extents a screen reader asks for
+    private void UpdateAtSpiWindow()
+    {
+        if (OperatingSystem.IsLinux())
+            _atSpiProvider?.UpdateWindow(ClientLocation.X, ClientLocation.Y, ClientSize.X, ClientSize.Y);
+    }
+
+    protected override void OnMove(WindowPositionEventArgs e)
+    {
+        base.OnMove(e);
+        UpdateAtSpiWindow();
+    }
+
+    protected override void OnFocusedChanged(FocusedChangedEventArgs e)
+    {
+        base.OnFocusedChanged(e);
+        if (OperatingSystem.IsLinux())
+            _atSpiProvider?.SetActive(e.IsFocused);
     }
 
     /// <summary>
@@ -158,6 +188,7 @@ public class DrawnUiWindow : GameWindow
         base.OnResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
         RecreateSurface(e.Width, e.Height);
+        UpdateAtSpiWindow();
 
         // Linux (X11/Wayland) has no modal size loop: the render loop keeps running during a resize
         // and picks up the Repaint from RecreateSurface, so an extra (vsync-blocking) frame here would only add lag.
@@ -364,6 +395,12 @@ public class DrawnUiWindow : GameWindow
             WindowChrome.SetWindowLongPtr(_hwnd, -4, _oldWndProc);
             _uiaProvider?.Dispose();
             _uiaProvider = null;
+        }
+
+        if (OperatingSystem.IsLinux())
+        {
+            _atSpiProvider?.Dispose();
+            _atSpiProvider = null;
         }
 
         MainThread.Reset();
