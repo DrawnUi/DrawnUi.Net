@@ -68,7 +68,7 @@ public static class CachedStackWindowRepro
 
         // this repro covers the double-buffer plane machinery over the built-in window: opt in so the
         // async bake runs while the viewport moves.
-        ((SkiaCachedStack)stack).AutoDoubleBuffering = true;
+        CachedStackAccess.SetAutoDoubleBuffering(stack, true);
 
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: Colors.Black);
         host.Canvas.Content = scroll;

@@ -17,7 +17,7 @@ public static class PlaneImageStartupRepro
     {
         Console.WriteLine();
         Console.WriteLine("========= PLANE IMAGE STARTUP (UseDoubleBuffering=true) =========");
-        var dir = @"C:\Users\taubl\AppData\Local\Temp\claude\C--Users-taubl\2c597eec-477f-4fa9-a277-76a6f3f92aa3\scratchpad";
+        var dir = CachedStackAccess.OutputDir;
 
         var profiles = new List<int[]>();
 
@@ -29,7 +29,7 @@ public static class PlaneImageStartupRepro
             page.InitializeList();
 
             var stack = (SkiaCachedStack)page.ChatStack;
-            stack.AutoDoubleBuffering = useDouble;
+            CachedStackAccess.SetAutoDoubleBuffering(stack, useDouble);
 
             for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
             for (int f = 0; f < 90; f++) { host.RenderFrame(16); Thread.Sleep(3); } // settle + bake + adopt

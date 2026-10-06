@@ -70,7 +70,7 @@ public static class PlaceholderFlashRepro
                     // capture the exact invalidation frame: with the stale-serve fix this must show the
                     // message CONTENT (cache blit), not the skeleton
                     host.SavePng(System.IO.Path.Combine(
-                        @"C:\Users\taubl\AppData\Local\Temp\claude\C--Users-taubl\2c597eec-477f-4fa9-a277-76a6f3f92aa3\scratchpad",
+                        CachedStackAccess.OutputDir,
                         "flash-frame.png"));
                 }
                 if (lastUid != Guid.Empty && view.Uid != lastUid) uidChanges++;

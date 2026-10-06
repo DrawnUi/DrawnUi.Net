@@ -78,7 +78,6 @@ public static class StalePlaneContentRepro
             VerticalOptions = LayoutOptions.Fill,
             Content = new SkiaCachedStack
             {
-                AutoDoubleBuffering = true, // this repro targets the double-buffer path (on while scrolling)
                 RecyclingTemplate = RecyclingTemplate.Enabled,
                 Spacing = 8,
                 Padding = new Thickness(12, 8),
@@ -109,6 +108,7 @@ public static class StalePlaneContentRepro
                 }),
             }.Assign(out stack)
         };
+        CachedStackAccess.SetAutoDoubleBuffering(stack, true); // this repro targets the double-buffer path (on while scrolling)
 
         // settle: cells visible + first plane recorded
         for (int i = 0; i < 500 && (stack.LastVisibleIndex < 0 || stack.ForegroundPlane == null); i++)
