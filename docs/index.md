@@ -285,7 +285,7 @@ window.addEventListener('load', function() {
 <!-- OPENTK -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">OpenTK</h3>
-  <p>Use <strong>DrawnUi.OpenTk</strong> for native OpenGL desktop Window or Linux app, fully drawn or overlay for already existing projects.</p>
+  <p>Use <strong>DrawnUi.OpenTk</strong> for native OpenGL desktop Windows or Linux app, fully drawn or overlay for already existing projects.</p>
   <p><strong>Reference:</strong></p>
   <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.OpenTk</code></pre>
   <p><a href="articles/opentk/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">OpenTK guide →</a></p>
@@ -313,10 +313,10 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
 <!-- WASM -->
 <div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
   <h3 style="margin-top: 0; color: white;">WebAssembly</h3>
-  <p>Use <strong>DrawnUi.Wasm</strong> for a fully drawn web app — no Blazor, no Razor, just .NET WASM + SkiaSharp for WebAssembly.</p>
+  <p>Use <strong>DrawnUi.Web</strong> for a fully drawn web app — no Blazor, no Razor, just .NET WASM + SkiaSharp for WebAssembly.</p>
   <p><strong>Install:</strong></p>
-  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Wasm</code></pre>
-  <p><a href="articles/web/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Wasm guide →</a></p>
+  <pre style="white-space: pre-wrap;"><code>dotnet add package DrawnUi.Web</code></pre>
+  <p><a href="articles/web/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Web guide →</a></p>
 </div>
 
 <!-- NET -->
@@ -372,8 +372,8 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 😃 <a href="https://drawfiddle.com" target="_blank" rel="noopener noreferrer">Don't miss the Fiddle!</a>
 
 ### 👨‍💻 **Familiar Yet Powerful**
-- **MAUI/WFP-like** properties for layout etc
-- **Shell-like** navigation on canvas (MAUI only, others soon)
+- **MAUI/WPF-like** properties for layout etc
+- **Shell-like** navigation on canvas (MAUI, WPF and OpenTK)
 - **XAML + Hot Reload** support
 - **Fluent C#** syntax for code-behind UI with bindings
 - **Accessible** canvas: screen readers and keyboard navigation on MAUI, WPF, OpenTK, Blazor and WebAssembly
@@ -397,7 +397,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
   <a href="articles/wpf/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">WPF →</a><br>
   <a href="articles/maui/getting-started.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Getting Started →</a><br>
   <a href="articles/blazor/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Blazor →</a><br>
-  <a href="articles/web/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">DrawnUi.Wasm →</a><br>
+  <a href="articles/web/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">DrawnUi.Web →</a><br>
   <a href="articles/controls/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Controls Reference →</a><br>
   <a href="articles/advanced/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Advanced Topics →</a><br>
   <a href="/api/" style="color: #4299e1; text-decoration: none; font-weight: 600;">API Reference →</a>
@@ -433,7 +433,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 
 <div style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
   <p>
-    <img src="https://img.shields.io/github/license/taublast/DrawnUi.svg" alt="License" style="margin: 0 5px;">
+    <img src="https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg" alt="License" style="margin: 0 5px;">
     <img src="https://img.shields.io/nuget/v/DrawnUi.Maui.svg" alt="NuGet Version" style="margin: 0 5px;">
     <img src="https://img.shields.io/nuget/dt/AppoMobi.Maui.DrawnUi.svg" alt="NuGet Downloads" style="margin: 0 5px;">
   </p>

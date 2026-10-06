@@ -62,7 +62,7 @@ new SkiaMauiEditor()
 {
     MaxLines = 1,
     HeightRequest = 32,
-    Placeholder = "...",
+    PlaceholderText = "...",
     Padding = new Thickness(0, 2, 0, 4),
 }
 .Initialize(me =>
@@ -436,9 +436,9 @@ new SkiaLabel()
 
 For complex scenarios where targets change dynamically or you need to observe nested properties:
 
-### `.ObservePropertyOn(parent, targetSelector, parentPropertyName, callback)` - Dynamic Target
+### `.ObservePropertyOn(parent, targetSelector, parentPropertyName, propertyName, callback)` - Dynamic Target
 
-Observes a dynamically resolved target object using a function selector. When the parent's properties change, re-evaluates the selector and automatically unsubscribes from old target and subscribes to new one:
+Observes one property of a dynamically resolved target object using a function selector. When the parent's properties change, re-evaluates the selector and automatically unsubscribes from old target and subscribes to new one:
 
 ```csharp
 new SkiaLabel()
@@ -446,12 +446,10 @@ new SkiaLabel()
     this,
     () => CurrentTimer,
     nameof(CurrentTimer),
-    (me, prop) =>
+    nameof(RunningTimer.Time),
+    me =>
     {
-        if (prop.IsEither(nameof(BindingContext), nameof(RunningTimer.Time)))
-        {
-            me.Text = $"{CurrentTimer.Time:mm\\:ss}";
-        }
+        me.Text = $"{CurrentTimer.Time:mm\\:ss}";
     }
 )
 ```
@@ -481,7 +479,7 @@ Watches for property changes on another control's BindingContext:
 
 ```csharp
 new SkiaLabel()
-.ObserveBindingContextOn<SkiaLabel, SkiaEntry, MyViewModel>(
+.ObserveBindingContextOn<SkiaLabel, SkiaMauiEntry, MyViewModel>(
     entryControl,
     (me, target, vm, prop) =>
     {
@@ -539,38 +537,38 @@ public class MyScreen : AppScreen //subclassed custom SkiaLayout
 {
     public readonly InjectedViewModel Model;
 
-    public ScreenChat(InjectedViewModel vm)
+    public MyScreen(InjectedViewModel vm)
     {
         Model = vm;
         BindingContext = Model;
 
         CreateContent();
     }
-}
 
-protected void CreateContent()
-{
-    HorizontalOptions = LayoutOptions.Fill;
-    VerticalOptions = LayoutOptions.Fill;
-    Type = LayoutType.Column;
-    Spacing = 0;
-    Padding = 16;
-    Children =
+    protected void CreateContent()
     {
-        new SkiaLabel()
-        .Observe(Model, (me, prop) => //observe Model reference directly
+        HorizontalOptions = LayoutOptions.Fill;
+        VerticalOptions = LayoutOptions.Fill;
+        Type = LayoutType.Column;
+        Spacing = 0;
+        Padding = 16;
+        Children = new List<SkiaControl>
         {
-            bool attached = prop == nameof(BindingContext);
-            if (attached || prop == nameof(Model.Title))
+            new SkiaLabel()
+            .Observe(Model, (me, prop) => //observe Model reference directly
             {
-                me.Text = Model.Title;
-            }
-            if (attached || prop == nameof(Model.Error))
-            {
-                me.TextColor = Model.Error ? Colors.Red : Colors.Black;
-            }
-        }),
-    };
+                bool attached = prop == nameof(BindingContext);
+                if (attached || prop == nameof(Model.Title))
+                {
+                    me.Text = Model.Title;
+                }
+                if (attached || prop == nameof(Model.Error))
+                {
+                    me.TextColor = Model.Error ? Colors.Red : Colors.Black;
+                }
+            }),
+        };
+    }
 }
 ```
 
@@ -590,7 +588,7 @@ new SkiaLabel()
 **Dynamic reference** - when `Model` is likely to change and implements INotifyPropertyChanged:
 ```csharp
 new SkiaLabel()
-.ObservePropertyOn(this, () => Model, nameof(Model), (me, propertyName) =>
+.ObservePropertyOn(this, () => Model, nameof(Model), nameof(Model.Title), me =>
 {
     me.Text = Model.Title;
 })
@@ -625,10 +623,10 @@ new SkiaLabel()
 ### Two-Way bindings
 
 ```csharp
-new WheelPicker()
+new SkiaWheelPicker()
 .ObserveSelf((me, prop) =>
 {
-    if (prop.IsEither(nameof(BindingContext), nameof(WheelPicker.SelectedIndex)))
+    if (prop.IsEither(nameof(BindingContext), nameof(SkiaWheelPicker.SelectedIndex)))
     {
         IndexIso = me.SelectedIndex; //update local property from control
     }
@@ -678,13 +676,16 @@ var errorView = new SkiaLabel()
 ### Loading States
 
 ```csharp
-var loadingIndicator = new ActivityIndicator()
-    .ObserveBindingContext<ActivityIndicator, MyViewModel>((indicator, vm, prop) => {
+var loadingIndicator = new SkiaLottie()
+    .ObserveBindingContext<SkiaLottie, MyViewModel>((indicator, vm, prop) => {
         bool attached = prop == nameof(BindingContext);
         if (attached || prop == nameof(vm.IsLoading))
         {
             indicator.IsVisible = vm.IsLoading;
-            indicator.IsRunning = vm.IsLoading;
+            if (vm.IsLoading)
+                indicator.Start();
+            else
+                indicator.Stop();
         }
     });
 ```
@@ -692,8 +693,8 @@ var loadingIndicator = new ActivityIndicator()
 ### List Content Management
 
 ```csharp
-var listView = new CellsStack()
-    .ObserveBindingContext<CellsStack, MyViewModel>((list, vm, prop) => {
+var listView = new SkiaStack()
+    .ObserveBindingContext<SkiaStack, MyViewModel>((list, vm, prop) => {
         bool attached = prop == nameof(BindingContext);
 
         if (attached || prop == nameof(vm.HasData))
@@ -712,21 +713,21 @@ var listView = new CellsStack()
 ### Two-Way Property Synchronization
 
 ```csharp
-// Sync slider value with viewModel
+// Sync slider value with viewModel (End is the value of a non-range SkiaSlider)
 var slider = new SkiaSlider()
     .ObserveBindingContext<SkiaSlider, MyViewModel>((sld, vm, prop) => {
         bool attached = prop == nameof(BindingContext);
         if (attached || prop == nameof(vm.Volume))
         {
-            if (Math.Abs(sld.Value - vm.Volume) > 0.01) // Prevent loops
-                sld.Value = vm.Volume;
+            if (Math.Abs(sld.End - vm.Volume) > 0.01) // Prevent loops
+                sld.End = vm.Volume;
         }
     })
     .ObserveSelf((sld, prop) => {
-        if (prop == nameof(sld.Value))
+        if (prop == nameof(sld.End))
         {
             if (BindingContext is MyViewModel vm)
-                vm.Volume = sld.Value;
+                vm.Volume = sld.End;
         }
     });
 ```
@@ -816,6 +817,8 @@ new SkiaLabel("Text")
 
 ### Entry Extensions
 
+`SkiaMauiEntry` and `SkiaMauiEditor` exist in DrawnUi.Maui only. The shared drawn `SkiaEditor` has `.OnTextChanged(text => ...)`, which receives only the new text, and `.OnFocusChanged((editor, focused) => ...)`.
+
 ```csharp
 new SkiaMauiEntry()
     .OnTextChanged((entry, text) =>
@@ -857,7 +860,7 @@ anyControl
 
 ### Advanced Gesture Handling
 
-Controls that implement `ISkiaGestureListener` (deriving from `SkiaLayout` etc) can use this extension.
+Controls deriving from `SkiaLayout` can use this extension.
 Technically, this calls a delegate `OnGestures` action before executing the `base.ProcessGestures` code.
 The same logic can be implemented by subclassing a control and overriding `ProcessGestures`.
 Return this control reference if you consumed a gesture, return `null` if not.
@@ -871,7 +874,7 @@ layout.WithGestures((me, args, apply) => {
     if (args.Type == TouchActionResult.Panning)
     {
         // Handle panning
-        consumed = this; //we consumed this one
+        consumed = me; //we consumed this one
     }
 
     //return consumed state

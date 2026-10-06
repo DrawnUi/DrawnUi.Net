@@ -1,6 +1,6 @@
 # DrawnUi.Net
 
-`DrawnUi.Net` is the platform-agnostic DrawnUI target.
+`DrawnUi.Net` is the platform-agnostic DrawnUI target (`net9.0` and `net10.0`).
 
 ## Install
 
@@ -30,7 +30,7 @@ In those cases, use `DrawnUi.Net` to isolate the shared logic first, then valida
 
 ## Current samples
 
-The `src/Net/Samples/SkiaEditorHarness` sample demonstrates the headless-harness style. More to come.
+`src/Net/Samples` holds headless-harness samples: `SkiaEditorHarness`, `GestureHarnessDemo` and `VirtualizationHarnessDemo`.
 
 ## Related docs
 

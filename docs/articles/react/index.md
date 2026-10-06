@@ -43,7 +43,7 @@ What you can use today:
 - **Scrolling**: `SkiaScroll` with headers, footers, `SkiaScrollBar`, pull to refresh (`RefreshIndicator`) and snapping.
 - **Text**: `SkiaLabel` with spans, `SkiaRichLabel` with markdown, and `SkiaEditor` for drawn text input.
 - **Shapes and images**: `SkiaShape`, `SkiaImage`, `SkiaImageTiles`, `SkiaSvg`, gradients, shadows and shader effects.
-- **Controls**: `SkiaButton`, `SkiaHotspot`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider` and `SkiaProgress`, in the Default, Cupertino, Material and Windows looks.
+- **Controls**: `SkiaButton`, `SkiaHotspot`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider` and `SkiaProgress`, in the Default, Cupertino, Material, Material3 and Windows looks.
 - **Carousels and panels**: `SkiaCarousel`, `SkiaShaderCarousel` and `SkiaDrawer`.
 - **Animation**: `SkiaLottie`, `SkiaGif`, `SkiaSprite`, `SkiaSpriteSet`, animators and transforms.
 - **Apps and games**: `SkiaShell` navigation (pages, popups, modals, toasts), `DrawnGame`, `KeyboardManager` and styles (`ConfigureStyles`).
@@ -110,7 +110,7 @@ Work continues control by control against the .NET sources. Not there yet:
 
 - **Gestures**: long press, hover and two-finger pinch.
 - **Recycling beyond one column**: lists in a single column reuse their cells, while templated rows, grids and wraps still create every item.
-- **Controls**: `SkiaViewSwitcher`, `SkiaTabsSelector`, `SkiaWheelPicker`, `SkiaSpinner`, `SkiaCachedStack` and `SkiaLabelFps`.
+- **Controls**: `SkiaViewSwitcher`, `SkiaTabsSelector`, `SkiaWheelPicker`, `SkiaSpinner` and `SkiaCachedStack`.
 
 ## Known limitations
 

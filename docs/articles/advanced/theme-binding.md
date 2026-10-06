@@ -1,5 +1,7 @@
 # Theme Bindings
 
+Theme bindings ship in the MAUI package (`DrawnUi.Maui`). The default provider is `MauiThemeProvider`, which follows `Application.UserAppTheme` and `Application.RequestedTheme`.
+
 ### 📊 **Usage Examples**
 
 #### XAML:
@@ -21,10 +23,10 @@ myLabel.WithThemeBinding(SkiaLabel.TextColorProperty, Colors.Red, Colors.Blue)
 var color = ThemeBindings.GetThemeValue(Colors.Red, Colors.Blue);
 ```
 
-#### Custom Theme Provider (Blazor):
+#### Custom Theme Provider:
 ```csharp
-// Set custom theme provider for Blazor
-ThemeBindingManager.SetThemeProvider(new BlazorThemeProvider());
+// Replace the default MauiThemeProvider with your own IThemeProvider
+ThemeBindingManager.SetThemeProvider(new MyThemeProvider());
 ```
 
 ### 🔧 **Diagnostics & Monitoring**

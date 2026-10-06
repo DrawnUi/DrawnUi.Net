@@ -7,7 +7,7 @@ tags: [drawnui, opentk, desktop, opengl, dotnet]
 
 # DrawnUI OpenTK (desktop head)
 
-Package `DrawnUi.OpenTk` (+ addon `DrawnUi.OpenTk.Game` for games: `DrawnGame`, `KeyboardManager`, `AspectLayer`). Framework rules in `drawnui` skill, C# composition in `drawnui-fluent`, GL-state-restore contract detail in the `drawnui` skill's "OpenTK / Mixed GL+DrawnUI" section.
+Package `DrawnUi.OpenTk` (+ addon `DrawnUi.OpenTk.Game` for games: `DrawnGame` from the shared `SharedGame` sources; `KeyboardManager` is in the core package). Framework rules in `drawnui` skill, C# composition in `drawnui-fluent`, GL-state-restore contract detail in the `drawnui` skill's "OpenTK / Mixed GL+DrawnUI" section.
 
 ## App csproj shape
 
@@ -48,7 +48,7 @@ window.Run();
 
 `DrawnUiWindow` owns the Skia GPU surface, VSync, mouse/keyboard routing, centering, chrome, fullscreen (F11 toggle / ESC exit built in), and the no-white-flash reveal (window hidden until first `SwapBuffers`). `Super.Init()` runs automatically in its `OnLoad`; `Super.MaxFps` = primary monitor refresh rate. Overridables: `PositionWindow()`, `ConfigureWindowChrome(hwnd)` (Windows-only, called only there), `RenderScene()` (raw GL behind the canvas — base restores GL state before and `ResetContext()` after; end yours with `GL.Finish()`).
 
-Fixed-proportion scaling on resize: `RescalingCanvas { LogicalWidth = W, LogicalHeight = H }` (Pong) or the Game addon's `AspectLayer`.
+Fixed-proportion scaling on resize: `RescalingCanvas { LogicalWidth = W, LogicalHeight = H }` (Pong, `src/Shared/Samples/Pong.Shared/Views/RescalingCanvas.cs`) or a `RescalingLayout` inside the canvas (HelloOpenTk `Pages/RescalingLayout.cs`). Both are sample classes, not package API.
 
 ## Entry pattern B — `CanvasHost` (overlay over your own GL loop)
 
@@ -70,7 +70,7 @@ Your `GameWindow` subclass owns rendering; DrawnUI composites as a transparent o
 
 ## Input
 
-- `DrawnUiWindow` auto-routes mouse (all buttons + wheel + leaving the window, which ends hover; a `CanvasHost` app calls `host.Gestures.OnMouseLeave()` itself) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (backspace/delete/enter/arrows/home/end/Ctrl+A/Tab→4 spaces) built in. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
+- `DrawnUiWindow` auto-routes mouse (all buttons + wheel + leaving the window, which ends hover; a `CanvasHost` app calls `host.Gestures.OnMouseLeave()` itself) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (Backspace / Delete / Enter / Left / Right / Home / End, Shift selects, Ctrl+A) built in, Tab walks the Tab stops (see Keyboard navigation). A `CanvasHost` app's `host.Input.OnKeyDown` has the same editor keys but types Tab as 4 spaces. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
 - Custom controls layered behind a `SkiaEditor`: return `null` from `ProcessGestures` on Up when you didn't capture on Down, or you steal the editor's focus.
 
 ## Window niceties
@@ -137,7 +137,7 @@ The fastest way to run shared DrawnUI code on desktop: a tiny OpenTK head over y
 - Structure: shared `.projitems` with your scenes/controls + a throwaway OpenTK head project importing it (see `drawnui-web-app` skill for the shared-source pattern — identical here).
 - Keep temp diagnostics in the harness head (a partial of your test page), never in shared/library code; delete before finishing.
 - Pair with the `drawnui-net-harness` skill (headless, deterministic clock, pixel/structure asserts) — OpenTK head for eyeballing + interactive repro, headless harness for scripted assertions.
-- `SkiaLabelFps` overlay + `Super.EnableRenderingStats` for quick perf reads.
+- `SkiaLabelFps` overlay (or the canvas `FPS` / `FrameTime`) for quick perf reads.
 
 ## Samples (in-repo)
 

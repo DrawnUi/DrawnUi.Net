@@ -52,7 +52,7 @@ Maintains one surface and repaints only dirty (changed) child regions. Preserves
 Use for: mixed-content containers where some children are interactive (badges, counters) while others are static (avatars, titles). More detail in [ImageComposite internals](#imagecomposite-internals).
 
 ### `GPU`
-Caches to a `GRBackendTexture` in GPU memory. Zero CPU readback cost; blits directly on GPU.
+Caches to a GPU surface created on the canvas `GRContext`. Zero CPU readback cost; blits directly on GPU. Falls back to `Image` when hardware acceleration is not available. Inside an `ImageDoubleBuffered` parent the control paints live, because that parent is recorded on a background thread.
 
 Use for: small, stable overlays — headers, navigation bars, toolbars.
 
@@ -83,7 +83,7 @@ Use for: small, stable overlays — headers, navigation bars, toolbars.
 control.Update();            // Invalidate cache + schedule repaint
 control.Repaint();           // Repaint parent surface (no cache destruction)
 control.Invalidate();        // Full re-measure + repaint
-control.InvalidateMeasure(); // Re-measure + repaint
+control.InvalidateMeasureInternal(); // Re-measure + repaint (InvalidateMeasure() is protected)
 ```
 
 For `ImageComposite` containers, two dedicated methods exist:
@@ -100,7 +100,7 @@ layout.DestroyRenderingObject();
 
 ## Cache Sharing
 
-When many instances of the same control type appear on one Canvas (e.g. 50 divider lines, repeated icons), each normally allocates its own `CachedObject`. `CacheSharing=Shared` collapses all of them to a single shared entry stored in `Canvas.Cache`.
+When many instances of the same control type appear on one Canvas (e.g. 50 divider lines, repeated icons), each normally allocates its own `CachedObject`. `CacheSharing=Shared` collapses all of them to a single shared entry stored in `Canvas.SharedCache`.
 
 **Eligible cache types:** `Operations`, `Image`, `GPU`. (`OperationsFull` and composite types are excluded.)
 
@@ -121,19 +121,19 @@ public class DividerLine : SkiaShape
 }
 ```
 
-First instance to render creates the `CachedObject` and stores it in `SuperView.Cache`. Every subsequent instance of the same type reads that entry — no re-render, no extra allocation.
+First instance to render creates the `CachedObject` and stores it in `Superview.SharedCache`. Every subsequent instance of the same type reads that entry — no re-render, no extra allocation.
 
 ### Invalidation in shared mode
 
 Per-instance `InvalidateCache()` is intentionally bypassed — the shared snapshot is considered valid for all peers. To force a re-render for every instance of a type:
 
 ```csharp
-myCanvas.Cache.Free<DividerLine>();        // by generic type
-myCanvas.Cache.Free(typeof(DividerLine));  // by Type reference
-myCanvas.Cache.Free();                     // evict everything
+myCanvas.SharedCache.Free<DividerLine>();        // by generic type
+myCanvas.SharedCache.Free(typeof(DividerLine));  // by Type reference
+myCanvas.SharedCache.Free();                     // evict everything
 ```
 
-Disposing one instance does **not** clear the shared entry. The entry lives until the Canvas disposes or you call `Cache.Free(...)`.
+Disposing one instance does **not** clear the shared entry. The entry lives until the Canvas disposes or you call `SharedCache.Free(...)`.
 
 ### When to use
 
@@ -143,9 +143,9 @@ Poor fit: controls whose appearance differs per instance (different text, colors
 
 ---
 
-## Resource Management (DisposeManager)
+## Resource Management (DisposableManager)
 
-Render objects must not be disposed mid-frame — GPU operations and background threads may still reference them. DrawnUI queues disposals through `DisposeManager`, which flushes them safely at the end of each frame.
+Render objects must not be disposed mid-frame — GPU operations and background threads may still reference them. DrawnUI queues disposals through the canvas `DisposableManager`, which disposes them a few frames later (3 by default), at the start of a frame.
 
 Always use:
 
@@ -153,7 +153,7 @@ Always use:
 control.DisposeObject(resource);  // safe, deferred disposal
 ```
 
-Never call `.Dispose()` directly on a `CachedObject`, `SKSurface`, or `SKPicture` obtained from the rendering pipeline — let `DisposeManager` handle it.
+Never call `.Dispose()` directly on a `CachedObject`, `SKSurface`, or `SKPicture` obtained from the rendering pipeline — let `DisposableManager` handle it.
 
 ---
 
@@ -169,8 +169,8 @@ Never call `.Dispose()` directly on a `CachedObject`, `SKSurface`, or `SKPicture
 `RenderObjectPrevious` acts as a wrapper: each draw replaces the wrapper reference but reuses the same underlying surface, avoiding a full re-allocation.
 
 **Child invalidation hooks:**
-- `OnChildAdded` — invalidates previous cache
-- `OnChildRemoved` — invalidates previous cache when `NeedAutoSize` is true
+- `OnChildAdded` / `OnChildRemoved` — mark the child dirty (`TrackChildAsDirty`)
+- `OnChildrenChanged` — calls `Invalidate()` when `NeedAutoSize` is true
 
 ---
 

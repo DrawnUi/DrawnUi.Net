@@ -106,34 +106,37 @@ Controls don't respond to mouse input.
 
 **Cause:** Input events not forwarded to the canvas (`CanvasHost` only — `DrawnUiWindow` wires this automatically).
 
-**Fix:** Override all four mouse events in your `GameWindow`:
+**Fix:** Forward the mouse events and text input in your `GameWindow` to the `CanvasHost` handlers:
 
 ```csharp
 protected override void OnMouseDown(MouseButtonEventArgs e)
 {
     base.OnMouseDown(e);
-    if (e.Button == MouseButton.Left)
-        _canvas.HandleDesktopPointerDown(MousePosition.X, MousePosition.Y, ClientSize.X, ClientSize.Y);
+    _host?.Gestures.OnMouseDown(e, MousePosition, ClientSize, MouseState);
 }
 
 protected override void OnMouseMove(MouseMoveEventArgs e)
 {
     base.OnMouseMove(e);
-    _canvas.HandleDesktopPointerMove(MousePosition.X, MousePosition.Y,
-        MouseState.IsButtonDown(MouseButton.Left), ClientSize.X, ClientSize.Y);
+    _host?.Gestures.OnMouseMove(e, MousePosition, MouseState.IsAnyButtonDown, ClientSize, MouseState);
 }
 
 protected override void OnMouseUp(MouseButtonEventArgs e)
 {
     base.OnMouseUp(e);
-    if (e.Button == MouseButton.Left)
-        _canvas.HandleDesktopPointerUp(MousePosition.X, MousePosition.Y, ClientSize.X, ClientSize.Y);
+    _host?.Gestures.OnMouseUp(e, MousePosition, ClientSize, MouseState);
+}
+
+protected override void OnMouseWheel(MouseWheelEventArgs e)
+{
+    base.OnMouseWheel(e);
+    _host?.Gestures.OnMouseWheel(e, MousePosition, ClientSize);
 }
 
 protected override void OnTextInput(TextInputEventArgs e)
 {
     base.OnTextInput(e);
-    _canvas.HandleDesktopTextInput(e.AsString);
+    _host?.Input.OnTextInput(e);
 }
 ```
 
@@ -145,26 +148,13 @@ Clicking the editor focuses it but keys produce no text and navigation keys don'
 
 **Cause:** Editor-key events not forwarded (`CanvasHost` only — `DrawnUiWindow` handles this automatically).
 
-**Fix:** Override `OnKeyDown` and dispatch to canvas editor helpers:
+**Fix:** Override `OnKeyDown` and forward it to `CanvasHost.Input`, which dispatches Backspace, Delete, Enter, the arrows, Home / End, Ctrl+A and Tab (four spaces) to the focused editor:
 
 ```csharp
 protected override void OnKeyDown(KeyboardKeyEventArgs e)
 {
     base.OnKeyDown(e);
-    var shift = KeyboardState.IsKeyDown(Keys.LeftShift) || KeyboardState.IsKeyDown(Keys.RightShift);
-    var ctrl  = KeyboardState.IsKeyDown(Keys.LeftControl) || KeyboardState.IsKeyDown(Keys.RightControl);
-    switch (e.Key)
-    {
-        case Keys.Backspace: _canvas.DesktopEditorBackspace(); break;
-        case Keys.Delete:    _canvas.DesktopEditorDelete(); break;
-        case Keys.Enter:     _canvas.DesktopEditorEnter(); break;
-        case Keys.Left:      _canvas.DesktopEditorMoveCursor(-1, shift); break;
-        case Keys.Right:     _canvas.DesktopEditorMoveCursor(1, shift); break;
-        case Keys.Home:      _canvas.DesktopEditorMoveToStart(shift); break;
-        case Keys.End:       _canvas.DesktopEditorMoveToEnd(shift); break;
-        case Keys.A when ctrl: _canvas.DesktopEditorSelectAll(); break;
-        case Keys.Tab:       _canvas.HandleDesktopTextInput("    "); break;
-    }
+    _host?.Input.OnKeyDown(e, KeyboardState);
 }
 ```
 
@@ -230,7 +220,7 @@ var nativeSettings = new NativeWindowSettings
 
 **Cause:** Mesa/WSLg ignores the OpenGL swap interval — `VSync = VSyncMode.On` has no effect. `SwapBuffers()` returns immediately, so the render loop runs at CPU speed.
 
-**Fix:** `DrawnUiWindow` automatically applies a software frame cap at the monitor refresh rate on Linux. No app-level change needed. This is handled inside the library.
+**Fix:** `DrawnUiWindow` spaces frames one monitor refresh apart by itself where the driver ignores vsync: a `Constant` window detects it in its first 60 frames, a `Dynamic` window always paces. No app-level change needed. This is handled inside the library.
 
 If you use a custom `GameWindow` (not `DrawnUiWindow`), add this after `VSync = VSyncMode.On`:
 

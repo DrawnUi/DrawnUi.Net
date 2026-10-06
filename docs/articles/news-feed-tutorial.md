@@ -25,7 +25,7 @@ In Blazor, the page shell becomes a Razor component and the feed layout is hoste
 ```razor
 <Canvas Content="_canvasContent"
         MaxWidthRequest="430"
-        BackgroundColor="#DCDCDC"
+        BackgroundColor="@Color.Parse("#DCDCDC")"
         RenderingMode="@RenderingModeType.Accelerated"
         Gestures="@GesturesMode.Lock" />
 
@@ -44,7 +44,7 @@ In Blazor, the page shell becomes a Razor component and the feed layout is hoste
 
 <img src="../images/scroller.jpg" alt="News Feed Tutorial" width="350" style="margin-top: 16px;" />
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials)  
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Tutorials)  
 Clone the repo and run the Tutorials project to explore all examples!
 
 ## 🎓 What You'll Learn:
@@ -189,6 +189,7 @@ These are friends when it comes to creating recycled or "bindable layout-like" s
                     ChangeVelocityScrolled="1.35"
                     RefreshCommand="{Binding RefreshCommand}"
                     LoadMoreCommand="{Binding LoadMoreCommand}"
+                    LoadMoreOffset="500"
                     RefreshEnabled="True"
                     HorizontalOptions="Fill"
                     VerticalOptions="Fill">
@@ -486,7 +487,7 @@ These are friends when it comes to creating recycled or "bindable layout-like" s
 </draw:SkiaDynamicDrawnCell>
 ```
 
-You could enable showing debugging information by uncommenting the following code on the sample page, this would give you the idea what is happening with your cells, how much of them you are currently using and have in the pool:
+The sample page shows debugging information with the following code. It gives you an idea of what is happening with your cells, how many of them you are currently using and have in the pool:
 
 ```xml
                 <draw:SkiaLabel
@@ -589,7 +590,7 @@ public override void OnWillDisposeWithChildren()
 }
 ```
 
-> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/NewsFeed/NewsCell.xaml.cs)
+> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Tutorials/Tutorials/NewsFeed/Views/NewsCell.xaml.cs)
 
 ### 🌐 Data Provider
 

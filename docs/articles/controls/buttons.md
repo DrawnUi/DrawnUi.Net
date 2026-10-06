@@ -18,7 +18,7 @@ DrawnUi provides highly customizable button controls with platform-specific styl
     BackgroundColor="Blue"
     TextColor="White"
     CornerRadius="8"
-    Clicked="OnButtonClicked" />
+    Tapped="OnButtonTapped" />
 ```
 
 ### Custom Content Example
@@ -70,7 +70,7 @@ Set the bindable `ControlStyle` property (XAML or code) to pick a look; `UsingCo
 | `Text` | string | The text displayed on the button |
 | `TextColor` | Color | The color of the button text |
 | `BackgroundColor` | Color | The background color of the button |
-| `CornerRadius` | float | The corner radius of the button (applied via `BtnShape`) |
+| `CornerRadius` | CornerRadius | The corner radius of the button (applied via `BtnShape`, default 8) |
 | `ButtonStyle` | ButtonStyleType | The button style (Contained, Outlined, Text) |
 | `ElevationEnabled` | bool | Whether the button has a shadow effect |
 | `TextCase` | TextTransform | The text case transformation (None, Uppercase, Lowercase) |
@@ -79,14 +79,13 @@ Set the bindable `ControlStyle` property (XAML or code) to pick a look; `UsingCo
 | `IsDisabled` | bool | Disables the button if true |
 | `IsPressed` | bool | True while the button is pressed |
 | `IconPosition` | IconPositionType | Position of icon (icon support planned) |
-| `ApplyEffect` | SkiaTouchAnimation | Touch animation effect (Ripple, Shimmer, etc.) |
+| `ApplyEffect` | SkiaTouchAnimation | Touch animation effect (`None`, `Ripple` (default), `Shimmer`) |
 
 ### Events
 
-- `Clicked`: Raised when the button is clicked/tapped
-- `Pressed`: Raised when the button is pressed down
-- `Released`: Raised when the button is released
-- `Up`, `Down`, `Tapped`: Additional gesture events
+- `Tapped`: Raised when the button is tapped (use this one in XAML)
+- `Up`, `Down`: Raised when the button is released or pressed down
+- `Clicked`, `Pressed`, `Released`: `Action<SkiaButton, SkiaGesturesParameters>` callbacks for code-behind (tapped, pressed down, released). They are fields, not events, so XAML cannot set them.
 
 ### Icon Support
 
@@ -103,4 +102,4 @@ A `SkiaButton` becomes an accessibility node when you give it a role: `Accessibi
 > The following methods in SkiaButton have been updated with XML documentation in the codebase:
 > - `OnDown`, `OnUp`, `OnTapped`, `ApplyProperties`, `CreateDefaultContent`, `CreateCupertinoStyleContent`, `CreateMaterialStyleContent`, `CreateWindowsStyleContent`, `OnButtonPropertyChanged`, `FindViews`, `CreateClip`.
 
-For more details, see the source code in `src/Engine/Maui/Controls/Button/SkiaButton.cs`.
+For more details, see the source code in `src/Shared/DrawnUi/Controls/Button/SkiaButton.cs`.

@@ -39,7 +39,7 @@ The following controls support platform-specific styling:
 - `SkiaRadioButton`: Radio rings and dots per platform
 - `SkiaSlider`: Change values with platform-specific track and thumb styling
 - `SkiaProgress`: Track and trail per platform (Material3 adds the gap and stop indicator)
-- `SkiaPicker`, `SkiaWheelPicker`: Field and wheel looks per platform
+- `SkiaPicker`: Field look per platform
 - `SkiaEditor`: Background, border and cursor per platform
 
 ## Changing the style at runtime

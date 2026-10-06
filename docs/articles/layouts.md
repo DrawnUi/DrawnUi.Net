@@ -8,7 +8,7 @@ Layouts can auto-size to content or take explicit size according to properties.
 
 ## Layout Aliases
 
-For convenience, DrawnUI provides alias classes that inherit from `SkiaLayout` with pre-configured `Type` values, contrary to base controls they usually come with `HorizonalOptions="Fill"`:
+For convenience, DrawnUI provides alias classes that inherit from `SkiaLayout` with pre-configured `Type` values, contrary to base controls they usually come with `HorizontalOptions="Fill"`:
 
 - `SkiaStack`: Alias for `SkiaLayout` with `Type="Column"` (vertical stack)
 - `SkiaRow`: Alias for `SkiaLayout` with `Type="Row"` (horizontal stack)  
@@ -24,7 +24,7 @@ It's sometime better for performance to use this type instead of a grid, for exa
 
 **Usage:**
 ```xml
-<draw:SkiaLayout HorizonatalOptions="Fill" HeightRequest="50">
+<draw:SkiaLayout HorizontalOptions="Fill" HeightRequest="50">
     <draw:SkiaLabel Text="Top Left" />
     <draw:SkiaLabel Text="Center Bottom" HorizontalOptions="Center" VerticalOptions="End"/>
 </draw:SkiaLayout>
@@ -48,7 +48,7 @@ Vertical stack layout that arranges children from top to bottom. When using `Ite
 
 **Additional Properties:**
 - `Split`: Number of columns to split items into (for data-bound content). Items are arranged left to right, top to bottom.
-- `UseDynamicColumns`: For `SkiaStack` with `ItemsSource`, allows dynamic column count to avoid empty cells. When enabled, the last row can have fewer columns that expand to fill available width.
+- `DynamicColumns`: For `SkiaStack` with `ItemsSource`, allows dynamic column count to avoid empty cells. When enabled, the last row can have fewer columns that expand to fill available width.
 
 ### Row Layout
 Horizontal stack layout that arranges children from left to right.
@@ -86,17 +86,17 @@ Two-dimensional grid layout with rows and columns. When using `ItemsSource` supp
 <draw:SkiaLayout Type="Grid">
     <!-- Define grid structure -->
     <draw:SkiaLayout.ColumnDefinitions>
-        <draw:ColumnDefinition Width="*" />
-        <draw:ColumnDefinition Width="2*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="2*" />
     </draw:SkiaLayout.ColumnDefinitions>
     <draw:SkiaLayout.RowDefinitions>
-        <draw:RowDefinition Height="Auto" />
-        <draw:RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
     </draw:SkiaLayout.RowDefinitions>
     
     <!-- Position children in grid -->
-    <draw:SkiaLabel Text="Cell 1" draw:SkiaLayout.Column="0" draw:SkiaLayout.Row="0" />
-    <draw:SkiaLabel Text="Cell 2" draw:SkiaLayout.Column="1" draw:SkiaLayout.Row="0" />
+    <draw:SkiaLabel Text="Cell 1" Grid.Column="0" Grid.Row="0" />
+    <draw:SkiaLabel Text="Cell 2" Grid.Column="1" Grid.Row="0" />
 </draw:SkiaLayout>
 ```
 
@@ -148,7 +148,7 @@ All layouts inherit from `SkiaLayout` and support these common properties:
 - `HorizontalOptions`/`VerticalOptions`: Layout alignment options
 - `UseCache`: Performance caching strategy (`Operations`, `Image`, `ImageComposite`)
 - `BackgroundColor`: Layout background
-- `Gestures`: Enable/disable touch gestures
+- `LockChildrenGestures`: Which gestures reach child controls
 - `Split`: Number of columns for multi-column layouts (Column, Wrap, and Grid with ItemsSource)
 
 For rounded corners, wrap the layout in a `SkiaShape` (`SkiaFrame`) — layouts themselves have no corner radius.
@@ -220,16 +220,17 @@ For grid layouts (`Type="Grid"`):
 - `Invert`: Controls fill direction for auto-generated grids (`false` = left-to-right, `true` = top-to-bottom)
 
 Child positioning in grids:
-- `SkiaLayout.Column`: Column index (0-based)
-- `SkiaLayout.Row`: Row index (0-based)
-- `SkiaLayout.ColumnSpan`: Number of columns to span
-- `SkiaLayout.RowSpan`: Number of rows to span
+- `Grid.Column`: Column index (0-based)
+- `Grid.Row`: Row index (0-based)
+- `Grid.ColumnSpan`: Number of columns to span
+- `Grid.RowSpan`: Number of rows to span
 
 ### Decorated Layouts
 
 Specialized layout classes that add visual separators:
 
 - `SkiaDecoratedGrid`: Extends `SkiaGrid` with separator lines between columns and rows
+- `SkiaDecoratedColumn`: Extends `SkiaStack` with separator lines between rows, and between columns where a row has several (`Split`)
 
 **Customization Properties:**
 Decorators can be customized through gradient properties:

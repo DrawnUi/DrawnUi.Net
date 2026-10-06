@@ -11,8 +11,8 @@ Use this page first when you need to decide which package to install and which r
 | MAUI (Android/iOS/MacCatalyst/Windows) | `DrawnUi.Maui` | You are building a native cross-platform app | App UI, gestures, animation-heavy native experiences |
 | Blazor WebAssembly | `DrawnUi.Blazor.Wasm` | DrawnUI should render locally in the browser | Canvas-like browser UI, high-fps, local responsiveness, animation-heavy, web surfaces |
 | Blazor Server | `DrawnUi.Blazor.Server` | DrawnUI should be hosted in a Blazor Server or `InteractiveServer` app | Event-driven widgets, low-fps, dashboards, mixed Razor + DrawnUI pages |
-| Pure WebAssembly | `DrawnUi.Wasm` | You want a standalone fully drawn web app with no Blazor | Games, tools, full-canvas web surfaces; smallest WASM payload |
-| OpenTK (Windows/Linux) | `DrawnUi.OpenTk.Game` | You need fast and small-sized desktop app/game | create from scratch or overlay drawn layouts on top of your OpenGL window |
+| Pure WebAssembly | `DrawnUi.Web` | You want a standalone fully drawn web app with no Blazor | Games, tools, full-canvas web surfaces; smallest WASM payload |
+| OpenTK (Windows/Linux) | `DrawnUi.OpenTk` (+ `DrawnUi.OpenTk.Game` for games) | You need fast and small-sized desktop app/game | create from scratch or overlay drawn layouts on top of your OpenGL window |
 | WPF (Windows) | `DrawnUi.Wpf` (+ `DrawnUi.Wpf.Game` for games) | You have or want a WPF app and need drawn, GPU-rendered UI inside it | Drawn controls declared in WPF XAML with `{Binding}` and styles, a full drawn window with `SkiaShell`, or a game |
 | Platform-agnostic .NET | `DrawnUi.Net` | You need DrawnUI without a framework-specific UI host | Headless rendering, console app, server-side, image/PDF generation, harnesses, shared-logic debugging |
 
@@ -60,15 +60,15 @@ Start here:
 - [Blazor Packages](blazor/packages.md)
 - [Blazor FAQ](blazor/faq.md)
 
-## DrawnUi.Wasm (Pure WebAssembly)
+## DrawnUi.Web (Pure WebAssembly)
 
 Install:
 
 ```bash
-dotnet add package DrawnUi.Wasm
+dotnet add package DrawnUi.Web
 ```
 
-Choose `DrawnUi.Wasm` when you want DrawnUI to run in the browser as a standalone pure-WebAssembly app — no Blazor, no Razor, only `[JSImport]`/`[JSExport]` interop. DrawnUI owns an HTML `<canvas>` and renders to it via WebGL (with raster fallback).
+Choose `DrawnUi.Web` when you want DrawnUI to run in the browser as a standalone pure-WebAssembly app — no Blazor, no Razor, only `[JSImport]`/`[JSExport]` interop. DrawnUI owns an HTML `<canvas>` and renders to it via WebGL (with raster fallback).
 
 Use it for:
 
@@ -80,8 +80,8 @@ Prefer `DrawnUi.Blazor.Wasm` instead when DrawnUI should be a `Canvas` component
 
 Start here:
 
-- [DrawnUi.Wasm](web/index.md)
-- [Getting Started (DrawnUi.Wasm)](web/getting-started.md)
+- [DrawnUi.Web](web/index.md)
+- [Getting Started (DrawnUi.Web)](web/getting-started.md)
 
 ## OpenTK (Windows / Linux)
 
@@ -96,7 +96,7 @@ Choose OpenTK when you need a native OpenGL window on Windows or Linux without o
 Use it for:
 
 - embedding rich DrawnUI UIs into existing OpenTK engine scenes
-- standalone desktop app with rich UI which will would also run in browser and other platforms DrawnUI supports
+- standalone desktop app with rich UI which would also run in browser and other platforms DrawnUI supports
 - 2D/2.5D games which will run with hardware acceleration and same codebase in browser and other platforms DrawnUI supports
 
 Two integration paths:
@@ -157,4 +157,4 @@ Start here:
 
 ## More targets coming
 
-The DrawnUI umbrella is expanding and your PRs are welcome. Current docs cover MAUI, Blazor, DrawnUi.Wasm, DrawnUi.Net, OpenTK, and WPF, while future platform targets can slot into the same package-and-host model.
+The DrawnUI umbrella is expanding and your PRs are welcome. Current docs cover MAUI, Blazor, DrawnUi.Web, DrawnUi.Net, OpenTK, and WPF, while future platform targets can slot into the same package-and-host model.

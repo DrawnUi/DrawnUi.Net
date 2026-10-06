@@ -98,4 +98,4 @@ private void Tick()
 - `MeasureFirst` + `RecyclingTemplate.Enabled` for the live reorder; uniform row height is the assumption behind the stride arithmetic.
 - Take the scroll's gestures only for the length of the drag (`RespondsToGestures`), and always give them back, including from `OnDisposing`.
 - The cell knows nothing about the ghost; the page draws it in an `InputTransparent` overlay from the cell's `DrawingRect`.
-- Buttons that reorder from code ("move 1st below 10th", "reverse") go through the same collection: a `Move` for a single item, a new collection assigned to `ItemsSource` for a bulk change.
+- Buttons that reorder from code ("move 1st below 10th", "reverse") go through the same collection: a `Move` for a single item, a run of `Move` calls for a bulk change. The layout keeps its cells, their measured heights and the scroll offset; a new `ItemsSource` would rebuild the list.

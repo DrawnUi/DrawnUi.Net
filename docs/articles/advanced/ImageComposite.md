@@ -1,6 +1,6 @@
 # ImageComposite Cache Notes
 
-`SkiaCacheType.ImageComposite` is a caching strategy that enables partial cache updates 
+`SkiaCacheType.ImageComposite` (and its GPU variant `ImageCompositeGPU`) is a caching strategy that enables partial cache updates 
 by erasing and redrawing only dirty regions while preserving unchanged areas. 
 This provides performance for complex layouts where only specific children change 
 while others remain static.
@@ -18,8 +18,8 @@ would come from `RenderObjectPrevious` if existing.
 
 ### Invalidating
 
-* `OnChildAdded` will invalidate previous cache
-* `OnChildRemoved` will invalidate previous cache if `NeedAutoSize`
+* `OnChildAdded` and `OnChildRemoved` mark the child dirty (`TrackChildAsDirty`) when the cache is composite
+* `OnChildrenChanged` then calls `Invalidate()` if `NeedAutoSize`
 
 ### Rendering
 
@@ -40,7 +40,7 @@ public virtual void InvalidateCacheWithPrevious()
 {
     InvalidateCache();
 
-    if (UsingCacheType == SkiaCacheType.ImageComposite)
+    if (IsCacheComposite) // ImageComposite or ImageCompositeGPU
     {
         RenderObjectPreviousNeedsUpdate = true;
     }
@@ -60,7 +60,7 @@ public void DestroyRenderingObject()
 
 **`InvalidateCacheWithPrevious()`:**
 - Calls `InvalidateCache()` (sets `RenderObjectNeedsUpdate = true`)
-- Only sets `RenderObjectPreviousNeedsUpdate = true` for `ImageComposite` cache type
+- Only sets `RenderObjectPreviousNeedsUpdate = true` for composite cache types (`ImageComposite`, `ImageCompositeGPU`)
 - Conditional logic based on cache type
 
 **`DestroyRenderingObject()`:**
@@ -73,11 +73,12 @@ Two methods are needed because:
 - `DestroyRenderingObject()` = "Destroy immediately" (immediate cleanup)
 
 **`InvalidateCacheWithPrevious()` is used when:**
-- Child added/removed (you fixed this)
+- Measured size changes, or `NeedMeasure` is set (`InvalidateInternal`)
 - Layout changes but rendering continues
 - Want to preserve current cache until next draw
 
 **`DestroyRenderingObject()` is used when:**
-- Control becomes invisible (`OnVisibilityChanged`)
+- Control with a GPU cache becomes invisible (`OnVisibilityChanged`)
+- Measure is invalidated (`InvalidateMeasureInternal`), except for `ImageDoubleBuffered`
 - Immediate memory cleanup needed
 - Cache is completely invalid and shouldn't be used

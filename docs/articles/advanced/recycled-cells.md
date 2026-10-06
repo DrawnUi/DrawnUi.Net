@@ -142,7 +142,7 @@ Use `ReserveTemplates` to pre-allocate cell instances for smoother scrolling:
     MeasureItemsStrategy="MeasureVisible">
 ```
 
-- **ReserveTemplates="10"**: Pre-creates 10 cell instances
+- **ReserveTemplates="10"**: Keeps 10 cell instances in the pool beyond those visible in the viewport (default 2)
 - **Smoother Scrolling**: Reduces cell creation during fast scrolling
 - **Memory Trade-off**: Uses more memory but provides better performance
 

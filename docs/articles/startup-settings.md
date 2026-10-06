@@ -77,7 +77,7 @@ In Blazor, `UseDesktopKeyboard` attaches browser `keydown` and `keyup` listeners
 
 ## .NET / OpenTK
 
-Plain .NET apps and OpenTK window apps use the non-async fluent builder returned by `Super.UseDrawnUi()` (no host builder argument):
+Plain .NET apps, OpenTK window apps and WPF apps use the non-async fluent builder returned by `Super.UseDrawnUi()` (no host builder argument):
 
 ```csharp
 using DrawnUi.Draw;
@@ -97,6 +97,8 @@ window.Run();
 
 Call `Build()` once before creating any DrawnUI canvases or windows. `BuildAsync()` is also available when async font loading is needed.
 
+On WPF, pass the settings with `.WithSettings(new DrawnUiStartupSettings { ... })` before `Build()`. The pure WebAssembly head (`DrawnUi.Web`) ends the same chain with `RunAsync("canvas-id", () => new Canvas { ... })` instead of `Build()`.
+
 ## Properties
 
 - DesktopWindow (WindowParameters?)
@@ -109,14 +111,19 @@ Call `Build()` once before creating any DrawnUI canvases or windows. `BuildAsync
 
 - UseDesktopKeyboard (bool)
   - Enables keyboard handling via `KeyboardManager`.
-  - MAUI: desktop support on Windows and Mac Catalyst.
+  - MAUI: Windows and Mac Catalyst, and hardware keyboards on Android.
+  - WPF: keys pressed in the window that hosts the first `DrawnUiElement`.
   - Blazor: browser keyboard events are forwarded to the same API.
   - The manager sees every key before the canvas, also the keys keyboard navigation uses: listen for Escape there to close a panel.
+
+- UseVulkan (bool, default true)
+  - Android: draws accelerated canvases with Vulkan where the device supports it, with OpenGL ES otherwise. Set false to always use OpenGL ES.
 
 - Startup (Action<IServiceProvider>)
   - Called after DrawnUI is initialized and the MAUI App is created, useful for one-time setup that needs DI services.
 
-  - Logger implementing `Microsoft.Extensions.Logging.ILogger` interface
+- Logger (ILogger?)
+  - Logger implementing `Microsoft.Extensions.Logging.ILogger` interface, used by `Super.Log`.
 
 ### Logger
 

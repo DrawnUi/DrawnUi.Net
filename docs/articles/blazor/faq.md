@@ -65,7 +65,7 @@ A: Use this rule of thumb:
 - choose `DrawnUi.Blazor.Server` when the surface should be server-owned and event-driven
 - choose a mixed Blazor Web App when one app needs both kinds of DrawnUI surfaces
 
-## Thechnical Questions
+## Technical Questions
 
 **Q: Why do static assets still come from `DrawnUi.Blazor.Core` in mixed apps?**  
 A: Because the current shared browser static asset flow is still anchored on the core browser implementation project.
@@ -101,13 +101,13 @@ A: Two things are required for SkiaSharp to load on a Linux server.
 
 **1. The native Linux package must be in the publish output.**
 
-`DrawnUi.Blazor.Server` depends on SkiaSharp but the SkiaSharp NuGet package does not include Linux native assets by default on all feeds. Add this to your server host project:
+The SkiaSharp NuGet package does not include Linux native assets by default. `DrawnUi.Blazor.Server` already references the Linux native asset package:
 
 ```xml
-<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.147.0-preview.2.1" />
+<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
 ```
 
-Use the version from the [SkiaSharp EAP feed](https://aka.ms/skiasharp-eap/index.json) that matches your SkiaSharp version. After adding this, `runtimes/linux-x64/native/libSkiaSharp.so` will be included in `dotnet publish` output.
+If your host project references this package itself, use the version that matches your SkiaSharp version. `runtimes/linux-x64/native/libSkiaSharp.so` is then included in `dotnet publish` output.
 
 **2. `libfontconfig1` must be installed on the server.**
 
@@ -154,4 +154,4 @@ Re-run this after every redeploy because rsync replaces real files and does not 
 **Can't find the answer to your question?** → 
 * Please check [Blazor Overview](index.md), [Blazor Packages](packages.md), and [Blazor Capabilities](capabilities.md).
 * For host-agnostic questions, check the main [Frequently Asked Questions](../faq.md).
-* [Ask in GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)** - The community is here to help!
+* [Ask in GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions) - The community is here to help!

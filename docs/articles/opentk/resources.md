@@ -61,7 +61,7 @@ in **all** the heads you ship:
 |---|---|
 | **OpenTK** | `Content Include … CopyToOutputDirectory` → copied next to the exe |
 | **.NET MAUI** | `Resources/Raw/**` (MauiAsset; bundled automatically) |
-| **Web (Blazor / DrawnUi.Wasm)** | `wwwroot/**` (served as a static web asset) |
+| **Web (Blazor / DrawnUi.Web)** | `wwwroot/**` (served as a static web asset) |
 
 A source path like `"Images/banana.gif"` should resolve to the same relative location under each head's
 asset root, so the shared code stays head-agnostic.

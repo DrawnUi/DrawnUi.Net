@@ -1,10 +1,10 @@
 # Text Controls
 
-DrawnUi.Maui offers text rendering capabilities through its specialized text controls. These controls provide text rendering with advanced formatting options while maintaining consistent appearance across all platforms.
+DrawnUI offers text rendering capabilities through its specialized text controls. These controls provide text rendering with advanced formatting options while maintaining consistent appearance across all platforms.
 
 ## SkiaLabel
 
-SkiaLabel is the primary text rendering control in DrawnUi.Maui, rendering text directly with SkiaSharp. Unlike traditional MAUI labels, SkiaLabel provides pixel-perfect text rendering with advanced formatting capabilities.
+SkiaLabel is the primary text rendering control in DrawnUI, rendering text directly with SkiaSharp. Unlike traditional MAUI labels, SkiaLabel provides pixel-perfect text rendering with advanced formatting capabilities.
 
 ### Basic Usage
 
@@ -24,11 +24,11 @@ SkiaLabel is the primary text rendering control in DrawnUi.Maui, rendering text 
 | `Text` | string | The text content to display |
 | `TextColor` | Color | Text color |
 | `FontFamily` | string | Font family name |
-| `FontSize` | float | Font size in logical pixels |
+| `FontSize` | double | Font size in points (default 12) |
 | `FontWeight` | int | Font weight (100-900 scale, 400=normal, 700=bold) |
 | `FontAttributes` | FontAttributes | Bold/Italic/None |
-| `HorizontalTextAlignment` | DrawTextAlignment | Text horizontal alignment (Start, Center, End, Fill) |
-| `VerticalTextAlignment` | DrawTextAlignment | Text vertical alignment (Start, Center, End) |
+| `HorizontalTextAlignment` | DrawTextAlignment | Text horizontal alignment (Start, Center, End, FillWords, FillWordsFull, FillCharacters, FillCharactersFull) |
+| `VerticalTextAlignment` | TextAlignment | Text vertical alignment (Start, Center, End) |
 | `LineBreakMode` | LineBreakMode | How text should wrap or truncate. `WordWrap` breaks at spaces and between Chinese and Japanese characters (a line never starts with 、。」ー or small kana), and breaks a word wider than the line, like a long URL, by characters |
 | `MaxLines` | int | Maximum number of lines to display |
 | `StrokeColor` | Color | Outline color |
@@ -41,7 +41,6 @@ SkiaLabel is the primary text rendering control in DrawnUi.Maui, rendering text 
 | `LineSpacing` | double | Line spacing multiplier |
 | `ParagraphSpacing` | double | Paragraph spacing multiplier |
 | `CharacterSpacing` | double | Character spacing multiplier |
-| `IsMonospaced` | bool | Enables monospaced text rendering |
 | `MonoForDigits` | string | Use mono width for digits (e.g. "8") |
 
 ### Rich Text Formatting (Spans)
@@ -53,7 +52,7 @@ SkiaLabel supports rich text formatting through its `Spans` collection:
     <draw:SkiaLabel.Spans>
         <draw:TextSpan Text="Hello " TextColor="Black" FontSize="18" />
         <draw:TextSpan Text="Beautiful " TextColor="Red" FontSize="20" FontWeight="700" />
-        <draw:TextSpan Text="World!" TextColor="Blue" FontSize="18" FontAttributes="Italic" />
+        <draw:TextSpan Text="World!" TextColor="Blue" FontSize="18" IsItalic="True" />
     </draw:SkiaLabel.Spans>
 </draw:SkiaLabel>
 ```
@@ -91,8 +90,8 @@ private void OnSpanTapped(object sender, EventArgs e)
 TextSpan supports various styling options:
 
 ```xml
-<draw:TextSpan Text="Bold text" FontAttributes="Bold" />
-<draw:TextSpan Text="Italic text" FontAttributes="Italic" />
+<draw:TextSpan Text="Bold text" IsBold="True" />
+<draw:TextSpan Text="Italic text" IsItalic="True" />
 <draw:TextSpan Text="Underlined text" Underline="True" />
 <draw:TextSpan Text="Strikethrough text" Strikeout="True" />
 <draw:TextSpan Text="Highlighted text" BackgroundColor="Yellow" />
@@ -100,11 +99,11 @@ TextSpan supports various styling options:
 
 #### Emoji Support
 
-For emoji rendering, use the `AutoFont` property:
+For emoji rendering, use the `AutoFindFont` property of the span:
 
 ```xml
 <draw:TextSpan Text="Regular text " />
-<draw:TextSpan AutoFont="True" Text="🌐🚒🙎🏽👻🤖" />
+<draw:TextSpan AutoFindFont="True" Text="🌐🚒🙎🏽👻🤖" />
 <draw:TextSpan Text=" more text..." />
 ```
 
@@ -169,21 +168,21 @@ SkiaLabel features powerful automatic font sizing capabilities that can dynamica
 ```xml
 <draw:SkiaLabel
     Text="This text will resize to fit the available space"
-    AutoSize="TextToView"
+    AutoSize="FitFillHorizontal"
     FontSize="24"
     MaxLines="1" />
 ```
 
-- `AutoSize`: Controls auto-sizing mode (None, TextToWidth, TextToHeight, TextToView)
+- `AutoSize`: Controls auto-sizing mode: `None` (default), `FitHorizontal` / `FitVertical` (make the font smaller until the text fits), `FillHorizontal` / `FillVertical` (make it bigger to fill the space), `FitFillHorizontal` / `FitFillVertical` (both).
 - `AutoSizeText`: Text to use for sizing calculations
 
 ### Monospaced Text Rendering
 
-SkiaLabel provides the ability to render text in a monospaced style, regardless of the font used:
+SkiaLabel can give every digit the same width, regardless of the font used, so changing numbers (counters, timers) do not jump around:
 
 ```xml
 <draw:SkiaLabel
-    Text="This text will be monospaced"
+    Text="12:30:45"
     FontSize="18"
     MonoForDigits="8" />
 ```
@@ -211,12 +210,12 @@ Copying goes through `Super.SetClipboardText`, which every head fills (MAUI, WPF
 
 ### Performance Considerations
 
-- For static text, set `Cache="Image"` to render once and cache as bitmap
-- For frequently updated text, use `Cache="Operations"` for best performance
+- For static text, set `UseCache="Image"` to render once and cache as bitmap
+- For frequently updated text, use `UseCache="Operations"` (the label default) for best performance
 - Consider setting `MaxLines` when appropriate to avoid unnecessary layout calculations
 - For large blocks of text, monitor performance and consider breaking into multiple labels
 - Use monospaced features only when needed as it adds some calculation overhead
-- For complex shadow effects, consider using `Cache="Image"` to optimize rendering
+- For complex shadow effects, consider using `UseCache="Image"` to optimize rendering
 
 ## SkiaRichLabel
 
@@ -224,24 +223,24 @@ SkiaRichLabel extends SkiaLabel to provide Markdown formatting capabilities. It 
 
 ### Basic Usage
 
-```xml
-<draw:SkiaRichLabel>
-# Markdown Title
-
-This is a paragraph with **bold** and *italic* text.
-
-- List item 1
-- List item 2
-
-[Visit Documentation](https://link.example.com)
-
-`Inline code` looks like this.
+Set the markdown in `Text`. In XAML put a single line in the `Text` attribute; multi-line markdown is easiest from code:
 
 ```csharp
-// Code block
-var label = new SkiaRichLabel();
-```
-</draw:SkiaRichLabel>
+new SkiaRichLabel
+{
+    Text = """
+           # Markdown Title
+
+           This is a paragraph with **bold** and *italic* text.
+
+           - List item 1
+           - List item 2
+
+           [Visit Documentation](https://link.example.com)
+
+           `Inline code` looks like this.
+           """
+};
 ```
 
 ### Supported Markdown Features
@@ -262,12 +261,10 @@ var label = new SkiaRichLabel();
     CodeBackgroundColor="#EEEEEE"
     StrikeoutColor="Red"
     PrefixBullet="• "
-    PrefixNumbered="{0}. "
+    PrefixNumbered="{}{0}. "
     UnderlineLink="True"
-    UnderlineWidth="1">
-# Custom Styled Markdown
-This has **custom** styling for [links](https://example.com) and `code blocks`.
-</draw:SkiaRichLabel>
+    UnderlineWidth="1"
+    Text="This has **custom** styling for [links](https://example.com) and `code blocks`." />
 ```
 
 ### Link Handling
@@ -277,9 +274,8 @@ SkiaRichLabel provides built-in support for handling link taps:
 ```xml
 <draw:SkiaRichLabel
     LinkTapped="OnLinkTapped"
-    CommandLinkTapped="{Binding OpenLinkCommand}">
-Check out [this link](https://example.com)!
-</draw:SkiaRichLabel>
+    CommandLinkTapped="{Binding OpenLinkCommand}"
+    Text="Check out [this link](https://example.com)!" />
 ```
 
 In your code-behind:
@@ -294,7 +290,7 @@ private void OnLinkTapped(object sender, string url)
 
 ### Implementation Notes
 
-- SkiaRichLabel implements a lightweight Markdown parser optimized for display, not full CommonMark compliance
+- SkiaRichLabel parses Markdown with CommonMark.NET (plus `~~strikethrough~~`) and draws only the features listed above
 - The parser focuses on the most commonly used Markdown syntax for mobile applications
 - For more complex Markdown rendering needs, consider creating a custom renderer
 
@@ -326,8 +322,9 @@ A specialized label for displaying frames-per-second (FPS) metrics, useful for p
     <draw:SkiaShape.Shadows>
         <draw:SkiaShadow
             Color="#22000000"
-            BlurRadius="10"
-            Offset="0,2" />
+            Blur="10"
+            X="0"
+            Y="2" />
     </draw:SkiaShape.Shadows>
 
     <draw:SkiaLayout Type="Column" Spacing="8">
@@ -351,7 +348,7 @@ A specialized label for displaying frames-per-second (FPS) metrics, useful for p
         <draw:SkiaLabel>
             <draw:SkiaLabel.Spans>
                 <draw:TextSpan Text="Read more " TextColor="#444444" FontSize="14" />
-                <draw:TextSpan Text="here" TextColor="Blue" FontSize="14" IsUnderline="True" />
+                <draw:TextSpan Text="here" TextColor="Blue" FontSize="14" Underline="True" />
             </draw:SkiaLabel.Spans>
         </draw:SkiaLabel>
     </draw:SkiaLayout>

@@ -53,14 +53,14 @@ Blazor uses `UseDrawnUiAsync()` instead of the MAUI `UseDrawnUi()` extension.
 
 ```razor
 @page "/"
+@using DrawnUi
 @using DrawnUi.Draw
 @using DrawnUi.Views
-@using Microsoft.Maui.Controls
 
 <Canvas WidthRequest="400"
         HeightRequest="220"
-        BackgroundColor="#F4F1E8"
-        RootControl="@RootControl" />
+        BackgroundColor="@Color.Parse("#F4F1E8")"
+        Content="@RootControl" />
 
 @code {
     private readonly SkiaControl RootControl = new SkiaLayout()

@@ -1,6 +1,6 @@
 # Input Controls
 
-DrawnUi.Maui provides various input controls for user interaction, including sliders, progress indicators, and specialized picker controls.
+DrawnUI provides various input controls for user interaction, including sliders, progress indicators, and specialized picker controls.
 
 ## SkiaSlider
 
@@ -86,45 +86,39 @@ A slider is an accessibility node by default (role slider). Its name is your `Ac
 
 ### Customizing (XAML subclass)
 
-Subclass `SkiaSlider` and provide your own content: a child tagged `"Trail"` hosting the track, a `SliderTrail` tagged `"SelectedTrail"`, and a `SliderThumb` named/tagged `"EndThumb"` (plus `"StartThumb"` for range). See `Sandbox/Views/Controls/DrawnSlider.xaml` (visual reskin) and `SliderColor.xaml` (gradient color-picker slider) for working examples. User-provided content is never overridden by the built-in style logic.
+Subclass `SkiaSlider` and provide your own content: a child tagged `"Trail"` hosting the track, a `SliderTrail` tagged `"SelectedTrail"`, and a `SliderThumb` named/tagged `"EndThumb"` (plus `"StartThumb"` for range). See `Sandbox/Views/Controls/DrawnSlider.xaml` (visual reskin) and `Sandbox/Views/Controls/ColorPicker/SliderColor.xaml` (gradient color-picker slider) for working examples. User-provided content is never overridden by the built-in style logic.
 
 ## SkiaProgress
 
-`SkiaProgress` is a progress indicator control to show that you are actually doing something, with support for determinate and indeterminate progress.
+`SkiaProgress` is a progress indicator control to show that you are actually doing something. It shows a determinate value: there is no indeterminate mode.
 
 ### Basic Usage
 
 ```xml
 <draw:SkiaProgress
-    Progress="0.5"
+    Min="0"
+    Max="100"
+    Value="50"
     WidthRequest="200"
-    HeightRequest="20"
+    TrackHeight="8"
     ProgressColor="Green"
-    BackgroundColor="LightGray"
-    CornerRadius="10" />
-```
-
-### Indeterminate Progress
-
-```xml
-<draw:SkiaProgress
-    IsIndeterminate="true"
-    WidthRequest="200"
-    HeightRequest="20"
-    ProgressColor="Blue"
-    BackgroundColor="LightGray" />
+    TrackColor="LightGray" />
 ```
 
 ### Key Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Progress` | double | Progress value (0.0 to 1.0) |
-| `IsIndeterminate` | bool | Whether to show indeterminate progress |
-| `ProgressColor` | Color | Color of the progress bar |
-| `BackgroundColor` | Color | Background color of the progress track |
-| `CornerRadius` | double | Corner radius for rounded progress bar |
+| `Value` | double | Current value, clamped to `Min`..`Max` and snapped to `Step` |
+| `Min` | double | Minimum value (default 0) |
+| `Max` | double | Maximum value (default 100) |
+| `Step` | double | Step the value snaps to (default 0, no snapping) |
+| `ProgressColor` | Color | Color of the progress bar; when not set, the style's color |
+| `TrackColor` | Color | Color of the background track; when not set, the style's color |
+| `TrackHeight` | double | Height of the track; when not set, the style's height |
 | `ControlStyle` | PrebuiltControlStyle | `Unset`, `Platform`, `Cupertino`, `Material`, `Material3` (gap and stop indicator), `Windows`; can be changed at runtime |
+
+`ValueChanged` (`EventHandler<double>`) is raised when `Value` changes.
 
 ### Accessibility
 
@@ -139,27 +133,28 @@ A progress bar is an accessibility node by default (role progressbar). Screen re
 ```xml
 <draw:SkiaWheelPicker
     ItemsSource="{Binding Items}"
-    SelectedItem="{Binding SelectedItem}"
+    SelectedIndex="{Binding SelectedIndex}"
     WidthRequest="200"
     HeightRequest="150"
-    ItemHeight="40"
-    VisibleItemsCount="5" />
+    VisibleItems="5" />
 ```
 
 ### Key Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `ItemsSource` | IEnumerable | Collection of items to display |
-| `SelectedItem` | object | Currently selected item |
-| `SelectedIndex` | int | Index of the selected item |
-| `ItemHeight` | double | Height of each item in the picker |
-| `VisibleItemsCount` | int | Number of visible items |
-| `IsLooped` | bool | Whether the picker loops infinitely |
+| `ItemsSource` | IList | Collection of items to display |
+| `ItemTemplate` | DataTemplate | Optional template for the items |
+| `SelectedIndex` | int | Index of the selected item (two-way, default -1) |
+| `VisibleItems` | int | Number of visible items (default 7) |
+| `TextColor` | Color | Color of the item text (default Gray) |
+| `TextSelectedColor` | Color | Color of the selected item text (default Red) |
+| `LinesColor` | Color | Color of the selection lines (default White) |
+| `BackgroundView` | SkiaControl | Optional extra view added to the picker next to the wheel |
 
 ### Events
 
-- `SelectionChanged`: Raised when the selected item changes
+- `SelectedIndexChanged`: Raised when `SelectedIndex` is set from code or a binding. Signature: `EventHandler<int>`. When the user scrolls the wheel, `SelectedIndex` changes (bind or observe it) but this event is not raised.
 
 ### Two-Way Binding `SelectedIndex` (C# code-behind)
 
@@ -186,35 +181,44 @@ Scrolling the wheel updates `model.SelectedIndex`; setting `model.SelectedIndex`
 
 ## SkiaSpinner
 
-`SkiaSpinner` is a spinner control to test your luck, providing a rotating wheel with customizable segments.
+`SkiaSpinner` is a spinner control to test your luck: a wheel of names that shows its items around a circle and is spun with a gesture or from code.
 
 ### Basic Usage
 
 ```xml
 <draw:SkiaSpinner
-    Segments="{Binding SpinnerSegments}"
+    ItemsSource="{Binding SpinnerItems}"
+    SelectedIndex="{Binding SelectedIndex}"
     WidthRequest="200"
     HeightRequest="200"
-    SpinDuration="3000"
-    SpinCompleted="OnSpinCompleted" />
+    SidePosition="Right" />
 ```
 
 ### Key Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Segments` | IEnumerable | Collection of spinner segments |
-| `SelectedSegment` | object | Currently selected segment |
-| `SpinDuration` | int | Duration of spin animation in milliseconds |
-| `IsSpinning` | bool | Whether the spinner is currently spinning |
-| `SpinVelocity` | double | Initial velocity for the spin |
+| `ItemsSource` | IList | Items shown on the wheel |
+| `ItemTemplate` | DataTemplate | Optional template for the items |
+| `SelectedIndex` | int | Index of the selected item (two-way, default -1) |
+| `SidePosition` | SidePosition | Where on the wheel the selection is read: `Top`, `Right` (default), `Bottom`, `Left` |
+| `WheelRotation` | double | Current rotation of the wheel in degrees |
+| `Snap` | bool | Snap to an item after the wheel stops (default true) |
+| `Velocity` | double | How much a gesture speeds up the wheel (default 2.0) |
+| `Deceleration` | double | Friction applied while spinning (default 0.0003) |
+| `InverseVisualRotation` | bool | Items readable on the left instead of the right |
+| `RespondsToGestures` | bool | False: the wheel turns from code only (default true) |
 
 ### Methods
 
-- `Spin()`: Start spinning the wheel
-- `Stop()`: Stop the spinning animation
+- `SpinToIndex(index, spins = 0, speed = 350)`: Animate to an item, with optional extra full turns
+- `SpinToIndexShortest(index, speed = 350)`: Animate to an item by the shortest path
+- `SpinToRandom()`: Spin to a random position
+- `Rotate(targetRotation, durationMs = 500)`: Animate to a rotation
+- `StopScrolling()`: Stop the spinning animation
 
 ### Events
 
-- `SpinCompleted`: Raised when the spin animation completes
-  - Event signature: `EventHandler<object>` where object is the selected segment
+- `SelectedIndexChanged`: Raised when `SelectedIndex` is set from code or a binding
+  - Event signature: `EventHandler<int>` with the new index
+  - When the user spins the wheel, `SelectedIndex` changes (bind or observe it) but this event is not raised

@@ -1,17 +1,17 @@
 # Controls Overview
 
-DrawnUi positions itsself as an angine providing a toolset to create and use custom drawn controls. Out-of-the box it provides you with base controls that can be used a lego-bricks to composite custom controls, and proposes some useful pre-made custom controls.
+DrawnUi positions itself as an engine providing a toolset to create and use custom drawn controls. Out of the box it provides you with base controls that can be used as lego bricks to composite custom controls, and proposes some useful pre-made custom controls.
 
-The main spirit is to have all controlls subclassable and customizable at the maximum possible extent.
+The main spirit is to have all controls subclassable and customizable at the maximum possible extent.
 
-DrawnUi provides a comprehensive set of UI controls rendered with SkiaSharp for optimal performance. All controls support platform-specific styling and extensive customization options.
+DrawnUi provides a comprehensive set of UI controls rendered with SkiaSharp for optimal performance. Buttons, switches, checkboxes, radio buttons, sliders, progress bars, the picker and the editor support platform-specific styling (`ControlStyle`); all controls support extensive customization.
 
 ## Control Categories
 
 DrawnUi controls can be organized into several categories:
 
 ### Aliases
-There are controls that are aliases for other controls, te make porting existing native apps easier, to replace one name in code with another:
+There are controls that are aliases for other controls, to make porting existing native apps easier, to replace one name in code with another:
 - SkiaFrame is an alias for SkiaShape of Rectangle type, MAUI Frame
 - SkiaStack is for SkiaLayout type Column with default horizontal Fill, MAUI VerticalStackLayout
 - SkiaRow is for SkiaLayout type Row, MAUI HorizontalStackLayout
@@ -25,8 +25,8 @@ There are controls that are aliases for other controls, te make porting existing
 - SnappingLayout: Base class for snap points
 - SkiaDrawer: Swipe-in/out panel, subclassed SnappingLayout,
 - SkiaCarousel: Swipeable carousel, subclassed SnappingLayout
-- [ContentLayout](layouts.md#contentlayout): Optimized for single child, SkiaShape derives from this one
-- SkiaShape: Base class for all shapes, can wrap other elements to be clipped inside
+- [ContentLayout](layouts.md#contentlayout): Optimized for a single child in its `Content` property, SkiaBackdrop derives from this one
+- SkiaShape: Base class for all shapes, subclassed SkiaLayout, can wrap other elements to be clipped inside
 
 ### Text Controls
 - [SkiaLabel](text.md#skialabel): High-performance text rendering, supports spans
@@ -38,11 +38,11 @@ There are controls that are aliases for other controls, te make porting existing
 - [SkiaSprite](sprites.md#skiasprite): Sprite sheet animation control
 - [SkiaSpriteSet](sprites.md#skiaspriteset): Stateful wrapper for characters and enemies with multiple sprite states
 - [SkiaGif](images.md#skiagif): Animated GIF support - dedicated lightweight GIF-player with playback properties
-- [SkiaMediaImage](images.md#skiamediaimage): Media image, subclassed SkiaImage for displaying any kind of images (image/animated gif/more..)
-- [SkiaLottie](animations.md#skialottie): Lottie animation with tint customization, subclassed SkiaImage
+- [SkiaMediaImage](images.md#skiamediaimage): Media image, subclassed SkiaImage for displaying any kind of images (image/animated gif/more..), .NET MAUI only
+- [SkiaLottie](animations.md#skialottie): Lottie animation with tint customization, subclassed AnimatedFramesRenderer
 
 ### Button Controls
-It's important to notice that every control can behaive like a button with gestures attached, but here is a pre-made button control, providing different platforms looks via `ControlStyle` property:
+It's important to notice that every control can behave like a button with gestures attached, but here is a pre-made button control, providing different platforms looks via `ControlStyle` property:
 - [SkiaButton](buttons.md): Standard button with platform-specific styling
 
 ### Toggle Controls
@@ -52,7 +52,7 @@ It's important to notice that every control can behaive like a button with gestu
 - [SkiaRadioButton](switches.md#skiaradiobutton): Radio button to select something unique from options, subclassed SkiaToggle
 
 ### Navigation Controls
-- [SkiaShell](shell.md): Navigation framework for navigation inside a drawn app, subclassed SkiaLayout
+- [SkiaShell](shell.md): Navigation framework for navigation inside a drawn app; on .NET MAUI it is a page (`BasePageReloadable`), on WPF and OpenTK a `SkiaLayer`
 - [SkiaViewSwitcher](shell.md#skiaviewswitcher): View switcher to switch your views, pop, push and slide, subclassed SkiaLayout
 
 ### Input Controls

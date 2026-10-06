@@ -10,10 +10,10 @@ This quickstart guide will help you create your first DrawnUi.Maui application f
 
 ## 🚀 Live Demo in Tutorials Project
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials) for:
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Tutorials) for:
 - **First App** - This tutorial in action
-- **Interactive Cards (XAML)** - Beautiful animated cards
-- **Interactive Cards (Code)** - Same UI built with C# code-behind  
+- **First App (Code)** - The same UI built with C# code-behind
+- **Interactive Cards** - Beautiful animated cards
 - **News Feed Tutorial** - Advanced scrolling lists
 - **Button Tutorial** - Game-style interactive buttons
 
@@ -27,12 +27,12 @@ A simple interactive app featuring:
 - 🎮 **Interactive button** with animations
 - 🔄 **Hot reload support** for rapid development
 
-<img src="../images/first.jpg" alt="News Feed Tutorial" width="350" style="margin-top: 16px;" />
+<img src="../images/first.jpg" alt="First App Tutorial" width="350" style="margin-top: 16px;" />
 
 ## Prerequisites
 
 - **.NET 9** or later
-- **MAUI 9.0.70** minimum
+- **MAUI 9.0.120** minimum (**10.0.80** on .NET 10)
 - **Visual Studio 2022** or **VS Code** with MAUI extension
 
 ## Step 1: Create a New MAUI Project
@@ -120,7 +120,7 @@ Replace the content of `MainPage.xaml`:
                 UseCache="Operations"
                 Text="Welcome to DrawnUI!" 
                 FontSize="28" 
-                FontWeight="Bold"
+                FontAttributes="Bold"
                 TextColor="DarkBlue" 
                 HorizontalOptions="Center" />
                 
@@ -140,7 +140,7 @@ Replace the content of `MainPage.xaml`:
                 CornerRadius="8"
                 Padding="20,12"
                 HorizontalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Tapped="OnButtonClicked" />
                 
             <draw:SkiaRichLabel 
                 UseCache="Operations"
@@ -164,7 +164,7 @@ Replace the content of `MainPage.xaml`:
 <draw:SkiaRichLabel Text="👆 Try clicking the button" />
 ```
 
-**SkiaRichLabel vs SkiaLabel:** For text containing emojis (✨👆), we use `SkiaRichLabel` because it automatically find an installed font to render all unicode characters. Regular `SkiaLabel` will not render emojis if your selected font doesn't include emoji glyphs.
+**SkiaRichLabel vs SkiaLabel:** For text containing emojis (✨👆), we use `SkiaRichLabel` because it automatically find an installed font to render all unicode characters. Regular `SkiaLabel` will not render emojis if neither your selected font nor its `FontFamilyFallback` fonts include emoji glyphs.
 
 ### Canvas Configuration
 ```xml
@@ -208,14 +208,14 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    private void OnButtonClicked(SkiaButton sender, SkiaGesturesParameters args)
+    private async void OnButtonClicked(object sender, ControlTappedEventArgs args)
     {
         clickCount++;
         ClickLabel.Text = $"Button clicked {clickCount} times! 🎉";
         
         // Simple animation
-        MyButton.AnimateScaleTo(1.2, 100);
-        MyButton.AnimateScaleTo(1.0, 100);
+        await MyButton.ScaleToAsync(1.1, 1.1, 100);
+        await MyButton.ScaleToAsync(1.0, 1.0, 100);
     }
 }
 ```
@@ -255,7 +255,7 @@ Now that you've mastered the basics, you're ready for more exciting projects:
 ### 🚀 **Ready for More?**
 - **[Interactive Card Gallery](interactive-cards.md)** - Build something impressive with animations and effects!
 - **[Controls Gallery](controls/index.md)** - Explore all available controls
-- **[Getting Started Guide](getting-started.md)** - Deep dive into DrawnUI concepts
+- **[Getting Started Guide](maui/getting-started.md)** - Deep dive into DrawnUI concepts
 
 ### 📚 **Learn More:**
 - **[Fluent Extensions](fluent-extensions.md)** - Code-behind UI creation

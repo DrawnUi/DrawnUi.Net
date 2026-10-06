@@ -166,7 +166,7 @@ C# Hot Reload works under Visual Studio, Rider and `dotnet watch`: after an edit
 dotnet add package DrawnUi.Wpf.Game
 ```
 
-`DrawnUi.Wpf.Game` is the game addon for this head, the same `DrawnGame` base class as `DrawnUi.Maui.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Blazor.Game` and `DrawnUi.Wasm.Game`: a fixed-step game loop with a frame-time interpolator, keyboard state through `KeyboardManager`, pause and resume. A game written against it is shared source between the heads.
+`DrawnUi.Wpf.Game` is the game addon for this head, the same `DrawnGame` base class as `DrawnUi.Maui.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Blazor.Game` and `DrawnUi.Web.Game`: a fixed-step game loop with a frame-time interpolator, keyboard state through `KeyboardManager`, pause and resume. A game written against it is shared source between the heads.
 
 A game usually wants a fixed logical viewport that scales with the window and keeps its aspect ratio. That is a `Canvas` subclass (`RescalingCanvas` in the Pong sample), and the element hosts one through its factory constructor:
 

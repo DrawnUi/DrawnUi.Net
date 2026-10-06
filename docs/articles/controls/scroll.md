@@ -1,10 +1,10 @@
 # Scroll Controls
 
-DrawnUi.Maui provides powerful scrolling containers that offer high-performance scrolling with advanced features like virtualization, infinite scrolling, and pull-to-refresh. This article covers the scroll controls available in the framework.
+DrawnUI provides powerful scrolling containers that offer high-performance scrolling with advanced features like virtualization, infinite scrolling, and pull-to-refresh. This article covers the scroll controls available in the framework.
 
 ## SkiaScroll
 
-SkiaScroll is the core scrolling container in DrawnUi.Maui, providing smooth scrolling capabilities with physics-based animations and gesture handling.
+SkiaScroll is the core scrolling container in DrawnUI, providing smooth scrolling capabilities with physics-based animations and gesture handling.
 
 ### Basic Usage
 
@@ -80,24 +80,18 @@ The zoom properties control the behavior:
 | `ViewportOffsetX` | float | Horizontal scroll position |
 | `ViewportOffsetY` | float | Vertical scroll position |
 | `UseVirtual` | bool | Read-only. True for scrolls that draw their content themselves instead of a measured `Content` tree (`VirtualScroll`, wheel pickers); templated lists virtualize through their layout instead |
-| `ScrollWidthRequest` | float | Width of the scrollable area |
-| `ScrollHeightRequest` | float | Height of the scrollable area |
 | `RespondsToGestures` | bool | Default true. Set false and the scroll ignores pan, fling and mouse wheel; scrolling by code (`ScrollTo...`, offsets) keeps working. Prefer it over `Orientation="Neither"` when the scroll must stay scrollable from code |
 
 ### Scrolling Behavior Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `EnableMouseWheel` | bool | Controls mouse wheel scrolling |
-| `ScrollVelocityThreshold` | float | Velocity threshold for scrolling |
-| `ThresholdSwipeOnUp` | float | Minimum velocity for fling animation |
-| `SystemAnimationTimeSecs` | float | Duration for system animations |
+| `ScrollVelocityThreshold` | float | Static, for all scrolls. Velocity below which pan micro-gestures are ignored, default 5 |
+| `ThesholdSwipeOnUp` | float | Static (spelled this way in code). Minimum velocity in points/sec for a fling when the finger lifts, default 20 |
+| `SystemAnimationTimeSecs` | float | Static. Duration of snapping and scroll-to-top animations, default 0.2 |
 | `ParallaxOverscrollEnabled` | bool | Enables parallax effect when overscrolling |
-| `OverscrollEnabled` | bool | Enables overscroll bouncing effect |
-| `HeaderParallaxRatio` | float | Controls parallax effect for header |
-| `ScrollPositionParallaxRatio` | float | Controls parallax effect for content |
-| `CurrentSmoothScrollY` | float | Current smooth scroll position (vertical) |
-| `CurrentSmoothScrollX` | float | Current smooth scroll position (horizontal) |
+| `Bounces` | bool | Bounces at the edges, default true |
+| `HeaderParallaxRatio` | double | Controls parallax effect for header |
 
 ### Headers and Footers
 
@@ -136,15 +130,24 @@ SkiaScroll supports header and footer elements that can behave in special ways:
 
 ### Scrolling to Position
 
+Offsets are the content offset, so they are negative when scrolled down or right: Y = -500 is 500 points down.
+
 ```csharp
-// Scroll to a specific position
-myScroll.ScrollToPosition(0, 500); // Scroll to Y = 500
+// Scroll to a specific position (x, y, maxTimeSecs, clamp)
+myScroll.ScrollTo(0, -500, 0, true); // Jump to Y = 500
 
 // Scroll with animation
-myScroll.ScrollToPosition(0, 500, true); // Animated scroll
+myScroll.ScrollTo(0, -500, 0.25f, true); // Animated scroll
 
-// Scroll to an element
-myScroll.ScrollToView(targetElement, true); // Animated scroll to element
+// Scroll to a child of the content layout by index
+myScroll.ScrollToIndex(5, true);
+
+// Bring any control inside the scroll into view
+SkiaScroll.EnsureVisible(targetElement);
+
+// Edges
+myScroll.ScrollToTop(0.25f);
+myScroll.ScrollToBottom(0.25f);
 ```
 
 ### Virtualization
@@ -169,10 +172,14 @@ How rows get measured is `MeasureItemsStrategy` on the layout: `MeasureAll` (def
 
 ### Pull-to-Refresh
 
-SkiaScroll supports pull-to-refresh functionality:
+SkiaScroll supports pull-to-refresh functionality. It needs `RefreshEnabled`, a `RefreshIndicator` and a `RefreshCommand`:
 
 ```xml
-<DrawUi:SkiaScroll x:Name="MyScrollView" Refreshing="OnRefreshing">
+<DrawUi:SkiaScroll
+    x:Name="MyScrollView"
+    RefreshEnabled="True"
+    RefreshCommand="{Binding RefreshCommand}"
+    IsRefreshing="{Binding IsRefreshing}">
     
     <DrawUi:SkiaScroll.RefreshIndicator>
         <DrawUi:RefreshIndicator />
@@ -185,17 +192,20 @@ SkiaScroll supports pull-to-refresh functionality:
 </DrawUi:SkiaScroll>
 ```
 
-In code-behind:
+Pulling past the limit sets `IsRefreshing` (two-way by default) and runs `RefreshCommand`. In the view model:
 ```csharp
-private async void OnRefreshing(object sender, EventArgs e)
+// RefreshCommand runs this
+private async Task RefreshAsync()
 {
     // Perform refresh operation
     await LoadDataAsync();
     
-    // End refreshing state
-    ((SkiaScroll)sender).EndRefresh();
+    // End refreshing state, the scroll returns to the top
+    IsRefreshing = false;
 }
 ```
+
+`RefreshDistanceLimit` (default 150) and `RefreshShowDistance` (default 50) set, in points, how far the user pulls and where the indicator stays while refreshing.
 
 ## SkiaScrollLooped
 
@@ -223,7 +233,7 @@ SkiaScrollLooped extends SkiaScroll to provide infinite, looped scrolling capabi
 | Property | Type | Description |
 |----------|------|-------------|
 | `IsBanner` | bool | When true, behaves like a scrolling banner |
-| `CycleSpace` | float | Space between content cycles in pixels |
+| `CycleSpace` | double | Space between content cycles in pixels |
 
 ### Banner Mode
 
@@ -248,17 +258,18 @@ In banner mode, there's space between the end of one cycle and the beginning of 
 
 ### Current Index Tracking
 
-SkiaScrollLooped can track the current visible index:
+SkiaScrollLooped can track the current visible index. Set `TrackIndexPosition` to the point of the viewport to track, then read `CurrentIndex` or handle `IndexChanged`:
 
 ```csharp
 var scrollLooped = new SkiaScrollLooped
 {
     Orientation = ScrollOrientation.Horizontal,
+    TrackIndexPosition = RelativePositionType.Center,
     WidthRequest = 400,
     HeightRequest = 200
 };
 
-scrollLooped.CurrentIndexChanged += (s, index) => {
+scrollLooped.IndexChanged += (s, index) => {
     Console.WriteLine($"Current visible index: {index}");
 };
 ```
@@ -280,7 +291,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
         <DrawUi:SkiaShape Type="Rectangle" BackgroundColor="White" CornerRadius="16"
                    WidthRequest="300" HeightRequest="250">
             <DrawUi:SkiaShape.Shadows>
-                <DrawUi:SkiaShadow Color="#40000000" BlurRadius="10" Offset="0,4" />
+                <DrawUi:SkiaShadow Color="#40000000" Blur="10" Y="4" />
             </DrawUi:SkiaShape.Shadows>
             
             <DrawUi:SkiaLayout Type="Column" Padding="20">
@@ -293,7 +304,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
         <DrawUi:SkiaShape Type="Rectangle" BackgroundColor="White" CornerRadius="16"
                    WidthRequest="300" HeightRequest="250">
             <DrawUi:SkiaShape.Shadows>
-                <DrawUi:SkiaShadow Color="#40000000" BlurRadius="10" Offset="0,4" />
+                <DrawUi:SkiaShadow Color="#40000000" Blur="10" Y="4" />
             </DrawUi:SkiaShape.Shadows>
             
             <DrawUi:SkiaLayout Type="Column" Padding="20">
@@ -306,7 +317,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
         <DrawUi:SkiaShape Type="Rectangle" BackgroundColor="White" CornerRadius="16"
                    WidthRequest="300" HeightRequest="250">
             <DrawUi:SkiaShape.Shadows>
-                <DrawUi:SkiaShadow Color="#40000000" BlurRadius="10" Offset="0,4" />
+                <DrawUi:SkiaShadow Color="#40000000" Blur="10" Y="4" />
             </DrawUi:SkiaShape.Shadows>
             
             <DrawUi:SkiaLayout Type="Column" Padding="20">
@@ -340,16 +351,17 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
 
 ## RefreshIndicator
 
-`RefreshIndicator` can use Lottie and anything as ActivityIndicator or for your scroll RefreshView. It provides customizable pull-to-refresh functionality.
+`RefreshIndicator` can use Lottie and anything as ActivityIndicator or for your scroll RefreshView. It provides customizable pull-to-refresh functionality. It draws only the content you put inside it. The refresh state and command live on the `SkiaScroll`.
 
 ### Basic Usage
 
 ```xml
-<DrawUi:SkiaScroll>
+<DrawUi:SkiaScroll
+    RefreshEnabled="True"
+    IsRefreshing="{Binding IsRefreshing}"
+    RefreshCommand="{Binding RefreshCommand}">
     <DrawUi:SkiaScroll.RefreshIndicator>
-        <DrawUi:RefreshIndicator
-            IsRefreshing="{Binding IsRefreshing}"
-            RefreshCommand="{Binding RefreshCommand}" />
+        <DrawUi:RefreshIndicator />
     </DrawUi:SkiaScroll.RefreshIndicator>
 
     <!-- Scroll content -->
@@ -393,7 +405,11 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
 ### Building a Feed with Pull-to-Refresh
 
 ```xml
-<DrawUi:SkiaScroll x:Name="FeedScroll" Refreshing="OnRefreshingFeed">
+<DrawUi:SkiaScroll
+    x:Name="FeedScroll"
+    RefreshEnabled="True"
+    IsRefreshing="{Binding IsRefreshing}"
+    RefreshCommand="{Binding RefreshCommand}">
 
     <DrawUi:SkiaScroll.RefreshIndicator>
         <DrawUi:RefreshIndicator />
@@ -408,7 +424,7 @@ scrollLooped.CurrentIndexChanged += (s, index) => {
             <DataTemplate>
                 <DrawUi:SkiaShape Type="Rectangle" BackgroundColor="White" CornerRadius="8">
                     <DrawUi:SkiaShape.Shadows>
-                        <DrawUi:SkiaShadow Color="#20000000" BlurRadius="4" Offset="0,2" />
+                        <DrawUi:SkiaShadow Color="#20000000" Blur="4" Y="2" />
                     </DrawUi:SkiaShape.Shadows>
                     
                     <DrawUi:SkiaLayout Type="Column" Padding="16">
@@ -572,7 +588,7 @@ For optimal performance with large datasets:
 
 When working with infinite scrolling:
 - Monitor memory usage, especially with large images
-- Use `Cache="Operations"` for content that changes frequently
+- Use `UseCache="Operations"` for content that changes frequently
 - For better performance with large collections, consider using data virtualization alongside UI virtualization
 
 ### Gestures
@@ -582,4 +598,4 @@ To take gestures away from a scroll entirely (a scroll driven only by code, a lo
 If scroll gesture handling conflicts with other gesture recognizers:
 - Adjust `ScrollVelocityThreshold` to control sensitivity
 - For nested scrolling scenarios, ensure proper gesture propagation
-- Consider using `TouchScrollFriendly` on inner components that need to receive touch events
+- Set `IgnoreWrongDirection="True"` on a scroll that should ignore gestures across its axis

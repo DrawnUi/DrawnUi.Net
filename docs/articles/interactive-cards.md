@@ -16,7 +16,7 @@ For Blazor, the page shell is a Razor component that hosts the card tree directl
 <Canvas Content="_canvasContent"
         WidthRequest="400"
         HeightRequest="760"
-        BackgroundColor="#F0F0F5"
+        BackgroundColor="@Color.Parse("#F0F0F5")"
         RenderingMode="@RenderingModeType.Accelerated"
         Gestures="@GesturesMode.Enabled" />
 
@@ -37,7 +37,7 @@ An interactive card gallery featuring:
 
 <img src="../images/cards.png" alt="Interactive Cards Tutorial" width="350" style="margin-top: 16px;" />
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials) 
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Tutorials) 
 
 Clone the repo and run the Tutorials project to explore all examples!
 
@@ -60,7 +60,7 @@ dotnet add package DrawnUi.Maui
 Replace your `MauiProgram.cs` with this enhanced setup:
 
 ```csharp
-using DrawnUi.Infrastructure;
+using DrawnUi.Draw;
 
 public static class MauiProgram
 {
@@ -366,14 +366,15 @@ Replace `MainPage.xaml.cs` with the interaction logic:
 
 ```csharp
 using AppoMobi.Gestures;
+using DrawnUi.Draw;
 
-namespace DrawnUI.Tutorials.InteractiveCards;
+namespace InteractiveCardsTutorial;
 
-public partial class TutorialCards : ContentPage
+public partial class MainPage : ContentPage
 {
     private readonly HashSet<SkiaControl> _activeTapAnimations = new();
 
-    public TutorialCards()
+    public MainPage()
     {
         try
         {
@@ -476,7 +477,6 @@ public partial class TutorialCards : ContentPage
         // Restore original colors
         await Task.Delay(200);
         gradient.Colors = new List<Color>() { originalStart, originalEnd };
-    }
     }
 }
 ```
@@ -645,7 +645,7 @@ public MainPage()
 
 **Why wrap InitializeComponent in try-catch?**
 
-DrawnUI provides developer-friendly error handling through `Super.DisplayException()`. Instead of your app crashing when you make XAML design mistakes, the error gets displayed **directly on the canvas** with full stack trace so you can see the issue immediately.
+DrawnUI provides developer-friendly error handling through `Super.DisplayException()`. Instead of your app crashing when you make XAML design mistakes, the error gets displayed **directly on the page** with full stack trace so you can see the issue immediately.
 
 ---
 
@@ -673,7 +673,7 @@ dotnet run
 
 **App won't start:**
 - Ensure you called `.UseDrawnUi()` in MauiProgram.cs
-- Verify .NET 9 is installed
+- Verify .NET 9 or .NET 10 is installed
 - Check that MAUI workload is installed: `dotnet workload install maui`
 
 **App not animating:**

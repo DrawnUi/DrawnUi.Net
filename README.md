@@ -1,7 +1,7 @@
 ﻿# DrawnUI for .NET
 ![NuGet DrawnUi.Net](https://img.shields.io/nuget/v/DrawnUi.Net.svg)
-![License](https://img.shields.io/github/license/taublast/DrawnUi.svg)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/taublast/drawnui/blob/master/CONTRIBUTING.md)
+![License](https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/DrawnUi/DrawnUi.Net/blob/main/CONTRIBUTING.md)
 
 👉 [Official Site](https://drawnui.net)   
 
@@ -14,7 +14,7 @@ Supported hosts:
 * `DrawnUi.Maui` - Android, iOS, MacCatalyst, and Windows.
 * `DrawnUi.Blazor.Wasm` - browser WebAssembly rendering.
 * `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
-* `DrawnUi.Wasm` - pure browser WebAssembly, no Blazor required.
+* `DrawnUi.Web` - pure browser WebAssembly, no Blazor required.
 * `DrawnUi.OpenTk` - Windows and Linux desktops.
 * `DrawnUi.Wpf` - drawn controls inside WPF windows.
 * `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
@@ -44,10 +44,10 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 
 ## Addons
 
-* Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Wasm.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Wpf.Game`.
+* Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Web.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Wpf.Game`.
 * .NET MAUI only: `DrawnUi.MauiGraphics`
-* .NET MAUI only: `DrawnUi.DrawnUi.MapsUi`
-* .NET MAUI only: `DrawnUi.DrawnUi.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
+* .NET MAUI only: `DrawnUi.Maui.MapsUi`
+* .NET MAUI only: `DrawnUi.Maui.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
 
 ---
 
@@ -102,11 +102,6 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * WPF and OpenTK: a drag released on Linux (WSLg, X11) flings as far as on Windows. Mouse moves can arrive there in pairs a hundredth of a millisecond apart, which made every fling start at the speed limit, about twice as far. A move's speed is now measured over the last 16 ms.
     * Sideways scrolling works: on MAUI Windows, WPF and OpenTK, a sideways swipe or a tilted wheel scrolls a horizontal `SkiaScroll`, and a vertical list ignores it. Before, a diagonal swipe made a vertical list jump up and down.
     * This needs AppoMobi gestures 3.11.4 or later (`WheelEventArgs.IsHorizontal`); this version references 3.11.5.
-    * WPF and OpenTK: dragging content with the mouse and letting go flings it the same distance on every system. Some systems hand the app its mouse moves in bursts (Linux under WSL sends two moves at almost the same moment); there every fling used to start at full speed and went about twice as far as on Windows.
-  * **OpenTK**
-    * Motion stays smooth where the graphics driver ignores vsync (for example Linux under WSL): `DrawnUiWindow` spaces frames one screen refresh apart itself. Before, a game drew hundreds of frames a second there and moved unevenly. Where vsync works, nothing changes.
-    * Apps that redraw only when needed (`UpdateMode.Dynamic`) run at the screen's exact refresh rate, 59.95 Hz screens included. Before, they ran a little slower.
-    * New sample: `HelloOpenTk`, the DrawnUI Hello app with its 20 screens on OpenTK, for Windows and Linux (`dev/hello-opentk-linux.ps1` runs it in WSL).
   * **Drawing and caching**
     * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. Before, it waited for something else to redraw.
     * A `.WhenPainted` overlay keeps drawing after its control is hidden and shown again. Before, hiding removed it for good, so a page pushed in a MAUI `SkiaShell` lost its overlays.

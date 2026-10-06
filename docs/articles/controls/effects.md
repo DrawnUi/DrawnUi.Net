@@ -20,10 +20,10 @@ Every `SkiaControl` exposes a `VisualEffects` collection. Effects modify how a c
 | `IColorEffect` | `SKColorFilter` on a `SaveLayer` | tint / color matrix effects |
 | `IRenderEffect` | Wraps/chains the control's own paint | `ChainDropShadowsEffect` |
 | `IPostRendererEffect` | Runs after the control is painted | `SkiaShaderEffect`, `AnimatedShaderEffect`, `ShaderTransitionEffect` |
-| `IStateEffect` | Per-frame state update hook | animators |
-| `ISkiaGestureProcessor` | Participates in gesture routing | interactive effects |
+| `IStateEffect` | State update hook before each paint (`UpdateState()`) | `StateEffect`, `SkiaTouchShockwaveEffect` |
+| `ISkiaGestureProcessor` | Participates in gesture routing | `SkiaTouchShockwaveEffect` |
 
-A single effect can implement several of these.
+A single effect can implement several of these. Only the first `IImageEffect` and the first `IColorEffect` in the collection are applied; for several shadows use `ChainDropShadowsEffect`.
 
 ## Built-in shadow effects
 

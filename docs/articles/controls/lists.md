@@ -72,7 +72,7 @@ Two knobs control that rhythm, and they work as a pair:
 
 Keep `PlaneRefreshRatio` below `VirtualisationInflatedRatio`. The plane can only be blitted while it still covers the visible viewport, so a drift equal to the band ratio exhausts the coverage exactly and the frame falls back to drawing cells live. The defaults re-record after half a screen of scrolling with half a screen of coverage still in hand. Raise both together for fewer, larger records; lower them for more frequent, cheaper ones.
 
-To check the plane is doing its job, enable the canvas debug string: it prints `plane [top..bottom] valid=True` when a plane is installed, or `plane none` when every frame is still drawing cells live. A second tell is `drawn X-Y` — blit frames never re-run the stack draw, so those indices stay frozen while the content moves. If `drawn` changes on every few pixels of scrolling, you are not blitting.
+To check the plane is doing its job, read the stack's `DebugString`: it prints `plane [top..bottom] valid=True` when a plane is installed, or `plane none` when every frame is still drawing cells live. A second tell is `drawn X-Y` — blit frames never re-run the stack draw, so those indices stay frozen while the content moves. If `drawn` changes on every few pixels of scrolling, you are not blitting.
 
 **5 — Uneven medium-large cells.** Few cells visible means per-cell caching already carries the frame; a band plane would add little. This is the [News Feed Tutorial](../news-feed-tutorial.md) configuration.
 

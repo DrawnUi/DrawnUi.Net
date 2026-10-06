@@ -39,16 +39,20 @@ Children = new List<SkiaControl>
 layout.ClearChildren();
 layout.AddSubView(new SkiaLabel { Text = "New" });
 layout.RemoveSubView(existingChild);
-layout.Children.RemoveAt(0); // also valid
 
-// ❌ WRONG — does NOT work after initial tree is built
-layout.Children.Clear();        // ignored
-layout.Children.Add(child);     // ignored
+// ✅ also works on the control's own (default) Children collection: it is observed,
+// Add / Insert / Remove / Move / Replace / Clear change what is drawn
+layout.Children.Add(child);
+layout.Children.RemoveAt(0);
+
+// ❌ WRONG — after `Children = new List<SkiaControl> { ... }` the collection is that plain list,
+// which nobody observes: later Add / Clear on it are invisible to the engine
+layout.Children.Add(child);     // ignored when Children was assigned a List
 ```
 
-Also wrong BEFORE the tree is built: `Children = new List<SkiaControl>()` then `layer.Children.Add(x)` — the assignment replaced the observed collection with a plain list, so the `Add` is invisible to the engine (verified 2026-09-16: popup wrappers built this way never rendered and their `ScaleToAsync` never completed). Build the full list first and assign once; the collection-initializer form `Children = { a, b }` (no `new List`) is fine because it adds to the control's own collection.
+Build the full list first and assign once (verified 2026-09-16: popup wrappers built as `Children = new List<SkiaControl>()` followed by `Children.Add(x)` never rendered and their `ScaleToAsync` never completed). The collection-initializer form `Children = { a, b }` (no `new List`) adds to the control's own observed collection.
 
-**Rule of thumb:** Use `Children = new List<...>` only during initial construction. Once `LayoutIsReady` has fired or the control is in the visual tree, use `ClearChildren()`, `AddSubView()`, `RemoveSubView()` instead.
+**Rule of thumb:** Use `Children = new List<...>` only during initial construction. Once `LayoutIsReady` has fired or the control is in the visual tree, use `ClearChildren()`, `AddSubView()`, `RemoveSubView()`: they work whatever collection `Children` holds.
 
 WRONG — never do this:
 ```csharp
@@ -132,7 +136,7 @@ new SkiaGrid()
 .WithRowDefinitions("Auto,Auto")
 ```
 
-`SetGrid(column, row)` / `SetGrid(column, row, columnSpan, rowSpan)` — **column comes first**, opposite of the usual "row, column" convention (the XML doc comment on the 4-arg overload in `FluentExtensions.Maui.cs` lists them backwards — trust the signature). Individual: `.WithRow(n)`, `.WithColumn(n)`, `.WithRowSpan(n)`, `.WithColumnSpan(n)`. Also `DefaultColumnDefinition`.
+`SetGrid(column, row)` / `SetGrid(column, row, columnSpan, rowSpan)` — **column comes first**, opposite of the usual "row, column" convention (the XML doc comment on the 4-arg overload in `FluentExtensions.Maui.cs` / `FluentExtensions.NonMaui.cs` lists them backwards — trust the signature). `WithColumnDefinitions` / `WithRowDefinitions` return `SkiaLayout`, so put them last in the chain (after `.Assign(...)`). Individual: `.WithRow(n)`, `.WithColumn(n)`, `.WithRowSpan(n)`, `.WithColumnSpan(n)`. Also `DefaultColumnDefinition`.
 
 ### `.Initialize` vs `.Adapt`
 
@@ -151,13 +155,18 @@ Always use fluent extension methods — never `+=` events or commands wired outs
 | Tap handler | `.OnTapped(me => { ... })` |
 | Tap with args | `.OnTapped((me, args) => { ... })` |
 | Long press | `.OnLongPressing(me => { ... })` |
-| Text changed | `.OnTextChanged(text => { ... })` |
+| Context menu (right click / long press / Menu key on the web heads) | `.OnContextMenu((me, e) => true)` — `true` = handled (browser menu suppressed), `false` = browser menu shows |
+| Editor text changed (`SkiaEditor`) | `.OnTextChanged(text => { ... })` |
+| Editor focus (`SkiaEditor`) | `.OnFocusChanged((me, focused) => { ... })` |
 | Label text + sender | `.OnTextChanged((lbl, text) => { ... })` |
 | Arbitrary setup | `.Adapt(me => { me.X = ...; })` |
 | Post-build wiring (touching Assign'd refs) | `.Initialize(me => { ... })` |
 | Key pressed | `.OnKeyDown((me, key) => { ... })` |
 | Key released | `.OnKeyUp((me, key) => { ... })` |
-| Paint hook | `.WhenPaint((me, ctx) => { ... })` |
+| Paint hook (before own background) | `.WhenPaint((me, ctx) => { ... })` |
+| Overlay above content + children | `.WhenPainted((ctx, control) => { ...; return false; })` — `true` = keep repainting |
+| Self-observe any property | `.ObserveSelf((me, propName) => { ... })` |
+| Raw gesture interception (`SkiaLayout`-derived) | `.WithGestures((me, args, apply) => { ... })` — return `me` = consumed, `null` = pass; never consume Up unless required |
 
 Keyboard: `.OnKeyDown` / `.OnKeyUp` both take `(control, InputKey key)` — `InputKey.ArrowLeft/ArrowRight/ArrowUp/ArrowDown`, `Space`, `Enter`, `KeyD`… Attach them to the ROOT control of the tree, not to the focused child. Verified on the Fiddle WASM build 2026-08-30.
 
@@ -195,8 +204,8 @@ new SkiaShape { CornerRadius = 10, BackgroundColor = Color.Parse("#0B0E14"), Wid
 ```
 
 Hook coordinates: `ctx.Context.Canvas` = raw `SKCanvas`, `ctx.Destination` = the control's rect in device pixels, `ctx.Scale` = DIP→px. Convert local DIP to canvas px with `dest.Left + v * scale`.
-| Self-observe any property | `.ObserveSelf((me, propName) => { ... })` |
-| Raw gesture interception | `.WithGestures((me, args, apply) => { ... })` — return `this` = consumed, `null` = pass; never consume Up unless required |
+
+To draw ON TOP of the control's own content and children instead, use `.WhenPainted((ctx, control) => ...)` (`control` is `IDrawnBase`; after-drawing overlay pass, where the ripple renders); draw only, never change layout properties inside.
 
 WRONG:
 ```csharp
@@ -233,7 +242,7 @@ return new SkiaSlider { Min = min, Max = max, End = value }
 
 Do not subclass the control and swallow the second `Down` for this — that also kills the thumb jump/press feedback of the first tap; the `Tapped` count leaves the control untouched.
 
-Exception — `SkiaButton.Clicked` / `Pressed` / `Released` are **fields**, not events (`Action<SkiaButton, SkiaGesturesParameters>`, `SkiaButton.cs:883-893`). Assigning them inside the initializer is valid and does not break the chain, so it is NOT the banned `+=` pattern:
+Exception — `SkiaButton.Clicked` / `Pressed` / `Released` are **fields**, not events (`Action<SkiaButton, SkiaGesturesParameters>`, `SkiaButton.cs`). Assigning them inside the initializer is valid and does not break the chain, so it is NOT the banned `+=` pattern:
 
 ```csharp
 new SkiaButton("Back") { Clicked = (me, args) => App.GoBack() }
@@ -255,7 +264,7 @@ new SkiaShape { Type = ShapeType.Circle, /* ... */ }
     {
         me.Rotation = value * 360;   // value = eased 0..1 progress of the cycle
         // animator.Stop();          // stop from inside when needed
-    }, repeat: -1);                  // -1 loop forever, N cycles, 0 once
+    }, repeat: -1);                  // -1 loop forever, N = N extra cycles, 0 once
 ```
 
 Signature: `.Animate(double seconds, Action<T, SkiaValueAnimator, double, double> onFrame, int repeat = 0, Easing easing = null, bool pingPong = false, double delaySeconds = 0)`. `pingPong: true` bounces value 0→1→0 each cycle. `easing: null` = linear.
@@ -430,7 +439,7 @@ FillGradient = new SkiaGradient()
         Color.FromHex("#FF0000"),
     },
     ColorPositions = new List<double> { 0.0, 1.0 },  // optional; default evenly spaced
-    Opacity = 0.8,
+    Opacity = 0.8f,                                  // float, not double
 }
 ```
 
@@ -494,9 +503,13 @@ Named colors: `Colors.White`, `Colors.Black`, `Colors.Red`, `Colors.DarkRed`,
 **Pitfall:** `Colors.FromRgba(double, double, double, double)` expects 0–1 floats.
 `Colors.FromRgb(int,int,int)` / `Colors.FromRgba(int,int,int,int)` take 0–255.
 
+`"#...".ToColor()` and the `Colors.FromRgb*` helpers are DrawnUI's own color types on the non-MAUI heads (Blazor, Web, OpenTK, WPF). On MAUI use `Color.FromArgb("#...")` / `Color.Parse("#...")`; `Color.Parse("#...")` works on every head.
+
 ---
 
 ## Shadows
+
+`Shadows` is a `SkiaShape` property:
 
 ```csharp
 Shadows = new List<SkiaShadow>()
@@ -559,7 +572,7 @@ new SkiaBackdrop()
 ```
 
 Place inside a `SkiaShape` child to clip the blur to rounded corners.
-**Blazor:** requires `SkiaBackdrop.cs` in Shared project — verify before porting.
+`SkiaBackdrop` is in the shared engine (`src/Shared/DrawnUi/Draw/SkiaBackdrop.cs`), so it exists on every head.
 
 ---
 
@@ -610,7 +623,7 @@ Prefer `ContextPropertyChanged` over per-control `.ObserveProperty(...)` inside 
 
 ### Teardown — `OnWillDisposeWithChildren()`
 
-The DrawnUI cleanup hook (`SkiaControl.Shared.cs:8725`), not `Dispose(bool)`. Use it to unsubscribe app-level messengers/singletons; fluent observers (`.Observe*`) and `.Animate` unregister themselves.
+The DrawnUI cleanup hook (`SkiaControl.Shared.cs`), not `Dispose(bool)`. Use it to unsubscribe app-level messengers/singletons; fluent observers (`.Observe*`) and `.Animate` unregister themselves.
 
 ```csharp
 public override void OnWillDisposeWithChildren()
@@ -653,7 +666,8 @@ public class PresetCell : SkiaDynamicDrawnCell
 }
 ```
 
-- A `SkiaButton` needs an explicit `AccessibilityRole = Aria.RoleButton`; a row of them goes in a container with `Aria.RoleToolbar`.
+- A `SkiaButton` needs an explicit `AccessibilityRole = Aria.RoleButton` (or `SkiaButton.DefaultAccessibilityRole = Aria.RoleButton` once at startup); a row of them goes in a container with `Aria.RoleToolbar`.
+- Fluent shortcuts: `.WithAccessibility(role, label, hint, canInteract)`, `.WithAccessibilityButton(label)` (no argument on a `SkiaButton` = its `Text`), `.WithAccessibilityText(text)` (no argument on a `SkiaLabel` = its `Text`), `.WithAccessibilityPressed(bool?)`, `.WithAccessibilityToggle(label)` (`SkiaToggle`: switch role, pressed state kept in sync with `IsToggled`), `.WithAccessibilityLive()` (`"polite"` by default).
 - Name toggles, sliders and progress bars by purpose: `new SkiaSlider { AccessibilityLabel = "Volume", ... }`. Their value is read separately (a slider reads "Volume, slider, 65"); without a label they read as a bare value.
 - A custom range control overrides `GetAccessibilityValue()` (now, min, max, step, optional spoken text) and `OnAccessibilitySetValue(double)`, and steps on ArrowUp / ArrowDown in `OnAccessibilityKey`: screen readers then adjust and set it.
 - To hide a part of a recycled cell from the pointer and the keyboard, use `Opacity = 0` plus `InputTransparent = true`: opacity alone still takes input.
@@ -661,7 +675,7 @@ public class PresetCell : SkiaDynamicDrawnCell
 
 ## XAML → Code-Behind Porting
 
-Check platform availability first — some controls are MAUI-only on other heads (`SkiaMauiElement`, `SkiaCamera`; verify others by grepping the class in `src/Shared/Shared.projitems` and the target head's csproj excludes).
+Check platform availability first — some controls are MAUI-only on other heads (`SkiaMauiElement`, `SkiaCamera`; verify others by grepping the class in `src/Shared/DrawnUi/Shared.projitems` and the target head's csproj excludes).
 
 - Every `x:Name="Foo"` → `private ControlType Foo;` field + `.Assign(out Foo)` on the inline construction.
 - Layout type: prefer alias controls (`Type="Column"` → `SkiaStack`, `"Row"` → `SkiaRow`, `"Wrap"` → `SkiaWrap`, `"Grid"` → `SkiaGrid`, absolute → `SkiaLayer`) — but note base `SkiaLayout` doesn't Fill by default while most aliases do; preserve the original's effective alignment.

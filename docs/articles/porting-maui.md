@@ -21,7 +21,7 @@ This guide will help you port your existing native MAUI controls to DrawnUI.
 
 ## Prerequisites
 
-First, please follow the [Getting Started guide](./getting-started.md) to set up your project for DrawnUI.
+First, please follow the [Getting Started guide](./maui/getting-started.md) to set up your project for DrawnUI.
 
 ## The Theory
 
@@ -58,8 +58,8 @@ You can also place MAUI controls over the canvas if you need to stick with nativ
 | `Label` | `SkiaLabel` | Renders unicode, spans support |
 | `Label` (with markdown) | `SkiaRichLabel` | For complex formatting, emojis, different languages, auto-finds fonts |
 | **Input Controls** |
-| `Entry` | `SkiaMauiEntry` | Native entry wrapped for DrawnUI |
-| `Editor` | `SkiaMauiEditor` | Native editor wrapped for DrawnUI |
+| `Entry` | `SkiaEditor` (`MaxLines="1"`) or `SkiaMauiEntry` | Drawn text input, or native entry wrapped for DrawnUI |
+| `Editor` | `SkiaEditor` or `SkiaMauiEditor` | Drawn text input, or native editor wrapped for DrawnUI |
 | **Button Controls** |
 | `Button` | `SkiaButton` | Platform-specific styling via ControlStyle |
 | **Toggle Controls** |
@@ -105,9 +105,9 @@ You can also place MAUI controls over the canvas if you need to stick with nativ
 | `Picker` | `SkiaMauiElement`+`Picker` | Dropdown selection, create custom |
 | `DatePicker` | `SkiaMauiElement`+`DatePicker` | Date selection control, create custom |
 | `TimePicker` | `SkiaMauiElement`+`TimePicker` | Time selection control, create custom |
-| `Slider` | `SkiaMauiElement`+`Slider`| Range input control, create custom |
-| `Stepper` | `SkiaMauiElement`+`Slider` | Increment/decrement numeric input, create custom |
-| `ProgressBar` | `SkiaMauiElement`+`Slider` | Progress indication, create custom |
+| `Slider` | `SkiaSlider` | Drawn slider, `EnableRange` for two thumbs |
+| `Stepper` | `SkiaMauiElement`+`Stepper` | Increment/decrement numeric input, create custom |
+| `ProgressBar` | `SkiaProgress` | Drawn progress bar |
 | `TableView` | `SkiaMauiElement`+`TableView` | Grouped table display, create custom |
 | `SearchBar` | ❌ Do not use, create custom | Search input with built-in styling |
 
@@ -197,7 +197,7 @@ Here's the same page converted to DrawnUI:
                                  CornerRadius="8"
                                  WidthRequest="120"
                                  HeightRequest="44"
-                                 Clicked="OnButtonClicked" />
+                                 Tapped="OnButtonClicked" />
 
             </draw:SkiaStack>
         </draw:SkiaScroll>
@@ -234,7 +234,7 @@ private void OnButtonClicked(object sender, EventArgs e)
 }
 
 // After (DrawnUI)
-private void OnButtonClicked(SkiaButton button, SkiaGesturesParameters args)
+private void OnButtonClicked(object sender, ControlTappedEventArgs e)
 {
     // Handle click - note the different parameters
 }
@@ -251,9 +251,7 @@ Imagine your page redrawing. What could stay the same if you redraw one element?
             leaving other raster areas unchanged -->
             <draw:SkiaStack Spacing="25" Padding="30,0" UseCache="ImageComposite">
 
-            <!-- unchaged code -->
-
-            </draw:SkiaStack>
+            <!-- unchanged code -->
 
             </draw:SkiaStack>
         </draw:SkiaScroll>
@@ -269,6 +267,6 @@ After conversion, you'll get:
 
 ### Further Reading
 
-Please see [sample apps](tutorials.md) and [controls documentation](controls/index.md) for more examples and details.
+Please see [sample apps](sample-apps.md) and [controls documentation](controls/index.md) for more examples and details.
 
 

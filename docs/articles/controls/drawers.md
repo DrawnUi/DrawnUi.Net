@@ -1,6 +1,6 @@
 # Drawer Controls
 
-DrawnUi.Maui provides powerful drawer controls for creating sliding panels that can appear from any edge of the screen. This article covers the drawer components available in the framework.
+DrawnUI provides powerful drawer controls for creating sliding panels that can appear from any edge of the screen. This article covers the drawer components available in the framework.
 
 ## SkiaDrawer
 
@@ -347,9 +347,10 @@ A common and powerful pattern is embedding a `SkiaScroll` inside a `SkiaDrawer`.
             
         </DrawUi:SkiaShape>
         
-        <!-- Content -->
+        <!-- Content, AutoCache off: native entries need uncached parents -->
         <DrawUi:SkiaScroll
             AddMarginTop="60"
+            AutoCache="False"
             BackgroundColor="White">
             
             <DrawUi:SkiaLayout
@@ -517,7 +518,7 @@ A common and powerful pattern is embedding a `SkiaScroll` inside a `SkiaDrawer`.
 
 ## Performance Considerations
 
-- For complex drawers, consider using `Cache="Operations"` on content that doesn't change often
+- For complex drawers, consider using `UseCache="Operations"` on content that doesn't change often
 - Use appropriate header size to ensure smooth gestures in the grabbable area
 - For large drawers with many child elements, enable virtualization in nested scrolling content
 - Avoid doing heavy work in `IsOpen` change handlers as this can cause animation stuttering

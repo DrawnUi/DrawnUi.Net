@@ -4,7 +4,9 @@ SkiaShell is a powerful navigation framework for DrawnUi applications that provi
 
 ## Overview
 
-SkiaShell acts as a replacement for the standard MAUI Shell, allowing for fully drawn UI with SkiaSharp while maintaining compatibility with MAUI's routing capabilities. It provides complete navigation stack management, modal presentations, popups, and toast notifications within a DrawnUi.Maui Canvas.
+SkiaShell acts as a replacement for the standard MAUI Shell, allowing for fully drawn UI with SkiaSharp while maintaining compatibility with MAUI's routing capabilities. It provides complete navigation stack management, modal presentations, popups, and toast notifications. On MAUI the shell is a page: it derives from `DrawnUiBasePage` and hosts a DrawnUI `Canvas`.
+
+On WPF and OpenTK, `SkiaShell` is a drawn control (a `SkiaLayer`) that goes inside any canvas. It has the same verbs (routes, `GoToAsync`, popups, modals, toasts and tabs) with its own API, see the `HelloWpf` and `HelloOpenTk` samples. The rest of this page shows the MAUI shell.
 
 ### Key Features
 
@@ -22,78 +24,78 @@ SkiaShell acts as a replacement for the standard MAUI Shell, allowing for fully 
 
 To use SkiaShell in your application, you need to:
 
-1. Optiinal: create a page that derives from `DrawnUiBasePage`. This class provide support to track native keyboard to be able to adapt layout accordingly.
-2. Add a Canvas to your page
+1. Create a page that derives from `SkiaShell`. It is a `DrawnUiBasePage`, which tracks the native keyboard to adapt the layout.
+2. Set its content to a Canvas
 3. Set up the required layout structure on the canvas
-4. Initialize the shell to register elements present on the canvas that would serve for navigation
+4. Register routes, then call `Initialize(route)`: it imports the tagged elements from the canvas and navigates to the start route
 
 Here's a basic example:
 
 ```xml
-<drawn:DrawnUiBasePage
+<draw:SkiaShell
     x:Class="MyApp.MainShellPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:drawn="clr-namespace:DrawnUi.Maui;assembly=DrawnUi.Maui">
+    xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw">
 
-    <drawn:Canvas
+    <draw:Canvas
         x:Name="MainCanvas"
-        HardwareAcceleration="Enabled"
+        RenderingMode="Accelerated"
         Gestures="Enabled"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
         
         <!-- Main content goes here -->
-        <drawn:SkiaLayout
+        <draw:SkiaLayout
             Tag="ShellLayout"
             HorizontalOptions="Fill"
             VerticalOptions="Fill">
             
-            <drawn:SkiaLayout
-                Tag="RootLayout"
-                HorizontalOptions="Fill"
-                VerticalOptions="Fill">
-                
-                <drawn:SkiaViewSwitcher
-                    Tag="NavigationLayout"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Fill" />
-                    
-            </drawn:SkiaLayout>
+            <!-- Placeholder, replaced by the start route -->
+            <draw:SkiaControl Tag="RootLayout" />
             
-        </drawn:SkiaLayout>
-    </drawn:Canvas>
+        </draw:SkiaLayout>
+    </draw:Canvas>
     
-</drawn:DrawnUiBasePage>
+</draw:SkiaShell>
 ```
 
 In your code-behind:
 
 ```csharp
-public partial class MainShellPage : DrawnUiBasePage
+public partial class MainShellPage : SkiaShell
 {
     public MainShellPage()
     {
         InitializeComponent();
         
-        // Initialize and register the shell
-        Shell = new SkiaShell();
-        Shell.Initialize(MainCanvas);
-    }
-    
-    public SkiaShell Shell { get; private set; }
-    
-    // Register routes in OnAppearing or constructor
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        
         // Register navigation routes
-        Shell.RegisterRoute("home", typeof(HomePage));
-        Shell.RegisterRoute("details", typeof(DetailsPage));
+        RegisterRoute("main", typeof(MainScreen));
+        RegisterRoute("details", typeof(DetailsPage));
         
-        // Navigate to the initial route
-        Shell.GoToAsync("home");
+        // Import the tagged layout and navigate to the start route
+        Initialize("main");
+    }
+}
+
+// The start route replaces RootLayout. It holds the SkiaViewSwitcher that pages are pushed into.
+public class MainScreen : SkiaLayer
+{
+    public MainScreen()
+    {
+        Children = new List<SkiaControl>
+        {
+            new SkiaViewSwitcher
+            {
+                Tag = "NavigationLayout",
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Children = new List<SkiaControl>
+                {
+                    new HomePage(),
+                },
+            },
+        };
     }
 }
 ```
@@ -102,13 +104,15 @@ public partial class MainShellPage : DrawnUiBasePage
 
 SkiaShell relies on specific tags to identify key components in your layout:
 
-- `ShellLayout`: The outer container for all navigation elements (typically directly inside the Canvas)
-- `RootLayout`: The main layout container (inside ShellLayout)
-- `NavigationLayout`: A `SkiaViewSwitcher` that handles page transitions (inside RootLayout)
+- `ShellLayout`: The outer container for all navigation elements (typically directly inside the Canvas). Without it the canvas content is used.
+- `RootLayout`: The main layout container (inside ShellLayout), required. The start route, and any route starting with `//`, replaces it.
+- `NavigationLayout`: A `SkiaViewSwitcher` inside the root that pages are pushed into. The shell logs a warning when it is missing.
 
 ## Navigation
 
 ### Basic Navigation
+
+In the samples below, `Shell` is your `SkiaShell` instance; inside the shell page itself, call the methods directly.
 
 ```csharp
 // Navigate to a registered route
@@ -118,10 +122,10 @@ await Shell.GoToAsync("details");
 await Shell.GoToAsync("details?id=123&name=Product");
 
 // Navigate back
-bool handled = Shell.GoBack(true); // true to animate
+bool handled = Shell.GoBack(true); // true to animate, false when there was nothing to go back to
 
-// Check if can go back
-bool canGoBack = Shell.CanGoBack();
+// Replace the root with another route
+await Shell.GoToAsync("//main");
 ```
 
 ### Push and Pop Pages
@@ -135,7 +139,7 @@ await Shell.PushAsync(detailsPage, animated: true);
 var poppedPage = await Shell.PopAsync(animated: true);
 
 // Pop to the root page
-await Shell.PopToRootAsync(animated: true);
+await Shell.PopToRootAsync();
 ```
 
 ### Route Registration
@@ -145,33 +149,25 @@ Routes need to be registered before navigation:
 ```csharp
 // Register a route with a page type
 Shell.RegisterRoute("details", typeof(DetailsPage));
-
-// Register a route with a factory function
-Shell.RegisterRoute("profile", () => new ProfilePage());
 ```
+
+The shell creates the page when the route is used: from the app's services when the type is registered there, else with its parameterless constructor.
 
 ### Route Parameters
 
-Extract parameters in the destination page:
+The query of the last route part, or the arguments dictionary passed to `GoToAsync`, goes to the `BindingContext` of the created page: through `IQueryAttributable`, or through a `[QueryProperty]` attribute on the view model.
 
 ```csharp
-public class DetailsPage : SkiaControl
+public class DetailsViewModel : IQueryAttributable
 {
-    protected override void OnParentChanged()
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        base.OnParentChanged();
-        
         // Get query parameters from shell route
-        var shell = AppShell; // Helper property to get the shell
+        var id = query.TryGetValue("id", out var idValue) ? idValue?.ToString() : null;
+        var name = query.TryGetValue("name", out var nameValue) ? nameValue?.ToString() : null;
         
-        if (shell?.RouteParameters != null)
-        {
-            string id = shell.RouteParameters.GetValueOrDefault("id");
-            string name = shell.RouteParameters.GetValueOrDefault("name");
-            
-            // Use the parameters
-            LoadDetails(id, name);
-        }
+        // Use the parameters
+        LoadDetails(id, name);
     }
 }
 ```
@@ -194,29 +190,22 @@ await Shell.PopModalAsync(animated: true);
 ### Popup Presentation
 
 ```csharp
-// Create a popup content
-var popupContent = new SkiaLayout
-{
-    WidthRequest = 300,
-    HeightRequest = 200,
-    BackgroundColor = Colors.White,
-    CornerRadius = 10
-};
-
-// Add content to the popup
-popupContent.Add(new SkiaLabel 
-{ 
-    Text = "This is a popup",
-    HorizontalOptions = LayoutOptions.Center,
-    VerticalOptions = LayoutOptions.Center
-});
-
 // Show popup
 await Shell.OpenPopupAsync(
-    content: popupContent,
+    content: new SkiaShape
+    {
+        WidthRequest = 300,
+        HeightRequest = 200,
+        BackgroundColor = Colors.White,
+        CornerRadius = 10,
+        Children = new List<SkiaControl>
+        {
+            new SkiaLabel("This is a popup").Center(),
+        }
+    },
     animated: true,
     closeWhenBackgroundTapped: true,
-    freezeBackground: true
+    showOverlay: true
 );
 
 // Close popup
@@ -243,30 +232,26 @@ Shell.ShowToast(new SkiaRichLabel
 
 ```csharp
 // Set global appearance properties
-SkiaShell.PopupBackgroundColor = new SKColor(0, 0, 0, 128); // 50% transparent black
+SkiaShell.PopupBackgroundColor = Color.FromArgb("#80000000"); // 50% transparent black
 SkiaShell.PopupsBackgroundBlur = 10; // Blur amount
 SkiaShell.PopupsAnimationSpeed = 350; // Animation duration in ms
-SkiaShell.ToastBackgroundColor = new SKColor(50, 50, 50, 230);
+SkiaShell.ToastBackgroundColor = Color.FromArgb("#E6323232");
 SkiaShell.ToastTextColor = Colors.White;
 ```
 
 ### Animation Control
 
-Control the animation duration and timing:
+Every navigation call can skip its animation. Durations are set on the `SkiaViewSwitcher` (`PagesAnimationSpeed`, `TabsAnimationSpeed`, in ms) and by `SkiaShell.PopupsAnimationSpeed`:
 
 ```csharp
-// Fast navigation with minimal animation
-await Shell.GoToAsync("details", new NavigationParameters
-{
-    AnimationDuration = 150
-});
+// Navigate without animation
+await Shell.GoToAsync("details", false);
 
-// Slow modal presentation with specific animation
-await Shell.PushModalAsync("settings", new NavigationParameters
-{
-    AnimationDuration = 500,
-    AnimationType = NavigationType.SlideFromRight
-});
+// Pass arguments to the page's BindingContext
+await Shell.GoToAsync("details", true, new Dictionary<string, object> { ["id"] = 123 });
+
+// Modal without animation
+await Shell.PushModalAsync("settings", useGestures: true, animated: false);
 ```
 
 ### Navigation Events
@@ -281,8 +266,10 @@ Shell.RouteChanged += OnRouteChanged;
 private void OnNavigating(object sender, SkiaShellNavigatingArgs e)
 {
     // Access navigation details
-    string source = e.Source.ToString();
-    string destination = e.Destination;
+    NavigationSource source = e.Source; // Push, Pop...
+    string route = e.Route;
+    SkiaControl view = e.View;          // the control that will navigate
+    SkiaControl current = e.Previous;   // the control upfront now
     
     // Optionally cancel navigation
     if (HasUnsavedChanges)
@@ -295,16 +282,16 @@ private void OnNavigating(object sender, SkiaShellNavigatingArgs e)
 private void OnNavigated(object sender, SkiaShellNavigatedArgs e)
 {
     // Navigation completed
-    Debug.WriteLine($"Navigated from {e.Source} to {e.Destination}");
+    Debug.WriteLine($"{e.Source} navigated to {e.Route}");
 }
 ```
 
 ### Custom Back Navigation
 
-Implement the `IHandleGoBack` interface to handle back navigation in view models:
+Implement the `SkiaShell.IHandleGoBack` interface to handle back navigation. `GoBack` asks the static `SkiaShell.OnShellGoBack` handler first, and the `BindingContext` of the top modal when it implements the interface:
 
 ```csharp
-public class EditViewModel : IHandleGoBack
+public class EditViewModel : SkiaShell.IHandleGoBack
 {
     public bool OnShellGoBack(bool animate)
     {
@@ -331,54 +318,63 @@ public class EditViewModel : IHandleGoBack
 When showing modals or popups, SkiaShell can freeze the background content by taking a screenshot:
 
 ```csharp
-// Show a modal with frozen background
-await Shell.PushModalAsync("details", new NavigationParameters
-{
-    FreezeBackground = true,
-    FreezeBlur = 5,
-    FreezeTint = new SKColor(0, 0, 0, 100)
-});
+// Show a modal with frozen background (true by default)
+await Shell.PushModalAsync("details", useGestures: true, animated: true, freezeBackground: true);
 ```
+
+The frozen screenshot is tinted with `SkiaShell.PopupBackgroundColor` and blurred by `SkiaShell.PopupsBackgroundBlur`.
 
 ### Custom Modal Presentation
 
-Create a custom modal presentation style:
+A modal is a `SkiaShell.ModalWrapper` holding a `SkiaDrawer` that slides in from the bottom. Create a custom modal presentation style by returning your own wrapper:
 
 ```csharp
 // Subclass SkiaShell to customize modal presentation
 public class CustomShell : SkiaShell
 {
-    protected override SkiaDrawer CreateModalDrawer(SkiaControl content, bool useGestures)
+    public class SideModalWrapper : ModalWrapper
     {
-        var drawer = base.CreateModalDrawer(content, useGestures);
-        
-        // Customize the drawer
-        drawer.Direction = DrawerDirection.FromBottom;
-        drawer.HeaderSize = 40;
-        
-        // Add custom styling
-        content.BackgroundColor = Colors.White;
-        content.CornerRadius = new CornerRadius(20, 20, 0, 0);
-        
-        return drawer;
+        public SideModalWrapper(bool useGestures, bool animated, bool willFreeze, Color backgroundColor, SkiaShell shell)
+            : base(useGestures, animated, willFreeze, backgroundColor, shell)
+        {
+        }
+
+        public override void WrapContent(SkiaControl content)
+        {
+            base.WrapContent(content);
+            
+            // Customize the drawer
+            Drawer.Direction = DrawerDirection.FromRight;
+        }
+    }
+
+    protected override ModalWrapper CreateModalDrawer(bool useGestures, bool animated, bool willFreeze, Color backgroundColor)
+    {
+        return new SideModalWrapper(useGestures, animated, willFreeze, backgroundColor, this)
+        {
+            Tag = "Modal",
+            ZIndex = ZIndexModals + ModalStack.Count,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+        };
     }
 }
 ```
 
 ### Handling Page Lifecycle
 
-Implement navigation-aware controls:
+Implement `IVisibilityAware` on a page: the `SkiaViewSwitcher` calls it when the page shows and hides. `SkiaLayout` already has the four methods as virtual ones:
 
 ```csharp
-public class MyPage : SkiaLayout, INavigationAware
+public class MyPage : SkiaLayout, IVisibilityAware
 {
-    public void OnAppearing()
+    public override void OnAppearing()
     {
         // Page is becoming visible
         LoadData();
     }
     
-    public void OnDisappearing()
+    public override void OnDisappearing()
     {
         // Page is being hidden
         SaveData();
@@ -392,226 +388,208 @@ Here's a complete example of a minimal shell-based application:
 
 ```xml
 <!-- MainShell.xaml -->
-<drawn:DrawnUiBasePage
+<draw:SkiaShell
     x:Class="MyApp.MainShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:drawn="clr-namespace:DrawnUi.Maui;assembly=DrawnUi.Maui">
+    xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw">
 
-    <drawn:Canvas
+    <draw:Canvas
         x:Name="MainCanvas"
-        HardwareAcceleration="Enabled"
-        Gestures="Enabled">
+        RenderingMode="Accelerated"
+        Gestures="Enabled"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
         
-        <drawn:SkiaLayout
+        <draw:SkiaLayout
             Tag="ShellLayout"
             BackgroundColor="#F0F0F0"
             HorizontalOptions="Fill"
             VerticalOptions="Fill">
             
-            <drawn:SkiaLayout
-                Tag="RootLayout"
-                HorizontalOptions="Fill"
-                VerticalOptions="Fill">
-                
-                <!-- Navigation content -->
-                <drawn:SkiaViewSwitcher
-                    Tag="NavigationLayout" 
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Fill"
-                    TransitionType="SlideHorizontal" />
-                    
-                <!-- Bottom tabs -->
-                <drawn:SkiaLayout
-                    LayoutType="Row"
-                    HeightRequest="60"
-                    BackgroundColor="White"
-                    VerticalOptions="End"
-                    HorizontalOptions="Fill"
-                    Spacing="0">
-                    
-                    <drawn:SkiaHotspot 
-                        HorizontalOptions="FillAndExpand"
-                        Tapped="OnHomeTabTapped">
-                        <drawn:SkiaLabel 
-                            Text="Home" 
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center" />
-                    </drawn:SkiaHotspot>
-                    
-                    <drawn:SkiaHotspot 
-                        HorizontalOptions="FillAndExpand"
-                        Tapped="OnProfileTabTapped">
-                        <drawn:SkiaLabel 
-                            Text="Profile" 
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center" />
-                    </drawn:SkiaHotspot>
-                    
-                    <drawn:SkiaHotspot 
-                        HorizontalOptions="FillAndExpand"
-                        Tapped="OnSettingsTabTapped">
-                        <drawn:SkiaLabel 
-                            Text="Settings" 
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center" />
-                    </drawn:SkiaHotspot>
-                </drawn:SkiaLayout>
-                
-            </drawn:SkiaLayout>
-        </drawn:SkiaLayout>
-    </drawn:Canvas>
-</drawn:DrawnUiBasePage>
+            <!-- Replaced by the "main" route -->
+            <draw:SkiaControl Tag="RootLayout" />
+            
+        </draw:SkiaLayout>
+    </draw:Canvas>
+</draw:SkiaShell>
 ```
 
 ```csharp
 // MainShell.xaml.cs
-public partial class MainShell : DrawnUiBasePage
+public partial class MainShell : SkiaShell
 {
-    public SkiaShell Shell { get; private set; }
-    
     public MainShell()
     {
         InitializeComponent();
         
-        // Initialize shell
-        Shell = new SkiaShell();
-        Shell.Initialize(MainCanvas);
-        
         // Register routes
-        Shell.RegisterRoute("home", typeof(HomePage));
-        Shell.RegisterRoute("profile", typeof(ProfilePage));
-        Shell.RegisterRoute("settings", typeof(SettingsPage));
-        Shell.RegisterRoute("details", typeof(DetailsPage));
+        RegisterRoute("main", typeof(TabsScreen));
+        RegisterRoute("details", typeof(DetailsPage));
         
-        // Navigate to initial route
-        Shell.GoToAsync("home");
-    }
-    
-    private void OnHomeTabTapped(object sender, EventArgs e)
-    {
-        Shell.GoToAsync("home");
-    }
-    
-    private void OnProfileTabTapped(object sender, EventArgs e)
-    {
-        Shell.GoToAsync("profile");
-    }
-    
-    private void OnSettingsTabTapped(object sender, EventArgs e)
-    {
-        Shell.GoToAsync("settings");
+        // Initialize shell and navigate to initial route
+        Initialize("main");
     }
     
     protected override bool OnBackButtonPressed()
     {
         // Let shell handle back button
-        return Shell.GoBack(true);
+        return GoBack(true);
+    }
+}
+
+// Root screen: each child of the SkiaViewSwitcher is the root of one tab,
+// pages pushed with GoToAsync("details") go into the selected tab
+public class TabsScreen : SkiaLayer
+{
+    SkiaViewSwitcher _tabs;
+
+    public TabsScreen()
+    {
+        Children = new List<SkiaControl>
+        {
+            new SkiaViewSwitcher
+            {
+                Tag = "NavigationLayout",
+                Margin = new Thickness(0, 0, 0, 60),
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Children = new List<SkiaControl>
+                {
+                    new HomePage(),
+                    new ProfilePage(),
+                    new SettingsPage(),
+                },
+                SelectedIndex = 0,
+            }.Assign(out _tabs),
+
+            // Bottom tabs
+            new SkiaGrid
+            {
+                HeightRequest = 60,
+                BackgroundColor = Colors.White,
+                VerticalOptions = LayoutOptions.End,
+                Children = new List<SkiaControl>
+                {
+                    new SkiaLabel("Home").Center().SetGrid(0, 0).OnTapped(me => _tabs.SelectedIndex = 0),
+                    new SkiaLabel("Profile").Center().SetGrid(1, 0).OnTapped(me => _tabs.SelectedIndex = 1),
+                    new SkiaLabel("Settings").Center().SetGrid(2, 0).OnTapped(me => _tabs.SelectedIndex = 2),
+                },
+            }.WithColumnDefinitions("*,*,*"),
+        };
     }
 }
 ```
 
 ## SkiaTabsSelector
 
-`SkiaTabsSelector` is a control for creating top and bottom tabs with customizable appearance and behavior.
+`SkiaTabsSelector` is a layout for building top and bottom tab bars. Its children of type `TabType` (default `SkiaLabel`) are the tabs; any other child just draws, so you can add icons, backgrounds or an indicator. It tracks the selection; the look of the selected tab is yours.
 
 ### Basic Usage
 
 ```xml
 <draw:SkiaTabsSelector
     x:Name="TabsSelector"
+    Type="Row"
+    Spacing="24"
     SelectedIndex="0"
-    TabHeight="50"
-    TabsPosition="Bottom"
+    HeightRequest="50"
     BackgroundColor="White"
-    SelectedTabColor="Blue"
-    UnselectedTabColor="Gray"
-    SelectionChanged="OnTabSelectionChanged">
+    CommandTabSelected="{Binding SelectTabCommand}">
 
-    <draw:SkiaTabsSelector.Tabs>
-        <draw:SkiaTab Text="Home" Icon="home.png" />
-        <draw:SkiaTab Text="Search" Icon="search.png" />
-        <draw:SkiaTab Text="Profile" Icon="profile.png" />
-        <draw:SkiaTab Text="Settings" Icon="settings.png" />
-    </draw:SkiaTabsSelector.Tabs>
+    <draw:SkiaLabel Text="Home" />
+    <draw:SkiaLabel Text="Search" />
+    <draw:SkiaLabel Text="Profile" />
+    <draw:SkiaLabel Text="Settings" />
 </draw:SkiaTabsSelector>
 ```
+
+Tapping a tab does not select it by itself: set `SelectedIndex` from your tap handler, or execute `CommandTappedTab` with the tab index.
 
 ### Code-Behind Example
 
 ```csharp
-var tabsSelector = new SkiaTabsSelector
+// Subclass to style the selected tab
+public class MyTabs : SkiaTabsSelector
 {
-    TabHeight = 60,
-    TabsPosition = TabsPosition.Top,
-    BackgroundColor = Colors.White,
-    SelectedTabColor = Colors.Blue,
-    UnselectedTabColor = Colors.Gray
-};
+    public override async Task ApplySelectedIndex(bool tabsChanged, int selectedIndex)
+    {
+        await base.ApplySelectedIndex(tabsChanged, selectedIndex);
 
-// Add tabs
-tabsSelector.Tabs.Add(new SkiaTab { Text = "Tab 1", Icon = "icon1.png" });
-tabsSelector.Tabs.Add(new SkiaTab { Text = "Tab 2", Icon = "icon2.png" });
-tabsSelector.Tabs.Add(new SkiaTab { Text = "Tab 3", Icon = "icon3.png" });
+        foreach (var tab in SelectableTabs)
+        {
+            if (tab.VIew is SkiaLabel label)
+                label.TextColor = tab.IsSelected ? Colors.Blue : Colors.Gray;
+        }
+    }
+}
 
-// Handle selection changes
-tabsSelector.SelectionChanged += (s, e) => {
-    Console.WriteLine($"Selected tab: {e.SelectedIndex}");
-};
+new MyTabs
+{
+    Type = LayoutType.Row,
+    Spacing = 24,
+    HeightRequest = 60,
+    CommandTabSelected = new Command(index => Console.WriteLine($"Selected tab: {index}")),
+    Children = new List<SkiaControl>
+    {
+        new SkiaLabel("Tab 1").OnTapped(me => _tabs.SelectedIndex = 0),
+        new SkiaLabel("Tab 2").OnTapped(me => _tabs.SelectedIndex = 1),
+        new SkiaLabel("Tab 3").OnTapped(me => _tabs.SelectedIndex = 2),
+    }
+}.Assign(out _tabs)
 ```
 
 ### Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `SelectedIndex` | int | Index of the currently selected tab |
-| `TabHeight` | double | Height of the tab bar |
-| `TabsPosition` | TabsPosition | Position of tabs (Top, Bottom) |
-| `SelectedTabColor` | Color | Color of the selected tab |
-| `UnselectedTabColor` | Color | Color of unselected tabs |
-| `Tabs` | ObservableCollection<SkiaTab> | Collection of tabs |
+| `SelectedIndex` | int | Index of the currently selected tab, default -1 |
+| `TabType` | Type | Type of the children treated as tabs, default `SkiaLabel` |
+| `LastSelectedIndex` | int | Index selected before the current one |
+| `CommandTabSelected` | ICommand | Runs with the new index when the selection changes |
+| `CommandTabReselected` | ICommand | Runs with the index when the selected tab is tapped again through `CommandTappedTab` |
+| `CommandTappedTab` | ICommand | Read-only. Execute it with a tab index: selects that tab, or reselects it |
 
 ### Events
 
-- `SelectionChanged`: Raised when the selected tab changes
-  - Event signature: `EventHandler<TabSelectionChangedEventArgs>`
+`SkiaTabsSelector` raises no events: use `CommandTabSelected` and `CommandTabReselected`, or override `OnTabSelectionChanged` and `OnTabReselected`.
 
 ## SkiaViewSwitcher
 
-`SkiaViewSwitcher` allows you to switch your views with animations like pop, push, and slide transitions.
+`SkiaViewSwitcher` allows you to switch your views with animations like pop, push, and slide transitions. Each child is the root of one tab, `SelectedIndex` picks the visible tab, and every tab keeps its own stack of pushed views.
 
 ### Basic Usage
 
 ```xml
 <draw:SkiaViewSwitcher
     x:Name="ViewSwitcher"
-    TransitionType="SlideHorizontal"
-    TransitionDuration="300"
+    SelectedIndex="0"
+    PagesAnimationSpeed="300"
     HorizontalOptions="Fill"
     VerticalOptions="Fill">
 
-    <!-- Views will be added programmatically -->
+    <!-- Each child is the root of one tab -->
+    <local:HomeView />
+    <local:SearchView />
 </draw:SkiaViewSwitcher>
 ```
+
+`PagesAnimationSpeed` (default 200) and `TabsAnimationSpeed` (default 150) are in milliseconds. `AnimatePages` (default true) and `AnimateTabs` (default false) turn the animations on or off.
 
 ### Code-Behind Example
 
 ```csharp
-var viewSwitcher = new SkiaViewSwitcher
-{
-    TransitionType = ViewTransitionType.SlideHorizontal,
-    TransitionDuration = 300
-};
+// Switch to another tab
+ViewSwitcher.SelectedIndex = 1;
 
-// Switch to a new view
-var newView = new MyCustomView();
-await viewSwitcher.SwitchToAsync(newView, animated: true);
-
-// Push a view (adds to stack)
-await viewSwitcher.PushAsync(newView, animated: true);
+// Push a view on top of the current tab (adds to stack)
+ViewSwitcher.PushView(new MyCustomView(), animated: true);
 
 // Pop the current view
-await viewSwitcher.PopAsync(animated: true);
+await ViewSwitcher.PopPage();
+
+// Pop the current tab back to its root
+await ViewSwitcher.PopTabToRoot();
 ```
 
 ## Performance Considerations

@@ -27,9 +27,9 @@ SkiaSprite is a high-performance control for displaying and animating sprite she
 | `Source` | string | Path or URL of the sprite sheet image |
 | `Columns` | int | Number of columns in the sprite sheet grid |
 | `Rows` | int | Number of rows in the sprite sheet grid |
-| `FramesPerSecond` | int | Animation speed in frames per second (default: 24) |
+| `FramesPerSecond` | double | Animation speed in frames per second (default: 24) |
 | `MaxFrames` | int | Maximum number of frames to use (0 means use all) |
-| `CurrentFrame` | int | Current frame being displayed (0-based index) |
+| `CurrentFrame` | int | Current frame being displayed (0-based index). Setting it does not change the shown frame, use `Seek` |
 | `FrameSequence` | int[] | Custom sequence of frames to play |
 | `AnimationName` | string | Name of a predefined animation sequence |
 | `AutoPlay` | bool | Whether animation starts automatically when loaded |
@@ -48,11 +48,11 @@ mySprite.Start();
 // Stop animation
 mySprite.Stop();
 
-// Jump to a specific frame
-mySprite.CurrentFrame = 5;
-
 // Seek to a time position
 mySprite.Seek(timeInMs);
+
+// Show a specific frame: seek to the middle of frame 5
+mySprite.Seek((5 + 0.5) * mySprite.FrameDurationMs);
 ```
 
 ### Animation Events
@@ -438,34 +438,35 @@ Adjust animation speed using `SpeedRatio`:
     WidthRequest="200"
     HeightRequest="60">
     
-    <draw:SkiaHotspot Tapped="OnButtonTapped">
-        <draw:SkiaLayout
-            HorizontalOptions="Fill"
-            VerticalOptions="Fill">
+    <draw:SkiaLayout
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        
+        <!-- Button text -->
+        <draw:SkiaLabel
+            Text="Click Me"
+            TextColor="White"
+            FontSize="18"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
             
-            <!-- Button text -->
-            <draw:SkiaLabel
-                Text="Click Me"
-                TextColor="White"
-                FontSize="18"
-                HorizontalOptions="Center"
-                VerticalOptions="Center" />
-                
-            <!-- Button animation that plays on tap -->
-            <draw:SkiaSprite
-                x:Name="ButtonAnimation"
-                Source="button_press.png"
-                Columns="5"
-                Rows="1"
-                FramesPerSecond="30"
-                AutoPlay="False"
-                Repeat="0"
-                HorizontalOptions="Fill"
-                VerticalOptions="Fill"
-                Opacity="0.5" />
-                
-        </draw:SkiaLayout>
-    </draw:SkiaHotspot>
+        <!-- Button animation that plays on tap -->
+        <draw:SkiaSprite
+            x:Name="ButtonAnimation"
+            Source="button_press.png"
+            Columns="5"
+            Rows="1"
+            FramesPerSecond="30"
+            AutoPlay="False"
+            Repeat="0"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"
+            Opacity="0.5" />
+            
+    </draw:SkiaLayout>
+
+    <!-- Tap area on top; a hotspot draws no children of its own -->
+    <draw:SkiaHotspot Tapped="OnButtonTapped" />
     
 </draw:SkiaShape>
 ```
@@ -475,7 +476,6 @@ In code-behind:
 private void OnButtonTapped(object sender, EventArgs e)
 {
     ButtonAnimation.Stop();
-    ButtonAnimation.CurrentFrame = 0;
     ButtonAnimation.Start();
 }
 ```
@@ -516,8 +516,8 @@ The `SkiaSprite` control derives from `AnimatedFramesRenderer`, which provides t
 
 1. Loads a spritesheet image into an `SKBitmap`
 2. Calculates frame dimensions based on `Columns` and `Rows`
-3. Extracts individual frames on demand by creating a new bitmap for each frame
-4. Uses a `SkiaImage` control to display the current frame
+3. Draws the current frame straight from the sheet as a source rectangle, without copying it to a new bitmap
+4. Uses a `SkiaImage`-based display control to show the current frame
 5. Manages animation timing through the inherited animator functionality
 
 This architecture aligns with other animation controls in DrawnUi like `SkiaGif` and `SkiaLottie`.

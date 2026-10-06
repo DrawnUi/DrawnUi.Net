@@ -150,19 +150,25 @@ class MyExistingAppWindow : GameWindow
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         base.OnMouseDown(e);
-        _host?.Gestures.OnMouseDown(e, MousePosition, ClientSize);
+        _host?.Gestures.OnMouseDown(e, MousePosition, ClientSize, MouseState);
     }
 
     protected override void OnMouseMove(MouseMoveEventArgs e)
     {
         base.OnMouseMove(e);
-        _host?.Gestures.OnMouseMove(e, MousePosition, MouseState.IsButtonDown(MouseButton.Left), ClientSize);
+        _host?.Gestures.OnMouseMove(e, MousePosition, MouseState.IsAnyButtonDown, ClientSize, MouseState);
     }
 
     protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         base.OnMouseUp(e);
-        _host?.Gestures.OnMouseUp(e, MousePosition, ClientSize);
+        _host?.Gestures.OnMouseUp(e, MousePosition, ClientSize, MouseState);
+    }
+
+    protected override void OnMouseWheel(MouseWheelEventArgs e)
+    {
+        base.OnMouseWheel(e);
+        _host?.Gestures.OnMouseWheel(e, MousePosition, ClientSize);
     }
 
     protected override void OnTextInput(TextInputEventArgs e)

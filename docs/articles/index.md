@@ -1,14 +1,14 @@
 # DrawnUI for .NET
 
-![License](https://img.shields.io/github/license/taublast/DrawnUi.svg)
+![License](https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg)
 ![NuGet Version](https://img.shields.io/nuget/v/DrawnUi.Maui.svg)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/AppoMobi.Maui.DrawnUi.svg)
 
-[Source Code](https://github.com/DrawnUi/DrawnUi.Net.Maui) 👈
+[Source Code](https://github.com/DrawnUi/DrawnUi.Net) 👈
 
-**A rendering engine for .NET, including MAUI, Blazor, and platform-agnostic hosts, built on top of SkiaSharp**
+**A rendering engine for .NET, including MAUI, Blazor, WPF, OpenTK, WebAssembly, and platform-agnostic hosts, built on top of SkiaSharp**
 
-**Hardware-accelerated rendering engine** for **.NET**, with packages and hosts for **MAUI**, **Blazor**, and **DrawnUi.Net**, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).
+**Hardware-accelerated rendering engine** for **.NET**, with packages and hosts for **MAUI**, **Blazor**, **WPF**, **OpenTK**, pure **WebAssembly**, and **DrawnUi.Net**, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).
 
 ---
 
@@ -34,7 +34,7 @@ dotnet add package DrawnUi.Blazor.Server
 
 **For pure WebAssembly (standalone, no Blazor):**
 ```bash
-dotnet add package DrawnUi.Wasm
+dotnet add package DrawnUi.Web
 ```
 
 **For OpenTK (Windows/Linux desktop games and tools):**
@@ -77,7 +77,7 @@ builder.UseDrawnUi();
 - **[Blazor Capabilities](blazor/capabilities.md)** - Runtime fit, validated strengths, and current boundaries
 - **[Blazor Migration](blazor/migration.md)** - Adoption strategy for existing Blazor apps
 - **[Blazor FAQ](blazor/faq.md)** - Package choice, migration path, and support boundaries
-- **[DrawnUi.Wasm](web/index.md)** - Pure WebAssembly host (no Blazor): standalone fully drawn web apps and games
+- **[DrawnUi.Web](web/index.md)** - Pure WebAssembly host (no Blazor): standalone fully drawn web apps and games
 - **[DrawnUI for OpenTK](opentk/index.md)** - OpenTK `GameWindow` host: games, GPU tools, and desktop apps on Windows/Linux
 - **[DrawnUI for WPF](wpf/index.md)** - `DrawnUiElement` inside a WPF window: drawn controls in WPF XAML with bindings and styles
 - **[DrawnUi.Net](net/index.md)** - Platform-agnostic rendering, harnesses, and headless workflows
@@ -88,7 +88,7 @@ builder.UseDrawnUi();
 
 ### Community & Support
 - **[GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)** - Community help and discussions
-- **[GitHub Issues](https://github.com/DrawnUi/DrawnUi.Net.Maui/issues)** - Report bugs or ask questions
+- **[GitHub Issues](https://github.com/DrawnUi/DrawnUi.Net/issues)** - Report bugs or ask questions
 
 ### Additional Resources
 - **[Sample Apps](sample-apps.md)** - Apps built with DrawnUI

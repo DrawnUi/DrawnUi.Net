@@ -3,8 +3,8 @@
 DrawnUI's drawing pipeline transforms your logical UI controls into pixel-perfect drawings on a Skia canvas. 
 This article explains how the pipeline works, from initial layout calculations to final rendering.  
 DrawnUI is rather a rendering engine, not a UI-framework, and is not designed for an "unaware" usage.  
-In order to use it effectively, one needs to understand how it works in order to achive the best performance and results.  
-At the same time it's possible to create abstractional wrappers around performance-oriented controls, to automaticaly set caching types, layout options etc. that could be used without deep understanding of internals. 
+In order to use it effectively, one needs to understand how it works in order to achieve the best performance and results.  
+At the same time it's possible to create abstractional wrappers around performance-oriented controls, to automatically set caching types, layout options etc. that could be used without deep understanding of internals. 
 
 ## Overview
 
@@ -37,7 +37,7 @@ The pipeline begins when a control needs to be redrawn. This can happen due to:
 control.Update();            // Mark for redraw (Update), invalidates cache
 control.Repaint();           // Mark parent for redraw (Update), to repaint without destroying cache, at new positions, transformed etc
 control.Invalidate();        // Invalidate and (maybe, depending on this control  logic) update
-control.InvalidateMeasure(); // Just recalculate size and layout and update
+control.InvalidateMeasureInternal(); // Just recalculate size and layout and update (InvalidateMeasure() is protected)
 control.Parent?.Invalidate() // When the above doesn't work if parent refuses to invalidate due to its internal logic
 ```
 
@@ -67,13 +67,19 @@ This stage handles the layout system - measure and arrange self and children if 
 Controls calculate their desired size based on available space and content requirements.
 
 ```csharp
-public virtual ScaledSize Measure(float widthConstraint, float heightConstraint, float scale)
+public ScaledSize Measure(float widthConstraint, float heightConstraint, float scale)
+{
+    // Returns the previous result when nothing changed, otherwise:
+    return OnMeasuring(widthConstraint, heightConstraint, scale);
+}
+
+public virtual ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
 {
     // Create measure request with constraints
     var request = CreateMeasureRequest(widthConstraint, heightConstraint, scale);
 
-    // Measure content and return desired size
-    return MeasureLayout(request, false);
+    // Measure content and return desired size (SkiaLayout calls MeasureLayout(request, false))
+    return MeasureInternal(request);
 }
 ```
 
@@ -83,7 +89,7 @@ public virtual ScaledSize Measure(float widthConstraint, float heightConstraint,
 3. **Size Request** - Calculate final desired size
 
 **Layout Types:**
-- `Absolute` - Children positioned at specific coordinates
+- `Absolute` - Children layered, each placed by its own options, margins and translation
 - `Column/Row` - Stack children vertically or horizontally
 - `Grid` - Arrange children in rows and columns
 - `Wrap` - Flow children with wrapping
@@ -97,22 +103,27 @@ public virtual void Arrange(SKRect destination, float widthRequest, float height
 {
     // Pre-arrange validation
     if (!PreArrange(destination, widthRequest, heightRequest, scale))
+    {
+        DrawingRect = SKRect.Empty;
         return;
+    }
 
-    // Calculate final layout
-    var layout = CalculateLayout(arrangingFor, widthRequest, heightRequest, scale);
+    // Measured size, or -1 on a Fill axis without a size request
+    var width = (HorizontalOptions.Alignment == LayoutAlignment.Fill && WidthRequest < 0)
+        ? -1
+        : MeasuredSize.Units.Width;
+    var height = (VerticalOptions.Alignment == LayoutAlignment.Fill && HeightRequest < 0)
+        ? -1
+        : MeasuredSize.Units.Height;
 
-    // Set drawing rectangle
-    DrawingRect = layout;
-
-    // Post-arrange processing
-    PostArrange(destination, widthRequest, heightRequest, scale);
+    // Calculate final layout (CalculateLayout) and set DrawingRect
+    PostArrange(destination, width, height, scale);
 }
 ```
 
 **Arrange Process:**
 1. **Pre-Arrange** - Validate and prepare for layout
-2. **Layout Calculation** - Determine final position and size
+2. **Layout Calculation** - `PostArrange` calls `CalculateLayout` to determine final position and size
 3. **Drawing Rectangle** - Set the area where control will be drawn
 4. **Post-Arrange** - Cache layout information and handle changes
 
@@ -127,19 +138,16 @@ The paint stage renders the actual visual content to the Skia canvas.
 ```csharp
 protected virtual void Paint(DrawingContext ctx)
 {
+    // Execute custom paint operations (WhenPaint callbacks)
+    ExecuteOnPaintCallbacks(ctx);
+
     // Paint background
     PaintTintBackground(ctx.Context.Canvas, ctx.Destination);
-
-    // Execute custom paint operations
-    foreach (var action in ExecuteOnPaint.Values)
-    {
-        action?.Invoke(this, ctx);
-    }
 }
 ```
 
 **Drawing Context:**
-- `SKCanvas` - The Skia drawing surface
+- `SkiaDrawingContext Context` - Holds the `SKCanvas Canvas` to draw on
 - `SKRect Destination` - Where to draw in pixels
 - `float Scale` - Pixel density scaling factor
 - `object Parameters` - Optional custom parameters
@@ -154,11 +162,13 @@ DrawnUI uses sophisticated caching to optimize rendering performance through ren
 public enum SkiaCacheType
 {
     None,                    // No caching, direct drawing every frame
+    Auto,                    // Library chooses, currently the same as Image
     Operations,              // Cache drawing operations as SKPicture  
     OperationsFull,          // Cache operations ignoring clipping bounds
     Image,                   // Cache as rasterized SKBitmap  
+    ImageDoubleBuffered,     // Background thread rendering of cache of same size, while showing previous cache
     ImageComposite,          // Advanced bitmap caching with composition
-    ImageDoubleBuffered,     // Background thread rendering of cache of same same, while showing previous cache
+    ImageCompositeGPU,       // ImageComposite on the canvas GPU context
     GPU                      // Hardware-accelerated GPU memory caching
 }
 ```
@@ -179,19 +189,20 @@ public virtual bool DrawUsingRenderObject(DrawingContext context,
     // 1. Arrange the control
     Arrange(context.Destination, widthRequest, heightRequest, context.Scale);
 
-    // 2. Check if we can use cached render object
-    if (RenderObject != null && CheckCachedObjectValid(RenderObject))
+    if (UsingCacheType != SkiaCacheType.None)
     {
-        DrawRenderObjectInternal(context, RenderObject);
-        return true;
+        // 2. Draw the cached render object if it is still valid (CheckCachedObjectValid),
+        // 3. otherwise record a new one with PaintWithEffects and draw it.
+        //    ImageDoubleBuffered records in background and draws the previous cache meanwhile.
+        TryUseExistingRenderingObjectOrCreateNewAndPaint(context, DrawingRect);
+    }
+    else
+    {
+        // No cache: paint directly
+        DrawDirectInternal(context, DrawingRect);
     }
 
-    // 3. Create new render object if needed
-    var cache = CreateRenderingObject(context, recordArea, oldObject, UsingCacheType,
-        (ctx) => { PaintWithEffects(ctx); });
-
-    // 4. Draw using the render object
-    DrawRenderObjectInternal(context, cache);
+    FinalizeDrawingWithRenderObject(context);
 
     return true;
 }
@@ -199,7 +210,7 @@ public virtual bool DrawUsingRenderObject(DrawingContext context,
 
 ##### Cache Sharing
 
-When many instances of the same control type appear on one Canvas (e.g. divider lines, repeated icons) each would normally allocate its own `CachedObject`. `CacheSharing` eliminates that — all instances share one object stored in `Canvas.Cache`.
+When many instances of the same control type appear on one Canvas (e.g. divider lines, repeated icons) each would normally allocate its own `CachedObject`. `CacheSharing` eliminates that — all instances share one object stored in `Canvas.SharedCache`.
 
 **Eligible cache types:** `Operations`, `Image`, `GPU` (`OperationsFull` and composite types are excluded).
 
@@ -218,17 +229,17 @@ public class DividerLine : SkiaShape
 }
 ```
 
-First instance to render creates the `CachedObject` and stores it in `SuperView.Cache`. Every subsequent instance of the same type fetches and reuses it without re-rendering.
+First instance to render creates the `CachedObject` and stores it in `Superview.SharedCache`. Every subsequent instance of the same type fetches and reuses it without re-rendering.
 
 **Invalidation in shared mode:** per-instance `InvalidateCache()` is bypassed — the shared object is valid for all peers. To force a full re-render for all instances of a type:
 
 ```csharp
-myCanvas.Cache.Free<DividerLine>();       // by generic type
-myCanvas.Cache.Free(typeof(DividerLine)); // by type reference
-myCanvas.Cache.Free();                    // clear entire shared cache
+myCanvas.SharedCache.Free<DividerLine>();       // by generic type
+myCanvas.SharedCache.Free(typeof(DividerLine)); // by type reference
+myCanvas.SharedCache.Free();                    // clear entire shared cache
 ```
 
-Individual instance disposal does **not** clear the shared entry — it lives until the Canvas is disposed or you call `Cache.Free(...)` explicitly.
+Individual instance disposal does **not** clear the shared entry — it lives until the Canvas is disposed or you call `SharedCache.Free(...)` explicitly.
 
 > **When to use:** Controls that are visually identical across all instances and change infrequently. Avoid for controls whose appearance differs per instance — they would all render as a clone of the first.
 
@@ -270,7 +281,7 @@ control.DisposeObject(resource);
 
 **Practice:**
 ```csharp
-// WUpdating a cached image
+// Updating a cached image
 var oldBitmap = this.CachedBitmap;
 this.CachedBitmap = newBitmap;
 
@@ -306,7 +317,9 @@ public class SkiaGesturesParameters
 - `Tapped` - Quick tap gesture
 - `Panning` - Drag/swipe movement
 - `LongPressing` - Extended press
-- `Cancelled` - Gesture interrupted
+- `Wheel` - Mouse wheel
+- `Pointer` - Pointer movement without a press (hover)
+- `ContextMenu` - Context menu request
 
 **TouchActionEventArgs Properties:**
 - `Location` - Current touch position
@@ -358,6 +371,13 @@ public virtual bool IsGestureForChild(SkiaControlWithRect child, SKPoint point)
 {
     if (child.Control != null && !child.Control.InputTransparent && child.Control.CanDraw)
     {
+        if (child.Control.HasTransform && child.Control.RenderTransformMatrix.TryInvert(out SKMatrix inverse))
+        {
+            // Map the point into the child's local space
+            var localPoint = inverse.MapPoint(point);
+            return child.HitRect.ContainsInclusive(localPoint.X, localPoint.Y);
+        }
+
         var transformed = child.Control.ApplyTransforms(child.HitRect);
         return transformed.ContainsInclusive(point.X, point.Y);
     }
@@ -416,10 +436,18 @@ protected virtual void ProcessGestures(SkiaGesturesParameters args)
 ```
 
 #### Control-Level Processing
-Individual controls process gestures with coordinate transformation:
+Individual controls process gestures with coordinate transformation. `OnSkiaGestureEvent` calls `ProcessGestures`, and the base `ProcessGestures` starts by applying the inverse transform:
 
 ```csharp
 public ISkiaGestureListener OnSkiaGestureEvent(SkiaGesturesParameters args,
+    GestureEventProcessingInfo apply)
+{
+    // Process the gesture
+    var result = ProcessGestures(args, apply);
+    return result; // Return consumer or null
+}
+
+public virtual ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args,
     GestureEventProcessingInfo apply)
 {
     // Apply inverse transforms if control has transformations
@@ -433,9 +461,7 @@ public ISkiaGestureListener OnSkiaGestureEvent(SkiaGesturesParameters args,
         );
     }
 
-    // Process the gesture
-    var result = ProcessGestures(args, apply);
-    return result; // Return consumer or null
+    // ... pass the gesture to children and handle it
 }
 ```
 
@@ -553,56 +579,54 @@ public class MyCustomControl : SkiaControl
 
 ### Layout Container
 
+There is no separate arrange pass for children: each child is arranged when it is drawn, inside the layout rect, and is placed by its own options, margins and translation. A custom `Absolute` layout positions its children before measuring them:
+
 ```csharp
 public class MyLayout : SkiaLayout
 {
-    protected override ScaledSize MeasureAbsolute(SKRect rectForChildrenPixels, float scale)
+    public override ScaledSize MeasureAbsolute(SKRect rectForChildrenPixels, float scale)
     {
-        // Measure all children
+        // Position each child, in points
         foreach (var child in Views)
         {
-            var childSize = MeasureChild(child, 
-                rectForChildrenPixels.Width, 
-                rectForChildrenPixels.Height, scale);
+            var offset = CalculateChildOffset(child);
+            child.TranslationX = offset.X;
+            child.TranslationY = offset.Y;
         }
-        
-        // Return total size needed
-        return ScaledSize.FromPixels(totalWidth, totalHeight, scale);
-    }
-    
-    protected override void ArrangeChildren(SKRect rectForChildrenPixels, float scale)
-    {
-        // Position each child
-        foreach (var child in Views)
-        {
-            var childRect = CalculateChildPosition(child, rectForChildrenPixels);
-            child.Arrange(childRect, child.SizeRequest.Width, child.SizeRequest.Height, scale);
-        }
+
+        // Measure all children and return the total size needed
+        return base.MeasureAbsolute(rectForChildrenPixels, scale);
     }
 }
 ```
+
+See [Creating a Custom Layout Type](advanced/layout-system.md#creating-a-custom-layout-type) for a full example.
 
 ## Debugging the Pipeline
 
 ### Performance Monitoring
 
 ```csharp
-// Enable performance tracking
-Super.EnableRenderingStats = true;
-
 // Monitor frame rates
-var fps = canvasView.FPS;
-var frameTime = canvasView.FrameTime;
+var fps = canvasView.FPS;             // average FPS
+var frameTime = canvasView.FrameTime; // when the current frame started rendering, in nanoseconds
 ```
 
 ### Visual Debugging
 
 ```csharp
-// Show control boundaries
-control.DebugShowBounds = true;
+// Show FPS on screen: add this label to your canvas content
+new SkiaLabelFps()
+{
+    HorizontalOptions = LayoutOptions.End,
+    VerticalOptions = LayoutOptions.End
+};
 
-// Highlight invalidated areas
-Super.ShowInvalidatedAreas = true;
+// Log the control tree with sizes
+control.PrintDebug();
+
+// SkiaLayout: visible and drawn items, plus cell pool info when templated
+var info = layout.DebugString;
 ```
 
 ## Best Practices for Performance
@@ -618,16 +642,13 @@ Super.ShowInvalidatedAreas = true;
 ## Debugging and Profiling
 
 ```csharp
-// Enable performance tracking
-Super.EnableRenderingStats = true;
-
 // Monitor frame rates and timing
 var fps = canvasView.FPS;
 var frameTime = canvasView.FrameTime;
 
-// Visual debugging
-control.DebugShowBounds = true;
-Super.ShowInvalidatedAreas = true;
+// Debugging output
+control.PrintDebug();      // control tree with sizes
+var info = layout.DebugString; // SkiaLayout items and cells info
 ```
 
 ## Conclusion

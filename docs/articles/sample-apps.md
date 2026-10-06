@@ -13,15 +13,15 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
   [See it live in browser!](https://drawnui.net/sandbox/)
 
 
-- **[Pong (DrawnUi.Wasm)](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/PongWeb)** 🕹️ - A full game running as **pure WebAssembly** (no Blazor) with:
-  - `DrawnUi.Wasm` standalone host (`RunAsync`)
+- **[Pong (DrawnUi.Web)](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/PongWeb)** 🕹️ - A full game running as **pure WebAssembly** (no Blazor) with:
+  - `DrawnUi.Web` standalone host (`RunAsync`)
   - GPU (WebGL) rendering with raster fallback
   - HTTP-loaded fonts, `GesturesMode.Lock` with iOS swipe guard
   - OG/Twitter SEO metadata
 
   [Play it live!](https://pong.appomobi.com/)
 
-  A minimal "Hello DrawnUI on Web" starter also lives at **[DrawnUi.Wasm.Sample](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/DrawnUi.Wasm.Sample)**.
+  A minimal starter app also lives at **[tpls/Wasm/EmptyCode](https://github.com/DrawnUi/DrawnUi.Net/tree/main/tpls/Wasm/EmptyCode)**.
 
 
 - **[HelloMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/HelloMaui)** 📱 - The full feature demo on .NET MAUI (Windows, Android, iOS, MacCatalyst), one page per feature navigated with a drawn `SkiaShell`: recycled cells, images, SVG, shapes, text, layouts, platform looks, carousels, Lottie, shell, editor, keyboard, scroll, shaders, sprites, transforms, drag to reorder, accessibility. Same pages as HelloWpf and the React demo.
@@ -34,7 +34,7 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
   - Camera integration examples
   - Custom controls showcase
 
-- **[MAUI Sandbox](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Sandbox)** 🧪 - Experiment with:
+- **[MAUI Sandbox](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Sandbox)** 🧪 - Experiment with:
   - Playground examples
   - Custom controls development
   - Maps integration
