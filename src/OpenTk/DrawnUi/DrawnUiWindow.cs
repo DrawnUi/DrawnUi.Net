@@ -309,9 +309,28 @@ public class DrawnUiWindow : GameWindow
         var alt = KeyboardState.IsKeyDown(Keys.LeftAlt) || KeyboardState.IsKeyDown(Keys.RightAlt);
         switch (e.Key)
         {
-            case Keys.F11: ToggleFullscreen(); break;
+            case Keys.F11: ToggleFullscreen(); return;
             case Keys.Escape when WindowState == WindowState.Fullscreen:
-                WindowState = WindowState.Normal; break;
+                WindowState = WindowState.Normal; return;
+        }
+
+        // Keyboard navigation, the rules of the other desktop heads (DrawnView.HandleKeyboardNavigation): Tab / Shift+Tab
+        // walk the Tab stops, also out of a drawn editor (no tab characters). Enter / Space / Escape / arrows / Home / End /
+        // PageUp / PageDown go to the node in keyboard focus while the keyboard is in use, so a game's keys stay its own.
+        if (e.Key == Keys.Tab)
+        {
+            if (_canvas.FocusedChild is SkiaEditor editor)
+                _canvas.AccessibilityManager.NotifyFocused(editor); // continue from the field, also when a click focused it
+            _canvas.HandleKeyboardNavigation(InputKey.Tab, shift);
+            return;
+        }
+
+        if (_canvas.FocusedChild is not SkiaEditor && _canvas.KeyboardFocusNode != null
+            && OpenTkKeyMapper.Map(e.Key) is { } key && _canvas.HandleKeyboardNavigation(key, shift))
+            return;
+
+        switch (e.Key)
+        {
             case Keys.Backspace: _canvas.DesktopEditorBackspace(); break;
             case Keys.Delete: _canvas.DesktopEditorDelete(); break;
             case Keys.Enter: _canvas.DesktopEditorEnter(alt, shift); break;
@@ -325,7 +344,6 @@ public class DrawnUiWindow : GameWindow
             case Keys.C when ctrl && _canvas.FocusedChild is SkiaLabel { AccessibilityTextSelectable: true } label:
                 label.CopySelection(); break;
             case Keys.A when ctrl: _canvas.DesktopEditorSelectAll(); break;
-            case Keys.Tab: _canvas.HandleDesktopTextInput("    "); break;
         }
     }
 
