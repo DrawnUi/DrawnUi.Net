@@ -272,3 +272,81 @@ img[src*="shields.io"], img[src*="badge"] {
 .actionbar {
             margin-top: 0px !important;
           }
+
+/* Top bar. The menu has many top-level items: on a wide window they sit on one row, each label on one line
+   and all of them centered vertically; on a narrower window the menu goes behind the hamburger button and
+   opens as a column, the same layout the template uses on phones (below 768 px). */
+@media (min-width: 1460px) {
+    #navbar .navbar-nav {
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    #navbar .nav-link {
+        white-space: nowrap;
+        font-size: 15px;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+    }
+
+    /* docfx puts a <wbr> into CamelCase labels ("Web<wbr>Assembly"), which still breaks them */
+    #navbar .nav-link wbr {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1459.98px) {
+    body > header, body[data-layout=landing] > header {
+        height: auto;
+        min-height: 60px;
+    }
+
+    header .navbar > .container-xxl {
+        flex-wrap: wrap !important;
+    }
+
+    header .navbar .btn.d-md-none {
+        display: inline-block !important;
+        margin-left: auto;
+    }
+
+    .navbar-expand-md .navbar-collapse {
+        flex-basis: 100%;
+    }
+
+    .navbar-expand-md .navbar-collapse:not(.show):not(.collapsing) {
+        display: none !important;
+    }
+
+    .navbar-expand-md .navbar-collapse.show {
+        display: block !important;
+    }
+
+    .navbar-expand-md .navbar-nav {
+        flex-direction: column;
+    }
+
+    .navbar-expand-md .navbar-nav .dropdown-menu {
+        position: static;
+    }
+
+    .navbar #navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar #navbar form {
+        margin: 1rem 0 0;
+    }
+
+    .navbar #navbar form.search {
+        align-self: stretch;
+        order: 30;
+    }
+
+    .navbar #navbar form.icons {
+        align-self: center;
+        order: 40;
+        margin: 1rem 0;
+    }
+}

@@ -1,4 +1,4 @@
-# DrawnUI for .NET
+# DrawnUI
 
 ![License](https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg)
 ![NuGet Version](https://img.shields.io/nuget/v/DrawnUi.Maui.svg)
@@ -6,9 +6,9 @@
 
 [Source Code](https://github.com/DrawnUi/DrawnUi.Net) 👈
 
-**A rendering engine for .NET, including MAUI, Blazor, WPF, OpenTK, WebAssembly, and platform-agnostic hosts, built on top of SkiaSharp**
+**A rendering engine that works along your framework: .NET (MAUI, Blazor, WPF, OpenTK, WebAssembly and any .NET host), React and Rust, built on top of Skia**
 
-**Hardware-accelerated rendering engine** for **.NET**, with packages and hosts for **MAUI**, **Blazor**, **WPF**, **OpenTK**, pure **WebAssembly**, and **DrawnUi.Net**, powered by [SkiaSharp](https://github.com/mono/SkiaSharp).
+**Hardware-accelerated rendering engine** with packages and hosts for **MAUI**, **Blazor**, **WPF**, **OpenTK**, pure **WebAssembly** and **DrawnUi.Net**, powered by [SkiaSharp](https://github.com/mono/SkiaSharp), and the same engine for [React](react/index.md) and [Rust](rust/index.md).
 
 ---
 
@@ -52,6 +52,16 @@ dotnet add package DrawnUi.Wpf
 dotnet add package DrawnUi.Net
 ```
 
+**For React (browser):**
+```bash
+npm i drawnui-react@preview react react-dom
+```
+
+**For Rust (desktop, mobile, browser):**
+```bash
+cargo add drawnui@0.1.0-preview.4
+```
+
 **Initialize in MauiProgram.cs when using MAUI:**
 ```csharp
 builder.UseDrawnUi();
@@ -81,6 +91,8 @@ builder.UseDrawnUi();
 - **[DrawnUI for OpenTK](opentk/index.md)** - OpenTK `GameWindow` host: games, GPU tools, and desktop apps on Windows/Linux
 - **[DrawnUI for WPF](wpf/index.md)** - `DrawnUiElement` inside a WPF window: drawn controls in WPF XAML with bindings and styles
 - **[DrawnUi.Net](net/index.md)** - Platform-agnostic rendering, harnesses, and headless workflows
+- **[DrawnUI for React](react/index.md)** - The same engine in TypeScript on CanvasKit, composed with React
+- **[DrawnUI for Rust](rust/index.md)** - The same engine in Rust for Windows, macOS, Linux, iOS, Android and the browser
 - **[Fluent Extensions](fluent-extensions.md)** - Code-behind UI creation patterns
 - **[FAQ](faq.md)** - Frequently asked questions and answers
 - **[Controls Documentation](controls/index.md)** - Complete controls reference

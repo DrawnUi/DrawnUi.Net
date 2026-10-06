@@ -44,8 +44,8 @@ Agents that understand [llms.txt](https://drawnui.net/llms.txt) can discover and
 | [drawnui-opentk](https://drawnui.net/skills/drawnui-opentk/SKILL.md) | OpenTK desktop apps: `DrawnUiWindow`, `CanvasHost` GL overlays, window chrome, Linux fixes |
 | [drawnui-net-harness](https://drawnui.net/skills/drawnui-net-harness/SKILL.md) | Headless testing and repros — render frames and simulate gestures with no device or GPU |
 | [skmech](https://drawnui.net/skills/skmech/SKILL.md) | SkiaSharp `SKMesh` custom mesh drawing with SkSL. Bundle: also fetch [references/api-overview.md](https://drawnui.net/skills/skmech/references/api-overview.md) and [references/examples.md](https://drawnui.net/skills/skmech/references/examples.md) |
-| [drawnui-react](https://helloreact.drawnui.net/skills/drawnui-react/SKILL.md) | [DrawnUI for React](react/index.md) (npm `drawnui-react`): install, startup, composition rules |
-| [drawnui-rust](https://hellorust.drawnui.net/skills/drawnui-rust/SKILL.md) | [DrawnUI for Rust](rust/index.md) (crate `drawnui`): adding the crate, the browser build, the web page, Android, Linux |
+| [drawnui-react](https://raw.githubusercontent.com/DrawnUi/DrawnUi.React/master/skills/drawnui-react/SKILL.md) | [DrawnUI for React](react/index.md) (npm `drawnui-react`): install, startup, composition rules. From the [DrawnUi.React repository](https://github.com/DrawnUi/DrawnUi.React/tree/master/skills/drawnui-react) |
+| [drawnui-rust](https://raw.githubusercontent.com/DrawnUi/DrawnUi.Rust/main/skills/drawnui-rust/SKILL.md) | [DrawnUI for Rust](rust/index.md) (crate `drawnui`): adding the crate, the browser build, the web page, Android, Linux. From the [DrawnUi.Rust repository](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/skills/drawnui-rust) |
 | [drawnui-fiddle](https://drawfiddle.com/skills/drawnui-fiddle/SKILL.md) | Driving the in-browser [Fiddle](https://drawfiddle.com) programmatically via its `window.fiddle` API |
 
 Load `drawnui` for everything, then add whichever ones match the target head and the kind of code you are writing.
