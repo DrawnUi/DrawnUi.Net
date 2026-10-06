@@ -57,8 +57,36 @@ What you can use today:
 - **Media**: images (decoded off the frame thread), image tiles, SVG, GIF, Lottie, sprites, SkSL shader effects and transitions, SkMesh (your own vertex and fragment programs).
 - **Caching**: every DrawnUI cache type: `Operations`, `OperationsFull`, `Image`, `GPU`, `ImageDoubleBuffered` (bitmaps made on background threads on the desktop) and `ImageComposite`. A lost GPU context comes back on its own.
 - **Input**: tap, pan, fling, long press, hover, context menu, mouse wheel and touchpad, keyboard and focus.
-- **Accessibility**: UI Automation on Windows, VoiceOver on macOS and iOS, TalkBack on Android, AT-SPI (Orca) on Linux, an ARIA overlay in the browser.
+- **Accessibility**: screen readers on every platform, keyboard navigation with a focus ring, values a screen reader reads and changes. See [Accessibility](#accessibility) below.
 - **Animation**: value, range, spring, ping-pong, pendulum and ripple animators, timers.
+
+## Accessibility
+
+Drawn controls reach screen readers and the keyboard on every platform, with no work from the app for the common cases. The engine keeps one list of what is on screen: each control that has a role, with its name, its place on screen (through transforms and scrolling), its state or value, in reading order. Each platform gets it its own way:
+
+| Platform | How | Screen readers |
+|---|---|---|
+| Windows | UI Automation | Narrator, NVDA |
+| macOS, iOS | VoiceOver accessibility | VoiceOver |
+| Linux | AT-SPI | Orca |
+| Android | the activity's view | TalkBack |
+| Browser | an ARIA overlay of invisible elements over the canvas | NVDA, JAWS, VoiceOver, TalkBack |
+
+What people get:
+
+- **Names, roles and states**: a button is read with its caption, a switch with its state. A card titled by its own text is read once, not twice. A control that cannot be used right now is read as unavailable.
+- **Values**: a slider or progress bar is read as a name and a value ("Volume, 65", "Download, 65%", "Price range, 20 – 80"), and a screen reader can move a slider or set its value.
+- **Actions**: a screen reader presses a control, scrolls it into view when it moves to it, and pages a scroll with its own gestures on iOS and Android. When a page closes, the reader moves to the next control instead of going silent.
+- **Keyboard**: on the desktop, Tab and Shift+Tab walk the controls in reading order with a focus ring, Enter and Space press, the arrow keys move a slider or move inside a group (a list, a toolbar, a grid), Escape leaves. In the browser the page's own Tab order and focus ring apply.
+- **Selectable text**: a label with `accessibility_text_selectable` can be selected and copied, with the mouse or a long press.
+
+What an app does:
+
+- Name every control that has no text of its own by what it controls: `.accessibility_label("Wi-Fi")` on a switch, `"Volume"` on a slider.
+- Give a container a role (`Aria::LIST`, `Aria::TOOLBAR`...) when it is a group: it becomes one Tab stop and the arrow keys move inside it.
+- Mark a status text with `accessibility_live("polite")` to have it read when it changes.
+
+These are the same rules as in DrawnUI for .NET, see [Accessibility](../advanced/accessibility.md). The [Accessibility page](https://hellorust.drawnui.net/#/a11y) of the demo shows them, and [`ACCESSIBILITY.md`](https://github.com/DrawnUi/DrawnUi.Rust/blob/main/ACCESSIBILITY.md) in the repository has the details and where each platform was checked.
 
 ## Platforms
 

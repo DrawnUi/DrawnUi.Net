@@ -64,6 +64,43 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 
 ## What's New 1.10.6.22
 
+  * **Accessibility, reworked on every platform**
+
+    This version makes drawn apps usable with a screen reader and a keyboard wherever DrawnUI runs. Every drawn control with a role is its own item for the screen reader: people find it by touch or by swiping, hear its name, role and state, and press it or change its value. The same names, roles and hints reach every platform.
+
+    | Platform | Screen reader |
+    |---|---|
+    | MAUI Windows, WPF, OpenTK on Windows | Narrator (UI Automation) |
+    | MAUI Android | TalkBack, **new** |
+    | MAUI iOS and Mac Catalyst | VoiceOver, **new** |
+    | OpenTK on Linux | Orca (AT-SPI), **new** |
+    | Blazor | the browser's screen readers (ARIA) |
+    | WebAssembly (`DrawnUi.Web`) | the browser's screen readers (ARIA), **new** |
+
+    Keyboard navigation (Tab, a focus ring, Enter and Space, the arrow keys) now also works on Mac Catalyst and OpenTK, next to MAUI Windows, WPF, Blazor and WebAssembly.
+
+    * MAUI Android: TalkBack reads drawn controls. Each control with an accessibility role is its own item: touch it to hear it, swipe right or left to move between items in reading order, double tap to press it. Before, TalkBack saw the whole canvas as one empty view. TalkBack reads the same labels, roles and hints as Narrator on MAUI Windows, and nothing runs while no screen reader is on.
+    * MAUI Mac Catalyst: Tab and Shift+Tab move between the drawn controls with a focus ring, and the arrow keys move inside a group (a list, a toolbar, a grid), as on MAUI Windows and WPF.
+    * MAUI iOS and Mac Catalyst: VoiceOver reads drawn controls. Double tap presses, swiping up or down moves a slider, a three-finger swipe scrolls.
+    * OpenTK on Linux: Orca reads drawn controls. It works without any app code once a screen reader is running.
+    * OpenTK: Tab and Shift+Tab move between the drawn controls with a focus ring, Enter and Space press, the arrow keys move a slider or inside a group, Escape leaves, as on WPF. Tab moves on from a text field instead of typing four spaces.
+    * WebAssembly (`DrawnUi.Web`): screen readers read drawn controls and Tab moves between them, as on Blazor. Before, a pure WebAssembly app was silent for screen readers.
+    * Sliders and progress bars: screen readers say the name and the value separately ("Volume, 65", "Download, 65%", "Price range, 20 – 80") and can move a slider or set its value. Before, the value was read as the name. Give each one a name with `AccessibilityLabel`.
+    * Screen readers scroll a control into view when they move to it, and TalkBack and VoiceOver can scroll a page with their own gestures.
+    * When a page closes under a screen reader, it moves to the next control instead of going silent.
+    * A card whose title repeats its name is read once, not twice. A button, switch or slider that cannot be used right now reads as unavailable on every platform.
+    * Blazor: switches, checkboxes and radio buttons read their real state. Before, browsers read them as unchecked.
+    * MAUI Windows and OpenTK: Narrator presses drawn buttons with its default action. Before, the press failed and Narrator could only read them.
+    * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
+    * WPF and MAUI Windows: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
+    * People can select and copy a label's text: `AccessibilityTextSelectable`, see Text below.
+    * **What your app does:**
+      * Name every control that has no text of its own with `AccessibilityLabel`, by what it controls ("Volume", "Wi-Fi"), not by what it is.
+      * Give a list, grid or toolbar a role (`Aria.RoleList`, `RoleGrid`, `RoleToolbar`...): it becomes one Tab stop, and the arrow keys move inside it.
+      * Set `AccessibilityLive` on a status text to have it read when it changes.
+      * Your own range control reports its value with `GetAccessibilityValue()` and takes one from the screen reader with `OnAccessibilitySetValue()`; your own control takes keys with `OnAccessibilityKey`.
+      * `SkiaLabel.DefaultAccessibilityRole` and `SkiaButton.DefaultAccessibilityRole` give every label or button a role in one line.
+      * The whole guide: [Accessibility](https://drawnui.net/articles/advanced/accessibility.html).
   * **Rendering**
     * Android: hardware-accelerated canvases (`RenderingMode = Accelerated`) draw with Vulkan. On a phone with a Mali-G57 GPU this takes about 11% less CPU per frame than OpenGL, at the same frame rate. Devices without Vulkan 1.1 (or older than Android 7) keep OpenGL, and so do Android emulators and devices whose system draws its own UI with OpenGL (the emulator's Vulkan cannot draw Skia: images crashed the app or the emulator). When Vulkan fails to start on a device, DrawnUI switches the canvas to OpenGL by itself. To always use OpenGL, set `UseVulkan = false` in the settings you pass to `UseDrawnUi`.
 
@@ -94,6 +131,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
     * An image that loads in the background no longer reports an error right after it loaded. Before, `Error` came after `Success` and `HasError` stayed true.
     * **Changed:** `SpeedRatio` on `SkiaSprite`, `SkiaGif` and `SkiaLottie` means what it says: 0.5 plays at half speed, 2 at double speed. Before, slow values played too fast (0.5 ran at about two thirds of the speed). `FrameSequence` shows each of its frames once, `DefaultFrame` is a frame number (-1 is the last frame) and `CurrentFrame` shows the frame you set.
   * **Controls**
+    * MAUI Windows: a right click, Shift+F10 or the Menu key reaches `SkiaControl.ContextMenu`, as on WPF and in the browser.
     * **Changed:** `LockChildrenGestures` works on layouts. Before, layouts ignored it, so taps reached their children whatever the value. Now `Enabled` and `PassNone` keep every gesture from the children, `PassTap` lets only taps through, and `PassTapAndLongPress` taps and long presses. The layout itself still gets its own `Tapped`, so "lock the children, handle the tap on the card" works. `Enabled` also keeps gestures from controls stacked under the layout, as its description says.
     * `SkiaWheelPicker` and `SkiaSpinner` raise `SelectedIndexChanged` when the user turns the wheel. Before, it fired only when code set the index. A spinner set from code shows the right item (it showed the one on the opposite side), and a wheel picker raises the event once when its first item gets selected.
     * `SkiaPicker` has a Material 3 look (`ControlStyle = Material3`): an outlined field whose placeholder moves up into the outline as a label once something is picked.
@@ -123,22 +161,6 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
     * Shader files load on every platform. `ShaderSource`, `ShaderTemplate`, a `SkiaShaderCarousel`'s `TransitionShader` and the textures of a two-texture effect are read from the app's folder on OpenTK and WPF and from the site in the browser, as MAUI reads them from the app package. Before, OpenTK and pure WebAssembly could not open them at all, and WPF read every shader file next to the app at startup, used or not.
     * With `Super.Multithreaded` on, an `Operations` or `OperationsFull` cache is no longer redrawn on every frame. Before, it was thrown away and drawn again each time.
     * WPF, OpenTK and WebAssembly: an animation started while a frame is being drawn starts at once. Before, it waited for the next touch or mouse move. `DrawnView.RequestNextFrame()` asks for one more frame from anywhere, also from inside a draw.
-  * **Keyboard and accessibility**
-    * MAUI Android: TalkBack reads drawn controls. Each control with an accessibility role is its own item: touch it to hear it, swipe right or left to move between items in reading order, double tap to press it. Before, TalkBack saw the whole canvas as one empty view. TalkBack reads the same labels, roles and hints as Narrator on MAUI Windows, and nothing runs while no screen reader is on.
-    * MAUI Mac Catalyst: Tab and Shift+Tab move between the drawn controls with a focus ring, and the arrow keys move inside a group (a list, a toolbar, a grid), as on MAUI Windows and WPF.
-    * MAUI iOS and Mac Catalyst: VoiceOver reads drawn controls. Double tap presses, swiping up or down moves a slider, a three-finger swipe scrolls.
-    * OpenTK on Linux: Orca reads drawn controls. It works without any app code once a screen reader is running.
-    * OpenTK: Tab and Shift+Tab move between the drawn controls with a focus ring, Enter and Space press, the arrow keys move a slider or inside a group, Escape leaves, as on WPF. Tab moves on from a text field instead of typing four spaces.
-    * WebAssembly (`DrawnUi.Web`): screen readers read drawn controls and Tab moves between them, as on Blazor. Before, a pure WebAssembly app was silent for screen readers.
-    * Sliders and progress bars: screen readers say the name and the value separately ("Volume, 65", "Download, 65%", "Price range, 20 – 80") and can move a slider or set its value. Before, the value was read as the name. Give each one a name with `AccessibilityLabel`.
-    * Screen readers scroll a control into view when they move to it, and TalkBack and VoiceOver can scroll a page with their own gestures.
-    * When a page closes under a screen reader, it moves to the next control instead of going silent.
-    * A card whose title repeats its name is read once, not twice. A button, switch or slider that cannot be used right now reads as unavailable on every platform.
-    * Blazor: switches, checkboxes and radio buttons read their real state. Before, browsers read them as unchecked.
-    * MAUI Windows and OpenTK: Narrator presses drawn buttons with its default action. Before, the press failed and Narrator could only read them.
-    * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
-    * WPF and MAUI Windows: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
-    * MAUI Windows: a right click, Shift+F10 or the Menu key reaches `SkiaControl.ContextMenu`, as on WPF and in the browser.
   * **OpenTK and Linux**
     * Smooth frames where the graphics driver ignores vsync, like Linux under WSL: a `Constant` window notices it in its first second and spaces frames one screen refresh apart, and a `Dynamic` window always does. Before, a game ran at hundreds of frames a second there and movement stuttered.
     * On Windows, frames follow the screen's exact refresh rate. A 59.95 Hz screen used to get 59 frames a second, a little behind the display.
