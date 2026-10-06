@@ -36,8 +36,8 @@ SkiaLabel is the primary text rendering control in DrawnUI, rendering text direc
 | `DropShadowColor` | Color | Shadow color |
 | `DropShadowSize` | double | Shadow blur radius |
 | `DropShadowOffsetX`/`DropShadowOffsetY` | double | Shadow offset |
-| `AutoSize` | AutoSizeType | Auto-sizing mode |
-| `AutoSizeText` | string | Text to use for auto-sizing calculations |
+| `AutoSize` | AutoSizeType | Changes the font size to fit or fill the box, see [Auto-sizing Text](#auto-sizing-text) |
+| `AutoSizeText` | string | Text used to compute the auto size instead of `Text` |
 | `LineSpacing` | double | Line spacing multiplier |
 | `ParagraphSpacing` | double | Paragraph spacing multiplier |
 | `CharacterSpacing` | double | Character spacing multiplier |
@@ -163,18 +163,30 @@ Use the following properties for shadow effects:
 
 ### Auto-sizing Text
 
-SkiaLabel features powerful automatic font sizing capabilities that can dynamically adjust text to fit your container:
+`AutoSize` changes the font size so the text fits or fills the label's box. The label needs a size on that axis: a `WidthRequest` / `HeightRequest`, or a width or height given by its parent.
 
 ```xml
 <draw:SkiaLabel
-    Text="This text will resize to fit the available space"
-    AutoSize="FitFillHorizontal"
+    Text="This text gets smaller when it is too long"
+    AutoSize="FitHorizontal"
+    WidthRequest="200"
     FontSize="24"
     MaxLines="1" />
 ```
 
-- `AutoSize`: Controls auto-sizing mode: `None` (default), `FitHorizontal` / `FitVertical` (make the font smaller until the text fits), `FillHorizontal` / `FillVertical` (make it bigger to fill the space), `FitFillHorizontal` / `FitFillVertical` (both).
-- `AutoSizeText`: Text to use for sizing calculations
+| Mode | What it does |
+|------|--------------|
+| `None` | The default. The font size is `FontSize`. |
+| `FitHorizontal` | Makes the font smaller until each paragraph fits the width on one line and nothing is cut. A text that already fits keeps `FontSize`, and the size goes back up when the text gets shorter or the label wider. Works with `LineBreakMode="NoWrap"` too. |
+| `FitVertical` | Makes the font smaller until the wrapped text is not cut by the height or `MaxLines`. Never bigger than `FontSize`. |
+| `FillHorizontal` | Makes the font bigger than `FontSize` while the widest line still has room in the width. |
+| `FillVertical` | Makes the font bigger than `FontSize` while there is room for another line below the text. |
+| `FitFillHorizontal` | Smaller to fit the width, bigger to fill it. Starts from the size it used last time, so it is the faster choice for text that changes often. The size can go above `FontSize`. |
+| `FitFillVertical` | The same on the height. |
+
+`AutoSizeText` computes the size from that text instead of `Text`. Put the longest value you expect there (for example `"00:00:00"` for a timer), so the size does not change with every new value.
+
+The size is searched in small steps and each step lays the text out again. This happens only when the text or the box changes, but a long text in a narrow label takes many steps: for text that changes all the time, prefer the `FitFill` modes.
 
 ### Monospaced Text Rendering
 

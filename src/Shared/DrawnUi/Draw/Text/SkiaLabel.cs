@@ -251,7 +251,7 @@ namespace DrawnUi.Draw
         /// &lt;draw:SkiaLabel&gt;
         ///     &lt;draw:SkiaLabel.Spans&gt;
         ///         &lt;draw:TextSpan Text="This is " /&gt;
-        ///         &lt;draw:TextSpan Text="bold" FontAttributes="Bold" TextColor="Red" /&gt;
+        ///         &lt;draw:TextSpan Text="bold" IsBold="True" TextColor="Red" /&gt;
         ///         &lt;draw:TextSpan Text=" text" /&gt;
         ///     &lt;/draw:SkiaLabel.Spans&gt;
         /// &lt;/draw:SkiaLabel&gt;
@@ -2290,8 +2290,12 @@ namespace DrawnUi.Draw
 
                 if (autosize != AutoSizeType.None && maxWidth > 0 && maxHeight > 0)
                 {
+                    // fit the width: every paragraph on one line, nothing cut, and no line wider than the box
+                    // (NoWrap keeps an overflowing line whole, so the line count alone never saw it).
+                    // 1px tolerance, same as the word wrap.
                     if ((AutoSize == AutoSizeType.FitHorizontal || AutoSize == AutoSizeType.FitFillHorizontal)
-                        && (decomposedText.CountParagraphs != decomposedText.Lines.Length || decomposedText.WasCut))
+                        && (decomposedText.CountParagraphs != decomposedText.Lines.Length || decomposedText.WasCut
+                            || decomposedText.HasMoreHorizontalSpace < -1))
                     {
                         autosize = AutoSizeType.FitHorizontal;
                     }
@@ -2368,6 +2372,15 @@ namespace DrawnUi.Draw
 
             IsCut = decomposedText.WasCut;
             UsingFontSize = font.Size;
+
+            if (ReferenceEquals(font, FontDefault))
+            {
+                // AutoSize resizes FontDefault behind the SetupDefaultPaint guard: record the real size so the
+                // next measure resets it to FontSize. Without this the Fit and Fill modes started from their last
+                // size, so FitHorizontal never grew back for a shorter text or a wider box (FitFill modes restart
+                // from UsingFontSize on purpose and are not affected).
+                _fontDefaultSize = (float)UsingFontSize;
+            }
 
             return decomposedText.Lines;
         }
@@ -3691,27 +3704,24 @@ namespace DrawnUi.Draw
             propertyChanged: NeedInvalidateMeasure);
 
         /// <summary>
-        /// Gets or sets how the label automatically adjusts font size to fit available space.
+        /// Gets or sets how the label changes its font size to fit or fill its box.
         /// </summary>
         /// <remarks>
-        /// Available auto-sizing options:
-        /// 
-        /// - None (default): No auto-sizing, text uses the exact FontSize specified
-        /// - TextToWidth: Adjusts font size to fit the width of the label
-        /// - TextToHeight: Adjusts font size to fit the height of the label
-        /// - TextToView: Adjusts font size to fit both width and height of the label
-        /// 
-        /// When auto-sizing is enabled, the label will automatically reduce the font size
-        /// when necessary to make the text fit within the available space. The minimum
-        /// font size is determined by the AutoSizeText property.
-        /// 
-        /// This is useful for:
-        /// - Responsive layouts where available space may vary
-        /// - Dynamic text where length may change at runtime
-        /// - Ensuring text is fully visible within fixed space constraints
-        /// 
-        /// Note that auto-sizing can impact performance, especially with frequently 
-        /// changing text or container sizes.
+        /// - None (default): the font size is FontSize.
+        /// - FitHorizontal: shrinks the font until every paragraph fits the width on one line and nothing is cut;
+        ///   never above FontSize, and back to FontSize when the text gets shorter or the label wider.
+        /// - FitVertical: shrinks the font until the wrapped text is not cut by the height or MaxLines; never above FontSize.
+        /// - FillHorizontal: grows the font from FontSize while the widest line has room in the width.
+        /// - FillVertical: grows the font from FontSize while there is room for another line below the text.
+        /// - FitFillHorizontal / FitFillVertical: shrink and grow on that axis, starting from the size used last
+        ///   time; faster for text that changes often, and the size can go above FontSize.
+        ///
+        /// The label needs a size on that axis (a request or a constraint from its parent).
+        /// Set AutoSizeText to compute the size from a sample text (for example the longest value expected)
+        /// instead of the current Text, so the size does not change with every new value.
+        ///
+        /// The size is searched in 0.1px steps and each step lays out the text again, so a big change of size
+        /// costs many layouts when the text or the box changes; nothing is spent while they stay the same.
         /// </remarks>
         public AutoSizeType AutoSize
         {
