@@ -137,6 +137,21 @@ namespace DrawnUi.Views
                 SkiaScroll.EnsureVisible(control);
         }
 
+        /// <summary>
+        /// A screen reader pages from the node: the nearest scroll above it that can move that way (<see cref="SkiaScroll.AccessibilityPage"/>).
+        /// False when none can, so the reader says there is nothing more; <paramref name="probe"/> only answers that.
+        /// </summary>
+        public static bool Page(ISkiaAccessibilityNode? node, bool vertical, bool forward, bool probe = false)
+        {
+            for (var parent = (node as SkiaControl)?.Parent; parent is SkiaControl control; parent = control.Parent)
+            {
+                if (control is SkiaScroll scroll && scroll.AccessibilityPage(vertical, forward, probe))
+                    return true;
+            }
+
+            return false;
+        }
+
         private static bool CanAdjust(ISkiaAccessibilityNode node) =>
             node is not SkiaControl control || control.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult.Panning);
 

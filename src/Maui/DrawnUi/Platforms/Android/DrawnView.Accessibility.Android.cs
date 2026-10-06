@@ -99,8 +99,10 @@ namespace DrawnUi.Views
             var view = _a11yView;
             view?.Post(() =>
             {
-                if (ReferenceEquals(view, _a11yView))
-                    _a11yHelper?.InvalidateRoot();
+                if (!ReferenceEquals(view, _a11yView))
+                    return;
+                _a11yHelper?.RefocusIfDropped();
+                _a11yHelper?.InvalidateRoot();
             });
         }
 
@@ -140,8 +142,11 @@ namespace DrawnUi.Views
         private readonly WeakReference<DrawnView> _canvas;
         private readonly AccessibilityManager _system;
 
+        private readonly View _host;
+
         public DrawnUiAccessibilityHelper(View host, DrawnView canvas) : base(host)
         {
+            _host = host;
             _canvas = new WeakReference<DrawnView>(canvas);
             _system = host.Context?.GetSystemService(Context.AccessibilityService) as AccessibilityManager;
             HoverListener = new HoverForwarder(this);
@@ -170,6 +175,56 @@ namespace DrawnUi.Views
                 if (node.Id == id)
                     return node;
             return null;
+        }
+
+        /// <summary>
+        /// TalkBack's node left the snapshot (its page closed, a popup gone): focus the first node that says something (a name,
+        /// or takes input), so the reader's cursor does not stay on an empty spot. Only when TalkBack really was on a node.
+        /// </summary>
+        public void RefocusIfDropped()
+        {
+            var focused = AccessibilityFocusedVirtualViewId;
+            if (focused == HostId || focused == InvalidId)
+                return;
+
+            var snapshot = Snapshot(false);
+            if (Array.Exists(snapshot, n => n.Id == focused))
+                return;
+
+            var next = Array.Find(snapshot, n => n.CanInteract || !string.IsNullOrEmpty(n.Label));
+            if (next != null)
+                GetAccessibilityNodeProvider(_host)?.PerformAction(next.Id, AccessibilityNodeInfoCompat.ActionAccessibilityFocus, null);
+        }
+
+        // Scroll paging sits on the canvas node: our virtual views are flat, there is no scroll node above them. It pages
+        // the scroll holding the node TalkBack is on, and only while that scroll can move, so a page that does not scroll
+        // is not called scrollable.
+        protected override void OnPopulateNodeForHost(AccessibilityNodeInfoCompat info)
+        {
+            var source = Find(AccessibilityFocusedVirtualViewId)?.Source;
+            if (source == null)
+                return;
+
+            var forward = SkiaAccessibilityManager.Page(source, true, true, probe: true) || SkiaAccessibilityManager.Page(source, false, true, probe: true);
+            var backward = SkiaAccessibilityManager.Page(source, true, false, probe: true) || SkiaAccessibilityManager.Page(source, false, false, probe: true);
+            if (forward)
+                info.AddAction(AccessibilityNodeInfoCompat.ActionScrollForward);
+            if (backward)
+                info.AddAction(AccessibilityNodeInfoCompat.ActionScrollBackward);
+            info.Scrollable = forward || backward;
+        }
+
+        public override bool PerformAccessibilityAction(View host, int action, Bundle args)
+        {
+            if (action is AccessibilityNodeInfoCompat.ActionScrollForward or AccessibilityNodeInfoCompat.ActionScrollBackward)
+            {
+                var source = Find(AccessibilityFocusedVirtualViewId)?.Source;
+                var forward = action == AccessibilityNodeInfoCompat.ActionScrollForward;
+                if (source != null && (SkiaAccessibilityManager.Page(source, true, forward) || SkiaAccessibilityManager.Page(source, false, forward)))
+                    return true;
+            }
+
+            return base.PerformAccessibilityAction(host, action, args);
         }
 
         // the last node in reading order that contains the point, as MAUI Windows: a title over its card
@@ -209,8 +264,8 @@ namespace DrawnUi.Views
                 (int)Math.Floor(node.Rect.Left * scale), (int)Math.Floor(node.Rect.Top * scale),
                 (int)Math.Ceiling(node.Rect.Right * scale), (int)Math.Ceiling(node.Rect.Bottom * scale)));
 
-            // the live label, the snapshot is rebuilt at most once a second
-            var label = node.Source?.AccessibilityLabel ?? node.Label ?? string.Empty;
+            // the live label, the snapshot is rebuilt at most once a second; none when a title text inside says it
+            var label = node.NamedByChild ? string.Empty : node.Source?.AccessibilityLabel ?? node.Label ?? string.Empty;
             if (node.Role is "text" or "heading")
                 info.Text = label;
             else
@@ -237,6 +292,28 @@ namespace DrawnUi.Views
                 info.AddAction(AccessibilityNodeInfoCompat.ActionClick);
             }
 
+            // every node can be brought on screen (TalkBack "show on screen")
+            info.AddAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ActionShowOnScreen);
+
+            // a range control's value: RangeInfo plus the spoken text; a slider steps with scroll forward / back
+            // (TalkBack's adjust) and takes SET_PROGRESS snapped to its step
+            if (node.Value is { } snapshotValue)
+            {
+                var value = node.Source?.GetAccessibilityValue() ?? snapshotValue;
+                info.RangeInfo = AccessibilityNodeInfoCompat.RangeInfoCompat.Obtain(
+                    AccessibilityNodeInfoCompat.RangeInfoCompat.RangeTypeFloat, (float)value.Min, (float)value.Max, (float)value.Now);
+                if (!string.IsNullOrEmpty(value.Text))
+                    info.StateDescription = value.Text;
+                if (node.CanInteract && value.Step > 0)
+                {
+                    if (value.Now < value.Max)
+                        info.AddAction(AccessibilityNodeInfoCompat.ActionScrollForward);
+                    if (value.Now > value.Min)
+                        info.AddAction(AccessibilityNodeInfoCompat.ActionScrollBackward);
+                    info.AddAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ActionSetProgress);
+                }
+            }
+
             var live = node.Live ?? node.Source?.AccessibilityLive;
             info.LiveRegion = live switch
             {
@@ -249,16 +326,36 @@ namespace DrawnUi.Views
         // double tap: the node's activation (a tap at its center), as UIA Invoke and the web overlay
         protected override bool OnPerformActionForVirtualView(int virtualViewId, int action, Bundle arguments)
         {
-            if (action != AccessibilityNodeInfoCompat.ActionClick)
+            var source = Find(virtualViewId)?.Source;
+            if (source == null)
                 return false;
 
-            var node = Find(virtualViewId);
-            if (node?.Source == null || !SkiaAccessibilityManager.Activate(node.Source))
+            if (action == AccessibilityNodeInfoCompat.ActionClick)
+            {
+                if (!SkiaAccessibilityManager.Activate(source))
+                    return false;
+                InvalidateVirtualView(virtualViewId);
+                SendEventForVirtualView(virtualViewId, (int)EventTypes.ViewClicked);
+                return true;
+            }
+
+            bool used;
+            if (action is AccessibilityNodeInfoCompat.ActionScrollForward or AccessibilityNodeInfoCompat.ActionScrollBackward)
+                used = SkiaAccessibilityManager.Adjust(source, action == AccessibilityNodeInfoCompat.ActionScrollForward);
+            else if (action == AccessibilityNodeInfoCompat.AccessibilityActionCompat.ActionSetProgress.Id)
+                used = arguments != null && SkiaAccessibilityManager.SetValue(source,
+                    arguments.GetFloat(AccessibilityNodeInfoCompat.ActionArgumentProgressValue));
+            else if (action == AccessibilityNodeInfoCompat.AccessibilityActionCompat.ActionShowOnScreen.Id)
+            {
+                SkiaAccessibilityManager.ScrollIntoView(source);
+                used = true;
+            }
+            else
                 return false;
 
-            InvalidateVirtualView(virtualViewId);
-            SendEventForVirtualView(virtualViewId, (int)EventTypes.ViewClicked);
-            return true;
+            if (used)
+                InvalidateVirtualView(virtualViewId); // the new value is read back from the source at once
+            return used;
         }
 
         private static string ClassName(string role) => role switch

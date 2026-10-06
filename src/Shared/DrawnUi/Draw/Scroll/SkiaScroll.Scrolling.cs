@@ -1354,6 +1354,31 @@ public partial class SkiaScroll
     /// Scrolls every enclosing SkiaScroll so <paramref name="control"/> is inside its viewport
     /// (used when keyboard / screen-reader focus lands on an off-screen node). No-op when already visible.
     /// </summary>
+    /// <summary>
+    /// A screen reader pages the content (TalkBack scroll forward / back, VoiceOver's three-finger swipe): by the viewport
+    /// less a tenth, animated. <paramref name="forward"/> moves toward the end (down, right). False when the content cannot
+    /// move that way along that axis, so the reader gives its own "no more pages" feedback; <paramref name="probe"/> only
+    /// answers that.
+    /// </summary>
+    public bool AccessibilityPage(bool vertical, bool forward, bool probe = false)
+    {
+        if (vertical ? Orientation == ScrollOrientation.Horizontal : Orientation == ScrollOrientation.Vertical)
+            return false;
+
+        var offset = InternalViewportOffset.Units;
+        var current = vertical ? offset.Y : offset.X;
+        var page = (vertical ? Viewport.Units.Height : Viewport.Units.Width) * 0.9f;
+        var target = current + (forward ? -page : page);
+        var clamped = ClampOffsetHard(vertical ? offset.X : target, vertical ? target : offset.Y);
+        var moved = vertical ? clamped.Y : clamped.X;
+        if (page <= 0 || Math.Abs(moved - current) < 1)
+            return false;
+
+        if (!probe)
+            ScrollTo(vertical ? offset.X : moved, vertical ? moved : offset.Y, 0.25f, true);
+        return true;
+    }
+
     public static void EnsureVisible(SkiaControl control, float maxTimeSecs = 0.25f, float paddingPts = 8f)
     {
         var parent = control?.Parent;

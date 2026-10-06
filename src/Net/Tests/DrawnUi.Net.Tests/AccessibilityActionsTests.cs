@@ -126,6 +126,36 @@ public class AccessibilityActionsTests
     }
 
     [Fact]
+    public void Paging_MovesTheScrollAboveTheNodeByTheViewportLessATenth_NoPageWhereItCannotMove()
+    {
+        using var host = new HeadlessCanvasHost(300, 400);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+
+        var first = new SkiaButton("first") { HeightRequest = 40, AccessibilityRole = Aria.RoleButton };
+        var scroll = new SkiaScroll
+        {
+            Orientation = ScrollOrientation.Vertical,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaStack
+            {
+                Children = Enumerable.Range(0, 40).Select(i => (SkiaControl)new SkiaLayout { HeightRequest = 50, HorizontalOptions = LayoutOptions.Fill })
+                    .Prepend(first).ToList(),
+            },
+        };
+        host.Canvas.Content = scroll;
+        host.AdvanceFrames(4);
+
+        Assert.False(SkiaAccessibilityManager.Page(first, vertical: true, forward: false, probe: true)); // already at the top
+        Assert.False(SkiaAccessibilityManager.Page(first, vertical: false, forward: true, probe: true)); // no horizontal travel
+        Assert.True(SkiaAccessibilityManager.Page(first, vertical: true, forward: true));
+        host.AdvanceFrames(30); // the animated move ends
+
+        Assert.Equal(-400 * 0.9f, scroll.ViewportOffsetY, 1);
+        Assert.True(SkiaAccessibilityManager.Page(first, vertical: true, forward: false, probe: true));
+    }
+
+    [Fact]
     public void UpFromAShortLastRow_MovesByTheFirstRowsLength()
     {
         using var host = new HeadlessCanvasHost(300, 400);
